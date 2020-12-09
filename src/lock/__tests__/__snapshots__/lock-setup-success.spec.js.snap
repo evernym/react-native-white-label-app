@@ -1,0 +1,538 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<LockSetupSuccess /> should display Loading while fetching the invitation 1`] = `
+<RCTSafeAreaView
+  emulateUnlessSupported={true}
+  safeArea={true}
+  style={
+    Object {
+      "backgroundColor": "#ffffff",
+      "flex": 1,
+    }
+  }
+  tertiary={true}
+>
+  <View
+    center={true}
+    clearBg={true}
+    style={
+      Object {
+        "alignItems": "center",
+        "backgroundColor": "transparent",
+        "flex": 1,
+        "justifyContent": "center",
+        "paddingHorizontal": 20,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "borderColor": "#86B93B",
+          "borderRadius": 34.457142857142856,
+          "borderWidth": 2,
+          "height": 68.91428571428571,
+          "justifyContent": "center",
+          "width": 68.91428571428571,
+        }
+      }
+    >
+      <View
+        style={
+          Object {
+            "transform": Array [
+              Object {
+                "scale": 1,
+              },
+            ],
+          }
+        }
+      >
+        <RNSVGSvgView
+          align="xMidYMid"
+          bbHeight={38.285714285714285}
+          bbWidth={38.285714285714285}
+          color={4287019323}
+          fill="#86B93B"
+          focusable={false}
+          height={38.285714285714285}
+          meetOrSlice={0}
+          minX={0}
+          minY={0}
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "borderWidth": 0,
+              },
+              Object {
+                "flex": 0,
+                "height": 38,
+                "width": 38,
+              },
+            ]
+          }
+          tintColor={4287019323}
+          vbHeight={24}
+          vbWidth={24}
+          width={38.285714285714285}
+        >
+          <RNSVGGroup
+            fill={4287019323}
+            propList={
+              Array [
+                "fill",
+              ]
+            }
+          >
+            <RNSVGGroup>
+              <RNSVGGroup>
+                <RNSVGRect
+                  height="24"
+                  opacity={0}
+                  width="24"
+                  x={0}
+                  y={0}
+                />
+                <RNSVGCircle
+                  cx="12"
+                  cy="15"
+                  r="1"
+                />
+                <RNSVGPath
+                  d="M17 8h-1V6.11a4 4 0 1 0-8 0V8H7a3 3 0 0 0-3 3v8a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-8a3 3 0 0 0-3-3zm-7-1.89A2.06 2.06 0 0 1 12 4a2.06 2.06 0 0 1 2 2.11V8h-4zM12 18a3 3 0 1 1 3-3 3 3 0 0 1-3 3z"
+                />
+              </RNSVGGroup>
+            </RNSVGGroup>
+          </RNSVGGroup>
+        </RNSVGSvgView>
+      </View>
+    </View>
+    <Text
+      allowFontScaling={false}
+      style={
+        Array [
+          Object {
+            "fontSize": 19,
+          },
+          Object {
+            "fontFamily": "Lato",
+          },
+          Object {
+            "backgroundColor": "#ffffff",
+            "color": "#777777",
+          },
+          Object {
+            "fontWeight": "800",
+          },
+          Object {
+            "textAlign": "center",
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          Object {
+            "paddingVertical": 40,
+          },
+        ]
+      }
+    >
+      Loading please wait...
+    </Text>
+    <Text
+      allowFontScaling={false}
+      style={
+        Array [
+          Object {
+            "fontSize": 15,
+          },
+          Object {
+            "fontFamily": "Lato",
+          },
+          Object {
+            "backgroundColor": "#ffffff",
+            "color": "#777777",
+          },
+          Object {
+            "fontWeight": "800",
+          },
+          Object {
+            "textAlign": "center",
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          Object {
+            "paddingVertical": 40,
+          },
+        ]
+      }
+    >
+       
+    </Text>
+  </View>
+  <View
+    style={
+      Object {
+        "marginHorizontal": "2%",
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "borderRadius": 3,
+          "marginLeft": 0,
+          "marginRight": 0,
+          "overflow": "hidden",
+        }
+      }
+    >
+      <View
+        accessibilityLabel="close-button"
+        accessibilityRole="button"
+        accessibilityState={
+          Object {
+            "busy": false,
+            "disabled": true,
+          }
+        }
+        accessible={true}
+        focusable={true}
+        isTVSelectable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "opacity": 1,
+          }
+        }
+        testID="close-button"
+      >
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "#ffffff",
+              "borderColor": "#2089dc",
+              "borderRadius": 3,
+              "borderWidth": 0,
+              "color": "#ffffff",
+              "flexDirection": "row",
+              "justifyContent": "center",
+              "opacity": 0.4,
+              "padding": 8,
+              "paddingVertical": 17,
+              "textAlign": "center",
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "hsl(208, 8%, 63%)",
+                "fontSize": 18,
+                "paddingBottom": 1,
+                "paddingTop": 2,
+                "textAlign": "center",
+              }
+            }
+          >
+            Close
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+</RCTSafeAreaView>
+`;
+
+exports[`<LockSetupSuccess /> should render Lock setup success Screen 1`] = `
+<RCTSafeAreaView
+  emulateUnlessSupported={true}
+  safeArea={true}
+  style={
+    Object {
+      "backgroundColor": "#ffffff",
+      "flex": 1,
+    }
+  }
+  tertiary={true}
+>
+  <View
+    center={true}
+    clearBg={true}
+    style={
+      Object {
+        "alignItems": "center",
+        "backgroundColor": "transparent",
+        "flex": 1,
+        "justifyContent": "center",
+        "paddingHorizontal": 20,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "borderColor": "#86B93B",
+          "borderRadius": 34.457142857142856,
+          "borderWidth": 2,
+          "height": 68.91428571428571,
+          "justifyContent": "center",
+          "width": 68.91428571428571,
+        }
+      }
+    >
+      <View
+        style={
+          Object {
+            "transform": Array [
+              Object {
+                "scale": 1,
+              },
+            ],
+          }
+        }
+      >
+        <RNSVGSvgView
+          align="xMidYMid"
+          bbHeight={38.285714285714285}
+          bbWidth={38.285714285714285}
+          color={4287019323}
+          fill="#86B93B"
+          focusable={false}
+          height={38.285714285714285}
+          meetOrSlice={0}
+          minX={0}
+          minY={0}
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "borderWidth": 0,
+              },
+              Object {
+                "flex": 0,
+                "height": 38,
+                "width": 38,
+              },
+            ]
+          }
+          tintColor={4287019323}
+          vbHeight={24}
+          vbWidth={24}
+          width={38.285714285714285}
+        >
+          <RNSVGGroup
+            fill={4287019323}
+            propList={
+              Array [
+                "fill",
+              ]
+            }
+          >
+            <RNSVGGroup>
+              <RNSVGGroup>
+                <RNSVGRect
+                  height="24"
+                  opacity={0}
+                  width="24"
+                  x={0}
+                  y={0}
+                />
+                <RNSVGCircle
+                  cx="12"
+                  cy="15"
+                  r="1"
+                />
+                <RNSVGPath
+                  d="M17 8h-1V6.11a4 4 0 1 0-8 0V8H7a3 3 0 0 0-3 3v8a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-8a3 3 0 0 0-3-3zm-7-1.89A2.06 2.06 0 0 1 12 4a2.06 2.06 0 0 1 2 2.11V8h-4zM12 18a3 3 0 1 1 3-3 3 3 0 0 1-3 3z"
+                />
+              </RNSVGGroup>
+            </RNSVGGroup>
+          </RNSVGGroup>
+        </RNSVGSvgView>
+      </View>
+    </View>
+    <Text
+      allowFontScaling={false}
+      style={
+        Array [
+          Object {
+            "fontSize": 19,
+          },
+          Object {
+            "fontFamily": "Lato",
+          },
+          Object {
+            "backgroundColor": "#ffffff",
+            "color": "#777777",
+          },
+          Object {
+            "fontWeight": "800",
+          },
+          Object {
+            "textAlign": "center",
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          Object {
+            "paddingVertical": 40,
+          },
+        ]
+      }
+    >
+      Your AppName app is now secured
+    </Text>
+    <Text
+      allowFontScaling={false}
+      style={
+        Array [
+          Object {
+            "fontSize": 15,
+          },
+          Object {
+            "fontFamily": "Lato",
+          },
+          Object {
+            "backgroundColor": "#ffffff",
+            "color": "#777777",
+          },
+          Object {
+            "fontWeight": "800",
+          },
+          Object {
+            "textAlign": "center",
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          Object {
+            "paddingVertical": 40,
+          },
+        ]
+      }
+    >
+       
+    </Text>
+  </View>
+  <View
+    style={
+      Object {
+        "marginHorizontal": "2%",
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "backgroundColor": "#fff",
+          "borderRadius": 3,
+          "marginLeft": 0,
+          "marginRight": 0,
+          "overflow": "visible",
+          "shadowColor": "rgba(0,0,0, .4)",
+          "shadowOffset": Object {
+            "height": 1,
+            "width": 1,
+          },
+          "shadowOpacity": 1,
+          "shadowRadius": 1,
+        }
+      }
+    >
+      <View
+        accessibilityLabel="close-button"
+        accessibilityRole="button"
+        accessibilityState={
+          Object {
+            "busy": false,
+            "disabled": false,
+          }
+        }
+        accessible={true}
+        focusable={true}
+        isTVSelectable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "opacity": 1,
+          }
+        }
+        testID="close-button"
+      >
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "#777777",
+              "borderColor": "#2089dc",
+              "borderRadius": 3,
+              "borderWidth": 0,
+              "color": "#ffffff",
+              "flexDirection": "row",
+              "justifyContent": "center",
+              "padding": 8,
+              "paddingVertical": 17,
+              "textAlign": "center",
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "white",
+                "fontSize": 18,
+                "paddingBottom": 1,
+                "paddingTop": 2,
+                "textAlign": "center",
+              }
+            }
+          >
+            Close
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+</RCTSafeAreaView>
+`;

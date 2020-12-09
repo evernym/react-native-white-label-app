@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`withStatusBar() HOC should correctly get statics if wrapped by this HOC 1`] = `"SOME STATIC PROP VALUE"`;
+
+exports[`withStatusBar() HOC should render another component correctly if wrapped with this HOC 1`] = `
+<View>
+  <Text>
+    Some Text
+  </Text>
+</View>
+`;
+
+exports[`withStatusBar() HOC should render another component correctly if wrapped with this HOC 2`] = `
+<Text>
+  Som component text to test
+</Text>
+`;

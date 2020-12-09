@@ -1,0 +1,1004 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<QuestionActions /> when more than two responses are present match snapshot if in error status 1`] = `
+<View
+  style={
+    Object {
+      "marginLeft": "3%",
+      "width": "94%",
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "borderColor": "#ffffff",
+        "borderRadius": 5,
+        "borderWidth": 1,
+        "marginBottom": 15,
+        "minHeight": 56,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "borderRadius": 3,
+          "marginLeft": 0,
+          "marginRight": 0,
+          "overflow": "hidden",
+        }
+      }
+    >
+      <View
+        accessibilityLabel="question-action-submit"
+        accessibilityRole="button"
+        accessibilityState={
+          Object {
+            "busy": false,
+            "disabled": false,
+          }
+        }
+        accessible={true}
+        focusable={true}
+        isTVSelectable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "backgroundColor": "#86B93B",
+            "borderColor": "#86B93B",
+            "borderRadius": 5,
+            "borderWidth": 0,
+            "height": 56,
+            "opacity": 1,
+          }
+        }
+        testID="question-action-submit"
+      >
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "#86B93B",
+              "borderColor": "#86B93B",
+              "borderRadius": 5,
+              "borderWidth": 0,
+              "color": "#ffffff",
+              "flexDirection": "row",
+              "height": 56,
+              "justifyContent": "center",
+              "padding": 8,
+              "textAlign": "center",
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "white",
+                "fontSize": 18,
+                "paddingBottom": 1,
+                "paddingTop": 2,
+                "textAlign": "center",
+              }
+            }
+          >
+            Try Again
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`<QuestionActions /> when more than two responses are present match snapshot if in success status 1`] = `
+<View
+  style={
+    Object {
+      "marginLeft": "3%",
+      "width": "94%",
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "borderColor": "#ffffff",
+        "borderRadius": 5,
+        "borderWidth": 1,
+        "marginBottom": 15,
+        "minHeight": 56,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "borderRadius": 3,
+          "marginLeft": 0,
+          "marginRight": 0,
+          "overflow": "hidden",
+        }
+      }
+    >
+      <View
+        accessibilityLabel="question-action-submit"
+        accessibilityRole="button"
+        accessibilityState={
+          Object {
+            "busy": false,
+            "disabled": false,
+          }
+        }
+        accessible={true}
+        focusable={true}
+        isTVSelectable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "backgroundColor": "#86B93B",
+            "borderColor": "#86B93B",
+            "borderRadius": 5,
+            "borderWidth": 0,
+            "height": 56,
+            "opacity": 1,
+          }
+        }
+        testID="question-action-submit"
+      >
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "#86B93B",
+              "borderColor": "#86B93B",
+              "borderRadius": 5,
+              "borderWidth": 0,
+              "color": "#ffffff",
+              "flexDirection": "row",
+              "height": 56,
+              "justifyContent": "center",
+              "padding": 8,
+              "textAlign": "center",
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "white",
+                "fontSize": 18,
+                "paddingBottom": 1,
+                "paddingTop": 2,
+                "textAlign": "center",
+              }
+            }
+          >
+            OK
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`<QuestionActions /> when more than two responses are present render Ignore and Submit button 1`] = `
+<View
+  style={
+    Object {
+      "marginLeft": "3%",
+      "width": "94%",
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "borderColor": "#ffffff",
+        "borderRadius": 5,
+        "borderWidth": 1,
+        "marginBottom": 15,
+        "minHeight": 56,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "borderRadius": 3,
+          "marginLeft": 0,
+          "marginRight": 0,
+          "overflow": "hidden",
+        }
+      }
+    >
+      <View
+        accessibilityLabel="question-action-submit"
+        accessibilityRole="button"
+        accessibilityState={
+          Object {
+            "busy": false,
+            "disabled": true,
+          }
+        }
+        accessible={true}
+        focusable={true}
+        isTVSelectable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "backgroundColor": "#86B93B",
+            "borderColor": "#86B93B",
+            "borderRadius": 5,
+            "borderWidth": 0,
+            "height": 56,
+            "opacity": 1,
+          }
+        }
+        testID="question-action-submit"
+      >
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "#86B93B",
+              "borderColor": "#86B93B",
+              "borderRadius": 5,
+              "borderWidth": 0,
+              "color": "#ffffff",
+              "flexDirection": "row",
+              "height": 56,
+              "justifyContent": "center",
+              "opacity": 0.4,
+              "padding": 8,
+              "textAlign": "center",
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "hsl(208, 8%, 63%)",
+                "fontSize": 18,
+                "paddingBottom": 1,
+                "paddingTop": 2,
+                "textAlign": "center",
+              }
+            }
+          >
+            Submit
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`<QuestionActions /> when one response is present match snapshot if in error status 1`] = `
+<View
+  style={
+    Object {
+      "marginLeft": "3%",
+      "width": "94%",
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "borderColor": "#ffffff",
+        "borderRadius": 5,
+        "borderWidth": 1,
+        "marginBottom": 15,
+        "minHeight": 56,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "borderRadius": 3,
+          "marginLeft": 0,
+          "marginRight": 0,
+          "overflow": "hidden",
+        }
+      }
+    >
+      <View
+        accessibilityLabel="question-action-submit"
+        accessibilityRole="button"
+        accessibilityState={
+          Object {
+            "busy": false,
+            "disabled": false,
+          }
+        }
+        accessible={true}
+        focusable={true}
+        isTVSelectable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "backgroundColor": "#86B93B",
+            "borderColor": "#86B93B",
+            "borderRadius": 5,
+            "borderWidth": 0,
+            "height": 56,
+            "opacity": 1,
+          }
+        }
+        testID="question-action-submit"
+      >
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "#86B93B",
+              "borderColor": "#86B93B",
+              "borderRadius": 5,
+              "borderWidth": 0,
+              "color": "#ffffff",
+              "flexDirection": "row",
+              "height": 56,
+              "justifyContent": "center",
+              "padding": 8,
+              "textAlign": "center",
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "white",
+                "fontSize": 18,
+                "paddingBottom": 1,
+                "paddingTop": 2,
+                "textAlign": "center",
+              }
+            }
+          >
+            Try Again
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`<QuestionActions /> when one response is present match snapshot if in success status 1`] = `
+<View
+  style={
+    Object {
+      "marginLeft": "3%",
+      "width": "94%",
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "borderColor": "#ffffff",
+        "borderRadius": 5,
+        "borderWidth": 1,
+        "marginBottom": 15,
+        "minHeight": 56,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "borderRadius": 3,
+          "marginLeft": 0,
+          "marginRight": 0,
+          "overflow": "hidden",
+        }
+      }
+    >
+      <View
+        accessibilityLabel="question-action-submit"
+        accessibilityRole="button"
+        accessibilityState={
+          Object {
+            "busy": false,
+            "disabled": false,
+          }
+        }
+        accessible={true}
+        focusable={true}
+        isTVSelectable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "backgroundColor": "#86B93B",
+            "borderColor": "#86B93B",
+            "borderRadius": 5,
+            "borderWidth": 0,
+            "height": 56,
+            "opacity": 1,
+          }
+        }
+        testID="question-action-submit"
+      >
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "#86B93B",
+              "borderColor": "#86B93B",
+              "borderRadius": 5,
+              "borderWidth": 0,
+              "color": "#ffffff",
+              "flexDirection": "row",
+              "height": 56,
+              "justifyContent": "center",
+              "padding": 8,
+              "textAlign": "center",
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "white",
+                "fontSize": 18,
+                "paddingBottom": 1,
+                "paddingTop": 2,
+                "textAlign": "center",
+              }
+            }
+          >
+            OK
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`<QuestionActions /> when one response is present render Ignore and response button 1`] = `
+<View
+  style={
+    Object {
+      "marginLeft": "3%",
+      "width": "94%",
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "borderColor": "#ffffff",
+        "borderRadius": 5,
+        "borderWidth": 1,
+        "marginBottom": 15,
+        "minHeight": 56,
+      }
+    }
+  >
+    <View
+      style={Object {}}
+    >
+      <View
+        style={
+          Object {
+            "backgroundColor": "#86B93B",
+            "borderColor": "#86B93B",
+            "borderRadius": 5,
+            "borderWidth": 1,
+            "marginBottom": 15,
+            "minHeight": 56,
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "borderRadius": 3,
+              "marginLeft": 0,
+              "marginRight": 0,
+              "overflow": "hidden",
+            }
+          }
+        >
+          <View
+            accessibilityLabel="akdfakjfkjdaadkgak-submit"
+            accessibilityRole="button"
+            accessibilityState={
+              Object {
+                "busy": false,
+                "disabled": false,
+              }
+            }
+            accessible={true}
+            focusable={true}
+            isTVSelectable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              Object {
+                "backgroundColor": "#86B93B",
+                "borderColor": "#86B93B",
+                "borderRadius": 5,
+                "borderWidth": 0,
+                "height": 56,
+                "opacity": 1,
+              }
+            }
+            testID="akdfakjfkjdaadkgak-submit"
+          >
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "backgroundColor": "#01C8A1",
+                  "borderColor": "#86B93B",
+                  "borderRadius": 5,
+                  "borderWidth": 0,
+                  "color": "#ffffff",
+                  "flexDirection": "row",
+                  "height": 56,
+                  "justifyContent": "center",
+                  "padding": 8,
+                  "textAlign": "center",
+                }
+              }
+            >
+              <Text
+                style={
+                  Object {
+                    "color": "white",
+                    "fontSize": 18,
+                    "paddingBottom": 1,
+                    "paddingTop": 2,
+                    "textAlign": "center",
+                  }
+                }
+              >
+                Yes
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`<QuestionActions /> when two responses are present match snapshot if in error status 1`] = `
+<View
+  style={
+    Object {
+      "marginLeft": "3%",
+      "width": "94%",
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "borderColor": "#ffffff",
+        "borderRadius": 5,
+        "borderWidth": 1,
+        "marginBottom": 15,
+        "minHeight": 56,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "borderRadius": 3,
+          "marginLeft": 0,
+          "marginRight": 0,
+          "overflow": "hidden",
+        }
+      }
+    >
+      <View
+        accessibilityLabel="question-action-submit"
+        accessibilityRole="button"
+        accessibilityState={
+          Object {
+            "busy": false,
+            "disabled": false,
+          }
+        }
+        accessible={true}
+        focusable={true}
+        isTVSelectable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "backgroundColor": "#86B93B",
+            "borderColor": "#86B93B",
+            "borderRadius": 5,
+            "borderWidth": 0,
+            "height": 56,
+            "opacity": 1,
+          }
+        }
+        testID="question-action-submit"
+      >
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "#86B93B",
+              "borderColor": "#86B93B",
+              "borderRadius": 5,
+              "borderWidth": 0,
+              "color": "#ffffff",
+              "flexDirection": "row",
+              "height": 56,
+              "justifyContent": "center",
+              "padding": 8,
+              "textAlign": "center",
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "white",
+                "fontSize": 18,
+                "paddingBottom": 1,
+                "paddingTop": 2,
+                "textAlign": "center",
+              }
+            }
+          >
+            Try Again
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`<QuestionActions /> when two responses are present match snapshot if in success status 1`] = `
+<View
+  style={
+    Object {
+      "marginLeft": "3%",
+      "width": "94%",
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "borderColor": "#ffffff",
+        "borderRadius": 5,
+        "borderWidth": 1,
+        "marginBottom": 15,
+        "minHeight": 56,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "borderRadius": 3,
+          "marginLeft": 0,
+          "marginRight": 0,
+          "overflow": "hidden",
+        }
+      }
+    >
+      <View
+        accessibilityLabel="question-action-submit"
+        accessibilityRole="button"
+        accessibilityState={
+          Object {
+            "busy": false,
+            "disabled": false,
+          }
+        }
+        accessible={true}
+        focusable={true}
+        isTVSelectable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "backgroundColor": "#86B93B",
+            "borderColor": "#86B93B",
+            "borderRadius": 5,
+            "borderWidth": 0,
+            "height": 56,
+            "opacity": 1,
+          }
+        }
+        testID="question-action-submit"
+      >
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "#86B93B",
+              "borderColor": "#86B93B",
+              "borderRadius": 5,
+              "borderWidth": 0,
+              "color": "#ffffff",
+              "flexDirection": "row",
+              "height": 56,
+              "justifyContent": "center",
+              "padding": 8,
+              "textAlign": "center",
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "white",
+                "fontSize": 18,
+                "paddingBottom": 1,
+                "paddingTop": 2,
+                "textAlign": "center",
+              }
+            }
+          >
+            OK
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`<QuestionActions /> when two responses are present render both response buttons and no ignore button 1`] = `
+<View
+  style={
+    Object {
+      "marginLeft": "3%",
+      "width": "94%",
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "borderColor": "#ffffff",
+        "borderRadius": 5,
+        "borderWidth": 1,
+        "marginBottom": 15,
+        "minHeight": 56,
+      }
+    }
+  >
+    <View
+      style={Object {}}
+    >
+      <View
+        style={
+          Object {
+            "borderColor": "#CE0B24",
+            "borderRadius": 5,
+            "borderWidth": 1,
+            "marginBottom": 15,
+            "minHeight": 56,
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "borderRadius": 3,
+              "marginLeft": 0,
+              "marginRight": 0,
+              "overflow": "hidden",
+            }
+          }
+        >
+          <View
+            accessibilityLabel="No-submit"
+            accessibilityRole="button"
+            accessibilityState={
+              Object {
+                "busy": false,
+                "disabled": false,
+              }
+            }
+            accessible={true}
+            focusable={true}
+            isTVSelectable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              Object {
+                "backgroundColor": "transparent",
+                "borderRadius": 5,
+                "borderWidth": 0,
+                "height": 56,
+                "opacity": 1,
+              }
+            }
+            testID="No-submit"
+          >
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "backgroundColor": "#ffffff",
+                  "borderColor": "#2089dc",
+                  "borderRadius": 5,
+                  "borderWidth": 0,
+                  "color": "#777777",
+                  "flexDirection": "row",
+                  "height": 56,
+                  "justifyContent": "center",
+                  "padding": 8,
+                  "textAlign": "center",
+                }
+              }
+            >
+              <Text
+                style={
+                  Object {
+                    "backgroundColor": "white",
+                    "color": "#CE0B24",
+                    "fontSize": 18,
+                    "paddingBottom": 1,
+                    "paddingTop": 2,
+                    "textAlign": "center",
+                  }
+                }
+              >
+                Answer 2
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+      <View
+        style={
+          Object {
+            "backgroundColor": "#86B93B",
+            "borderColor": "#86B93B",
+            "borderRadius": 5,
+            "borderWidth": 1,
+            "marginBottom": 15,
+            "minHeight": 56,
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "borderRadius": 3,
+              "marginLeft": 0,
+              "marginRight": 0,
+              "overflow": "hidden",
+            }
+          }
+        >
+          <View
+            accessibilityLabel="YES-submit"
+            accessibilityRole="button"
+            accessibilityState={
+              Object {
+                "busy": false,
+                "disabled": false,
+              }
+            }
+            accessible={true}
+            focusable={true}
+            isTVSelectable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              Object {
+                "backgroundColor": "#86B93B",
+                "borderColor": "#86B93B",
+                "borderRadius": 5,
+                "borderWidth": 0,
+                "height": 56,
+                "opacity": 1,
+              }
+            }
+            testID="YES-submit"
+          >
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "backgroundColor": "#01C8A1",
+                  "borderColor": "#86B93B",
+                  "borderRadius": 5,
+                  "borderWidth": 0,
+                  "color": "#ffffff",
+                  "flexDirection": "row",
+                  "height": 56,
+                  "justifyContent": "center",
+                  "padding": 8,
+                  "textAlign": "center",
+                }
+              }
+            >
+              <Text
+                style={
+                  Object {
+                    "color": "white",
+                    "fontSize": 18,
+                    "paddingBottom": 1,
+                    "paddingTop": 2,
+                    "textAlign": "center",
+                  }
+                }
+              >
+                Answer 1
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;

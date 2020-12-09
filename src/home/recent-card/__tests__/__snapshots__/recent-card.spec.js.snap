@@ -1,0 +1,119 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<RecentCard /> should render RecentCard component and match snapshot 1`] = `
+<View
+  style={
+    Object {
+      "backgroundColor": "#FFFFFF",
+      "flexDirection": "row",
+      "height": 31.76470588235294,
+      "marginLeft": 19.142857142857142,
+      "marginRight": 19.142857142857142,
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "height": "100%",
+        "justifyContent": "center",
+        "width": 40,
+      }
+    }
+  >
+    <Image
+      source={
+        Object {
+          "uri": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjimxZbcvZzPcPvHd_y7f0tc5d8QoC9DOPecb8JTOChmS1IoDq",
+        }
+      }
+      style={
+        Object {
+          "borderRadius": 14.357142857142858,
+          "height": 28.714285714285715,
+          "opacity": 0.5,
+          "width": 28.714285714285715,
+        }
+      }
+    />
+  </View>
+  <View
+    style={
+      Object {
+        "flex": 1,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "flex": 2,
+          "justifyContent": "flex-end",
+        }
+      }
+    >
+      <Text
+        ellipsizeMode="tail"
+        numberOfLines={1}
+        style={
+          Object {
+            "color": "#A5A5A5",
+            "fontFamily": "Lato",
+            "fontSize": 8.735294117647058,
+            "fontWeight": "normal",
+          }
+        }
+      >
+        You have been issued a 'Name'.
+      </Text>
+    </View>
+    <View
+      style={
+        Object {
+          "flex": 2,
+          "justifyContent": "flex-start",
+        }
+      }
+    >
+      <Text
+        ellipsizeMode="tail"
+        numberOfLines={1}
+        style={
+          Object {
+            "color": "#A5A5A5",
+            "fontFamily": "Lato",
+            "fontSize": 7.147058823529411,
+            "fontWeight": "normal",
+          }
+        }
+      >
+        Evernym QA-RC
+      </Text>
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "alignItems": "flex-end",
+        "height": "100%",
+        "justifyContent": "center",
+        "width": 45.94285714285714,
+      }
+    }
+  >
+    <Text
+      style={
+        Object {
+          "color": "#A5A5A5",
+          "fontFamily": "Lato",
+          "fontSize": 6.352941176470588,
+          "fontStyle": "italic",
+          "fontWeight": "normal",
+        }
+      }
+    >
+      2020-03-15T15:57:54+01:00
+    </Text>
+  </View>
+</View>
+`;

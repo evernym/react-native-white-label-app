@@ -1,0 +1,414 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Restore screen should render properly and match the snapshot 1`] = `
+<RCTSafeAreaView
+  accessibilityLabel="restore-container"
+  accessible={true}
+  emulateUnlessSupported={true}
+  safeArea={true}
+  style={
+    Object {
+      "backgroundColor": "#ffffff",
+      "flex": 1,
+    }
+  }
+  testID="restore-container"
+>
+  <Image
+    source={
+      Object {
+        "default": "RelativeImageStub",
+      }
+    }
+    style={
+      Array [
+        Object {
+          "left": 0,
+          "position": "absolute",
+          "resizeMode": "stretch",
+          "right": 0,
+          "top": "20%",
+          "width": "100%",
+        },
+      ]
+    }
+  />
+  <View
+    accessibilityLabel="restore-innercontainer"
+    accessible={true}
+    style={
+      Object {
+        "flex": 1,
+      }
+    }
+    testID="restore-innercontainer"
+  >
+    <View
+      center={true}
+      style={
+        Object {
+          "alignItems": "center",
+          "justifyContent": "center",
+        }
+      }
+    >
+      <Image
+        source={
+          Object {
+            "default": "RelativeImageStub",
+          }
+        }
+        style={
+          Array [
+            Object {
+              "marginTop": "20%",
+              "zIndex": -1,
+            },
+          ]
+        }
+      />
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "paddingVertical": 8,
+      }
+    }
+    verticalSpace={true}
+  >
+    <View
+      center={true}
+      doubleVerticalSpace={true}
+      style={
+        Object {
+          "alignItems": "center",
+          "justifyContent": "center",
+          "marginBottom": "10%",
+          "paddingVertical": 16,
+        }
+      }
+    >
+      <Text
+        allowFontScaling={false}
+        style={
+          Array [
+            Object {
+              "fontSize": 18,
+            },
+            Object {
+              "fontFamily": "Lato",
+            },
+            Object {
+              "backgroundColor": "#333333",
+              "color": "#ffffff",
+            },
+            Object {
+              "fontWeight": "500",
+            },
+            Object {
+              "textAlign": "center",
+            },
+            Object {
+              "backgroundColor": "transparent",
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            Object {
+              "marginBottom": "6%",
+            },
+            Object {
+              "color": "#717171",
+            },
+          ]
+        }
+      >
+        Thanks for installing 
+        AppName
+        .
+      </Text>
+      <Text
+        allowFontScaling={false}
+        style={
+          Array [
+            Object {
+              "fontSize": 18,
+            },
+            Object {
+              "fontFamily": "Lato",
+            },
+            Object {
+              "backgroundColor": "#333333",
+              "color": "#ffffff",
+            },
+            Object {
+              "fontWeight": "500",
+            },
+            Object {
+              "textAlign": "center",
+            },
+            Object {
+              "backgroundColor": "transparent",
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            Object {
+              "marginBottom": "6%",
+              "marginLeft": "6%",
+              "marginRight": "6%",
+            },
+            Object {
+              "color": "#717171",
+            },
+          ]
+        }
+      >
+        You can restore from a backup or start with a brand new install.
+      </Text>
+      <Text
+        allowFontScaling={false}
+        style={
+          Array [
+            Object {
+              "fontSize": 18,
+            },
+            Object {
+              "fontFamily": "Lato",
+            },
+            Object {
+              "backgroundColor": "#333333",
+              "color": "#ffffff",
+            },
+            Object {
+              "fontWeight": "500",
+            },
+            null,
+            Object {
+              "backgroundColor": "transparent",
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            Object {
+              "color": "#717171",
+            },
+          ]
+        }
+      >
+        How would you like to proceed?
+      </Text>
+    </View>
+    <View
+      pad={true}
+      style={
+        Object {
+          "paddingHorizontal": 15,
+          "paddingVertical": 8,
+        }
+      }
+    >
+      <View
+        style={
+          Object {
+            "borderRadius": 3,
+            "marginLeft": 0,
+            "marginRight": 0,
+            "overflow": "hidden",
+          }
+        }
+      >
+        <View
+          accessibilityLabel="restore-from-backup"
+          accessibilityRole="button"
+          accessibilityState={
+            Object {
+              "busy": false,
+              "disabled": false,
+            }
+          }
+          accessible={true}
+          focusable={true}
+          isTVSelectable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "borderRadius": 5,
+              "elevation": 4,
+              "height": 43,
+              "marginTop": 10,
+              "opacity": 1,
+              "shadowColor": "#777777",
+              "shadowOffset": Object {
+                "height": 5,
+                "width": 0,
+              },
+              "shadowOpacity": 0.3,
+              "shadowRadius": 5,
+              "width": "100%",
+            }
+          }
+          testID="restore-from-backup"
+        >
+          <View
+            style={
+              Object {
+                "alignItems": "center",
+                "backgroundColor": "#ffffff",
+                "borderColor": "#2089dc",
+                "borderRadius": 5,
+                "borderWidth": 0,
+                "color": "#4A90E2",
+                "elevation": 4,
+                "flexDirection": "row",
+                "fontWeight": "600",
+                "height": 43,
+                "justifyContent": "center",
+                "marginTop": 10,
+                "padding": 8,
+                "shadowColor": "#777777",
+                "shadowOffset": Object {
+                  "height": 5,
+                  "width": 0,
+                },
+                "shadowOpacity": 0.3,
+                "shadowRadius": 5,
+                "textAlign": "center",
+                "width": "100%",
+              }
+            }
+          >
+            <Text
+              style={
+                Object {
+                  "color": "white",
+                  "fontSize": 18,
+                  "paddingBottom": 1,
+                  "paddingTop": 2,
+                  "textAlign": "center",
+                }
+              }
+            >
+              Restore From A Backup
+            </Text>
+          </View>
+        </View>
+      </View>
+      <View
+        style={
+          Object {
+            "borderRadius": 3,
+            "marginLeft": 0,
+            "marginRight": 0,
+            "overflow": "hidden",
+          }
+        }
+      >
+        <View
+          accessibilityLabel="start-fresh"
+          accessibilityRole="button"
+          accessibilityState={
+            Object {
+              "busy": false,
+              "disabled": false,
+            }
+          }
+          accessible={true}
+          focusable={true}
+          isTVSelectable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "borderRadius": 5,
+              "elevation": 4,
+              "height": 43,
+              "marginTop": 10,
+              "opacity": 1,
+              "shadowColor": "#777777",
+              "shadowOffset": Object {
+                "height": 5,
+                "width": 0,
+              },
+              "shadowOpacity": 0.3,
+              "shadowRadius": 5,
+              "width": "100%",
+            }
+          }
+          testID="start-fresh"
+        >
+          <View
+            style={
+              Object {
+                "alignItems": "center",
+                "backgroundColor": "#ffffff",
+                "borderColor": "#2089dc",
+                "borderRadius": 5,
+                "borderWidth": 0,
+                "color": "#4A90E2",
+                "elevation": 4,
+                "flexDirection": "row",
+                "fontWeight": "600",
+                "height": 43,
+                "justifyContent": "center",
+                "marginTop": 10,
+                "padding": 8,
+                "shadowColor": "#777777",
+                "shadowOffset": Object {
+                  "height": 5,
+                  "width": 0,
+                },
+                "shadowOpacity": 0.3,
+                "shadowRadius": 5,
+                "textAlign": "center",
+                "width": "100%",
+              }
+            }
+          >
+            <Text
+              style={
+                Object {
+                  "color": "white",
+                  "fontSize": 18,
+                  "paddingBottom": 1,
+                  "paddingTop": 2,
+                  "textAlign": "center",
+                }
+              }
+            >
+              Start Fresh
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</RCTSafeAreaView>
+`;

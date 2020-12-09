@@ -1,0 +1,1065 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ClaimRequestStatusModal /> should hideModal if continue is clicked 1`] = `
+<View
+  center={true}
+  style={
+    Object {
+      "alignItems": "center",
+      "flex": 1,
+      "justifyContent": "center",
+    }
+  }
+>
+  <View
+    center={true}
+    shadow={true}
+    style={
+      Object {
+        "alignItems": "center",
+        "backgroundColor": "#FFFFFF",
+        "elevation": 10,
+        "justifyContent": "center",
+        "marginHorizontal": 28.714285714285715,
+        "shadowColor": "rgba(0, 0, 0, 0.2)",
+        "shadowOffset": Object {
+          "height": 10,
+          "width": 0,
+        },
+        "shadowOpacity": 1,
+        "shadowRadius": 30,
+      }
+    }
+  >
+    <View
+      center={true}
+      style={
+        Object {
+          "alignItems": "center",
+          "borderBottomColor": "#505050",
+          "borderBottomWidth": 0.23928571428571427,
+          "justifyContent": "center",
+          "padding": 19.142857142857142,
+          "paddingVertical": 8,
+        }
+      }
+      verticalSpace={true}
+    >
+      <Text
+        accessibilityLabel="claim-request-message"
+        accessible={true}
+        allowFontScaling={false}
+        style={
+          Array [
+            Object {
+              "fontSize": 17,
+            },
+            Object {
+              "fontFamily": "Lato",
+            },
+            Object {
+              "backgroundColor": "#ffffff",
+              "color": "#777777",
+            },
+            Object {
+              "fontWeight": "bold",
+            },
+            Object {
+              "textAlign": "center",
+            },
+            Object {
+              "backgroundColor": "transparent",
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            Object {
+              "marginBottom": 4.785714285714286,
+            },
+          ]
+        }
+        testID="claim-request-message"
+      >
+        
+      </Text>
+    </View>
+    <View
+      style={
+        Object {
+          "borderRadius": 3,
+          "marginLeft": 0,
+          "marginRight": 0,
+          "overflow": "hidden",
+        }
+      }
+    >
+      <View
+        accessibilityRole="button"
+        accessibilityState={
+          Object {
+            "busy": false,
+            "disabled": false,
+          }
+        }
+        accessible={true}
+        focusable={true}
+        isTVSelectable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "opacity": 1,
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "#ffffff",
+              "borderColor": "#2089dc",
+              "borderRadius": 3,
+              "borderWidth": 0,
+              "color": "#4A8FE3",
+              "flexDirection": "row",
+              "justifyContent": "center",
+              "padding": 8,
+              "textAlign": "center",
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "white",
+                "fontSize": 18,
+                "paddingBottom": 1,
+                "paddingTop": 2,
+                "textAlign": "center",
+              }
+            }
+          >
+            Continue
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`<ClaimRequestStatusModal /> should match paid credential success, if sending state changes to success 1`] = `
+<View
+  center={true}
+  style={
+    Object {
+      "alignItems": "center",
+      "flex": 1,
+      "justifyContent": "center",
+    }
+  }
+>
+  <View
+    center={true}
+    shadow={true}
+    style={
+      Object {
+        "alignItems": "center",
+        "backgroundColor": "#FFFFFF",
+        "elevation": 10,
+        "justifyContent": "center",
+        "marginHorizontal": 28.714285714285715,
+        "shadowColor": "rgba(0, 0, 0, 0.2)",
+        "shadowOffset": Object {
+          "height": 10,
+          "width": 0,
+        },
+        "shadowOpacity": 1,
+        "shadowRadius": 30,
+      }
+    }
+  >
+    <View
+      center={true}
+      style={
+        Object {
+          "alignItems": "center",
+          "borderBottomColor": "#505050",
+          "borderBottomWidth": 0.23928571428571427,
+          "justifyContent": "center",
+          "padding": 19.142857142857142,
+          "paddingVertical": 8,
+        }
+      }
+      verticalSpace={true}
+    >
+      <Text
+        accessibilityLabel="Paying..."
+        accessible={true}
+        allowFontScaling={false}
+        style={
+          Array [
+            Object {
+              "fontSize": 17,
+            },
+            Object {
+              "fontFamily": "Lato",
+            },
+            Object {
+              "backgroundColor": "#ffffff",
+              "color": "#777777",
+            },
+            Object {
+              "fontWeight": "bold",
+            },
+            Object {
+              "textAlign": "center",
+            },
+            Object {
+              "backgroundColor": "transparent",
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            Object {
+              "marginBottom": 4.785714285714286,
+            },
+          ]
+        }
+        testID="claim-request-message"
+      >
+        Paying...
+      </Text>
+    </View>
+    <View
+      style={
+        Object {
+          "borderRadius": 3,
+          "marginLeft": 0,
+          "marginRight": 0,
+          "overflow": "hidden",
+        }
+      }
+    >
+      <View
+        accessibilityRole="button"
+        accessibilityState={
+          Object {
+            "busy": false,
+            "disabled": false,
+          }
+        }
+        accessible={true}
+        focusable={true}
+        isTVSelectable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "opacity": 1,
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "#ffffff",
+              "borderColor": "#2089dc",
+              "borderRadius": 3,
+              "borderWidth": 0,
+              "color": "#4A8FE3",
+              "flexDirection": "row",
+              "justifyContent": "center",
+              "padding": 8,
+              "textAlign": "center",
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "white",
+                "fontSize": 18,
+                "paddingBottom": 1,
+                "paddingTop": 2,
+                "textAlign": "center",
+              }
+            }
+          >
+            Continue
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`<ClaimRequestStatusModal /> should match snapshot when pending popOver 1`] = `
+<View
+  center={false}
+  style={
+    Object {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    center={true}
+    fifth={true}
+    style={
+      Object {
+        "alignItems": "center",
+        "backgroundColor": "#ffffff",
+        "flex": 1,
+        "justifyContent": "center",
+      }
+    }
+  >
+    <View
+      center={true}
+      style={
+        Object {
+          "alignItems": "center",
+          "height": "84%",
+          "justifyContent": "center",
+        }
+      }
+    >
+      <Text
+        allowFontScaling={false}
+        style={
+          Array [
+            Object {
+              "fontSize": 17,
+            },
+            Object {
+              "fontFamily": "Lato",
+            },
+            Object {
+              "backgroundColor": "#ffffff",
+              "color": "#777777",
+            },
+            Object {
+              "fontWeight": "bold",
+            },
+            Object {
+              "textAlign": "center",
+            },
+            Object {
+              "backgroundColor": "transparent",
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            Object {
+              "marginBottom": 4.785714285714286,
+            },
+          ]
+        }
+      >
+        
+      </Text>
+      <View
+        center={true}
+        style={
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+            "padding": 20,
+          }
+        }
+      >
+        <ActivityIndicator
+          animating={true}
+          color="#777777"
+          hidesWhenStopped={true}
+          size="large"
+        />
+        <Text
+          allowFontScaling={false}
+          style={
+            Array [
+              Object {
+                "fontSize": 17,
+              },
+              Object {
+                "fontFamily": "Lato",
+              },
+              Object {
+                "backgroundColor": "#333333",
+                "color": "#ffffff",
+              },
+              null,
+              Object {
+                "textAlign": "center",
+              },
+              Object {
+                "backgroundColor": "transparent",
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              Object {
+                "color": "#464646",
+              },
+              Object {
+                "fontSize": 17,
+                "fontWeight": "500",
+                "letterSpacing": -0.42,
+                "lineHeight": 21,
+                "marginTop": 20,
+              },
+            ]
+          }
+        >
+          Please wait…
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`<ClaimRequestStatusModal /> should show arrow right and accepting text, if claim request is being sent 1`] = `
+<View
+  center={true}
+  style={
+    Object {
+      "alignItems": "center",
+      "flex": 1,
+      "justifyContent": "center",
+    }
+  }
+>
+  <View
+    center={true}
+    shadow={true}
+    style={
+      Object {
+        "alignItems": "center",
+        "backgroundColor": "#FFFFFF",
+        "elevation": 10,
+        "justifyContent": "center",
+        "marginHorizontal": 28.714285714285715,
+        "shadowColor": "rgba(0, 0, 0, 0.2)",
+        "shadowOffset": Object {
+          "height": 10,
+          "width": 0,
+        },
+        "shadowOpacity": 1,
+        "shadowRadius": 30,
+      }
+    }
+  >
+    <View
+      center={true}
+      style={
+        Object {
+          "alignItems": "center",
+          "borderBottomColor": "#505050",
+          "borderBottomWidth": 0.23928571428571427,
+          "justifyContent": "center",
+          "padding": 19.142857142857142,
+          "paddingVertical": 8,
+        }
+      }
+      verticalSpace={true}
+    >
+      <Text
+        accessibilityLabel="Accepting..."
+        accessible={true}
+        allowFontScaling={false}
+        style={
+          Array [
+            Object {
+              "fontSize": 17,
+            },
+            Object {
+              "fontFamily": "Lato",
+            },
+            Object {
+              "backgroundColor": "#ffffff",
+              "color": "#777777",
+            },
+            Object {
+              "fontWeight": "bold",
+            },
+            Object {
+              "textAlign": "center",
+            },
+            Object {
+              "backgroundColor": "transparent",
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            Object {
+              "marginBottom": 4.785714285714286,
+            },
+          ]
+        }
+        testID="claim-request-message"
+      >
+        Accepting...
+      </Text>
+    </View>
+    <View
+      style={
+        Object {
+          "borderRadius": 3,
+          "marginLeft": 0,
+          "marginRight": 0,
+          "overflow": "hidden",
+        }
+      }
+    >
+      <View
+        accessibilityRole="button"
+        accessibilityState={
+          Object {
+            "busy": false,
+            "disabled": false,
+          }
+        }
+        accessible={true}
+        focusable={true}
+        isTVSelectable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "opacity": 1,
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "#ffffff",
+              "borderColor": "#2089dc",
+              "borderRadius": 3,
+              "borderWidth": 0,
+              "color": "#4A8FE3",
+              "flexDirection": "row",
+              "justifyContent": "center",
+              "padding": 8,
+              "textAlign": "center",
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "white",
+                "fontSize": 18,
+                "paddingBottom": 1,
+                "paddingTop": 2,
+                "textAlign": "center",
+              }
+            }
+          >
+            Continue
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`<ClaimRequestStatusModal /> should show arrow right and only Paying text if paid credential request is being sent 1`] = `
+<View
+  center={false}
+  style={
+    Object {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    center={true}
+    fifth={true}
+    style={
+      Object {
+        "alignItems": "center",
+        "backgroundColor": "#ffffff",
+        "flex": 1,
+        "justifyContent": "center",
+      }
+    }
+  >
+    <View
+      center={true}
+      style={
+        Object {
+          "alignItems": "center",
+          "height": "84%",
+          "justifyContent": "center",
+        }
+      }
+    >
+      <Text
+        allowFontScaling={false}
+        style={
+          Array [
+            Object {
+              "fontSize": 17,
+            },
+            Object {
+              "fontFamily": "Lato",
+            },
+            Object {
+              "backgroundColor": "#ffffff",
+              "color": "#777777",
+            },
+            Object {
+              "fontWeight": "bold",
+            },
+            Object {
+              "textAlign": "center",
+            },
+            Object {
+              "backgroundColor": "transparent",
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            Object {
+              "marginBottom": 4.785714285714286,
+            },
+          ]
+        }
+      >
+        Paying...
+      </Text>
+      <View
+        center={true}
+        style={
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+            "padding": 20,
+          }
+        }
+      >
+        <ActivityIndicator
+          animating={true}
+          color="#777777"
+          hidesWhenStopped={true}
+          size="large"
+        />
+        <Text
+          allowFontScaling={false}
+          style={
+            Array [
+              Object {
+                "fontSize": 17,
+              },
+              Object {
+                "fontFamily": "Lato",
+              },
+              Object {
+                "backgroundColor": "#333333",
+                "color": "#ffffff",
+              },
+              null,
+              Object {
+                "textAlign": "center",
+              },
+              Object {
+                "backgroundColor": "transparent",
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              Object {
+                "color": "#464646",
+              },
+              Object {
+                "fontSize": 17,
+                "fontWeight": "500",
+                "letterSpacing": -0.42,
+                "lineHeight": 21,
+                "marginTop": 20,
+              },
+            ]
+          }
+        >
+          Please wait…
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`<ClaimRequestStatusModal /> should show check mark, token amount, if paid credential request is sent 1`] = `
+<View
+  center={true}
+  style={
+    Object {
+      "alignItems": "center",
+      "flex": 1,
+      "justifyContent": "center",
+    }
+  }
+>
+  <View
+    center={true}
+    shadow={true}
+    style={
+      Object {
+        "alignItems": "center",
+        "backgroundColor": "#FFFFFF",
+        "elevation": 10,
+        "justifyContent": "center",
+        "marginHorizontal": 28.714285714285715,
+        "shadowColor": "rgba(0, 0, 0, 0.2)",
+        "shadowOffset": Object {
+          "height": 10,
+          "width": 0,
+        },
+        "shadowOpacity": 1,
+        "shadowRadius": 30,
+      }
+    }
+  >
+    <View
+      center={true}
+      style={
+        Object {
+          "alignItems": "center",
+          "borderBottomColor": "#505050",
+          "borderBottomWidth": 0.23928571428571427,
+          "justifyContent": "center",
+          "padding": 19.142857142857142,
+          "paddingVertical": 8,
+        }
+      }
+      verticalSpace={true}
+    >
+      <Text
+        accessibilityLabel="claim-request-message"
+        accessible={true}
+        allowFontScaling={false}
+        style={
+          Array [
+            Object {
+              "fontSize": 17,
+            },
+            Object {
+              "fontFamily": "Lato",
+            },
+            Object {
+              "backgroundColor": "#ffffff",
+              "color": "#777777",
+            },
+            Object {
+              "fontWeight": "bold",
+            },
+            Object {
+              "textAlign": "center",
+            },
+            Object {
+              "backgroundColor": "transparent",
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            Object {
+              "marginBottom": 4.785714285714286,
+            },
+          ]
+        }
+        testID="claim-request-message"
+      >
+        
+      </Text>
+    </View>
+    <View
+      style={
+        Object {
+          "borderRadius": 3,
+          "marginLeft": 0,
+          "marginRight": 0,
+          "overflow": "hidden",
+        }
+      }
+    >
+      <View
+        accessibilityRole="button"
+        accessibilityState={
+          Object {
+            "busy": false,
+            "disabled": false,
+          }
+        }
+        accessible={true}
+        focusable={true}
+        isTVSelectable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "opacity": 1,
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "#ffffff",
+              "borderColor": "#2089dc",
+              "borderRadius": 3,
+              "borderWidth": 0,
+              "color": "#4A8FE3",
+              "flexDirection": "row",
+              "justifyContent": "center",
+              "padding": 8,
+              "textAlign": "center",
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "white",
+                "fontSize": 18,
+                "paddingBottom": 1,
+                "paddingTop": 2,
+                "textAlign": "center",
+              }
+            }
+          >
+            Continue
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`<ClaimRequestStatusModal /> should show check mark, you accepted text, if claim request is sent 1`] = `
+<View
+  center={true}
+  style={
+    Object {
+      "alignItems": "center",
+      "flex": 1,
+      "justifyContent": "center",
+    }
+  }
+>
+  <View
+    center={true}
+    shadow={true}
+    style={
+      Object {
+        "alignItems": "center",
+        "backgroundColor": "#FFFFFF",
+        "elevation": 10,
+        "justifyContent": "center",
+        "marginHorizontal": 28.714285714285715,
+        "shadowColor": "rgba(0, 0, 0, 0.2)",
+        "shadowOffset": Object {
+          "height": 10,
+          "width": 0,
+        },
+        "shadowOpacity": 1,
+        "shadowRadius": 30,
+      }
+    }
+  >
+    <View
+      center={true}
+      style={
+        Object {
+          "alignItems": "center",
+          "borderBottomColor": "#505050",
+          "borderBottomWidth": 0.23928571428571427,
+          "justifyContent": "center",
+          "padding": 19.142857142857142,
+          "paddingVertical": 8,
+        }
+      }
+      verticalSpace={true}
+    >
+      <Text
+        accessibilityLabel="claim-request-message"
+        accessible={true}
+        allowFontScaling={false}
+        style={
+          Array [
+            Object {
+              "fontSize": 17,
+            },
+            Object {
+              "fontFamily": "Lato",
+            },
+            Object {
+              "backgroundColor": "#ffffff",
+              "color": "#777777",
+            },
+            Object {
+              "fontWeight": "bold",
+            },
+            Object {
+              "textAlign": "center",
+            },
+            Object {
+              "backgroundColor": "transparent",
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            Object {
+              "marginBottom": 4.785714285714286,
+            },
+          ]
+        }
+        testID="claim-request-message"
+      >
+        
+      </Text>
+    </View>
+    <View
+      style={
+        Object {
+          "borderRadius": 3,
+          "marginLeft": 0,
+          "marginRight": 0,
+          "overflow": "hidden",
+        }
+      }
+    >
+      <View
+        accessibilityRole="button"
+        accessibilityState={
+          Object {
+            "busy": false,
+            "disabled": false,
+          }
+        }
+        accessible={true}
+        focusable={true}
+        isTVSelectable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "opacity": 1,
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "#ffffff",
+              "borderColor": "#2089dc",
+              "borderRadius": 3,
+              "borderWidth": 0,
+              "color": "#4A8FE3",
+              "flexDirection": "row",
+              "justifyContent": "center",
+              "padding": 8,
+              "textAlign": "center",
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "white",
+                "fontSize": 18,
+                "paddingBottom": 1,
+                "paddingTop": 2,
+                "textAlign": "center",
+              }
+            }
+          >
+            Continue
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;

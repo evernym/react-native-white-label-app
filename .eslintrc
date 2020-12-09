@@ -1,0 +1,50 @@
+{
+  "parser": "babel-eslint",
+  "plugins": ["react", "flowtype"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended"
+],
+"env": {
+  "node": true,
+  "browser": true,
+  "es6": true,
+  "jest": true
+},
+"globals": {
+  "Generator": true,
+  "__DEV__": true
+},
+  "rules": {
+    "flowtype/require-valid-file-annotation": [2, "always"],
+    "flowtype/define-flow-type": 1,
+    "no-unused-vars": ["warn", { "ignoreRestSiblings": true, "argsIgnorePattern": "^action", "caughtErrors": "none" }],
+    "react/display-name": 0,
+    "react/prop-types": 0,
+    "react/jsx-no-duplicate-props": 0,
+    "no-prototype-builtins": 0,
+    "no-empty": 0,
+    "no-extra-semi": 0,
+    "no-case-declarations": 0,
+    "no-fallthrough": 0,
+    "no-dupe-keys": 0,
+    "no-useless-catch": 0,
+    "react/no-unescaped-entities": 0,
+    "no-useless-escape": 0
+  },
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "ecmaFeatures": {
+        "modules": true
+    }
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    },
+    "flowtype": {
+      "onlyFilesWithFlowAnnotation": true
+    }
+  }
+}

@@ -1,0 +1,537 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CloudBackup /> should match snapshot 1`] = `
+<View
+  style={
+    Object {
+      "backgroundColor": "rgba(0, 0, 0, 0.8)",
+      "flex": 1,
+      "opacity": 1,
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "flex": 1,
+        "transform": Array [
+          Object {
+            "translateY": 0,
+          },
+        ],
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "backgroundColor": "transparent",
+          "flex": 1,
+        }
+      }
+    >
+      <View
+        onGestureEvent={[Function]}
+        onHandlerStateChange={[Function]}
+      >
+        <View
+          style={
+            Object {
+              "flex": 1,
+            }
+          }
+        >
+          <View
+            row={true}
+            style={
+              Object {
+                "backgroundColor": "transparent",
+                "flex": 1,
+                "flexDirection": "row",
+              }
+            }
+          >
+            <View
+              accessible={true}
+              focusable={true}
+              hitSlop={
+                Object {
+                  "bottom": 20,
+                  "left": 20,
+                  "right": 20,
+                  "top": 20,
+                }
+              }
+              onClick={[Function]}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
+              style={
+                Object {
+                  "flex": 1,
+                }
+              }
+            />
+            <View
+              style={
+                Object {
+                  "justifyContent": "flex-end",
+                  "marginBottom": 8,
+                }
+              }
+            >
+              <View
+                style={
+                  Object {
+                    "backgroundColor": "#F2F2F2",
+                    "borderRadius": 6,
+                    "height": 6,
+                    "width": 51,
+                  }
+                }
+              />
+            </View>
+            <View
+              accessible={true}
+              focusable={true}
+              hitSlop={
+                Object {
+                  "bottom": 20,
+                  "left": 20,
+                  "right": 20,
+                  "top": 20,
+                }
+              }
+              onClick={[Function]}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
+              style={
+                Object {
+                  "flex": 1,
+                }
+              }
+            />
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      style={
+        Object {
+          "backgroundColor": "#ffffff",
+          "borderTopLeftRadius": 8,
+          "borderTopRightRadius": 8,
+          "paddingBottom": 10,
+          "paddingLeft": "5%",
+          "paddingRight": "5%",
+        }
+      }
+    >
+      <View>
+        <View
+          center={true}
+          row={true}
+          style={
+            Object {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "justifyContent": "center",
+              "maxHeight": 90,
+              "minHeight": 64,
+            }
+          }
+        >
+          <View
+            style={Object {}}
+          >
+            <Image
+              resizeMode="cover"
+              source={
+                Object {
+                  "default": "RelativeImageStub",
+                }
+              }
+              style={
+                Array [
+                  Object {
+                    "height": 32,
+                    "width": 32,
+                  },
+                ]
+              }
+            />
+          </View>
+          <View
+            style={
+              Object {
+                "flex": 1,
+                "marginLeft": "5%",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              numberOfLines={2}
+              style={
+                Array [
+                  Object {
+                    "fontSize": 17,
+                  },
+                  Object {
+                    "fontFamily": "Lato",
+                  },
+                  Object {},
+                  Object {
+                    "fontWeight": "bold",
+                  },
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  Object {
+                    "color": "#505050",
+                  },
+                ]
+              }
+            >
+              Cloud Backup
+            </Text>
+          </View>
+        </View>
+        <View>
+          <View
+            center={true}
+            row={true}
+            style={
+              Object {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "justifyContent": "center",
+              }
+            }
+          >
+            <Image
+              resizeMode="cover"
+              source={
+                Object {
+                  "default": "RelativeImageStub",
+                }
+              }
+              style={
+                Array [
+                  Object {
+                    "height": 54,
+                    "width": 80,
+                  },
+                ]
+              }
+            />
+          </View>
+          <View
+            center={true}
+            row={true}
+            style={
+              Object {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "justifyContent": "center",
+              }
+            }
+          />
+          <Text
+            allowFontScaling={false}
+            numberOfLines={2}
+            style={
+              Array [
+                undefined,
+                Object {
+                  "fontFamily": "Lato",
+                },
+                Object {},
+                Object {
+                  "fontWeight": "bold",
+                },
+                Object {
+                  "textAlign": "center",
+                },
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                Object {
+                  "color": "#505050",
+                  "fontSize": 23,
+                  "marginVertical": 20,
+                },
+              ]
+            }
+          >
+            Enable Automatic Backups?
+          </Text>
+          <Text
+            allowFontScaling={false}
+            style={
+              Array [
+                undefined,
+                Object {
+                  "fontFamily": "Lato",
+                },
+                Object {},
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                Object {
+                  "color": "#505050",
+                },
+              ]
+            }
+          >
+            When enabled, any changes to your 
+            AppName
+             app are automatically backed up to the Evernym Cloud. This makes recovery easier should you lose your phone.
+          </Text>
+          <View
+            style={
+              Object {
+                "marginTop": 10,
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              style={
+                Array [
+                  undefined,
+                  Object {
+                    "fontFamily": "Lato",
+                  },
+                  Object {},
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  Object {
+                    "color": "#505050",
+                  },
+                ]
+              }
+            >
+              All 
+              AppName
+               backups are encrypted and anonymized before leaving your phone. You will still need your Recovery Phrase and a fresh install of 
+              AppName
+               to recover.
+            </Text>
+          </View>
+          <View
+            style={Object {}}
+          >
+            <View
+              row={true}
+              style={
+                Object {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "justifyContent": "space-around",
+                  "marginVertical": "3%",
+                  "paddingBottom": 20,
+                }
+              }
+            >
+              <View
+                style={
+                  Object {
+                    "flex": 1,
+                  }
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "borderRadius": 3,
+                      "marginLeft": 0,
+                      "marginRight": 0,
+                      "overflow": "hidden",
+                    }
+                  }
+                >
+                  <View
+                    accessibilityRole="button"
+                    accessibilityState={
+                      Object {
+                        "busy": false,
+                        "disabled": false,
+                      }
+                    }
+                    accessible={true}
+                    focusable={true}
+                    isTVSelectable={true}
+                    onClick={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
+                    style={
+                      Object {
+                        "borderColor": "#A5A5A5",
+                        "borderRadius": 5,
+                        "borderWidth": 1,
+                        "opacity": 1,
+                      }
+                    }
+                  >
+                    <View
+                      style={
+                        Object {
+                          "alignItems": "center",
+                          "backgroundColor": "#ffffff",
+                          "borderColor": "#A5A5A5",
+                          "borderRadius": 5,
+                          "borderWidth": 1,
+                          "color": "#777777",
+                          "flexDirection": "row",
+                          "justifyContent": "center",
+                          "padding": 8,
+                          "textAlign": "center",
+                        }
+                      }
+                    >
+                      <Text
+                        style={
+                          Object {
+                            "color": "white",
+                            "fontSize": 18,
+                            "paddingBottom": 1,
+                            "paddingTop": 2,
+                            "textAlign": "center",
+                          }
+                        }
+                      >
+                        Just One Cloud Backup
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+                <View
+                  style={
+                    Object {
+                      "marginTop": 10,
+                    }
+                  }
+                >
+                  <View
+                    style={
+                      Object {
+                        "borderRadius": 3,
+                        "marginLeft": 0,
+                        "marginRight": 0,
+                        "overflow": "hidden",
+                      }
+                    }
+                  >
+                    <View
+                      accessibilityRole="button"
+                      accessibilityState={
+                        Object {
+                          "busy": false,
+                          "disabled": false,
+                        }
+                      }
+                      accessible={true}
+                      focusable={true}
+                      isTVSelectable={true}
+                      onClick={[Function]}
+                      onResponderGrant={[Function]}
+                      onResponderMove={[Function]}
+                      onResponderRelease={[Function]}
+                      onResponderTerminate={[Function]}
+                      onResponderTerminationRequest={[Function]}
+                      onStartShouldSetResponder={[Function]}
+                      style={
+                        Object {
+                          "backgroundColor": "#86B93B",
+                          "borderColor": "#86B93B",
+                          "borderRadius": 5,
+                          "borderWidth": 1,
+                          "opacity": 1,
+                        }
+                      }
+                    >
+                      <View
+                        style={
+                          Object {
+                            "alignItems": "center",
+                            "backgroundColor": "#777777",
+                            "borderColor": "#86B93B",
+                            "borderRadius": 5,
+                            "borderWidth": 1,
+                            "color": "#ffffff",
+                            "flexDirection": "row",
+                            "justifyContent": "center",
+                            "padding": 8,
+                            "textAlign": "center",
+                          }
+                        }
+                      >
+                        <Text
+                          style={
+                            Object {
+                              "color": "white",
+                              "fontSize": 18,
+                              "paddingBottom": 1,
+                              "paddingTop": 2,
+                              "textAlign": "center",
+                            }
+                          }
+                        >
+                          Enable Automatic Backups
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;

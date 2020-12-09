@@ -1,0 +1,81 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<App/> in android environment. should dispatch navigation action 1`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      Object {
+        "payload": Object {
+          "name": "routeName",
+          "params": Object {
+            "existingPin": true,
+          },
+        },
+        "type": "NAVIGATE",
+      },
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": undefined,
+    },
+  ],
+}
+`;
+
+exports[`<App/> in android environment. should redirect to lockSelectionRoute screen if user has no existing pin ands pressed back button from lockPinSetup screen  1`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      Object {
+        "payload": Object {
+          "name": "LockSelection",
+        },
+        "type": "NAVIGATE",
+      },
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": undefined,
+    },
+  ],
+}
+`;
+
+exports[`<App/> in android environment. should redirect to settingsTab screen if user has pressed back button from lockPinSetup screen if user has already setup  1`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      Object {
+        "payload": Object {
+          "name": "TabSettings",
+        },
+        "type": "NAVIGATE",
+      },
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": undefined,
+    },
+  ],
+}
+`;
+
+exports[`<App/> in ios environment. should render properly and snapshot should match 1`] = `
+<RNCSafeAreaProvider
+  onInsetsChange={[Function]}
+  style={
+    Array [
+      Object {
+        "flex": 1,
+      },
+      undefined,
+    ]
+  }
+/>
+`;

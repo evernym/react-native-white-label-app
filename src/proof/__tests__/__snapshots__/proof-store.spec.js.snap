@@ -1,0 +1,520 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Proof Store fn:convertPreparedProofToRequestedAttributes 1`] = `
+Array [
+  Array [
+    Object {
+      "claimUuid": "claim::ea03d8ca-eeb4-4944-b7d6-5abcf4503d73",
+      "cred_info": Object {
+        "cred_info": Object {
+          "attrs": Object {
+            "Address 1": "Address 1",
+          },
+          "cred_def_id": "V4SGRU86Z58d6TV7PBUe6f:3:CL:24:tag1",
+          "referent": "claim::ea03d8ca-eeb4-4944-b7d6-5abcf4503d73",
+          "schema_id": "V4SGRU86Z58d6TV7Pf:2:slKljrSQ80tCQ40F:33089",
+        },
+      },
+      "data": "Address 1",
+      "key": "attr1_uuid",
+      "label": "Address 1",
+      "self_attest_allowed": true,
+      "type": "FILLED_ATTRIBUTE",
+      "values": Object {
+        "Address 1": "Address 1",
+      },
+    },
+  ],
+  Array [
+    Object {
+      "claimUuid": "claim::6a0f42b4-1210-4bdb-ad53-10ed765276b5",
+      "cred_info": Object {
+        "cred_info": Object {
+          "attrs": Object {
+            "Address 2": "Address 2",
+          },
+          "cred_def_id": "V4SGRU86Z58d6TV7PBUe6f:3:CL:24:tag1",
+          "referent": "claim::6a0f42b4-1210-4bdb-ad53-10ed765276b5",
+          "schema_id": "V4SGRU86Z58d6TV7Pf:2:slKljrSQ80tCQ40F:33089",
+        },
+      },
+      "data": "Address 2",
+      "key": "attr2_uuid",
+      "label": "Address 2",
+      "self_attest_allowed": true,
+      "type": "FILLED_ATTRIBUTE",
+      "values": Object {
+        "Address 2": "Address 2",
+      },
+    },
+  ],
+]
+`;
+
+exports[`Proof Store fn:convertPreparedProofToRequestedAttributes 2`] = `
+Array [
+  Array [
+    Object {
+      "claimUuid": "claim::ea03d8ca-eeb4-4944-b7d6-5abcf4503d73",
+      "cred_info": Object {
+        "cred_info": Object {
+          "attrs": Object {
+            "Address 1": "Address 1",
+          },
+          "cred_def_id": "V4SGRU86Z58d6TV7PBUe6f:3:CL:24:tag1",
+          "referent": "claim::ea03d8ca-eeb4-4944-b7d6-5abcf4503d73",
+          "schema_id": "V4SGRU86Z58d6TV7Pf:2:slKljrSQ80tCQ40F:33089",
+        },
+      },
+      "data": "Address 1",
+      "key": "attr1_uuid",
+      "label": "Address 1",
+      "self_attest_allowed": true,
+      "type": "FILLED_ATTRIBUTE",
+      "values": Object {
+        "Address 1": "Address 1",
+      },
+    },
+  ],
+  Array [
+    Object {
+      "claimUuid": "claim::6a0f42b4-1210-4bdb-ad53-10ed765276b5",
+      "cred_info": Object {
+        "cred_info": Object {
+          "attrs": Object {
+            "Address 2": "Address 2",
+          },
+          "cred_def_id": "V4SGRU86Z58d6TV7PBUe6f:3:CL:24:tag1",
+          "referent": "claim::6a0f42b4-1210-4bdb-ad53-10ed765276b5",
+          "schema_id": "V4SGRU86Z58d6TV7Pf:2:slKljrSQ80tCQ40F:33089",
+        },
+      },
+      "data": "Address 2",
+      "key": "attr2_uuid",
+      "label": "Address 2",
+      "self_attest_allowed": true,
+      "type": "FILLED_ATTRIBUTE",
+      "values": Object {
+        "Address 2": "Address 2",
+      },
+    },
+  ],
+  Array [
+    Object {
+      "data": undefined,
+      "key": "attr3_uuid",
+      "label": "Address 3",
+      "self_attest_allowed": true,
+      "type": "SELF_ATTESTED_ATTRIBUTE",
+      "values": Object {
+        "Address 3": undefined,
+      },
+    },
+  ],
+  Array [
+    Object {
+      "data": undefined,
+      "key": "attr4_uuid",
+      "label": "Address 4",
+      "self_attest_allowed": true,
+      "type": "SELF_ATTESTED_ATTRIBUTE",
+      "values": Object {
+        "Address 4": undefined,
+      },
+    },
+  ],
+  Array [
+    Object {
+      "data": undefined,
+      "key": "attr5_uuid",
+      "label": "Address 5",
+      "self_attest_allowed": true,
+      "type": "SELF_ATTESTED_ATTRIBUTE",
+      "values": Object {
+        "Address 5": undefined,
+      },
+    },
+  ],
+  Array [
+    Object {
+      "data": undefined,
+      "key": "attr6_uuid",
+      "label": "Address 6",
+      "self_attest_allowed": true,
+      "type": "SELF_ATTESTED_ATTRIBUTE",
+      "values": Object {
+        "Address 6": undefined,
+      },
+    },
+  ],
+  Array [
+    Object {
+      "data": undefined,
+      "key": "attr7_uuid",
+      "label": "Address 7",
+      "self_attest_allowed": true,
+      "type": "SELF_ATTESTED_ATTRIBUTE",
+      "values": Object {
+        "Address 7": undefined,
+      },
+    },
+  ],
+  Array [
+    Object {
+      "data": undefined,
+      "key": "attr8_uuid",
+      "label": "Address 8",
+      "self_attest_allowed": true,
+      "type": "SELF_ATTESTED_ATTRIBUTE",
+      "values": Object {
+        "Address 8": undefined,
+      },
+    },
+  ],
+  Array [
+    Object {
+      "data": undefined,
+      "key": "attr9_uuid",
+      "label": "Address 9",
+      "self_attest_allowed": true,
+      "type": "SELF_ATTESTED_ATTRIBUTE",
+      "values": Object {
+        "Address 9": undefined,
+      },
+    },
+  ],
+  Array [
+    Object {
+      "data": undefined,
+      "key": "attr10_uuid",
+      "label": "Address 10",
+      "self_attest_allowed": true,
+      "type": "SELF_ATTESTED_ATTRIBUTE",
+      "values": Object {
+        "Address 10": undefined,
+      },
+    },
+  ],
+]
+`;
+
+exports[`Proof Store fn:convertPreparedProofToRequestedAttributes 3`] = `
+Array [
+  Array [
+    Object {
+      "claimUuid": "claim::ea03d8ca-eeb4-4944-b7d6-5abcf4503d73",
+      "cred_info": Object {
+        "cred_info": Object {
+          "attrs": Object {
+            "Address 1": "Address 1",
+          },
+          "cred_def_id": "V4SGRU86Z58d6TV7PBUe6f:3:CL:24:tag1",
+          "referent": "claim::ea03d8ca-eeb4-4944-b7d6-5abcf4503d73",
+          "schema_id": "V4SGRU86Z58d6TV7Pf:2:slKljrSQ80tCQ40F:33089",
+        },
+      },
+      "data": "Address 1",
+      "key": "attr1_uuid",
+      "label": "A d d r e s s    1",
+      "self_attest_allowed": true,
+      "type": "FILLED_ATTRIBUTE",
+      "values": Object {
+        "A d d r e s s    1": "Address 1",
+      },
+    },
+  ],
+  Array [
+    Object {
+      "claimUuid": "claim::6a0f42b4-1210-4bdb-ad53-10ed765276b5",
+      "cred_info": Object {
+        "cred_info": Object {
+          "attrs": Object {
+            "Address 2": "Address 2",
+          },
+          "cred_def_id": "V4SGRU86Z58d6TV7PBUe6f:3:CL:24:tag1",
+          "referent": "claim::6a0f42b4-1210-4bdb-ad53-10ed765276b5",
+          "schema_id": "V4SGRU86Z58d6TV7Pf:2:slKljrSQ80tCQ40F:33089",
+        },
+      },
+      "data": "Address 2",
+      "key": "attr2_uuid",
+      "label": "  Ad  dress 2 ",
+      "self_attest_allowed": true,
+      "type": "FILLED_ATTRIBUTE",
+      "values": Object {
+        "  Ad  dress 2 ": "Address 2",
+      },
+    },
+  ],
+]
+`;
+
+exports[`Proof Store fn:convertPreparedProofToRequestedAttributes 4`] = `
+Array [
+  Array [
+    Object {
+      "claimUuid": "claim::ea03d8ca-eeb4-4944-b7d6-5abcf4503d73",
+      "cred_info": Object {
+        "cred_info": Object {
+          "attrs": Object {
+            "Address 1": "Address 1",
+          },
+          "cred_def_id": "V4SGRU86Z58d6TV7PBUe6f:3:CL:24:tag1",
+          "referent": "claim::ea03d8ca-eeb4-4944-b7d6-5abcf4503d73",
+          "schema_id": "V4SGRU86Z58d6TV7Pf:2:slKljrSQ80tCQ40F:33089",
+        },
+      },
+      "data": "Address 1",
+      "key": "attr1_uuid",
+      "label": "Address 1",
+      "self_attest_allowed": true,
+      "type": "FILLED_ATTRIBUTE",
+      "values": Object {
+        "Address 1": "Address 1",
+      },
+    },
+  ],
+  Array [
+    Object {
+      "claimUuid": "claim::6a0f42b4-1210-4bdb-ad53-10ed765276b5",
+      "cred_info": Object {
+        "cred_info": Object {
+          "attrs": Object {
+            "Address 2": "Address 2",
+          },
+          "cred_def_id": "V4SGRU86Z58d6TV7PBUe6f:3:CL:24:tag1",
+          "referent": "claim::6a0f42b4-1210-4bdb-ad53-10ed765276b5",
+          "schema_id": "V4SGRU86Z58d6TV7Pf:2:slKljrSQ80tCQ40F:33089",
+        },
+      },
+      "data": "Address 2",
+      "key": "attr2_uuid",
+      "label": "Address 2",
+      "self_attest_allowed": true,
+      "type": "FILLED_ATTRIBUTE",
+      "values": Object {
+        "Address 2": "Address 2",
+      },
+    },
+  ],
+  Array [
+    Object {
+      "claimUuid": "claim::6a0f42b4-1210-4bdb-ad53-10ed765276ca",
+      "cred_info": Object {
+        "cred_info": Object {
+          "attrs": Object {
+            "Age 1": "20",
+          },
+          "cred_def_id": "V4SGRU86Z58d6TV7PBUe6f:3:CL:24:tag1",
+          "referent": "claim::6a0f42b4-1210-4bdb-ad53-10ed765276ca",
+          "schema_id": "V4SGRU86Z58d6TV7Pf:2:slKljrSQ80tCQ40F:33089",
+        },
+      },
+      "data": "20",
+      "key": "predicate1_uuid",
+      "label": "Age 1",
+      "p_type": ">",
+      "p_value": 20,
+      "type": "FILLED_PREDICATE",
+    },
+  ],
+  Array [
+    Object {
+      "claimUuid": "claim::110f42b4-1210-4bdb-ad53-10ed765276ca",
+      "cred_info": Object {
+        "cred_info": Object {
+          "attrs": Object {
+            "Age 2": "22",
+          },
+          "cred_def_id": "V4SGRU86Z58d6TV7PBUe6f:3:CL:24:tag1",
+          "referent": "claim::110f42b4-1210-4bdb-ad53-10ed765276ca",
+          "schema_id": "V4SGRU86Z58d6TV7Pf:2:slKljrSQ80tCQ40F:33089",
+        },
+      },
+      "data": "22",
+      "key": "predicate2_uuid",
+      "label": "Age 2",
+      "p_type": ">",
+      "p_value": 20,
+      "type": "FILLED_PREDICATE",
+    },
+  ],
+]
+`;
+
+exports[`Proof Store proof store should reset for a given proof request if PROOF_REQUEST_SHOW_START is raised 1`] = `
+Object {
+  "pid123": undefined,
+}
+`;
+
+exports[`Proof Store should find missing attributes if any missing 1`] = `
+Array [
+  Array [
+    Object {
+      "key": "attr2_uuid",
+      "name": "address2",
+    },
+  ],
+  Array [],
+]
+`;
+
+exports[`Proof Store fn:findMissingRequestedAttributes 2`] = `
+Array [
+  Array [
+    Object {
+      "key": "attr2_uuid",
+      "name": "Address 2",
+    },
+  ],
+  Array [],
+]
+`;
+
+exports[`Proof Store fn:findMissingRequestedAttributes 4`] = `
+Array [
+  Array [
+    Object {
+      "key": "attr1_uuid",
+      "name": "Address 1",
+    },
+    Object {
+      "key": "attr2_uuid",
+      "name": "Address 2",
+    },
+  ],
+  Array [
+    Object {
+      "name": "Age 1",
+      "p_type": ">",
+      "p_value": 20,
+      "reason": "NO_CRED_NO_SELF_ATTEST",
+      "type": "PREDICATE",
+    },
+    Object {
+      "name": "Age 2",
+      "p_type": ">",
+      "p_value": 20,
+      "reason": "NO_CRED_NO_SELF_ATTEST",
+      "type": "PREDICATE",
+    },
+  ],
+]
+`;
+
+exports[`Proof Store fn:findMissingRequestedAttributes 3`] = `
+Array [
+  Array [],
+  Array [
+    Object {
+      "name": "Age 1",
+      "p_type": ">",
+      "p_value": 20,
+      "reason": "NO_CRED_NO_SELF_ATTEST",
+      "type": "PREDICATE",
+    },
+    Object {
+      "name": "Age 2",
+      "p_type": ">",
+      "p_value": 20,
+      "reason": "NO_CRED_NO_SELF_ATTEST",
+      "type": "PREDICATE",
+    },
+  ],
+]
+`;
+
+exports[`Proof Store should find one missing and one dissatisfied attribute 1`] = `
+Array [
+  Array [
+    Object {
+      "key": "attr1_uuid",
+      "name": "Address 1",
+    },
+  ],
+  Array [
+    Object {
+      "name": "Address 2",
+      "reason": "NO_SELF_ATTEST",
+      "type": "ATTRIBUTE",
+    },
+  ],
+]
+`;
+
+exports[`Proof Store should match snapshot for proof received action 1`] = `
+Object {
+  "pid123": Object {
+    "aggregated_proof": Object {
+      "c_hash": "31",
+      "c_list": Array [
+        Array [
+          36,
+        ],
+      ],
+    },
+    "proofs": Object {
+      "claim::f760213b-e719-47fb-9669-b72c5c410e8c": Object {
+        "issuer_did": "issuerDid",
+        "proof": Object {
+          "non_revoc_proof": null,
+          "primary_proof": Object {
+            "eq_proof": Object {
+              "a_prime": "13",
+              "e": "51",
+              "m": Object {},
+              "m1": "67",
+              "m2": "60",
+              "revealed_attrs": Object {
+                "name": "11",
+                "sex": "59",
+              },
+              "v": "13",
+            },
+            "ge_proofs": Array [],
+          },
+        },
+        "schema_seq_no": 36,
+      },
+    },
+    "requested_proof": Object {
+      "predicates": Object {},
+      "revealed_attrs": Object {
+        "attr1_uuid": Array [
+          "claim::f760213b-e719-47fb-9669-b72c5c410e8c",
+          "Alex",
+          "11",
+        ],
+        "attr2_uuid": Array [
+          "claim::f760213b-e719-47fb-9669-b72c5c410e8c",
+          "male",
+          "59",
+        ],
+      },
+      "self_attested_attrs": Object {},
+      "unrevealed_attrs": Object {},
+    },
+  },
+}
+`;
+
+exports[`Proof Store fn:findMissingRequestedAttributes 1`] = `
+Array [
+  Array [],
+  Array [],
+]
+`;
+
+exports[`Proof Store should reset proof store, if RESET action is raised 1`] = `Object {}`;
+
+exports[`Proof Store store update correctly if proof fails 1`] = `
+Object {
+  "pid123": Object {
+    "error": Object {
+      "code": "TEST-CODE",
+      "message": "test error message",
+    },
+  },
+}
+`;

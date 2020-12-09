@@ -1,0 +1,117 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ConnectedUserAvatar /> should match snapshot when no user image is selected 1`] = `
+<View
+  accessible={true}
+  clearBg={true}
+  focusable={true}
+  hitSlop={
+    Object {
+      "bottom": 20,
+      "left": 20,
+      "right": 20,
+      "top": 20,
+    }
+  }
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  resizeMode="cover"
+  round={true}
+  src={
+    Object {
+      "default": "RelativeImageStub",
+    }
+  }
+  style={
+    Object {
+      "backgroundColor": "transparent",
+    }
+  }
+  xxLarge={true}
+>
+  <View
+    style={Object {}}
+  >
+    <Image
+      resizeMode="cover"
+      source={
+        Object {
+          "default": "RelativeImageStub",
+        }
+      }
+      style={
+        Array [
+          Object {
+            "height": 90,
+            "width": 90,
+          },
+          undefined,
+        ]
+      }
+    />
+  </View>
+</View>
+`;
+
+exports[`<ConnectedUserAvatar /> should match snapshot when user image is selected 1`] = `
+<View
+  accessible={true}
+  clearBg={true}
+  focusable={true}
+  hitSlop={
+    Object {
+      "bottom": 20,
+      "left": 20,
+      "right": 20,
+      "top": 20,
+    }
+  }
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  resizeMode="cover"
+  round={true}
+  src={
+    Object {
+      "uri": "/var/application/DocumentDir/user-avatar.jpeg",
+    }
+  }
+  style={
+    Object {
+      "backgroundColor": "transparent",
+    }
+  }
+  xxLarge={true}
+>
+  <View
+    style={Object {}}
+  >
+    <Image
+      resizeMode="cover"
+      source={
+        Object {
+          "uri": "/var/application/DocumentDir/user-avatar.jpeg",
+        }
+      }
+      style={
+        Array [
+          Object {
+            "height": 90,
+            "width": 90,
+          },
+          undefined,
+        ]
+      }
+    />
+  </View>
+</View>
+`;

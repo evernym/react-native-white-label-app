@@ -1,0 +1,144 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<WalletSendAmount /> should render properly and match the snapshot 1`] = `
+<View
+  style={
+    Object {
+      "alignContent": "center",
+      "backgroundColor": "#ffffff",
+      "flex": 1,
+      "flexDirection": "column",
+      "marginLeft": 6,
+      "marginRight": 6,
+      "marginTop": 6,
+    }
+  }
+  tertiary={true}
+>
+  <View
+    style={
+      Object {
+        "paddingVertical": 8,
+      }
+    }
+    verticalSpace={true}
+  >
+    <Text
+      allowFontScaling={false}
+      style={
+        Array [
+          Object {
+            "fontSize": 15,
+          },
+          Object {
+            "fontFamily": "Lato",
+          },
+          Object {
+            "backgroundColor": "#333333",
+            "color": "#333333",
+          },
+          null,
+          null,
+          Object {
+            "backgroundColor": "transparent",
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      Please first accept the Transaction Author Agreement (TAA)!
+    </Text>
+    <View
+      style={
+        Object {
+          "marginBottom": 6,
+          "marginHorizontal": "5%",
+          "marginTop": 20,
+        }
+      }
+    >
+      <View
+        style={
+          Object {
+            "borderRadius": 3,
+            "marginLeft": 0,
+            "marginRight": 0,
+            "overflow": "hidden",
+          }
+        }
+      >
+        <View
+          accessibilityLabel="show-txn-author-agreement"
+          accessibilityRole="button"
+          accessibilityState={
+            Object {
+              "busy": false,
+              "disabled": false,
+            }
+          }
+          accessible={true}
+          focusable={true}
+          isTVSelectable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "backgroundColor": "rgba(237, 156, 46, 1)",
+              "borderRadius": 5,
+              "flex": -1,
+              "height": 43,
+              "opacity": 1,
+            }
+          }
+          testID="show-txn-author-agreement"
+        >
+          <View
+            style={
+              Object {
+                "alignItems": "center",
+                "backgroundColor": "rgba(237, 156, 46, 1)",
+                "borderColor": "#2089dc",
+                "borderRadius": 5,
+                "borderWidth": 0,
+                "color": "#ffffff",
+                "flex": -1,
+                "flexDirection": "row",
+                "height": 43,
+                "justifyContent": "center",
+                "padding": 8,
+                "textAlign": "center",
+              }
+            }
+          >
+            <Text
+              style={
+                Object {
+                  "color": "white",
+                  "fontSize": 18,
+                  "paddingBottom": 1,
+                  "paddingTop": 2,
+                  "textAlign": "center",
+                }
+              }
+            >
+              Read and Sign TAA
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;

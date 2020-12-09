@@ -1,0 +1,77 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LockStore add pending redirection change state correctly 1`] = `
+Object {
+  "checkPinStatus": "CHECK_PIN_IDLE",
+  "inRecovery": "false",
+  "isAppLocked": true,
+  "isLockEnabled": "false",
+  "isTouchIdEnabled": false,
+  "lockdownTimeMessage": "App is locked for 1 minute.",
+  "numberOfAttemptsMessage": "1 failed attempt.",
+  "numberOfFailedPinAttempts": 1,
+  "pendingRedirection": Array [
+    Object {
+      "routeName": "home",
+    },
+  ],
+  "pendingRedirectionParams": Object {},
+  "recordedTimeOfPinFailedAttempt": "2018-01-10T04:32:43+05:30",
+  "shouldLockApp": false,
+  "showDevMode": false,
+}
+`;
+
+exports[`LockStore clear pending redirect if clear action is raised 1`] = `
+Object {
+  "checkPinStatus": "CHECK_PIN_IDLE",
+  "inRecovery": "false",
+  "isAppLocked": true,
+  "isLockEnabled": "false",
+  "isTouchIdEnabled": false,
+  "lockdownTimeMessage": "App is locked for 1 minute.",
+  "numberOfAttemptsMessage": "1 failed attempt.",
+  "numberOfFailedPinAttempts": 1,
+  "pendingRedirection": null,
+  "pendingRedirectionParams": Object {},
+  "recordedTimeOfPinFailedAttempt": "2018-01-10T04:32:43+05:30",
+  "shouldLockApp": false,
+  "showDevMode": false,
+}
+`;
+
+exports[`LockStore should set checkPinStatus to idle 1`] = `
+Object {
+  "checkPinStatus": "CHECK_PIN_FAIL",
+  "inRecovery": "false",
+  "isAppLocked": true,
+  "isLockEnabled": "false",
+  "isTouchIdEnabled": false,
+  "lockdownTimeMessage": "App is locked for 1 minute.",
+  "numberOfAttemptsMessage": "1 failed attempt.",
+  "numberOfFailedPinAttempts": undefined,
+  "pendingRedirection": null,
+  "pendingRedirectionParams": Object {},
+  "recordedTimeOfPinFailedAttempt": undefined,
+  "shouldLockApp": false,
+  "showDevMode": false,
+}
+`;
+
+exports[`LockStore should set checkPinStatus to idle 2`] = `
+Object {
+  "checkPinStatus": "CHECK_PIN_IDLE",
+  "inRecovery": "false",
+  "isAppLocked": true,
+  "isLockEnabled": "false",
+  "isTouchIdEnabled": false,
+  "lockdownTimeMessage": "App is locked for 1 minute.",
+  "numberOfAttemptsMessage": "1 failed attempt.",
+  "numberOfFailedPinAttempts": undefined,
+  "pendingRedirection": null,
+  "pendingRedirectionParams": Object {},
+  "recordedTimeOfPinFailedAttempt": undefined,
+  "shouldLockApp": false,
+  "showDevMode": false,
+}
+`;

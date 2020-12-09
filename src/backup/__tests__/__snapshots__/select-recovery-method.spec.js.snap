@@ -1,0 +1,442 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SelectRecoveryMethod /> should match snapshot 1`] = `
+<View
+  style={
+    Object {
+      "backgroundColor": "#ffffff",
+      "flex": 1,
+      "paddingHorizontal": 20,
+    }
+  }
+>
+  <View
+    center={true}
+    style={
+      Object {
+        "alignItems": "center",
+        "justifyContent": "center",
+      }
+    }
+  >
+    <Text
+      allowFontScaling={false}
+      style={
+        Array [
+          Object {
+            "fontSize": 17,
+          },
+          Object {
+            "fontFamily": "Lato",
+          },
+          Object {
+            "backgroundColor": "#333333",
+            "color": "#ffffff",
+          },
+          null,
+          Object {
+            "textAlign": "center",
+          },
+          Object {
+            "backgroundColor": "transparent",
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          Object {
+            "color": "#505050",
+            "fontSize": 20,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "marginBottom": 10,
+            "width": "100%",
+          },
+        ]
+      }
+    >
+      Select your backup method
+    </Text>
+  </View>
+  <View
+    spaceBetween={true}
+    style={
+      Object {
+        "flex": 1,
+        "justifyContent": "space-between",
+        "maxHeight": 310,
+      }
+    }
+  >
+    <View
+      accessible={true}
+      center={true}
+      focusable={true}
+      hitSlop={
+        Object {
+          "bottom": 20,
+          "left": 20,
+          "right": 20,
+          "top": 20,
+        }
+      }
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      spaceAround={true}
+      style={
+        Object {
+          "alignItems": "center",
+          "backgroundColor": "#86B93B",
+          "borderRadius": 4,
+          "justifyContent": "space-around",
+          "padding": 20,
+        }
+      }
+    >
+      <View
+        clearBg={true}
+        iconStyle={
+          Array [
+            Object {
+              "marginBottom": 10,
+            },
+          ]
+        }
+        mediumLarge={true}
+        src={
+          Object {
+            "default": "RelativeImageStub",
+          }
+        }
+        style={
+          Object {
+            "backgroundColor": "transparent",
+          }
+        }
+      >
+        <View
+          style={Object {}}
+        >
+          <Image
+            resizeMode="contain"
+            source={
+              Object {
+                "default": "RelativeImageStub",
+              }
+            }
+            style={
+              Array [
+                Object {
+                  "height": 40,
+                  "width": 40,
+                },
+                null,
+                Object {
+                  "marginBottom": 10,
+                },
+              ]
+            }
+          />
+        </View>
+      </View>
+      <Text
+        allowFontScaling={false}
+        style={
+          Array [
+            Object {
+              "fontSize": 17,
+            },
+            Object {
+              "fontFamily": "Lato",
+            },
+            Object {
+              "backgroundColor": "#333333",
+              "color": "#ffffff",
+            },
+            null,
+            Object {
+              "textAlign": "center",
+            },
+            Object {
+              "backgroundColor": "transparent",
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            Object {
+              "color": "white",
+              "fontSize": 22,
+              "fontWeight": "400",
+              "lineHeight": 22,
+              "marginBottom": 10,
+              "width": "100%",
+            },
+          ]
+        }
+      >
+        Cloud Backup
+      </Text>
+      <Text
+        allowFontScaling={false}
+        style={
+          Array [
+            undefined,
+            Object {
+              "fontFamily": "Lato",
+            },
+            Object {
+              "backgroundColor": "#333333",
+              "color": "#ffffff",
+            },
+            null,
+            Object {
+              "textAlign": "center",
+            },
+            Object {
+              "backgroundColor": "transparent",
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        Store an encrypted, anonymous backup of 
+        AppName
+         in the Evernym Cloud. You will need your Recovery Phrase and a fresh 
+        AppName
+        installation to restore.
+      </Text>
+    </View>
+    <View
+      center={true}
+      style={
+        Object {
+          "alignItems": "center",
+          "justifyContent": "center",
+        }
+      }
+    >
+      <Text
+        allowFontScaling={false}
+        style={
+          Array [
+            Object {
+              "fontSize": 17,
+            },
+            Object {
+              "fontFamily": "Lato",
+            },
+            Object {
+              "backgroundColor": "#333333",
+              "color": "#ffffff",
+            },
+            null,
+            Object {
+              "textAlign": "center",
+            },
+            Object {
+              "backgroundColor": "transparent",
+            },
+            null,
+            null,
+            null,
+            Object {
+              "color": "#333333",
+            },
+            null,
+            null,
+            null,
+            null,
+            Object {
+              "fontSize": 20,
+              "fontWeight": "400",
+              "lineHeight": 22,
+              "marginBottom": 10,
+              "width": "100%",
+            },
+          ]
+        }
+      >
+        or
+      </Text>
+    </View>
+    <View
+      accessible={true}
+      center={true}
+      focusable={true}
+      hitSlop={
+        Object {
+          "bottom": 20,
+          "left": 20,
+          "right": 20,
+          "top": 20,
+        }
+      }
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      secondary={true}
+      spaceAround={true}
+      style={
+        Object {
+          "alignItems": "center",
+          "backgroundColor": "#777777",
+          "borderRadius": 4,
+          "justifyContent": "space-around",
+          "padding": 20,
+        }
+      }
+    >
+      <View
+        clearBg={true}
+        iconStyle={
+          Array [
+            Object {
+              "marginBottom": 10,
+            },
+          ]
+        }
+        mediumLarge={true}
+        src={
+          Object {
+            "default": "RelativeImageStub",
+          }
+        }
+        style={
+          Object {
+            "backgroundColor": "transparent",
+          }
+        }
+      >
+        <View
+          style={Object {}}
+        >
+          <Image
+            resizeMode="contain"
+            source={
+              Object {
+                "default": "RelativeImageStub",
+              }
+            }
+            style={
+              Array [
+                Object {
+                  "height": 40,
+                  "width": 40,
+                },
+                null,
+                Object {
+                  "marginBottom": 10,
+                },
+              ]
+            }
+          />
+        </View>
+      </View>
+      <Text
+        allowFontScaling={false}
+        style={
+          Array [
+            Object {
+              "fontSize": 17,
+            },
+            Object {
+              "fontFamily": "Lato",
+            },
+            Object {
+              "backgroundColor": "#333333",
+              "color": "#ffffff",
+            },
+            null,
+            Object {
+              "textAlign": "center",
+            },
+            Object {
+              "backgroundColor": "transparent",
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            Object {
+              "color": "white",
+              "fontSize": 22,
+              "fontWeight": "400",
+              "lineHeight": 22,
+              "marginBottom": 10,
+              "width": "100%",
+            },
+          ]
+        }
+      >
+        Downloaded .zip Backup
+      </Text>
+      <Text
+        allowFontScaling={false}
+        style={
+          Array [
+            undefined,
+            Object {
+              "fontFamily": "Lato",
+            },
+            Object {
+              "backgroundColor": "#333333",
+              "color": "#ffffff",
+            },
+            null,
+            Object {
+              "textAlign": "center",
+            },
+            Object {
+              "backgroundColor": "transparent",
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            Object {
+              "color": "white",
+            },
+          ]
+        }
+      >
+        Manually choose where to store your backup file. You will need your Recovery Phrase, a fresh install of 
+        AppName
+         and your backup .zip file on the device you wish to restore to.
+      </Text>
+    </View>
+  </View>
+</View>
+`;

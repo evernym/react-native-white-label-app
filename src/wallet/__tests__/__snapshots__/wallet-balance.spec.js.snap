@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<WalletBalance /> should render WalletBalance 1`] = `
+<View>
+  <View>
+    <Text>
+      1000
+    </Text>
+  </View>
+</View>
+`;

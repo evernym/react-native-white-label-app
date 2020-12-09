@@ -1,0 +1,3568 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ConnectionDetails /> should ConnectionDetails render CLAIM OFFER RECEIVED properly 1`] = `
+<View
+  style={
+    Object {
+      "alignItems": "center",
+      "backgroundColor": "#FFFFFF",
+      "flex": 1,
+      "justifyContent": "center",
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "backgroundColor": "#FFFFFF",
+        "elevation": 0,
+        "flexDirection": "row",
+        "height": 63.52941176470588,
+        "paddingTop": 19.058823529411764,
+        "shadowColor": "#000000",
+        "shadowOffset": Object {
+          "height": 2,
+          "width": 0,
+        },
+        "shadowOpacity": 0.2,
+        "shadowRadius": 10,
+        "width": "100%",
+        "zIndex": 1,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "width": "15%",
+        }
+      }
+    >
+      <View
+        accessibilityLabel="back-arrow"
+        accessible={true}
+        focusable={true}
+        isTVSelectable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "opacity": 1,
+          }
+        }
+        testID="back-arrow-touchable"
+      >
+        <View
+          style={
+            Object {
+              "transform": Array [
+                Object {
+                  "scale": 1,
+                },
+              ],
+            }
+          }
+        >
+          <RNSVGSvgView
+            align="xMidYMid"
+            bbHeight={30.628571428571426}
+            bbWidth={30.628571428571426}
+            fill="#777777"
+            focusable={false}
+            height={30.628571428571426}
+            meetOrSlice={0}
+            minX={0}
+            minY={0}
+            style={
+              Array [
+                Object {
+                  "backgroundColor": "transparent",
+                  "borderWidth": 0,
+                },
+                Object {
+                  "marginBottom": 1.9142857142857141,
+                  "marginLeft": 14.357142857142858,
+                },
+                Object {
+                  "flex": 0,
+                  "height": 30,
+                  "width": 30,
+                },
+              ]
+            }
+            vbHeight={24}
+            vbWidth={24}
+            width={30.628571428571426}
+          >
+            <RNSVGGroup
+              fill={4286019447}
+              propList={
+                Array [
+                  "fill",
+                ]
+              }
+            >
+              <RNSVGGroup>
+                <RNSVGGroup>
+                  <RNSVGRect
+                    height="24"
+                    matrix={
+                      Array [
+                        6.123233995736766e-17,
+                        1,
+                        -1,
+                        6.123233995736766e-17,
+                        24,
+                        0,
+                      ]
+                    }
+                    opacity={0}
+                    width="24"
+                    x={0}
+                    y={0}
+                  />
+                  <RNSVGPath
+                    d="M13.83 19a1 1 0 0 1-.78-.37l-4.83-6a1 1 0 0 1 0-1.27l5-6a1 1 0 0 1 1.54 1.28L10.29 12l4.32 5.36a1 1 0 0 1-.78 1.64z"
+                  />
+                </RNSVGGroup>
+              </RNSVGGroup>
+            </RNSVGGroup>
+          </RNSVGSvgView>
+        </View>
+      </View>
+    </View>
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+          "height": "100%",
+          "marginEnd": 30.628571428571426,
+          "marginStart": -7.657142857142857,
+          "width": "65%",
+        }
+      }
+    >
+      <View
+        accessibilityLabel="connection-logo"
+        accessible={true}
+        style={
+          Object {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "height": "100%",
+            "marginLeft": 9.571428571428571,
+            "marginRight": 5.742857142857143,
+            "width": "35%",
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "borderRadius": 20,
+              "height": 30.628571428571426,
+              "width": 30.628571428571426,
+            }
+          }
+        >
+          <Image
+            resizeMode="cover"
+            source={
+              Object {
+                "uri": "https://robothash.com/logo.png",
+              }
+            }
+            style={
+              Object {
+                "height": 30.628571428571426,
+                "width": 30.628571428571426,
+              }
+            }
+          />
+        </View>
+      </View>
+      <View
+        accessibilityLabel="connection-name"
+        accessible={true}
+        style={
+          Object {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "justifyContent": "flex-start",
+            "width": "85%",
+          }
+        }
+      >
+        <Text
+          ellipsizeMode="tail"
+          numberOfLines={1}
+          style={
+            Object {
+              "color": "#777777",
+              "fontFamily": "Lato",
+              "fontSize": 21.057142857142857,
+              "marginLeft": -47.85714285714286,
+            }
+          }
+        >
+          jim
+        </Text>
+      </View>
+    </View>
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "height": "100%",
+          "justifyContent": "center",
+          "width": "15%",
+        }
+      }
+    >
+      <View
+        accessibilityLabel="three-dots"
+        accessible={true}
+        focusable={true}
+        isTVSelectable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "opacity": 1,
+          }
+        }
+        testID="three-dots"
+      >
+        <View
+          style={
+            Object {
+              "transform": Array [
+                Object {
+                  "scale": 1,
+                },
+              ],
+            }
+          }
+        >
+          <RNSVGSvgView
+            align="xMidYMid"
+            bbHeight={30.628571428571426}
+            bbWidth={30.628571428571426}
+            fill="#777777"
+            focusable={false}
+            height={30.628571428571426}
+            meetOrSlice={0}
+            minX={0}
+            minY={0}
+            style={
+              Array [
+                Object {
+                  "backgroundColor": "transparent",
+                  "borderWidth": 0,
+                },
+                Object {
+                  "flex": 0,
+                  "height": 30,
+                  "width": 30,
+                },
+              ]
+            }
+            vbHeight={24}
+            vbWidth={24}
+            width={30.628571428571426}
+          >
+            <RNSVGGroup
+              fill={4286019447}
+              propList={
+                Array [
+                  "fill",
+                ]
+              }
+            >
+              <RNSVGGroup>
+                <RNSVGGroup>
+                  <RNSVGRect
+                    height="24"
+                    matrix={
+                      Array [
+                        6.123233995736766e-17,
+                        -1,
+                        1,
+                        6.123233995736766e-17,
+                        0,
+                        24,
+                      ]
+                    }
+                    opacity={0}
+                    width="24"
+                    x={0}
+                    y={0}
+                  />
+                  <RNSVGCircle
+                    cx="12"
+                    cy="12"
+                    r="2"
+                  />
+                  <RNSVGCircle
+                    cx="12"
+                    cy="5"
+                    r="2"
+                  />
+                  <RNSVGCircle
+                    cx="12"
+                    cy="19"
+                    r="2"
+                  />
+                </RNSVGGroup>
+              </RNSVGGroup>
+            </RNSVGGroup>
+          </RNSVGSvgView>
+        </View>
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "elevation": 8,
+        "height": 540,
+        "position": "absolute",
+        "transform": Array [
+          Object {
+            "translateX": 320,
+          },
+        ],
+        "width": 320,
+        "zIndex": 999,
+      }
+    }
+  />
+  <RCTScrollView
+    data={
+      Array [
+        Object {
+          "action": "CLAIM OFFER RECEIVED",
+          "data": Array [
+            Object {
+              "data": "2017-09-06T00:00:00+05:30",
+              "label": "Evernym",
+            },
+          ],
+          "icon": Object {
+            "default": "RelativeImageStub",
+          },
+          "id": "1",
+          "name": "Enterprise name",
+          "originalPayload": Object {
+            "payload": Object {
+              "requester": Object {
+                "name": "bob",
+              },
+            },
+            "payloadInfo": Object {
+              "uid": "uidProofReceived",
+            },
+          },
+          "remoteDid": "remoteDid",
+          "status": "INVITATION_RECEIVED",
+          "timestamp": "2017-09-06T00:00:00+05:30",
+          "type": "INVITATION",
+        },
+      ]
+    }
+    disableVirtualization={false}
+    getItem={[Function]}
+    getItemCount={[Function]}
+    horizontal={false}
+    initialNumToRender={10}
+    keyExtractor={[Function]}
+    maxToRenderPerBatch={10}
+    numColumns={1}
+    onContentSizeChange={[Function]}
+    onEndReachedThreshold={2}
+    onLayout={[Function]}
+    onMomentumScrollEnd={[Function]}
+    onScroll={[Function]}
+    onScrollBeginDrag={[Function]}
+    onScrollEndDrag={[Function]}
+    removeClippedSubviews={false}
+    renderItem={[Function]}
+    scrollEventThrottle={50}
+    stickyHeaderIndices={Array []}
+    style={
+      Object {
+        "backgroundColor": "#FFFFFF",
+        "height": "100%",
+        "width": "100%",
+      }
+    }
+    updateCellsBatchingPeriod={50}
+    viewabilityConfigCallbackPairs={Array []}
+    windowSize={21}
+  >
+    <View>
+      <View
+        onLayout={[Function]}
+        style={null}
+      >
+        <View
+          style={
+            Object {
+              "alignItems": "stretch",
+              "flex": 1,
+              "flexDirection": "column",
+              "justifyContent": "center",
+              "paddingLeft": "7%",
+              "paddingRight": "7%",
+              "paddingTop": 14.357142857142858,
+              "width": "100%",
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "#777777",
+                "fontFamily": "Lato",
+                "fontSize": 9.571428571428571,
+                "textAlign": "left",
+              }
+            }
+          >
+            2018-01-10T04:32:43+05:30 | 2018-01-10T04:32:43+05:30
+          </Text>
+          <Text
+            style={
+              Object {
+                "color": "#505050",
+                "fontFamily": "Lato",
+                "fontSize": 14.357142857142858,
+                "fontWeight": "500",
+                "marginBottom": 1.9142857142857141,
+                "marginTop": 1.9142857142857141,
+                "textAlign": "left",
+              }
+            }
+          >
+            New Credential Offer
+          </Text>
+          <Text
+            ellipsizeMode="tail"
+            numberOfLines={1}
+            style={
+              Object {
+                "color": "#505050",
+                "fontFamily": "Lato",
+                "fontSize": 12.442857142857143,
+                "textAlign": "left",
+              }
+            }
+          >
+            Enterprise name
+          </Text>
+          <View
+            style={
+              Array [
+                Object {
+                  "flexDirection": "row",
+                  "marginTop": 14.357142857142858,
+                  "width": "100%",
+                },
+                Object {
+                  "display": "flex",
+                },
+              ]
+            }
+          >
+            <View
+              accessible={true}
+              focusable={true}
+              isTVSelectable={true}
+              onClick={[Function]}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
+              style={
+                Object {
+                  "backgroundColor": "rgba(119, 119, 119, 1.0)",
+                  "borderRadius": 5,
+                  "opacity": 1,
+                  "padding": 5.742857142857143,
+                  "paddingLeft": 24.885714285714286,
+                  "paddingRight": 24.885714285714286,
+                }
+              }
+            >
+              <Text
+                style={
+                  Object {
+                    "color": "#FFFFFF",
+                    "fontFamily": "Lato",
+                    "fontSize": 12.442857142857143,
+                    "fontWeight": "700",
+                  }
+                }
+              >
+                View
+              </Text>
+            </View>
+          </View>
+          <View
+            style={
+              Object {
+                "borderBottomColor": "#F2F2F2",
+                "borderBottomWidth": 1,
+                "paddingTop": 14.357142857142858,
+                "width": "100%",
+              }
+            }
+          />
+        </View>
+      </View>
+    </View>
+  </RCTScrollView>
+</View>
+`;
+
+exports[`<ConnectionDetails /> should ConnectionDetails render CONNECTED properly 1`] = `
+<View
+  style={
+    Object {
+      "alignItems": "center",
+      "backgroundColor": "#FFFFFF",
+      "flex": 1,
+      "justifyContent": "center",
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "backgroundColor": "#FFFFFF",
+        "elevation": 0,
+        "flexDirection": "row",
+        "height": 63.52941176470588,
+        "paddingTop": 19.058823529411764,
+        "shadowColor": "#000000",
+        "shadowOffset": Object {
+          "height": 2,
+          "width": 0,
+        },
+        "shadowOpacity": 0.2,
+        "shadowRadius": 10,
+        "width": "100%",
+        "zIndex": 1,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "width": "15%",
+        }
+      }
+    >
+      <View
+        accessibilityLabel="back-arrow"
+        accessible={true}
+        focusable={true}
+        isTVSelectable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "opacity": 1,
+          }
+        }
+        testID="back-arrow-touchable"
+      >
+        <View
+          style={
+            Object {
+              "transform": Array [
+                Object {
+                  "scale": 1,
+                },
+              ],
+            }
+          }
+        >
+          <RNSVGSvgView
+            align="xMidYMid"
+            bbHeight={30.628571428571426}
+            bbWidth={30.628571428571426}
+            fill="#777777"
+            focusable={false}
+            height={30.628571428571426}
+            meetOrSlice={0}
+            minX={0}
+            minY={0}
+            style={
+              Array [
+                Object {
+                  "backgroundColor": "transparent",
+                  "borderWidth": 0,
+                },
+                Object {
+                  "marginBottom": 1.9142857142857141,
+                  "marginLeft": 14.357142857142858,
+                },
+                Object {
+                  "flex": 0,
+                  "height": 30,
+                  "width": 30,
+                },
+              ]
+            }
+            vbHeight={24}
+            vbWidth={24}
+            width={30.628571428571426}
+          >
+            <RNSVGGroup
+              fill={4286019447}
+              propList={
+                Array [
+                  "fill",
+                ]
+              }
+            >
+              <RNSVGGroup>
+                <RNSVGGroup>
+                  <RNSVGRect
+                    height="24"
+                    matrix={
+                      Array [
+                        6.123233995736766e-17,
+                        1,
+                        -1,
+                        6.123233995736766e-17,
+                        24,
+                        0,
+                      ]
+                    }
+                    opacity={0}
+                    width="24"
+                    x={0}
+                    y={0}
+                  />
+                  <RNSVGPath
+                    d="M13.83 19a1 1 0 0 1-.78-.37l-4.83-6a1 1 0 0 1 0-1.27l5-6a1 1 0 0 1 1.54 1.28L10.29 12l4.32 5.36a1 1 0 0 1-.78 1.64z"
+                  />
+                </RNSVGGroup>
+              </RNSVGGroup>
+            </RNSVGGroup>
+          </RNSVGSvgView>
+        </View>
+      </View>
+    </View>
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+          "height": "100%",
+          "marginEnd": 30.628571428571426,
+          "marginStart": -7.657142857142857,
+          "width": "65%",
+        }
+      }
+    >
+      <View
+        accessibilityLabel="connection-logo"
+        accessible={true}
+        style={
+          Object {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "height": "100%",
+            "marginLeft": 9.571428571428571,
+            "marginRight": 5.742857142857143,
+            "width": "35%",
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "borderRadius": 20,
+              "height": 30.628571428571426,
+              "width": 30.628571428571426,
+            }
+          }
+        >
+          <Image
+            resizeMode="cover"
+            source={
+              Object {
+                "uri": "https://robothash.com/logo.png",
+              }
+            }
+            style={
+              Object {
+                "height": 30.628571428571426,
+                "width": 30.628571428571426,
+              }
+            }
+          />
+        </View>
+      </View>
+      <View
+        accessibilityLabel="connection-name"
+        accessible={true}
+        style={
+          Object {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "justifyContent": "flex-start",
+            "width": "85%",
+          }
+        }
+      >
+        <Text
+          ellipsizeMode="tail"
+          numberOfLines={1}
+          style={
+            Object {
+              "color": "#777777",
+              "fontFamily": "Lato",
+              "fontSize": 21.057142857142857,
+              "marginLeft": -47.85714285714286,
+            }
+          }
+        >
+          jim
+        </Text>
+      </View>
+    </View>
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "height": "100%",
+          "justifyContent": "center",
+          "width": "15%",
+        }
+      }
+    >
+      <View
+        accessibilityLabel="three-dots"
+        accessible={true}
+        focusable={true}
+        isTVSelectable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "opacity": 1,
+          }
+        }
+        testID="three-dots"
+      >
+        <View
+          style={
+            Object {
+              "transform": Array [
+                Object {
+                  "scale": 1,
+                },
+              ],
+            }
+          }
+        >
+          <RNSVGSvgView
+            align="xMidYMid"
+            bbHeight={30.628571428571426}
+            bbWidth={30.628571428571426}
+            fill="#777777"
+            focusable={false}
+            height={30.628571428571426}
+            meetOrSlice={0}
+            minX={0}
+            minY={0}
+            style={
+              Array [
+                Object {
+                  "backgroundColor": "transparent",
+                  "borderWidth": 0,
+                },
+                Object {
+                  "flex": 0,
+                  "height": 30,
+                  "width": 30,
+                },
+              ]
+            }
+            vbHeight={24}
+            vbWidth={24}
+            width={30.628571428571426}
+          >
+            <RNSVGGroup
+              fill={4286019447}
+              propList={
+                Array [
+                  "fill",
+                ]
+              }
+            >
+              <RNSVGGroup>
+                <RNSVGGroup>
+                  <RNSVGRect
+                    height="24"
+                    matrix={
+                      Array [
+                        6.123233995736766e-17,
+                        -1,
+                        1,
+                        6.123233995736766e-17,
+                        0,
+                        24,
+                      ]
+                    }
+                    opacity={0}
+                    width="24"
+                    x={0}
+                    y={0}
+                  />
+                  <RNSVGCircle
+                    cx="12"
+                    cy="12"
+                    r="2"
+                  />
+                  <RNSVGCircle
+                    cx="12"
+                    cy="5"
+                    r="2"
+                  />
+                  <RNSVGCircle
+                    cx="12"
+                    cy="19"
+                    r="2"
+                  />
+                </RNSVGGroup>
+              </RNSVGGroup>
+            </RNSVGGroup>
+          </RNSVGSvgView>
+        </View>
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "elevation": 8,
+        "height": 540,
+        "position": "absolute",
+        "transform": Array [
+          Object {
+            "translateX": 320,
+          },
+        ],
+        "width": 320,
+        "zIndex": 999,
+      }
+    }
+  />
+  <RCTScrollView
+    data={
+      Array [
+        Object {
+          "action": "CONNECTED",
+          "data": Array [
+            Object {
+              "data": "2017-09-06T00:00:00+05:30",
+              "label": "Evernym",
+            },
+          ],
+          "icon": Object {
+            "default": "RelativeImageStub",
+          },
+          "id": "1",
+          "name": "Enterprise name",
+          "originalPayload": Object {},
+          "remoteDid": "remoteDid",
+          "status": "INVITATION_RECEIVED",
+          "timestamp": "2017-09-06T00:00:00+05:30",
+          "type": "INVITATION",
+        },
+      ]
+    }
+    disableVirtualization={false}
+    getItem={[Function]}
+    getItemCount={[Function]}
+    horizontal={false}
+    initialNumToRender={10}
+    keyExtractor={[Function]}
+    maxToRenderPerBatch={10}
+    numColumns={1}
+    onContentSizeChange={[Function]}
+    onEndReachedThreshold={2}
+    onLayout={[Function]}
+    onMomentumScrollEnd={[Function]}
+    onScroll={[Function]}
+    onScrollBeginDrag={[Function]}
+    onScrollEndDrag={[Function]}
+    removeClippedSubviews={false}
+    renderItem={[Function]}
+    scrollEventThrottle={50}
+    stickyHeaderIndices={Array []}
+    style={
+      Object {
+        "backgroundColor": "#FFFFFF",
+        "height": "100%",
+        "width": "100%",
+      }
+    }
+    updateCellsBatchingPeriod={50}
+    viewabilityConfigCallbackPairs={Array []}
+    windowSize={21}
+  >
+    <View>
+      <View
+        onLayout={[Function]}
+        style={null}
+      >
+        <View
+          style={
+            Object {
+              "alignItems": "stretch",
+              "flex": 1,
+              "flexDirection": "column",
+              "justifyContent": "center",
+              "paddingLeft": "7%",
+              "paddingRight": "7%",
+              "paddingTop": 14.357142857142858,
+              "width": "100%",
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "#777777",
+                "fontFamily": "Lato",
+                "fontSize": 9.571428571428571,
+                "textAlign": "left",
+              }
+            }
+          >
+            2018-01-10T04:32:43+05:30 | 2018-01-10T04:32:43+05:30
+          </Text>
+          <Text
+            style={
+              Object {
+                "color": "#505050",
+                "fontFamily": "Lato",
+                "fontSize": 14.357142857142858,
+                "fontWeight": "500",
+                "marginBottom": 1.9142857142857141,
+                "marginTop": 1.9142857142857141,
+                "textAlign": "left",
+              }
+            }
+          >
+            Added Connection
+          </Text>
+          <Text
+            ellipsizeMode="tail"
+            numberOfLines={1}
+            style={
+              Object {
+                "color": "#505050",
+                "fontFamily": "Lato",
+                "fontSize": 12.442857142857143,
+                "textAlign": "left",
+              }
+            }
+          >
+            You added Enterprise name as a Connection
+          </Text>
+          <View
+            style={
+              Array [
+                Object {
+                  "flexDirection": "row",
+                  "marginTop": 14.357142857142858,
+                  "width": "100%",
+                },
+                Object {
+                  "display": "none",
+                },
+              ]
+            }
+          >
+            <View
+              accessible={true}
+              focusable={true}
+              isTVSelectable={true}
+              onClick={[Function]}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
+              style={
+                Object {
+                  "backgroundColor": undefined,
+                  "borderRadius": 5,
+                  "opacity": 1,
+                  "padding": 5.742857142857143,
+                  "paddingLeft": 24.885714285714286,
+                  "paddingRight": 24.885714285714286,
+                }
+              }
+            >
+              <Text
+                style={
+                  Object {
+                    "color": "#FFFFFF",
+                    "fontFamily": "Lato",
+                    "fontSize": 12.442857142857143,
+                    "fontWeight": "700",
+                  }
+                }
+              >
+                View
+              </Text>
+            </View>
+          </View>
+          <View
+            style={
+              Object {
+                "borderBottomColor": "#F2F2F2",
+                "borderBottomWidth": 1,
+                "paddingTop": 14.357142857142858,
+                "width": "100%",
+              }
+            }
+          />
+        </View>
+      </View>
+    </View>
+  </RCTScrollView>
+</View>
+`;
+
+exports[`<ConnectionDetails /> should ConnectionDetails render PENDING properly 1`] = `
+<View
+  style={
+    Object {
+      "alignItems": "center",
+      "backgroundColor": "#FFFFFF",
+      "flex": 1,
+      "justifyContent": "center",
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "backgroundColor": "#FFFFFF",
+        "elevation": 0,
+        "flexDirection": "row",
+        "height": 63.52941176470588,
+        "paddingTop": 19.058823529411764,
+        "shadowColor": "#000000",
+        "shadowOffset": Object {
+          "height": 2,
+          "width": 0,
+        },
+        "shadowOpacity": 0.2,
+        "shadowRadius": 10,
+        "width": "100%",
+        "zIndex": 1,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "width": "15%",
+        }
+      }
+    >
+      <View
+        accessibilityLabel="back-arrow"
+        accessible={true}
+        focusable={true}
+        isTVSelectable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "opacity": 1,
+          }
+        }
+        testID="back-arrow-touchable"
+      >
+        <View
+          style={
+            Object {
+              "transform": Array [
+                Object {
+                  "scale": 1,
+                },
+              ],
+            }
+          }
+        >
+          <RNSVGSvgView
+            align="xMidYMid"
+            bbHeight={30.628571428571426}
+            bbWidth={30.628571428571426}
+            fill="#777777"
+            focusable={false}
+            height={30.628571428571426}
+            meetOrSlice={0}
+            minX={0}
+            minY={0}
+            style={
+              Array [
+                Object {
+                  "backgroundColor": "transparent",
+                  "borderWidth": 0,
+                },
+                Object {
+                  "marginBottom": 1.9142857142857141,
+                  "marginLeft": 14.357142857142858,
+                },
+                Object {
+                  "flex": 0,
+                  "height": 30,
+                  "width": 30,
+                },
+              ]
+            }
+            vbHeight={24}
+            vbWidth={24}
+            width={30.628571428571426}
+          >
+            <RNSVGGroup
+              fill={4286019447}
+              propList={
+                Array [
+                  "fill",
+                ]
+              }
+            >
+              <RNSVGGroup>
+                <RNSVGGroup>
+                  <RNSVGRect
+                    height="24"
+                    matrix={
+                      Array [
+                        6.123233995736766e-17,
+                        1,
+                        -1,
+                        6.123233995736766e-17,
+                        24,
+                        0,
+                      ]
+                    }
+                    opacity={0}
+                    width="24"
+                    x={0}
+                    y={0}
+                  />
+                  <RNSVGPath
+                    d="M13.83 19a1 1 0 0 1-.78-.37l-4.83-6a1 1 0 0 1 0-1.27l5-6a1 1 0 0 1 1.54 1.28L10.29 12l4.32 5.36a1 1 0 0 1-.78 1.64z"
+                  />
+                </RNSVGGroup>
+              </RNSVGGroup>
+            </RNSVGGroup>
+          </RNSVGSvgView>
+        </View>
+      </View>
+    </View>
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+          "height": "100%",
+          "marginEnd": 30.628571428571426,
+          "marginStart": -7.657142857142857,
+          "width": "65%",
+        }
+      }
+    >
+      <View
+        accessibilityLabel="connection-logo"
+        accessible={true}
+        style={
+          Object {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "height": "100%",
+            "marginLeft": 9.571428571428571,
+            "marginRight": 5.742857142857143,
+            "width": "35%",
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "borderRadius": 20,
+              "height": 30.628571428571426,
+              "width": 30.628571428571426,
+            }
+          }
+        >
+          <Image
+            resizeMode="cover"
+            source={
+              Object {
+                "uri": "https://robothash.com/logo.png",
+              }
+            }
+            style={
+              Object {
+                "height": 30.628571428571426,
+                "width": 30.628571428571426,
+              }
+            }
+          />
+        </View>
+      </View>
+      <View
+        accessibilityLabel="connection-name"
+        accessible={true}
+        style={
+          Object {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "justifyContent": "flex-start",
+            "width": "85%",
+          }
+        }
+      >
+        <Text
+          ellipsizeMode="tail"
+          numberOfLines={1}
+          style={
+            Object {
+              "color": "#777777",
+              "fontFamily": "Lato",
+              "fontSize": 21.057142857142857,
+              "marginLeft": -47.85714285714286,
+            }
+          }
+        >
+          jim
+        </Text>
+      </View>
+    </View>
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "height": "100%",
+          "justifyContent": "center",
+          "width": "15%",
+        }
+      }
+    >
+      <View
+        accessibilityLabel="three-dots"
+        accessible={true}
+        focusable={true}
+        isTVSelectable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "opacity": 1,
+          }
+        }
+        testID="three-dots"
+      >
+        <View
+          style={
+            Object {
+              "transform": Array [
+                Object {
+                  "scale": 1,
+                },
+              ],
+            }
+          }
+        >
+          <RNSVGSvgView
+            align="xMidYMid"
+            bbHeight={30.628571428571426}
+            bbWidth={30.628571428571426}
+            fill="#777777"
+            focusable={false}
+            height={30.628571428571426}
+            meetOrSlice={0}
+            minX={0}
+            minY={0}
+            style={
+              Array [
+                Object {
+                  "backgroundColor": "transparent",
+                  "borderWidth": 0,
+                },
+                Object {
+                  "flex": 0,
+                  "height": 30,
+                  "width": 30,
+                },
+              ]
+            }
+            vbHeight={24}
+            vbWidth={24}
+            width={30.628571428571426}
+          >
+            <RNSVGGroup
+              fill={4286019447}
+              propList={
+                Array [
+                  "fill",
+                ]
+              }
+            >
+              <RNSVGGroup>
+                <RNSVGGroup>
+                  <RNSVGRect
+                    height="24"
+                    matrix={
+                      Array [
+                        6.123233995736766e-17,
+                        -1,
+                        1,
+                        6.123233995736766e-17,
+                        0,
+                        24,
+                      ]
+                    }
+                    opacity={0}
+                    width="24"
+                    x={0}
+                    y={0}
+                  />
+                  <RNSVGCircle
+                    cx="12"
+                    cy="12"
+                    r="2"
+                  />
+                  <RNSVGCircle
+                    cx="12"
+                    cy="5"
+                    r="2"
+                  />
+                  <RNSVGCircle
+                    cx="12"
+                    cy="19"
+                    r="2"
+                  />
+                </RNSVGGroup>
+              </RNSVGGroup>
+            </RNSVGGroup>
+          </RNSVGSvgView>
+        </View>
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "elevation": 8,
+        "height": 540,
+        "position": "absolute",
+        "transform": Array [
+          Object {
+            "translateX": 320,
+          },
+        ],
+        "width": 320,
+        "zIndex": 999,
+      }
+    }
+  />
+  <RCTScrollView
+    data={
+      Array [
+        Object {
+          "action": "PENDING",
+          "data": Array [
+            Object {
+              "data": "2017-09-06T00:00:00+05:30",
+              "label": "Evernym",
+            },
+          ],
+          "icon": Object {
+            "default": "RelativeImageStub",
+          },
+          "id": "1",
+          "name": "Enterprise name",
+          "originalPayload": Object {},
+          "remoteDid": "remoteDid",
+          "status": "INVITATION_RECEIVED",
+          "timestamp": "2017-09-06T00:00:00+05:30",
+          "type": "INVITATION",
+        },
+      ]
+    }
+    disableVirtualization={false}
+    getItem={[Function]}
+    getItemCount={[Function]}
+    horizontal={false}
+    initialNumToRender={10}
+    keyExtractor={[Function]}
+    maxToRenderPerBatch={10}
+    numColumns={1}
+    onContentSizeChange={[Function]}
+    onEndReachedThreshold={2}
+    onLayout={[Function]}
+    onMomentumScrollEnd={[Function]}
+    onScroll={[Function]}
+    onScrollBeginDrag={[Function]}
+    onScrollEndDrag={[Function]}
+    removeClippedSubviews={false}
+    renderItem={[Function]}
+    scrollEventThrottle={50}
+    stickyHeaderIndices={Array []}
+    style={
+      Object {
+        "backgroundColor": "#FFFFFF",
+        "height": "100%",
+        "width": "100%",
+      }
+    }
+    updateCellsBatchingPeriod={50}
+    viewabilityConfigCallbackPairs={Array []}
+    windowSize={21}
+  >
+    <View>
+      <View
+        onLayout={[Function]}
+        style={null}
+      >
+        <View
+          style={
+            Object {
+              "alignItems": "flex-start",
+              "flex": 1,
+              "justifyContent": "center",
+              "marginLeft": "7%",
+              "paddingBottom": 14.357142857142858,
+              "paddingTop": 14.357142857142858,
+              "width": "86%",
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "#777777",
+                "fontFamily": "Lato",
+                "fontSize": 8.614285714285714,
+                "paddingBottom": 7.657142857142857,
+                "textAlign": "left",
+              }
+            }
+          >
+            2018-01-10T04:32:43+05:30 | 2018-01-10T04:32:43+05:30
+          </Text>
+          <View
+            style={
+              Object {
+                "alignItems": "stretch",
+                "borderColor": "#F2F2F2",
+                "borderRadius": 3,
+                "borderWidth": 1,
+                "flexDirection": "row",
+                "padding": 11.485714285714286,
+                "width": "100%",
+              }
+            }
+          >
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "justifyContent": "center",
+                }
+              }
+            >
+              <Image
+                source={
+                  Object {
+                    "default": "RelativeImageStub",
+                  }
+                }
+                style={
+                  Object {
+                    "height": 22.97142857142857,
+                    "width": 22.97142857142857,
+                  }
+                }
+              />
+              <View
+                style={
+                  Object {
+                    "backgroundColor": "#FFFFFF",
+                    "borderRadius": 7,
+                    "height": 13.399999999999999,
+                    "position": "absolute",
+                    "width": 13.399999999999999,
+                  }
+                }
+              />
+            </View>
+            <View
+              style={
+                Object {
+                  "flex": 1,
+                  "paddingLeft": 11.485714285714286,
+                }
+              }
+            >
+              <Text
+                style={
+                  Object {
+                    "color": "#505050",
+                    "fontFamily": "Lato",
+                    "fontSize": 12.442857142857143,
+                    "fontWeight": "700",
+                    "marginBottom": 3.8285714285714283,
+                    "textAlign": "left",
+                  }
+                }
+              >
+                Enterprise name
+              </Text>
+              <Text
+                style={
+                  Object {
+                    "color": "#777777",
+                    "fontFamily": "Lato",
+                    "fontSize": 9.571428571428571,
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  }
+                }
+              >
+                ISSUING - PLEASE WAIT
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+  </RCTScrollView>
+</View>
+`;
+
+exports[`<ConnectionDetails /> should ConnectionDetails render PROOF RECEIVED properly 1`] = `
+<View
+  style={
+    Object {
+      "alignItems": "center",
+      "backgroundColor": "#FFFFFF",
+      "flex": 1,
+      "justifyContent": "center",
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "backgroundColor": "#FFFFFF",
+        "elevation": 0,
+        "flexDirection": "row",
+        "height": 63.52941176470588,
+        "paddingTop": 19.058823529411764,
+        "shadowColor": "#000000",
+        "shadowOffset": Object {
+          "height": 2,
+          "width": 0,
+        },
+        "shadowOpacity": 0.2,
+        "shadowRadius": 10,
+        "width": "100%",
+        "zIndex": 1,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "width": "15%",
+        }
+      }
+    >
+      <View
+        accessibilityLabel="back-arrow"
+        accessible={true}
+        focusable={true}
+        isTVSelectable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "opacity": 1,
+          }
+        }
+        testID="back-arrow-touchable"
+      >
+        <View
+          style={
+            Object {
+              "transform": Array [
+                Object {
+                  "scale": 1,
+                },
+              ],
+            }
+          }
+        >
+          <RNSVGSvgView
+            align="xMidYMid"
+            bbHeight={30.628571428571426}
+            bbWidth={30.628571428571426}
+            fill="#777777"
+            focusable={false}
+            height={30.628571428571426}
+            meetOrSlice={0}
+            minX={0}
+            minY={0}
+            style={
+              Array [
+                Object {
+                  "backgroundColor": "transparent",
+                  "borderWidth": 0,
+                },
+                Object {
+                  "marginBottom": 1.9142857142857141,
+                  "marginLeft": 14.357142857142858,
+                },
+                Object {
+                  "flex": 0,
+                  "height": 30,
+                  "width": 30,
+                },
+              ]
+            }
+            vbHeight={24}
+            vbWidth={24}
+            width={30.628571428571426}
+          >
+            <RNSVGGroup
+              fill={4286019447}
+              propList={
+                Array [
+                  "fill",
+                ]
+              }
+            >
+              <RNSVGGroup>
+                <RNSVGGroup>
+                  <RNSVGRect
+                    height="24"
+                    matrix={
+                      Array [
+                        6.123233995736766e-17,
+                        1,
+                        -1,
+                        6.123233995736766e-17,
+                        24,
+                        0,
+                      ]
+                    }
+                    opacity={0}
+                    width="24"
+                    x={0}
+                    y={0}
+                  />
+                  <RNSVGPath
+                    d="M13.83 19a1 1 0 0 1-.78-.37l-4.83-6a1 1 0 0 1 0-1.27l5-6a1 1 0 0 1 1.54 1.28L10.29 12l4.32 5.36a1 1 0 0 1-.78 1.64z"
+                  />
+                </RNSVGGroup>
+              </RNSVGGroup>
+            </RNSVGGroup>
+          </RNSVGSvgView>
+        </View>
+      </View>
+    </View>
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+          "height": "100%",
+          "marginEnd": 30.628571428571426,
+          "marginStart": -7.657142857142857,
+          "width": "65%",
+        }
+      }
+    >
+      <View
+        accessibilityLabel="connection-logo"
+        accessible={true}
+        style={
+          Object {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "height": "100%",
+            "marginLeft": 9.571428571428571,
+            "marginRight": 5.742857142857143,
+            "width": "35%",
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "borderRadius": 20,
+              "height": 30.628571428571426,
+              "width": 30.628571428571426,
+            }
+          }
+        >
+          <Image
+            resizeMode="cover"
+            source={
+              Object {
+                "uri": "https://robothash.com/logo.png",
+              }
+            }
+            style={
+              Object {
+                "height": 30.628571428571426,
+                "width": 30.628571428571426,
+              }
+            }
+          />
+        </View>
+      </View>
+      <View
+        accessibilityLabel="connection-name"
+        accessible={true}
+        style={
+          Object {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "justifyContent": "flex-start",
+            "width": "85%",
+          }
+        }
+      >
+        <Text
+          ellipsizeMode="tail"
+          numberOfLines={1}
+          style={
+            Object {
+              "color": "#777777",
+              "fontFamily": "Lato",
+              "fontSize": 21.057142857142857,
+              "marginLeft": -47.85714285714286,
+            }
+          }
+        >
+          jim
+        </Text>
+      </View>
+    </View>
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "height": "100%",
+          "justifyContent": "center",
+          "width": "15%",
+        }
+      }
+    >
+      <View
+        accessibilityLabel="three-dots"
+        accessible={true}
+        focusable={true}
+        isTVSelectable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "opacity": 1,
+          }
+        }
+        testID="three-dots"
+      >
+        <View
+          style={
+            Object {
+              "transform": Array [
+                Object {
+                  "scale": 1,
+                },
+              ],
+            }
+          }
+        >
+          <RNSVGSvgView
+            align="xMidYMid"
+            bbHeight={30.628571428571426}
+            bbWidth={30.628571428571426}
+            fill="#777777"
+            focusable={false}
+            height={30.628571428571426}
+            meetOrSlice={0}
+            minX={0}
+            minY={0}
+            style={
+              Array [
+                Object {
+                  "backgroundColor": "transparent",
+                  "borderWidth": 0,
+                },
+                Object {
+                  "flex": 0,
+                  "height": 30,
+                  "width": 30,
+                },
+              ]
+            }
+            vbHeight={24}
+            vbWidth={24}
+            width={30.628571428571426}
+          >
+            <RNSVGGroup
+              fill={4286019447}
+              propList={
+                Array [
+                  "fill",
+                ]
+              }
+            >
+              <RNSVGGroup>
+                <RNSVGGroup>
+                  <RNSVGRect
+                    height="24"
+                    matrix={
+                      Array [
+                        6.123233995736766e-17,
+                        -1,
+                        1,
+                        6.123233995736766e-17,
+                        0,
+                        24,
+                      ]
+                    }
+                    opacity={0}
+                    width="24"
+                    x={0}
+                    y={0}
+                  />
+                  <RNSVGCircle
+                    cx="12"
+                    cy="12"
+                    r="2"
+                  />
+                  <RNSVGCircle
+                    cx="12"
+                    cy="5"
+                    r="2"
+                  />
+                  <RNSVGCircle
+                    cx="12"
+                    cy="19"
+                    r="2"
+                  />
+                </RNSVGGroup>
+              </RNSVGGroup>
+            </RNSVGGroup>
+          </RNSVGSvgView>
+        </View>
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "elevation": 8,
+        "height": 540,
+        "position": "absolute",
+        "transform": Array [
+          Object {
+            "translateX": 320,
+          },
+        ],
+        "width": 320,
+        "zIndex": 999,
+      }
+    }
+  />
+  <RCTScrollView
+    data={
+      Array [
+        Object {
+          "action": "PROOF RECEIVED",
+          "data": Array [
+            Object {
+              "data": "2017-09-06T00:00:00+05:30",
+              "label": "Evernym",
+            },
+          ],
+          "icon": Object {
+            "default": "RelativeImageStub",
+          },
+          "id": "1",
+          "name": "Enterprise name",
+          "originalPayload": Object {
+            "payload": Object {
+              "requester": Object {
+                "name": "bob",
+              },
+            },
+            "payloadInfo": Object {
+              "uid": "uidProofReceived",
+            },
+          },
+          "remoteDid": "remoteDid",
+          "status": "INVITATION_RECEIVED",
+          "timestamp": "2017-09-06T00:00:00+05:30",
+          "type": "INVITATION",
+        },
+      ]
+    }
+    disableVirtualization={false}
+    getItem={[Function]}
+    getItemCount={[Function]}
+    horizontal={false}
+    initialNumToRender={10}
+    keyExtractor={[Function]}
+    maxToRenderPerBatch={10}
+    numColumns={1}
+    onContentSizeChange={[Function]}
+    onEndReachedThreshold={2}
+    onLayout={[Function]}
+    onMomentumScrollEnd={[Function]}
+    onScroll={[Function]}
+    onScrollBeginDrag={[Function]}
+    onScrollEndDrag={[Function]}
+    removeClippedSubviews={false}
+    renderItem={[Function]}
+    scrollEventThrottle={50}
+    stickyHeaderIndices={Array []}
+    style={
+      Object {
+        "backgroundColor": "#FFFFFF",
+        "height": "100%",
+        "width": "100%",
+      }
+    }
+    updateCellsBatchingPeriod={50}
+    viewabilityConfigCallbackPairs={Array []}
+    windowSize={21}
+  >
+    <View>
+      <View
+        onLayout={[Function]}
+        style={null}
+      >
+        <View
+          style={
+            Object {
+              "alignItems": "stretch",
+              "flex": 1,
+              "flexDirection": "column",
+              "justifyContent": "center",
+              "paddingLeft": "7%",
+              "paddingRight": "7%",
+              "paddingTop": 14.357142857142858,
+              "width": "100%",
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "#777777",
+                "fontFamily": "Lato",
+                "fontSize": 9.571428571428571,
+                "textAlign": "left",
+              }
+            }
+          >
+            2018-01-10T04:32:43+05:30 | 2018-01-10T04:32:43+05:30
+          </Text>
+          <Text
+            style={
+              Object {
+                "color": "#505050",
+                "fontFamily": "Lato",
+                "fontSize": 14.357142857142858,
+                "fontWeight": "500",
+                "marginBottom": 1.9142857142857141,
+                "marginTop": 1.9142857142857141,
+                "textAlign": "left",
+              }
+            }
+          >
+            bob wants you to share the following:
+          </Text>
+          <Text
+            ellipsizeMode="tail"
+            numberOfLines={1}
+            style={
+              Object {
+                "color": "#505050",
+                "fontFamily": "Lato",
+                "fontSize": 12.442857142857143,
+                "textAlign": "left",
+              }
+            }
+          >
+            Evernym
+          </Text>
+          <View
+            style={
+              Array [
+                Object {
+                  "flexDirection": "row",
+                  "marginTop": 14.357142857142858,
+                  "width": "100%",
+                },
+                Object {
+                  "display": "flex",
+                },
+              ]
+            }
+          >
+            <View
+              accessible={true}
+              focusable={true}
+              isTVSelectable={true}
+              onClick={[Function]}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
+              style={
+                Object {
+                  "backgroundColor": "rgba(119, 119, 119, 1.0)",
+                  "borderRadius": 5,
+                  "opacity": 1,
+                  "padding": 5.742857142857143,
+                  "paddingLeft": 24.885714285714286,
+                  "paddingRight": 24.885714285714286,
+                }
+              }
+            >
+              <Text
+                style={
+                  Object {
+                    "color": "#FFFFFF",
+                    "fontFamily": "Lato",
+                    "fontSize": 12.442857142857143,
+                    "fontWeight": "700",
+                  }
+                }
+              >
+                View
+              </Text>
+            </View>
+          </View>
+          <View
+            style={
+              Object {
+                "borderBottomColor": "#F2F2F2",
+                "borderBottomWidth": 1,
+                "paddingTop": 14.357142857142858,
+                "width": "100%",
+              }
+            }
+          />
+        </View>
+      </View>
+    </View>
+  </RCTScrollView>
+</View>
+`;
+
+exports[`<ConnectionDetails /> should ConnectionDetails render RECEIVED properly 1`] = `
+<View
+  style={
+    Object {
+      "alignItems": "center",
+      "backgroundColor": "#FFFFFF",
+      "flex": 1,
+      "justifyContent": "center",
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "backgroundColor": "#FFFFFF",
+        "elevation": 0,
+        "flexDirection": "row",
+        "height": 63.52941176470588,
+        "paddingTop": 19.058823529411764,
+        "shadowColor": "#000000",
+        "shadowOffset": Object {
+          "height": 2,
+          "width": 0,
+        },
+        "shadowOpacity": 0.2,
+        "shadowRadius": 10,
+        "width": "100%",
+        "zIndex": 1,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "width": "15%",
+        }
+      }
+    >
+      <View
+        accessibilityLabel="back-arrow"
+        accessible={true}
+        focusable={true}
+        isTVSelectable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "opacity": 1,
+          }
+        }
+        testID="back-arrow-touchable"
+      >
+        <View
+          style={
+            Object {
+              "transform": Array [
+                Object {
+                  "scale": 1,
+                },
+              ],
+            }
+          }
+        >
+          <RNSVGSvgView
+            align="xMidYMid"
+            bbHeight={30.628571428571426}
+            bbWidth={30.628571428571426}
+            fill="#777777"
+            focusable={false}
+            height={30.628571428571426}
+            meetOrSlice={0}
+            minX={0}
+            minY={0}
+            style={
+              Array [
+                Object {
+                  "backgroundColor": "transparent",
+                  "borderWidth": 0,
+                },
+                Object {
+                  "marginBottom": 1.9142857142857141,
+                  "marginLeft": 14.357142857142858,
+                },
+                Object {
+                  "flex": 0,
+                  "height": 30,
+                  "width": 30,
+                },
+              ]
+            }
+            vbHeight={24}
+            vbWidth={24}
+            width={30.628571428571426}
+          >
+            <RNSVGGroup
+              fill={4286019447}
+              propList={
+                Array [
+                  "fill",
+                ]
+              }
+            >
+              <RNSVGGroup>
+                <RNSVGGroup>
+                  <RNSVGRect
+                    height="24"
+                    matrix={
+                      Array [
+                        6.123233995736766e-17,
+                        1,
+                        -1,
+                        6.123233995736766e-17,
+                        24,
+                        0,
+                      ]
+                    }
+                    opacity={0}
+                    width="24"
+                    x={0}
+                    y={0}
+                  />
+                  <RNSVGPath
+                    d="M13.83 19a1 1 0 0 1-.78-.37l-4.83-6a1 1 0 0 1 0-1.27l5-6a1 1 0 0 1 1.54 1.28L10.29 12l4.32 5.36a1 1 0 0 1-.78 1.64z"
+                  />
+                </RNSVGGroup>
+              </RNSVGGroup>
+            </RNSVGGroup>
+          </RNSVGSvgView>
+        </View>
+      </View>
+    </View>
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+          "height": "100%",
+          "marginEnd": 30.628571428571426,
+          "marginStart": -7.657142857142857,
+          "width": "65%",
+        }
+      }
+    >
+      <View
+        accessibilityLabel="connection-logo"
+        accessible={true}
+        style={
+          Object {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "height": "100%",
+            "marginLeft": 9.571428571428571,
+            "marginRight": 5.742857142857143,
+            "width": "35%",
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "borderRadius": 20,
+              "height": 30.628571428571426,
+              "width": 30.628571428571426,
+            }
+          }
+        >
+          <Image
+            resizeMode="cover"
+            source={
+              Object {
+                "uri": "https://robothash.com/logo.png",
+              }
+            }
+            style={
+              Object {
+                "height": 30.628571428571426,
+                "width": 30.628571428571426,
+              }
+            }
+          />
+        </View>
+      </View>
+      <View
+        accessibilityLabel="connection-name"
+        accessible={true}
+        style={
+          Object {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "justifyContent": "flex-start",
+            "width": "85%",
+          }
+        }
+      >
+        <Text
+          ellipsizeMode="tail"
+          numberOfLines={1}
+          style={
+            Object {
+              "color": "#777777",
+              "fontFamily": "Lato",
+              "fontSize": 21.057142857142857,
+              "marginLeft": -47.85714285714286,
+            }
+          }
+        >
+          jim
+        </Text>
+      </View>
+    </View>
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "height": "100%",
+          "justifyContent": "center",
+          "width": "15%",
+        }
+      }
+    >
+      <View
+        accessibilityLabel="three-dots"
+        accessible={true}
+        focusable={true}
+        isTVSelectable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "opacity": 1,
+          }
+        }
+        testID="three-dots"
+      >
+        <View
+          style={
+            Object {
+              "transform": Array [
+                Object {
+                  "scale": 1,
+                },
+              ],
+            }
+          }
+        >
+          <RNSVGSvgView
+            align="xMidYMid"
+            bbHeight={30.628571428571426}
+            bbWidth={30.628571428571426}
+            fill="#777777"
+            focusable={false}
+            height={30.628571428571426}
+            meetOrSlice={0}
+            minX={0}
+            minY={0}
+            style={
+              Array [
+                Object {
+                  "backgroundColor": "transparent",
+                  "borderWidth": 0,
+                },
+                Object {
+                  "flex": 0,
+                  "height": 30,
+                  "width": 30,
+                },
+              ]
+            }
+            vbHeight={24}
+            vbWidth={24}
+            width={30.628571428571426}
+          >
+            <RNSVGGroup
+              fill={4286019447}
+              propList={
+                Array [
+                  "fill",
+                ]
+              }
+            >
+              <RNSVGGroup>
+                <RNSVGGroup>
+                  <RNSVGRect
+                    height="24"
+                    matrix={
+                      Array [
+                        6.123233995736766e-17,
+                        -1,
+                        1,
+                        6.123233995736766e-17,
+                        0,
+                        24,
+                      ]
+                    }
+                    opacity={0}
+                    width="24"
+                    x={0}
+                    y={0}
+                  />
+                  <RNSVGCircle
+                    cx="12"
+                    cy="12"
+                    r="2"
+                  />
+                  <RNSVGCircle
+                    cx="12"
+                    cy="5"
+                    r="2"
+                  />
+                  <RNSVGCircle
+                    cx="12"
+                    cy="19"
+                    r="2"
+                  />
+                </RNSVGGroup>
+              </RNSVGGroup>
+            </RNSVGGroup>
+          </RNSVGSvgView>
+        </View>
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "elevation": 8,
+        "height": 540,
+        "position": "absolute",
+        "transform": Array [
+          Object {
+            "translateX": 320,
+          },
+        ],
+        "width": 320,
+        "zIndex": 999,
+      }
+    }
+  />
+  <RCTScrollView
+    data={
+      Array [
+        Object {
+          "action": "RECEIVED",
+          "data": Array [
+            Object {
+              "data": "2017-09-06T00:00:00+05:30",
+              "label": "Evernym",
+            },
+          ],
+          "icon": Object {
+            "default": "RelativeImageStub",
+          },
+          "id": "1",
+          "name": "Enterprise name",
+          "originalPayload": Object {
+            "payload": Object {
+              "requester": Object {
+                "name": "bob",
+              },
+            },
+            "payloadInfo": Object {
+              "uid": "uidProofReceived",
+            },
+          },
+          "remoteDid": "remoteDid",
+          "status": "INVITATION_RECEIVED",
+          "timestamp": "2017-09-06T00:00:00+05:30",
+          "type": "INVITATION",
+        },
+      ]
+    }
+    disableVirtualization={false}
+    getItem={[Function]}
+    getItemCount={[Function]}
+    horizontal={false}
+    initialNumToRender={10}
+    keyExtractor={[Function]}
+    maxToRenderPerBatch={10}
+    numColumns={1}
+    onContentSizeChange={[Function]}
+    onEndReachedThreshold={2}
+    onLayout={[Function]}
+    onMomentumScrollEnd={[Function]}
+    onScroll={[Function]}
+    onScrollBeginDrag={[Function]}
+    onScrollEndDrag={[Function]}
+    removeClippedSubviews={false}
+    renderItem={[Function]}
+    scrollEventThrottle={50}
+    stickyHeaderIndices={Array []}
+    style={
+      Object {
+        "backgroundColor": "#FFFFFF",
+        "height": "100%",
+        "width": "100%",
+      }
+    }
+    updateCellsBatchingPeriod={50}
+    viewabilityConfigCallbackPairs={Array []}
+    windowSize={21}
+  >
+    <View>
+      <View
+        onLayout={[Function]}
+        style={null}
+      >
+        <View
+          style={
+            Object {
+              "alignItems": "stretch",
+              "flex": 1,
+              "flexDirection": "column",
+              "justifyContent": "center",
+              "paddingLeft": "7%",
+              "paddingRight": "7%",
+              "paddingTop": 14.357142857142858,
+              "width": "100%",
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "#777777",
+                "fontFamily": "Lato",
+                "fontSize": 9.571428571428571,
+                "textAlign": "left",
+              }
+            }
+          >
+            2018-01-10T04:32:43+05:30 | 2018-01-10T04:32:43+05:30
+          </Text>
+          <View
+            style={
+              Object {
+                "backgroundColor": "#FFFFFF",
+                "borderBottomColor": "#EAEAEA",
+                "borderRadius": 6,
+                "elevation": 0,
+                "marginBottom": 14.357142857142858,
+                "marginTop": 14.357142857142858,
+                "shadowColor": "#000000",
+                "shadowOffset": Object {
+                  "height": 0,
+                  "width": 0,
+                },
+                "shadowOpacity": 0.2,
+                "shadowRadius": 7,
+              }
+            }
+          >
+            <View
+              style={
+                Object {
+                  "padding": 14.357142857142858,
+                }
+              }
+            >
+              <View
+                style={
+                  Object {
+                    "alignItems": "stretch",
+                    "borderBottomColor": "#A5A5A5",
+                    "borderBottomWidth": 0.5,
+                    "flexDirection": "row",
+                    "paddingBottom": 14.357142857142858,
+                  }
+                }
+              >
+                <View
+                  style={
+                    Array [
+                      Object {
+                        "height": 36.37142857142857,
+                        "width": 33.5,
+                      },
+                      Object {
+                        "display": "flex",
+                      },
+                    ]
+                  }
+                >
+                  <View
+                    style={
+                      Object {
+                        "alignItems": "flex-start",
+                        "height": "100%",
+                        "justifyContent": "flex-end",
+                        "width": "100%",
+                      }
+                    }
+                  >
+                    <RNSVGSvgView
+                      align="xMidYMid"
+                      bbHeight="31.585714285714285"
+                      bbWidth="21.057142857142857"
+                      focusable={false}
+                      height="31.585714285714285"
+                      meetOrSlice={0}
+                      minX={0}
+                      minY={0}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "borderWidth": 0,
+                          },
+                          Object {
+                            "flex": 0,
+                            "height": 31,
+                            "width": 21,
+                          },
+                        ]
+                      }
+                      vbHeight={33}
+                      vbWidth={22}
+                      width="21.057142857142857"
+                    >
+                      <RNSVGGroup>
+                        <RNSVGPath
+                          d="M6.875 21.2004V28.4852L10.9705 25.2123L15.125 28.4852V21.2004C13.8512 21.7161 12.4587 22 11 22C9.54126 22 8.14884 21.7161 6.875 21.2004ZM4.12496 19.5874C1.61021 17.5714 0 14.4738 0 11C0 4.92487 4.92487 0 11 0C17.0751 0 22 4.92487 22 11C22 14.5008 20.3646 17.6197 17.8161 19.6343L17.816 32.527L10.9705 28.4315L4.125 32.527L4.12496 19.5874ZM11 19.25C15.5563 19.25 19.25 15.5563 19.25 11C19.25 6.44365 15.5563 2.75 11 2.75C6.44365 2.75 2.75 6.44365 2.75 11C2.75 15.5563 6.44365 19.25 11 19.25ZM16.2142 7.8418C16.2443 7.89785 16.2594 7.93988 16.2594 7.9679C16.2594 7.99593 16.2443 8.03796 16.2142 8.09401L10.5972 14.8196C10.5069 14.9036 10.4393 14.9457 10.3941 14.9457C10.3189 14.9457 10.2438 14.9106 10.1686 14.8406L6.98779 11.9822L6.92012 11.9192C6.89004 11.8631 6.875 11.8211 6.875 11.7931C6.875 11.779 6.89004 11.744 6.92012 11.688L6.96523 11.6459C7.38633 11.2256 7.71719 10.9033 7.95781 10.6791C8.04804 10.5951 8.1082 10.553 8.13828 10.553C8.19844 10.553 8.27363 10.5951 8.36387 10.6791L10.1686 12.3185L14.6803 6.91704C14.7104 6.88901 14.7555 6.875 14.8156 6.875C14.8608 6.875 14.9134 6.88901 14.9736 6.91704L16.2142 7.8418Z"
+                          fill={4283453520}
+                          fillRule={0}
+                          propList={
+                            Array [
+                              "fill",
+                              "fillRule",
+                            ]
+                          }
+                        />
+                      </RNSVGGroup>
+                    </RNSVGSvgView>
+                  </View>
+                </View>
+                <View
+                  style={
+                    Object {
+                      "flex": 1,
+                    }
+                  }
+                >
+                  <View
+                    style={
+                      Object {
+                        "width": "100%",
+                      }
+                    }
+                  >
+                    <Text
+                      style={
+                        Object {
+                          "color": "#505050",
+                          "fontFamily": "Lato",
+                          "fontSize": 12.442857142857143,
+                          "fontWeight": "700",
+                          "textAlign": "left",
+                        }
+                      }
+                    >
+                      Enterprise name
+                    </Text>
+                  </View>
+                  <View
+                    style={
+                      Object {
+                        "alignItems": "stretch",
+                        "flexDirection": "row",
+                        "paddingTop": 3.8285714285714283,
+                        "width": "100%",
+                      }
+                    }
+                  >
+                    <Text
+                      style={
+                        Object {
+                          "color": "#777777",
+                          "flex": 1,
+                          "fontFamily": "Lato",
+                          "fontSize": 9.571428571428571,
+                          "fontWeight": "500",
+                          "textAlign": "left",
+                        }
+                      }
+                    >
+                      ACCEPTED CREDENTIAL
+                    </Text>
+                    <Text
+                      style={
+                        Object {
+                          "color": "#505050",
+                          "fontFamily": "Lato",
+                          "fontSize": 9.571428571428571,
+                          "fontWeight": "500",
+                          "textAlign": "right",
+                        }
+                      }
+                    >
+                      2018-01-10T04:32:43+05:30
+                    </Text>
+                  </View>
+                </View>
+              </View>
+              <View
+                style={
+                  Object {
+                    "backgroundColor": "#FFFFFF",
+                    "paddingTop": 14.357142857142858,
+                    "width": "100%",
+                  }
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "alignItems": "stretch",
+                      "flexDirection": "row",
+                    }
+                  }
+                >
+                  <Text
+                    style={
+                      Object {
+                        "color": "#505050",
+                        "fontFamily": "Lato",
+                        "fontSize": 12.442857142857143,
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      }
+                    }
+                  >
+                    1
+                  </Text>
+                  <Text
+                    style={
+                      Object {
+                        "color": "#505050",
+                        "fontFamily": "Lato",
+                        "fontSize": 12.442857142857143,
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      }
+                    }
+                  >
+                     Attributes
+                  </Text>
+                </View>
+                <View
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                    }
+                  }
+                >
+                  <View
+                    accessible={true}
+                    focusable={true}
+                    isTVSelectable={true}
+                    onClick={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
+                    style={
+                      Object {
+                        "opacity": 1,
+                      }
+                    }
+                  >
+                    <Text
+                      style={
+                        Array [
+                          Object {
+                            "fontFamily": "Lato",
+                            "fontSize": 12.442857142857143,
+                            "fontWeight": "700",
+                          },
+                          Object {
+                            "color": "rgba(119, 119, 119, 1.0)",
+                          },
+                        ]
+                      }
+                    >
+                      VIEW CREDENTIAL
+                    </Text>
+                  </View>
+                </View>
+              </View>
+            </View>
+          </View>
+          <View
+            style={
+              Object {
+                "borderBottomColor": "#F2F2F2",
+                "borderBottomWidth": 1,
+                "paddingTop": 14.357142857142858,
+                "width": "100%",
+              }
+            }
+          />
+        </View>
+      </View>
+    </View>
+  </RCTScrollView>
+</View>
+`;
+
+exports[`<ConnectionDetails /> should ConnectionDetails render SHARED properly 1`] = `
+<View
+  style={
+    Object {
+      "alignItems": "center",
+      "backgroundColor": "#FFFFFF",
+      "flex": 1,
+      "justifyContent": "center",
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "backgroundColor": "#FFFFFF",
+        "elevation": 0,
+        "flexDirection": "row",
+        "height": 63.52941176470588,
+        "paddingTop": 19.058823529411764,
+        "shadowColor": "#000000",
+        "shadowOffset": Object {
+          "height": 2,
+          "width": 0,
+        },
+        "shadowOpacity": 0.2,
+        "shadowRadius": 10,
+        "width": "100%",
+        "zIndex": 1,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "width": "15%",
+        }
+      }
+    >
+      <View
+        accessibilityLabel="back-arrow"
+        accessible={true}
+        focusable={true}
+        isTVSelectable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "opacity": 1,
+          }
+        }
+        testID="back-arrow-touchable"
+      >
+        <View
+          style={
+            Object {
+              "transform": Array [
+                Object {
+                  "scale": 1,
+                },
+              ],
+            }
+          }
+        >
+          <RNSVGSvgView
+            align="xMidYMid"
+            bbHeight={30.628571428571426}
+            bbWidth={30.628571428571426}
+            fill="#777777"
+            focusable={false}
+            height={30.628571428571426}
+            meetOrSlice={0}
+            minX={0}
+            minY={0}
+            style={
+              Array [
+                Object {
+                  "backgroundColor": "transparent",
+                  "borderWidth": 0,
+                },
+                Object {
+                  "marginBottom": 1.9142857142857141,
+                  "marginLeft": 14.357142857142858,
+                },
+                Object {
+                  "flex": 0,
+                  "height": 30,
+                  "width": 30,
+                },
+              ]
+            }
+            vbHeight={24}
+            vbWidth={24}
+            width={30.628571428571426}
+          >
+            <RNSVGGroup
+              fill={4286019447}
+              propList={
+                Array [
+                  "fill",
+                ]
+              }
+            >
+              <RNSVGGroup>
+                <RNSVGGroup>
+                  <RNSVGRect
+                    height="24"
+                    matrix={
+                      Array [
+                        6.123233995736766e-17,
+                        1,
+                        -1,
+                        6.123233995736766e-17,
+                        24,
+                        0,
+                      ]
+                    }
+                    opacity={0}
+                    width="24"
+                    x={0}
+                    y={0}
+                  />
+                  <RNSVGPath
+                    d="M13.83 19a1 1 0 0 1-.78-.37l-4.83-6a1 1 0 0 1 0-1.27l5-6a1 1 0 0 1 1.54 1.28L10.29 12l4.32 5.36a1 1 0 0 1-.78 1.64z"
+                  />
+                </RNSVGGroup>
+              </RNSVGGroup>
+            </RNSVGGroup>
+          </RNSVGSvgView>
+        </View>
+      </View>
+    </View>
+    <View
+      style={
+        Object {
+          "flexDirection": "row",
+          "height": "100%",
+          "marginEnd": 30.628571428571426,
+          "marginStart": -7.657142857142857,
+          "width": "65%",
+        }
+      }
+    >
+      <View
+        accessibilityLabel="connection-logo"
+        accessible={true}
+        style={
+          Object {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "height": "100%",
+            "marginLeft": 9.571428571428571,
+            "marginRight": 5.742857142857143,
+            "width": "35%",
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "borderRadius": 20,
+              "height": 30.628571428571426,
+              "width": 30.628571428571426,
+            }
+          }
+        >
+          <Image
+            resizeMode="cover"
+            source={
+              Object {
+                "uri": "https://robothash.com/logo.png",
+              }
+            }
+            style={
+              Object {
+                "height": 30.628571428571426,
+                "width": 30.628571428571426,
+              }
+            }
+          />
+        </View>
+      </View>
+      <View
+        accessibilityLabel="connection-name"
+        accessible={true}
+        style={
+          Object {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "justifyContent": "flex-start",
+            "width": "85%",
+          }
+        }
+      >
+        <Text
+          ellipsizeMode="tail"
+          numberOfLines={1}
+          style={
+            Object {
+              "color": "#777777",
+              "fontFamily": "Lato",
+              "fontSize": 21.057142857142857,
+              "marginLeft": -47.85714285714286,
+            }
+          }
+        >
+          jim
+        </Text>
+      </View>
+    </View>
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "height": "100%",
+          "justifyContent": "center",
+          "width": "15%",
+        }
+      }
+    >
+      <View
+        accessibilityLabel="three-dots"
+        accessible={true}
+        focusable={true}
+        isTVSelectable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "opacity": 1,
+          }
+        }
+        testID="three-dots"
+      >
+        <View
+          style={
+            Object {
+              "transform": Array [
+                Object {
+                  "scale": 1,
+                },
+              ],
+            }
+          }
+        >
+          <RNSVGSvgView
+            align="xMidYMid"
+            bbHeight={30.628571428571426}
+            bbWidth={30.628571428571426}
+            fill="#777777"
+            focusable={false}
+            height={30.628571428571426}
+            meetOrSlice={0}
+            minX={0}
+            minY={0}
+            style={
+              Array [
+                Object {
+                  "backgroundColor": "transparent",
+                  "borderWidth": 0,
+                },
+                Object {
+                  "flex": 0,
+                  "height": 30,
+                  "width": 30,
+                },
+              ]
+            }
+            vbHeight={24}
+            vbWidth={24}
+            width={30.628571428571426}
+          >
+            <RNSVGGroup
+              fill={4286019447}
+              propList={
+                Array [
+                  "fill",
+                ]
+              }
+            >
+              <RNSVGGroup>
+                <RNSVGGroup>
+                  <RNSVGRect
+                    height="24"
+                    matrix={
+                      Array [
+                        6.123233995736766e-17,
+                        -1,
+                        1,
+                        6.123233995736766e-17,
+                        0,
+                        24,
+                      ]
+                    }
+                    opacity={0}
+                    width="24"
+                    x={0}
+                    y={0}
+                  />
+                  <RNSVGCircle
+                    cx="12"
+                    cy="12"
+                    r="2"
+                  />
+                  <RNSVGCircle
+                    cx="12"
+                    cy="5"
+                    r="2"
+                  />
+                  <RNSVGCircle
+                    cx="12"
+                    cy="19"
+                    r="2"
+                  />
+                </RNSVGGroup>
+              </RNSVGGroup>
+            </RNSVGGroup>
+          </RNSVGSvgView>
+        </View>
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "elevation": 8,
+        "height": 540,
+        "position": "absolute",
+        "transform": Array [
+          Object {
+            "translateX": 320,
+          },
+        ],
+        "width": 320,
+        "zIndex": 999,
+      }
+    }
+  />
+  <RCTScrollView
+    data={
+      Array [
+        Object {
+          "action": "SHARED",
+          "data": Array [
+            Object {
+              "data": "2017-09-06T00:00:00+05:30",
+              "label": "Evernym",
+            },
+          ],
+          "icon": Object {
+            "default": "RelativeImageStub",
+          },
+          "id": "1",
+          "name": "Enterprise name",
+          "originalPayload": Object {},
+          "remoteDid": "remoteDid",
+          "status": "INVITATION_RECEIVED",
+          "timestamp": "2017-09-06T00:00:00+05:30",
+          "type": "INVITATION",
+        },
+      ]
+    }
+    disableVirtualization={false}
+    getItem={[Function]}
+    getItemCount={[Function]}
+    horizontal={false}
+    initialNumToRender={10}
+    keyExtractor={[Function]}
+    maxToRenderPerBatch={10}
+    numColumns={1}
+    onContentSizeChange={[Function]}
+    onEndReachedThreshold={2}
+    onLayout={[Function]}
+    onMomentumScrollEnd={[Function]}
+    onScroll={[Function]}
+    onScrollBeginDrag={[Function]}
+    onScrollEndDrag={[Function]}
+    removeClippedSubviews={false}
+    renderItem={[Function]}
+    scrollEventThrottle={50}
+    stickyHeaderIndices={Array []}
+    style={
+      Object {
+        "backgroundColor": "#FFFFFF",
+        "height": "100%",
+        "width": "100%",
+      }
+    }
+    updateCellsBatchingPeriod={50}
+    viewabilityConfigCallbackPairs={Array []}
+    windowSize={21}
+  >
+    <View>
+      <View
+        onLayout={[Function]}
+        style={null}
+      >
+        <View
+          style={
+            Object {
+              "alignItems": "stretch",
+              "flex": 1,
+              "flexDirection": "column",
+              "justifyContent": "center",
+              "paddingLeft": "7%",
+              "paddingRight": "7%",
+              "paddingTop": 14.357142857142858,
+              "width": "100%",
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "#777777",
+                "fontFamily": "Lato",
+                "fontSize": 9.571428571428571,
+                "textAlign": "left",
+              }
+            }
+          >
+            2018-01-10T04:32:43+05:30 | 2018-01-10T04:32:43+05:30
+          </Text>
+          <View
+            style={
+              Object {
+                "backgroundColor": "#FFFFFF",
+                "borderBottomColor": "#EAEAEA",
+                "borderRadius": 6,
+                "elevation": 0,
+                "marginBottom": 14.357142857142858,
+                "marginTop": 14.357142857142858,
+                "shadowColor": "#000000",
+                "shadowOffset": Object {
+                  "height": 0,
+                  "width": 0,
+                },
+                "shadowOpacity": 0.2,
+                "shadowRadius": 7,
+              }
+            }
+          >
+            <View
+              style={
+                Object {
+                  "padding": 14.357142857142858,
+                }
+              }
+            >
+              <View
+                style={
+                  Object {
+                    "alignItems": "stretch",
+                    "borderBottomColor": "#A5A5A5",
+                    "borderBottomWidth": 0.5,
+                    "flexDirection": "row",
+                    "paddingBottom": 14.357142857142858,
+                  }
+                }
+              >
+                <View
+                  style={
+                    Array [
+                      Object {
+                        "height": 36.37142857142857,
+                        "width": 33.5,
+                      },
+                      Object {
+                        "display": "none",
+                      },
+                    ]
+                  }
+                >
+                  <View
+                    style={
+                      Object {
+                        "alignItems": "flex-start",
+                        "height": "100%",
+                        "justifyContent": "flex-end",
+                        "width": "100%",
+                      }
+                    }
+                  >
+                    <RNSVGSvgView
+                      align="xMidYMid"
+                      bbHeight="31.585714285714285"
+                      bbWidth="21.057142857142857"
+                      focusable={false}
+                      height="31.585714285714285"
+                      meetOrSlice={0}
+                      minX={0}
+                      minY={0}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "borderWidth": 0,
+                          },
+                          Object {
+                            "flex": 0,
+                            "height": 31,
+                            "width": 21,
+                          },
+                        ]
+                      }
+                      vbHeight={33}
+                      vbWidth={22}
+                      width="21.057142857142857"
+                    >
+                      <RNSVGGroup>
+                        <RNSVGPath
+                          d="M6.875 21.2004V28.4852L10.9705 25.2123L15.125 28.4852V21.2004C13.8512 21.7161 12.4587 22 11 22C9.54126 22 8.14884 21.7161 6.875 21.2004ZM4.12496 19.5874C1.61021 17.5714 0 14.4738 0 11C0 4.92487 4.92487 0 11 0C17.0751 0 22 4.92487 22 11C22 14.5008 20.3646 17.6197 17.8161 19.6343L17.816 32.527L10.9705 28.4315L4.125 32.527L4.12496 19.5874ZM11 19.25C15.5563 19.25 19.25 15.5563 19.25 11C19.25 6.44365 15.5563 2.75 11 2.75C6.44365 2.75 2.75 6.44365 2.75 11C2.75 15.5563 6.44365 19.25 11 19.25ZM16.2142 7.8418C16.2443 7.89785 16.2594 7.93988 16.2594 7.9679C16.2594 7.99593 16.2443 8.03796 16.2142 8.09401L10.5972 14.8196C10.5069 14.9036 10.4393 14.9457 10.3941 14.9457C10.3189 14.9457 10.2438 14.9106 10.1686 14.8406L6.98779 11.9822L6.92012 11.9192C6.89004 11.8631 6.875 11.8211 6.875 11.7931C6.875 11.779 6.89004 11.744 6.92012 11.688L6.96523 11.6459C7.38633 11.2256 7.71719 10.9033 7.95781 10.6791C8.04804 10.5951 8.1082 10.553 8.13828 10.553C8.19844 10.553 8.27363 10.5951 8.36387 10.6791L10.1686 12.3185L14.6803 6.91704C14.7104 6.88901 14.7555 6.875 14.8156 6.875C14.8608 6.875 14.9134 6.88901 14.9736 6.91704L16.2142 7.8418Z"
+                          fill={4283453520}
+                          fillRule={0}
+                          propList={
+                            Array [
+                              "fill",
+                              "fillRule",
+                            ]
+                          }
+                        />
+                      </RNSVGGroup>
+                    </RNSVGSvgView>
+                  </View>
+                </View>
+                <View
+                  style={
+                    Object {
+                      "flex": 1,
+                    }
+                  }
+                >
+                  <View
+                    style={
+                      Object {
+                        "width": "100%",
+                      }
+                    }
+                  >
+                    <Text
+                      style={
+                        Object {
+                          "color": "#505050",
+                          "fontFamily": "Lato",
+                          "fontSize": 12.442857142857143,
+                          "fontWeight": "700",
+                          "textAlign": "left",
+                        }
+                      }
+                    >
+                      Enterprise name
+                    </Text>
+                  </View>
+                  <View
+                    style={
+                      Object {
+                        "alignItems": "stretch",
+                        "flexDirection": "row",
+                        "paddingTop": 3.8285714285714283,
+                        "width": "100%",
+                      }
+                    }
+                  >
+                    <Text
+                      style={
+                        Object {
+                          "color": "#777777",
+                          "flex": 1,
+                          "fontFamily": "Lato",
+                          "fontSize": 9.571428571428571,
+                          "fontWeight": "500",
+                          "textAlign": "left",
+                        }
+                      }
+                    >
+                      SHARED
+                    </Text>
+                    <Text
+                      style={
+                        Object {
+                          "color": "#505050",
+                          "fontFamily": "Lato",
+                          "fontSize": 9.571428571428571,
+                          "fontWeight": "500",
+                          "textAlign": "right",
+                        }
+                      }
+                    >
+                      2018-01-10T04:32:43+05:30 | 2018-01-10T04:32:43+05:30
+                    </Text>
+                  </View>
+                </View>
+              </View>
+              <View
+                style={
+                  Object {
+                    "backgroundColor": "#FFFFFF",
+                    "paddingTop": 14.357142857142858,
+                    "width": "100%",
+                  }
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "alignItems": "stretch",
+                      "flexDirection": "row",
+                    }
+                  }
+                >
+                  <Text
+                    style={
+                      Object {
+                        "color": "#505050",
+                        "fontFamily": "Lato",
+                        "fontSize": 12.442857142857143,
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      }
+                    }
+                  >
+                    1
+                  </Text>
+                  <Text
+                    style={
+                      Object {
+                        "color": "#505050",
+                        "fontFamily": "Lato",
+                        "fontSize": 12.442857142857143,
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      }
+                    }
+                  >
+                     Attributes
+                  </Text>
+                </View>
+                <View
+                  style={
+                    Object {
+                      "backgroundColor": "transparent",
+                    }
+                  }
+                >
+                  <View
+                    accessible={true}
+                    focusable={true}
+                    isTVSelectable={true}
+                    onClick={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
+                    style={
+                      Object {
+                        "opacity": 1,
+                      }
+                    }
+                  >
+                    <Text
+                      style={
+                        Array [
+                          Object {
+                            "fontFamily": "Lato",
+                            "fontSize": 12.442857142857143,
+                            "fontWeight": "700",
+                          },
+                          Object {
+                            "color": "rgba(119, 119, 119, 1.0)",
+                          },
+                        ]
+                      }
+                    >
+                      VIEW REQUEST DETAILS
+                    </Text>
+                  </View>
+                </View>
+              </View>
+            </View>
+          </View>
+          <View
+            style={
+              Object {
+                "borderBottomColor": "#F2F2F2",
+                "borderBottomWidth": 1,
+                "paddingTop": 14.357142857142858,
+                "width": "100%",
+              }
+            }
+          />
+        </View>
+      </View>
+    </View>
+  </RCTScrollView>
+</View>
+`;

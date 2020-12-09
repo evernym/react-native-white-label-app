@@ -1,0 +1,490 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Question Store action:hydrateQuestionStore 1`] = `
+Object {
+  "data": Object {
+    "001": Object {
+      "answer": null,
+      "answerMsgId": null,
+      "error": null,
+      "payload": Object {
+        "@type": "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/committedanswer/1.0/answer",
+        "externalLinks": Array [],
+        "forDID": "myPairwiseDid",
+        "from_did": "senderDID1",
+        "issuer_did": "issuerDid",
+        "messageId": "MSG-ID",
+        "messageText": "Message Text",
+        "messageTitle": "Message Title",
+        "question_detail": "Question Detail",
+        "question_text": "Question Text",
+        "remoteDid": "remoteDid",
+        "timing": Object {
+          "expires_time": "2017-06-01:05:07:07",
+        },
+        "uid": "001",
+        "valid_responses": Array [
+          Object {
+            "nonce": "YES",
+            "text": "Answer 1",
+          },
+          Object {
+            "nonce": "No",
+            "text": "Answer 2",
+          },
+        ],
+      },
+      "status": "RECEIVED",
+    },
+    "002": Object {
+      "answer": null,
+      "answerMsgId": null,
+      "error": null,
+      "payload": Object {
+        "@type": "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/committedanswer/1.0/answer",
+        "externalLinks": Array [
+          Object {
+            "src": "https://somexternal.com/link",
+            "text": "An external link",
+          },
+          Object {
+            "src": "https://secondlink.com/external",
+          },
+        ],
+        "forDID": "myPairwiseDid",
+        "from_did": "senderDID1",
+        "issuer_did": "issuerDid",
+        "messageId": "MSG-ID-2",
+        "messageText": "Hi User,",
+        "messageTitle": "Survey request for family members",
+        "question_detail": "Some more details regarding question that should scrolled along with some data",
+        "question_text": "How many members are in your family",
+        "remoteDid": "remoteDid",
+        "timing": Object {
+          "expires_time": "2017-06-01:05:07:07",
+        },
+        "uid": "002",
+        "valid_responses": Array [
+          Object {
+            "nonce": "akdfakjfkjdaadkgak",
+            "text": "0 to 2 people",
+          },
+          Object {
+            "nonce": "hyjjjjuifhjkiutyojoh",
+            "text": "3 to 5 people",
+          },
+          Object {
+            "nonce": "hyjjjjuifhjkiutdsyojoh",
+            "text": "6 to 10 people",
+          },
+        ],
+      },
+      "status": "RECEIVED",
+    },
+  },
+  "storageStatus": "RESTORE_SUCCESS",
+}
+`;
+
+exports[`Question Store action:hydrateQuestionStore 2`] = `
+Object {
+  "data": Object {
+    "001": Object {
+      "answer": null,
+      "answerMsgId": null,
+      "error": null,
+      "payload": Object {
+        "@type": "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/committedanswer/1.0/answer",
+        "externalLinks": Array [],
+        "forDID": "myPairwiseDid",
+        "from_did": "senderDID1",
+        "issuer_did": "issuerDid",
+        "messageId": "MSG-ID",
+        "messageText": "Message Text",
+        "messageTitle": "Message Title",
+        "question_detail": "Question Detail",
+        "question_text": "Question Text",
+        "remoteDid": "remoteDid",
+        "timing": Object {
+          "expires_time": "2017-06-01:05:07:07",
+        },
+        "uid": "001",
+        "valid_responses": Array [
+          Object {
+            "nonce": "YES",
+            "text": "Answer 1",
+          },
+          Object {
+            "nonce": "No",
+            "text": "Answer 2",
+          },
+        ],
+      },
+      "status": "RECEIVED",
+    },
+    "002": Object {
+      "answer": null,
+      "answerMsgId": null,
+      "error": null,
+      "payload": Object {
+        "@type": "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/committedanswer/1.0/answer",
+        "externalLinks": Array [
+          Object {
+            "src": "https://somexternal.com/link",
+            "text": "An external link",
+          },
+          Object {
+            "src": "https://secondlink.com/external",
+          },
+        ],
+        "forDID": "myPairwiseDid",
+        "from_did": "senderDID1",
+        "issuer_did": "issuerDid",
+        "messageId": "MSG-ID-2",
+        "messageText": "Hi User,",
+        "messageTitle": "Survey request for family members",
+        "question_detail": "Some more details regarding question that should scrolled along with some data",
+        "question_text": "How many members are in your family",
+        "remoteDid": "remoteDid",
+        "timing": Object {
+          "expires_time": "2017-06-01:05:07:07",
+        },
+        "uid": "002",
+        "valid_responses": Array [
+          Object {
+            "nonce": "akdfakjfkjdaadkgak",
+            "text": "0 to 2 people",
+          },
+          Object {
+            "nonce": "hyjjjjuifhjkiutyojoh",
+            "text": "3 to 5 people",
+          },
+          Object {
+            "nonce": "hyjjjjuifhjkiutdsyojoh",
+            "text": "6 to 10 people",
+          },
+        ],
+      },
+      "status": "RECEIVED",
+    },
+  },
+  "storageStatus": "RESTORE_SUCCESS",
+}
+`;
+
+exports[`Question Store action:questionReceived 1`] = `
+Object {
+  "data": Object {
+    "001": Object {
+      "answer": null,
+      "answerMsgId": null,
+      "error": null,
+      "payload": Object {
+        "@type": "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/committedanswer/1.0/answer",
+        "externalLinks": Array [],
+        "forDID": "myPairwiseDid",
+        "from_did": "senderDID1",
+        "issuer_did": "issuerDid",
+        "messageId": "MSG-ID",
+        "messageText": "Message Text",
+        "messageTitle": "Message Title",
+        "question_detail": "Question Detail",
+        "question_text": "Question Text",
+        "remoteDid": "remoteDid",
+        "timing": Object {
+          "expires_time": "2017-06-01:05:07:07",
+        },
+        "uid": "001",
+        "valid_responses": Array [
+          Object {
+            "nonce": "YES",
+            "text": "Answer 1",
+          },
+          Object {
+            "nonce": "No",
+            "text": "Answer 2",
+          },
+        ],
+      },
+      "status": "RECEIVED",
+    },
+  },
+  "storageStatus": "IDLE",
+}
+`;
+
+exports[`Question Store action:sendAnswerToQuestion 1`] = `
+Object {
+  "data": Object {
+    "001": Object {
+      "answer": null,
+      "answerMsgId": null,
+      "error": null,
+      "payload": Object {
+        "@type": "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/committedanswer/1.0/answer",
+        "externalLinks": Array [],
+        "forDID": "myPairwiseDid",
+        "from_did": "senderDID1",
+        "issuer_did": "issuerDid",
+        "messageId": "MSG-ID",
+        "messageText": "Message Text",
+        "messageTitle": "Message Title",
+        "question_detail": "Question Detail",
+        "question_text": "Question Text",
+        "remoteDid": "remoteDid",
+        "timing": Object {
+          "expires_time": "2017-06-01:05:07:07",
+        },
+        "uid": "001",
+        "valid_responses": Array [
+          Object {
+            "nonce": "YES",
+            "text": "Answer 1",
+          },
+          Object {
+            "nonce": "No",
+            "text": "Answer 2",
+          },
+        ],
+      },
+      "status": "RECEIVED",
+    },
+  },
+  "storageStatus": "IDLE",
+}
+`;
+
+exports[`Question Store action:updateQuestionAnswer 1`] = `
+Object {
+  "data": Object {
+    "001": Object {
+      "answer": Object {
+        "nonce": "YES",
+        "text": "Answer 1",
+      },
+      "answerMsgId": "answerMsgId",
+      "error": null,
+      "payload": Object {
+        "@type": "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/committedanswer/1.0/answer",
+        "externalLinks": Array [],
+        "forDID": "myPairwiseDid",
+        "from_did": "senderDID1",
+        "issuer_did": "issuerDid",
+        "messageId": "MSG-ID",
+        "messageText": "Message Text",
+        "messageTitle": "Message Title",
+        "question_detail": "Question Detail",
+        "question_text": "Question Text",
+        "remoteDid": "remoteDid",
+        "timing": Object {
+          "expires_time": "2017-06-01:05:07:07",
+        },
+        "uid": "001",
+        "valid_responses": Array [
+          Object {
+            "nonce": "YES",
+            "text": "Answer 1",
+          },
+          Object {
+            "nonce": "No",
+            "text": "Answer 2",
+          },
+        ],
+      },
+      "status": "RECEIVED",
+    },
+  },
+  "storageStatus": "IDLE",
+}
+`;
+
+exports[`Question Store action:updateQuestionStatus 1`] = `
+Object {
+  "data": Object {
+    "001": Object {
+      "answer": null,
+      "answerMsgId": null,
+      "error": null,
+      "payload": Object {
+        "@type": "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/committedanswer/1.0/answer",
+        "externalLinks": Array [],
+        "forDID": "myPairwiseDid",
+        "from_did": "senderDID1",
+        "issuer_did": "issuerDid",
+        "messageId": "MSG-ID",
+        "messageText": "Message Text",
+        "messageTitle": "Message Title",
+        "question_detail": "Question Detail",
+        "question_text": "Question Text",
+        "remoteDid": "remoteDid",
+        "timing": Object {
+          "expires_time": "2017-06-01:05:07:07",
+        },
+        "uid": "001",
+        "valid_responses": Array [
+          Object {
+            "nonce": "YES",
+            "text": "Answer 1",
+          },
+          Object {
+            "nonce": "No",
+            "text": "Answer 2",
+          },
+        ],
+      },
+      "status": "SEND_ANSWER_IN_PROGRESS",
+    },
+  },
+  "storageStatus": "IDLE",
+}
+`;
+
+exports[`Question Store action:updateQuestionStatus 2`] = `
+Object {
+  "data": Object {
+    "001": Object {
+      "answer": null,
+      "answerMsgId": null,
+      "error": Object {
+        "code": "CM-QUE-003",
+        "message": "Failed to send answer: HTTP error",
+      },
+      "payload": Object {
+        "@type": "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/committedanswer/1.0/answer",
+        "externalLinks": Array [],
+        "forDID": "myPairwiseDid",
+        "from_did": "senderDID1",
+        "issuer_did": "issuerDid",
+        "messageId": "MSG-ID",
+        "messageText": "Message Text",
+        "messageTitle": "Message Title",
+        "question_detail": "Question Detail",
+        "question_text": "Question Text",
+        "remoteDid": "remoteDid",
+        "timing": Object {
+          "expires_time": "2017-06-01:05:07:07",
+        },
+        "uid": "001",
+        "valid_responses": Array [
+          Object {
+            "nonce": "YES",
+            "text": "Answer 1",
+          },
+          Object {
+            "nonce": "No",
+            "text": "Answer 2",
+          },
+        ],
+      },
+      "status": "SEND_ANSWER_FAIL_TILL_CLOUD_AGENT",
+    },
+  },
+  "storageStatus": "IDLE",
+}
+`;
+
+exports[`Question Store action:updateQuestionStorageStatus 1`] = `
+Object {
+  "data": Object {
+    "001": Object {
+      "answer": null,
+      "answerMsgId": null,
+      "error": null,
+      "payload": Object {
+        "@type": "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/committedanswer/1.0/answer",
+        "externalLinks": Array [],
+        "forDID": "myPairwiseDid",
+        "from_did": "senderDID1",
+        "issuer_did": "issuerDid",
+        "messageId": "MSG-ID",
+        "messageText": "Message Text",
+        "messageTitle": "Message Title",
+        "question_detail": "Question Detail",
+        "question_text": "Question Text",
+        "remoteDid": "remoteDid",
+        "timing": Object {
+          "expires_time": "2017-06-01:05:07:07",
+        },
+        "uid": "001",
+        "valid_responses": Array [
+          Object {
+            "nonce": "YES",
+            "text": "Answer 1",
+          },
+          Object {
+            "nonce": "No",
+            "text": "Answer 2",
+          },
+        ],
+      },
+      "status": "RECEIVED",
+    },
+  },
+  "storageStatus": "RESTORE_START",
+}
+`;
+
+exports[`fn:getQuestionValidity should return error ERROR_NO_QUESTION_DATA 1`] = `
+Object {
+  "code": "CM-QUE-004",
+  "message": "No data received for this message.",
+}
+`;
+
+exports[`fn:getQuestionValidity should return error ERROR_NO_RESPONSE_ARRAY 1`] = `
+Object {
+  "code": "CM-QUE-005",
+  "message": "Property valid_responses should be a JSON array.",
+}
+`;
+
+exports[`fn:getQuestionValidity should return error ERROR_NO_RESPONSE_ARRAY 2`] = `
+Object {
+  "code": "CM-QUE-005",
+  "message": "Property valid_responses should be a JSON array.",
+}
+`;
+
+exports[`fn:getQuestionValidity should return error ERROR_NOT_ENOUGH_RESPONSES 1`] = `
+Object {
+  "code": "CM-QUE-006",
+  "message": "Property valid_responses should have at least one response.",
+}
+`;
+
+exports[`fn:getQuestionValidity should return error ERROR_RESPONSE_NOT_PROPERLY_FORMATTED 1`] = `
+Object {
+  "code": "CM-QUE-008",
+  "message": "One or more of response in valid_responses property is not in correct format {text: string, nonce: string}.",
+}
+`;
+
+exports[`fn:getQuestionValidity should return error ERROR_RESPONSE_NOT_PROPERLY_FORMATTED 2`] = `
+Object {
+  "code": "CM-QUE-008",
+  "message": "One or more of response in valid_responses property is not in correct format {text: string, nonce: string}.",
+}
+`;
+
+exports[`fn:getQuestionValidity should return error ERROR_RESPONSE_NOT_PROPERLY_FORMATTED 3`] = `
+Object {
+  "code": "CM-QUE-008",
+  "message": "One or more of response in valid_responses property is not in correct format {text: string, nonce: string}.",
+}
+`;
+
+exports[`fn:getQuestionValidity should return error ERROR_RESPONSE_NOT_UNIQUE_NONCE 1`] = `
+Object {
+  "code": "CM-QUE-009",
+  "message": "Not every response in valid_responses array has unique nonce",
+}
+`;
+
+exports[`fn:getQuestionValidity should return error ERROR_TOO_MANY_RESPONSES 1`] = `
+Object {
+  "code": "CM-QUE-007",
+  "message": "There are more than 1000 responses.",
+}
+`;
+
+exports[`fn:getQuestionValidity should return null if everything is fine 1`] = `null`;

@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`fn:isValidUrlQrCode should return true, if protocol is http 1`] = `
+Object {
+  "auth": "",
+  "hash": "",
+  "host": "xya.com",
+  "hostname": "xya.com",
+  "href": "http://xya.com/dev",
+  "origin": "http://xya.com",
+  "password": "",
+  "pathname": "/dev",
+  "port": "",
+  "protocol": "http:",
+  "query": Object {},
+  "slashes": true,
+  "username": "",
+}
+`;
+
+exports[`fn:isValidUrlQrCode should return true, if protocol is https 1`] = `
+Object {
+  "auth": "",
+  "hash": "",
+  "host": "xya.com",
+  "hostname": "xya.com",
+  "href": "https://xya.com/dev",
+  "origin": "https://xya.com",
+  "password": "",
+  "pathname": "/dev",
+  "port": "",
+  "protocol": "https:",
+  "query": Object {},
+  "slashes": true,
+  "username": "",
+}
+`;

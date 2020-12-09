@@ -1,0 +1,485 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Invitation /> should match snapshot 1`] = `
+<View
+  style={
+    Object {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "flex": 1,
+      }
+    }
+  >
+    <View
+      fifth={true}
+      style={
+        Object {
+          "backgroundColor": "#ffffff",
+          "flex": 1,
+        }
+      }
+    >
+      <View
+        hCenter={true}
+        style={
+          Object {
+            "flex": 1,
+            "justifyContent": "center",
+          }
+        }
+        useNativeDriver={true}
+      >
+        <View
+          style={
+            Object {
+              "flex": 1,
+              "justifyContent": "flex-end",
+            }
+          }
+        >
+          <View>
+            <View
+              accessibilityLabel="invitation-text-container-message-title"
+              accessible={true}
+              center={true}
+              style={
+                Object {
+                  "alignItems": "center",
+                  "justifyContent": "center",
+                }
+              }
+              testID="invitation-text-container-message-title"
+            >
+              <Text
+                accessibilityLabel="Hi"
+                accessible={true}
+                allowFontScaling={false}
+                style={
+                  Array [
+                    Object {
+                      "fontSize": 19,
+                    },
+                    Object {
+                      "fontFamily": "Lato",
+                    },
+                    Object {
+                      "backgroundColor": "#ffffff",
+                      "color": "#777777",
+                    },
+                    Object {
+                      "fontWeight": "800",
+                    },
+                    Object {
+                      "textAlign": "center",
+                    },
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    Object {
+                      "lineHeight": 30,
+                      "marginHorizontal": 30,
+                      "marginVertical": 10,
+                    },
+                  ]
+                }
+                testID="invitation-text-title"
+              >
+                Hi
+              </Text>
+              <Text
+                accessibilityLabel="sender1 wants to connect with you."
+                accessible={true}
+                allowFontScaling={false}
+                style={
+                  Array [
+                    Object {
+                      "fontSize": 17,
+                    },
+                    Object {
+                      "fontFamily": "Lato",
+                    },
+                    Object {
+                      "backgroundColor": "#ffffff",
+                      "color": "#777777",
+                    },
+                    Object {
+                      "fontWeight": "bold",
+                    },
+                    Object {
+                      "textAlign": "center",
+                    },
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    Object {
+                      "margin": 10,
+                    },
+                  ]
+                }
+                testID="invitation-text-message"
+              >
+                sender1 wants to connect with you.
+              </Text>
+            </View>
+          </View>
+        </View>
+        <View
+          style={
+            Object {
+              "flex": 1,
+            }
+          }
+        >
+          <View>
+            <View
+              center={true}
+              spaceBetween={true}
+              style={
+                Object {
+                  "alignItems": "center",
+                  "justifyContent": "space-between",
+                }
+              }
+            >
+              <View
+                row={true}
+                spaceBetween={true}
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "justifyContent": "space-between",
+                    "marginVertical": 40,
+                  }
+                }
+                vCenter={true}
+              >
+                <View
+                  accessible={true}
+                  focusable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  pointerEvents="box-only"
+                >
+                  <View
+                    accessibilityLabel="invitation-avatars-invitee"
+                    accessible={true}
+                    imageShadow="imageShadow"
+                    style={
+                      Object {
+                        "borderRadius": 38,
+                        "elevation": 3,
+                        "shadowColor": "rgba(0, 0, 0, 0.25)",
+                        "shadowOffset": Object {
+                          "height": 3,
+                          "width": 0,
+                        },
+                        "shadowOpacity": 1,
+                        "shadowRadius": 8,
+                      }
+                    }
+                    testID="invitation-avatars-invitee"
+                  >
+                    <Image
+                      accessibilityLabel="invitation-avatars-invitee-image"
+                      accessible={true}
+                      focusable={true}
+                      onClick={[Function]}
+                      onResponderGrant={[Function]}
+                      onResponderMove={[Function]}
+                      onResponderRelease={[Function]}
+                      onResponderTerminate={[Function]}
+                      onResponderTerminationRequest={[Function]}
+                      onStartShouldSetResponder={[Function]}
+                      source={
+                        Object {
+                          "default": "RelativeImageStub",
+                        }
+                      }
+                      style={
+                        Array [
+                          Object {
+                            "height": 76,
+                            "width": 76,
+                          },
+                          Object {
+                            "borderRadius": 38,
+                          },
+                        ]
+                      }
+                      testID="invitation-avatars-invitee-image"
+                    />
+                  </View>
+                </View>
+                <Image
+                  source={
+                    Object {
+                      "default": "RelativeImageStub",
+                    }
+                  }
+                  style={
+                    Object {
+                      "height": 8,
+                      "marginHorizontal": 5,
+                      "width": 60,
+                    }
+                  }
+                />
+                <View
+                  accessibilityLabel="invitation-avatars-inviter"
+                  accessible={true}
+                  imageShadow="imageShadow"
+                  style={
+                    Object {
+                      "borderRadius": 38,
+                      "elevation": 3,
+                      "shadowColor": "rgba(0, 0, 0, 0.25)",
+                      "shadowOffset": Object {
+                        "height": 3,
+                        "width": 0,
+                      },
+                      "shadowOpacity": 1,
+                      "shadowRadius": 8,
+                    }
+                  }
+                  testID="invitation-avatars-inviter"
+                >
+                  <Image
+                    accessibilityLabel="invitation-avatars-inviter-image"
+                    accessible={true}
+                    focusable={true}
+                    onClick={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
+                    source={
+                      Object {
+                        "uri": "lu",
+                      }
+                    }
+                    style={
+                      Array [
+                        Object {
+                          "height": 76,
+                          "width": 76,
+                        },
+                        Object {
+                          "borderRadius": 38,
+                        },
+                      ]
+                    }
+                    testID="invitation-avatars-inviter-image"
+                  />
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "backgroundColor": "#FFFFFF",
+            "flexDirection": "column",
+            "maxWidth": "100%",
+            "padding": 14.357142857142858,
+            "paddingBottom": 0.9571428571428571,
+            "width": "100%",
+          },
+          Object {
+            "padding": 14.357142857142858,
+            "paddingBottom": 9.571428571428571,
+          },
+        ]
+      }
+    >
+      <View
+        accessibilityLabel="invitation-deny"
+        accessible={true}
+        focusable={true}
+        isTVSelectable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "opacity": 1,
+          }
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "alignItems": "stretch",
+                "borderRadius": 5,
+                "flexDirection": "row",
+                "justifyContent": "center",
+                "overflow": "hidden",
+                "width": "100%",
+              },
+              Object {
+                "alignItems": "center",
+                "borderColor": "#CE0B24",
+                "borderWidth": 1,
+                "justifyContent": "center",
+                "minWidth": "35%",
+                "padding": 16.271428571428572,
+                "paddingLeft": 9.571428571428571,
+                "paddingRight": 9.571428571428571,
+              },
+              Object {
+                "marginBottom": 15.314285714285713,
+              },
+            ]
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            style={
+              Array [
+                Object {
+                  "fontSize": 19,
+                },
+                Object {
+                  "fontFamily": "Lato",
+                },
+                Object {
+                  "backgroundColor": "#333333",
+                  "color": "#ffffff",
+                },
+                Object {
+                  "fontWeight": "600",
+                },
+                null,
+                Object {
+                  "backgroundColor": "transparent",
+                },
+                null,
+                Object {
+                  "color": "#d0021b",
+                },
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+              ]
+            }
+          >
+            Deny
+          </Text>
+        </View>
+      </View>
+      <View
+        accessibilityLabel="invitation-accept"
+        accessible={true}
+        focusable={true}
+        isTVSelectable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "alignItems": "center",
+            "backgroundColor": "#86B93B",
+            "borderRadius": 5,
+            "flexDirection": "row",
+            "justifyContent": "center",
+            "minWidth": "35%",
+            "opacity": 1,
+            "overflow": "hidden",
+            "padding": 16.271428571428572,
+            "paddingLeft": 9.571428571428571,
+            "paddingRight": 9.571428571428571,
+            "width": "100%",
+          }
+        }
+      >
+        <Text
+          allowFontScaling={false}
+          style={
+            Array [
+              Object {
+                "fontSize": 19,
+              },
+              Object {
+                "fontFamily": "Lato",
+              },
+              Object {
+                "backgroundColor": "#333333",
+                "color": "#ffffff",
+              },
+              Object {
+                "fontWeight": "800",
+              },
+              Object {
+                "textAlign": "center",
+              },
+              Object {
+                "backgroundColor": "transparent",
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+            ]
+          }
+        >
+          Connect
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`<Invitation /> should return a empty container when invitation is null 1`] = `
+<View
+  style={
+    Object {
+      "flex": 1,
+    }
+  }
+/>
+`;

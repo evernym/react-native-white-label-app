@@ -1,0 +1,1437 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<QuestionExternalLinks /> should render MAX_EXTERNAL_LINKS_TO_SHOW links if more than limit is passed 1`] = `
+<View
+  style={Object {}}
+>
+  <View
+    style={
+      Object {
+        "marginVertical": 8,
+      }
+    }
+  >
+    <View
+      accessible={true}
+      focusable={true}
+      isTVSelectable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+    >
+      <Text
+        allowFontScaling={false}
+        numberOfLines={2}
+        style={
+          Array [
+            Object {
+              "fontSize": 15,
+            },
+            Object {
+              "fontFamily": "Lato",
+            },
+            Object {},
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            Object {
+              "color": "blue",
+            },
+          ]
+        }
+      >
+        An external link
+      </Text>
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "marginVertical": 8,
+      }
+    }
+  >
+    <View
+      accessible={true}
+      focusable={true}
+      isTVSelectable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+    >
+      <Text
+        allowFontScaling={false}
+        numberOfLines={2}
+        style={
+          Array [
+            Object {
+              "fontSize": 15,
+            },
+            Object {
+              "fontFamily": "Lato",
+            },
+            Object {},
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            Object {
+              "color": "blue",
+            },
+          ]
+        }
+      >
+        An external link
+      </Text>
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "marginVertical": 8,
+      }
+    }
+  >
+    <View
+      accessible={true}
+      focusable={true}
+      isTVSelectable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+    >
+      <Text
+        allowFontScaling={false}
+        numberOfLines={2}
+        style={
+          Array [
+            Object {
+              "fontSize": 15,
+            },
+            Object {
+              "fontFamily": "Lato",
+            },
+            Object {},
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            Object {
+              "color": "blue",
+            },
+          ]
+        }
+      >
+        An external link
+      </Text>
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "marginVertical": 8,
+      }
+    }
+  >
+    <View
+      accessible={true}
+      focusable={true}
+      isTVSelectable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+    >
+      <Text
+        allowFontScaling={false}
+        numberOfLines={2}
+        style={
+          Array [
+            Object {
+              "fontSize": 15,
+            },
+            Object {
+              "fontFamily": "Lato",
+            },
+            Object {},
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            Object {
+              "color": "blue",
+            },
+          ]
+        }
+      >
+        An external link
+      </Text>
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "marginVertical": 8,
+      }
+    }
+  >
+    <View
+      accessible={true}
+      focusable={true}
+      isTVSelectable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+    >
+      <Text
+        allowFontScaling={false}
+        numberOfLines={2}
+        style={
+          Array [
+            Object {
+              "fontSize": 15,
+            },
+            Object {
+              "fontFamily": "Lato",
+            },
+            Object {},
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            Object {
+              "color": "blue",
+            },
+          ]
+        }
+      >
+        An external link
+      </Text>
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "marginVertical": 8,
+      }
+    }
+  >
+    <View
+      accessible={true}
+      focusable={true}
+      isTVSelectable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+    >
+      <Text
+        allowFontScaling={false}
+        numberOfLines={2}
+        style={
+          Array [
+            Object {
+              "fontSize": 15,
+            },
+            Object {
+              "fontFamily": "Lato",
+            },
+            Object {},
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            Object {
+              "color": "blue",
+            },
+          ]
+        }
+      >
+        An external link
+      </Text>
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "marginVertical": 8,
+      }
+    }
+  >
+    <View
+      accessible={true}
+      focusable={true}
+      isTVSelectable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+    >
+      <Text
+        allowFontScaling={false}
+        numberOfLines={2}
+        style={
+          Array [
+            Object {
+              "fontSize": 15,
+            },
+            Object {
+              "fontFamily": "Lato",
+            },
+            Object {},
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            Object {
+              "color": "blue",
+            },
+          ]
+        }
+      >
+        An external link
+      </Text>
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "marginVertical": 8,
+      }
+    }
+  >
+    <View
+      accessible={true}
+      focusable={true}
+      isTVSelectable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+    >
+      <Text
+        allowFontScaling={false}
+        numberOfLines={2}
+        style={
+          Array [
+            Object {
+              "fontSize": 15,
+            },
+            Object {
+              "fontFamily": "Lato",
+            },
+            Object {},
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            Object {
+              "color": "blue",
+            },
+          ]
+        }
+      >
+        An external link
+      </Text>
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "marginVertical": 8,
+      }
+    }
+  >
+    <View
+      accessible={true}
+      focusable={true}
+      isTVSelectable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+    >
+      <Text
+        allowFontScaling={false}
+        numberOfLines={2}
+        style={
+          Array [
+            Object {
+              "fontSize": 15,
+            },
+            Object {
+              "fontFamily": "Lato",
+            },
+            Object {},
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            Object {
+              "color": "blue",
+            },
+          ]
+        }
+      >
+        An external link
+      </Text>
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "marginVertical": 8,
+      }
+    }
+  >
+    <View
+      accessible={true}
+      focusable={true}
+      isTVSelectable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+    >
+      <Text
+        allowFontScaling={false}
+        numberOfLines={2}
+        style={
+          Array [
+            Object {
+              "fontSize": 15,
+            },
+            Object {
+              "fontFamily": "Lato",
+            },
+            Object {},
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            Object {
+              "color": "blue",
+            },
+          ]
+        }
+      >
+        An external link
+      </Text>
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "marginVertical": 8,
+      }
+    }
+  >
+    <View
+      accessible={true}
+      focusable={true}
+      isTVSelectable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+    >
+      <Text
+        allowFontScaling={false}
+        numberOfLines={2}
+        style={
+          Array [
+            Object {
+              "fontSize": 15,
+            },
+            Object {
+              "fontFamily": "Lato",
+            },
+            Object {},
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            Object {
+              "color": "blue",
+            },
+          ]
+        }
+      >
+        An external link
+      </Text>
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "marginVertical": 8,
+      }
+    }
+  >
+    <View
+      accessible={true}
+      focusable={true}
+      isTVSelectable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+    >
+      <Text
+        allowFontScaling={false}
+        numberOfLines={2}
+        style={
+          Array [
+            Object {
+              "fontSize": 15,
+            },
+            Object {
+              "fontFamily": "Lato",
+            },
+            Object {},
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            Object {
+              "color": "blue",
+            },
+          ]
+        }
+      >
+        An external link
+      </Text>
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "marginVertical": 8,
+      }
+    }
+  >
+    <View
+      accessible={true}
+      focusable={true}
+      isTVSelectable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+    >
+      <Text
+        allowFontScaling={false}
+        numberOfLines={2}
+        style={
+          Array [
+            Object {
+              "fontSize": 15,
+            },
+            Object {
+              "fontFamily": "Lato",
+            },
+            Object {},
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            Object {
+              "color": "blue",
+            },
+          ]
+        }
+      >
+        An external link
+      </Text>
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "marginVertical": 8,
+      }
+    }
+  >
+    <View
+      accessible={true}
+      focusable={true}
+      isTVSelectable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+    >
+      <Text
+        allowFontScaling={false}
+        numberOfLines={2}
+        style={
+          Array [
+            Object {
+              "fontSize": 15,
+            },
+            Object {
+              "fontFamily": "Lato",
+            },
+            Object {},
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            Object {
+              "color": "blue",
+            },
+          ]
+        }
+      >
+        An external link
+      </Text>
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "marginVertical": 8,
+      }
+    }
+  >
+    <View
+      accessible={true}
+      focusable={true}
+      isTVSelectable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+    >
+      <Text
+        allowFontScaling={false}
+        numberOfLines={2}
+        style={
+          Array [
+            Object {
+              "fontSize": 15,
+            },
+            Object {
+              "fontFamily": "Lato",
+            },
+            Object {},
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            Object {
+              "color": "blue",
+            },
+          ]
+        }
+      >
+        An external link
+      </Text>
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "marginVertical": 8,
+      }
+    }
+  >
+    <View
+      accessible={true}
+      focusable={true}
+      isTVSelectable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+    >
+      <Text
+        allowFontScaling={false}
+        numberOfLines={2}
+        style={
+          Array [
+            Object {
+              "fontSize": 15,
+            },
+            Object {
+              "fontFamily": "Lato",
+            },
+            Object {},
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            Object {
+              "color": "blue",
+            },
+          ]
+        }
+      >
+        An external link
+      </Text>
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "marginVertical": 8,
+      }
+    }
+  >
+    <View
+      accessible={true}
+      focusable={true}
+      isTVSelectable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+    >
+      <Text
+        allowFontScaling={false}
+        numberOfLines={2}
+        style={
+          Array [
+            Object {
+              "fontSize": 15,
+            },
+            Object {
+              "fontFamily": "Lato",
+            },
+            Object {},
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            Object {
+              "color": "blue",
+            },
+          ]
+        }
+      >
+        An external link
+      </Text>
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "marginVertical": 8,
+      }
+    }
+  >
+    <View
+      accessible={true}
+      focusable={true}
+      isTVSelectable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+    >
+      <Text
+        allowFontScaling={false}
+        numberOfLines={2}
+        style={
+          Array [
+            Object {
+              "fontSize": 15,
+            },
+            Object {
+              "fontFamily": "Lato",
+            },
+            Object {},
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            Object {
+              "color": "blue",
+            },
+          ]
+        }
+      >
+        An external link
+      </Text>
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "marginVertical": 8,
+      }
+    }
+  >
+    <View
+      accessible={true}
+      focusable={true}
+      isTVSelectable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+    >
+      <Text
+        allowFontScaling={false}
+        numberOfLines={2}
+        style={
+          Array [
+            Object {
+              "fontSize": 15,
+            },
+            Object {
+              "fontFamily": "Lato",
+            },
+            Object {},
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            Object {
+              "color": "blue",
+            },
+          ]
+        }
+      >
+        An external link
+      </Text>
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "marginVertical": 8,
+      }
+    }
+  >
+    <View
+      accessible={true}
+      focusable={true}
+      isTVSelectable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+    >
+      <Text
+        allowFontScaling={false}
+        numberOfLines={2}
+        style={
+          Array [
+            Object {
+              "fontSize": 15,
+            },
+            Object {
+              "fontFamily": "Lato",
+            },
+            Object {},
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            Object {
+              "color": "blue",
+            },
+          ]
+        }
+      >
+        An external link
+      </Text>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`<QuestionExternalLinks /> should render links if links are passed 1`] = `
+<View
+  style={Object {}}
+>
+  <View
+    style={
+      Object {
+        "marginVertical": 8,
+      }
+    }
+  >
+    <View
+      accessible={true}
+      focusable={true}
+      isTVSelectable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+    >
+      <Text
+        allowFontScaling={false}
+        numberOfLines={2}
+        style={
+          Array [
+            Object {
+              "fontSize": 15,
+            },
+            Object {
+              "fontFamily": "Lato",
+            },
+            Object {},
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            Object {
+              "color": "blue",
+            },
+          ]
+        }
+      >
+        An external link
+      </Text>
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "marginVertical": 8,
+      }
+    }
+  >
+    <View
+      accessible={true}
+      focusable={true}
+      isTVSelectable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+    >
+      <Text
+        allowFontScaling={false}
+        numberOfLines={2}
+        style={
+          Array [
+            Object {
+              "fontSize": 15,
+            },
+            Object {
+              "fontFamily": "Lato",
+            },
+            Object {},
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            Object {
+              "color": "blue",
+            },
+          ]
+        }
+      >
+        https://secondlink.com/external
+      </Text>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`<QuestionExternalLinks /> should render null if no link is passed 1`] = `null`;
+
+exports[`<QuestionExternalLinks /> should render validation error if wrong data is passed 1`] = `
+<View
+  style={
+    Object {
+      "marginVertical": 10,
+    }
+  }
+>
+  <Text
+    allowFontScaling={false}
+    style={
+      Array [
+        Object {
+          "fontSize": 15,
+        },
+        Object {
+          "fontFamily": "Lato",
+        },
+        Object {},
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        Object {
+          "color": "#505050",
+        },
+      ]
+    }
+  >
+    Invalid external link. Error: CM-QUE-011
+  </Text>
+</View>
+`;
+
+exports[`fn:getExternalLinkValidity should not return an error if all link objects are correct 1`] = `null`;
+
+exports[`fn:getExternalLinkValidity should not return an error if all link objects are correct 2`] = `null`;
+
+exports[`fn:getExternalLinkValidity should not return an error if externalLinks array is empty 1`] = `null`;
+
+exports[`fn:getExternalLinkValidity should return an error if link object is not defined correctly 1`] = `
+Object {
+  "code": "CM-QUE-011",
+  "message": "One or more link object inside \\"external_links\\" array is invalid. Link object should be of format { text?:string, src:string }, where \\"text\\" property is optional. However, if \\"text\\" property is defined, then it should be a string with less than or equal to 1000 characters. \\"src\\" property should be a string and is not optional.",
+}
+`;
+
+exports[`fn:getExternalLinkValidity should return an error if link object is not defined correctly 2`] = `
+Object {
+  "code": "CM-QUE-011",
+  "message": "One or more link object inside \\"external_links\\" array is invalid. Link object should be of format { text?:string, src:string }, where \\"text\\" property is optional. However, if \\"text\\" property is defined, then it should be a string with less than or equal to 1000 characters. \\"src\\" property should be a string and is not optional.",
+}
+`;
+
+exports[`fn:getExternalLinkValidity should return an error if link object is not defined correctly 3`] = `
+Object {
+  "code": "CM-QUE-011",
+  "message": "One or more link object inside \\"external_links\\" array is invalid. Link object should be of format { text?:string, src:string }, where \\"text\\" property is optional. However, if \\"text\\" property is defined, then it should be a string with less than or equal to 1000 characters. \\"src\\" property should be a string and is not optional.",
+}
+`;
+
+exports[`fn:getExternalLinkValidity should return an error if link object is not defined correctly 4`] = `
+Object {
+  "code": "CM-QUE-011",
+  "message": "One or more link object inside \\"external_links\\" array is invalid. Link object should be of format { text?:string, src:string }, where \\"text\\" property is optional. However, if \\"text\\" property is defined, then it should be a string with less than or equal to 1000 characters. \\"src\\" property should be a string and is not optional.",
+}
+`;
+
+exports[`fn:getExternalLinkValidity should return an error if link object is not defined correctly 5`] = `
+Object {
+  "code": "CM-QUE-011",
+  "message": "One or more link object inside \\"external_links\\" array is invalid. Link object should be of format { text?:string, src:string }, where \\"text\\" property is optional. However, if \\"text\\" property is defined, then it should be a string with less than or equal to 1000 characters. \\"src\\" property should be a string and is not optional.",
+}
+`;
+
+exports[`fn:getExternalLinkValidity should return an error if link object is not defined correctly 6`] = `
+Object {
+  "code": "CM-QUE-011",
+  "message": "One or more link object inside \\"external_links\\" array is invalid. Link object should be of format { text?:string, src:string }, where \\"text\\" property is optional. However, if \\"text\\" property is defined, then it should be a string with less than or equal to 1000 characters. \\"src\\" property should be a string and is not optional.",
+}
+`;
+
+exports[`fn:getExternalLinkValidity should return an error if link object is not defined correctly 7`] = `
+Object {
+  "code": "CM-QUE-011",
+  "message": "One or more link object inside \\"external_links\\" array is invalid. Link object should be of format { text?:string, src:string }, where \\"text\\" property is optional. However, if \\"text\\" property is defined, then it should be a string with less than or equal to 1000 characters. \\"src\\" property should be a string and is not optional.",
+}
+`;
+
+exports[`fn:getExternalLinkValidity should return an error if link object is not defined correctly 8`] = `
+Object {
+  "code": "CM-QUE-011",
+  "message": "One or more link object inside \\"external_links\\" array is invalid. Link object should be of format { text?:string, src:string }, where \\"text\\" property is optional. However, if \\"text\\" property is defined, then it should be a string with less than or equal to 1000 characters. \\"src\\" property should be a string and is not optional.",
+}
+`;
+
+exports[`fn:getExternalLinkValidity should return an error if link object is not defined correctly 9`] = `
+Object {
+  "code": "CM-QUE-011",
+  "message": "One or more link object inside \\"external_links\\" array is invalid. Link object should be of format { text?:string, src:string }, where \\"text\\" property is optional. However, if \\"text\\" property is defined, then it should be a string with less than or equal to 1000 characters. \\"src\\" property should be a string and is not optional.",
+}
+`;
+
+exports[`fn:getExternalLinkValidity should return an error if more than 1000 external link objects are passed 1`] = `
+Object {
+  "code": "CM-QUE-012",
+  "message": "\\"external_links\\" array should not have more than 1000 link objects.",
+}
+`;
+
+exports[`fn:getExternalLinkValidity should return error if external_links is not an array 1`] = `
+Object {
+  "code": "CM-QUE-010",
+  "message": "property \\"external_links\\" should be an array of object type { text?:string, src:string }",
+}
+`;
+
+exports[`fn:getExternalLinkValidity should return error if external_links is not an array 2`] = `
+Object {
+  "code": "CM-QUE-010",
+  "message": "property \\"external_links\\" should be an array of object type { text?:string, src:string }",
+}
+`;
+
+exports[`fn:getExternalLinkValidity should return error if external_links is not an array 3`] = `
+Object {
+  "code": "CM-QUE-010",
+  "message": "property \\"external_links\\" should be an array of object type { text?:string, src:string }",
+}
+`;
+
+exports[`fn:getExternalLinkValidity should return error if external_links is not an array 4`] = `
+Object {
+  "code": "CM-QUE-010",
+  "message": "property \\"external_links\\" should be an array of object type { text?:string, src:string }",
+}
+`;
+
+exports[`fn:getExternalLinkValidity should return error if external_links is not an array 5`] = `
+Object {
+  "code": "CM-QUE-010",
+  "message": "property \\"external_links\\" should be an array of object type { text?:string, src:string }",
+}
+`;
+
+exports[`fn:getExternalLinkValidity should return error if external_links is not an array 6`] = `
+Object {
+  "code": "CM-QUE-010",
+  "message": "property \\"external_links\\" should be an array of object type { text?:string, src:string }",
+}
+`;
+
+exports[`fn:getExternalLinkValidity should return error if external_links is not an array 7`] = `
+Object {
+  "code": "CM-QUE-010",
+  "message": "property \\"external_links\\" should be an array of object type { text?:string, src:string }",
+}
+`;

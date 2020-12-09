@@ -1,0 +1,288 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<NewBannerCard /> should render NewBannerCard component and match snapshot 1`] = `
+<View
+  style={Object {}}
+>
+  <View
+    style={
+      Array [
+        Object {
+          "bottom": 0,
+          "left": 0,
+          "overflow": "hidden",
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+          "zIndex": 1,
+        },
+        Object {
+          "height": 0,
+          "width": 0,
+        },
+      ]
+    }
+  >
+    <View
+      leftActionActivated={false}
+      leftActionState={false}
+      rightActionActivated={false}
+      rightActionState={false}
+      style={
+        Object {
+          "alignItems": "center",
+          "backgroundColor": "#FFFFFF",
+          "flex": 1,
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "marginLeft": 6.9399999999999995,
+          "marginRight": 6.9399999999999995,
+          "marginTop": 6.9399999999999995,
+        }
+      }
+      swipeAnimatedValue={0}
+    >
+      <View
+        accessible={true}
+        focusable={true}
+        isTVSelectable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "alignItems": "center",
+            "backgroundColor": "#CE0B24",
+            "borderRadius": 8,
+            "bottom": 0,
+            "height": 69.28,
+            "justifyContent": "center",
+            "opacity": 1,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+            "width": 74.22857142857143,
+          }
+        }
+      >
+        <Text
+          style={
+            Object {
+              "alignItems": "center",
+              "color": "#FFFFFF",
+              "fontFamily": "Lato",
+              "fontSize": 12.799999999999999,
+            }
+          }
+        >
+          Delete
+        </Text>
+      </View>
+    </View>
+  </View>
+  <View
+    manipulationModes={
+      Array [
+        "translateX",
+      ]
+    }
+    onLayout={[Function]}
+    onMoveShouldSetResponder={[Function]}
+    onMoveShouldSetResponderCapture={[Function]}
+    onResponderEnd={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderReject={[Function]}
+    onResponderRelease={[Function]}
+    onResponderStart={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    onStartShouldSetResponderCapture={[Function]}
+    style={
+      Object {
+        "transform": Array [
+          Object {
+            "translateX": 0,
+          },
+        ],
+        "zIndex": 2,
+      }
+    }
+  >
+    <View
+      accessible={false}
+      focusable={true}
+      isTVSelectable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+    >
+      <View
+        leftActionActivated={false}
+        leftActionState={false}
+        rightActionActivated={false}
+        rightActionState={false}
+        style={
+          Object {
+            "alignItems": "center",
+            "backgroundColor": "#FFFFFF",
+            "justifyContent": "center",
+            "marginLeft": 6.9399999999999995,
+            "marginRight": 6.9399999999999995,
+            "marginTop": 6.9399999999999995,
+          }
+        }
+        swipeAnimatedValue={0}
+      >
+        <View
+          accessibilityLabel="new-message"
+          accessible={true}
+          focusable={true}
+          isTVSelectable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "rgba(134, 185, 59, 0.15)",
+              "borderColor": "#86B93B",
+              "borderRadius": 8,
+              "borderWidth": 1,
+              "flexDirection": "row",
+              "height": 69.28,
+              "justifyContent": "center",
+              "opacity": 1,
+            }
+          }
+          testID="new-message"
+        >
+          <View
+            style={
+              Object {
+                "alignItems": "center",
+                "height": "100%",
+                "justifyContent": "center",
+                "width": 63.885714285714286,
+              }
+            }
+          >
+            <Image
+              source={
+                Object {
+                  "uri": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjimxZbcvZzPcPvHd_y7f0tc5d8QoC9DOPecb8JTOChmS1IoDq",
+                }
+              }
+              style={
+                Object {
+                  "borderRadius": 16.78142857142857,
+                  "height": 33.56285714285714,
+                  "width": 33.56285714285714,
+                }
+              }
+            />
+          </View>
+          <View
+            style={
+              Object {
+                "flex": 1,
+              }
+            }
+          >
+            <View
+              style={
+                Object {
+                  "flex": 2,
+                  "justifyContent": "flex-end",
+                }
+              }
+            >
+              <Text
+                ellipsizeMode="tail"
+                numberOfLines={1}
+                style={
+                  Object {
+                    "color": "#505050",
+                    "fontFamily": "Lato",
+                    "fontSize": 14.871428571428572,
+                    "fontWeight": "bold",
+                    "marginBottom": 2.974285714285714,
+                  }
+                }
+              >
+                Evernym QA-RC
+              </Text>
+            </View>
+            <View
+              style={
+                Object {
+                  "flex": 2,
+                  "justifyContent": "flex-start",
+                }
+              }
+            >
+              <Text
+                style={
+                  Object {
+                    "color": "#505050",
+                    "fontFamily": "Lato",
+                    "fontSize": 10.905714285714286,
+                    "fontWeight": "bold",
+                    "marginTop": 2.974285714285714,
+                  }
+                }
+              >
+                NEW MESSAGE - TAP TO OPEN
+              </Text>
+            </View>
+          </View>
+          <View
+            style={
+              Object {
+                "alignItems": "flex-end",
+                "height": "100%",
+                "justifyContent": "flex-start",
+                "width": 63.885714285714286,
+              }
+            }
+          >
+            <Text
+              style={
+                Object {
+                  "color": "#505050",
+                  "fontFamily": "Lato",
+                  "fontSize": 9.914285714285715,
+                  "fontStyle": "italic",
+                  "fontWeight": "500",
+                  "marginRight": 7.9314285714285715,
+                  "marginTop": 7.9314285714285715,
+                }
+              }
+            >
+              2020-03-15T15:57:54+01:00
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;

@@ -1,0 +1,4583 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<LockPinCodeSetup /> should render pin code box 1`] = `
+<View
+  style={
+    Object {
+      "flex": 1,
+    }
+  }
+>
+  <RNCSafeAreaProvider
+    onInsetsChange={[Function]}
+    style={
+      Array [
+        Object {
+          "flex": 1,
+        },
+        undefined,
+      ]
+    }
+  >
+    <View
+      pointerEvents="box-none"
+      style={
+        Array [
+          Object {
+            "zIndex": 1,
+          },
+          false,
+        ]
+      }
+    >
+      <View
+        accessibilityElementsHidden={false}
+        importantForAccessibility="auto"
+        onLayout={[Function]}
+        pointerEvents="box-none"
+        style={null}
+      >
+        <View
+          pointerEvents="box-none"
+          style={
+            Object {
+              "bottom": 0,
+              "left": 0,
+              "opacity": 1,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+              "zIndex": 0,
+            }
+          }
+        >
+          <View
+            style={
+              Object {
+                "backgroundColor": "rgb(255, 255, 255)",
+                "borderBottomColor": "rgb(216, 216, 216)",
+                "flex": 1,
+                "shadowColor": "rgb(216, 216, 216)",
+                "shadowOffset": Object {
+                  "height": 0.5,
+                  "width": 0,
+                },
+                "shadowOpacity": 0.85,
+                "shadowRadius": 0,
+              }
+            }
+          />
+        </View>
+        <View
+          pointerEvents="box-none"
+          style={
+            Object {
+              "height": 64,
+              "maxHeight": undefined,
+              "minHeight": undefined,
+              "opacity": undefined,
+              "transform": undefined,
+            }
+          }
+        >
+          <View
+            pointerEvents="none"
+            style={
+              Object {
+                "height": 20,
+              }
+            }
+          />
+          <View
+            pointerEvents="box-none"
+            style={
+              Object {
+                "alignItems": "center",
+                "flex": 1,
+                "flexDirection": "row",
+                "justifyContent": "center",
+              }
+            }
+          >
+            <View
+              pointerEvents="box-none"
+              style={
+                Object {
+                  "marginHorizontal": 16,
+                  "opacity": 1,
+                }
+              }
+            >
+              <Text
+                accessibilityRole="header"
+                numberOfLines={1}
+                onLayout={[Function]}
+                style={
+                  Object {
+                    "color": "rgb(28, 28, 30)",
+                    "fontSize": 17,
+                    "fontWeight": "600",
+                  }
+                }
+              >
+                MockedScreen
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      onLayout={[Function]}
+      style={
+        Object {
+          "flex": 1,
+        }
+      }
+    >
+      <View
+        pointerEvents="box-none"
+        style={
+          Object {
+            "bottom": 0,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
+        }
+      >
+        <View
+          accessibilityElementsHidden={false}
+          closing={false}
+          gestureVelocityImpact={0.3}
+          importantForAccessibility="auto"
+          onClose={[Function]}
+          onGestureBegin={[Function]}
+          onGestureCanceled={[Function]}
+          onOpen={[Function]}
+          onTransitionStart={[Function]}
+          pointerEvents="box-none"
+          style={
+            Object {
+              "bottom": 0,
+              "left": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+          transitionSpec={
+            Object {
+              "close": Object {
+                "animation": "spring",
+                "config": Object {
+                  "damping": 500,
+                  "mass": 3,
+                  "overshootClamping": true,
+                  "restDisplacementThreshold": 10,
+                  "restSpeedThreshold": 10,
+                  "stiffness": 1000,
+                },
+              },
+              "open": Object {
+                "animation": "spring",
+                "config": Object {
+                  "damping": 500,
+                  "mass": 3,
+                  "overshootClamping": true,
+                  "restDisplacementThreshold": 10,
+                  "restSpeedThreshold": 10,
+                  "stiffness": 1000,
+                },
+              },
+            }
+          }
+        >
+          <View
+            pointerEvents="box-none"
+            style={
+              Object {
+                "flex": 1,
+                "opacity": 1,
+              }
+            }
+          >
+            <View
+              enabled={false}
+              hitSlop={
+                Object {
+                  "right": -270,
+                }
+              }
+              maxDeltaY={20}
+              minOffsetX={5}
+              onHandlerStateChange={[Function]}
+            >
+              <View
+                style={
+                  Object {
+                    "flex": 1,
+                    "transform": Array [
+                      Object {
+                        "translateX": 0,
+                      },
+                      Object {
+                        "translateX": 0,
+                      },
+                    ],
+                  }
+                }
+              >
+                <View
+                  pointerEvents="none"
+                  style={
+                    Object {
+                      "backgroundColor": "rgb(242, 242, 242)",
+                      "bottom": 0,
+                      "left": 0,
+                      "position": "absolute",
+                      "shadowColor": "#000",
+                      "shadowOffset": Object {
+                        "height": 1,
+                        "width": -1,
+                      },
+                      "shadowOpacity": 0.3,
+                      "shadowRadius": 5,
+                      "top": 0,
+                      "width": 3,
+                    }
+                  }
+                />
+                <View
+                  style={
+                    Array [
+                      Object {
+                        "flex": 1,
+                        "overflow": "hidden",
+                      },
+                      Array [
+                        Object {
+                          "backgroundColor": "rgb(242, 242, 242)",
+                        },
+                        undefined,
+                      ],
+                    ]
+                  }
+                >
+                  <View
+                    style={
+                      Object {
+                        "flex": 1,
+                        "flexDirection": "column-reverse",
+                      }
+                    }
+                  >
+                    <View
+                      style={
+                        Object {
+                          "flex": 1,
+                        }
+                      }
+                    >
+                      <View
+                        style={
+                          Object {
+                            "backgroundColor": "#ffffff",
+                            "flex": 1,
+                          }
+                        }
+                        tertiary={true}
+                      >
+                        <View
+                          style={
+                            Object {
+                              "flexDirection": "row",
+                              "height": 63.52941176470588,
+                              "paddingTop": 19.058823529411764,
+                              "width": "100%",
+                            }
+                          }
+                        >
+                          <View
+                            accessibilityLabel="left-icon"
+                            accessible={true}
+                            style={
+                              Object {
+                                "alignItems": "center",
+                                "flexDirection": "row",
+                                "width": "15%",
+                              }
+                            }
+                          >
+                            <View
+                              accessible={true}
+                              focusable={true}
+                              isTVSelectable={true}
+                              onClick={[Function]}
+                              onResponderGrant={[Function]}
+                              onResponderMove={[Function]}
+                              onResponderRelease={[Function]}
+                              onResponderTerminate={[Function]}
+                              onResponderTerminationRequest={[Function]}
+                              onStartShouldSetResponder={[Function]}
+                              style={
+                                Object {
+                                  "opacity": 1,
+                                }
+                              }
+                              testID="left-icon"
+                            >
+                              <View
+                                style={
+                                  Object {
+                                    "transform": Array [
+                                      Object {
+                                        "scale": 1,
+                                      },
+                                    ],
+                                  }
+                                }
+                              >
+                                <RNSVGSvgView
+                                  align="xMidYMid"
+                                  bbHeight={30.628571428571426}
+                                  bbWidth={30.628571428571426}
+                                  fill="#777777"
+                                  focusable={false}
+                                  height={30.628571428571426}
+                                  meetOrSlice={0}
+                                  minX={0}
+                                  minY={0}
+                                  style={
+                                    Array [
+                                      Object {
+                                        "backgroundColor": "transparent",
+                                        "borderWidth": 0,
+                                      },
+                                      Object {
+                                        "marginBottom": 1.9142857142857141,
+                                        "marginLeft": 14.357142857142858,
+                                      },
+                                      Object {
+                                        "flex": 0,
+                                        "height": 30,
+                                        "width": 30,
+                                      },
+                                    ]
+                                  }
+                                  vbHeight={24}
+                                  vbWidth={24}
+                                  width={30.628571428571426}
+                                >
+                                  <RNSVGGroup
+                                    fill={4286019447}
+                                    propList={
+                                      Array [
+                                        "fill",
+                                      ]
+                                    }
+                                  >
+                                    <RNSVGGroup>
+                                      <RNSVGGroup>
+                                        <RNSVGRect
+                                          height="24"
+                                          matrix={
+                                            Array [
+                                              6.123233995736766e-17,
+                                              1,
+                                              -1,
+                                              6.123233995736766e-17,
+                                              24,
+                                              0,
+                                            ]
+                                          }
+                                          opacity={0}
+                                          width="24"
+                                          x={0}
+                                          y={0}
+                                        />
+                                        <RNSVGPath
+                                          d="M13.83 19a1 1 0 0 1-.78-.37l-4.83-6a1 1 0 0 1 0-1.27l5-6a1 1 0 0 1 1.54 1.28L10.29 12l4.32 5.36a1 1 0 0 1-.78 1.64z"
+                                        />
+                                      </RNSVGGroup>
+                                    </RNSVGGroup>
+                                  </RNSVGGroup>
+                                </RNSVGSvgView>
+                              </View>
+                            </View>
+                          </View>
+                          <View
+                            style={
+                              Object {
+                                "alignItems": "center",
+                                "flexDirection": "row",
+                                "justifyContent": "center",
+                                "width": "85%",
+                              }
+                            }
+                          >
+                            <Text
+                              style={
+                                Object {
+                                  "color": "#777777",
+                                  "fontFamily": "Lato",
+                                  "fontSize": 21.057142857142857,
+                                  "marginLeft": -47.85714285714286,
+                                }
+                              }
+                            />
+                          </View>
+                        </View>
+                        <View
+                          center={true}
+                          style={
+                            Object {
+                              "alignItems": "center",
+                              "justifyContent": "center",
+                            }
+                          }
+                        />
+                        <Text
+                          allowFontScaling={false}
+                          style={
+                            Array [
+                              Object {
+                                "fontSize": 19,
+                              },
+                              Object {
+                                "fontFamily": "Lato",
+                              },
+                              Object {
+                                "backgroundColor": "#ffffff",
+                                "color": "#777777",
+                              },
+                              Object {
+                                "fontWeight": "800",
+                              },
+                              Object {
+                                "textAlign": "center",
+                              },
+                              null,
+                              null,
+                              null,
+                              null,
+                              null,
+                              null,
+                              null,
+                              null,
+                              null,
+                              Object {
+                                "fontFamily": "Lato",
+                                "fontSize": 25.777142857142856,
+                                "fontStyle": "normal",
+                                "fontWeight": "700",
+                                "height": 49.23529411764706,
+                                "lineHeight": 30.734285714285715,
+                                "marginBottom": 31.76470588235294,
+                                "marginTop": 31.76470588235294,
+                                "paddingHorizontal": 20,
+                                "textAlign": "center",
+                              },
+                            ]
+                          }
+                        >
+                          Set a passcode to secure this app
+                        </Text>
+                        <Text
+                          allowFontScaling={false}
+                          style={
+                            Array [
+                              Object {
+                                "fontSize": 17,
+                              },
+                              Object {
+                                "fontFamily": "Lato",
+                              },
+                              Object {
+                                "backgroundColor": "#ffffff",
+                                "color": "#777777",
+                              },
+                              null,
+                              Object {
+                                "textAlign": "center",
+                              },
+                              null,
+                              null,
+                              null,
+                              null,
+                              null,
+                              null,
+                              null,
+                              null,
+                              null,
+                              Object {
+                                "color": "#CE0B24",
+                                "fontFamily": "Lato",
+                                "fontSize": 16.854285714285716,
+                                "fontStyle": "normal",
+                                "fontWeight": "500",
+                                "height": 18.285714285714285,
+                                "justifyContent": "center",
+                                "lineHeight": 19.82857142857143,
+                                "marginBottom": 10.971428571428572,
+                              },
+                            ]
+                          }
+                        />
+                        <View
+                          center={true}
+                          style={
+                            Object {
+                              "alignItems": "center",
+                              "justifyContent": "center",
+                            }
+                          }
+                        >
+                          <View
+                            style={Object {}}
+                          >
+                            <View
+                              accessible={true}
+                              focusable={true}
+                              hitSlop={
+                                Object {
+                                  "bottom": 20,
+                                  "left": 20,
+                                  "right": 20,
+                                  "top": 20,
+                                }
+                              }
+                              onClick={[Function]}
+                              onResponderGrant={[Function]}
+                              onResponderMove={[Function]}
+                              onResponderRelease={[Function]}
+                              onResponderTerminate={[Function]}
+                              onResponderTerminationRequest={[Function]}
+                              onStartShouldSetResponder={[Function]}
+                              row={true}
+                              style={
+                                Object {
+                                  "flexDirection": "row",
+                                }
+                              }
+                            >
+                              <View
+                                accessibilityLabel="pin-code-digit-0-touchable"
+                                accessible={false}
+                                center={true}
+                                focusable={true}
+                                hitSlop={
+                                  Object {
+                                    "bottom": 20,
+                                    "left": 20,
+                                    "right": 20,
+                                    "top": 20,
+                                  }
+                                }
+                                onClick={[Function]}
+                                onResponderGrant={[Function]}
+                                onResponderMove={[Function]}
+                                onResponderRelease={[Function]}
+                                onResponderTerminate={[Function]}
+                                onResponderTerminationRequest={[Function]}
+                                onStartShouldSetResponder={[Function]}
+                                style={
+                                  Object {
+                                    "alignItems": "center",
+                                    "height": 66,
+                                    "justifyContent": "center",
+                                    "marginHorizontal": 5,
+                                    "width": 38,
+                                  }
+                                }
+                                testID="pin-code-digit-0-touchable"
+                              >
+                                <Text
+                                  allowFontScaling={false}
+                                  style={
+                                    Array [
+                                      Object {
+                                        "color": "#EAEAEA",
+                                        "fontSize": 26,
+                                      },
+                                      undefined,
+                                      Object {
+                                        "fontFamily": "Material Icons",
+                                        "fontStyle": "normal",
+                                        "fontWeight": "normal",
+                                      },
+                                      Object {},
+                                    ]
+                                  }
+                                >
+                                  
+                                </Text>
+                              </View>
+                              <View
+                                accessibilityLabel="pin-code-digit-1-touchable"
+                                accessible={false}
+                                center={true}
+                                focusable={true}
+                                hitSlop={
+                                  Object {
+                                    "bottom": 20,
+                                    "left": 20,
+                                    "right": 20,
+                                    "top": 20,
+                                  }
+                                }
+                                onClick={[Function]}
+                                onResponderGrant={[Function]}
+                                onResponderMove={[Function]}
+                                onResponderRelease={[Function]}
+                                onResponderTerminate={[Function]}
+                                onResponderTerminationRequest={[Function]}
+                                onStartShouldSetResponder={[Function]}
+                                style={
+                                  Object {
+                                    "alignItems": "center",
+                                    "height": 66,
+                                    "justifyContent": "center",
+                                    "marginHorizontal": 5,
+                                    "width": 38,
+                                  }
+                                }
+                                testID="pin-code-digit-1-touchable"
+                              >
+                                <Text
+                                  allowFontScaling={false}
+                                  style={
+                                    Array [
+                                      Object {
+                                        "color": "#EAEAEA",
+                                        "fontSize": 26,
+                                      },
+                                      undefined,
+                                      Object {
+                                        "fontFamily": "Material Icons",
+                                        "fontStyle": "normal",
+                                        "fontWeight": "normal",
+                                      },
+                                      Object {},
+                                    ]
+                                  }
+                                >
+                                  
+                                </Text>
+                              </View>
+                              <View
+                                accessibilityLabel="pin-code-digit-2-touchable"
+                                accessible={false}
+                                center={true}
+                                focusable={true}
+                                hitSlop={
+                                  Object {
+                                    "bottom": 20,
+                                    "left": 20,
+                                    "right": 20,
+                                    "top": 20,
+                                  }
+                                }
+                                onClick={[Function]}
+                                onResponderGrant={[Function]}
+                                onResponderMove={[Function]}
+                                onResponderRelease={[Function]}
+                                onResponderTerminate={[Function]}
+                                onResponderTerminationRequest={[Function]}
+                                onStartShouldSetResponder={[Function]}
+                                style={
+                                  Object {
+                                    "alignItems": "center",
+                                    "height": 66,
+                                    "justifyContent": "center",
+                                    "marginHorizontal": 5,
+                                    "width": 38,
+                                  }
+                                }
+                                testID="pin-code-digit-2-touchable"
+                              >
+                                <Text
+                                  allowFontScaling={false}
+                                  style={
+                                    Array [
+                                      Object {
+                                        "color": "#EAEAEA",
+                                        "fontSize": 26,
+                                      },
+                                      undefined,
+                                      Object {
+                                        "fontFamily": "Material Icons",
+                                        "fontStyle": "normal",
+                                        "fontWeight": "normal",
+                                      },
+                                      Object {},
+                                    ]
+                                  }
+                                >
+                                  
+                                </Text>
+                              </View>
+                              <View
+                                accessibilityLabel="pin-code-digit-3-touchable"
+                                accessible={false}
+                                center={true}
+                                focusable={true}
+                                hitSlop={
+                                  Object {
+                                    "bottom": 20,
+                                    "left": 20,
+                                    "right": 20,
+                                    "top": 20,
+                                  }
+                                }
+                                onClick={[Function]}
+                                onResponderGrant={[Function]}
+                                onResponderMove={[Function]}
+                                onResponderRelease={[Function]}
+                                onResponderTerminate={[Function]}
+                                onResponderTerminationRequest={[Function]}
+                                onStartShouldSetResponder={[Function]}
+                                style={
+                                  Object {
+                                    "alignItems": "center",
+                                    "height": 66,
+                                    "justifyContent": "center",
+                                    "marginHorizontal": 5,
+                                    "width": 38,
+                                  }
+                                }
+                                testID="pin-code-digit-3-touchable"
+                              >
+                                <Text
+                                  allowFontScaling={false}
+                                  style={
+                                    Array [
+                                      Object {
+                                        "color": "#EAEAEA",
+                                        "fontSize": 26,
+                                      },
+                                      undefined,
+                                      Object {
+                                        "fontFamily": "Material Icons",
+                                        "fontStyle": "normal",
+                                        "fontWeight": "normal",
+                                      },
+                                      Object {},
+                                    ]
+                                  }
+                                >
+                                  
+                                </Text>
+                              </View>
+                              <View
+                                accessibilityLabel="pin-code-digit-4-touchable"
+                                accessible={false}
+                                center={true}
+                                focusable={true}
+                                hitSlop={
+                                  Object {
+                                    "bottom": 20,
+                                    "left": 20,
+                                    "right": 20,
+                                    "top": 20,
+                                  }
+                                }
+                                onClick={[Function]}
+                                onResponderGrant={[Function]}
+                                onResponderMove={[Function]}
+                                onResponderRelease={[Function]}
+                                onResponderTerminate={[Function]}
+                                onResponderTerminationRequest={[Function]}
+                                onStartShouldSetResponder={[Function]}
+                                style={
+                                  Object {
+                                    "alignItems": "center",
+                                    "height": 66,
+                                    "justifyContent": "center",
+                                    "marginHorizontal": 5,
+                                    "width": 38,
+                                  }
+                                }
+                                testID="pin-code-digit-4-touchable"
+                              >
+                                <Text
+                                  allowFontScaling={false}
+                                  style={
+                                    Array [
+                                      Object {
+                                        "color": "#EAEAEA",
+                                        "fontSize": 26,
+                                      },
+                                      undefined,
+                                      Object {
+                                        "fontFamily": "Material Icons",
+                                        "fontStyle": "normal",
+                                        "fontWeight": "normal",
+                                      },
+                                      Object {},
+                                    ]
+                                  }
+                                >
+                                  
+                                </Text>
+                              </View>
+                              <View
+                                accessibilityLabel="pin-code-digit-5-touchable"
+                                accessible={false}
+                                center={true}
+                                focusable={true}
+                                hitSlop={
+                                  Object {
+                                    "bottom": 20,
+                                    "left": 20,
+                                    "right": 20,
+                                    "top": 20,
+                                  }
+                                }
+                                onClick={[Function]}
+                                onResponderGrant={[Function]}
+                                onResponderMove={[Function]}
+                                onResponderRelease={[Function]}
+                                onResponderTerminate={[Function]}
+                                onResponderTerminationRequest={[Function]}
+                                onStartShouldSetResponder={[Function]}
+                                style={
+                                  Object {
+                                    "alignItems": "center",
+                                    "height": 66,
+                                    "justifyContent": "center",
+                                    "marginHorizontal": 5,
+                                    "width": 38,
+                                  }
+                                }
+                                testID="pin-code-digit-5-touchable"
+                              >
+                                <Text
+                                  allowFontScaling={false}
+                                  style={
+                                    Array [
+                                      Object {
+                                        "color": "#EAEAEA",
+                                        "fontSize": 26,
+                                      },
+                                      undefined,
+                                      Object {
+                                        "fontFamily": "Material Icons",
+                                        "fontStyle": "normal",
+                                        "fontWeight": "normal",
+                                      },
+                                      Object {},
+                                    ]
+                                  }
+                                >
+                                  
+                                </Text>
+                              </View>
+                            </View>
+                            <TextInput
+                              accessibilityLabel="pin-code-input-box"
+                              accessible={true}
+                              allowFontScaling={true}
+                              autoCorrect={false}
+                              blurOnSubmit={false}
+                              editable={true}
+                              enablesReturnKeyAutomatically={false}
+                              keyboardAppearance="dark"
+                              keyboardType="number-pad"
+                              maxLength={6}
+                              onChangeText={[Function]}
+                              rejectResponderTermination={true}
+                              style={
+                                Object {
+                                  "height": 0,
+                                  "position": "absolute",
+                                  "right": -999,
+                                  "width": 0,
+                                }
+                              }
+                              testID="pin-code-input-box"
+                              underlineColorAndroid="transparent"
+                              value=""
+                            />
+                          </View>
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+  </RNCSafeAreaProvider>
+</View>
+`;
+
+exports[`<LockPinCodeSetup /> should set pinSetupState and pinReEnterSuccessPin for after pin is success for redirection 1`] = `
+<View
+  style={
+    Object {
+      "flex": 1,
+    }
+  }
+>
+  <RNCSafeAreaProvider
+    onInsetsChange={[Function]}
+    style={
+      Array [
+        Object {
+          "flex": 1,
+        },
+        undefined,
+      ]
+    }
+  >
+    <View
+      pointerEvents="box-none"
+      style={
+        Array [
+          Object {
+            "zIndex": 1,
+          },
+          false,
+        ]
+      }
+    >
+      <View
+        accessibilityElementsHidden={false}
+        importantForAccessibility="auto"
+        onLayout={[Function]}
+        pointerEvents="box-none"
+        style={null}
+      >
+        <View
+          pointerEvents="box-none"
+          style={
+            Object {
+              "bottom": 0,
+              "left": 0,
+              "opacity": 1,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+              "zIndex": 0,
+            }
+          }
+        >
+          <View
+            style={
+              Object {
+                "backgroundColor": "rgb(255, 255, 255)",
+                "borderBottomColor": "rgb(216, 216, 216)",
+                "flex": 1,
+                "shadowColor": "rgb(216, 216, 216)",
+                "shadowOffset": Object {
+                  "height": 0.5,
+                  "width": 0,
+                },
+                "shadowOpacity": 0.85,
+                "shadowRadius": 0,
+              }
+            }
+          />
+        </View>
+        <View
+          pointerEvents="box-none"
+          style={
+            Object {
+              "height": 64,
+              "maxHeight": undefined,
+              "minHeight": undefined,
+              "opacity": undefined,
+              "transform": undefined,
+            }
+          }
+        >
+          <View
+            pointerEvents="none"
+            style={
+              Object {
+                "height": 20,
+              }
+            }
+          />
+          <View
+            pointerEvents="box-none"
+            style={
+              Object {
+                "alignItems": "center",
+                "flex": 1,
+                "flexDirection": "row",
+                "justifyContent": "center",
+              }
+            }
+          >
+            <View
+              pointerEvents="box-none"
+              style={
+                Object {
+                  "marginHorizontal": 16,
+                  "opacity": 1,
+                }
+              }
+            >
+              <Text
+                accessibilityRole="header"
+                numberOfLines={1}
+                onLayout={[Function]}
+                style={
+                  Object {
+                    "color": "rgb(28, 28, 30)",
+                    "fontSize": 17,
+                    "fontWeight": "600",
+                  }
+                }
+              >
+                MockedScreen
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      onLayout={[Function]}
+      style={
+        Object {
+          "flex": 1,
+        }
+      }
+    >
+      <View
+        pointerEvents="box-none"
+        style={
+          Object {
+            "bottom": 0,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
+        }
+      >
+        <View
+          accessibilityElementsHidden={false}
+          closing={false}
+          gestureVelocityImpact={0.3}
+          importantForAccessibility="auto"
+          onClose={[Function]}
+          onGestureBegin={[Function]}
+          onGestureCanceled={[Function]}
+          onOpen={[Function]}
+          onTransitionStart={[Function]}
+          pointerEvents="box-none"
+          style={
+            Object {
+              "bottom": 0,
+              "left": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+          transitionSpec={
+            Object {
+              "close": Object {
+                "animation": "spring",
+                "config": Object {
+                  "damping": 500,
+                  "mass": 3,
+                  "overshootClamping": true,
+                  "restDisplacementThreshold": 10,
+                  "restSpeedThreshold": 10,
+                  "stiffness": 1000,
+                },
+              },
+              "open": Object {
+                "animation": "spring",
+                "config": Object {
+                  "damping": 500,
+                  "mass": 3,
+                  "overshootClamping": true,
+                  "restDisplacementThreshold": 10,
+                  "restSpeedThreshold": 10,
+                  "stiffness": 1000,
+                },
+              },
+            }
+          }
+        >
+          <View
+            pointerEvents="box-none"
+            style={
+              Object {
+                "flex": 1,
+                "opacity": 1,
+              }
+            }
+          >
+            <View
+              enabled={false}
+              hitSlop={
+                Object {
+                  "right": -270,
+                }
+              }
+              maxDeltaY={20}
+              minOffsetX={5}
+              onHandlerStateChange={[Function]}
+            >
+              <View
+                style={
+                  Object {
+                    "flex": 1,
+                    "transform": Array [
+                      Object {
+                        "translateX": 0,
+                      },
+                      Object {
+                        "translateX": 0,
+                      },
+                    ],
+                  }
+                }
+              >
+                <View
+                  pointerEvents="none"
+                  style={
+                    Object {
+                      "backgroundColor": "rgb(242, 242, 242)",
+                      "bottom": 0,
+                      "left": 0,
+                      "position": "absolute",
+                      "shadowColor": "#000",
+                      "shadowOffset": Object {
+                        "height": 1,
+                        "width": -1,
+                      },
+                      "shadowOpacity": 0.3,
+                      "shadowRadius": 5,
+                      "top": 0,
+                      "width": 3,
+                    }
+                  }
+                />
+                <View
+                  style={
+                    Array [
+                      Object {
+                        "flex": 1,
+                        "overflow": "hidden",
+                      },
+                      Array [
+                        Object {
+                          "backgroundColor": "rgb(242, 242, 242)",
+                        },
+                        undefined,
+                      ],
+                    ]
+                  }
+                >
+                  <View
+                    style={
+                      Object {
+                        "flex": 1,
+                        "flexDirection": "column-reverse",
+                      }
+                    }
+                  >
+                    <View
+                      style={
+                        Object {
+                          "flex": 1,
+                        }
+                      }
+                    >
+                      <View
+                        style={
+                          Object {
+                            "backgroundColor": "#ffffff",
+                            "flex": 1,
+                          }
+                        }
+                        tertiary={true}
+                      >
+                        <View
+                          style={
+                            Object {
+                              "flexDirection": "row",
+                              "height": 63.52941176470588,
+                              "paddingTop": 19.058823529411764,
+                              "width": "100%",
+                            }
+                          }
+                        >
+                          <View
+                            accessibilityLabel="left-icon"
+                            accessible={true}
+                            style={
+                              Object {
+                                "alignItems": "center",
+                                "flexDirection": "row",
+                                "width": "15%",
+                              }
+                            }
+                          >
+                            <View
+                              accessible={true}
+                              focusable={true}
+                              isTVSelectable={true}
+                              onClick={[Function]}
+                              onResponderGrant={[Function]}
+                              onResponderMove={[Function]}
+                              onResponderRelease={[Function]}
+                              onResponderTerminate={[Function]}
+                              onResponderTerminationRequest={[Function]}
+                              onStartShouldSetResponder={[Function]}
+                              style={
+                                Object {
+                                  "opacity": 1,
+                                }
+                              }
+                              testID="left-icon"
+                            >
+                              <View
+                                style={
+                                  Object {
+                                    "transform": Array [
+                                      Object {
+                                        "scale": 1,
+                                      },
+                                    ],
+                                  }
+                                }
+                              >
+                                <RNSVGSvgView
+                                  align="xMidYMid"
+                                  bbHeight={30.628571428571426}
+                                  bbWidth={30.628571428571426}
+                                  fill="#777777"
+                                  focusable={false}
+                                  height={30.628571428571426}
+                                  meetOrSlice={0}
+                                  minX={0}
+                                  minY={0}
+                                  style={
+                                    Array [
+                                      Object {
+                                        "backgroundColor": "transparent",
+                                        "borderWidth": 0,
+                                      },
+                                      Object {
+                                        "marginBottom": 1.9142857142857141,
+                                        "marginLeft": 14.357142857142858,
+                                      },
+                                      Object {
+                                        "flex": 0,
+                                        "height": 30,
+                                        "width": 30,
+                                      },
+                                    ]
+                                  }
+                                  vbHeight={24}
+                                  vbWidth={24}
+                                  width={30.628571428571426}
+                                >
+                                  <RNSVGGroup
+                                    fill={4286019447}
+                                    propList={
+                                      Array [
+                                        "fill",
+                                      ]
+                                    }
+                                  >
+                                    <RNSVGGroup>
+                                      <RNSVGGroup>
+                                        <RNSVGRect
+                                          height="24"
+                                          matrix={
+                                            Array [
+                                              6.123233995736766e-17,
+                                              1,
+                                              -1,
+                                              6.123233995736766e-17,
+                                              24,
+                                              0,
+                                            ]
+                                          }
+                                          opacity={0}
+                                          width="24"
+                                          x={0}
+                                          y={0}
+                                        />
+                                        <RNSVGPath
+                                          d="M13.83 19a1 1 0 0 1-.78-.37l-4.83-6a1 1 0 0 1 0-1.27l5-6a1 1 0 0 1 1.54 1.28L10.29 12l4.32 5.36a1 1 0 0 1-.78 1.64z"
+                                        />
+                                      </RNSVGGroup>
+                                    </RNSVGGroup>
+                                  </RNSVGGroup>
+                                </RNSVGSvgView>
+                              </View>
+                            </View>
+                          </View>
+                          <View
+                            style={
+                              Object {
+                                "alignItems": "center",
+                                "flexDirection": "row",
+                                "justifyContent": "center",
+                                "width": "85%",
+                              }
+                            }
+                          >
+                            <Text
+                              style={
+                                Object {
+                                  "color": "#777777",
+                                  "fontFamily": "Lato",
+                                  "fontSize": 21.057142857142857,
+                                  "marginLeft": -47.85714285714286,
+                                }
+                              }
+                            />
+                          </View>
+                        </View>
+                        <View
+                          center={true}
+                          style={
+                            Object {
+                              "alignItems": "center",
+                              "justifyContent": "center",
+                            }
+                          }
+                        />
+                        <Text
+                          allowFontScaling={false}
+                          style={
+                            Array [
+                              Object {
+                                "fontSize": 19,
+                              },
+                              Object {
+                                "fontFamily": "Lato",
+                              },
+                              Object {
+                                "backgroundColor": "#ffffff",
+                                "color": "#777777",
+                              },
+                              Object {
+                                "fontWeight": "800",
+                              },
+                              Object {
+                                "textAlign": "center",
+                              },
+                              null,
+                              null,
+                              null,
+                              null,
+                              null,
+                              null,
+                              null,
+                              null,
+                              null,
+                              Object {
+                                "fontFamily": "Lato",
+                                "fontSize": 25.777142857142856,
+                                "fontStyle": "normal",
+                                "fontWeight": "700",
+                                "height": 49.23529411764706,
+                                "lineHeight": 30.734285714285715,
+                                "marginBottom": 31.76470588235294,
+                                "marginTop": 31.76470588235294,
+                                "paddingHorizontal": 20,
+                                "textAlign": "center",
+                              },
+                            ]
+                          }
+                        >
+                          Re-enter passcode
+                        </Text>
+                        <Text
+                          allowFontScaling={false}
+                          style={
+                            Array [
+                              Object {
+                                "fontSize": 17,
+                              },
+                              Object {
+                                "fontFamily": "Lato",
+                              },
+                              Object {
+                                "backgroundColor": "#ffffff",
+                                "color": "#777777",
+                              },
+                              null,
+                              Object {
+                                "textAlign": "center",
+                              },
+                              null,
+                              null,
+                              null,
+                              null,
+                              null,
+                              null,
+                              null,
+                              null,
+                              null,
+                              Object {
+                                "color": "#CE0B24",
+                                "fontFamily": "Lato",
+                                "fontSize": 16.854285714285716,
+                                "fontStyle": "normal",
+                                "fontWeight": "500",
+                                "height": 18.285714285714285,
+                                "justifyContent": "center",
+                                "lineHeight": 19.82857142857143,
+                                "marginBottom": 10.971428571428572,
+                              },
+                            ]
+                          }
+                        />
+                        <View
+                          center={true}
+                          style={
+                            Object {
+                              "alignItems": "center",
+                              "justifyContent": "center",
+                            }
+                          }
+                        >
+                          <View
+                            style={Object {}}
+                          >
+                            <View
+                              accessible={true}
+                              focusable={true}
+                              hitSlop={
+                                Object {
+                                  "bottom": 20,
+                                  "left": 20,
+                                  "right": 20,
+                                  "top": 20,
+                                }
+                              }
+                              onClick={[Function]}
+                              onResponderGrant={[Function]}
+                              onResponderMove={[Function]}
+                              onResponderRelease={[Function]}
+                              onResponderTerminate={[Function]}
+                              onResponderTerminationRequest={[Function]}
+                              onStartShouldSetResponder={[Function]}
+                              row={true}
+                              style={
+                                Object {
+                                  "flexDirection": "row",
+                                }
+                              }
+                            >
+                              <View
+                                accessibilityLabel="pin-code-digit-0-touchable"
+                                accessible={false}
+                                center={true}
+                                focusable={true}
+                                hitSlop={
+                                  Object {
+                                    "bottom": 20,
+                                    "left": 20,
+                                    "right": 20,
+                                    "top": 20,
+                                  }
+                                }
+                                onClick={[Function]}
+                                onResponderGrant={[Function]}
+                                onResponderMove={[Function]}
+                                onResponderRelease={[Function]}
+                                onResponderTerminate={[Function]}
+                                onResponderTerminationRequest={[Function]}
+                                onStartShouldSetResponder={[Function]}
+                                style={
+                                  Object {
+                                    "alignItems": "center",
+                                    "height": 66,
+                                    "justifyContent": "center",
+                                    "marginHorizontal": 5,
+                                    "width": 38,
+                                  }
+                                }
+                                testID="pin-code-digit-0-touchable"
+                              >
+                                <Text
+                                  allowFontScaling={false}
+                                  style={
+                                    Array [
+                                      Object {
+                                        "color": "#EAEAEA",
+                                        "fontSize": 26,
+                                      },
+                                      undefined,
+                                      Object {
+                                        "fontFamily": "Material Icons",
+                                        "fontStyle": "normal",
+                                        "fontWeight": "normal",
+                                      },
+                                      Object {},
+                                    ]
+                                  }
+                                >
+                                  
+                                </Text>
+                              </View>
+                              <View
+                                accessibilityLabel="pin-code-digit-1-touchable"
+                                accessible={false}
+                                center={true}
+                                focusable={true}
+                                hitSlop={
+                                  Object {
+                                    "bottom": 20,
+                                    "left": 20,
+                                    "right": 20,
+                                    "top": 20,
+                                  }
+                                }
+                                onClick={[Function]}
+                                onResponderGrant={[Function]}
+                                onResponderMove={[Function]}
+                                onResponderRelease={[Function]}
+                                onResponderTerminate={[Function]}
+                                onResponderTerminationRequest={[Function]}
+                                onStartShouldSetResponder={[Function]}
+                                style={
+                                  Object {
+                                    "alignItems": "center",
+                                    "height": 66,
+                                    "justifyContent": "center",
+                                    "marginHorizontal": 5,
+                                    "width": 38,
+                                  }
+                                }
+                                testID="pin-code-digit-1-touchable"
+                              >
+                                <Text
+                                  allowFontScaling={false}
+                                  style={
+                                    Array [
+                                      Object {
+                                        "color": "#EAEAEA",
+                                        "fontSize": 26,
+                                      },
+                                      undefined,
+                                      Object {
+                                        "fontFamily": "Material Icons",
+                                        "fontStyle": "normal",
+                                        "fontWeight": "normal",
+                                      },
+                                      Object {},
+                                    ]
+                                  }
+                                >
+                                  
+                                </Text>
+                              </View>
+                              <View
+                                accessibilityLabel="pin-code-digit-2-touchable"
+                                accessible={false}
+                                center={true}
+                                focusable={true}
+                                hitSlop={
+                                  Object {
+                                    "bottom": 20,
+                                    "left": 20,
+                                    "right": 20,
+                                    "top": 20,
+                                  }
+                                }
+                                onClick={[Function]}
+                                onResponderGrant={[Function]}
+                                onResponderMove={[Function]}
+                                onResponderRelease={[Function]}
+                                onResponderTerminate={[Function]}
+                                onResponderTerminationRequest={[Function]}
+                                onStartShouldSetResponder={[Function]}
+                                style={
+                                  Object {
+                                    "alignItems": "center",
+                                    "height": 66,
+                                    "justifyContent": "center",
+                                    "marginHorizontal": 5,
+                                    "width": 38,
+                                  }
+                                }
+                                testID="pin-code-digit-2-touchable"
+                              >
+                                <Text
+                                  allowFontScaling={false}
+                                  style={
+                                    Array [
+                                      Object {
+                                        "color": "#EAEAEA",
+                                        "fontSize": 26,
+                                      },
+                                      undefined,
+                                      Object {
+                                        "fontFamily": "Material Icons",
+                                        "fontStyle": "normal",
+                                        "fontWeight": "normal",
+                                      },
+                                      Object {},
+                                    ]
+                                  }
+                                >
+                                  
+                                </Text>
+                              </View>
+                              <View
+                                accessibilityLabel="pin-code-digit-3-touchable"
+                                accessible={false}
+                                center={true}
+                                focusable={true}
+                                hitSlop={
+                                  Object {
+                                    "bottom": 20,
+                                    "left": 20,
+                                    "right": 20,
+                                    "top": 20,
+                                  }
+                                }
+                                onClick={[Function]}
+                                onResponderGrant={[Function]}
+                                onResponderMove={[Function]}
+                                onResponderRelease={[Function]}
+                                onResponderTerminate={[Function]}
+                                onResponderTerminationRequest={[Function]}
+                                onStartShouldSetResponder={[Function]}
+                                style={
+                                  Object {
+                                    "alignItems": "center",
+                                    "height": 66,
+                                    "justifyContent": "center",
+                                    "marginHorizontal": 5,
+                                    "width": 38,
+                                  }
+                                }
+                                testID="pin-code-digit-3-touchable"
+                              >
+                                <Text
+                                  allowFontScaling={false}
+                                  style={
+                                    Array [
+                                      Object {
+                                        "color": "#EAEAEA",
+                                        "fontSize": 26,
+                                      },
+                                      undefined,
+                                      Object {
+                                        "fontFamily": "Material Icons",
+                                        "fontStyle": "normal",
+                                        "fontWeight": "normal",
+                                      },
+                                      Object {},
+                                    ]
+                                  }
+                                >
+                                  
+                                </Text>
+                              </View>
+                              <View
+                                accessibilityLabel="pin-code-digit-4-touchable"
+                                accessible={false}
+                                center={true}
+                                focusable={true}
+                                hitSlop={
+                                  Object {
+                                    "bottom": 20,
+                                    "left": 20,
+                                    "right": 20,
+                                    "top": 20,
+                                  }
+                                }
+                                onClick={[Function]}
+                                onResponderGrant={[Function]}
+                                onResponderMove={[Function]}
+                                onResponderRelease={[Function]}
+                                onResponderTerminate={[Function]}
+                                onResponderTerminationRequest={[Function]}
+                                onStartShouldSetResponder={[Function]}
+                                style={
+                                  Object {
+                                    "alignItems": "center",
+                                    "height": 66,
+                                    "justifyContent": "center",
+                                    "marginHorizontal": 5,
+                                    "width": 38,
+                                  }
+                                }
+                                testID="pin-code-digit-4-touchable"
+                              >
+                                <Text
+                                  allowFontScaling={false}
+                                  style={
+                                    Array [
+                                      Object {
+                                        "color": "#EAEAEA",
+                                        "fontSize": 26,
+                                      },
+                                      undefined,
+                                      Object {
+                                        "fontFamily": "Material Icons",
+                                        "fontStyle": "normal",
+                                        "fontWeight": "normal",
+                                      },
+                                      Object {},
+                                    ]
+                                  }
+                                >
+                                  
+                                </Text>
+                              </View>
+                              <View
+                                accessibilityLabel="pin-code-digit-5-touchable"
+                                accessible={false}
+                                center={true}
+                                focusable={true}
+                                hitSlop={
+                                  Object {
+                                    "bottom": 20,
+                                    "left": 20,
+                                    "right": 20,
+                                    "top": 20,
+                                  }
+                                }
+                                onClick={[Function]}
+                                onResponderGrant={[Function]}
+                                onResponderMove={[Function]}
+                                onResponderRelease={[Function]}
+                                onResponderTerminate={[Function]}
+                                onResponderTerminationRequest={[Function]}
+                                onStartShouldSetResponder={[Function]}
+                                style={
+                                  Object {
+                                    "alignItems": "center",
+                                    "height": 66,
+                                    "justifyContent": "center",
+                                    "marginHorizontal": 5,
+                                    "width": 38,
+                                  }
+                                }
+                                testID="pin-code-digit-5-touchable"
+                              >
+                                <Text
+                                  allowFontScaling={false}
+                                  style={
+                                    Array [
+                                      Object {
+                                        "color": "#EAEAEA",
+                                        "fontSize": 26,
+                                      },
+                                      undefined,
+                                      Object {
+                                        "fontFamily": "Material Icons",
+                                        "fontStyle": "normal",
+                                        "fontWeight": "normal",
+                                      },
+                                      Object {},
+                                    ]
+                                  }
+                                >
+                                  
+                                </Text>
+                              </View>
+                            </View>
+                            <TextInput
+                              accessibilityLabel="pin-code-input-box"
+                              accessible={true}
+                              allowFontScaling={true}
+                              autoCorrect={false}
+                              blurOnSubmit={false}
+                              editable={true}
+                              enablesReturnKeyAutomatically={false}
+                              keyboardAppearance="dark"
+                              keyboardType="number-pad"
+                              maxLength={6}
+                              onChangeText={[Function]}
+                              rejectResponderTermination={true}
+                              style={
+                                Object {
+                                  "height": 0,
+                                  "position": "absolute",
+                                  "right": -999,
+                                  "width": 0,
+                                }
+                              }
+                              testID="pin-code-input-box"
+                              underlineColorAndroid="transparent"
+                              value=""
+                            />
+                          </View>
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+  </RNCSafeAreaProvider>
+</View>
+`;
+
+exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and reset to initial state after passcode mismatch 1`] = `
+<View
+  style={
+    Object {
+      "flex": 1,
+    }
+  }
+>
+  <RNCSafeAreaProvider
+    onInsetsChange={[Function]}
+    style={
+      Array [
+        Object {
+          "flex": 1,
+        },
+        undefined,
+      ]
+    }
+  >
+    <View
+      pointerEvents="box-none"
+      style={
+        Array [
+          Object {
+            "zIndex": 1,
+          },
+          false,
+        ]
+      }
+    >
+      <View
+        accessibilityElementsHidden={false}
+        importantForAccessibility="auto"
+        onLayout={[Function]}
+        pointerEvents="box-none"
+        style={null}
+      >
+        <View
+          pointerEvents="box-none"
+          style={
+            Object {
+              "bottom": 0,
+              "left": 0,
+              "opacity": 1,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+              "zIndex": 0,
+            }
+          }
+        >
+          <View
+            style={
+              Object {
+                "backgroundColor": "rgb(255, 255, 255)",
+                "borderBottomColor": "rgb(216, 216, 216)",
+                "flex": 1,
+                "shadowColor": "rgb(216, 216, 216)",
+                "shadowOffset": Object {
+                  "height": 0.5,
+                  "width": 0,
+                },
+                "shadowOpacity": 0.85,
+                "shadowRadius": 0,
+              }
+            }
+          />
+        </View>
+        <View
+          pointerEvents="box-none"
+          style={
+            Object {
+              "height": 64,
+              "maxHeight": undefined,
+              "minHeight": undefined,
+              "opacity": undefined,
+              "transform": undefined,
+            }
+          }
+        >
+          <View
+            pointerEvents="none"
+            style={
+              Object {
+                "height": 20,
+              }
+            }
+          />
+          <View
+            pointerEvents="box-none"
+            style={
+              Object {
+                "alignItems": "center",
+                "flex": 1,
+                "flexDirection": "row",
+                "justifyContent": "center",
+              }
+            }
+          >
+            <View
+              pointerEvents="box-none"
+              style={
+                Object {
+                  "marginHorizontal": 16,
+                  "opacity": 1,
+                }
+              }
+            >
+              <Text
+                accessibilityRole="header"
+                numberOfLines={1}
+                onLayout={[Function]}
+                style={
+                  Object {
+                    "color": "rgb(28, 28, 30)",
+                    "fontSize": 17,
+                    "fontWeight": "600",
+                  }
+                }
+              >
+                MockedScreen
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      onLayout={[Function]}
+      style={
+        Object {
+          "flex": 1,
+        }
+      }
+    >
+      <View
+        pointerEvents="box-none"
+        style={
+          Object {
+            "bottom": 0,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
+        }
+      >
+        <View
+          accessibilityElementsHidden={false}
+          closing={false}
+          gestureVelocityImpact={0.3}
+          importantForAccessibility="auto"
+          onClose={[Function]}
+          onGestureBegin={[Function]}
+          onGestureCanceled={[Function]}
+          onOpen={[Function]}
+          onTransitionStart={[Function]}
+          pointerEvents="box-none"
+          style={
+            Object {
+              "bottom": 0,
+              "left": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+          transitionSpec={
+            Object {
+              "close": Object {
+                "animation": "spring",
+                "config": Object {
+                  "damping": 500,
+                  "mass": 3,
+                  "overshootClamping": true,
+                  "restDisplacementThreshold": 10,
+                  "restSpeedThreshold": 10,
+                  "stiffness": 1000,
+                },
+              },
+              "open": Object {
+                "animation": "spring",
+                "config": Object {
+                  "damping": 500,
+                  "mass": 3,
+                  "overshootClamping": true,
+                  "restDisplacementThreshold": 10,
+                  "restSpeedThreshold": 10,
+                  "stiffness": 1000,
+                },
+              },
+            }
+          }
+        >
+          <View
+            pointerEvents="box-none"
+            style={
+              Object {
+                "flex": 1,
+                "opacity": 1,
+              }
+            }
+          >
+            <View
+              enabled={false}
+              hitSlop={
+                Object {
+                  "right": -270,
+                }
+              }
+              maxDeltaY={20}
+              minOffsetX={5}
+              onHandlerStateChange={[Function]}
+            >
+              <View
+                style={
+                  Object {
+                    "flex": 1,
+                    "transform": Array [
+                      Object {
+                        "translateX": 0,
+                      },
+                      Object {
+                        "translateX": 0,
+                      },
+                    ],
+                  }
+                }
+              >
+                <View
+                  pointerEvents="none"
+                  style={
+                    Object {
+                      "backgroundColor": "rgb(242, 242, 242)",
+                      "bottom": 0,
+                      "left": 0,
+                      "position": "absolute",
+                      "shadowColor": "#000",
+                      "shadowOffset": Object {
+                        "height": 1,
+                        "width": -1,
+                      },
+                      "shadowOpacity": 0.3,
+                      "shadowRadius": 5,
+                      "top": 0,
+                      "width": 3,
+                    }
+                  }
+                />
+                <View
+                  style={
+                    Array [
+                      Object {
+                        "flex": 1,
+                        "overflow": "hidden",
+                      },
+                      Array [
+                        Object {
+                          "backgroundColor": "rgb(242, 242, 242)",
+                        },
+                        undefined,
+                      ],
+                    ]
+                  }
+                >
+                  <View
+                    style={
+                      Object {
+                        "flex": 1,
+                        "flexDirection": "column-reverse",
+                      }
+                    }
+                  >
+                    <View
+                      style={
+                        Object {
+                          "flex": 1,
+                        }
+                      }
+                    >
+                      <View
+                        style={
+                          Object {
+                            "backgroundColor": "#ffffff",
+                            "flex": 1,
+                          }
+                        }
+                        tertiary={true}
+                      >
+                        <View
+                          style={
+                            Object {
+                              "flexDirection": "row",
+                              "height": 63.52941176470588,
+                              "paddingTop": 19.058823529411764,
+                              "width": "100%",
+                            }
+                          }
+                        >
+                          <View
+                            accessibilityLabel="left-icon"
+                            accessible={true}
+                            style={
+                              Object {
+                                "alignItems": "center",
+                                "flexDirection": "row",
+                                "width": "15%",
+                              }
+                            }
+                          >
+                            <View
+                              accessible={true}
+                              focusable={true}
+                              isTVSelectable={true}
+                              onClick={[Function]}
+                              onResponderGrant={[Function]}
+                              onResponderMove={[Function]}
+                              onResponderRelease={[Function]}
+                              onResponderTerminate={[Function]}
+                              onResponderTerminationRequest={[Function]}
+                              onStartShouldSetResponder={[Function]}
+                              style={
+                                Object {
+                                  "opacity": 1,
+                                }
+                              }
+                              testID="left-icon"
+                            >
+                              <View
+                                style={
+                                  Object {
+                                    "transform": Array [
+                                      Object {
+                                        "scale": 1,
+                                      },
+                                    ],
+                                  }
+                                }
+                              >
+                                <RNSVGSvgView
+                                  align="xMidYMid"
+                                  bbHeight={30.628571428571426}
+                                  bbWidth={30.628571428571426}
+                                  fill="#777777"
+                                  focusable={false}
+                                  height={30.628571428571426}
+                                  meetOrSlice={0}
+                                  minX={0}
+                                  minY={0}
+                                  style={
+                                    Array [
+                                      Object {
+                                        "backgroundColor": "transparent",
+                                        "borderWidth": 0,
+                                      },
+                                      Object {
+                                        "marginBottom": 1.9142857142857141,
+                                        "marginLeft": 14.357142857142858,
+                                      },
+                                      Object {
+                                        "flex": 0,
+                                        "height": 30,
+                                        "width": 30,
+                                      },
+                                    ]
+                                  }
+                                  vbHeight={24}
+                                  vbWidth={24}
+                                  width={30.628571428571426}
+                                >
+                                  <RNSVGGroup
+                                    fill={4286019447}
+                                    propList={
+                                      Array [
+                                        "fill",
+                                      ]
+                                    }
+                                  >
+                                    <RNSVGGroup>
+                                      <RNSVGGroup>
+                                        <RNSVGRect
+                                          height="24"
+                                          matrix={
+                                            Array [
+                                              6.123233995736766e-17,
+                                              1,
+                                              -1,
+                                              6.123233995736766e-17,
+                                              24,
+                                              0,
+                                            ]
+                                          }
+                                          opacity={0}
+                                          width="24"
+                                          x={0}
+                                          y={0}
+                                        />
+                                        <RNSVGPath
+                                          d="M13.83 19a1 1 0 0 1-.78-.37l-4.83-6a1 1 0 0 1 0-1.27l5-6a1 1 0 0 1 1.54 1.28L10.29 12l4.32 5.36a1 1 0 0 1-.78 1.64z"
+                                        />
+                                      </RNSVGGroup>
+                                    </RNSVGGroup>
+                                  </RNSVGGroup>
+                                </RNSVGSvgView>
+                              </View>
+                            </View>
+                          </View>
+                          <View
+                            style={
+                              Object {
+                                "alignItems": "center",
+                                "flexDirection": "row",
+                                "justifyContent": "center",
+                                "width": "85%",
+                              }
+                            }
+                          >
+                            <Text
+                              style={
+                                Object {
+                                  "color": "#777777",
+                                  "fontFamily": "Lato",
+                                  "fontSize": 21.057142857142857,
+                                  "marginLeft": -47.85714285714286,
+                                }
+                              }
+                            />
+                          </View>
+                        </View>
+                        <View
+                          center={true}
+                          style={
+                            Object {
+                              "alignItems": "center",
+                              "justifyContent": "center",
+                            }
+                          }
+                        />
+                        <Text
+                          allowFontScaling={false}
+                          style={
+                            Array [
+                              Object {
+                                "fontSize": 19,
+                              },
+                              Object {
+                                "fontFamily": "Lato",
+                              },
+                              Object {
+                                "backgroundColor": "#ffffff",
+                                "color": "#777777",
+                              },
+                              Object {
+                                "fontWeight": "800",
+                              },
+                              Object {
+                                "textAlign": "center",
+                              },
+                              null,
+                              null,
+                              null,
+                              null,
+                              null,
+                              null,
+                              null,
+                              null,
+                              null,
+                              Object {
+                                "fontFamily": "Lato",
+                                "fontSize": 25.777142857142856,
+                                "fontStyle": "normal",
+                                "fontWeight": "700",
+                                "height": 49.23529411764706,
+                                "lineHeight": 30.734285714285715,
+                                "marginBottom": 31.76470588235294,
+                                "marginTop": 31.76470588235294,
+                                "paddingHorizontal": 20,
+                                "textAlign": "center",
+                              },
+                            ]
+                          }
+                        >
+                          Set a passcode to secure this app
+                        </Text>
+                        <Text
+                          allowFontScaling={false}
+                          style={
+                            Array [
+                              Object {
+                                "fontSize": 17,
+                              },
+                              Object {
+                                "fontFamily": "Lato",
+                              },
+                              Object {
+                                "backgroundColor": "#ffffff",
+                                "color": "#777777",
+                              },
+                              null,
+                              Object {
+                                "textAlign": "center",
+                              },
+                              null,
+                              null,
+                              null,
+                              null,
+                              null,
+                              null,
+                              null,
+                              null,
+                              null,
+                              Object {
+                                "color": "#CE0B24",
+                                "fontFamily": "Lato",
+                                "fontSize": 16.854285714285716,
+                                "fontStyle": "normal",
+                                "fontWeight": "500",
+                                "height": 18.285714285714285,
+                                "justifyContent": "center",
+                                "lineHeight": 19.82857142857143,
+                                "marginBottom": 10.971428571428572,
+                              },
+                            ]
+                          }
+                        >
+                          Your passcodes do not match
+                        </Text>
+                        <View
+                          center={true}
+                          style={
+                            Object {
+                              "alignItems": "center",
+                              "justifyContent": "center",
+                            }
+                          }
+                        >
+                          <View
+                            style={Object {}}
+                          >
+                            <View
+                              accessible={true}
+                              focusable={true}
+                              hitSlop={
+                                Object {
+                                  "bottom": 20,
+                                  "left": 20,
+                                  "right": 20,
+                                  "top": 20,
+                                }
+                              }
+                              onClick={[Function]}
+                              onResponderGrant={[Function]}
+                              onResponderMove={[Function]}
+                              onResponderRelease={[Function]}
+                              onResponderTerminate={[Function]}
+                              onResponderTerminationRequest={[Function]}
+                              onStartShouldSetResponder={[Function]}
+                              row={true}
+                              style={
+                                Object {
+                                  "flexDirection": "row",
+                                }
+                              }
+                            >
+                              <View
+                                accessibilityLabel="pin-code-digit-0-touchable"
+                                accessible={false}
+                                center={true}
+                                focusable={true}
+                                hitSlop={
+                                  Object {
+                                    "bottom": 20,
+                                    "left": 20,
+                                    "right": 20,
+                                    "top": 20,
+                                  }
+                                }
+                                onClick={[Function]}
+                                onResponderGrant={[Function]}
+                                onResponderMove={[Function]}
+                                onResponderRelease={[Function]}
+                                onResponderTerminate={[Function]}
+                                onResponderTerminationRequest={[Function]}
+                                onStartShouldSetResponder={[Function]}
+                                style={
+                                  Object {
+                                    "alignItems": "center",
+                                    "height": 66,
+                                    "justifyContent": "center",
+                                    "marginHorizontal": 5,
+                                    "width": 38,
+                                  }
+                                }
+                                testID="pin-code-digit-0-touchable"
+                              >
+                                <Text
+                                  allowFontScaling={false}
+                                  style={
+                                    Array [
+                                      Object {
+                                        "color": "#EAEAEA",
+                                        "fontSize": 26,
+                                      },
+                                      undefined,
+                                      Object {
+                                        "fontFamily": "Material Icons",
+                                        "fontStyle": "normal",
+                                        "fontWeight": "normal",
+                                      },
+                                      Object {},
+                                    ]
+                                  }
+                                >
+                                  
+                                </Text>
+                              </View>
+                              <View
+                                accessibilityLabel="pin-code-digit-1-touchable"
+                                accessible={false}
+                                center={true}
+                                focusable={true}
+                                hitSlop={
+                                  Object {
+                                    "bottom": 20,
+                                    "left": 20,
+                                    "right": 20,
+                                    "top": 20,
+                                  }
+                                }
+                                onClick={[Function]}
+                                onResponderGrant={[Function]}
+                                onResponderMove={[Function]}
+                                onResponderRelease={[Function]}
+                                onResponderTerminate={[Function]}
+                                onResponderTerminationRequest={[Function]}
+                                onStartShouldSetResponder={[Function]}
+                                style={
+                                  Object {
+                                    "alignItems": "center",
+                                    "height": 66,
+                                    "justifyContent": "center",
+                                    "marginHorizontal": 5,
+                                    "width": 38,
+                                  }
+                                }
+                                testID="pin-code-digit-1-touchable"
+                              >
+                                <Text
+                                  allowFontScaling={false}
+                                  style={
+                                    Array [
+                                      Object {
+                                        "color": "#EAEAEA",
+                                        "fontSize": 26,
+                                      },
+                                      undefined,
+                                      Object {
+                                        "fontFamily": "Material Icons",
+                                        "fontStyle": "normal",
+                                        "fontWeight": "normal",
+                                      },
+                                      Object {},
+                                    ]
+                                  }
+                                >
+                                  
+                                </Text>
+                              </View>
+                              <View
+                                accessibilityLabel="pin-code-digit-2-touchable"
+                                accessible={false}
+                                center={true}
+                                focusable={true}
+                                hitSlop={
+                                  Object {
+                                    "bottom": 20,
+                                    "left": 20,
+                                    "right": 20,
+                                    "top": 20,
+                                  }
+                                }
+                                onClick={[Function]}
+                                onResponderGrant={[Function]}
+                                onResponderMove={[Function]}
+                                onResponderRelease={[Function]}
+                                onResponderTerminate={[Function]}
+                                onResponderTerminationRequest={[Function]}
+                                onStartShouldSetResponder={[Function]}
+                                style={
+                                  Object {
+                                    "alignItems": "center",
+                                    "height": 66,
+                                    "justifyContent": "center",
+                                    "marginHorizontal": 5,
+                                    "width": 38,
+                                  }
+                                }
+                                testID="pin-code-digit-2-touchable"
+                              >
+                                <Text
+                                  allowFontScaling={false}
+                                  style={
+                                    Array [
+                                      Object {
+                                        "color": "#EAEAEA",
+                                        "fontSize": 26,
+                                      },
+                                      undefined,
+                                      Object {
+                                        "fontFamily": "Material Icons",
+                                        "fontStyle": "normal",
+                                        "fontWeight": "normal",
+                                      },
+                                      Object {},
+                                    ]
+                                  }
+                                >
+                                  
+                                </Text>
+                              </View>
+                              <View
+                                accessibilityLabel="pin-code-digit-3-touchable"
+                                accessible={false}
+                                center={true}
+                                focusable={true}
+                                hitSlop={
+                                  Object {
+                                    "bottom": 20,
+                                    "left": 20,
+                                    "right": 20,
+                                    "top": 20,
+                                  }
+                                }
+                                onClick={[Function]}
+                                onResponderGrant={[Function]}
+                                onResponderMove={[Function]}
+                                onResponderRelease={[Function]}
+                                onResponderTerminate={[Function]}
+                                onResponderTerminationRequest={[Function]}
+                                onStartShouldSetResponder={[Function]}
+                                style={
+                                  Object {
+                                    "alignItems": "center",
+                                    "height": 66,
+                                    "justifyContent": "center",
+                                    "marginHorizontal": 5,
+                                    "width": 38,
+                                  }
+                                }
+                                testID="pin-code-digit-3-touchable"
+                              >
+                                <Text
+                                  allowFontScaling={false}
+                                  style={
+                                    Array [
+                                      Object {
+                                        "color": "#EAEAEA",
+                                        "fontSize": 26,
+                                      },
+                                      undefined,
+                                      Object {
+                                        "fontFamily": "Material Icons",
+                                        "fontStyle": "normal",
+                                        "fontWeight": "normal",
+                                      },
+                                      Object {},
+                                    ]
+                                  }
+                                >
+                                  
+                                </Text>
+                              </View>
+                              <View
+                                accessibilityLabel="pin-code-digit-4-touchable"
+                                accessible={false}
+                                center={true}
+                                focusable={true}
+                                hitSlop={
+                                  Object {
+                                    "bottom": 20,
+                                    "left": 20,
+                                    "right": 20,
+                                    "top": 20,
+                                  }
+                                }
+                                onClick={[Function]}
+                                onResponderGrant={[Function]}
+                                onResponderMove={[Function]}
+                                onResponderRelease={[Function]}
+                                onResponderTerminate={[Function]}
+                                onResponderTerminationRequest={[Function]}
+                                onStartShouldSetResponder={[Function]}
+                                style={
+                                  Object {
+                                    "alignItems": "center",
+                                    "height": 66,
+                                    "justifyContent": "center",
+                                    "marginHorizontal": 5,
+                                    "width": 38,
+                                  }
+                                }
+                                testID="pin-code-digit-4-touchable"
+                              >
+                                <Text
+                                  allowFontScaling={false}
+                                  style={
+                                    Array [
+                                      Object {
+                                        "color": "#EAEAEA",
+                                        "fontSize": 26,
+                                      },
+                                      undefined,
+                                      Object {
+                                        "fontFamily": "Material Icons",
+                                        "fontStyle": "normal",
+                                        "fontWeight": "normal",
+                                      },
+                                      Object {},
+                                    ]
+                                  }
+                                >
+                                  
+                                </Text>
+                              </View>
+                              <View
+                                accessibilityLabel="pin-code-digit-5-touchable"
+                                accessible={false}
+                                center={true}
+                                focusable={true}
+                                hitSlop={
+                                  Object {
+                                    "bottom": 20,
+                                    "left": 20,
+                                    "right": 20,
+                                    "top": 20,
+                                  }
+                                }
+                                onClick={[Function]}
+                                onResponderGrant={[Function]}
+                                onResponderMove={[Function]}
+                                onResponderRelease={[Function]}
+                                onResponderTerminate={[Function]}
+                                onResponderTerminationRequest={[Function]}
+                                onStartShouldSetResponder={[Function]}
+                                style={
+                                  Object {
+                                    "alignItems": "center",
+                                    "height": 66,
+                                    "justifyContent": "center",
+                                    "marginHorizontal": 5,
+                                    "width": 38,
+                                  }
+                                }
+                                testID="pin-code-digit-5-touchable"
+                              >
+                                <Text
+                                  allowFontScaling={false}
+                                  style={
+                                    Array [
+                                      Object {
+                                        "color": "#EAEAEA",
+                                        "fontSize": 26,
+                                      },
+                                      undefined,
+                                      Object {
+                                        "fontFamily": "Material Icons",
+                                        "fontStyle": "normal",
+                                        "fontWeight": "normal",
+                                      },
+                                      Object {},
+                                    ]
+                                  }
+                                >
+                                  
+                                </Text>
+                              </View>
+                            </View>
+                            <TextInput
+                              accessibilityLabel="pin-code-input-box"
+                              accessible={true}
+                              allowFontScaling={true}
+                              autoCorrect={false}
+                              blurOnSubmit={false}
+                              editable={true}
+                              enablesReturnKeyAutomatically={false}
+                              keyboardAppearance="dark"
+                              keyboardType="number-pad"
+                              maxLength={6}
+                              onChangeText={[Function]}
+                              rejectResponderTermination={true}
+                              style={
+                                Object {
+                                  "height": 0,
+                                  "position": "absolute",
+                                  "right": -999,
+                                  "width": 0,
+                                }
+                              }
+                              testID="pin-code-input-box"
+                              underlineColorAndroid="transparent"
+                              value=""
+                            />
+                          </View>
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+  </RNCSafeAreaProvider>
+</View>
+`;
+
+exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and reset to initial state after passcode mismatch 2`] = `
+<View
+  style={
+    Object {
+      "flex": 1,
+    }
+  }
+>
+  <RNCSafeAreaProvider
+    onInsetsChange={[Function]}
+    style={
+      Array [
+        Object {
+          "flex": 1,
+        },
+        undefined,
+      ]
+    }
+  >
+    <View
+      pointerEvents="box-none"
+      style={
+        Array [
+          Object {
+            "zIndex": 1,
+          },
+          false,
+        ]
+      }
+    >
+      <View
+        accessibilityElementsHidden={false}
+        importantForAccessibility="auto"
+        onLayout={[Function]}
+        pointerEvents="box-none"
+        style={null}
+      >
+        <View
+          pointerEvents="box-none"
+          style={
+            Object {
+              "bottom": 0,
+              "left": 0,
+              "opacity": 1,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+              "zIndex": 0,
+            }
+          }
+        >
+          <View
+            style={
+              Object {
+                "backgroundColor": "rgb(255, 255, 255)",
+                "borderBottomColor": "rgb(216, 216, 216)",
+                "flex": 1,
+                "shadowColor": "rgb(216, 216, 216)",
+                "shadowOffset": Object {
+                  "height": 0.5,
+                  "width": 0,
+                },
+                "shadowOpacity": 0.85,
+                "shadowRadius": 0,
+              }
+            }
+          />
+        </View>
+        <View
+          pointerEvents="box-none"
+          style={
+            Object {
+              "height": 64,
+              "maxHeight": undefined,
+              "minHeight": undefined,
+              "opacity": undefined,
+              "transform": undefined,
+            }
+          }
+        >
+          <View
+            pointerEvents="none"
+            style={
+              Object {
+                "height": 20,
+              }
+            }
+          />
+          <View
+            pointerEvents="box-none"
+            style={
+              Object {
+                "alignItems": "center",
+                "flex": 1,
+                "flexDirection": "row",
+                "justifyContent": "center",
+              }
+            }
+          >
+            <View
+              pointerEvents="box-none"
+              style={
+                Object {
+                  "marginHorizontal": 16,
+                  "opacity": 1,
+                }
+              }
+            >
+              <Text
+                accessibilityRole="header"
+                numberOfLines={1}
+                onLayout={[Function]}
+                style={
+                  Object {
+                    "color": "rgb(28, 28, 30)",
+                    "fontSize": 17,
+                    "fontWeight": "600",
+                  }
+                }
+              >
+                MockedScreen
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      onLayout={[Function]}
+      style={
+        Object {
+          "flex": 1,
+        }
+      }
+    >
+      <View
+        pointerEvents="box-none"
+        style={
+          Object {
+            "bottom": 0,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
+        }
+      >
+        <View
+          accessibilityElementsHidden={false}
+          closing={false}
+          gestureVelocityImpact={0.3}
+          importantForAccessibility="auto"
+          onClose={[Function]}
+          onGestureBegin={[Function]}
+          onGestureCanceled={[Function]}
+          onOpen={[Function]}
+          onTransitionStart={[Function]}
+          pointerEvents="box-none"
+          style={
+            Object {
+              "bottom": 0,
+              "left": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+          transitionSpec={
+            Object {
+              "close": Object {
+                "animation": "spring",
+                "config": Object {
+                  "damping": 500,
+                  "mass": 3,
+                  "overshootClamping": true,
+                  "restDisplacementThreshold": 10,
+                  "restSpeedThreshold": 10,
+                  "stiffness": 1000,
+                },
+              },
+              "open": Object {
+                "animation": "spring",
+                "config": Object {
+                  "damping": 500,
+                  "mass": 3,
+                  "overshootClamping": true,
+                  "restDisplacementThreshold": 10,
+                  "restSpeedThreshold": 10,
+                  "stiffness": 1000,
+                },
+              },
+            }
+          }
+        >
+          <View
+            pointerEvents="box-none"
+            style={
+              Object {
+                "flex": 1,
+                "opacity": 1,
+              }
+            }
+          >
+            <View
+              enabled={false}
+              hitSlop={
+                Object {
+                  "right": -270,
+                }
+              }
+              maxDeltaY={20}
+              minOffsetX={5}
+              onHandlerStateChange={[Function]}
+            >
+              <View
+                style={
+                  Object {
+                    "flex": 1,
+                    "transform": Array [
+                      Object {
+                        "translateX": 0,
+                      },
+                      Object {
+                        "translateX": 0,
+                      },
+                    ],
+                  }
+                }
+              >
+                <View
+                  pointerEvents="none"
+                  style={
+                    Object {
+                      "backgroundColor": "rgb(242, 242, 242)",
+                      "bottom": 0,
+                      "left": 0,
+                      "position": "absolute",
+                      "shadowColor": "#000",
+                      "shadowOffset": Object {
+                        "height": 1,
+                        "width": -1,
+                      },
+                      "shadowOpacity": 0.3,
+                      "shadowRadius": 5,
+                      "top": 0,
+                      "width": 3,
+                    }
+                  }
+                />
+                <View
+                  style={
+                    Array [
+                      Object {
+                        "flex": 1,
+                        "overflow": "hidden",
+                      },
+                      Array [
+                        Object {
+                          "backgroundColor": "rgb(242, 242, 242)",
+                        },
+                        undefined,
+                      ],
+                    ]
+                  }
+                >
+                  <View
+                    style={
+                      Object {
+                        "flex": 1,
+                        "flexDirection": "column-reverse",
+                      }
+                    }
+                  >
+                    <View
+                      style={
+                        Object {
+                          "flex": 1,
+                        }
+                      }
+                    >
+                      <View
+                        style={
+                          Object {
+                            "backgroundColor": "#ffffff",
+                            "flex": 1,
+                          }
+                        }
+                        tertiary={true}
+                      >
+                        <View
+                          style={
+                            Object {
+                              "flexDirection": "row",
+                              "height": 63.52941176470588,
+                              "paddingTop": 19.058823529411764,
+                              "width": "100%",
+                            }
+                          }
+                        >
+                          <View
+                            accessibilityLabel="left-icon"
+                            accessible={true}
+                            style={
+                              Object {
+                                "alignItems": "center",
+                                "flexDirection": "row",
+                                "width": "15%",
+                              }
+                            }
+                          >
+                            <View
+                              accessible={true}
+                              focusable={true}
+                              isTVSelectable={true}
+                              onClick={[Function]}
+                              onResponderGrant={[Function]}
+                              onResponderMove={[Function]}
+                              onResponderRelease={[Function]}
+                              onResponderTerminate={[Function]}
+                              onResponderTerminationRequest={[Function]}
+                              onStartShouldSetResponder={[Function]}
+                              style={
+                                Object {
+                                  "opacity": 1,
+                                }
+                              }
+                              testID="left-icon"
+                            >
+                              <View
+                                style={
+                                  Object {
+                                    "transform": Array [
+                                      Object {
+                                        "scale": 1,
+                                      },
+                                    ],
+                                  }
+                                }
+                              >
+                                <RNSVGSvgView
+                                  align="xMidYMid"
+                                  bbHeight={30.628571428571426}
+                                  bbWidth={30.628571428571426}
+                                  fill="#777777"
+                                  focusable={false}
+                                  height={30.628571428571426}
+                                  meetOrSlice={0}
+                                  minX={0}
+                                  minY={0}
+                                  style={
+                                    Array [
+                                      Object {
+                                        "backgroundColor": "transparent",
+                                        "borderWidth": 0,
+                                      },
+                                      Object {
+                                        "marginBottom": 1.9142857142857141,
+                                        "marginLeft": 14.357142857142858,
+                                      },
+                                      Object {
+                                        "flex": 0,
+                                        "height": 30,
+                                        "width": 30,
+                                      },
+                                    ]
+                                  }
+                                  vbHeight={24}
+                                  vbWidth={24}
+                                  width={30.628571428571426}
+                                >
+                                  <RNSVGGroup
+                                    fill={4286019447}
+                                    propList={
+                                      Array [
+                                        "fill",
+                                      ]
+                                    }
+                                  >
+                                    <RNSVGGroup>
+                                      <RNSVGGroup>
+                                        <RNSVGRect
+                                          height="24"
+                                          matrix={
+                                            Array [
+                                              6.123233995736766e-17,
+                                              1,
+                                              -1,
+                                              6.123233995736766e-17,
+                                              24,
+                                              0,
+                                            ]
+                                          }
+                                          opacity={0}
+                                          width="24"
+                                          x={0}
+                                          y={0}
+                                        />
+                                        <RNSVGPath
+                                          d="M13.83 19a1 1 0 0 1-.78-.37l-4.83-6a1 1 0 0 1 0-1.27l5-6a1 1 0 0 1 1.54 1.28L10.29 12l4.32 5.36a1 1 0 0 1-.78 1.64z"
+                                        />
+                                      </RNSVGGroup>
+                                    </RNSVGGroup>
+                                  </RNSVGGroup>
+                                </RNSVGSvgView>
+                              </View>
+                            </View>
+                          </View>
+                          <View
+                            style={
+                              Object {
+                                "alignItems": "center",
+                                "flexDirection": "row",
+                                "justifyContent": "center",
+                                "width": "85%",
+                              }
+                            }
+                          >
+                            <Text
+                              style={
+                                Object {
+                                  "color": "#777777",
+                                  "fontFamily": "Lato",
+                                  "fontSize": 21.057142857142857,
+                                  "marginLeft": -47.85714285714286,
+                                }
+                              }
+                            />
+                          </View>
+                        </View>
+                        <View
+                          center={true}
+                          style={
+                            Object {
+                              "alignItems": "center",
+                              "justifyContent": "center",
+                            }
+                          }
+                        />
+                        <Text
+                          allowFontScaling={false}
+                          style={
+                            Array [
+                              Object {
+                                "fontSize": 19,
+                              },
+                              Object {
+                                "fontFamily": "Lato",
+                              },
+                              Object {
+                                "backgroundColor": "#ffffff",
+                                "color": "#777777",
+                              },
+                              Object {
+                                "fontWeight": "800",
+                              },
+                              Object {
+                                "textAlign": "center",
+                              },
+                              null,
+                              null,
+                              null,
+                              null,
+                              null,
+                              null,
+                              null,
+                              null,
+                              null,
+                              Object {
+                                "fontFamily": "Lato",
+                                "fontSize": 25.777142857142856,
+                                "fontStyle": "normal",
+                                "fontWeight": "700",
+                                "height": 49.23529411764706,
+                                "lineHeight": 30.734285714285715,
+                                "marginBottom": 31.76470588235294,
+                                "marginTop": 31.76470588235294,
+                                "paddingHorizontal": 20,
+                                "textAlign": "center",
+                              },
+                            ]
+                          }
+                        >
+                          Set a passcode to secure this app
+                        </Text>
+                        <Text
+                          allowFontScaling={false}
+                          style={
+                            Array [
+                              Object {
+                                "fontSize": 17,
+                              },
+                              Object {
+                                "fontFamily": "Lato",
+                              },
+                              Object {
+                                "backgroundColor": "#ffffff",
+                                "color": "#777777",
+                              },
+                              null,
+                              Object {
+                                "textAlign": "center",
+                              },
+                              null,
+                              null,
+                              null,
+                              null,
+                              null,
+                              null,
+                              null,
+                              null,
+                              null,
+                              Object {
+                                "color": "#CE0B24",
+                                "fontFamily": "Lato",
+                                "fontSize": 16.854285714285716,
+                                "fontStyle": "normal",
+                                "fontWeight": "500",
+                                "height": 18.285714285714285,
+                                "justifyContent": "center",
+                                "lineHeight": 19.82857142857143,
+                                "marginBottom": 10.971428571428572,
+                              },
+                            ]
+                          }
+                        />
+                        <View
+                          center={true}
+                          style={
+                            Object {
+                              "alignItems": "center",
+                              "justifyContent": "center",
+                            }
+                          }
+                        >
+                          <View
+                            style={Object {}}
+                          >
+                            <View
+                              accessible={true}
+                              focusable={true}
+                              hitSlop={
+                                Object {
+                                  "bottom": 20,
+                                  "left": 20,
+                                  "right": 20,
+                                  "top": 20,
+                                }
+                              }
+                              onClick={[Function]}
+                              onResponderGrant={[Function]}
+                              onResponderMove={[Function]}
+                              onResponderRelease={[Function]}
+                              onResponderTerminate={[Function]}
+                              onResponderTerminationRequest={[Function]}
+                              onStartShouldSetResponder={[Function]}
+                              row={true}
+                              style={
+                                Object {
+                                  "flexDirection": "row",
+                                }
+                              }
+                            >
+                              <View
+                                accessibilityLabel="pin-code-digit-0-touchable"
+                                accessible={false}
+                                center={true}
+                                focusable={true}
+                                hitSlop={
+                                  Object {
+                                    "bottom": 20,
+                                    "left": 20,
+                                    "right": 20,
+                                    "top": 20,
+                                  }
+                                }
+                                onClick={[Function]}
+                                onResponderGrant={[Function]}
+                                onResponderMove={[Function]}
+                                onResponderRelease={[Function]}
+                                onResponderTerminate={[Function]}
+                                onResponderTerminationRequest={[Function]}
+                                onStartShouldSetResponder={[Function]}
+                                style={
+                                  Object {
+                                    "alignItems": "center",
+                                    "height": 66,
+                                    "justifyContent": "center",
+                                    "marginHorizontal": 5,
+                                    "width": 38,
+                                  }
+                                }
+                                testID="pin-code-digit-0-touchable"
+                              >
+                                <Text
+                                  allowFontScaling={false}
+                                  style={
+                                    Array [
+                                      Object {
+                                        "color": "#EAEAEA",
+                                        "fontSize": 26,
+                                      },
+                                      undefined,
+                                      Object {
+                                        "fontFamily": "Material Icons",
+                                        "fontStyle": "normal",
+                                        "fontWeight": "normal",
+                                      },
+                                      Object {},
+                                    ]
+                                  }
+                                >
+                                  
+                                </Text>
+                              </View>
+                              <View
+                                accessibilityLabel="pin-code-digit-1-touchable"
+                                accessible={false}
+                                center={true}
+                                focusable={true}
+                                hitSlop={
+                                  Object {
+                                    "bottom": 20,
+                                    "left": 20,
+                                    "right": 20,
+                                    "top": 20,
+                                  }
+                                }
+                                onClick={[Function]}
+                                onResponderGrant={[Function]}
+                                onResponderMove={[Function]}
+                                onResponderRelease={[Function]}
+                                onResponderTerminate={[Function]}
+                                onResponderTerminationRequest={[Function]}
+                                onStartShouldSetResponder={[Function]}
+                                style={
+                                  Object {
+                                    "alignItems": "center",
+                                    "height": 66,
+                                    "justifyContent": "center",
+                                    "marginHorizontal": 5,
+                                    "width": 38,
+                                  }
+                                }
+                                testID="pin-code-digit-1-touchable"
+                              >
+                                <Text
+                                  allowFontScaling={false}
+                                  style={
+                                    Array [
+                                      Object {
+                                        "color": "#EAEAEA",
+                                        "fontSize": 26,
+                                      },
+                                      undefined,
+                                      Object {
+                                        "fontFamily": "Material Icons",
+                                        "fontStyle": "normal",
+                                        "fontWeight": "normal",
+                                      },
+                                      Object {},
+                                    ]
+                                  }
+                                >
+                                  
+                                </Text>
+                              </View>
+                              <View
+                                accessibilityLabel="pin-code-digit-2-touchable"
+                                accessible={false}
+                                center={true}
+                                focusable={true}
+                                hitSlop={
+                                  Object {
+                                    "bottom": 20,
+                                    "left": 20,
+                                    "right": 20,
+                                    "top": 20,
+                                  }
+                                }
+                                onClick={[Function]}
+                                onResponderGrant={[Function]}
+                                onResponderMove={[Function]}
+                                onResponderRelease={[Function]}
+                                onResponderTerminate={[Function]}
+                                onResponderTerminationRequest={[Function]}
+                                onStartShouldSetResponder={[Function]}
+                                style={
+                                  Object {
+                                    "alignItems": "center",
+                                    "height": 66,
+                                    "justifyContent": "center",
+                                    "marginHorizontal": 5,
+                                    "width": 38,
+                                  }
+                                }
+                                testID="pin-code-digit-2-touchable"
+                              >
+                                <Text
+                                  allowFontScaling={false}
+                                  style={
+                                    Array [
+                                      Object {
+                                        "color": "#EAEAEA",
+                                        "fontSize": 26,
+                                      },
+                                      undefined,
+                                      Object {
+                                        "fontFamily": "Material Icons",
+                                        "fontStyle": "normal",
+                                        "fontWeight": "normal",
+                                      },
+                                      Object {},
+                                    ]
+                                  }
+                                >
+                                  
+                                </Text>
+                              </View>
+                              <View
+                                accessibilityLabel="pin-code-digit-3-touchable"
+                                accessible={false}
+                                center={true}
+                                focusable={true}
+                                hitSlop={
+                                  Object {
+                                    "bottom": 20,
+                                    "left": 20,
+                                    "right": 20,
+                                    "top": 20,
+                                  }
+                                }
+                                onClick={[Function]}
+                                onResponderGrant={[Function]}
+                                onResponderMove={[Function]}
+                                onResponderRelease={[Function]}
+                                onResponderTerminate={[Function]}
+                                onResponderTerminationRequest={[Function]}
+                                onStartShouldSetResponder={[Function]}
+                                style={
+                                  Object {
+                                    "alignItems": "center",
+                                    "height": 66,
+                                    "justifyContent": "center",
+                                    "marginHorizontal": 5,
+                                    "width": 38,
+                                  }
+                                }
+                                testID="pin-code-digit-3-touchable"
+                              >
+                                <Text
+                                  allowFontScaling={false}
+                                  style={
+                                    Array [
+                                      Object {
+                                        "color": "#EAEAEA",
+                                        "fontSize": 26,
+                                      },
+                                      undefined,
+                                      Object {
+                                        "fontFamily": "Material Icons",
+                                        "fontStyle": "normal",
+                                        "fontWeight": "normal",
+                                      },
+                                      Object {},
+                                    ]
+                                  }
+                                >
+                                  
+                                </Text>
+                              </View>
+                              <View
+                                accessibilityLabel="pin-code-digit-4-touchable"
+                                accessible={false}
+                                center={true}
+                                focusable={true}
+                                hitSlop={
+                                  Object {
+                                    "bottom": 20,
+                                    "left": 20,
+                                    "right": 20,
+                                    "top": 20,
+                                  }
+                                }
+                                onClick={[Function]}
+                                onResponderGrant={[Function]}
+                                onResponderMove={[Function]}
+                                onResponderRelease={[Function]}
+                                onResponderTerminate={[Function]}
+                                onResponderTerminationRequest={[Function]}
+                                onStartShouldSetResponder={[Function]}
+                                style={
+                                  Object {
+                                    "alignItems": "center",
+                                    "height": 66,
+                                    "justifyContent": "center",
+                                    "marginHorizontal": 5,
+                                    "width": 38,
+                                  }
+                                }
+                                testID="pin-code-digit-4-touchable"
+                              >
+                                <Text
+                                  allowFontScaling={false}
+                                  style={
+                                    Array [
+                                      Object {
+                                        "color": "#EAEAEA",
+                                        "fontSize": 26,
+                                      },
+                                      undefined,
+                                      Object {
+                                        "fontFamily": "Material Icons",
+                                        "fontStyle": "normal",
+                                        "fontWeight": "normal",
+                                      },
+                                      Object {},
+                                    ]
+                                  }
+                                >
+                                  
+                                </Text>
+                              </View>
+                              <View
+                                accessibilityLabel="pin-code-digit-5-touchable"
+                                accessible={false}
+                                center={true}
+                                focusable={true}
+                                hitSlop={
+                                  Object {
+                                    "bottom": 20,
+                                    "left": 20,
+                                    "right": 20,
+                                    "top": 20,
+                                  }
+                                }
+                                onClick={[Function]}
+                                onResponderGrant={[Function]}
+                                onResponderMove={[Function]}
+                                onResponderRelease={[Function]}
+                                onResponderTerminate={[Function]}
+                                onResponderTerminationRequest={[Function]}
+                                onStartShouldSetResponder={[Function]}
+                                style={
+                                  Object {
+                                    "alignItems": "center",
+                                    "height": 66,
+                                    "justifyContent": "center",
+                                    "marginHorizontal": 5,
+                                    "width": 38,
+                                  }
+                                }
+                                testID="pin-code-digit-5-touchable"
+                              >
+                                <Text
+                                  allowFontScaling={false}
+                                  style={
+                                    Array [
+                                      Object {
+                                        "color": "#EAEAEA",
+                                        "fontSize": 26,
+                                      },
+                                      undefined,
+                                      Object {
+                                        "fontFamily": "Material Icons",
+                                        "fontStyle": "normal",
+                                        "fontWeight": "normal",
+                                      },
+                                      Object {},
+                                    ]
+                                  }
+                                >
+                                  
+                                </Text>
+                              </View>
+                            </View>
+                            <TextInput
+                              accessibilityLabel="pin-code-input-box"
+                              accessible={true}
+                              allowFontScaling={true}
+                              autoCorrect={false}
+                              blurOnSubmit={false}
+                              editable={true}
+                              enablesReturnKeyAutomatically={false}
+                              keyboardAppearance="dark"
+                              keyboardType="number-pad"
+                              maxLength={6}
+                              onChangeText={[Function]}
+                              rejectResponderTermination={true}
+                              style={
+                                Object {
+                                  "height": 0,
+                                  "position": "absolute",
+                                  "right": -999,
+                                  "width": 0,
+                                }
+                              }
+                              testID="pin-code-input-box"
+                              underlineColorAndroid="transparent"
+                              value=""
+                            />
+                          </View>
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+  </RNCSafeAreaProvider>
+</View>
+`;
+
+exports[`<LockPinCodeSetup /> should show re enter pass code after first entry 1`] = `
+<View
+  style={
+    Object {
+      "flex": 1,
+    }
+  }
+>
+  <RNCSafeAreaProvider
+    onInsetsChange={[Function]}
+    style={
+      Array [
+        Object {
+          "flex": 1,
+        },
+        undefined,
+      ]
+    }
+  >
+    <View
+      pointerEvents="box-none"
+      style={
+        Array [
+          Object {
+            "zIndex": 1,
+          },
+          false,
+        ]
+      }
+    >
+      <View
+        accessibilityElementsHidden={false}
+        importantForAccessibility="auto"
+        onLayout={[Function]}
+        pointerEvents="box-none"
+        style={null}
+      >
+        <View
+          pointerEvents="box-none"
+          style={
+            Object {
+              "bottom": 0,
+              "left": 0,
+              "opacity": 1,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+              "zIndex": 0,
+            }
+          }
+        >
+          <View
+            style={
+              Object {
+                "backgroundColor": "rgb(255, 255, 255)",
+                "borderBottomColor": "rgb(216, 216, 216)",
+                "flex": 1,
+                "shadowColor": "rgb(216, 216, 216)",
+                "shadowOffset": Object {
+                  "height": 0.5,
+                  "width": 0,
+                },
+                "shadowOpacity": 0.85,
+                "shadowRadius": 0,
+              }
+            }
+          />
+        </View>
+        <View
+          pointerEvents="box-none"
+          style={
+            Object {
+              "height": 64,
+              "maxHeight": undefined,
+              "minHeight": undefined,
+              "opacity": undefined,
+              "transform": undefined,
+            }
+          }
+        >
+          <View
+            pointerEvents="none"
+            style={
+              Object {
+                "height": 20,
+              }
+            }
+          />
+          <View
+            pointerEvents="box-none"
+            style={
+              Object {
+                "alignItems": "center",
+                "flex": 1,
+                "flexDirection": "row",
+                "justifyContent": "center",
+              }
+            }
+          >
+            <View
+              pointerEvents="box-none"
+              style={
+                Object {
+                  "marginHorizontal": 16,
+                  "opacity": 1,
+                }
+              }
+            >
+              <Text
+                accessibilityRole="header"
+                numberOfLines={1}
+                onLayout={[Function]}
+                style={
+                  Object {
+                    "color": "rgb(28, 28, 30)",
+                    "fontSize": 17,
+                    "fontWeight": "600",
+                  }
+                }
+              >
+                MockedScreen
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      onLayout={[Function]}
+      style={
+        Object {
+          "flex": 1,
+        }
+      }
+    >
+      <View
+        pointerEvents="box-none"
+        style={
+          Object {
+            "bottom": 0,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
+        }
+      >
+        <View
+          accessibilityElementsHidden={false}
+          closing={false}
+          gestureVelocityImpact={0.3}
+          importantForAccessibility="auto"
+          onClose={[Function]}
+          onGestureBegin={[Function]}
+          onGestureCanceled={[Function]}
+          onOpen={[Function]}
+          onTransitionStart={[Function]}
+          pointerEvents="box-none"
+          style={
+            Object {
+              "bottom": 0,
+              "left": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+          transitionSpec={
+            Object {
+              "close": Object {
+                "animation": "spring",
+                "config": Object {
+                  "damping": 500,
+                  "mass": 3,
+                  "overshootClamping": true,
+                  "restDisplacementThreshold": 10,
+                  "restSpeedThreshold": 10,
+                  "stiffness": 1000,
+                },
+              },
+              "open": Object {
+                "animation": "spring",
+                "config": Object {
+                  "damping": 500,
+                  "mass": 3,
+                  "overshootClamping": true,
+                  "restDisplacementThreshold": 10,
+                  "restSpeedThreshold": 10,
+                  "stiffness": 1000,
+                },
+              },
+            }
+          }
+        >
+          <View
+            pointerEvents="box-none"
+            style={
+              Object {
+                "flex": 1,
+                "opacity": 1,
+              }
+            }
+          >
+            <View
+              enabled={false}
+              hitSlop={
+                Object {
+                  "right": -270,
+                }
+              }
+              maxDeltaY={20}
+              minOffsetX={5}
+              onHandlerStateChange={[Function]}
+            >
+              <View
+                style={
+                  Object {
+                    "flex": 1,
+                    "transform": Array [
+                      Object {
+                        "translateX": 0,
+                      },
+                      Object {
+                        "translateX": 0,
+                      },
+                    ],
+                  }
+                }
+              >
+                <View
+                  pointerEvents="none"
+                  style={
+                    Object {
+                      "backgroundColor": "rgb(242, 242, 242)",
+                      "bottom": 0,
+                      "left": 0,
+                      "position": "absolute",
+                      "shadowColor": "#000",
+                      "shadowOffset": Object {
+                        "height": 1,
+                        "width": -1,
+                      },
+                      "shadowOpacity": 0.3,
+                      "shadowRadius": 5,
+                      "top": 0,
+                      "width": 3,
+                    }
+                  }
+                />
+                <View
+                  style={
+                    Array [
+                      Object {
+                        "flex": 1,
+                        "overflow": "hidden",
+                      },
+                      Array [
+                        Object {
+                          "backgroundColor": "rgb(242, 242, 242)",
+                        },
+                        undefined,
+                      ],
+                    ]
+                  }
+                >
+                  <View
+                    style={
+                      Object {
+                        "flex": 1,
+                        "flexDirection": "column-reverse",
+                      }
+                    }
+                  >
+                    <View
+                      style={
+                        Object {
+                          "flex": 1,
+                        }
+                      }
+                    >
+                      <View
+                        style={
+                          Object {
+                            "backgroundColor": "#ffffff",
+                            "flex": 1,
+                          }
+                        }
+                        tertiary={true}
+                      >
+                        <View
+                          style={
+                            Object {
+                              "flexDirection": "row",
+                              "height": 63.52941176470588,
+                              "paddingTop": 19.058823529411764,
+                              "width": "100%",
+                            }
+                          }
+                        >
+                          <View
+                            accessibilityLabel="left-icon"
+                            accessible={true}
+                            style={
+                              Object {
+                                "alignItems": "center",
+                                "flexDirection": "row",
+                                "width": "15%",
+                              }
+                            }
+                          >
+                            <View
+                              accessible={true}
+                              focusable={true}
+                              isTVSelectable={true}
+                              onClick={[Function]}
+                              onResponderGrant={[Function]}
+                              onResponderMove={[Function]}
+                              onResponderRelease={[Function]}
+                              onResponderTerminate={[Function]}
+                              onResponderTerminationRequest={[Function]}
+                              onStartShouldSetResponder={[Function]}
+                              style={
+                                Object {
+                                  "opacity": 1,
+                                }
+                              }
+                              testID="left-icon"
+                            >
+                              <View
+                                style={
+                                  Object {
+                                    "transform": Array [
+                                      Object {
+                                        "scale": 1,
+                                      },
+                                    ],
+                                  }
+                                }
+                              >
+                                <RNSVGSvgView
+                                  align="xMidYMid"
+                                  bbHeight={30.628571428571426}
+                                  bbWidth={30.628571428571426}
+                                  fill="#777777"
+                                  focusable={false}
+                                  height={30.628571428571426}
+                                  meetOrSlice={0}
+                                  minX={0}
+                                  minY={0}
+                                  style={
+                                    Array [
+                                      Object {
+                                        "backgroundColor": "transparent",
+                                        "borderWidth": 0,
+                                      },
+                                      Object {
+                                        "marginBottom": 1.9142857142857141,
+                                        "marginLeft": 14.357142857142858,
+                                      },
+                                      Object {
+                                        "flex": 0,
+                                        "height": 30,
+                                        "width": 30,
+                                      },
+                                    ]
+                                  }
+                                  vbHeight={24}
+                                  vbWidth={24}
+                                  width={30.628571428571426}
+                                >
+                                  <RNSVGGroup
+                                    fill={4286019447}
+                                    propList={
+                                      Array [
+                                        "fill",
+                                      ]
+                                    }
+                                  >
+                                    <RNSVGGroup>
+                                      <RNSVGGroup>
+                                        <RNSVGRect
+                                          height="24"
+                                          matrix={
+                                            Array [
+                                              6.123233995736766e-17,
+                                              1,
+                                              -1,
+                                              6.123233995736766e-17,
+                                              24,
+                                              0,
+                                            ]
+                                          }
+                                          opacity={0}
+                                          width="24"
+                                          x={0}
+                                          y={0}
+                                        />
+                                        <RNSVGPath
+                                          d="M13.83 19a1 1 0 0 1-.78-.37l-4.83-6a1 1 0 0 1 0-1.27l5-6a1 1 0 0 1 1.54 1.28L10.29 12l4.32 5.36a1 1 0 0 1-.78 1.64z"
+                                        />
+                                      </RNSVGGroup>
+                                    </RNSVGGroup>
+                                  </RNSVGGroup>
+                                </RNSVGSvgView>
+                              </View>
+                            </View>
+                          </View>
+                          <View
+                            style={
+                              Object {
+                                "alignItems": "center",
+                                "flexDirection": "row",
+                                "justifyContent": "center",
+                                "width": "85%",
+                              }
+                            }
+                          >
+                            <Text
+                              style={
+                                Object {
+                                  "color": "#777777",
+                                  "fontFamily": "Lato",
+                                  "fontSize": 21.057142857142857,
+                                  "marginLeft": -47.85714285714286,
+                                }
+                              }
+                            />
+                          </View>
+                        </View>
+                        <View
+                          center={true}
+                          style={
+                            Object {
+                              "alignItems": "center",
+                              "justifyContent": "center",
+                            }
+                          }
+                        />
+                        <Text
+                          allowFontScaling={false}
+                          style={
+                            Array [
+                              Object {
+                                "fontSize": 19,
+                              },
+                              Object {
+                                "fontFamily": "Lato",
+                              },
+                              Object {
+                                "backgroundColor": "#ffffff",
+                                "color": "#777777",
+                              },
+                              Object {
+                                "fontWeight": "800",
+                              },
+                              Object {
+                                "textAlign": "center",
+                              },
+                              null,
+                              null,
+                              null,
+                              null,
+                              null,
+                              null,
+                              null,
+                              null,
+                              null,
+                              Object {
+                                "fontFamily": "Lato",
+                                "fontSize": 25.777142857142856,
+                                "fontStyle": "normal",
+                                "fontWeight": "700",
+                                "height": 49.23529411764706,
+                                "lineHeight": 30.734285714285715,
+                                "marginBottom": 31.76470588235294,
+                                "marginTop": 31.76470588235294,
+                                "paddingHorizontal": 20,
+                                "textAlign": "center",
+                              },
+                            ]
+                          }
+                        >
+                          Re-enter passcode
+                        </Text>
+                        <Text
+                          allowFontScaling={false}
+                          style={
+                            Array [
+                              Object {
+                                "fontSize": 17,
+                              },
+                              Object {
+                                "fontFamily": "Lato",
+                              },
+                              Object {
+                                "backgroundColor": "#ffffff",
+                                "color": "#777777",
+                              },
+                              null,
+                              Object {
+                                "textAlign": "center",
+                              },
+                              null,
+                              null,
+                              null,
+                              null,
+                              null,
+                              null,
+                              null,
+                              null,
+                              null,
+                              Object {
+                                "color": "#CE0B24",
+                                "fontFamily": "Lato",
+                                "fontSize": 16.854285714285716,
+                                "fontStyle": "normal",
+                                "fontWeight": "500",
+                                "height": 18.285714285714285,
+                                "justifyContent": "center",
+                                "lineHeight": 19.82857142857143,
+                                "marginBottom": 10.971428571428572,
+                              },
+                            ]
+                          }
+                        />
+                        <View
+                          center={true}
+                          style={
+                            Object {
+                              "alignItems": "center",
+                              "justifyContent": "center",
+                            }
+                          }
+                        >
+                          <View
+                            style={Object {}}
+                          >
+                            <View
+                              accessible={true}
+                              focusable={true}
+                              hitSlop={
+                                Object {
+                                  "bottom": 20,
+                                  "left": 20,
+                                  "right": 20,
+                                  "top": 20,
+                                }
+                              }
+                              onClick={[Function]}
+                              onResponderGrant={[Function]}
+                              onResponderMove={[Function]}
+                              onResponderRelease={[Function]}
+                              onResponderTerminate={[Function]}
+                              onResponderTerminationRequest={[Function]}
+                              onStartShouldSetResponder={[Function]}
+                              row={true}
+                              style={
+                                Object {
+                                  "flexDirection": "row",
+                                }
+                              }
+                            >
+                              <View
+                                accessibilityLabel="pin-code-digit-0-touchable"
+                                accessible={false}
+                                center={true}
+                                focusable={true}
+                                hitSlop={
+                                  Object {
+                                    "bottom": 20,
+                                    "left": 20,
+                                    "right": 20,
+                                    "top": 20,
+                                  }
+                                }
+                                onClick={[Function]}
+                                onResponderGrant={[Function]}
+                                onResponderMove={[Function]}
+                                onResponderRelease={[Function]}
+                                onResponderTerminate={[Function]}
+                                onResponderTerminationRequest={[Function]}
+                                onStartShouldSetResponder={[Function]}
+                                style={
+                                  Object {
+                                    "alignItems": "center",
+                                    "height": 66,
+                                    "justifyContent": "center",
+                                    "marginHorizontal": 5,
+                                    "width": 38,
+                                  }
+                                }
+                                testID="pin-code-digit-0-touchable"
+                              >
+                                <Text
+                                  allowFontScaling={false}
+                                  style={
+                                    Array [
+                                      Object {
+                                        "color": "#EAEAEA",
+                                        "fontSize": 26,
+                                      },
+                                      undefined,
+                                      Object {
+                                        "fontFamily": "Material Icons",
+                                        "fontStyle": "normal",
+                                        "fontWeight": "normal",
+                                      },
+                                      Object {},
+                                    ]
+                                  }
+                                >
+                                  
+                                </Text>
+                              </View>
+                              <View
+                                accessibilityLabel="pin-code-digit-1-touchable"
+                                accessible={false}
+                                center={true}
+                                focusable={true}
+                                hitSlop={
+                                  Object {
+                                    "bottom": 20,
+                                    "left": 20,
+                                    "right": 20,
+                                    "top": 20,
+                                  }
+                                }
+                                onClick={[Function]}
+                                onResponderGrant={[Function]}
+                                onResponderMove={[Function]}
+                                onResponderRelease={[Function]}
+                                onResponderTerminate={[Function]}
+                                onResponderTerminationRequest={[Function]}
+                                onStartShouldSetResponder={[Function]}
+                                style={
+                                  Object {
+                                    "alignItems": "center",
+                                    "height": 66,
+                                    "justifyContent": "center",
+                                    "marginHorizontal": 5,
+                                    "width": 38,
+                                  }
+                                }
+                                testID="pin-code-digit-1-touchable"
+                              >
+                                <Text
+                                  allowFontScaling={false}
+                                  style={
+                                    Array [
+                                      Object {
+                                        "color": "#EAEAEA",
+                                        "fontSize": 26,
+                                      },
+                                      undefined,
+                                      Object {
+                                        "fontFamily": "Material Icons",
+                                        "fontStyle": "normal",
+                                        "fontWeight": "normal",
+                                      },
+                                      Object {},
+                                    ]
+                                  }
+                                >
+                                  
+                                </Text>
+                              </View>
+                              <View
+                                accessibilityLabel="pin-code-digit-2-touchable"
+                                accessible={false}
+                                center={true}
+                                focusable={true}
+                                hitSlop={
+                                  Object {
+                                    "bottom": 20,
+                                    "left": 20,
+                                    "right": 20,
+                                    "top": 20,
+                                  }
+                                }
+                                onClick={[Function]}
+                                onResponderGrant={[Function]}
+                                onResponderMove={[Function]}
+                                onResponderRelease={[Function]}
+                                onResponderTerminate={[Function]}
+                                onResponderTerminationRequest={[Function]}
+                                onStartShouldSetResponder={[Function]}
+                                style={
+                                  Object {
+                                    "alignItems": "center",
+                                    "height": 66,
+                                    "justifyContent": "center",
+                                    "marginHorizontal": 5,
+                                    "width": 38,
+                                  }
+                                }
+                                testID="pin-code-digit-2-touchable"
+                              >
+                                <Text
+                                  allowFontScaling={false}
+                                  style={
+                                    Array [
+                                      Object {
+                                        "color": "#EAEAEA",
+                                        "fontSize": 26,
+                                      },
+                                      undefined,
+                                      Object {
+                                        "fontFamily": "Material Icons",
+                                        "fontStyle": "normal",
+                                        "fontWeight": "normal",
+                                      },
+                                      Object {},
+                                    ]
+                                  }
+                                >
+                                  
+                                </Text>
+                              </View>
+                              <View
+                                accessibilityLabel="pin-code-digit-3-touchable"
+                                accessible={false}
+                                center={true}
+                                focusable={true}
+                                hitSlop={
+                                  Object {
+                                    "bottom": 20,
+                                    "left": 20,
+                                    "right": 20,
+                                    "top": 20,
+                                  }
+                                }
+                                onClick={[Function]}
+                                onResponderGrant={[Function]}
+                                onResponderMove={[Function]}
+                                onResponderRelease={[Function]}
+                                onResponderTerminate={[Function]}
+                                onResponderTerminationRequest={[Function]}
+                                onStartShouldSetResponder={[Function]}
+                                style={
+                                  Object {
+                                    "alignItems": "center",
+                                    "height": 66,
+                                    "justifyContent": "center",
+                                    "marginHorizontal": 5,
+                                    "width": 38,
+                                  }
+                                }
+                                testID="pin-code-digit-3-touchable"
+                              >
+                                <Text
+                                  allowFontScaling={false}
+                                  style={
+                                    Array [
+                                      Object {
+                                        "color": "#EAEAEA",
+                                        "fontSize": 26,
+                                      },
+                                      undefined,
+                                      Object {
+                                        "fontFamily": "Material Icons",
+                                        "fontStyle": "normal",
+                                        "fontWeight": "normal",
+                                      },
+                                      Object {},
+                                    ]
+                                  }
+                                >
+                                  
+                                </Text>
+                              </View>
+                              <View
+                                accessibilityLabel="pin-code-digit-4-touchable"
+                                accessible={false}
+                                center={true}
+                                focusable={true}
+                                hitSlop={
+                                  Object {
+                                    "bottom": 20,
+                                    "left": 20,
+                                    "right": 20,
+                                    "top": 20,
+                                  }
+                                }
+                                onClick={[Function]}
+                                onResponderGrant={[Function]}
+                                onResponderMove={[Function]}
+                                onResponderRelease={[Function]}
+                                onResponderTerminate={[Function]}
+                                onResponderTerminationRequest={[Function]}
+                                onStartShouldSetResponder={[Function]}
+                                style={
+                                  Object {
+                                    "alignItems": "center",
+                                    "height": 66,
+                                    "justifyContent": "center",
+                                    "marginHorizontal": 5,
+                                    "width": 38,
+                                  }
+                                }
+                                testID="pin-code-digit-4-touchable"
+                              >
+                                <Text
+                                  allowFontScaling={false}
+                                  style={
+                                    Array [
+                                      Object {
+                                        "color": "#EAEAEA",
+                                        "fontSize": 26,
+                                      },
+                                      undefined,
+                                      Object {
+                                        "fontFamily": "Material Icons",
+                                        "fontStyle": "normal",
+                                        "fontWeight": "normal",
+                                      },
+                                      Object {},
+                                    ]
+                                  }
+                                >
+                                  
+                                </Text>
+                              </View>
+                              <View
+                                accessibilityLabel="pin-code-digit-5-touchable"
+                                accessible={false}
+                                center={true}
+                                focusable={true}
+                                hitSlop={
+                                  Object {
+                                    "bottom": 20,
+                                    "left": 20,
+                                    "right": 20,
+                                    "top": 20,
+                                  }
+                                }
+                                onClick={[Function]}
+                                onResponderGrant={[Function]}
+                                onResponderMove={[Function]}
+                                onResponderRelease={[Function]}
+                                onResponderTerminate={[Function]}
+                                onResponderTerminationRequest={[Function]}
+                                onStartShouldSetResponder={[Function]}
+                                style={
+                                  Object {
+                                    "alignItems": "center",
+                                    "height": 66,
+                                    "justifyContent": "center",
+                                    "marginHorizontal": 5,
+                                    "width": 38,
+                                  }
+                                }
+                                testID="pin-code-digit-5-touchable"
+                              >
+                                <Text
+                                  allowFontScaling={false}
+                                  style={
+                                    Array [
+                                      Object {
+                                        "color": "#EAEAEA",
+                                        "fontSize": 26,
+                                      },
+                                      undefined,
+                                      Object {
+                                        "fontFamily": "Material Icons",
+                                        "fontStyle": "normal",
+                                        "fontWeight": "normal",
+                                      },
+                                      Object {},
+                                    ]
+                                  }
+                                >
+                                  
+                                </Text>
+                              </View>
+                            </View>
+                            <TextInput
+                              accessibilityLabel="pin-code-input-box"
+                              accessible={true}
+                              allowFontScaling={true}
+                              autoCorrect={false}
+                              blurOnSubmit={false}
+                              editable={true}
+                              enablesReturnKeyAutomatically={false}
+                              keyboardAppearance="dark"
+                              keyboardType="number-pad"
+                              maxLength={6}
+                              onChangeText={[Function]}
+                              rejectResponderTermination={true}
+                              style={
+                                Object {
+                                  "height": 0,
+                                  "position": "absolute",
+                                  "right": -999,
+                                  "width": 0,
+                                }
+                              }
+                              testID="pin-code-input-box"
+                              underlineColorAndroid="transparent"
+                              value=""
+                            />
+                          </View>
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+  </RNCSafeAreaProvider>
+</View>
+`;

@@ -1,0 +1,71 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`qr-code-aries::connection-invite should return AriesConnectionInvite if label is not present 1`] = `
+Object {
+  "original": "{\\"@id\\":\\"7bf4f041-5ed4-4246-b309-396aeae830ab\\",\\"@type\\":\\"did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/connections/1.0/invitation\\",\\"recipientKeys\\":[\\"6B5wQFpWbwJYB7qQYWydSwvCNKGoTZq6KvUe8TWBgPFY\\"],\\"routingKeys\\":null,\\"serviceEndpoint\\":\\"https://agency.com/agency/msg\\"}",
+  "payload": Object {
+    "@id": "7bf4f041-5ed4-4246-b309-396aeae830ab",
+    "@type": "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/connections/1.0/invitation",
+    "recipientKeys": Array [
+      "6B5wQFpWbwJYB7qQYWydSwvCNKGoTZq6KvUe8TWBgPFY",
+    ],
+    "routingKeys": null,
+    "serviceEndpoint": "https://agency.com/agency/msg",
+  },
+  "type": "ARIES_V1_QR",
+  "version": "1.0",
+}
+`;
+
+exports[`qr-code-aries::connection-invite should return AriesConnectionInvite if label is null 1`] = `
+Object {
+  "original": "{\\"@id\\":\\"7bf4f041-5ed4-4246-b309-396aeae830ab\\",\\"@type\\":\\"did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/connections/1.0/invitation\\",\\"label\\":null,\\"recipientKeys\\":[\\"6B5wQFpWbwJYB7qQYWydSwvCNKGoTZq6KvUe8TWBgPFY\\"],\\"routingKeys\\":null,\\"serviceEndpoint\\":\\"https://agency.com/agency/msg\\"}",
+  "payload": Object {
+    "@id": "7bf4f041-5ed4-4246-b309-396aeae830ab",
+    "@type": "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/connections/1.0/invitation",
+    "label": null,
+    "recipientKeys": Array [
+      "6B5wQFpWbwJYB7qQYWydSwvCNKGoTZq6KvUe8TWBgPFY",
+    ],
+    "routingKeys": null,
+    "serviceEndpoint": "https://agency.com/agency/msg",
+  },
+  "type": "ARIES_V1_QR",
+  "version": "1.0",
+}
+`;
+
+exports[`qr-code-aries::connection-invite should return AriesConnectionInvite if routingKeys is not present 1`] = `
+Object {
+  "original": "{\\"@id\\":\\"7bf4f041-5ed4-4246-b309-396aeae830ab\\",\\"@type\\":\\"did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/connections/1.0/invitation\\",\\"label\\":\\"alice\\",\\"recipientKeys\\":[\\"6B5wQFpWbwJYB7qQYWydSwvCNKGoTZq6KvUe8TWBgPFY\\"],\\"serviceEndpoint\\":\\"https://agency.com/agency/msg\\"}",
+  "payload": Object {
+    "@id": "7bf4f041-5ed4-4246-b309-396aeae830ab",
+    "@type": "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/connections/1.0/invitation",
+    "label": "alice",
+    "recipientKeys": Array [
+      "6B5wQFpWbwJYB7qQYWydSwvCNKGoTZq6KvUe8TWBgPFY",
+    ],
+    "serviceEndpoint": "https://agency.com/agency/msg",
+  },
+  "type": "ARIES_V1_QR",
+  "version": "1.0",
+}
+`;
+
+exports[`qr-code-aries::connection-invite should return AriesConnectionInvite if routingKeys is null 1`] = `
+Object {
+  "original": "{\\"@id\\":\\"7bf4f041-5ed4-4246-b309-396aeae830ab\\",\\"@type\\":\\"did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/connections/1.0/invitation\\",\\"label\\":\\"alice\\",\\"recipientKeys\\":[\\"6B5wQFpWbwJYB7qQYWydSwvCNKGoTZq6KvUe8TWBgPFY\\"],\\"routingKeys\\":null,\\"serviceEndpoint\\":\\"https://agency.com/agency/msg\\"}",
+  "payload": Object {
+    "@id": "7bf4f041-5ed4-4246-b309-396aeae830ab",
+    "@type": "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/connections/1.0/invitation",
+    "label": "alice",
+    "recipientKeys": Array [
+      "6B5wQFpWbwJYB7qQYWydSwvCNKGoTZq6KvUe8TWBgPFY",
+    ],
+    "routingKeys": null,
+    "serviceEndpoint": "https://agency.com/agency/msg",
+  },
+  "type": "ARIES_V1_QR",
+  "version": "1.0",
+}
+`;

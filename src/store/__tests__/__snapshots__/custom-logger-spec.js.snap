@@ -1,0 +1,234 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`fn:PiiHiddenActionTransformer should hide PII in TOKEN_SENT_SUCCESS 1`] = `
+Object {
+  "payment": Object {
+    "error": null,
+    "status": "SUCCESS",
+    "tokenAmount": "****",
+  },
+  "type": "TOKEN_SENT_SUCCESS",
+}
+`;
+
+exports[`fn:PiiHiddenActionTransformer should hide PII in WALLET_ADDRESSES_REFRESHED 1`] = `
+Object {
+  "type": "WALLET_ADDRESSES_REFRESHED",
+  "walletAddresses": Object {
+    "data": "****",
+    "error": null,
+    "status": "SUCCESS",
+  },
+}
+`;
+
+exports[`fn:PiiHiddenActionTransformer should hide PII in WALLET_BALANCE_REFRESHED 1`] = `
+Object {
+  "type": "WALLET_BALANCE_REFRESHED",
+  "walletBalance": Object {
+    "data": "****",
+    "error": null,
+    "status": "SUCCESS",
+  },
+}
+`;
+
+exports[`fn:PiiHiddenActionTransformer should hide PII in WALLET_HISTORY_REFRESHED 1`] = `
+Object {
+  "type": "WALLET_HISTORY_REFRESHED",
+  "walletHistory": Object {
+    "error": null,
+    "status": "SUCCESS",
+    "transactions": "****",
+  },
+}
+`;
+
+exports[`fn:PiiHiddenActionTransformer should hide data Passphrase from action logging 1`] = `
+Object {
+  "passphrase": "****",
+  "status": "GENERATE_PHRASE_SUCCESS",
+  "type": "GENERATE_RECOVERY_PHRASE_SUCCESS",
+}
+`;
+
+exports[`fn:PiiHiddenActionTransformer should hide senderDID and pairwiseDID in MAP_CLAIM_TO_SENDER 1`] = `
+Object {
+  "claimUuid": "****",
+  "issueDate": "****",
+  "logoUrl": "****",
+  "myPairwiseDID": "****",
+  "name": "****",
+  "senderDID": "****",
+  "senderName": "****",
+  "type": "MAP_CLAIM_TO_SENDER",
+}
+`;
+
+exports[`fn:PiiHiddenTransformer should hide all PII information with **** 1`] = `
+Object {
+  "backup": Object {
+    "backupWalletPath": "/Users/CoreSimulator/Devices/5F89AA14-B694-465F-82C3-838552AB4B85/data/Containers/Data/Application/4536A441-4B70-4A30-8DCC-5274E6781535/Documents/backup.zip",
+    "cloudBackupPending": false,
+    "error": null,
+    "lastSuccessfulBackup": "2018-06-27T18:27:35+05:30",
+    "lastSuccessfulCloudBackup": "2018-06-27T18:27:35+05:30",
+    "passphrase": "****",
+    "prepareBackupStatus": "PREPARE_BACKUP_SUCCESS",
+    "showBanner": true,
+    "status": "BACKUP_COMPLETE",
+  },
+  "claim": "****",
+  "claimOffer": "****",
+  "config": Object {
+    "agencyDID": "****",
+    "agencyUrl": "****",
+    "agencyVerificationKey": "****",
+    "isAlreadyInstalled": true,
+    "isHydrated": false,
+    "isInitialized": false,
+    "paymentMethod": "sov",
+    "poolConfig": "****",
+    "showErrorAlerts": false,
+    "vcxInitializationError": null,
+    "vcxInitializationState": "VCX_INIT_SUCCESS",
+    "vcxPoolInitializationError": null,
+    "vcxPoolInitializationState": "VCX_INIT_POOL_SUCCESS",
+  },
+  "connections": Object {
+    "connectionThemes": Object {
+      "default": Object {
+        "primary": "rgba(119, 119, 119, 1.0)",
+        "secondary": "rgba(119, 119, 119, 0.6)",
+      },
+    },
+    "data": "****",
+    "oneTimeConnections": "****",
+  },
+  "deepLink": Object {
+    "error": undefined,
+    "isLoading": true,
+    "tokens": "****",
+  },
+  "eula": Object {
+    "isEulaAccept": true,
+  },
+  "history": Object {
+    "data": "****",
+    "isLoading": true,
+  },
+  "inAppNotification": Object {
+    "notification": "****",
+  },
+  "invitation": "****",
+  "ledger": Object {
+    "fees": Object {
+      "data": Object {
+        "refreshTime": "2018-01-10T04:32:43+05:30",
+        "transfer": "0.00001",
+      },
+      "error": null,
+      "status": "SUCCESS",
+    },
+  },
+  "lock": Object {
+    "checkPinStatus": "CHECK_PIN_IDLE",
+    "inRecovery": "false",
+    "isAppLocked": false,
+    "isLockEnabled": "true",
+    "isTouchIdEnabled": true,
+    "pendingRedirection": undefined,
+    "showDevMode": false,
+  },
+  "offline": Object {
+    "offline": false,
+  },
+  "onfido": Object {
+    "applicantId": null,
+    "error": null,
+    "onfidoConnectionStatus": "IDLE",
+    "onfidoDid": null,
+    "status": "IDLE",
+  },
+  "openIdConnect": "****",
+  "proof": "****",
+  "proofRequest": "****",
+  "pushNotification": Object {
+    "error": undefined,
+    "isAllowed": true,
+    "isFetching": false,
+    "isPristine": true,
+    "navigateRoute": undefined,
+    "notification": "****",
+    "pendingFetchAdditionalDataKey": undefined,
+    "pushToken": "****",
+  },
+  "question": Object {
+    "data": "****",
+    "storageStatus": "RESTORE_SUCCESS",
+  },
+  "restore": Object {
+    "error": null,
+    "passphrase": null,
+    "restoreFile": Object {
+      "fileName": "backup.zip",
+      "fileSize": 22,
+      "type": "application/zip",
+      "uri": "file://data/Containers/Data/Application/021D78D1-044B-4874-BE8D-EC71781CA978/tmp/com.evernym.connectme.callcenter-Inbox/backup.zip",
+    },
+    "status": "none",
+  },
+  "route": Object {
+    "currentScreen": "TabQRCodeScanner",
+    "timeStamp": 1557756720914,
+  },
+  "sendlogs": Object {
+    "encryptLogStatus": false,
+  },
+  "smsPendingInvitation": "****",
+  "txnAuthorAgreement": Object {
+    "haveAlreadySignedAgreement": false,
+    "status": "IDLE",
+    "taaAcceptedVersion": "",
+    "text": "",
+    "thereIsANewAgreement": false,
+    "version": "",
+  },
+  "user": Object {
+    "avatarName": "user-avatar.jpeg",
+    "error": null,
+    "isFetching": false,
+    "userOneTimeInfo": "****",
+  },
+  "wallet": Object {
+    "backup": Object {
+      "backupPath": "test_backup_path",
+      "encryptionKey": "****",
+      "error": null,
+      "fileStatus": "IDLE",
+      "latest": "2017-09-06T00:00:00+05:30",
+      "status": "IDLE",
+    },
+    "payment": Object {
+      "error": null,
+      "status": "SUCCESS",
+      "tokenAmount": "****",
+    },
+    "walletAddresses": Object {
+      "data": "****",
+      "error": null,
+      "status": "SUCCESS",
+    },
+    "walletBalance": Object {
+      "data": "****",
+      "error": null,
+      "status": "SUCCESS",
+    },
+    "walletHistory": Object {
+      "error": null,
+      "status": "SUCCESS",
+      "transactions": "****",
+    },
+  },
+}
+`;

@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<LedgerFees /> should call TRANSFER_NOT_POSSIBLE_WITH_FEES with correct fees data 1`] = `
+<View>
+  <Text>
+    TRANSFER_NOT_POSSIBLE_WITH_FEES
+  </Text>
+</View>
+`;
+
+exports[`<LedgerFees /> should call TRANSFER_POSSIBLE_WITH_FEES with correct fees data 1`] = `
+<View>
+  <Text>
+    TRANSFER_POSSIBLE_WITH_FEES
+  </Text>
+</View>
+`;
+
+exports[`<LedgerFees /> should render IN_PROGRESS component if balance is in progress 1`] = `
+<View>
+  <Text>
+    In progress...
+  </Text>
+</View>
+`;
+
+exports[`<LedgerFees /> should render IN_PROGRESS component if both balance and fees are in progress 1`] = `
+<View>
+  <Text>
+    In progress...
+  </Text>
+</View>
+`;
+
+exports[`<LedgerFees /> should render IN_PROGRESS component if fees is in progress 1`] = `
+<View>
+  <Text>
+    In progress...
+  </Text>
+</View>
+`;
+
+exports[`<LedgerFees /> should render ZERO component if fees is zero 1`] = `
+<View>
+  <Text>
+    zero fees
+  </Text>
+</View>
+`;

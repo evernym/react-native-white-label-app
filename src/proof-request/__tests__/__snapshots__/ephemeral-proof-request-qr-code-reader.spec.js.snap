@@ -1,0 +1,148 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ephemeral-proof-request-qr-code-reader should match valid ephemeral proof request qr code 1`] = `
+Object {
+  "proofRequest": Object {
+    "ephemeralProofRequest": Object {
+      "@id": "7bf4f041-5ed4-4246-b309-396aeae830bc",
+      "@type": "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/connections/1.0/invitation",
+      "comment": "Sender Name",
+      "request_presentations~attach": Array [
+        Object {
+          "@id": "7bf4f041-5ed4-4246-b309-396aeae830cd",
+          "data": Object {
+            "base64": "oihkadnkfnakfadfda=/",
+          },
+          "mime-type": "application/json",
+        },
+      ],
+      "~service": Object {
+        "recipientKeys": Array [
+          "6B5wQFpWbwJYB7qQYWydSwvCNKGoTZq6KvUe8TWBgPFY",
+        ],
+        "routingKeys": Array [
+          "7re7C6zmg3p1r1hzHZSQJgt27wbycLeuzgopq1xNZqs6",
+          "7G3LhXFKXKTMv7XGx1Qc9wqkMbwcU2iLBHL8x1JXWWC2",
+        ],
+        "serviceEndpoint": "https://agency.com/agency/msg",
+      },
+    },
+    "originalMessage": "{\\"@id\\":\\"7bf4f041-5ed4-4246-b309-396aeae830bc\\",\\"@type\\":\\"did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/connections/1.0/invitation\\",\\"request_presentations~attach\\":[{\\"@id\\":\\"7bf4f041-5ed4-4246-b309-396aeae830cd\\",\\"mime-type\\":\\"application/json\\",\\"data\\":{\\"base64\\":\\"oihkadnkfnakfadfda=/\\"}}],\\"comment\\":\\"Sender Name\\",\\"~service\\":{\\"recipientKeys\\":[\\"6B5wQFpWbwJYB7qQYWydSwvCNKGoTZq6KvUe8TWBgPFY\\"],\\"routingKeys\\":[\\"7re7C6zmg3p1r1hzHZSQJgt27wbycLeuzgopq1xNZqs6\\",\\"7G3LhXFKXKTMv7XGx1Qc9wqkMbwcU2iLBHL8x1JXWWC2\\"],\\"serviceEndpoint\\":\\"https://agency.com/agency/msg\\"}}",
+    "proofRequestPayload": Object {
+      "data": Object {
+        "name": "proof_req_1",
+        "requestedAttributes": Array [
+          Object {
+            "label": "Address 1",
+            "type": "FILLED_ATTRIBUTE",
+            "values": Object {
+              "Address 1": "",
+            },
+          },
+          Object {
+            "label": "Address 2",
+            "type": "FILLED_ATTRIBUTE",
+            "values": Object {
+              "Address 2": "",
+            },
+          },
+        ],
+        "version": "0.1",
+      },
+      "ephemeralProofRequest": "{\\"@id\\":\\"7bf4f041-5ed4-4246-b309-396aeae830bc\\",\\"@type\\":\\"did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/connections/1.0/invitation\\",\\"request_presentations~attach\\":[{\\"@id\\":\\"7bf4f041-5ed4-4246-b309-396aeae830cd\\",\\"mime-type\\":\\"application/json\\",\\"data\\":{\\"base64\\":\\"oihkadnkfnakfadfda=/\\"}}],\\"comment\\":\\"Sender Name\\",\\"~service\\":{\\"recipientKeys\\":[\\"6B5wQFpWbwJYB7qQYWydSwvCNKGoTZq6KvUe8TWBgPFY\\"],\\"routingKeys\\":[\\"7re7C6zmg3p1r1hzHZSQJgt27wbycLeuzgopq1xNZqs6\\",\\"7G3LhXFKXKTMv7XGx1Qc9wqkMbwcU2iLBHL8x1JXWWC2\\"],\\"serviceEndpoint\\":\\"https://agency.com/agency/msg\\"}}",
+      "originalProofRequestData": Object {
+        "name": "proof_req_1",
+        "nonce": "123432421212",
+        "requested_attributes": Object {
+          "attr1_uuid": Object {
+            "name": "Address 1",
+          },
+          "attr2_uuid": Object {
+            "name": "Address 2",
+          },
+        },
+        "requested_predicates": Object {},
+        "version": "0.1",
+      },
+      "outofbandProofRequest": undefined,
+      "proofHandle": 0,
+      "requester": Object {
+        "name": "Sender Name",
+      },
+    },
+  },
+  "type": "EPHEMERAL_PROOF_REQUEST_V1",
+}
+`;
+
+exports[`ephemeral-proof-request-qr-code-reader should match valid ephemeral proof request with null comment, and null routingKeys 1`] = `
+Object {
+  "proofRequest": Object {
+    "ephemeralProofRequest": Object {
+      "@id": "7bf4f041-5ed4-4246-b309-396aeae830bc",
+      "@type": "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/connections/1.0/invitation",
+      "comment": null,
+      "request_presentations~attach": Array [
+        Object {
+          "@id": "7bf4f041-5ed4-4246-b309-396aeae830cd",
+          "data": Object {
+            "base64": "oihkadnkfnakfadfda=/",
+          },
+          "mime-type": "application/json",
+        },
+      ],
+      "~service": Object {
+        "recipientKeys": Array [
+          "6B5wQFpWbwJYB7qQYWydSwvCNKGoTZq6KvUe8TWBgPFY",
+        ],
+        "routingKeys": null,
+        "serviceEndpoint": "https://agency.com/agency/msg",
+      },
+    },
+    "originalMessage": "{\\"@id\\":\\"7bf4f041-5ed4-4246-b309-396aeae830bc\\",\\"@type\\":\\"did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/connections/1.0/invitation\\",\\"request_presentations~attach\\":[{\\"@id\\":\\"7bf4f041-5ed4-4246-b309-396aeae830cd\\",\\"mime-type\\":\\"application/json\\",\\"data\\":{\\"base64\\":\\"oihkadnkfnakfadfda=/\\"}}],\\"comment\\":null,\\"~service\\":{\\"recipientKeys\\":[\\"6B5wQFpWbwJYB7qQYWydSwvCNKGoTZq6KvUe8TWBgPFY\\"],\\"routingKeys\\":null,\\"serviceEndpoint\\":\\"https://agency.com/agency/msg\\"}}",
+    "proofRequestPayload": Object {
+      "data": Object {
+        "name": "proof_req_1",
+        "requestedAttributes": Array [
+          Object {
+            "label": "Address 1",
+            "type": "FILLED_ATTRIBUTE",
+            "values": Object {
+              "Address 1": "",
+            },
+          },
+          Object {
+            "label": "Address 2",
+            "type": "FILLED_ATTRIBUTE",
+            "values": Object {
+              "Address 2": "",
+            },
+          },
+        ],
+        "version": "0.1",
+      },
+      "ephemeralProofRequest": "{\\"@id\\":\\"7bf4f041-5ed4-4246-b309-396aeae830bc\\",\\"@type\\":\\"did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/connections/1.0/invitation\\",\\"request_presentations~attach\\":[{\\"@id\\":\\"7bf4f041-5ed4-4246-b309-396aeae830cd\\",\\"mime-type\\":\\"application/json\\",\\"data\\":{\\"base64\\":\\"oihkadnkfnakfadfda=/\\"}}],\\"comment\\":null,\\"~service\\":{\\"recipientKeys\\":[\\"6B5wQFpWbwJYB7qQYWydSwvCNKGoTZq6KvUe8TWBgPFY\\"],\\"routingKeys\\":null,\\"serviceEndpoint\\":\\"https://agency.com/agency/msg\\"}}",
+      "originalProofRequestData": Object {
+        "name": "proof_req_1",
+        "nonce": "123432421212",
+        "requested_attributes": Object {
+          "attr1_uuid": Object {
+            "name": "Address 1",
+          },
+          "attr2_uuid": Object {
+            "name": "Address 2",
+          },
+        },
+        "requested_predicates": Object {},
+        "version": "0.1",
+      },
+      "outofbandProofRequest": undefined,
+      "proofHandle": 0,
+      "requester": Object {
+        "name": "Unknown",
+      },
+    },
+  },
+  "type": "EPHEMERAL_PROOF_REQUEST_V1",
+}
+`;

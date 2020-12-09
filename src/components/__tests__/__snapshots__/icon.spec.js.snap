@@ -1,0 +1,78 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Icon /> should match snapshot 1`] = `
+<View
+  accessibilityLabel="test-icon-test"
+  accessible={true}
+  center={true}
+  clearBg={true}
+  extraLarge={true}
+  halo={true}
+  iconStyle={
+    Array [
+      Object {
+        "width": 90,
+      },
+    ]
+  }
+  resizeMode="cover"
+  src={
+    Object {
+      "default": "RelativeImageStub",
+    }
+  }
+  style={
+    Object {
+      "alignItems": "center",
+      "backgroundColor": "transparent",
+      "fontSize": 15,
+      "justifyContent": "center",
+    }
+  }
+  testID="test-icon-test"
+>
+  <View
+    center={true}
+    style={
+      Object {
+        "alignItems": "center",
+        "backgroundColor": "rgba(0,0,0,0.07)",
+        "borderRadius": 50,
+        "height": 100,
+        "justifyContent": "center",
+        "width": 100,
+      }
+    }
+  >
+    <View
+      style={Object {}}
+    >
+      <Image
+        accessibilityLabel="test-icon-test"
+        accessible={true}
+        resizeMode="cover"
+        source={
+          Object {
+            "default": "RelativeImageStub",
+          }
+        }
+        style={
+          Array [
+            Object {
+              "height": 80,
+              "width": 80,
+            },
+            Object {
+              "borderRadius": 40,
+            },
+            Object {
+              "width": 90,
+            },
+          ]
+        }
+        testID="test-icon-test"
+      />
+    </View>
+  </View>
+</View>
+`;
