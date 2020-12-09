@@ -301,6 +301,14 @@ export const HomeInstructionsContent = () => {
 
 ### Navigation drawer
 
+You can rename navigation options by providing following object in `navigator.js`:
+```javascript
+export const navigationOptions = {
+  connections: { label: 'Label for Connections' },
+  credentials: { label: 'Label for Credentials' },
+}
+```
+
 You can provide component to be displayed in the navigation drawer at the bottom, below the navigation section.
 
 You can provide contents for the footer like this:
@@ -337,6 +345,24 @@ export const SERVER_ENVIRONMENTS = {
       '{"reqSignature":{},"txn":{"data": pool config data},"ver":"1"}',
     paymentMethod: 'sov',
   },
+```
+
+### Collecting log information
+
+You can collect encrypted log information by email.
+Email and encryption information is provided in `logs.js`.
+
+You can provide key or URL to the file containing key.
+
+Sample configuration could be:
+
+```javascript
+export const SEND_LOGS_EMAIL = 'support@app.com'
+export let CUSTOM_LOG_UTILS = {
+  publicKeyUrl: 'https://app.com/sendlogs.public.encryption.key.txt',
+  encryptionKey: '',
+}
+
 ```
 
 ### Further customization
