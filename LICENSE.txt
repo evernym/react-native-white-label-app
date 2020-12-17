@@ -1,12 +1,12 @@
 Evernym, Inc.
-Verity
+Mobile SDK
 Business Source License 1.1
 
 Parameters
 
 Licensor:             Evernym, Inc.
 
-Licensed Work:        Verity 
+Licensed Work:        Mobile SDK 
                       and the components thereof, to the extent and only to  
                       the extent contained in the code repository set forth at  
                       https://github.com/evernym/verity  
