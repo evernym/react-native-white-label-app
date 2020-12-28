@@ -93,9 +93,7 @@
     "react-native-version-number": "^0.3.6",
     "react-native-webview": "10.1.1",
     "react-native-zip-archive": "5.0.2",
-    "rn-fetch-blob": "0.12.0"
-  },
-  "dependencies": {
+    "rn-fetch-blob": "0.12.0",
     "@types/color": "^3.0.1",
     "ajv": "^6.12.2",
     "bignumber.js": "^9.0.0",
