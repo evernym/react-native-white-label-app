@@ -13,7 +13,8 @@ Pod::Spec.new do |s|
   s.authors      = { "Evernym Inc." => "info@evernym.com" }
   s.platforms    = { :ios => "9.0" }
   s.source       = { :git => "https://gitlab.corp.evernym.com/dev/connectme/react-native-evernym-sdk.git", :tag => "#{s.version}" }
-
+  s.swift_version = '4.0'
+  
   s.source_files = "ios/**/*.{h,c,m,swift}"
   s.requires_arc = true
 
