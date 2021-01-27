@@ -19,12 +19,13 @@
     "lint": "flow && eslint src",
     "configure": "yarn --cwd ../../.. copyfiles -su 4 'node_modules/@dev/react-native-evernym-sdk/src/evernym-sdk/*.js' 'node_modules/@dev/react-native-evernym-sdk/src/evernym-sdk/images/*.png' ./app && echo 'Evernym React Native SDK configured successfully'",
     "pod:update": "pod repo update",
-    "pod:dev:install": "cd ios && CONNECTME_DEBUG=true pod install"
+    "pod:dev:install": "cd ios && CONNECTME_DEBUG=true pod install",
+    "evernym-sdk:configure": "yarn --cwd node_modules/react-native-evernym-sdk run configure"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://git@gitlab.corp.evernym.com/dev/connectme/react-native-evernym-sdk.git",
-    "baseUrl": "https://gitlab.corp.evernym.com/dev/connectme/react-native-evernym-sdk.git"
+    "url": "https://github.com/evernym/react-native-evernym-sdk.git",
+    "baseUrl": "https://github.com/evernym/react-native-evernym-sdk.git"
   },
   "keywords": [
     "ssi",
@@ -98,7 +99,6 @@
     "react-native-zip-archive": "5.0.2",
     "rn-fetch-blob": "0.12.0",
     "@types/color": "^3.0.1",
-    "rn-fetch-blob": "0.12.0"
     "ajv": "^6.12.2",
     "bignumber.js": "^9.0.0",
     "color": "^3.1.2",
