@@ -537,7 +537,7 @@ exports[`<QuestionActions /> when one response is present render Ignore and resp
           }
         >
           <View
-            accessibilityLabel="akdfakjfkjdaadkgak-submit"
+            accessibilityLabel="Yes"
             accessibilityRole="button"
             accessibilityState={
               Object {
@@ -565,7 +565,7 @@ exports[`<QuestionActions /> when one response is present render Ignore and resp
                 "opacity": 1,
               }
             }
-            testID="akdfakjfkjdaadkgak-submit"
+            testID="Yes"
           >
             <View
               style={
@@ -828,6 +828,93 @@ exports[`<QuestionActions /> when two responses are present render both response
       <View
         style={
           Object {
+            "backgroundColor": "#86B93B",
+            "borderColor": "#86B93B",
+            "borderRadius": 5,
+            "borderWidth": 1,
+            "marginBottom": 15,
+            "minHeight": 56,
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "borderRadius": 3,
+              "marginLeft": 0,
+              "marginRight": 0,
+              "overflow": "hidden",
+            }
+          }
+        >
+          <View
+            accessibilityLabel="Answer 1"
+            accessibilityRole="button"
+            accessibilityState={
+              Object {
+                "busy": false,
+                "disabled": false,
+              }
+            }
+            accessible={true}
+            focusable={true}
+            isTVSelectable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              Object {
+                "backgroundColor": "#86B93B",
+                "borderColor": "#86B93B",
+                "borderRadius": 5,
+                "borderWidth": 0,
+                "height": 56,
+                "opacity": 1,
+              }
+            }
+            testID="Answer 1"
+          >
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "backgroundColor": "#01C8A1",
+                  "borderColor": "#86B93B",
+                  "borderRadius": 5,
+                  "borderWidth": 0,
+                  "color": "#ffffff",
+                  "flexDirection": "row",
+                  "height": 56,
+                  "justifyContent": "center",
+                  "padding": 8,
+                  "textAlign": "center",
+                }
+              }
+            >
+              <Text
+                style={
+                  Object {
+                    "color": "white",
+                    "fontSize": 18,
+                    "paddingBottom": 1,
+                    "paddingTop": 2,
+                    "textAlign": "center",
+                  }
+                }
+              >
+                Answer 1
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+      <View
+        style={
+          Object {
             "borderColor": "#CE0B24",
             "borderRadius": 5,
             "borderWidth": 1,
@@ -847,7 +934,7 @@ exports[`<QuestionActions /> when two responses are present render both response
           }
         >
           <View
-            accessibilityLabel="No-submit"
+            accessibilityLabel="Answer 2"
             accessibilityRole="button"
             accessibilityState={
               Object {
@@ -874,7 +961,7 @@ exports[`<QuestionActions /> when two responses are present render both response
                 "opacity": 1,
               }
             }
-            testID="No-submit"
+            testID="Answer 2"
           >
             <View
               style={
@@ -906,93 +993,6 @@ exports[`<QuestionActions /> when two responses are present render both response
                 }
               >
                 Answer 2
-              </Text>
-            </View>
-          </View>
-        </View>
-      </View>
-      <View
-        style={
-          Object {
-            "backgroundColor": "#86B93B",
-            "borderColor": "#86B93B",
-            "borderRadius": 5,
-            "borderWidth": 1,
-            "marginBottom": 15,
-            "minHeight": 56,
-          }
-        }
-      >
-        <View
-          style={
-            Object {
-              "borderRadius": 3,
-              "marginLeft": 0,
-              "marginRight": 0,
-              "overflow": "hidden",
-            }
-          }
-        >
-          <View
-            accessibilityLabel="YES-submit"
-            accessibilityRole="button"
-            accessibilityState={
-              Object {
-                "busy": false,
-                "disabled": false,
-              }
-            }
-            accessible={true}
-            focusable={true}
-            isTVSelectable={true}
-            onClick={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
-            style={
-              Object {
-                "backgroundColor": "#86B93B",
-                "borderColor": "#86B93B",
-                "borderRadius": 5,
-                "borderWidth": 0,
-                "height": 56,
-                "opacity": 1,
-              }
-            }
-            testID="YES-submit"
-          >
-            <View
-              style={
-                Object {
-                  "alignItems": "center",
-                  "backgroundColor": "#01C8A1",
-                  "borderColor": "#86B93B",
-                  "borderRadius": 5,
-                  "borderWidth": 0,
-                  "color": "#ffffff",
-                  "flexDirection": "row",
-                  "height": 56,
-                  "justifyContent": "center",
-                  "padding": 8,
-                  "textAlign": "center",
-                }
-              }
-            >
-              <Text
-                style={
-                  Object {
-                    "color": "white",
-                    "fontSize": 18,
-                    "paddingBottom": 1,
-                    "paddingTop": 2,
-                    "textAlign": "center",
-                  }
-                }
-              >
-                Answer 1
               </Text>
             </View>
           </View>

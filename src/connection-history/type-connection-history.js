@@ -13,6 +13,7 @@ import type {
 } from '../invitation/type-invitation'
 import type {
   ConnectionFailAction,
+  DeleteConnectionSuccessEventAction,
   NewConnectionAction,
   NewConnectionSuccessAction,
 } from '../store/type-connection-store'
@@ -28,7 +29,6 @@ import type {
   ProofRequestReceivedAction,
   SendProofSuccessAction,
   AdditionalProofDataPayload,
-  AcceptOutofbandPresentationRequestAction,
 } from '../proof-request/type-proof-request'
 import type { UpdateAttributeClaimAction } from '../proof/type-proof'
 import type {
@@ -76,13 +76,17 @@ import {
 } from '../question/type-question'
 import {
   CONNECTION_FAIL,
+  CONNECTION_REQUEST_SENT,
+  DELETE_CONNECTION_SUCCESS,
   NEW_CONNECTION_SUCCESS,
 } from '../store/type-connection-store'
+import type { QuestionReceivedAction } from '../question/type-question'
 
 export const HISTORY_EVENT_STATUS = {
   [INVITATION_RECEIVED]: 'CONNECTION REQUEST',
   [NEW_CONNECTION_SUCCESS]: 'CONNECTED',
   [INVITATION_ACCEPTED]: INVITATION_ACCEPTED,
+  [CONNECTION_REQUEST_SENT]: CONNECTION_REQUEST_SENT,
   [CONNECTION_FAIL]: CONNECTION_FAIL,
   [INVITATION_REJECTED]: 'CONNECTION REJECTED',
   [SEND_CLAIM_REQUEST_SUCCESS]: 'PENDING',
@@ -109,6 +113,7 @@ export const HISTORY_EVENT_STATUS = {
   [PAID_CREDENTIAL_REQUEST_FAIL]: PAID_CREDENTIAL_REQUEST_FAIL,
   [UPDATE_ATTRIBUTE_CLAIM]: UPDATE_ATTRIBUTE_CLAIM,
   [ERROR_SEND_PROOF]: ERROR_SEND_PROOF,
+  [DELETE_CONNECTION_SUCCESS]: DELETE_CONNECTION_SUCCESS,
 }
 
 export type HistoryEventStatus = $Keys<typeof HISTORY_EVENT_STATUS>
@@ -127,9 +132,11 @@ export const EventTypeToEventStatusMap = {
   INVITATION: [
     INVITATION_RECEIVED,
     INVITATION_ACCEPTED,
+    CONNECTION_REQUEST_SENT,
     NEW_CONNECTION_SUCCESS,
     INVITATION_REJECTED,
     CONNECTION_FAIL,
+    DELETE_CONNECTION_SUCCESS,
   ],
   CLAIM: [
     CLAIM_OFFER_RECEIVED,
@@ -163,6 +170,8 @@ export type ConnectionHistoryEvent = {
   originalPayload: GenericObject,
   showBadge?: boolean,
   payTokenValue?: string,
+  senderName?: ?string,
+  senderLogoUrl?: ?string,
 }
 
 export type ConnectionHistoryItem = {
@@ -243,8 +252,9 @@ export type HistoryEventOccurredEventType =
   | UpdateAttributeClaimAction
   | InvitationAcceptedAction
   | ConnectionFailAction
+  | DeleteConnectionSuccessEventAction
+  | QuestionReceivedAction
   | OutofbandClaimOfferAcceptedAction
-  | AcceptOutofbandPresentationRequestAction
 
 export type HistoryEventOccurredAction = {
   type: typeof HISTORY_EVENT_OCCURRED,
@@ -263,6 +273,12 @@ export const DELETE_HISTORY_EVENT = 'DELETE_HISTORY_EVENT'
 export type DeleteHistoryEventAction = {
   type: typeof DELETE_HISTORY_EVENT,
   historyEvent: ConnectionHistoryEvent,
+}
+
+export const DELETE_PENDING_HISTORY_EVENTS = 'DELETE_PENDING_HISTORY_EVENTS'
+export type DeletePendingHistoryEventsAction = {
+  type: typeof DELETE_PENDING_HISTORY_EVENTS,
+  senderDID: string,
 }
 
 export const SHOW_USER_BACKUP_ALERT = 'SHOW_USER_BACKUP_ALERT'
@@ -333,3 +349,33 @@ export type RemoveEventAction = {
   uid: string,
   navigationRoute: string,
 }
+
+export const LOADING_ACTIONS = [
+  'PENDING',
+  HISTORY_EVENT_STATUS[INVITATION_ACCEPTED],
+  HISTORY_EVENT_STATUS[CLAIM_OFFER_ACCEPTED],
+  HISTORY_EVENT_STATUS[SEND_CLAIM_REQUEST_SUCCESS],
+  HISTORY_EVENT_STATUS[PROOF_REQUEST_ACCEPTED],
+  HISTORY_EVENT_STATUS[UPDATE_ATTRIBUTE_CLAIM],
+  HISTORY_EVENT_STATUS[DENY_PROOF_REQUEST],
+  HISTORY_EVENT_STATUS[DENY_CLAIM_OFFER],
+]
+
+export const PENDING_ACTIONS = [
+  'PENDING',
+  HISTORY_EVENT_STATUS[INVITATION_ACCEPTED],
+  HISTORY_EVENT_STATUS[CLAIM_OFFER_RECEIVED],
+  HISTORY_EVENT_STATUS[CLAIM_OFFER_ACCEPTED],
+  HISTORY_EVENT_STATUS[SEND_CLAIM_REQUEST_SUCCESS],
+  HISTORY_EVENT_STATUS[PROOF_REQUEST_RECEIVED],
+  HISTORY_EVENT_STATUS[PROOF_REQUEST_ACCEPTED],
+  HISTORY_EVENT_STATUS[UPDATE_ATTRIBUTE_CLAIM],
+  HISTORY_EVENT_STATUS[DENY_PROOF_REQUEST],
+  HISTORY_EVENT_STATUS[DENY_CLAIM_OFFER],
+  HISTORY_EVENT_STATUS[QUESTION_RECEIVED],
+  HISTORY_EVENT_STATUS[CONNECTION_FAIL],
+  HISTORY_EVENT_STATUS[SEND_CLAIM_REQUEST_FAIL],
+  HISTORY_EVENT_STATUS[ERROR_SEND_PROOF],
+  HISTORY_EVENT_STATUS[DENY_PROOF_REQUEST_FAIL],
+  HISTORY_EVENT_STATUS[DENY_CLAIM_OFFER_FAIL],
+]

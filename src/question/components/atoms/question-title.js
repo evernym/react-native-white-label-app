@@ -11,7 +11,12 @@ const QuestionTitle = (props: { title: string, questionStyles: any }) => {
       ? props.title
       : `${props.title.substring(0, maxLength)}...`
   return (
-    <CustomView style={props.questionStyles.questionTitle}>
+    <CustomView 
+      style={props.questionStyles.questionTitle}
+      testID={`question-title`}
+      accessible={true}
+      accessibilityLabel={`question-title`}
+    >
       <QuestionScreenText size="h3b">{title}</QuestionScreenText>
     </CustomView>
   )

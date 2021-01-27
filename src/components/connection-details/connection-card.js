@@ -35,6 +35,7 @@ import { CONNECTION_FAIL } from '../../store/type-connection-store'
 import { ResponseType } from '../request/type-request'
 import { sendInvitationResponse } from '../../invitation/invitation-store'
 import { deleteConnectionAction } from '../../store/connections-store'
+import { ExpandableText } from '../expandable-text/expandable-text'
 
 // TODO: Fix the <any, {}> to be the correct types for props and state
 class ConnectionCardComponent extends PureComponent<
@@ -127,7 +128,11 @@ class ConnectionCardComponent extends PureComponent<
               </View>
               <View style={styles.headerWrapper}>
                 <View style={styles.header}>
-                  <Text style={styles.headerText}>{this.props.headerText}</Text>
+                  <ExpandableText
+                    text={this.props.headerText}
+                    style={styles.headerText}
+                    lines={1}
+                  />
                 </View>
                 <View style={styles.infoWrapper}>
                   <Text style={styles.infoType}>{this.props.infoType}</Text>

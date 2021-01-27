@@ -32,6 +32,8 @@ import { UPDATE_ATTRIBUTE_CLAIM, ERROR_SEND_PROOF } from '../proof/type-proof'
 import { INVITATION_ACCEPTED } from '../invitation/type-invitation'
 import {
   CONNECTION_FAIL,
+  DELETE_CONNECTION_SUCCESS,
+  CONNECTION_REQUEST_SENT,
   NEW_CONNECTION_SUCCESS,
 } from '../store/type-connection-store'
 
@@ -43,6 +45,7 @@ const actionToRecord = [
   // is downloaded
   // INVITATION_RECEIVED,
   INVITATION_ACCEPTED,
+  CONNECTION_REQUEST_SENT,
   NEW_CONNECTION_SUCCESS,
   PROOF_REQUEST_RECEIVED,
   CLAIM_OFFER_RECEIVED,
@@ -67,6 +70,7 @@ const actionToRecord = [
   DELETE_CLAIM_SUCCESS,
   CONNECTION_FAIL,
   ACCEPT_OUTOFBAND_PRESENTATION_REQUEST,
+  DELETE_CONNECTION_SUCCESS,
 ]
 
 // TODO:KS Fix any type using `redux` provided Generic Types

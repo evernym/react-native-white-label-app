@@ -35,6 +35,9 @@ const QuestionResponses = (props: {
             labelHorizontal={true}
             key={i}
             style={questionStyles.questionRadioStyle}
+            testID={radioData.label}
+            accessible={true}
+            accessibilityLabel={radioData.label}
           >
             <RadioButtonInput
               obj={radioData}

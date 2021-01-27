@@ -12,6 +12,9 @@ const QuestionText = (props: { text: ?string, questionStyles: any }) => {
       bold={false}
       size="h5"
       style={[props.questionStyles.questionText]}
+      testID={`question-description`}
+      accessible={true}
+      accessibilityLabel={`question-description`}
     >
       {props.text}
     </QuestionScreenText>

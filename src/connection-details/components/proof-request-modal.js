@@ -72,7 +72,6 @@ const mapStateToProps = (state: Store, props: ClaimProofNavigation) => {
     data,
     requester = {},
     remotePairwiseDID,
-    missingAttributes = {},
     senderLogoUrl
   } = proofRequestData
   const { name } = requester

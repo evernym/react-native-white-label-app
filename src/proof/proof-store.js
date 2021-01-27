@@ -76,6 +76,7 @@ import {
   PROOF_REQUEST_AUTO_FILL,
   ATTRIBUTE_TYPE, NO_CRED_NO_SELF_ATTEST, DISSATISFIED_ATTRIBUTE_TYPE,
 } from '../proof-request/type-proof-request'
+import { ensureVcxInitAndPoolConnectSuccess } from '../store/route-store'
 import Snackbar from 'react-native-snackbar'
 import { venetianRed, white } from '../common/styles'
 
@@ -600,8 +601,28 @@ export function* updateAttributeClaimAndSendProof(
   action: UpdateAttributeClaimAction
 ): Generator<*, *, *> {
   try {
+    const vcxResult = yield* ensureVcxInitAndPoolConnectSuccess()
+    if (vcxResult && vcxResult.fail) {
+      yield put(errorSendProofFail(action.uid, action.remoteDid, vcxResult.fail))
+      return
+    }
+    let { proofHandle } = yield select(getProofData, action.uid)
+    if (!proofHandle) {
+      // restore VCX object for proof generation
+      const proofRequestPayload: ProofRequestPayload = yield select(
+        getProofRequest,
+        action.uid
+      )
+      if (proofRequestPayload.vcxSerializedProofRequest) {
+        // it might happen that we won't have serialized proof request
+        // so we guard against it and let fail
+        proofHandle = yield call(proofDeserialize, proofRequestPayload.vcxSerializedProofRequest)
+        yield put(updateProofHandle(proofHandle, action.uid))
+      }
+    }
+
     yield put(clearSendProofFail(action.uid))
-    const { proofHandle } = yield select(getProofData, action.uid)
+
     const requestedAttrsJson = action.requestedAttrsJson
     const selfAttestedAttributes = action.selfAttestedAttrs
     yield put(sendProof(action.uid))
@@ -783,7 +804,7 @@ export default function proofReducer(
         [action.uid]: {
           ...state[action.uid],
           proofData: {
-            ...state[action.uid].proofData,
+            ...state[action.uid] ? state[action.uid].proofData: undefined,
             error: null,
           },
         },

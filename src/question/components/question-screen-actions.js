@@ -90,31 +90,26 @@ function QuestionResponseButtons(props: QuestionResponseButtonsProps) {
     return null
   }
 
-  // as per requirements, we need to render responses in reverse order
-  // so that first response in array is at bottom which is closer
-  // to user's thumb.
-  // below we are slicing first, because `reverse` modifies the original array
-  // and since we are getting this array in props, we don't want to modify props
-  // so first, we create a copy of passed array and then reverse it
-  const reversedResponses = responses.slice().reverse()
-  // Also, only first (or last in reversed array) response in array
-  // is supposed to look green (primary button)
-  // and all other responses needs to look secondary
-  const lastItemIndex = reversedResponses.length - 1
   // if we have only single response, then we need some more business logic
   // as per our requirement, see <QuestionResponseButton /> render method
   // for more logic
-  const isSingleResponse = reversedResponses.length === 1
+  const isSingleResponse = responses.length === 1
 
   return (
     <CustomView>
-      {reversedResponses.map((response: QuestionResponse, index: number) => (
+      {responses.map((response: QuestionResponse, index: number) => (
         <QuestionResponseButton
           response={response}
           key={response.nonce}
           onPress={onPress}
-          isPrimaryResponse={index === lastItemIndex}
+          // Also, only first (or last in reversed array) response in array
+          // is supposed to look green (primary button)
+          // and all other responses needs to look secondary
+          isPrimaryResponse={index === 0}
           isSingleResponse={isSingleResponse}
+          testID={response.text}
+          accessible={true}
+          accessibilityLabel={response.text}
         />
       ))}
     </CustomView>
@@ -162,7 +157,9 @@ const QuestionResponseButton = ({
           isPrimaryResponse && questionStyles.submitButton,
         ]}
         title={buttonText}
-        testID={`${response.nonce ? response.nonce : response.text}-submit`}
+        testID={response.text}
+        accessible={true}
+        accessibilityLabel={response.text}
         onPress={onResponse}
         titleStyle={isPrimaryResponse ? {} : questionStyles.cancelBtnColor}
       />

@@ -53,7 +53,7 @@ import { safeToDownloadSmsInvitation } from '../sms-pending-invitation/sms-pendi
 import { SERVER_ENVIRONMENT } from '../store/type-config-store'
 import { Header } from '../components'
 
-const { width } = Dimensions.get('screen')
+const { width, height } = Dimensions.get('screen')
 
 export class LockSelection extends Component<LockSelectionProps, *> {
   constructor(props: LockSelectionProps) {
@@ -100,6 +100,11 @@ export class LockSelection extends Component<LockSelectionProps, *> {
         )
       })
     }
+  }
+  // width: 411.42857142857144 height: 868.5714285714286
+  // width: 320 height: 675.5555555555555
+  componentDidMount() {
+    console.log('width:', width, 'height:', height)
   }
 
   render() {
@@ -255,6 +260,13 @@ export const lockSelectionScreen = {
   screen: connect(mapStateToProps, mapDispatchToProps)(LockSelection),
 }
 
+const marginHorizontalHandler = (curWidth) => {
+  if (curWidth >= 411) return OFFSET_3X
+  if (curWidth >= 375) return OFFSET_2X
+
+  return OFFSET_1X
+}
+
 const style = StyleSheet.create({
   pinSelectionContainer: {
     paddingBottom: isiPhone5 ? OFFSET_1X / 2 : OFFSET_1X,
@@ -262,7 +274,7 @@ const style = StyleSheet.create({
     flexDirection: 'column',
   },
   devSwitchContainer: {
-    marginHorizontal: OFFSET_3X,
+    marginHorizontal: marginHorizontalHandler(width),
     marginTop: moderateScale(OFFSET_2X),
   },
   devSwitchText: {

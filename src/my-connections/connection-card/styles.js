@@ -27,6 +27,10 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
   },
+  itemFailed: {
+    borderWidth: 2,
+    borderColor: colors.cmRed,
+  },
   initialsContainer: {
     width: 32,
     height: 32,

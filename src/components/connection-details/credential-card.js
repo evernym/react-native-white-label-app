@@ -4,6 +4,7 @@ import { Text, View, StyleSheet, TouchableOpacity } from 'react-native'
 import { proofRequestRoute, claimOfferRoute } from '../../common'
 import { moderateScale } from 'react-native-size-matters'
 import { colors, fontSizes, fontFamily } from '../../common/styles/constant'
+import { ExpandableText } from '../expandable-text/expandable-text'
 
 // TODO: Fix the <any, {}> to be the correct types for props and state
 class CredentialCard extends PureComponent<any, {}> {
@@ -19,14 +20,16 @@ class CredentialCard extends PureComponent<any, {}> {
     return (
       <View style={styles.container}>
         <Text style={styles.messageDate}>{this.props.messageDate}</Text>
-        <Text style={styles.messageTitle}>{this.props.messageTitle}</Text>
-        <Text
+        <ExpandableText
+          text={this.props.messageTitle}
+          style={styles.messageTitle}
+          lines={1}
+        />
+        <ExpandableText
+          text={this.props.messageContent}
           style={styles.messageContent}
-          numberOfLines={1}
-          ellipsizeMode="tail"
-        >
-          {this.props.messageContent}
-        </Text>
+          lines={1}
+        />
         <View
           style={[
             styles.buttonsWrapper,

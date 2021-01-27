@@ -10,6 +10,92 @@ exports[`Eula screen should render properly and snapshot should match 1`] = `
     }
   }
 >
+  <View
+    accessible={true}
+    focusable={true}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+        "padding": 15.88235294117647,
+        "position": "absolute",
+        "right": 0,
+        "top": 0,
+        "zIndex": 900,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "transform": Array [
+            Object {
+              "scale": 1,
+            },
+          ],
+        }
+      }
+    >
+      <RNSVGSvgView
+        align="xMidYMid"
+        bbHeight={30.628571428571426}
+        bbWidth={30.628571428571426}
+        fill="#777777"
+        focusable={false}
+        height={30.628571428571426}
+        meetOrSlice={0}
+        minX={0}
+        minY={0}
+        style={
+          Array [
+            Object {
+              "backgroundColor": "transparent",
+              "borderWidth": 0,
+            },
+            Object {
+              "flex": 0,
+              "height": 30,
+              "width": 30,
+            },
+          ]
+        }
+        vbHeight={24}
+        vbWidth={24}
+        width={30.628571428571426}
+      >
+        <RNSVGGroup
+          fill={4286019447}
+          propList={
+            Array [
+              "fill",
+            ]
+          }
+        >
+          <RNSVGGroup>
+            <RNSVGGroup>
+              <RNSVGRect
+                height="24"
+                opacity={0}
+                width="24"
+                x={0}
+                y={0}
+              />
+              <RNSVGPath
+                d="M18 15a3 3 0 0 0-2.1.86L8 12.34V12v-.33l7.9-3.53A3 3 0 1 0 15 6v.34L7.1 9.86a3 3 0 1 0 0 4.28l7.9 3.53V18a3 3 0 1 0 3-3zm0-10a1 1 0 1 1-1 1 1 1 0 0 1 1-1zM5 13a1 1 0 1 1 1-1 1 1 0 0 1-1 1zm13 6a1 1 0 1 1 1-1 1 1 0 0 1-1 1z"
+              />
+            </RNSVGGroup>
+          </RNSVGGroup>
+        </RNSVGGroup>
+      </RNSVGSvgView>
+    </View>
+  </View>
   <RNCSafeAreaView
     edges={
       Array [

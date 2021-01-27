@@ -10,7 +10,7 @@ export function useInteractionDone() {
 
     timeOutId = setTimeout(() => {
       setInteractionDone(true)
-    }, 500)
+    }, 200)
 
     return () => clearTimeout(timeOutId)
   }, [])

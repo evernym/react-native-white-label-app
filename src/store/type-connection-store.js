@@ -7,6 +7,8 @@ import type {
 import type { CustomError, GenericObject } from '../common/type-common'
 
 export const UPDATE_CONNECTION_THEME = 'UPDATE_CONNECTION_THEME'
+export const UPDATE_CONNECTION_BACKGROUND_THEME =
+  'UPDATE_CONNECTION_BACKGROUND_THEME'
 export const UPDATE_STATUS_BAR_THEME = 'UPDATE_STATUS_BAR_THEME'
 export const HYDRATE_CONNECTIONS = 'HYDRATE_CONNECTIONS'
 export const UPDATE_CONNECTION_SERIALIZED_STATE =
@@ -33,6 +35,7 @@ export type Connection = {
   attachedRequest?: AriesAttachedRequest,
   isFetching?: boolean,
   isCompleted?: boolean,
+  colorTheme?: string,
 } & MyPairwiseInfo
 
 export const DELETE_PENDING_CONNECTION = 'DELETE_PENDING_CONNECTION'
@@ -65,6 +68,7 @@ export const DELETE_CONNECTION_FAILURE = 'DELETE_CONNECTION_FAILURE'
 export type DeleteConnectionSuccessEventAction = {
   type: typeof DELETE_CONNECTION_SUCCESS,
   filteredConnections: Connections,
+  senderDID: string,
 }
 
 export type DeleteConnectionFailureEventAction = {
@@ -80,6 +84,8 @@ export const NEW_PENDING_CONNECTION = 'NEW_PENDING_CONNECTION'
 export const NEW_ONE_TIME_CONNECTION = 'NEW_ONE_TIME_CONNECTION'
 
 export const UPDATE_CONNECTION = 'UPDATE_CONNECTION'
+
+export const CONNECTION_REQUEST_SENT = 'CONNECTION_REQUEST_SENT'
 
 export type NewConnectionAction = {
   type: typeof NEW_CONNECTION,

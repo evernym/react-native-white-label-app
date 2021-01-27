@@ -87,5 +87,6 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     marginLeft: moderateScale(10),
     marginRight: moderateScale(6),
+    paddingBottom: moderateScale(6),
   },
 })

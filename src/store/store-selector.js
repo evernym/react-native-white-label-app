@@ -10,7 +10,10 @@ import type {
   SerializedClaimOffersPerDid,
 } from '../claim-offer/type-claim-offer'
 import type { Connection } from './type-connection-store'
-import { HISTORY_EVENT_STATUS } from '../connection-history/type-connection-history'
+import {
+  HISTORY_EVENT_STATUS,
+  HISTORY_EVENT_TYPE,
+} from '../connection-history/type-connection-history'
 import type {
   QuestionStoreData,
   QuestionStoreMessage,
@@ -18,12 +21,13 @@ import type {
 import type { ConnectionStore } from './type-connection-store'
 import RNFetchBlob from 'rn-fetch-blob'
 import { Platform } from 'react-native'
-import { whiteSmoke } from '../common/styles/constant'
+import { colors, whiteSmoke } from '../common/styles/constant'
 import memoize from 'lodash.memoize'
 import { CLAIM_OFFER_STATUS } from './../claim-offer/type-claim-offer'
 import { PROOF_REQUEST_STATUS } from './../proof-request/type-proof-request'
 import { QUESTION_STATUS } from '../question/type-question'
 import { getConnections } from './connections-store'
+import type { ConnectionHistoryEvent } from '../connection-history/type-connection-history'
 
 export const getConfig = (state: Store) => state.config
 
@@ -50,6 +54,11 @@ export const getAllOneTimeConnection = (state: Store) =>
 export const getConnectionTheme = (state: Store, logoUrl: string) =>
   state.connections.connectionThemes[logoUrl] ||
   state.connections.connectionThemes['default']
+
+export const getConnectionColorTheme = (state: Store, remoteDid: string) => {
+  const [connection] = getConnection(state, remoteDid)
+  return connection ? connection.colorTheme : colors.cmGreen2
+}
 
 export const getErrorAlertsSwitchValue = (state: Store) =>
   state.config.showErrorAlerts
@@ -206,6 +215,16 @@ export const getUniqueHistoryItem = (
   return historyItems.filter((item) => item.action === type)[0]
 }
 
+export const getLastConnectionEvent = (
+  historyItems: [ConnectionHistoryEvent]
+) => {
+  return historyItems.reduce(
+    (result, item) =>
+      item.type === HISTORY_EVENT_TYPE.INVITATION ? item : result,
+    undefined
+  )
+}
+
 export const getClaimReceivedHistory = (
   state: Store,
   uid: string,
@@ -285,12 +304,12 @@ export const getUserOneTimeInfo = (state: Store) => state.user.userOneTimeInfo
 export const getClaimMap = (state: Store) => state.claim.claimMap
 
 export const getClaimForOffer = (state: Store, offer: ClaimOfferPayload) =>
-  Object.values(state.claim.claimMap)
-    .find((claim: any) =>
+  Object.values(state.claim.claimMap).find(
+    (claim: any) =>
       claim.senderDID === offer.remotePairwiseDID &&
       claim.name === offer.data.name &&
       claim.issueDate === offer.issueDate
-    )
+  )
 
 export const getCurrentScreen = (state: Store) => state.route.currentScreen
 
@@ -535,7 +554,7 @@ export const getPushNotificationPermissionState = (state: Store) =>
   state.pushNotification.isAllowed
 
 export const getProofData = (state: Store, proofRequestId: string) =>
-  state.proof[proofRequestId].proofData
+  state.proof[proofRequestId] ? state.proof[proofRequestId].proofData : {}
 
 export const getPrepareBackupStatus = (state: Store) =>
   state.backup.prepareBackupStatus

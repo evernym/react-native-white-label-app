@@ -1,9 +1,11 @@
 // @flow
 import React, { useMemo } from 'react'
-import { Text, View, Image, StyleSheet } from 'react-native'
+import { Text, View, StyleSheet } from 'react-native'
 import { verticalScale, moderateScale } from 'react-native-size-matters'
 import { colors, fontSizes, fontFamily } from '../../common/styles/constant'
 import { DefaultLogo } from '../../components/default-logo/default-logo'
+import { Avatar } from '../../components/avatar/avatar'
+import { ExpandableText } from '../../components/expandable-text/expandable-text'
 
 type ModalHeaderProps = {
   institutionalName: string,
@@ -25,12 +27,19 @@ export const ModalHeader = ({
       <View style={styles.topSection}>
         <View style={styles.issuerAndInfoSection}>
           <Text style={styles.infoText}>{credentialText}</Text>
-          <Text style={styles.issuerNameText}>{institutionalName}</Text>
+          <ExpandableText
+            text={institutionalName}
+            style={styles.issuerNameText}
+          />
         </View>
       </View>
       <View style={styles.imageContainer}>
         {source && source.uri ? (
-          <Image style={styles.image} source={source} resizeMode="cover" />
+          <Avatar
+            radius={48}
+            src={source}
+            testID={`sender-avatar`}
+          />
         ) : (
           <DefaultLogo
             text={institutionalName[0]}
@@ -41,13 +50,10 @@ export const ModalHeader = ({
       </View>
 
       <View style={styles.bottomSection}>
-        <Text
-          numberOfLines={2}
-          ellipsizeMode="tail"
+        <ExpandableText
+          text={credentialName}
           style={styles.credentialProofQuestionText}
-        >
-          {credentialName}
-        </Text>
+        />
       </View>
     </View>
   )
@@ -101,13 +107,13 @@ const styles = StyleSheet.create({
     paddingTop: moderateScale(24),
     justifyContent: 'center',
     marginBottom: moderateScale(12),
+    paddingBottom: moderateScale(12),
   },
   credentialProofQuestionText: {
     fontSize: verticalScale(fontSizes.size3),
     fontWeight: '400',
     color: colors.cmGray1,
     fontFamily: fontFamily,
-    marginBottom: moderateScale(8),
     textAlign: 'center',
   },
   imageContainer: {
