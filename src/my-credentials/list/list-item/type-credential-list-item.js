@@ -1,5 +1,5 @@
 // @flow
-export type CredentialCardProps = {
+export type CredentialListItemProps = {
   onPress: Function,
   credentialName: string,
   issuerName?: string,

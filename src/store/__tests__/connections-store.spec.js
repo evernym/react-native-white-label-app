@@ -87,8 +87,9 @@ describe('connections should update correctly', () => {
   })
 
   it('match delete connection success', () => {
+    const connection = successConnectionData.newConnection
     expect(
-      connectionReducer(initialState, deleteConnectionSuccess(connections))
+      connectionReducer(initialState, deleteConnectionSuccess(connections, connection.senderDID))
     ).toMatchSnapshot()
   })
 
@@ -117,7 +118,7 @@ describe('connections should update correctly', () => {
       ])
       .call(secureSet, CONNECTIONS, '{}')
       .call.like({ fn: deleteConnection })
-      .put(deleteConnectionSuccess({}))
+      .put(deleteConnectionSuccess({}, connection.senderDID))
       .run()
   })
 

@@ -6,7 +6,9 @@ import type { RequestDetailTextProps } from './type-request'
 
 import { CustomView } from '../layout/custom-view'
 import CustomText from '../text'
-import { OFFSET_1X, OFFSET_3X } from '../../common/styles'
+import { colors, fontFamily, fontSizes, OFFSET_1X, OFFSET_3X } from '../../common/styles'
+import { ExpandableText } from '../expandable-text/expandable-text'
+import { moderateScale } from 'react-native-size-matters'
 
 export const RequestDetailText = (props: RequestDetailTextProps) => {
   const { testID } = props
@@ -25,18 +27,13 @@ export const RequestDetailText = (props: RequestDetailTextProps) => {
         >
           {props.title}
         </CustomText>
-        <CustomText
-          h5
-          center
-          bold
-          bg="fifth"
-          style={[styles.textMessage]}
+        <ExpandableText
+          style={styles.textMessage}
+          text={props.message}
           testID={`${testID}-text-message`}
           accessible={true}
-          accessibilityLabel={`${testID}-text-message`}
-        >
-          {props.message}
-        </CustomText>
+          accessibilityLabel={props.message}
+        />
       </CustomView>
     </View>
   )
@@ -45,6 +42,11 @@ export const RequestDetailText = (props: RequestDetailTextProps) => {
 const styles = StyleSheet.create({
   textMessage: {
     margin: OFFSET_1X,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: colors.cmGray1,
+    fontSize: moderateScale(fontSizes.size6),
+    fontFamily: fontFamily,
   },
   textTitle: {
     marginVertical: OFFSET_1X,

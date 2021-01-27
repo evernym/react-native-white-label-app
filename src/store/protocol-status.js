@@ -37,7 +37,6 @@ export function* checkProtocolStatus({
                                        error,
                                        onErrorEvent,
                                      }: CheckProtocolStatusParams): Generator<*, *, *> {
-  console.log('checkProtocolStatus ' + identifier)
   // wait for VCX get initialized
   const vcxResult = yield* ensureVcxInitSuccess()
   if (vcxResult && vcxResult.fail) {
@@ -50,6 +49,10 @@ export function* checkProtocolStatus({
   // get target object
   let object = yield select(getObjectFunc, identifier)
 
+  if (!object) {
+    return
+  }
+
   // it action has been completed - exit
   if (isCompletedFunc(object)) {
     return
@@ -61,6 +64,10 @@ export function* checkProtocolStatus({
 
   // get new state of target object
   object = yield select(getObjectFunc, identifier)
+
+  if (!object) {
+    return
+  }
 
   // if action has not been completed - raise failed action
   if (!isCompletedFunc(object)) {

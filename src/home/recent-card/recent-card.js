@@ -22,10 +22,8 @@ import { isiPhone5 } from '../../common/styles'
 
 import type { RecentCardProps } from './type-recent-card'
 import {
-  CLAIM_OFFER_ACCEPTED,
   SEND_CLAIM_REQUEST_FAIL,
   PAID_CREDENTIAL_REQUEST_FAIL,
-  DENY_CLAIM_OFFER,
   DENY_CLAIM_OFFER_FAIL,
 } from '../../claim-offer/type-claim-offer'
 import { bindActionCreators } from 'redux'
@@ -34,7 +32,6 @@ import {
   denyClaimOffer,
 } from '../../claim-offer/claim-offer-store'
 import {
-  UPDATE_ATTRIBUTE_CLAIM,
   ERROR_SEND_PROOF,
 } from '../../proof/type-proof'
 import { reTrySendProof } from '../../proof/proof-store'
@@ -42,16 +39,14 @@ import { deleteHistoryEvent } from '../../connection-history/connection-history-
 import { safeGet, safeSet } from '../../services/storage'
 import {
   DENY_PROOF_REQUEST_FAIL,
-  DENY_PROOF_REQUEST,
-  PROOF_REQUEST_ACCEPTED,
 } from '../../proof-request/type-proof-request'
 import { denyProofRequest } from '../../proof-request/proof-request-store'
 import { DefaultLogo } from '../../components/default-logo/default-logo'
-import { INVITATION_ACCEPTED } from '../../invitation/type-invitation'
 import { CONNECTION_FAIL } from '../../store/type-connection-store'
 import { sendInvitationResponse } from '../../invitation/invitation-store'
 import { ResponseType } from '../../components/request/type-request'
 import { deleteConnectionAction } from '../../store/connections-store'
+import { LOADING_ACTIONS } from '../../connection-history/type-connection-history'
 
 class RecentCardComponent extends React.Component<RecentCardProps, void> {
   render() {
@@ -210,17 +205,8 @@ function getRetryStatus(event: *): boolean {
   return reTryActions.includes(event.action)
 }
 
-const loadingActions = [
-  'PENDING',
-  INVITATION_ACCEPTED,
-  CLAIM_OFFER_ACCEPTED,
-  PROOF_REQUEST_ACCEPTED,
-  UPDATE_ATTRIBUTE_CLAIM,
-  DENY_PROOF_REQUEST,
-  DENY_CLAIM_OFFER,
-]
 function getLoadingStatus(status: string) {
-  return loadingActions.includes(status)
+  return LOADING_ACTIONS.includes(status)
 }
 
 // TODO:KS Memoize this function

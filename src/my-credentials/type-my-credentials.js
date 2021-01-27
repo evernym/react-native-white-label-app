@@ -8,7 +8,20 @@ export type MyCredentialsProps = {
   offers: ClaimOffers,
   environmentName: string,
   deleteClaim: typeof deleteClaim,
+  credentialsColors: any,
 } & ReactNavigation
+
+export type CredentialsCardsProps = {
+  credentials: Array<CredentialItem>,
+} & ReactNavigation
+
+export type CredentialCardProps = {
+  item: CredentialItem,
+  isExpanded: boolean,
+  isHidden: boolean,
+  setActiveStack?: (stackName: string | null) => void,
+  elevation?: number,
+}
 
 export type CredentialItem = {
   claimOfferUuid: string,
@@ -17,6 +30,7 @@ export type CredentialItem = {
   date?: number,
   attributes: Array<Attribute>,
   logoUrl?: ?string,
+  remoteDid: string,
 }
 
 export type ClaimOffers = {
@@ -25,6 +39,13 @@ export type ClaimOffers = {
 
 export type NewCredentialInstructionsProps = {
   usingProductionNetwork: boolean,
+}
+
+export type CardStackProps = {
+  credentials: Array<CredentialItem>,
+  isExpanded: boolean,
+  isHidden: boolean,
+  setActiveStack: (stackName: string | null) => void,
 }
 
 export const MESSAGE_DELETE_CLAIM_TITLE = 'Delete credential?'

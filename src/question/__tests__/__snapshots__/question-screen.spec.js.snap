@@ -65,6 +65,8 @@ exports[`<QuestionScreen /> should match error snapshot 1`] = `
           }
         >
           <Image
+            accessibilityLabel="question-sender-logo"
+            accessible={true}
             resizeMode="cover"
             source={
               Object {
@@ -82,8 +84,11 @@ exports[`<QuestionScreen /> should match error snapshot 1`] = `
                 },
               ]
             }
+            testID="question-sender-logo"
           />
           <Text
+            accessibilityLabel="sender1"
+            accessible={true}
             allowFontScaling={false}
             numberOfLines={2}
             style={
@@ -113,6 +118,7 @@ exports[`<QuestionScreen /> should match error snapshot 1`] = `
                 },
               ]
             }
+            testID="question-sender-namr"
           >
             sender1
           </Text>
@@ -369,6 +375,8 @@ exports[`<QuestionScreen /> should match idle state snapshot 1`] = `
           }
         >
           <Image
+            accessibilityLabel="question-sender-logo"
+            accessible={true}
             resizeMode="cover"
             source={
               Object {
@@ -386,8 +394,11 @@ exports[`<QuestionScreen /> should match idle state snapshot 1`] = `
                 },
               ]
             }
+            testID="question-sender-logo"
           />
           <Text
+            accessibilityLabel="sender1"
+            accessible={true}
             allowFontScaling={false}
             numberOfLines={2}
             style={
@@ -417,6 +428,7 @@ exports[`<QuestionScreen /> should match idle state snapshot 1`] = `
                 },
               ]
             }
+            testID="question-sender-namr"
           >
             sender1
           </Text>
@@ -438,11 +450,14 @@ exports[`<QuestionScreen /> should match idle state snapshot 1`] = `
           }
         >
           <View
+            accessibilityLabel="question-title"
+            accessible={true}
             style={
               Object {
                 "marginBottom": 10,
               }
             }
+            testID="question-title"
           >
             <Text
               allowFontScaling={false}
@@ -478,6 +493,8 @@ exports[`<QuestionScreen /> should match idle state snapshot 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Hi User,"
+            accessible={true}
             allowFontScaling={false}
             style={
               Array [
@@ -507,6 +524,7 @@ exports[`<QuestionScreen /> should match idle state snapshot 1`] = `
                 },
               ]
             }
+            testID="question-description"
           >
             Hi User,
           </Text>
@@ -1137,6 +1155,8 @@ exports[`<QuestionScreen /> should match invalid data 1`] = `
           }
         >
           <Image
+            accessibilityLabel="question-sender-logo"
+            accessible={true}
             resizeMode="cover"
             source={
               Object {
@@ -1154,8 +1174,11 @@ exports[`<QuestionScreen /> should match invalid data 1`] = `
                 },
               ]
             }
+            testID="question-sender-logo"
           />
           <Text
+            accessibilityLabel="sender1"
+            accessible={true}
             allowFontScaling={false}
             numberOfLines={2}
             style={
@@ -1185,6 +1208,7 @@ exports[`<QuestionScreen /> should match invalid data 1`] = `
                 },
               ]
             }
+            testID="question-sender-namr"
           >
             sender1
           </Text>
@@ -1206,11 +1230,14 @@ exports[`<QuestionScreen /> should match invalid data 1`] = `
           }
         >
           <View
+            accessibilityLabel="question-title"
+            accessible={true}
             style={
               Object {
                 "marginBottom": 10,
               }
             }
+            testID="question-title"
           >
             <Text
               allowFontScaling={false}
@@ -1246,6 +1273,8 @@ exports[`<QuestionScreen /> should match invalid data 1`] = `
             </Text>
           </View>
           <Text
+            accessibilityLabel="Hi User,"
+            accessible={true}
             allowFontScaling={false}
             style={
               Array [
@@ -1275,6 +1304,7 @@ exports[`<QuestionScreen /> should match invalid data 1`] = `
                 },
               ]
             }
+            testID="question-description"
           >
             Hi User,
           </Text>
@@ -1520,6 +1550,8 @@ exports[`<QuestionScreen /> should match loading snapshot 1`] = `
           }
         >
           <Image
+            accessibilityLabel="question-sender-logo"
+            accessible={true}
             resizeMode="cover"
             source={
               Object {
@@ -1537,8 +1569,11 @@ exports[`<QuestionScreen /> should match loading snapshot 1`] = `
                 },
               ]
             }
+            testID="question-sender-logo"
           />
           <Text
+            accessibilityLabel="sender1"
+            accessible={true}
             allowFontScaling={false}
             numberOfLines={2}
             style={
@@ -1568,6 +1603,7 @@ exports[`<QuestionScreen /> should match loading snapshot 1`] = `
                 },
               ]
             }
+            testID="question-sender-namr"
           >
             sender1
           </Text>
@@ -1721,6 +1757,8 @@ exports[`<QuestionScreen /> should match success snapshot 1`] = `
           }
         >
           <Image
+            accessibilityLabel="question-sender-logo"
+            accessible={true}
             resizeMode="cover"
             source={
               Object {
@@ -1738,8 +1776,11 @@ exports[`<QuestionScreen /> should match success snapshot 1`] = `
                 },
               ]
             }
+            testID="question-sender-logo"
           />
           <Text
+            accessibilityLabel="sender1"
+            accessible={true}
             allowFontScaling={false}
             numberOfLines={2}
             style={
@@ -1769,6 +1810,7 @@ exports[`<QuestionScreen /> should match success snapshot 1`] = `
                 },
               ]
             }
+            testID="question-sender-namr"
           >
             sender1
           </Text>

@@ -9,7 +9,6 @@ import { verticalScale, moderateScale } from 'react-native-size-matters'
 import { customValuesRoute } from '../../common/route-constants'
 
 // components
-import { ModalButtons } from '../../components/buttons/modal-buttons'
 import { ModalHeaderBar } from '../../components/modal-header-bar/modal-header-bar'
 
 // types
@@ -17,16 +16,14 @@ import type { ReactNavigation } from '../../common/type-common'
 
 // styles
 import { colors, fontFamily, fontSizes } from '../../common/styles/constant'
+import { ModalLeftToRight } from '../utils/modal-animation'
+import { ExpandableText } from '../../components/expandable-text/expandable-text'
 
 const CustomValues = ({
-  navigation: { goBack },
-  route: { params },
-}: ReactNavigation) => {
+                        navigation: { goBack },
+                        route: { params },
+                      }: ReactNavigation) => {
   const [value, setValue] = useState(params?.labelValue || '')
-
-  const hideModal = useCallback(() => {
-    goBack(null)
-  }, [])
 
   const onDone = useCallback(() => {
     params.onTextChange(value, adjustedLabel, params.key)
@@ -36,40 +33,32 @@ const CustomValues = ({
   const adjustedLabel = params.label.toLocaleLowerCase()
 
   return (
-    <>
-      <View style={styles.modalWrapper}>
-        <View style={styles.descriptionWrapper}>
-          <Text style={styles.descriptionTitle}>
-            Please provide values for the following attributes
-          </Text>
-        </View>
-        <Text style={styles.labelText}>{params?.label || 'Attribute'}</Text>
-        <View style={styles.customValuesWrapper}>
-          <TextInput
-            onChangeText={setValue}
-            placeholder="Please type..."
-            placeholderTextColor={colors.cmGray2}
-            defaultValue={params?.labelValue ? params?.labelValue : ''}
-            style={styles.contentInput}
-            keyboardType="default"
-            returnKeyType="done"
-            multiline={true}
-            blurOnSubmit={true}
-          />
-        </View>
+    <View style={styles.modalWrapper}>
+      <View style={styles.descriptionWrapper}>
+        <Text style={styles.descriptionTitle}>
+          Please provide values for the following attributes
+        </Text>
       </View>
-      <ModalButtons
-        onPress={onDone}
-        onIgnore={hideModal}
-        topBtnText="Cancel"
-        bottomBtnText="Done"
-        disableAccept={false}
-        colorBackground={colors.cmGreen1}
-        numberOfLines={3}
-        multiline={true}
-        maxLength={200}
-      />
-    </>
+      <ExpandableText style={styles.labelText} text={params?.label || 'Attribute'} />
+      <View style={styles.customValuesWrapper}>
+        <TextInput
+          onChangeText={setValue}
+          autoFocus
+          placeholder="Please type..."
+          placeholderTextColor={colors.cmGray2}
+          defaultValue={params?.labelValue ? params?.labelValue : ''}
+          style={styles.contentInput}
+          keyboardType="default"
+          returnKeyType="done"
+          multiline={true}
+          blurOnSubmit={true}
+          testID="custom-value-input"
+          accessible={true}
+          accessibilityLabel="custom-value-input"
+          onSubmitEditing={onDone}
+        />
+      </View>
+    </View>
   )
 }
 
@@ -79,8 +68,8 @@ export const CustomValuesScreen = {
 }
 
 CustomValuesScreen.screen.navigationOptions = ({
-  navigation: { goBack, isFocused },
-}) => ({
+                                                 navigation: { goBack, isFocused },
+                                               }) => ({
   safeAreaInsets: { top: 85 },
   cardStyle: {
     marginLeft: '2.5%',
@@ -96,6 +85,7 @@ CustomValuesScreen.screen.navigationOptions = ({
       onPress={() => goBack(null)}
     />
   ),
+  ...ModalLeftToRight
 })
 
 const styles = StyleSheet.create({
@@ -131,6 +121,8 @@ const styles = StyleSheet.create({
     width: '100%',
     textAlign: 'left',
     paddingLeft: 10,
+    paddingTop: 8,
+    paddingBottom: 8,
     fontFamily: fontFamily,
     borderTopColor: colors.cmGray3,
     borderTopWidth: 1,

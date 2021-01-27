@@ -252,6 +252,7 @@ class PushNotificationPermission extends Component<
             source={require('../../images/iphoneX.png')}
           />
           <View style={styles.buttonsSection} accessible={false} accessibilityLabel="push-notifications-buttons-container">
+            {this.renderCorrectButton()}
             <TouchableOpacity
               style={styles.redButton}
               accessibilityLabel="not-now-notifications-button"
@@ -260,7 +261,6 @@ class PushNotificationPermission extends Component<
             >
               <Text style={styles.redButtonText}>Not Now</Text>
             </TouchableOpacity>
-            {this.renderCorrectButton()}
           </View>
         </View>
       </View>
@@ -344,6 +344,7 @@ const styles = StyleSheet.create({
     height: moderateScale(56),
     borderRadius: 5,
     width: '100%',
+    marginBottom: 8,
   },
   buttonsSection: {
     position: 'absolute',
@@ -372,7 +373,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderColor: colors.cmRed,
     borderWidth: 1,
-    marginBottom: 8,
     width: '100%',
   },
   redButtonText: {

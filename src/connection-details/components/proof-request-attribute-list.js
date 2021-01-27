@@ -2,7 +2,7 @@
 
 // packages
 import React, { Component } from 'react'
-import { Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { KeyboardAwareFlatList } from 'react-native-keyboard-aware-scroll-view'
 import { moderateScale, verticalScale } from 'react-native-size-matters'
 // types
@@ -15,7 +15,10 @@ import type { Attribute } from '../../push-notification/type-push-notification'
 import type { ReactNavigation, RequestedAttrsJson } from '../../common/type-common'
 // constants
 import { attributeValueRoute, customValuesRoute } from '../../common/route-constants'
-import { BLANK_ATTRIBUTE_DATA_TEXT, DISSATISFIED_ATTRIBUTE_DATA_TEXT } from '../type-connection-details'
+import {
+  DISSATISFIED_ATTRIBUTE_DATA_TEXT,
+  MISSING_ATTRIBUTE_DATA_TEXT,
+} from '../type-connection-details'
 // components
 import { ModalHeader } from './modal-header'
 // styles
@@ -29,6 +32,7 @@ import { attributesValueRoute } from '../../common'
 import { isSelected } from './attributes-values'
 import { DefaultLogo } from '../../components/default-logo/default-logo'
 import { getPredicateTitle } from '../utils/getPredicateTitle'
+import { ExpandableText } from '../../components/expandable-text/expandable-text'
 
 class ProofRequestAttributeList extends Component<ProofRequestAttributeListAndHeaderProps & ReactNavigation,
   ProofRequestAttributeListState> {
@@ -110,6 +114,7 @@ class ProofRequestAttributeList extends Component<ProofRequestAttributeListAndHe
     if (keys.length === 1) {
       return navigate(attributeValueRoute, {
         label: keys.join(),
+        customValue: this.state?.[label],
         onTextChange,
         items,
         attributesFilledFromCredential,
@@ -177,7 +182,6 @@ class ProofRequestAttributeList extends Component<ProofRequestAttributeListAndHe
 
       views = Object.keys(selectedItem.values).map((label, keyIndex) => {
         const value = selectedItem.values[label]
-        const isDataEmptyString = value === ''
 
         let claim =
           (selectedItem.claimUuid &&
@@ -190,104 +194,121 @@ class ProofRequestAttributeList extends Component<ProofRequestAttributeListAndHe
         }
 
         return (
-          <View key={`${index}_${keyIndex}`} style={styles.textAvatarWrapper}>
-            <View style={styles.textInnerWrapper}>
-              {
-                // If data is empty string, show the BLANK text in gray instead
-                isDataEmptyString ? (
+          <TouchableOpacity
+            key={`${index}_${keyIndex}`}
+            onPress={() =>
+              handleAttributeValuesNavigation(
+                label,
+                items,
+                attributesFilledFromCredential,
+              )
+            }
+            accessible={false}
+          >
+            <View style={styles.textAvatarWrapper}>
+              <View style={styles.textInnerWrapper}>
+                {
                   <View>
-                    <Text style={styles.title}>{label}</Text>
-                    <Text style={styles.contentGray}>
-                      {BLANK_ATTRIBUTE_DATA_TEXT}
-                    </Text>
-                  </View>
-                ) : (
-                  <View>
-                    <TouchableOpacity
-                      onPress={() =>
-                        handleAttributeValuesNavigation(
+                    <View style={styles.textAvatarWrapper}>
+                      <View style={styles.textInnerWrapper}>
+                        {renderAttachmentIcon(
                           label,
-                          items,
-                          attributesFilledFromCredential
-                        )
-                      }
-                    >
-                      <View style={styles.textAvatarWrapper}>
-                        <View style={styles.textInnerWrapper}>
-                          {renderAttachmentIcon(
-                            label,
-                            value,
-                            selectedItem.claimUuid || '',
-                            selectedItem.claimUuid || ''
-                          )}
-                        </View>
-                        {keyIndex === 0 && (
-                          <View style={styles.avatarWrapper}>
-                            {logoUrl ? (
-                              <Icon
-                                medium
-                                round
-                                resizeMode="cover"
-                                src={logoUrl}
-                              />
-                            ) : (
-                              claim &&
-                              claim.senderName && (
-                                <DefaultLogo
-                                  text={claim.senderName}
-                                  size={30}
-                                  fontSize={18}
-                                />
-                              )
-                            )}
-                          </View>
+                          value,
+                          selectedItem.claimUuid || '',
+                          selectedItem.claimUuid || '',
                         )}
                       </View>
-                    </TouchableOpacity>
+                      {keyIndex === 0 && (
+                        <View style={styles.avatarWrapper}>
+                          {logoUrl ? (
+                            <Icon
+                              medium
+                              round
+                              resizeMode="cover"
+                              src={logoUrl}
+                              testID="selected-credential-icon"
+                              accessible={true}
+                              accessibilityLabel="selected-credential-icon"
+                            />
+                          ) : (
+                            claim &&
+                            claim.senderName && (
+                              <DefaultLogo
+                                text={claim.senderName}
+                                size={30}
+                                fontSize={18}
+                              />
+                            )
+                          )}
+                        </View>
+                      )}
+                    </View>
                   </View>
-                )
-              }
-            </View>
-            {keyIndex === 0 && (
-              <View style={styles.iconWrapper}>
-                <EvaIcon name={ARROW_FORWARD_ICON} fill={colors.cmBlack} />
+                }
               </View>
-            )}
-          </View>
+              {keyIndex === 0 && (
+                <View style={styles.iconWrapper}>
+                  <EvaIcon
+                    name={ARROW_FORWARD_ICON}
+                    fill={colors.cmBlack}
+                    testID="arrow-forward-icon"
+                    accessible={true}
+                    accessibilityLabel="arrow-forward-icon"
+                  />
+                </View>
+              )}
+            </View>
+          </TouchableOpacity>
         )
       })
     } else {
       const value = attributesFilledByUser[attribute.key]
+      const logoUrl = require('../../../../../../app/evernym-sdk/images/UserAvatar.png')
+
       views = (
-        <View style={styles.textAvatarWrapper}>
-          <View style={styles.textInnerWrapper}>
-            <View>
-              <TouchableOpacity
-                onPress={() =>
-                  handleAttributeValuesNavigation(
-                    attribute.label,
-                    items,
-                    attributesFilledFromCredential
-                  )
-                }
-              >
+        <TouchableOpacity
+          onPress={() =>
+            handleAttributeValuesNavigation(
+              attribute.label,
+              items,
+              attributesFilledFromCredential,
+            )
+          }
+        >
+          <View style={styles.textAvatarWrapper}>
+            <View style={styles.textInnerWrapper}>
+              <View>
                 <View style={styles.textAvatarWrapper}>
                   <View style={styles.textInnerWrapper}>
                     {renderAttachmentIcon(
                       attribute.label,
                       value,
                       attribute.claimUuid || '',
-                      attribute.claimUuid || ''
+                      attribute.claimUuid || '',
                     )}
                   </View>
+                  <View style={styles.avatarWrapper}>
+                    <Icon
+                      medium
+                      round
+                      resizeMode="cover"
+                      src={logoUrl}
+                    />
+                  </View>
                 </View>
-              </TouchableOpacity>
+              </View>
+            </View>
+            <View style={styles.iconWrapper}>
+              <EvaIcon
+                name={ARROW_FORWARD_ICON}
+                fill={colors.cmBlack}
+                testID="arrow-forward-icon"
+                accessible={true}
+                accessibilityLabel="arrow-forward-icon"
+              />
             </View>
           </View>
-          <View style={styles.iconWrapper}>
-            <EvaIcon name={ARROW_FORWARD_ICON} fill={colors.cmBlack} />
-          </View>
-        </View>
+        </TouchableOpacity>
       )
     }
 
@@ -301,57 +322,62 @@ class ProofRequestAttributeList extends Component<ProofRequestAttributeListAndHe
   renderSelfAttestedAttribute = ({ attribute, index }: any) => {
     const views = Object.keys(attribute.values).map((label, keyIndex) => {
       const adjustedLabel = label.toLocaleLowerCase()
-      const testID = 'proof-request-attribute-item'
-      const value = attribute.values[label]
 
       const { handleCustomValuesNavigation } = this
+      const value = attribute.values[label]
+        ? attribute.values[label]
+        : this.state?.[adjustedLabel]
+          ? this.state?.[adjustedLabel]
+          : undefined
+
+      const logoUrl = require('../../../../../../app/evernym-sdk/images/UserAvatar.png')
+
       return (
-        <View key={`${index}_${keyIndex}`} style={styles.textAvatarWrapper}>
-          <View style={styles.textInnerWrapper}>
-            <View style={styles.wrapper}>
-              <Text style={styles.title}>{label}</Text>
-              <TouchableOpacity
-                onPress={() =>
-                  handleCustomValuesNavigation(
-                    label,
-                    adjustedLabel,
-                    attribute.key
-                  )
-                }
-              >
-                <TextInput
-                  style={styles.contentInput}
-                  defaultValue={
-                    value
-                      ? value
-                      : this.state?.[adjustedLabel]
-                      ? this.state?.[adjustedLabel]
-                      : '-'
-                  }
-                  autoCorrect={false}
-                  blurOnSubmit={true}
-                  clearButtonMode="always"
-                  numberOfLines={3}
-                  multiline={true}
-                  maxLength={200}
-                  placeholder={`Enter ${label}`}
-                  returnKeyType="done"
-                  testID={`${testID}-input-${adjustedLabel}`}
-                  accessible={true}
-                  accessibilityLabel={`${testID}-input-${adjustedLabel}`}
-                  underlineColorAndroid="transparent"
-                  editable={false}
-                  pointerEvents="none"
+        <TouchableOpacity
+          key={`${index}_${keyIndex}`}
+          testID={value}
+          accessible={false}
+          onPress={() =>
+            handleCustomValuesNavigation(
+              label,
+              adjustedLabel,
+              attribute.key,
+            )
+          }
+        >
+          <View style={styles.textAvatarWrapper}>
+            <View style={styles.textWrapper}>
+              <ExpandableText style={styles.title} text={label} />
+              {
+                value ?
+                  <ExpandableText style={styles.contentInput} text={value}/> :
+                  <Text style={styles.dissatisfiedAttribute}>
+                    {MISSING_ATTRIBUTE_DATA_TEXT}
+                  </Text>
+              }
+            </View>
+            {
+              value &&
+              <View style={[styles.avatarWrapper, { paddingLeft: 4 }]}>
+                <Icon
+                  medium
+                  round
+                  resizeMode="cover"
+                  src={logoUrl}
                 />
-              </TouchableOpacity>
+              </View>
+            }
+            <View style={styles.iconWrapper}>
+              <EvaIcon
+                name={ARROW_FORWARD_ICON}
+                fill={colors.cmBlack}
+                testID="arrow-forward-icon"
+                accessible={true}
+                accessibilityLabel="arrow-forward-icon"
+              />
             </View>
           </View>
-          {keyIndex === 0 && (
-            <View style={styles.iconWrapper}>
-              <EvaIcon name={ARROW_FORWARD_ICON} fill={colors.cmBlack} />
-            </View>
-          )}
-        </View>
+        </TouchableOpacity>
       )
     })
 
@@ -368,7 +394,7 @@ class ProofRequestAttributeList extends Component<ProofRequestAttributeListAndHe
         <View key={`${index}_${keyIndex}`} style={styles.textAvatarWrapper}>
           <View style={styles.textInnerWrapper}>
             <View>
-              <Text style={styles.title}>{label}</Text>
+              <ExpandableText style={styles.title} text={label} />
               <Text style={styles.dissatisfiedAttribute}>
                 {DISSATISFIED_ATTRIBUTE_DATA_TEXT}
               </Text>
@@ -376,7 +402,13 @@ class ProofRequestAttributeList extends Component<ProofRequestAttributeListAndHe
           </View>
           {keyIndex === 0 && (
             <View style={styles.iconWrapper}>
-              <EvaIcon name={ALERT_ICON} color={colors.cmRed} />
+              <EvaIcon
+                name={ALERT_ICON}
+                color={colors.cmRed}
+                testID="alert-icon"
+                accessible={true}
+                accessibilityLabel="alert-icon"
+              />
             </View>
           )}
         </View>
@@ -416,19 +448,20 @@ class ProofRequestAttributeList extends Component<ProofRequestAttributeListAndHe
     const logoUrl = claim.logoUrl ? { uri: claim.logoUrl } : null
 
     return (
-      <View key={index} style={styles.wrapper}>
-        <View style={styles.textAvatarWrapper}>
-          <View style={styles.textInnerWrapper}>
-            <View>
-              <TouchableOpacity
-                onPress={() =>
-                  handlePredicateValuesNavigation(
-                    attribute.label,
-                    items,
-                    attributesFilledFromCredential,
-                  )
-                }
-              >
+      <TouchableOpacity
+        onPress={() =>
+          handlePredicateValuesNavigation(
+            attribute.label,
+            items,
+            attributesFilledFromCredential,
+          )
+        }
+        accessible={false}
+      >
+        <View key={index} style={styles.wrapper}>
+          <View style={styles.textAvatarWrapper}>
+            <View style={styles.textInnerWrapper}>
+              <View>
                 <View style={styles.textAvatarWrapper}>
                   <View style={styles.textInnerWrapper}>
                     {renderAttachmentIcon(
@@ -445,6 +478,9 @@ class ProofRequestAttributeList extends Component<ProofRequestAttributeListAndHe
                         round
                         resizeMode="cover"
                         src={logoUrl}
+                        testID="selected-credential-icon"
+                        accessible={true}
+                        accessibilityLabel="selected-credential-icon"
                       />
                     ) : (
                       claim &&
@@ -458,14 +494,20 @@ class ProofRequestAttributeList extends Component<ProofRequestAttributeListAndHe
                     )}
                   </View>
                 </View>
-              </TouchableOpacity>
+              </View>
+            </View>
+            <View style={styles.iconWrapper}>
+              <EvaIcon
+                name={ARROW_FORWARD_ICON}
+                fill={colors.cmBlack}
+                testID="arrow-forward-icon"
+                accessible={true}
+                accessibilityLabel="arrow-forward-icon"
+              />
             </View>
           </View>
-          <View style={styles.iconWrapper}>
-            <EvaIcon name={ARROW_FORWARD_ICON} fill={colors.cmBlack}/>
-          </View>
         </View>
-      </View>
+      </TouchableOpacity>
     )
   }
 
@@ -484,7 +526,13 @@ class ProofRequestAttributeList extends Component<ProofRequestAttributeListAndHe
             )}
           </View>
           <View style={styles.iconWrapper}>
-            <EvaIcon name={ALERT_ICON} color={colors.cmRed}/>
+            <EvaIcon
+              name={ALERT_ICON}
+              color={colors.cmRed}
+              testID="alert-icon"
+              accessible={true}
+              accessibilityLabel="alert-icon"
+            />
           </View>
         </View>
       </View>
@@ -614,11 +662,10 @@ const styles = StyleSheet.create({
     lineHeight: verticalScale(17),
   },
   contentInput: {
-    padding: 0,
-    fontSize: verticalScale(fontSizes.size3),
     height: verticalScale(32),
+    fontSize: verticalScale(fontSizes.size3),
     fontWeight: '700',
-    color: colors.cmGray1,
+    color: '#505050',
     width: '100%',
     textAlign: 'left',
     fontFamily: fontFamily,
@@ -627,16 +674,6 @@ const styles = StyleSheet.create({
   content: {
     fontSize: verticalScale(fontSizes.size5),
     marginBottom: moderateScale(12),
-    fontWeight: '400',
-    color: colors.cmGray1,
-    width: '100%',
-    textAlign: 'left',
-    fontFamily: fontFamily,
-  },
-  contentGray: {
-    fontSize: verticalScale(fontSizes.size5),
-    marginTop: moderateScale(10),
-    marginBottom: moderateScale(6),
     fontWeight: '400',
     color: colors.cmGray1,
     width: '100%',
@@ -662,5 +699,8 @@ const styles = StyleSheet.create({
     paddingTop: moderateScale(10),
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
+  },
+  textWrapper: {
+    width: '80%',
   },
 })

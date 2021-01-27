@@ -94,12 +94,10 @@ describe('my credentials screen', () => {
     // skipping this test, somehow react-navigation v5 is not working correctly with jest on Android
     const existingOS = Platform.OS
     Platform.OS = 'android'
-
     const { props } = setup()
     const { wrapper } = render(props)
     const tree = wrapper.toJSON()
     expect(tree).toMatchSnapshot()
-
     // revert environment to what it was before
     Platform.OS = existingOS
   })

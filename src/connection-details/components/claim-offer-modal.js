@@ -43,6 +43,7 @@ import {
 import { animateLayout } from '../../common/layout-animation'
 import { colors } from '../../common/styles/constant'
 import { acceptOutOfBandInvitation } from '../../invitation/invitation-store'
+import { authForAction } from '../../lock/lock-auth-for-action'
 
 export class ClaimOfferModal extends Component<any, *> {
   constructor(props: any) {
@@ -164,8 +165,8 @@ export class ClaimOfferModal extends Component<any, *> {
             onIgnore={this.onIgnore}
             colorBackground={colors.cmGreen1}
             secondColorBackground={claimThemeSecondary}
-            topBtnText={'Close'}
-            bottomBtnText={'Read and Sign TAA'}
+            denyButtonText={'Close'}
+            acceptBtnText={'Read and Sign TAA'}
           />
         )}
 
@@ -182,8 +183,8 @@ export class ClaimOfferModal extends Component<any, *> {
               onIgnore={this.onDeny}
               colorBackground={colors.cmGreen1}
               secondColorBackground={claimThemeSecondary}
-              topBtnText={this.props.isOOBInvitation ? 'Cancel': 'Reject'}
-              bottomBtnText={acceptButtonText}
+              denyButtonText={this.props.isOOBInvitation ? 'Cancel' : 'Reject'}
+              acceptBtnText={acceptButtonText}
               svgIcon="Download"
             >
               <CredentialPriceInfo price={payTokenValue || ''} />
@@ -256,6 +257,14 @@ export class ClaimOfferModal extends Component<any, *> {
   }
 
   onDeny = () => {
+    authForAction({
+      lock: this.props.lock,
+      navigation: this.props.navigation,
+      onSuccess: this.onDenyAuthSuccess,
+    })
+  }
+
+  onDenyAuthSuccess = () => {
     const { invitationPayload } = this.props.route.params
 
     if (!invitationPayload) {
@@ -278,6 +287,14 @@ export class ClaimOfferModal extends Component<any, *> {
   }
 
   onAccept = () => {
+    authForAction({
+      lock: this.props.lock,
+      navigation: this.props.navigation,
+      onSuccess: this.onAcceptAuthSuccess,
+    })
+  }
+
+  onAcceptAuthSuccess = () => {
     // if not a paid cred, then just accept claim offer, and close modal
     const { payTokenValue }: ClaimOfferPayload = this.props.claimOfferData
     if (!payTokenValue) {
@@ -345,10 +362,13 @@ const mapStateToProps = (
   state: Store,
   { route: { params } }: ClaimProofNavigation
 ) => {
-  const { claimOffer } = state
+  const { claimOffer, lock } = state
   const { uid } = params || { uid: '' }
   const claimOfferData = params.claimOfferData || claimOffer[uid]
-  const logo = getConnectionLogoUrl(state, claimOfferData.remotePairwiseDID) || claimOfferData.senderLogoUrl || ''
+  const logo =
+    getConnectionLogoUrl(state, claimOfferData.remotePairwiseDID) ||
+    claimOfferData.senderLogoUrl ||
+    ''
   const themeForLogo = getConnectionTheme(state, logo)
   const isValid =
     claimOfferData &&
@@ -374,7 +394,8 @@ const mapStateToProps = (
     isValid,
     logoUrl: logo,
     claimPrice,
-    isOOBInvitation
+    lock,
+    isOOBInvitation,
   }
 }
 

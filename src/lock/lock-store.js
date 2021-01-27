@@ -452,6 +452,7 @@ export default function lockReducer(
       return {
         ...state,
         checkPinStatus: CHECK_PIN_SUCCESS,
+        lastUnlockSuccessTime: moment().format(),
       }
     case CHECK_PIN_FAIL:
       return {
@@ -469,6 +470,7 @@ export default function lockReducer(
       return {
         ...state,
         isAppLocked: false,
+        lastUnlockSuccessTime: moment().format(),
       }
     case ENABLE_TOUCHID:
       return {

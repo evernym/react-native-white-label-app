@@ -1,13 +1,13 @@
 // @flow
 import React, { PureComponent } from 'react'
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
-import { colors, fontFamily, fontSizes } from '../../common/styles/constant'
-import type { CredentialCardProps } from './type-credential-card'
-import { Avatar } from '../../components/avatar/avatar'
-import { DefaultLogo } from '../../components/default-logo/default-logo'
+import { colors, fontFamily, fontSizes } from '../../../common/styles/constant'
+import type { CredentialListItemProps } from './type-credential-list-item'
+import { Avatar } from '../../../components/avatar/avatar'
+import { DefaultLogo } from '../../../components/default-logo/default-logo'
 import { verticalScale, moderateScale } from 'react-native-size-matters'
 
-class CredentialCard extends PureComponent<CredentialCardProps, void> {
+class CredentialListItem extends PureComponent<CredentialListItemProps, void> {
   pad = (dateOrMonth: number) => {
     return dateOrMonth < 10 ? '0' + dateOrMonth : dateOrMonth
   }
@@ -84,7 +84,11 @@ class CredentialCard extends PureComponent<CredentialCardProps, void> {
     const attributesLabel = attributesCount == 1 ? 'attribute' : `attributes`
 
     return (
-      <TouchableOpacity style={styles.container} onPress={this.onButtonPress} accessible={false}>
+      <TouchableOpacity
+        style={styles.container}
+        onPress={this.onButtonPress}
+        accessible={false}
+      >
         <View style={styles.avatarSection}>
           {typeof image === 'string' ? (
             <Avatar
@@ -205,4 +209,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export { CredentialCard }
+export { CredentialListItem as CredentialItem }

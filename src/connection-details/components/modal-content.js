@@ -22,6 +22,7 @@ import { verticalScale, moderateScale } from 'react-native-size-matters'
 import { colors, fontSizes, fontFamily } from '../../common/styles/constant'
 import SvgCustomIcon from '../../components/svg-custom-icon'
 import { ModalHeader } from './modal-header'
+import { ExpandableText } from '../../components/expandable-text/expandable-text'
 
 type ModalContentProps = {
   uid: string,
@@ -94,7 +95,9 @@ export const renderAttachmentIcon = (
           width={24}
         />
         <View style={styles.textWrapper}>
-          <Text style={[styles.title, titleStyles]}>{label.slice(0, -5)}</Text>
+          <ExpandableText
+            text={label.slice(0, -5)}
+            style={[styles.title, titleStyles]} />
           <Text style={styles.extensionNameStyle}>
             {`${getFileExtensionName(attachment['mime-type'])} file`}
           </Text>
@@ -106,7 +109,9 @@ export const renderAttachmentIcon = (
 
   return (
     <View style={styles.textWrapper}>
-      <Text style={[styles.title, titleStyles]}>{label}</Text>
+      <ExpandableText
+        text={label}
+        style={[styles.title, titleStyles]} />
       <DataRenderer
         {...{ label, data, uid, remotePairwiseDID, contentStyles }}
       />
@@ -189,10 +194,10 @@ export function DataRenderer(props: {
 }) {
   const { label, data, uid, remotePairwiseDID, contentStyles } = props
 
-  if (!data) {
+  if (!data || data === '') {
     return (
       // Replace empty data string with (none) in lighter gray
-      <Text style={styles.contentGray}>{BLANK_ATTRIBUTE_DATA_TEXT}</Text>
+      <Text style={[styles.contentGray, contentStyles]}>{BLANK_ATTRIBUTE_DATA_TEXT}</Text>
     )
   }
 
@@ -231,7 +236,9 @@ export function DataRenderer(props: {
       />
     )
   }
-  return <Text style={[styles.content, contentStyles]}>{data}</Text>
+  return <ExpandableText
+    text={data}
+    style={[styles.content, contentStyles]}/>
 }
 
 function PhotoAttachment(props: { base64: string }) {
@@ -425,8 +432,8 @@ const styles = StyleSheet.create({
   },
   contentGray: {
     fontSize: verticalScale(fontSizes.size5),
-    fontWeight: '400',
-    color: colors.cmWhite,
+    fontWeight: '700',
+    color: colors.cmGray1,
     width: '100%',
     textAlign: 'left',
     fontFamily: fontFamily,

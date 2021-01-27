@@ -55,7 +55,7 @@ import { STORAGE_KEY_SHOW_BANNER } from '../components/banner/banner-constants'
 import { STORAGE_KEY_EULA_ACCEPTANCE } from '../eula/type-eula'
 import { hydrateClaimOffersSaga } from '../claim-offer/claim-offer-store'
 import { hydrateBackupSaga } from '../backup/backup-store'
-import { loadHistorySaga } from '../connection-history/connection-history-store'
+import { loadHistorySaga, retryInterruptedActionsSaga } from '../connection-history/connection-history-store'
 import { IS_ALREADY_INSTALLED } from '../common'
 import {
   alreadyInstalledAction,
@@ -277,6 +277,8 @@ export function* hydrate(): any {
       yield* hydrateClaimOffersSaga()
       yield* hydrateClaimMapSaga()
       yield* hydrateQuestionSaga()
+      // find and try to retry actions which was interrupted by closing the app
+      yield* retryInterruptedActionsSaga()
 
       if (inRecovery === 'true') {
         // TODO: Move vcx shutdown logic inside ensureVcxInitSuccess

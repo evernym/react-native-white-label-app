@@ -5,6 +5,7 @@ import { questionRoute } from '../../common'
 import { useNavigation } from '@react-navigation/native'
 import { verticalScale, moderateScale } from 'react-native-size-matters'
 import { colors, fontSizes, fontFamily } from '../../common/styles/constant'
+import { ExpandableText } from '../expandable-text/expandable-text'
 
 export const QuestionCard = ({
   uid,
@@ -21,14 +22,8 @@ export const QuestionCard = ({
   return (
     <View style={styles.container}>
       <Text style={styles.messageDate}>{messageDate}</Text>
-      <Text style={styles.messageTitle}>{messageTitle}</Text>
-      <Text
-        style={styles.messageContent}
-        numberOfLines={1}
-        ellipsizeMode="tail"
-      >
-        {messageContent}
-      </Text>
+      <ExpandableText text={messageTitle} style={styles.messageTitle} lines={1}/>
+      <ExpandableText text={messageContent} style={styles.messageContent} lines={1}/>
       <View style={styles.buttonsWrapper}>
         <TouchableOpacity
           onPress={navigateToQuestionScreen}

@@ -112,8 +112,8 @@ const CredentialCostInfo = (props: CredentialCostInfoProps) => {
         disableAccept={false}
         colorBackground={backgroundColor}
         secondColorBackground={secondColorBackground}
-        topBtnText={'Cancel'}
-        bottomBtnText={'Confirm and Pay'}
+        denyButtonText={'Cancel'}
+        acceptBtnText={'Confirm and Pay'}
       />
       {/* </View> */}
     </View>

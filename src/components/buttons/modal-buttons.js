@@ -7,19 +7,19 @@ import { colors, fontFamily, fontSizes } from '../../common/styles/constant'
 import { CustomText } from '../../components'
 import SvgCustomIcon from '../../components/svg-custom-icon'
 
-type BottomButtonProps = {
+type AcceptButtonProps = {
   colorBackground: string,
   debounceButtonPress: (event: any) => void,
   disableAccept: boolean,
-  bottomBtnText: string,
+  acceptBtnText: string,
   svgIcon: any,
   hideAccept?: boolean,
   bottomTestID: string,
 }
 
-type TopButtonProps = {
+type DenyButtonProps = {
   disableDeny: boolean,
-  topBtnText: string,
+  denyButtonText: string,
   onIgnore: (event: any) => void,
   topTestID: string,
 }
@@ -30,8 +30,8 @@ type ModalButtonProps = {
   children?: any,
   primaryActionValue: (event: any) => void,
   onPress: (event: any) => void,
-} & BottomButtonProps &
-  TopButtonProps
+} & DenyButtonProps &
+  AcceptButtonProps
 
 class ModalButtons extends PureComponent<any, ModalButtonProps> {
   constructor(props: ModalButtonProps) {
@@ -59,8 +59,8 @@ class ModalButtons extends PureComponent<any, ModalButtonProps> {
       disableDeny = false,
       disableAccept = false,
       colorBackground,
-      topBtnText,
-      bottomBtnText,
+      denyButtonText,
+      acceptBtnText,
       containerStyles,
       children,
       svgIcon,
@@ -74,25 +74,25 @@ class ModalButtons extends PureComponent<any, ModalButtonProps> {
     return (
       <View style={[container, containerStyles]}>
         {children}
-        {topBtnText && (
-          <TopButton
-            {...{
-              disableDeny,
-              topBtnText,
-              onIgnore,
-              topTestID,
-            }}
-          />
-        )}
         {!hideAccept && (
-          <BottomButton
+          <AcceptButton
             {...{
               disableAccept,
-              bottomBtnText,
+              acceptBtnText,
               debounceButtonPress,
               svgIcon,
               colorBackground,
               bottomTestID,
+            }}
+          />
+        )}
+        {denyButtonText && (
+          <DenyButton
+            {...{
+              disableDeny,
+              denyButtonText,
+              onIgnore,
+              topTestID,
             }}
           />
         )}
@@ -101,12 +101,12 @@ class ModalButtons extends PureComponent<any, ModalButtonProps> {
   }
 }
 
-const TopButton = ({
-  topBtnText,
+const DenyButton = ({
+  denyButtonText,
   onIgnore,
   disableDeny,
   topTestID,
-}: TopButtonProps) => {
+}: DenyButtonProps) => {
   const { buttonIgnore, ignoreTextStyle, buttonParentWrapper } = styles
 
   return (
@@ -115,29 +115,23 @@ const TopButton = ({
       onPress={onIgnore}
       accessibilityLabel={topTestID}
     >
-      <View
-        style={[
-          buttonParentWrapper,
-          buttonIgnore,
-          { marginBottom: moderateScale(16) },
-        ]}
-      >
+      <View style={[buttonParentWrapper, buttonIgnore]}>
         <CustomText errorText h4 transparentBg demiBold style={ignoreTextStyle}>
-          {topBtnText}
+          {denyButtonText}
         </CustomText>
       </View>
     </TouchableOpacity>
   )
 }
 
-const BottomButton = ({
+const AcceptButton = ({
   debounceButtonPress,
   disableAccept,
-  bottomBtnText,
+  acceptBtnText,
   svgIcon,
   colorBackground,
   bottomTestID,
-}: BottomButtonProps) => {
+}: AcceptButtonProps) => {
   const {
     buttonAccept,
     acceptTextStyle,
@@ -155,15 +149,16 @@ const BottomButton = ({
         {
           backgroundColor: colorBackground,
           opacity: disableAccept ? 0.4 : 1,
+          marginBottom: moderateScale(16),
         },
       ]}
       accessible={true}
       accessibilityLabel={bottomTestID}
     >
-        <CustomText h4 transparentBg thick center style={acceptTextStyle}>
-          {bottomBtnText}
-        </CustomText>
-        {svgIcon && <SvgCustomIcon style={svgIconStyles} name={svgIcon} />}
+      <CustomText h4 transparentBg thick center style={acceptTextStyle}>
+        {acceptBtnText}
+      </CustomText>
+      {svgIcon && <SvgCustomIcon style={svgIconStyles} name={svgIcon} />}
     </TouchableOpacity>
   )
 }

@@ -7,17 +7,12 @@ import {
   select,
   all,
 } from 'redux-saga/effects'
-import {
-  secureSet,
-  secureDelete,
-  getHydrationItem,
-} from '../services/storage'
+import { secureSet, secureDelete, getHydrationItem } from '../services/storage'
 import { CONNECTIONS } from '../common'
 import {
   getAllConnection,
   getThemes,
   getConnection as getConnectionBySenderDid,
-  isConnectionCompleted,
 } from './store-selector'
 import { color } from '../common/styles/constant'
 import { bubbleSize } from '../common/styles'
@@ -64,6 +59,7 @@ import {
   NEW_PENDING_CONNECTION,
   UPDATE_CONNECTION,
   DELETE_PENDING_CONNECTION,
+  CONNECTION_REQUEST_SENT,
 } from './type-connection-store'
 import {
   deleteConnection,
@@ -79,7 +75,7 @@ import { captureError } from '../services/error/error-handler'
 import { customLogger } from '../store/custom-logger'
 import { ensureVcxInitSuccess } from './route-store'
 import moment from 'moment'
-import { checkConnectionStatus } from '../invitation/invitation-store'
+import { getConnectionColorTheme } from '../invitation/invitation-store'
 
 const initialState: ConnectionStore = {
   data: {},
@@ -145,6 +141,11 @@ export const saveNewOneTimeConnection = (connection: GenericObject) => ({
   connection,
 })
 
+export const connectionRequestSent = (senderDID: string) => ({
+  type: CONNECTION_REQUEST_SENT,
+  senderDID,
+})
+
 //TODO refactor create a new store for ui
 export const updateStatusBarTheme = (statusColor?: string) => ({
   type: UPDATE_STATUS_BAR_THEME,
@@ -195,7 +196,7 @@ export function* deleteConnectionOccurredSaga(
 
   try {
     yield call(secureSet, CONNECTIONS, JSON.stringify(rest))
-    yield put(deleteConnectionSuccess(rest))
+    yield put(deleteConnectionSuccess(rest, action.senderDID))
 
     if (connection.vcxSerializedConnection) {
       const connectionHandle = yield call(
@@ -228,6 +229,7 @@ export function* watchConnectionsChanged(): any {
     [
       NEW_CONNECTION,
       NEW_PENDING_CONNECTION,
+      NEW_ONE_TIME_CONNECTION,
       UPDATE_CONNECTION,
       NEW_CONNECTION_SUCCESS,
       CONNECTION_FAIL,
@@ -235,6 +237,7 @@ export function* watchConnectionsChanged(): any {
       CONNECTION_ATTACH_REQUEST,
       CONNECTION_DELETE_ATTACHED_REQUEST,
       UPDATE_CONNECTION_SERIALIZED_STATE,
+      CONNECTION_REQUEST_SENT,
     ],
     loadNewConnectionSaga
   )
@@ -264,12 +267,12 @@ export function* hydrateConnectionSaga(): Generator<*, *, *> {
       // iterate over connections and check whether the in progress
       for (let identifier of Object.keys(connections)) {
         const connection = connections[identifier]
-        if (!isConnectionCompleted(connection)) {
-          yield call(
-            checkConnectionStatus,
-            identifier,
-            connection.senderName,
-            connection.senderDID,
+
+        // set connection theme color if missing
+        if (!connection.colorTheme) {
+          connection.colorTheme = yield call(
+            getConnectionColorTheme,
+            connection.logoUrl
           )
         }
       }
@@ -291,10 +294,12 @@ export const getConnectionLogo = (logoUrl: ?string) =>
   logoUrl ? { uri: logoUrl } : require('../images/cb_evernym.png')
 
 export const deleteConnectionSuccess = (
-  filteredConnections: Connections
+  filteredConnections: Connections,
+  senderDID: string
 ): DeleteConnectionSuccessEventAction => ({
   type: DELETE_CONNECTION_SUCCESS,
   filteredConnections,
+  senderDID,
 })
 
 export const deleteConnectionFailure = (

@@ -3,6 +3,7 @@ import React from 'react'
 import { Text, View, StyleSheet } from 'react-native'
 import { verticalScale, moderateScale } from 'react-native-size-matters'
 import { colors, fontSizes, fontFamily } from '../../common/styles/constant'
+import { ExpandableText } from '../expandable-text/expandable-text'
 
 export const QuestionViewCard = ({
   messageDate,
@@ -16,7 +17,11 @@ export const QuestionViewCard = ({
           <Text style={styles.messageDate}>{messageDate} - </Text>
           <Text style={styles.requestStatus}>{requestStatus}</Text>
         </View>
-        <Text style={styles.requestAction}>{requestAction}</Text>
+        <ExpandableText
+          style={styles.requestAction}
+          text={requestAction}
+          lines={1}
+        />
       </View>
     </View>
   )

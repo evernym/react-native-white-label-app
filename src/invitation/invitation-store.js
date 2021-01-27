@@ -1,4 +1,5 @@
 // @flow
+import { Platform } from 'react-native'
 import {
   put,
   takeEvery,
@@ -38,6 +39,7 @@ import {
   saveNewPendingConnection,
   updateConnection,
   deletePendingConnection,
+  connectionRequestSent,
 } from '../store/connections-store'
 import {
   createConnectionWithInvite,
@@ -48,7 +50,7 @@ import {
   getHandleBySerializedConnection,
   createCredentialWithAriesOfferObject,
   connectionGetState,
-  connectionUpdateStateWithMessage
+  connectionUpdateStateWithMessage,
 } from '../bridge/react-native-cxs/RNCxs'
 import type {
   AriesOutOfBandInvite,
@@ -87,18 +89,23 @@ import {
   acceptOutofbandClaimOffer,
   saveSerializedClaimOffer,
 } from '../claim-offer/claim-offer-store'
-import { CONNECTION_ALREADY_EXISTS, CLOUD_AGENT_UNAVAILABLE } from '../bridge/react-native-cxs/error-cxs'
+import {
+  CONNECTION_ALREADY_EXISTS,
+  CLOUD_AGENT_UNAVAILABLE,
+} from '../bridge/react-native-cxs/error-cxs'
 import {
   acceptOutofbandPresentationRequest,
   outOfBandConnectionForPresentationEstablished,
 } from '../proof-request/proof-request-store'
 import Snackbar from 'react-native-snackbar'
-import { venetianRed, white } from '../common/styles'
+import { colors, venetianRed, white } from '../common/styles'
 import { getHydrationItem, secureSet } from '../services/storage'
 import { INVITATIONS } from '../common'
 import { customLogger } from '../store/custom-logger'
 import { retrySaga } from '../api/api-utils'
 import { checkProtocolStatus } from '../store/protocol-status'
+import ImageColors from 'react-native-image-colors'
+import { pickAndroidColor, pickIosColor } from '../my-credentials/cards/utils'
 
 export const invitationInitialState = {}
 
@@ -161,10 +168,7 @@ export function* sendResponse(
     senderDID
   )
 
-  const connection = yield select(
-    getConnection,
-    senderDID
-  )
+  const connection = yield select(getConnection, senderDID)
 
   // connections exists + it is not completed
   // we are truing to establish it again
@@ -177,18 +181,16 @@ export function* sendResponse(
     // aries connection
     if (payload.type === CONNECTION_INVITE_TYPES.ARIES_V1_QR) {
       yield call(sendResponseOnAriesConnectionInvitation, payload)
-      return
-    }
-
-    // aries out-of-band connection
-    if (payload.type === CONNECTION_INVITE_TYPES.ARIES_OUT_OF_BAND) {
+    } else if (payload.type === CONNECTION_INVITE_TYPES.ARIES_OUT_OF_BAND) {
+      // aries out-of-band connection
       yield call(sendResponseOnAriesOutOfBandInvitation, payload)
-      return
+    } else {
+      // proprietary connection
+      yield call(sendResponseOnProprietaryConnectionInvitation, payload)
     }
-
-    // proprietary connection
-    yield call(sendResponseOnProprietaryConnectionInvitation, payload)
   } catch (e) {
+    console.log('e')
+    console.log(e)
     yield call(handleConnectionError, e, payload.senderDID)
   }
 }
@@ -250,6 +252,11 @@ export function* sendResponseOnProprietaryConnectionInvitation(
       connectionHandle
     )
 
+    const colorTheme = yield call(
+      getConnectionColorTheme,
+      payload.senderLogoUrl
+    )
+
     const connection = {
       identifier: pairwiseInfo.myPairwiseDid,
       logoUrl: payload.senderLogoUrl,
@@ -264,6 +271,7 @@ export function* sendResponseOnProprietaryConnectionInvitation(
       vcxSerializedConnection,
       publicDID: payload.senderDetail.publicDID,
       isCompleted: false,
+      colorTheme,
       ...payload,
     }
 
@@ -305,6 +313,11 @@ export function* sendResponseOnAriesConnectionInvitation(
       connectionHandle
     )
 
+    const colorTheme = yield call(
+      getConnectionColorTheme,
+      payload.senderLogoUrl
+    )
+
     const connection = {
       identifier: pairwiseInfo.myPairwiseDid,
       logoUrl: payload.senderLogoUrl,
@@ -316,35 +329,58 @@ export function* sendResponseOnAriesConnectionInvitation(
       vcxSerializedConnection,
       publicDID: payload.senderDetail.publicDID,
       isCompleted: false,
+      colorTheme,
       ...payload,
     }
     yield put(updateConnection(connection))
+    yield put(invitationSuccess(connection.senderDID))
+    yield put(connectionRequestSent(connection.senderDID))
 
     yield call(
       checkConnectionStatus,
       connection.identifier,
       connection.senderName,
-      connection.senderDID,
+      connection.senderDID
     )
   } catch (e) {
     yield call(handleConnectionError, e, payload.senderDID)
   }
 }
 
-export function* checkConnectionStatus(identifier: string, senderName: string, senderDID: string): Generator<*, *, *> {
+export function* getConnectionColorTheme(
+  senderLogoUrl: any
+): Generator<*, *, *> {
+  if (!senderLogoUrl) {
+    return colors.cmGreen2
+  }
+
+  try {
+    const foundColors = yield call(ImageColors.getColors, senderLogoUrl, {
+      fallback: colors.cmGreen2,
+    })
+    return Platform.OS === 'android'
+      ? pickAndroidColor(foundColors)
+      : pickIosColor(foundColors)
+  } catch (e) {
+    return colors.cmGreen2
+  }
+}
+
+export function* checkConnectionStatus(
+  identifier: string,
+  senderName: string,
+  senderDID: string
+): Generator<*, *, *> {
   const error = ERROR_CONNECTION(senderName)
   const failAction = connectionFail(error, senderDID)
 
-  yield spawn(
-    checkProtocolStatus,
-    {
-      identifier: identifier,
-      getObjectFunc: getConnectionByUserDid,
-      isCompletedFunc: isConnectionCompleted,
-      error: error,
-      onErrorEvent: failAction,
-    }
-  )
+  yield spawn(checkProtocolStatus, {
+    identifier: identifier,
+    getObjectFunc: getConnectionByUserDid,
+    isCompletedFunc: isConnectionCompleted,
+    error: error,
+    onErrorEvent: failAction,
+  })
 }
 
 export function* sendResponseOnAriesOutOfBandInvitation(
@@ -400,6 +436,8 @@ export function* sendResponseOnAriesOutOfBandInvitationWithHandshake(
       connectionHandle
     )
 
+    const colorTheme = yield call(getConnectionColorTheme)
+
     const connection = {
       identifier: pairwiseInfo.myPairwiseDid,
       logoUrl: payload.senderLogoUrl,
@@ -412,9 +450,12 @@ export function* sendResponseOnAriesOutOfBandInvitationWithHandshake(
       publicDID: payload.senderDetail.publicDID,
       attachedRequest,
       isCompleted: false,
+      colorTheme,
       ...payload,
     }
     yield put(updateConnection(connection))
+    yield put(invitationSuccess(connection.senderDID))
+    yield put(connectionRequestSent(connection.senderDID))
   } catch (e) {
     yield call(handleConnectionError, e, payload.senderDID)
   }
@@ -447,6 +488,11 @@ export function* sendResponseOnAriesOutOfBandInvitationWithoutHandshake(
       connectionHandle
     )
 
+    const colorTheme = yield call(
+      getConnectionColorTheme,
+      payload.senderLogoUrl
+    )
+
     const connection = {
       identifier: payload.senderDID,
       logoUrl: payload.senderLogoUrl,
@@ -455,6 +501,7 @@ export function* sendResponseOnAriesOutOfBandInvitationWithoutHandshake(
       senderName: payload.senderName,
       publicDID: payload.senderDetail.publicDID,
       vcxSerializedConnection,
+      colorTheme,
       attachedRequest,
       myPairwiseDid: '',
       myPairwiseVerKey: '',
@@ -489,7 +536,10 @@ export function* updateAriesConnectionState(
       CLOUD_AGENT_UNAVAILABLE
     )
 
-    const connectionState: number = yield call(connectionGetState, connectionHandle)
+    const connectionState: number = yield call(
+      connectionGetState,
+      connectionHandle
+    )
 
     // we need to take serialized connection state again
     // and update serialized state on connectme side
@@ -520,7 +570,6 @@ export function* updateAriesConnectionState(
     )
 
     if (isCompleted) {
-      yield put(invitationSuccess(connection.senderDID))
       yield put(connectionSuccess(connection.identifier, connection.senderDID))
       yield* processAttachedRequest(identifier)
     }
@@ -613,7 +662,6 @@ function* outOfBandInvitationAccepted(
       )
     )
   }
-
 }
 
 export async function getAttachedRequest(

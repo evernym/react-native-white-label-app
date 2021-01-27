@@ -100,38 +100,18 @@ exports[`<Invitation /> should match snapshot 1`] = `
               <Text
                 accessibilityLabel="sender1 wants to connect with you."
                 accessible={true}
-                allowFontScaling={false}
+                ellipsizeMode="tail"
+                numberOfLines={2}
+                onTextLayout={[Function]}
                 style={
-                  Array [
-                    Object {
-                      "fontSize": 17,
-                    },
-                    Object {
-                      "fontFamily": "Lato",
-                    },
-                    Object {
-                      "backgroundColor": "#ffffff",
-                      "color": "#777777",
-                    },
-                    Object {
-                      "fontWeight": "bold",
-                    },
-                    Object {
-                      "textAlign": "center",
-                    },
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    Object {
-                      "margin": 10,
-                    },
-                  ]
+                  Object {
+                    "color": "#505050",
+                    "fontFamily": "Lato",
+                    "fontSize": 13.399999999999999,
+                    "fontWeight": "bold",
+                    "margin": 10,
+                    "textAlign": "center",
+                  }
                 }
                 testID="invitation-text-message"
               >
@@ -321,89 +301,6 @@ exports[`<Invitation /> should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="invitation-deny"
-        accessible={true}
-        focusable={true}
-        isTVSelectable={true}
-        onClick={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          Object {
-            "opacity": 1,
-          }
-        }
-      >
-        <View
-          style={
-            Array [
-              Object {
-                "alignItems": "stretch",
-                "borderRadius": 5,
-                "flexDirection": "row",
-                "justifyContent": "center",
-                "overflow": "hidden",
-                "width": "100%",
-              },
-              Object {
-                "alignItems": "center",
-                "borderColor": "#CE0B24",
-                "borderWidth": 1,
-                "justifyContent": "center",
-                "minWidth": "35%",
-                "padding": 16.271428571428572,
-                "paddingLeft": 9.571428571428571,
-                "paddingRight": 9.571428571428571,
-              },
-              Object {
-                "marginBottom": 15.314285714285713,
-              },
-            ]
-          }
-        >
-          <Text
-            allowFontScaling={false}
-            style={
-              Array [
-                Object {
-                  "fontSize": 19,
-                },
-                Object {
-                  "fontFamily": "Lato",
-                },
-                Object {
-                  "backgroundColor": "#333333",
-                  "color": "#ffffff",
-                },
-                Object {
-                  "fontWeight": "600",
-                },
-                null,
-                Object {
-                  "backgroundColor": "transparent",
-                },
-                null,
-                Object {
-                  "color": "#d0021b",
-                },
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-              ]
-            }
-          >
-            Deny
-          </Text>
-        </View>
-      </View>
-      <View
         accessibilityLabel="invitation-accept"
         accessible={true}
         focusable={true}
@@ -422,6 +319,7 @@ exports[`<Invitation /> should match snapshot 1`] = `
             "borderRadius": 5,
             "flexDirection": "row",
             "justifyContent": "center",
+            "marginBottom": 15.314285714285713,
             "minWidth": "35%",
             "opacity": 1,
             "overflow": "hidden",
@@ -468,6 +366,86 @@ exports[`<Invitation /> should match snapshot 1`] = `
         >
           Connect
         </Text>
+      </View>
+      <View
+        accessibilityLabel="invitation-deny"
+        accessible={true}
+        focusable={true}
+        isTVSelectable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "opacity": 1,
+          }
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "alignItems": "stretch",
+                "borderRadius": 5,
+                "flexDirection": "row",
+                "justifyContent": "center",
+                "overflow": "hidden",
+                "width": "100%",
+              },
+              Object {
+                "alignItems": "center",
+                "borderColor": "#CE0B24",
+                "borderWidth": 1,
+                "justifyContent": "center",
+                "minWidth": "35%",
+                "padding": 16.271428571428572,
+                "paddingLeft": 9.571428571428571,
+                "paddingRight": 9.571428571428571,
+              },
+            ]
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            style={
+              Array [
+                Object {
+                  "fontSize": 19,
+                },
+                Object {
+                  "fontFamily": "Lato",
+                },
+                Object {
+                  "backgroundColor": "#333333",
+                  "color": "#ffffff",
+                },
+                Object {
+                  "fontWeight": "600",
+                },
+                null,
+                Object {
+                  "backgroundColor": "transparent",
+                },
+                null,
+                Object {
+                  "color": "#d0021b",
+                },
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+              ]
+            }
+          >
+            Deny
+          </Text>
+        </View>
       </View>
     </View>
   </View>

@@ -1,11 +1,10 @@
 // @flow
 import * as React from 'react'
 import { Component } from 'react'
-import { View, FlatList, Dimensions, Animated, StyleSheet } from 'react-native'
-import { ConnectionDetailsHeader } from '../components'
+import { View, FlatList, StyleSheet } from 'react-native'
+import { HeaderWithDeletion } from '../components'
 import { CredentialCard } from '../components/connection-details/credential-card'
 import { ConnectionCard } from '../components/connection-details/connection-card'
-import MoreOptions from './components/more-options'
 import { ConnectionPending } from '../components/connection-details/connection-pending'
 import {
   updateStatusBarTheme,
@@ -46,16 +45,13 @@ import {
 import { UPDATE_ATTRIBUTE_CLAIM, ERROR_SEND_PROOF } from '../proof/type-proof'
 import { INVITATION_ACCEPTED } from '../invitation/type-invitation'
 import { CONNECTION_FAIL } from '../store/type-connection-store'
-
-let ScreenWidth = Dimensions.get('window').width
+import { deleteConnectionAction } from '../store/connections-store'
 
 export class ConnectionDetails extends Component<
   ConnectionHistoryProps,
   ConnectionHistoryState
 > {
   state = {
-    hideMoreOptions: true,
-    moveMoreOptions: new Animated.Value(ScreenWidth),
     newMessageLine: false,
   }
 
@@ -63,35 +59,6 @@ export class ConnectionDetails extends Component<
 
   componentDidMount() {
     this.props.updateStatusBarTheme(this.props.activeConnectionThemePrimary)
-
-    // NOTE: This logic is moved to Home screen and commented out here to be available should we
-    // want to revert back quickly.
-
-    // since componentDidMount is always getting called when navigating to this screen
-    // the check if snack bar should be displayed can be done in componentDidMount
-    // if (this.props.route.params.showExistingConnectionSnack) {
-    //   this.showSnackBar()
-
-    //   const invite = this.props.route.params.qrCodeInvitationPayload
-
-    //   if (invite.type === CONNECTION_INVITE_TYPES.ARIES_V1_QR) {
-    //     this.props.sendConnectionRedirect(invite, {
-    //       senderDID: this.props.route.params.senderDID,
-    //       identifier: this.props.route.params.identifier,
-    //     })
-    //   } else if (invite.type === CONNECTION_INVITE_TYPES.ARIES_OUT_OF_BAND) {
-    //     if (!invite.originalObject) {
-    //       return
-    //     }
-
-    //     this.props.sendConnectionReuse(
-    //       ((invite.originalObject: any): AriesOutOfBandInvite),
-    //       {
-    //         senderDID: this.props.route.params.senderDID,
-    //       }
-    //     )
-    //   }
-    // }
   }
 
   keyExtractor = (item: Object) => item.timestamp
@@ -369,25 +336,9 @@ export class ConnectionDetails extends Component<
     return null
   }
 
-  moreOptionsClose = () => {
-    Animated.timing(this.state.moveMoreOptions, {
-      toValue: ScreenWidth,
-      duration: 1,
-      useNativeDriver: true,
-    }).start(() => {
-      this.setState({ hideMoreOptions: true })
-    })
-  }
-
-  moreOptionsOpen = () => {
-    this.setState(
-      { hideMoreOptions: false },
-      Animated.timing(this.state.moveMoreOptions, {
-        toValue: 0,
-        duration: 1,
-        useNativeDriver: true,
-      }).start()
-    )
+  onDelete = () => {
+    this.props.deleteConnectionAction(this.props.route.params.senderDID)
+    this.props.navigation.goBack(null)
   }
 
   scrollToEnd = () => {
@@ -399,31 +350,19 @@ export class ConnectionDetails extends Component<
 
   render() {
     if (this.props.route) {
-      const { activeConnectionThemePrimary, connectionHistory } = this.props
+      const { connectionHistory } = this.props
 
       return (
         <View style={styles.container}>
-          <ConnectionDetailsHeader
-            newConnectionSeen={this.props.newConnectionSeen}
+          <HeaderWithDeletion
+            headline={this.props.route.params.senderName}
             navigation={this.props.navigation}
-            moreOptionsOpen={this.moreOptionsOpen}
-            colorBackground={activeConnectionThemePrimary}
-            route={this.props.route}
+            showImage={true}
+            image={this.props.route.params.image}
+            onViewedAction={()=> this.props.newConnectionSeen(this.props.route.params.senderDID)}
+            onDeleteButtonTitle={'Delete Connection'}
+            onDelete={this.onDelete}
           />
-          <Animated.View
-            style={[
-              styles.moreOptionsWrapper,
-              { transform: [{ translateX: this.state.moveMoreOptions }] },
-            ]}
-          >
-            {!this.state.hideMoreOptions && (
-              <MoreOptions
-                navigation={this.props.navigation}
-                moreOptionsClose={this.moreOptionsClose}
-                route={this.props.route}
-              />
-            )}
-          </Animated.View>
           <FlatList
             ref={this.flatList}
             keyExtractor={this.keyExtractor}
@@ -485,6 +424,7 @@ const mapDispatchToProps = (dispatch) =>
       newConnectionSeen,
       sendConnectionRedirect,
       sendConnectionReuse,
+      deleteConnectionAction,
     },
     dispatch
   )
@@ -505,12 +445,5 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     backgroundColor: colors.cmWhite,
-  },
-  moreOptionsWrapper: {
-    position: 'absolute',
-    width: ScreenWidth,
-    zIndex: 999,
-    elevation: 8,
-    height: Dimensions.get('screen').height,
   },
 })
