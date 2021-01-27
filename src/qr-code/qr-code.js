@@ -3,7 +3,6 @@ import React, { Component } from 'react'
 import { Alert, AppState, Platform } from 'react-native'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { detox } from 'react-native-dotenv'
 
 import { convertAriesCredentialOfferToCxsClaimOffer } from '../bridge/react-native-cxs/vcx-transformers'
 import { convertClaimOfferPushPayloadToAppClaimOffer } from '../push-notification/push-notification-store'
@@ -267,22 +266,6 @@ export class QRCodeScannerScreen extends Component<
   }
 
   componentDidMount() {
-    if (detox === 'yes') {
-      setTimeout(async () => {
-        try {
-          // get invitation from server running inside detox test
-          const invitation = await (await fetch('http://localhost:1337')).json()
-          if (invitation['payload']) {
-            this.onAriesConnectionInviteRead(invitation) // for VAS
-          } else {
-            this.onRead(invitation) // for VUI
-          }
-        } catch (e) {
-          // Alert.alert(JSON.stringify(e)) // android scanning throws empty error {} here!
-        }
-      })
-    }
-
     AppState.addEventListener('change', this._handleAppStateChange)
   }
 
@@ -309,8 +292,8 @@ export class QRCodeScannerScreen extends Component<
 
   render() {
     return (
-      <Container 
-        dark 
+      <Container
+        dark
         collapsable={true} >
         {this.state.isCameraEnabled && this.props.navigation.isFocused() ? (
           <QRScanner
@@ -378,7 +361,6 @@ export class QRCodeScannerScreen extends Component<
         verKey: payload.recipientKeys[1],
         endpoint: payload.serviceEndpoint,
       },
-      type: CONNECTION_INVITE_TYPES.ARIES_V1_QR,
       version: '1.0',
       type: CONNECTION_INVITE_TYPES.ARIES_V1_QR,
       original,

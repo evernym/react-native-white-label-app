@@ -38,8 +38,7 @@ Some of the dependencies listed are dev dependecies. Move the following packages
 ```json
 "devDependencies": {
     ...
-    "copyfiles": "x",
-    "react-native-dotenv": "x"
+    "copyfiles": "x"
   },
 ```
 
@@ -59,14 +58,6 @@ yarn evernym-sdk:configure
 ```
 
 This will install all dependecies and add required modules to the `AwesomeProject/app/evernym-sdk` directory.
-
-Next let's configure babel, add the following presets to `babel.config.js`
-```javascript
-  presets: [
-    ...
-    'module:react-native-dotenv',
-  ],
-```
 
 Next steps is configuring build for the platforms.
 

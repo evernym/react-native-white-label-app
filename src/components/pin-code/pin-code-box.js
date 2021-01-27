@@ -1,7 +1,6 @@
 // @flow
 import React, { PureComponent } from 'react'
 import { TextInput, StyleSheet, Platform } from 'react-native'
-import { detox } from 'react-native-dotenv'
 
 import type { PinCodeBoxProps, PinCodeBoxState } from './type-pin-code-box'
 
@@ -143,7 +142,7 @@ export default class PinCodeBox extends PureComponent<
 const styles = StyleSheet.create({
   input: {
     position: 'absolute',
-    right: detox === 'yes' ? 250 : -999,
+    right: -999,
     height: 0,
     width: 0,
   },
