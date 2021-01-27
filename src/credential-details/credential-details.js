@@ -9,7 +9,10 @@ import type { CredentialDetailsProps } from './type-credential-details'
 import { Avatar } from '../components/avatar/avatar'
 import { DefaultLogo } from '../components/default-logo/default-logo'
 import { CredentialList } from './credential-list/credential-list'
-import { Header } from '../components'
+import { HeaderWithDeletion } from '../components'
+import { ExpandableText } from '../components/expandable-text/expandable-text'
+import { bindActionCreators } from "redux"
+import { deleteClaim } from '../claim/claim-store'
 
 const CredentialDetails = (props: CredentialDetailsProps) => {
   const {
@@ -20,6 +23,7 @@ const CredentialDetails = (props: CredentialDetailsProps) => {
     remoteDid,
     uid,
     date,
+    claimOfferUuid,
   } = props.route.params
 
   const data = attributes.map((attribute) => ({
@@ -27,45 +31,44 @@ const CredentialDetails = (props: CredentialDetailsProps) => {
     data: attribute.data,
   }))
 
+  const onDelete = () => {
+    props.deleteClaim(claimOfferUuid)
+    props.navigation.goBack(null)
+  }
+
   return (
     <View style={styles.container}>
-      <Header
-        headline="Credential Details"
+      <HeaderWithDeletion
+        headline='Credential Details'
         navigation={props.navigation}
-        route={props.route}
+        onDeleteButtonTitle={'Delete Credential'}
+        onDelete={onDelete}
       />
       <ScrollView>
         <View style={styles.headerWrapper}>
           <Text style={styles.headerSubText}>
             {date ? 'Issued by' : 'Offered by'}
           </Text>
-          <Text
+          <ExpandableText
             style={styles.headerText}
-            ellipsizeMode="tail"
-            numberOfLines={2}
-          >
-            {issuerName}
-          </Text>
-
+            text={issuerName}
+          />
           <View style={styles.avatarSection}>
             {typeof logoUrl === 'string' ? (
               <Avatar
                 radius={48}
                 src={{ uri: logoUrl }}
-                testID={`${credentialName}-avatar`}
+                testID={`sender-avatar`}
               />
             ) : (
               <DefaultLogo text={issuerName} size={96} fontSize={48} />
             )}
           </View>
           <View style={styles.contentWrapper}>
-            <Text
+            <ExpandableText
               style={styles.contentText}
-              ellipsizeMode="tail"
-              numberOfLines={2}
-            >
-              {credentialName}
-            </Text>
+              text={credentialName}
+            />
           </View>
         </View>
         <View style={styles.listContainer}>
@@ -80,9 +83,12 @@ const CredentialDetails = (props: CredentialDetailsProps) => {
   )
 }
 
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators({ deleteClaim }, dispatch)
+
 export const credentialDetailsScreen = {
   routeName: credentialDetailsRoute,
-  screen: connect()(CredentialDetails),
+  screen: connect(null, mapDispatchToProps)(CredentialDetails),
 }
 
 const styles = StyleSheet.create({
@@ -116,10 +122,10 @@ const styles = StyleSheet.create({
   },
   contentWrapper: {
     width: '100%',
+    marginTop: verticalScale(24),
+    marginBottom: verticalScale(12),
   },
   contentText: {
-    marginTop: verticalScale(24),
-    marginBottom: verticalScale(8),
     marginStart: moderateScale(8),
     marginEnd: moderateScale(8),
     fontSize: verticalScale(fontSizes.size2),

@@ -11,6 +11,7 @@ const externalStyles = StyleSheet.create({
     width: '100%',
     height: '100%',
     backgroundColor: colors.cmWhite,
+    flex: 1,
   },
   flatListContainer: {
     width: '100%',
@@ -28,6 +29,12 @@ const externalStyles = StyleSheet.create({
     top: 0,
     width: '100%',
     height: verticalScale(90),
+  },
+  backgroundImage: {
+    width: '100%',
+    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 })
 

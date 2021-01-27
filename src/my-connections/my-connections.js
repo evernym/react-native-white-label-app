@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react'
-import { Platform, View, FlatList } from 'react-native'
+import { Platform, View, FlatList, ImageBackground } from 'react-native'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import Snackbar from 'react-native-snackbar'
@@ -8,6 +8,9 @@ import PushNotificationIOS from '@react-native-community/push-notification-ios'
 
 // $FlowExpectedError[cannot-resolve-module] external file
 import { navigationOptions } from '../../../../../app/evernym-sdk/navigator'
+
+// $FlowExpectedError[cannot-resolve-module] external file
+import { MyConnectionsViewEmptyState } from '../../../../../app/evernym-sdk/my-connections'
 
 import type { Store } from '../store/type-store'
 import type {
@@ -24,13 +27,11 @@ import { getConnections } from '../store/connections-store'
 import { connectionHistRoute } from '../common'
 import { getUnseenMessages } from '../store/store-selector'
 import { externalStyles } from './styles'
-import { HomeInstructions } from '../home/home-instructions/home-instructions'
 import {
   getEnvironmentName,
   getUnacknowledgedMessages,
 } from '../store/config-store'
 import {
-  SERVER_ENVIRONMENT,
   GET_MESSAGES_LOADING,
 } from '../store/type-config-store'
 import { withStatusBar } from '../components/status-bar/status-bar'
@@ -122,6 +123,7 @@ export class MyConnections extends Component<
       flatListContainer,
       flatListInnerContainer,
       outerContainer,
+      backgroundImage,
     } = externalStyles
 
     const numColumns = 2
@@ -135,11 +137,12 @@ export class MyConnections extends Component<
         <NotificationCard />
         <View style={container}>
           {this.props.hasNoConnection && (
-            <HomeInstructions
-              usingProductionNetwork={
-                this.props.environmentName === SERVER_ENVIRONMENT.PROD
-              }
-            />
+            <ImageBackground
+              source={require('../images/connection-items-placeholder.png')}
+              style={backgroundImage}
+            >
+              {MyConnectionsViewEmptyState ? (<MyConnectionsViewEmptyState/>) : (<View/>)}
+            </ImageBackground>
           )}
           <FlatList
             keyExtractor={this.keyExtractor}

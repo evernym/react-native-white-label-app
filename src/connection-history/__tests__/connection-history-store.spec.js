@@ -16,6 +16,10 @@ import connectionHistoryReducer, {
   convertSendClaimRequestSuccessToHistoryEvent,
   deleteHistoryEvent,
   convertInvitationAcceptedToHistoryEvent,
+  retryInterruptedActionsSaga,
+  convertClaimOfferAcceptedToHistoryEvent,
+  convertClaimOfferToHistoryEvent,
+  convertUpdateAttributeToHistoryEvent,
 } from '../connection-history-store'
 import { initialTestAction } from '../../common/type-common'
 import {
@@ -33,9 +37,15 @@ import {
   proof,
   uid,
   invitationAcceptedEvent,
+  event,
+  claimOffer,
+  selfAttestedAttributes,
 } from '../../../__mocks__/static-data'
-import { invitationAccepted } from '../../invitation/invitation-store'
-import { sendClaimRequestSuccess } from '../../claim-offer/claim-offer-store'
+import {
+  invitationAccepted,
+  sendInvitationResponse,
+} from '../../invitation/invitation-store'
+import { acceptClaimOffer, claimOfferReceived, sendClaimRequestSuccess } from '../../claim-offer/claim-offer-store'
 import { CLAIM_STORAGE_SUCCESS } from '../../claim/type-claim'
 import { proofRequestReceived } from '../../proof-request/proof-request-store'
 import {
@@ -51,7 +61,7 @@ import {
   getHistoryEvent,
   getPendingHistory,
   getClaimReceivedHistory,
-  getUniqueHistoryItem,
+  getUniqueHistoryItem, getHistory,
 } from '../../store/store-selector'
 import { getHydrationItem } from '../../services/storage'
 import {
@@ -62,6 +72,9 @@ import { RESET } from '../../common/type-common'
 import { PROOF_REQUEST_RECEIVED } from '../../proof-request/type-proof-request'
 import { CONNECTION_FAIL } from '../../store/type-connection-store'
 import { defaultUUID as mockDefaultUUID } from '../../../__mocks__/static-data'
+import { INVITATION_ACCEPTED } from '../../invitation/type-invitation'
+import { expectSaga } from 'redux-saga-test-plan'
+import { updateAttributeClaim } from '../../proof/proof-store'
 
 jest.mock('../../services/uuid', () => {
   return { uuid: () => mockDefaultUUID }
@@ -164,7 +177,8 @@ describe('Store: ConnectionHistory', () => {
         initialState,
         recordHistoryEvent(
           convertSendClaimRequestSuccessToHistoryEvent(
-            sendClaimRequestSuccess(uid, claimOfferPayload)
+            sendClaimRequestSuccess(uid, claimOfferPayload),
+            event
           )
         )
       )
@@ -194,6 +208,10 @@ describe('Store: ConnectionHistory', () => {
 
     expect(gen.next().value).toEqual(
       select(getUniqueHistoryItem, historyEvent.remoteDid, CONNECTION_FAIL)
+    )
+
+    expect(gen.next().value).toEqual(
+      select(getUniqueHistoryItem, historyEvent.remoteDid, INVITATION_ACCEPTED)
     )
     expect(gen.next().value).toEqual(put(recordHistoryEvent(historyEvent)))
   })
@@ -238,7 +256,8 @@ describe('Store: ConnectionHistory', () => {
 
     historyEvent = convertClaimStorageSuccessToHistoryEvent(
       claimReceivedSuccessEvent,
-      claimOfferPayload
+      claimOfferPayload,
+      event,
     )
     expect(gen.next(claimOfferPayload).value).toEqual(
       select(
@@ -285,7 +304,8 @@ describe('Store: ConnectionHistory', () => {
     convertProofSendToHistoryEvent(
       proofSharedEvent,
       proofRequestAutofill,
-      proof
+      proof,
+      event,
     )
   })
 
@@ -319,7 +339,7 @@ describe('Store: ConnectionHistory', () => {
 
   it('convertSendClaimRequestSuccessToHistoryEvent should raise success', () => {
     expect(
-      convertSendClaimRequestSuccessToHistoryEvent(sendClaimRequestSuccessEvent)
+      convertSendClaimRequestSuccessToHistoryEvent(sendClaimRequestSuccessEvent, event)
     ).toMatchSnapshot()
   })
 
@@ -334,7 +354,8 @@ describe('Store: ConnectionHistory', () => {
       convertProofSendToHistoryEvent(
         proofSharedEvent,
         proofRequestAutofill,
-        proof
+        proof,
+        event
       )
     ).toMatchSnapshot()
   })
@@ -362,7 +383,8 @@ describe('Store: ConnectionHistory', () => {
       initialState,
       recordHistoryEvent(
         convertSendClaimRequestSuccessToHistoryEvent(
-          sendClaimRequestSuccess(uid, claimOfferPayload)
+          sendClaimRequestSuccess(uid, claimOfferPayload),
+          event
         )
       )
     )
@@ -371,5 +393,109 @@ describe('Store: ConnectionHistory', () => {
         type: RESET,
       })
     ).toMatchSnapshot()
+  })
+})
+
+describe('Store: ConnectionHistory', () => {
+  it('retryInterruptedActionsSaga when no interrupted actions', () => {
+    const gen = retryInterruptedActionsSaga()
+
+    expect(gen.next().value).toEqual(
+      select(getHistory)
+    )
+
+    expect(gen.next().value).toEqual(undefined)
+  })
+
+  it('retryInterruptedActionsSaga for accepted connection invitation', () => {
+    const invitationPayload = getTestInvitationPayload().next().value
+    if (!invitationPayload){
+      return
+    }
+
+    const acceptInviteEvent = convertInvitationAcceptedToHistoryEvent(
+      invitationAccepted(
+        invitationPayload.payload.senderDID,
+        invitationPayload.payload
+      )
+    )
+
+    return expectSaga(retryInterruptedActionsSaga)
+      .withState({
+        history: {
+          data: {
+            connections: {
+              [senderDid1]: { data: [acceptInviteEvent] }
+            },
+          },
+        }
+      })
+      .select(getHistory)
+      .put(sendInvitationResponse({ response: 'accepted', senderDID: invitationPayload.payload.senderDID }))
+      .run()
+  })
+
+  it('retryInterruptedActionsSaga for accepted credential offer', () => {
+    const acceptInviteEvent = convertClaimOfferAcceptedToHistoryEvent(
+      acceptClaimOffer(
+        claimOffer.payloadInfo.uid,
+        claimOffer.payloadInfo.remotePairwiseDID,
+      ),
+      convertClaimOfferToHistoryEvent(
+        claimOfferReceived(
+          claimOffer.payload,
+          claimOffer.payloadInfo,
+        )
+      )
+    )
+
+    return expectSaga(retryInterruptedActionsSaga)
+      .withState({
+        history: {
+          data: {
+            connections: {
+              [claimOffer.payloadInfo.remotePairwiseDID]: { data: [acceptInviteEvent] }
+            },
+          },
+        }
+      })
+      .select(getHistory)
+      .put(acceptClaimOffer(claimOffer.payloadInfo.uid, claimOffer.payloadInfo.remotePairwiseDID))
+      .run()
+  })
+
+  it('retryInterruptedActionsSaga for accepted proof request', () => {
+
+    const acceptInviteEvent = convertUpdateAttributeToHistoryEvent(
+      updateAttributeClaim(
+        proofRequest.payloadInfo.uid,
+        proofRequest.payloadInfo.remotePairwiseDID,
+        {},
+        selfAttestedAttributes,
+      ),
+      convertProofRequestToHistoryEvent(
+        proofRequestReceived(proofRequest.payload, proofRequest.payloadInfo)
+      ),
+      {}
+    )
+
+    return expectSaga(retryInterruptedActionsSaga)
+      .withState({
+        history: {
+          data: {
+            connections: {
+              [claimOffer.payloadInfo.remotePairwiseDID]: { data: [acceptInviteEvent] }
+            },
+          },
+        }
+      })
+      .select(getHistory)
+      .put(updateAttributeClaim(
+        proofRequest.payloadInfo.uid,
+        proofRequest.payloadInfo.remotePairwiseDID,
+        {},
+        selfAttestedAttributes,
+      ))
+      .run()
   })
 })

@@ -31,6 +31,8 @@ import { Avatar } from '../../components'
 import { DefaultLogo } from '../../components/default-logo/default-logo'
 import { CHECKMARK_ICON, EvaIcon } from '../../common/icons'
 import { renderAttachmentIcon } from './modal-content'
+import { ModalLeftToRight } from '../utils/modal-animation'
+import { ExpandableText } from '../../components/expandable-text/expandable-text'
 
 export const keyExtractor = (item: Object) => item.claimUuid.toString()
 
@@ -79,85 +81,83 @@ const AttributesValues = ({
 
   const renderItem = ({ item, index }: { item: Object, index: number }) => {
     return (
-      <View>
-        <TouchableOpacity onPress={() => setSelectedValueIndex(index)}>
-          <View style={styles.itemContainer}>
-            <View style={styles.itemInnerContainer}>
-              <View style={styles.itemValuesContainer}>
-                <View style={styles.avatarSection}>
-                  {typeof item.logoUrl === 'string' ? (
-                    <Avatar radius={18} src={{ uri: item.logoUrl }} />
-                  ) : (
-                    <DefaultLogo
-                      text={item.senderName}
-                      size={32}
-                      fontSize={17}
-                    />
-                  )}
-                </View>
-                <View style={styles.infoSectionRow}>
-                  <Text
-                    style={styles.credentialsNameText}
-                    numberOfLines={1}
-                    ellipsizeMode="tail"
-                  >
-                    {item.credentialName}
-                  </Text>
-                </View>
-              </View>
-              <View style={styles.itemAttributesContainer}>
-                {Object.keys(item.values).map((label, keyIndex) => (
-                  <View key={`${index}_${keyIndex}`}>
-                    {renderAttachmentIcon(
-                      label,
-                      item.values[label],
-                      item.claimUuid || '',
-                      item.claimUuid || '',
-                      styles.title,
-                      styles.content
-                    )}
-                  </View>
-                ))}
-              </View>
+      <TouchableOpacity
+        onPress={() => setSelectedValueIndex(index)}
+        style={styles.itemContainer}>
+        <View style={styles.itemInnerContainer}>
+          <View style={styles.itemValuesContainer}>
+            <View style={styles.avatarSection}>
+              {typeof item.logoUrl === 'string' ? (
+                <Avatar radius={18} src={{ uri: item.logoUrl }} />
+              ) : (
+                <DefaultLogo
+                  text={item.senderName}
+                  size={32}
+                  fontSize={17}
+                />
+              )}
             </View>
-            {index === selectedValueIndex && (
-              <View style={styles.iconWrapper}>
-                <EvaIcon name={CHECKMARK_ICON} color={colors.cmBlack} />
-              </View>
-            )}
+            <View style={styles.infoSectionRow}>
+              <ExpandableText
+                style={styles.credentialsNameText}
+                lines={1}
+                text={item.credentialName}
+              />
+            </View>
           </View>
-        </TouchableOpacity>
-      </View>
+          <View style={styles.itemAttributesContainer}>
+            {Object.keys(item.values).map((label, keyIndex) => (
+              <View key={`${index}_${keyIndex}`}>
+                {renderAttachmentIcon(
+                  label,
+                  item.values[label],
+                  item.claimUuid || '',
+                  item.claimUuid || '',
+                  styles.title,
+                  styles.content
+                )}
+              </View>
+            ))}
+          </View>
+        </View>
+        {index === selectedValueIndex && (
+          <View style={styles.iconWrapper}>
+            <EvaIcon name={CHECKMARK_ICON} color={colors.cmBlack} />
+          </View>
+        )}
+      </TouchableOpacity>
     )
   }
 
+  const renderHeader = () => (
+    <View style={styles.descriptionWrapper}>
+      <ExpandableText
+        style={styles.descriptionTitle}
+        text={params?.sender + ' requires following attributes coming from the same credential:'}
+      />
+      <ExpandableText
+        style={styles.labelText}
+        text={params?.label || 'Attribute'}/>
+      <Text style={styles.descriptionTitle}>
+        {params.items.length} sources
+      </Text>
+    </View>
+  )
+
   return (
     <>
-      <View style={styles.modalWrapper}>
-        <View style={styles.descriptionWrapper}>
-          <Text style={styles.descriptionTitle}>
-            {params?.sender} requires following attributes coming from the same
-            credential:
-          </Text>
-          <Text style={styles.labelText}>{params?.label || 'Attribute'}</Text>
-          <Text style={styles.descriptionTitle}>
-            {params.items.length} sources
-          </Text>
-        </View>
-        <View style={styles.customValuesWrapper}>
-          <FlatList
-            keyExtractor={keyExtractor}
-            style={styles.container}
-            data={data}
-            renderItem={renderItem}
-          />
-        </View>
-      </View>
+      <FlatList
+        keyExtractor={keyExtractor}
+        style={styles.container}
+        data={data}
+        renderItem={renderItem}
+        ListHeaderComponent={renderHeader}
+      />
       <ModalButtons
         onPress={onDone}
         onIgnore={hideModal}
-        topBtnText="Cancel"
-        bottomBtnText="Done"
+        denyButtonText="Cancel"
+        acceptBtnText="Done"
         disableAccept={false}
         colorBackground={colors.cmGreen1}
         numberOfLines={3}
@@ -191,12 +191,10 @@ AttributesValuesScreen.screen.navigationOptions = ({
       onPress={() => goBack(null)}
     />
   ),
+  ...ModalLeftToRight,
 })
 
 const styles = StyleSheet.create({
-  customValuesWrapper: {
-    flex: 1,
-  },
   descriptionWrapper: {
     ...Platform.select({
       ios: {
@@ -215,25 +213,24 @@ const styles = StyleSheet.create({
     fontSize: verticalScale(fontSizes.size6),
     fontWeight: '300',
     fontFamily: fontFamily,
+    marginTop: verticalScale(6),
     lineHeight: verticalScale(17),
-  },
-  modalWrapper: {
-    flex: 1,
-    paddingLeft: '5%',
-    paddingRight: '5%',
   },
   labelText: {
     fontSize: verticalScale(fontSizes.size4),
     fontWeight: '700',
     color: colors.cmGray1,
     fontFamily: fontFamily,
-    marginVertical: verticalScale(6),
+    marginTop: verticalScale(6),
     lineHeight: verticalScale(20),
   },
   container: {
     width: '100%',
     height: '100%',
     backgroundColor: colors.cmWhite,
+    flex: 1,
+    paddingLeft: '5%',
+    paddingRight: '5%',
   },
   itemContainer: {
     width: '100%',
@@ -243,8 +240,8 @@ const styles = StyleSheet.create({
     paddingVertical: moderateScale(12),
   },
   itemInnerContainer: {
-    flex: 1,
     flexDirection: 'column',
+    width: '90%',
   },
   itemValuesContainer: {
     width: '100%',
@@ -262,8 +259,6 @@ const styles = StyleSheet.create({
   },
   infoSectionRow: {
     flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
   },
   credentialsNameText: {
     fontFamily: fontFamily,

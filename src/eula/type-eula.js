@@ -12,6 +12,7 @@ import {
 
 const isAndroid = Platform.OS === 'android'
 export const EULA_ACCEPT = 'EULA_ACCEPT'
+export const SHARE_EULA = 'SHARE_EULA'
 export const EULA_URL = isAndroid ? ANDROID_EULA_URL : IOS_EULA_URL
 export const localEulaSource = isAndroid ? ANDROID_EULA_LOCAL : IOS_EULA_LOCAL
 export const STORAGE_KEY_EULA_ACCEPTANCE = 'STORAGE_KEY_EULA_ACCEPTANCE'
@@ -28,6 +29,11 @@ export type EulaAccept = {
   isEulaAccept: boolean,
 }
 
+export type ShareEula = {
+  type: typeof SHARE_EULA,
+  uri: string,
+}
+
 export type HydrateEulaAcceptAction = {
   type: typeof HYDRATE_EULA_ACCEPT,
   isEulaAccept: boolean,
@@ -36,3 +42,5 @@ export type HydrateEulaAcceptAction = {
 export type EulaScreenState = {
   error: null | CustomError,
 }
+
+export const title = 'END USER LICENSE AGREEMENT'

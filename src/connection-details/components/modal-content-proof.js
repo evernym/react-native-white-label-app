@@ -19,8 +19,6 @@ import type {
   ProofRequestAndHeaderProps,
 } from '../../proof-request/type-proof-request'
 import {
-  MESSAGE_MISSING_ATTRIBUTES_DESCRIPTION,
-  MESSAGE_MISSING_ATTRIBUTES_TITLE,
   MESSAGE_ERROR_PROOF_GENERATION_TITLE,
   MESSAGE_ERROR_PROOF_GENERATION_DESCRIPTION,
   MESSAGE_ERROR_DISSATISFIED_ATTRIBUTES_TITLE,
@@ -55,6 +53,7 @@ import { colors } from '../../common/styles/constant'
 
 // utils
 import { hasMissingAttributes } from '../utils'
+import { authForAction } from '../../lock/lock-auth-for-action.js'
 
 class ModalContentProof extends Component<
   ProofRequestAndHeaderProps,
@@ -91,7 +90,7 @@ class ModalContentProof extends Component<
         ),
         [
           {
-            text: 'Ok',
+            text: 'OK',
             onPress: this.onIgnore,
           },
         ]
@@ -104,10 +103,6 @@ class ModalContentProof extends Component<
       this.props.missingAttributes !== prevProps.missingAttributes &&
       hasMissingAttributes(this.props.missingAttributes)
     ) {
-      Alert.alert(
-        MESSAGE_MISSING_ATTRIBUTES_TITLE,
-        MESSAGE_MISSING_ATTRIBUTES_DESCRIPTION(this.props.name)
-      )
       this.setState({
         allMissingAttributesFilled: false,
       })
@@ -116,8 +111,8 @@ class ModalContentProof extends Component<
 
   UNSAFE_componentWillReceiveProps(nextProps: ProofRequestAndHeaderProps) {
     if (
-      (this.props.proofGenerationError !== nextProps.proofGenerationError &&
-        nextProps.proofGenerationError)
+      this.props.proofGenerationError !== nextProps.proofGenerationError &&
+      nextProps.proofGenerationError
     ) {
       setTimeout(() => {
         Alert.alert(
@@ -125,10 +120,9 @@ class ModalContentProof extends Component<
           MESSAGE_ERROR_PROOF_GENERATION_DESCRIPTION,
           [
             {
-              text: 'Ok',
+              text: 'OK',
             },
-          ],
-          { cancelable: false }
+          ]
         )
       }, 300)
     }
@@ -232,6 +226,14 @@ class ModalContentProof extends Component<
   }
 
   onDeny = () => {
+    authForAction({
+      lock: this.props.lock,
+      navigation: this.props.navigation,
+      onSuccess: this.onDenyAuthSuccess,
+    })
+  }
+
+  onDenyAuthSuccess = () => {
     if (this.props.invitationPayload) {
       this.setState({ scheduledDeletion: true })
     } else {
@@ -242,6 +244,14 @@ class ModalContentProof extends Component<
   }
 
   onSend = () => {
+    authForAction({
+      lock: this.props.lock,
+      navigation: this.props.navigation,
+      onSuccess: this.onSendAuthSuccess,
+    })
+  }
+
+  onSendAuthSuccess = () => {
     this.props.newConnectionSeen(this.props.remotePairwiseDID)
 
     if (this.props.invitationPayload) {
@@ -288,7 +298,8 @@ class ModalContentProof extends Component<
     const disableAccept =
       this.props.proofGenerationError ||
       !this.state.allMissingAttributesFilled ||
-      (this.props.dissatisfiedAttributes && this.props.dissatisfiedAttributes.length > 0)
+      (this.props.dissatisfiedAttributes &&
+        this.props.dissatisfiedAttributes.length > 0)
 
     const {
       canEnablePrimaryAction,
@@ -322,8 +333,8 @@ class ModalContentProof extends Component<
         <ModalButtons
           onPress={this.onSend}
           onIgnore={this.onDeny}
-          topBtnText={this.props.isOOBInvitation ? 'Cancel' : 'Reject'}
-          bottomBtnText={PRIMARY_ACTION_SEND}
+          denyButtonText={this.props.isOOBInvitation ? 'Cancel' : 'Reject'}
+          acceptBtnText={PRIMARY_ACTION_SEND}
           disableAccept={disableAccept}
           svgIcon="Send"
           colorBackground={colors.cmGreen1}
@@ -335,7 +346,7 @@ class ModalContentProof extends Component<
 }
 
 const mapStateToProps = (state: Store, mergeProps) => {
-  const { proofRequest } = state
+  const { proofRequest, lock } = state
   const uid = mergeProps.uid
   const proofRequestData = proofRequest[uid] || {}
   const {
@@ -359,6 +370,7 @@ const mapStateToProps = (state: Store, mergeProps) => {
     missingAttributes,
     remotePairwiseDID,
     dissatisfiedAttributes,
+    lock,
     isOOBInvitation,
   }
 }

@@ -150,7 +150,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render CLAIM OFFER RECEI
       }
     >
       <View
-        accessibilityLabel="connection-logo"
+        accessibilityLabel="logo"
         accessible={true}
         style={
           Object {
@@ -159,6 +159,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render CLAIM OFFER RECEI
             "height": "100%",
             "marginLeft": 9.571428571428571,
             "marginRight": 5.742857142857143,
+            "paddingBottom": 5.742857142857143,
             "width": "35%",
           }
         }
@@ -189,7 +190,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render CLAIM OFFER RECEI
         </View>
       </View>
       <View
-        accessibilityLabel="connection-name"
+        accessibilityLabel="jim"
         accessible={true}
         style={
           Object {
@@ -204,12 +205,17 @@ exports[`<ConnectionDetails /> should ConnectionDetails render CLAIM OFFER RECEI
           ellipsizeMode="tail"
           numberOfLines={1}
           style={
-            Object {
-              "color": "#777777",
-              "fontFamily": "Lato",
-              "fontSize": 21.057142857142857,
-              "marginLeft": -47.85714285714286,
-            }
+            Array [
+              Object {
+                "color": "#777777",
+                "fontFamily": "Lato",
+                "fontSize": 21.057142857142857,
+                "marginLeft": -47.85714285714286,
+              },
+              Object {
+                "paddingRight": 19.142857142857142,
+              },
+            ]
           }
         >
           jim
@@ -334,22 +340,6 @@ exports[`<ConnectionDetails /> should ConnectionDetails render CLAIM OFFER RECEI
       </View>
     </View>
   </View>
-  <View
-    style={
-      Object {
-        "elevation": 8,
-        "height": 540,
-        "position": "absolute",
-        "transform": Array [
-          Object {
-            "translateX": 320,
-          },
-        ],
-        "width": 320,
-        "zIndex": 999,
-      }
-    }
-  />
   <RCTScrollView
     data={
       Array [
@@ -445,6 +435,9 @@ exports[`<ConnectionDetails /> should ConnectionDetails render CLAIM OFFER RECEI
             2018-01-10T04:32:43+05:30 | 2018-01-10T04:32:43+05:30
           </Text>
           <Text
+            ellipsizeMode="tail"
+            numberOfLines={1}
+            onTextLayout={[Function]}
             style={
               Object {
                 "color": "#505050",
@@ -462,6 +455,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render CLAIM OFFER RECEI
           <Text
             ellipsizeMode="tail"
             numberOfLines={1}
+            onTextLayout={[Function]}
             style={
               Object {
                 "color": "#505050",
@@ -690,7 +684,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render CONNECTED properl
       }
     >
       <View
-        accessibilityLabel="connection-logo"
+        accessibilityLabel="logo"
         accessible={true}
         style={
           Object {
@@ -699,6 +693,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render CONNECTED properl
             "height": "100%",
             "marginLeft": 9.571428571428571,
             "marginRight": 5.742857142857143,
+            "paddingBottom": 5.742857142857143,
             "width": "35%",
           }
         }
@@ -729,7 +724,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render CONNECTED properl
         </View>
       </View>
       <View
-        accessibilityLabel="connection-name"
+        accessibilityLabel="jim"
         accessible={true}
         style={
           Object {
@@ -744,12 +739,17 @@ exports[`<ConnectionDetails /> should ConnectionDetails render CONNECTED properl
           ellipsizeMode="tail"
           numberOfLines={1}
           style={
-            Object {
-              "color": "#777777",
-              "fontFamily": "Lato",
-              "fontSize": 21.057142857142857,
-              "marginLeft": -47.85714285714286,
-            }
+            Array [
+              Object {
+                "color": "#777777",
+                "fontFamily": "Lato",
+                "fontSize": 21.057142857142857,
+                "marginLeft": -47.85714285714286,
+              },
+              Object {
+                "paddingRight": 19.142857142857142,
+              },
+            ]
           }
         >
           jim
@@ -874,22 +874,6 @@ exports[`<ConnectionDetails /> should ConnectionDetails render CONNECTED properl
       </View>
     </View>
   </View>
-  <View
-    style={
-      Object {
-        "elevation": 8,
-        "height": 540,
-        "position": "absolute",
-        "transform": Array [
-          Object {
-            "translateX": 320,
-          },
-        ],
-        "width": 320,
-        "zIndex": 999,
-      }
-    }
-  />
   <RCTScrollView
     data={
       Array [
@@ -976,6 +960,9 @@ exports[`<ConnectionDetails /> should ConnectionDetails render CONNECTED properl
             2018-01-10T04:32:43+05:30 | 2018-01-10T04:32:43+05:30
           </Text>
           <Text
+            ellipsizeMode="tail"
+            numberOfLines={1}
+            onTextLayout={[Function]}
             style={
               Object {
                 "color": "#505050",
@@ -993,6 +980,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render CONNECTED properl
           <Text
             ellipsizeMode="tail"
             numberOfLines={1}
+            onTextLayout={[Function]}
             style={
               Object {
                 "color": "#505050",
@@ -1221,7 +1209,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render PENDING properly 
       }
     >
       <View
-        accessibilityLabel="connection-logo"
+        accessibilityLabel="logo"
         accessible={true}
         style={
           Object {
@@ -1230,6 +1218,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render PENDING properly 
             "height": "100%",
             "marginLeft": 9.571428571428571,
             "marginRight": 5.742857142857143,
+            "paddingBottom": 5.742857142857143,
             "width": "35%",
           }
         }
@@ -1260,7 +1249,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render PENDING properly 
         </View>
       </View>
       <View
-        accessibilityLabel="connection-name"
+        accessibilityLabel="jim"
         accessible={true}
         style={
           Object {
@@ -1275,12 +1264,17 @@ exports[`<ConnectionDetails /> should ConnectionDetails render PENDING properly 
           ellipsizeMode="tail"
           numberOfLines={1}
           style={
-            Object {
-              "color": "#777777",
-              "fontFamily": "Lato",
-              "fontSize": 21.057142857142857,
-              "marginLeft": -47.85714285714286,
-            }
+            Array [
+              Object {
+                "color": "#777777",
+                "fontFamily": "Lato",
+                "fontSize": 21.057142857142857,
+                "marginLeft": -47.85714285714286,
+              },
+              Object {
+                "paddingRight": 19.142857142857142,
+              },
+            ]
           }
         >
           jim
@@ -1405,22 +1399,6 @@ exports[`<ConnectionDetails /> should ConnectionDetails render PENDING properly 
       </View>
     </View>
   </View>
-  <View
-    style={
-      Object {
-        "elevation": 8,
-        "height": 540,
-        "position": "absolute",
-        "transform": Array [
-          Object {
-            "translateX": 320,
-          },
-        ],
-        "width": 320,
-        "zIndex": 999,
-      }
-    }
-  />
   <RCTScrollView
     data={
       Array [
@@ -1561,6 +1539,9 @@ exports[`<ConnectionDetails /> should ConnectionDetails render PENDING properly 
               }
             >
               <Text
+                ellipsizeMode="tail"
+                numberOfLines={1}
+                onTextLayout={[Function]}
                 style={
                   Object {
                     "color": "#505050",
@@ -1746,7 +1727,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render PROOF RECEIVED pr
       }
     >
       <View
-        accessibilityLabel="connection-logo"
+        accessibilityLabel="logo"
         accessible={true}
         style={
           Object {
@@ -1755,6 +1736,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render PROOF RECEIVED pr
             "height": "100%",
             "marginLeft": 9.571428571428571,
             "marginRight": 5.742857142857143,
+            "paddingBottom": 5.742857142857143,
             "width": "35%",
           }
         }
@@ -1785,7 +1767,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render PROOF RECEIVED pr
         </View>
       </View>
       <View
-        accessibilityLabel="connection-name"
+        accessibilityLabel="jim"
         accessible={true}
         style={
           Object {
@@ -1800,12 +1782,17 @@ exports[`<ConnectionDetails /> should ConnectionDetails render PROOF RECEIVED pr
           ellipsizeMode="tail"
           numberOfLines={1}
           style={
-            Object {
-              "color": "#777777",
-              "fontFamily": "Lato",
-              "fontSize": 21.057142857142857,
-              "marginLeft": -47.85714285714286,
-            }
+            Array [
+              Object {
+                "color": "#777777",
+                "fontFamily": "Lato",
+                "fontSize": 21.057142857142857,
+                "marginLeft": -47.85714285714286,
+              },
+              Object {
+                "paddingRight": 19.142857142857142,
+              },
+            ]
           }
         >
           jim
@@ -1930,22 +1917,6 @@ exports[`<ConnectionDetails /> should ConnectionDetails render PROOF RECEIVED pr
       </View>
     </View>
   </View>
-  <View
-    style={
-      Object {
-        "elevation": 8,
-        "height": 540,
-        "position": "absolute",
-        "transform": Array [
-          Object {
-            "translateX": 320,
-          },
-        ],
-        "width": 320,
-        "zIndex": 999,
-      }
-    }
-  />
   <RCTScrollView
     data={
       Array [
@@ -2041,6 +2012,9 @@ exports[`<ConnectionDetails /> should ConnectionDetails render PROOF RECEIVED pr
             2018-01-10T04:32:43+05:30 | 2018-01-10T04:32:43+05:30
           </Text>
           <Text
+            ellipsizeMode="tail"
+            numberOfLines={1}
+            onTextLayout={[Function]}
             style={
               Object {
                 "color": "#505050",
@@ -2058,6 +2032,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render PROOF RECEIVED pr
           <Text
             ellipsizeMode="tail"
             numberOfLines={1}
+            onTextLayout={[Function]}
             style={
               Object {
                 "color": "#505050",
@@ -2286,7 +2261,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render RECEIVED properly
       }
     >
       <View
-        accessibilityLabel="connection-logo"
+        accessibilityLabel="logo"
         accessible={true}
         style={
           Object {
@@ -2295,6 +2270,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render RECEIVED properly
             "height": "100%",
             "marginLeft": 9.571428571428571,
             "marginRight": 5.742857142857143,
+            "paddingBottom": 5.742857142857143,
             "width": "35%",
           }
         }
@@ -2325,7 +2301,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render RECEIVED properly
         </View>
       </View>
       <View
-        accessibilityLabel="connection-name"
+        accessibilityLabel="jim"
         accessible={true}
         style={
           Object {
@@ -2340,12 +2316,17 @@ exports[`<ConnectionDetails /> should ConnectionDetails render RECEIVED properly
           ellipsizeMode="tail"
           numberOfLines={1}
           style={
-            Object {
-              "color": "#777777",
-              "fontFamily": "Lato",
-              "fontSize": 21.057142857142857,
-              "marginLeft": -47.85714285714286,
-            }
+            Array [
+              Object {
+                "color": "#777777",
+                "fontFamily": "Lato",
+                "fontSize": 21.057142857142857,
+                "marginLeft": -47.85714285714286,
+              },
+              Object {
+                "paddingRight": 19.142857142857142,
+              },
+            ]
           }
         >
           jim
@@ -2470,22 +2451,6 @@ exports[`<ConnectionDetails /> should ConnectionDetails render RECEIVED properly
       </View>
     </View>
   </View>
-  <View
-    style={
-      Object {
-        "elevation": 8,
-        "height": 540,
-        "position": "absolute",
-        "transform": Array [
-          Object {
-            "translateX": 320,
-          },
-        ],
-        "width": 320,
-        "zIndex": 999,
-      }
-    }
-  />
   <RCTScrollView
     data={
       Array [
@@ -2697,6 +2662,9 @@ exports[`<ConnectionDetails /> should ConnectionDetails render RECEIVED properly
                     }
                   >
                     <Text
+                      ellipsizeMode="tail"
+                      numberOfLines={1}
+                      onTextLayout={[Function]}
                       style={
                         Object {
                           "color": "#505050",
@@ -3006,7 +2974,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render SHARED properly 1
       }
     >
       <View
-        accessibilityLabel="connection-logo"
+        accessibilityLabel="logo"
         accessible={true}
         style={
           Object {
@@ -3015,6 +2983,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render SHARED properly 1
             "height": "100%",
             "marginLeft": 9.571428571428571,
             "marginRight": 5.742857142857143,
+            "paddingBottom": 5.742857142857143,
             "width": "35%",
           }
         }
@@ -3045,7 +3014,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render SHARED properly 1
         </View>
       </View>
       <View
-        accessibilityLabel="connection-name"
+        accessibilityLabel="jim"
         accessible={true}
         style={
           Object {
@@ -3060,12 +3029,17 @@ exports[`<ConnectionDetails /> should ConnectionDetails render SHARED properly 1
           ellipsizeMode="tail"
           numberOfLines={1}
           style={
-            Object {
-              "color": "#777777",
-              "fontFamily": "Lato",
-              "fontSize": 21.057142857142857,
-              "marginLeft": -47.85714285714286,
-            }
+            Array [
+              Object {
+                "color": "#777777",
+                "fontFamily": "Lato",
+                "fontSize": 21.057142857142857,
+                "marginLeft": -47.85714285714286,
+              },
+              Object {
+                "paddingRight": 19.142857142857142,
+              },
+            ]
           }
         >
           jim
@@ -3190,22 +3164,6 @@ exports[`<ConnectionDetails /> should ConnectionDetails render SHARED properly 1
       </View>
     </View>
   </View>
-  <View
-    style={
-      Object {
-        "elevation": 8,
-        "height": 540,
-        "position": "absolute",
-        "transform": Array [
-          Object {
-            "translateX": 320,
-          },
-        ],
-        "width": 320,
-        "zIndex": 999,
-      }
-    }
-  />
   <RCTScrollView
     data={
       Array [
@@ -3408,6 +3366,9 @@ exports[`<ConnectionDetails /> should ConnectionDetails render SHARED properly 1
                     }
                   >
                     <Text
+                      ellipsizeMode="tail"
+                      numberOfLines={1}
+                      onTextLayout={[Function]}
                       style={
                         Object {
                           "color": "#505050",

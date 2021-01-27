@@ -1,6 +1,7 @@
 //@flow
 import React, { Component } from 'react'
 import { StyleSheet } from 'react-native'
+import { CommonActions } from '@react-navigation/native'
 import { TouchId } from '../components/touch-id/touch-id'
 import { Container, CustomText, CustomButton } from '../components'
 import { connect } from 'react-redux'
@@ -47,14 +48,23 @@ export class LockEnterFingerprint extends Component<
   ) => {
     //this method will be called in fingerprint authentication screen
     //or any where in app if there is a invitation received.
-    if (pendingRedirection) {
+    if (pendingRedirection && pendingRedirection.length) {
       pendingRedirection.map((pendingRedirection) => {
-        this.props.navigation.navigate(
-          pendingRedirection.routeName,
-          pendingRedirection.params || {}
+        this.props.navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [
+              {
+                name: pendingRedirection.routeName,
+                params: pendingRedirection.params || {},
+              },
+            ],
+          })
         )
       })
       this.props.clearPendingRedirect()
+    } else if (this.props.onSuccess) {
+      this.props.onSuccess()
     } else if (this.props.isAppLocked === true) {
       // * if app is unlocked and invitation is fetched , with out this condition we are redirecting user to home screen from invitation screen.
       // * this condition will avoid redirecting user to home screen if app is already unlocked
@@ -149,16 +159,20 @@ export class LockEnterFingerprint extends Component<
   }
 }
 
-const mapStateToProps = (state: Store) => ({
-  pendingRedirection: state.lock.pendingRedirection,
-  pendingRedirectionParams: state.lock.pendingRedirectionParams || {},
-  isFetchingInvitation: Object.keys(state.smsPendingInvitation).some(
-    (smsToken) =>
-      state.smsPendingInvitation[smsToken] &&
-      state.smsPendingInvitation[smsToken].isFetching === true
-  ),
-  isAppLocked: state.lock.isAppLocked,
-})
+const mapStateToProps = (state: Store, { route: { params } }: any) => {
+  const { onSuccess } = params || { onSuccess: null }
+  return {
+    pendingRedirection: state.lock.pendingRedirection,
+    pendingRedirectionParams: state.lock.pendingRedirectionParams || {},
+    isFetchingInvitation: Object.keys(state.smsPendingInvitation).some(
+      (smsToken) =>
+        state.smsPendingInvitation[smsToken] &&
+        state.smsPendingInvitation[smsToken].isFetching === true
+    ),
+    isAppLocked: state.lock.isAppLocked,
+    onSuccess,
+  }
+}
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(

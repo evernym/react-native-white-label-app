@@ -60,6 +60,7 @@ import { DELETE_CLAIM_SUCCESS } from '../claim/type-claim'
 import { sendConnectionReuse } from '../store/connections-store'
 import {
   CONNECTION_FAIL,
+  CONNECTION_REQUEST_SENT,
   NEW_CONNECTION_SUCCESS,
 } from '../store/type-connection-store'
 
@@ -67,6 +68,7 @@ export const HISTORY_EVENT_STATUS = {
   [INVITATION_RECEIVED]: 'CONNECTION REQUEST',
   [NEW_CONNECTION_SUCCESS]: 'CONNECTED',
   [INVITATION_ACCEPTED]: 'CONNECTION ACCEPTED',
+  [CONNECTION_REQUEST_SENT]: 'CONNECTION REQUEST SENT',
   [INVITATION_REJECTED]: 'CONNECTION REJECTED',
   [CONNECTION_FAIL]: 'CONNECTION FAILED',
   [SEND_CLAIM_REQUEST_SUCCESS]: 'PENDING',
@@ -101,6 +103,7 @@ export const EventTypeToEventStatusMap = {
   INVITATION: [
     INVITATION_RECEIVED,
     INVITATION_ACCEPTED,
+    CONNECTION_REQUEST_SENT,
     NEW_CONNECTION_SUCCESS,
     INVITATION_REJECTED,
     CONNECTION_FAIL,
@@ -133,6 +136,8 @@ export type ConnectionHistoryEvent = {
   originalPayload: GenericObject,
   showBadge?: boolean,
   payTokenValue?: string,
+  senderName?: ?string,
+  senderLogoUrl?: ?string,
 }
 
 export type ConnectionHistoryItem = {
@@ -171,6 +176,7 @@ export type ConnectionHistoryDetailsProps = {
 export const BLANK_ATTRIBUTE_DATA_TEXT = '(none)'
 
 export const DISSATISFIED_ATTRIBUTE_DATA_TEXT = 'Not found'
+export const MISSING_ATTRIBUTE_DATA_TEXT = 'Missing - Tap to fix'
 
 export type ConnectionHistoryData = {
   [string]: { data: Array<ConnectionHistoryEvent>, newBadge: boolean },
@@ -254,8 +260,6 @@ export type ConnectionHistoryStore = {
 export const HISTORY_EVENT_STORAGE_KEY = 'HISTORY_EVENT_STORAGE_KEY'
 
 export type ConnectionHistoryState = {
-  hideMoreOptions: boolean,
-  moveMoreOptions: Object,
   newMessageLine?: boolean,
 }
 

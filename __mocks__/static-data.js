@@ -20,6 +20,7 @@ import {
   invitationReceived,
 } from '../src/invitation/invitation-store'
 import {
+  claimOfferAccepted,
   claimOfferReceived,
   sendClaimRequestSuccess,
 } from '../src/claim-offer/claim-offer-store'
@@ -62,6 +63,7 @@ import {
 } from '../src/proof-request/type-proof-request'
 import { inAppNotificationMockData } from './data/in-app-notification-mock-data'
 import { connectionSuccess } from '../src/store/type-connection-store'
+import { HISTORY_EVENT_TYPE } from '../src/connection-history/type-connection-history'
 
 // sadly, we can't export all variables in one line and use them in file as well
 // to use them in this file, we have to import them first
@@ -461,6 +463,20 @@ export const claimOffer = {
     senderLogoUrl: 'http://testissuer.com/logoUrl.png',
     remotePairwiseDID: 'ha66899sadfjZJGINKN0770',
   },
+}
+
+export const event = {
+  action: '',
+  data: [],
+  id: '123434325dsfefw',
+  name: 'test',
+  status: 'status',
+  timestamp: '',
+  remoteDid: senderDid1,
+  type: HISTORY_EVENT_TYPE.INVITATION,
+  originalPayload: {},
+  senderName: 'Test Issuer',
+  senderLogoUrl: 'http://testissuer.com/logoUrl.png',
 }
 
 export const paidClaimOffer = {
@@ -1424,11 +1440,6 @@ export const newConnectionSuccessEvent = connectionSuccess(
 export const invitationAcceptedEvent = invitationAccepted(
   invitationAcceptedData.senderDID,
   invitationAcceptedData.payload
-)
-
-export const claimOfferReceivedEvent = claimOfferReceived(
-  claimOffer.payload,
-  claimOffer.payloadInfo
 )
 
 export const claimReceivedEvent = claimReceived(claim)

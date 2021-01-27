@@ -155,6 +155,7 @@ export type LockStore = {
   shouldLockApp: boolean,
   numberOfAttemptsMessage: string,
   lockdownTimeMessage: string,
+  lastUnlockSuccessTime?: string,
 }
 
 export type LockSelectionProps = {
@@ -202,6 +203,7 @@ export type LockEnterFingerProps = {
   clearPendingRedirect: () => void,
   unlockApp: () => void,
   isAppLocked: boolean,
+  onSuccess?: () => void,
 } & ReactNavigation
 
 export type LockEnterPinState = {

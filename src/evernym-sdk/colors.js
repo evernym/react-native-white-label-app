@@ -13,6 +13,7 @@ export const colors = {
   cmGray3: '#A5A5A5',
   cmGray2: '#777777',
   cmGray1: '#505050',
+  cmGray0: '#404040',
   cmBlack: '#000000',
   cmBlue: '#236BAE',
 }

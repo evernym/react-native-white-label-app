@@ -18,6 +18,8 @@ import {
   ERROR_HISTORY_EVENT_OCCURRED,
   REMOVE_EVENT,
   UPDATE_HISTORY_EVENT,
+  DELETE_PENDING_HISTORY_EVENTS,
+  PENDING_ACTIONS,
 } from './type-connection-history'
 import type {
   ConnectionHistoryEvent,
@@ -31,6 +33,7 @@ import type {
   RecordHistoryEventAction,
   RemoveEventAction,
   UpdateHistoryEventAction,
+  DeletePendingHistoryEventsAction,
 } from './type-connection-history'
 import type { CustomError } from '../common/type-common'
 import type {
@@ -111,6 +114,7 @@ import {
   getHistoryEvent,
   getClaimReceivedHistory,
   getUniqueHistoryItem,
+  getConnection, getLastConnectionEvent,
 } from '../store/store-selector'
 import {
   CLAIM_STORAGE_SUCCESS,
@@ -132,9 +136,20 @@ import { MESSAGE_TYPE } from '../api/api-constants'
 import { selectQuestion } from '../question/question-store'
 import {
   CONNECTION_FAIL,
+  DELETE_CONNECTION_SUCCESS,
+  CONNECTION_REQUEST_SENT,
   NEW_CONNECTION_SUCCESS,
 } from '../store/type-connection-store'
-import type { ConnectionFailAction } from '../store/type-connection-store'
+import type {
+  Connection,
+  ConnectionFailAction,
+  DeleteConnectionSuccessEventAction,
+} from '../store/type-connection-store'
+import { acceptClaimOffer, checkCredentialStatus, denyClaimOffer } from '../claim-offer/claim-offer-store'
+import { updateAttributeClaim } from '../proof/proof-store'
+import { checkConnectionStatus, sendInvitationResponse } from '../invitation/invitation-store'
+import { ResponseType } from '../components/request/type-request'
+import { denyProofRequest } from '../proof-request/proof-request-store'
 
 const initialState = {
   error: null,
@@ -191,15 +206,16 @@ export function* loadHistorySaga(): Generator<*, *, *> {
         connectionsUpdated: false,
       }
 
+      let history
+
       if ('connectionsUpdated' in oldHistory) {
-        yield put(loadHistorySuccess(oldHistory))
+        history = oldHistory
       } else if ('newBadge' in oldHistory[oldHistoryKeys[0]]) {
         newHistory = {
           ...newHistory,
           connections: oldHistory,
         }
-        // $FlowFixMe Need to fix the type error here
-        yield put(loadHistorySuccess(newHistory))
+        history = newHistory
       } else {
         const modifiedData = {}
         for (let i = 0; i < oldHistoryKeys.length; i++) {
@@ -212,8 +228,31 @@ export function* loadHistorySaga(): Generator<*, *, *> {
           ...newHistory,
           connections: modifiedData,
         }
-        yield put(loadHistorySuccess(newHistory))
+        history = newHistory
       }
+
+      // CMe keeps the whole history event for delete connections
+      // for CMe <= 1.4.0 Home -> Recent event section showed events only for existing connections.
+      //            A history event didn't contain `senderLogoUrl` and `senderName`.
+      //            They we taken from connection store
+      // for CMe > 1.4.0 Home -> Recent event section shows all events (even for deleted connections)
+      //            The approach used for CMe <=1.4.0 doesn't work when we want to show history for deleted connections as well.
+      //            So we need populate history with missing data - add `senderLogoUrl` and `senderName` from last connection related event.
+      Object.keys(oldHistory.connections)
+        .forEach((connectionKey) => {
+          const connectionHistory = oldHistory.connections[connectionKey].data
+          for (let i = 0; i < connectionHistory.length; i++) {
+            if (!connectionHistory[i].senderName || !connectionHistory[i].senderLogoUrl) {
+              const connectionAddedEvent = getLastConnectionEvent(connectionHistory.slice(0, i + 1))
+              if (connectionAddedEvent) {
+                oldHistory.connections[connectionKey].data[i].senderName = connectionAddedEvent.originalPayload.payload.senderName
+                oldHistory.connections[connectionKey].data[i].senderLogoUrl = connectionAddedEvent.originalPayload.payload.senderLogoUrl
+              }
+            }
+          }
+        })
+
+      yield put(loadHistorySuccess(history))
     }
   } catch (e) {
     captureError(e)
@@ -223,6 +262,94 @@ export function* loadHistorySaga(): Generator<*, *, *> {
         message: `${ERROR_LOADING_HISTORY.message} ${e.message}`,
       })
     )
+  }
+}
+
+export function* retryInterruptedActionsSaga(): Generator<*, *, *> {
+  const history = yield select(getHistory)
+
+  if (!history){
+    return
+  }
+
+  // Iterate over history events.
+  // If the status of the last event associated with connection
+  // means that action was started but not finished,
+  // try to retry action associated with this event.
+  for (const connection: any of Object.values(history.connections)) {
+    if (connection && connection.data && connection.data.length > 0) {
+      for (const event of connection.data) {
+        if (event.status === INVITATION_ACCEPTED) {
+          // Invitation was accepted but ConnectionRequest was not send - retry
+          yield put(
+            sendInvitationResponse({
+              response: ResponseType.accepted,
+              senderDID: event.remoteDid,
+            }),
+          )
+        }
+        if (event.status === CONNECTION_REQUEST_SENT) {
+          // Invitation was accepted and ConnectionRequest was send - check for completion
+          const [connection]: Connection[] = yield select(getConnection, event.remoteDid)
+          if (connection && connection.senderName) {
+            yield call(
+              checkConnectionStatus,
+              connection.identifier,
+              connection.senderName,
+              connection.senderDID,
+            )
+          }
+        }
+        if (event.status === CLAIM_OFFER_ACCEPTED) {
+          // CredentialOffer was accepted but CredentialRequest was not send - retry
+          yield put(
+            acceptClaimOffer(
+              event.originalPayload.uid,
+              event.originalPayload.remoteDid,
+            ),
+          )
+        }
+        if (event.status === HISTORY_EVENT_STATUS[SEND_CLAIM_REQUEST_SUCCESS]) {
+          // CredentialOffer was accepted and CredentialRequest was send - check for completion
+          const claimOffer = yield select(getClaimOffer, event.originalPayload.uid)
+          if (claimOffer) {
+            yield call(
+              checkCredentialStatus,
+              claimOffer.uid,
+              claimOffer.issuer.name,
+              claimOffer.remotePairwiseDID,
+            )
+          }
+        }
+        if (event.status === HISTORY_EVENT_STATUS[DENY_CLAIM_OFFER]) {
+          // CredentialOffer was denied but not sent - retry
+          yield put(
+            denyClaimOffer(
+              event.originalPayload.uid,
+            ),
+          )
+        }
+        if (event.status === UPDATE_ATTRIBUTE_CLAIM) {
+          // ProofRequest was accepted but not sent - retry
+          yield put(
+            updateAttributeClaim(
+              event.originalPayload.uid,
+              event.originalPayload.remoteDid,
+              event.originalPayload.requestedAttrsJson,
+              event.originalPayload.selfAttestedAttrs,
+            ),
+          )
+        }
+        if (event.status === DENY_PROOF_REQUEST) {
+          // ProofRequest was denied but not sent - retry
+          yield put(
+            denyProofRequest(
+              event.originalPayload.uid,
+            )
+          )
+        }
+      }
+    }
   }
 }
 
@@ -240,6 +367,8 @@ export function convertInvitationToHistoryEvent(
     type: HISTORY_EVENT_TYPE.INVITATION,
     remoteDid: invitation.senderDID,
     originalPayload: invitation,
+    senderName: invitation.senderName,
+    senderLogoUrl: invitation.senderLogoUrl,
   }
 }
 
@@ -247,7 +376,7 @@ export function convertInvitationToHistoryEvent(
 export function convertInvitationAcceptedToHistoryEvent(
   action: InvitationAcceptedAction
 ): ConnectionHistoryEvent {
-  const { senderName, senderDID } = action.payload
+  const { senderName, senderDID, senderLogoUrl } = action.payload
 
   return {
     action: HISTORY_EVENT_STATUS[INVITATION_ACCEPTED],
@@ -264,6 +393,32 @@ export function convertInvitationAcceptedToHistoryEvent(
     type: HISTORY_EVENT_TYPE.INVITATION,
     remoteDid: senderDID,
     originalPayload: action,
+    senderName: senderName,
+    senderLogoUrl: senderLogoUrl,
+  }
+}
+
+// invitation accepted and connection request sent
+export function convertConnectionRequestSentToHistoryEvent(
+  event: ConnectionHistoryEvent,
+): ConnectionHistoryEvent {
+  return {
+    action: HISTORY_EVENT_STATUS[INVITATION_ACCEPTED],
+    data: [
+      {
+        label: 'Will be established on',
+        data: moment().format(),
+      },
+    ],
+    id: uuid(),
+    name: event.name,
+    status: HISTORY_EVENT_STATUS[CONNECTION_REQUEST_SENT],
+    timestamp: moment().format(),
+    type: HISTORY_EVENT_TYPE.INVITATION,
+    remoteDid: event.remoteDid,
+    originalPayload: event.originalPayload,
+    senderName: event.senderName,
+    senderLogoUrl: event.senderLogoUrl,
   }
 }
 
@@ -286,6 +441,8 @@ export function convertConnectionSuccessToHistoryEvent(
     type: HISTORY_EVENT_TYPE.INVITATION,
     remoteDid: event.remoteDid,
     originalPayload: event.originalPayload,
+    senderName: event.senderName,
+    senderLogoUrl: event.senderLogoUrl,
   }
 }
 
@@ -309,12 +466,40 @@ export function convertConnectionFailToHistoryEvent(
     remoteDid: event.remoteDid,
     originalPayload: event.originalPayload,
     status: HISTORY_EVENT_STATUS.CONNECTION_FAIL,
+    senderName: event.senderName,
+    senderLogoUrl: event.senderLogoUrl,
+  }
+}
+
+// connection deleted
+export function convertConnectionDeletedToHistoryEvent(
+  action: DeleteConnectionSuccessEventAction,
+  event: ConnectionHistoryEvent
+): ConnectionHistoryEvent {
+  return {
+    action: HISTORY_EVENT_STATUS.DELETE_CONNECTION_SUCCESS,
+    data: [
+      {
+        label: 'You deleted your connection with',
+        data: moment().format(),
+      },
+    ],
+    id: uuid(),
+    name: event.name,
+    timestamp: moment().format(),
+    type: HISTORY_EVENT_TYPE.INVITATION,
+    remoteDid: event.remoteDid,
+    originalPayload: event.originalPayload,
+    status: HISTORY_EVENT_STATUS.DELETE_CONNECTION_SUCCESS,
+    senderName: event.senderName,
+    senderLogoUrl: event.senderLogoUrl,
   }
 }
 
 // claim request pending
 export function convertSendClaimRequestSuccessToHistoryEvent(
-  action: SendClaimRequestSuccessAction
+  action: SendClaimRequestSuccessAction,
+  event?: ConnectionHistoryEvent
 ): ConnectionHistoryEvent {
   return {
     action: HISTORY_EVENT_STATUS[SEND_CLAIM_REQUEST_SUCCESS],
@@ -327,12 +512,15 @@ export function convertSendClaimRequestSuccessToHistoryEvent(
     type: HISTORY_EVENT_TYPE.CLAIM,
     remoteDid: action.payload.remotePairwiseDID,
     originalPayload: action,
+    senderName: event?.senderName,
+    senderLogoUrl: event?.senderLogoUrl,
   }
 }
 
 export function convertClaimStorageSuccessToHistoryEvent(
   action: ClaimStorageSuccessAction,
-  claim: ClaimOfferPayload
+  claim: ClaimOfferPayload,
+  event: ConnectionHistoryEvent
 ): ConnectionHistoryEvent {
   return {
     action: HISTORY_EVENT_STATUS[CLAIM_STORAGE_SUCCESS],
@@ -349,6 +537,8 @@ export function convertClaimStorageSuccessToHistoryEvent(
       remotePairwiseDID: claim.remotePairwiseDID,
     },
     payTokenValue: claim.payTokenValue,
+    senderName: event.senderName,
+    senderLogoUrl: event.senderLogoUrl,
   }
 }
 
@@ -367,6 +557,8 @@ export function convertProofRequestToHistoryEvent(
     remoteDid: action.payloadInfo.remotePairwiseDID,
     originalPayload: action,
     showBadge: !action.payloadInfo.hidden,
+    senderName: action.payload.requester.name,
+    senderLogoUrl: action.payloadInfo.senderLogoUrl,
   }
 }
 
@@ -385,6 +577,8 @@ export function convertClaimOfferToHistoryEvent(
     remoteDid: action.payload.issuer.did,
     originalPayload: action,
     showBadge: !action.payloadInfo.hidden,
+    senderName: action.payload.issuer.name,
+    senderLogoUrl: action.payloadInfo.senderLogoUrl,
   }
 }
 
@@ -402,12 +596,15 @@ export function convertClaimOfferAcceptedToHistoryEvent(
     remoteDid: credentialOfferReceivedHistoryEvent.remoteDid,
     originalPayload: action,
     status: HISTORY_EVENT_STATUS[CLAIM_OFFER_ACCEPTED],
+    senderName: credentialOfferReceivedHistoryEvent.senderName,
+    senderLogoUrl: credentialOfferReceivedHistoryEvent.senderLogoUrl,
   }
 }
 
 export function convertClaimOfferDenyToHistoryEvent(
   action: ClaimOfferDenyAction,
-  claimOffer: any
+  claimOffer: any,
+  event: ConnectionHistoryEvent
 ) {
   return {
     action: HISTORY_EVENT_STATUS[action.type],
@@ -419,6 +616,8 @@ export function convertClaimOfferDenyToHistoryEvent(
     remoteDid: claimOffer.remotePairwiseDID,
     originalPayload: { ...action, claimOffer },
     status: HISTORY_EVENT_STATUS[action.type],
+    senderName: event.senderName,
+    senderLogoUrl: event.senderLogoUrl,
   }
 }
 
@@ -436,6 +635,8 @@ export function convertCredentialRequestFailToHistoryEvent(
     remoteDid: credentialOfferAcceptedHistoryEvent.remoteDid,
     originalPayload: action,
     status: HISTORY_EVENT_STATUS[action.type],
+    senderName: credentialOfferAcceptedHistoryEvent.senderName,
+    senderLogoUrl: credentialOfferAcceptedHistoryEvent.senderLogoUrl,
   }
 }
 
@@ -452,11 +653,13 @@ function convertOutofbandProofRequestAcceptedToHistoryEvent(
     type: HISTORY_EVENT_TYPE.PROOF,
     remoteDid: proofReceivedEvent.remoteDid,
     originalPayload: proofReceivedEvent.originalPayload,
-    status: HISTORY_EVENT_STATUS.UPDATE_ATTRIBUTE_CLAIM,
+    status: HISTORY_EVENT_STATUS.PROOF_REQUEST_ACCEPTED,
+    senderName: proofReceivedEvent.senderName,
+    senderLogoUrl: proofReceivedEvent.senderLogoUrl,
   }
 }
 
-function convertUpdateAttributeToHistoryEvent(
+export function convertUpdateAttributeToHistoryEvent(
   action: UpdateAttributeClaimAction,
   proofReceivedEvent: ConnectionHistoryEvent,
   selfAttestedAttributes: *
@@ -471,6 +674,8 @@ function convertUpdateAttributeToHistoryEvent(
     remoteDid: proofReceivedEvent.remoteDid,
     originalPayload: { ...action, selfAttestedAttributes },
     status: HISTORY_EVENT_STATUS[action.type],
+    senderName: proofReceivedEvent.senderName,
+    senderLogoUrl: proofReceivedEvent.senderLogoUrl,
   }
 }
 
@@ -491,12 +696,15 @@ function convertErrorSendProofToHistoryEvent(
       type: action.type,
     },
     status: HISTORY_EVENT_STATUS[action.type],
+    senderName: storedUpdateAttributeEvent.senderName,
+    senderLogoUrl: storedUpdateAttributeEvent.senderLogoUrl,
   }
 }
 
 function convertDeleteClaimSuccessToHistoryEvent(
   action: DeleteClaimSuccessAction,
-  claim: ClaimOfferPayload
+  claim: ClaimOfferPayload,
+  event: ConnectionHistoryEvent
 ): ConnectionHistoryEvent {
   return {
     action: HISTORY_EVENT_STATUS[action.type],
@@ -513,6 +721,8 @@ function convertDeleteClaimSuccessToHistoryEvent(
       data: {},
       remotePairwiseDID: claim.remotePairwiseDID,
     },
+    senderName: event.senderName,
+    senderLogoUrl: event.senderLogoUrl
   }
 }
 
@@ -605,7 +815,8 @@ export function convertProofSendToHistoryEvent(
       self_attested_attrs,
       predicates,
     },
-  }: Proof
+  }: Proof,
+  event?: ConnectionHistoryEvent,
 ): ConnectionHistoryEvent {
   return {
     action: HISTORY_EVENT_STATUS[SEND_PROOF_SUCCESS],
@@ -624,6 +835,8 @@ export function convertProofSendToHistoryEvent(
     type: HISTORY_EVENT_TYPE.PROOF,
     remoteDid,
     originalPayload: action,
+    senderName: event?.senderName,
+    senderLogoUrl: event?.senderLogoUrl
   }
 }
 
@@ -632,7 +845,8 @@ export function convertProofDenyToHistoryEvent(
     | DenyProofRequestSuccessAction
     | DenyProofRequestAction
     | DenyProofRequestFailAction,
-  proofRequest: ProofRequestPayload
+  proofRequest: ProofRequestPayload,
+  event: ConnectionHistoryEvent,
 ): ConnectionHistoryEvent {
   return {
     action: HISTORY_EVENT_STATUS[action.type],
@@ -644,11 +858,14 @@ export function convertProofDenyToHistoryEvent(
     type: HISTORY_EVENT_TYPE.PROOF,
     remoteDid: proofRequest.remotePairwiseDID,
     originalPayload: { ...action, proofRequest },
+    senderName: event.senderName,
+    senderLogoUrl: event.senderLogoUrl
   }
 }
 
 export function convertQuestionReceivedToHistoryEvent(
-  action: QuestionReceivedAction
+  action: QuestionReceivedAction,
+  connection: Connection,
 ): ConnectionHistoryEvent {
   return {
     action: HISTORY_EVENT_STATUS[QUESTION_RECEIVED],
@@ -664,12 +881,15 @@ export function convertQuestionReceivedToHistoryEvent(
       type: MESSAGE_TYPE.QUESTION,
     },
     showBadge: true,
+    senderName: connection.senderName,
+    senderLogoUrl: connection.logoUrl
   }
 }
 
 export function convertQuestionAnswerToHistoryEvent(
   action: UpdateQuestionAnswerAction,
-  question: QuestionPayload
+  question: QuestionPayload,
+  event: ConnectionHistoryEvent,
 ): ConnectionHistoryEvent {
   return {
     action: HISTORY_EVENT_STATUS[UPDATE_QUESTION_ANSWER],
@@ -684,6 +904,8 @@ export function convertQuestionAnswerToHistoryEvent(
       payloadInfo: question,
       type: MESSAGE_TYPE.QUESTION,
     },
+    senderName: event.senderName,
+    senderLogoUrl: event.senderLogoUrl
   }
 }
 
@@ -704,6 +926,13 @@ export const deleteHistoryEvent = (
 ): DeleteHistoryEventAction => ({
   type: DELETE_HISTORY_EVENT,
   historyEvent,
+})
+
+export const deletePendingHistoryEvents = (
+  senderDID: string
+): DeletePendingHistoryEventsAction => ({
+  type: DELETE_PENDING_HISTORY_EVENTS,
+  senderDID,
 })
 
 export const updateHistoryEvent = (
@@ -729,16 +958,38 @@ export function* historyEventOccurredSaga(
     }
 
     if (event.type === INVITATION_ACCEPTED) {
+      historyEvent = convertInvitationAcceptedToHistoryEvent(event)
+
       const existingConnectionFailEvent: ConnectionHistoryEvent = yield select(
         getUniqueHistoryItem,
         event.senderDID,
-        CONNECTION_FAIL
+        CONNECTION_FAIL,
+      )
+      const existingInvitationAcceptedEvent = yield select(
+        getUniqueHistoryItem,
+        event.senderDID,
+        INVITATION_ACCEPTED,
+      )
+      const existingEvent = existingConnectionFailEvent || existingInvitationAcceptedEvent
+      if (existingEvent) {
+        yield put(deleteHistoryEvent(existingEvent))
+      }
+    }
+
+    if (event.type === CONNECTION_REQUEST_SENT) {
+      const invitationAcceptedEvent = yield select(
+        getUniqueHistoryItem,
+        event.senderDID,
+        INVITATION_ACCEPTED,
       )
 
-      if (existingConnectionFailEvent) {
-        yield put(deleteHistoryEvent(existingConnectionFailEvent))
+      // convert invitation accepted into connection success event
+      historyEvent = convertConnectionRequestSentToHistoryEvent(
+        invitationAcceptedEvent,
+      )
+      if (invitationAcceptedEvent) {
+        yield put(deleteHistoryEvent(invitationAcceptedEvent))
       }
-      historyEvent = convertInvitationAcceptedToHistoryEvent(event)
     }
 
     if (event.type === NEW_CONNECTION_SUCCESS) {
@@ -773,6 +1024,42 @@ export function* historyEventOccurredSaga(
       historyEvent = credentialRequestFailEvent
     }
 
+    if (event.type === DELETE_CONNECTION_SUCCESS) {
+      const invitationAcceptedEvent = yield select(
+        getUniqueHistoryItem,
+        event.senderDID,
+        INVITATION_ACCEPTED
+      )
+      const existingConnectionFailEvent: ConnectionHistoryEvent = yield select(
+        getUniqueHistoryItem,
+        event.senderDID,
+        CONNECTION_FAIL
+      )
+      const connectionSuccessEvent = yield select(
+        getUniqueHistoryItem,
+        event.senderDID,
+        HISTORY_EVENT_STATUS.NEW_CONNECTION_SUCCESS,
+      )
+
+      const existingEvent =
+        invitationAcceptedEvent ||
+        connectionSuccessEvent ||
+        existingConnectionFailEvent
+
+      const connectionDeletedEvent = convertConnectionDeletedToHistoryEvent(
+        event,
+        existingEvent,
+      )
+
+      // we can delete all active actions because deleting of the connection
+      // means that these actions never complete
+      yield put(deletePendingHistoryEvents(event.senderDID))
+
+      if (connectionSuccessEvent){
+        historyEvent = connectionDeletedEvent
+      }
+    }
+
     if (event.type === CLAIM_OFFER_RECEIVED) {
       historyEvent = convertClaimOfferToHistoryEvent(event)
       const existingEvent = yield select(
@@ -786,57 +1073,68 @@ export function* historyEventOccurredSaga(
 
     if (event.type === DELETE_OUTOFBAND_CLAIM_OFFER) {
       const claimOffer = yield select(getClaimOffer, event.uid)
-      historyEvent = convertClaimOfferDenyToHistoryEvent(event, claimOffer)
       const claimOfferReceivedEvent = yield select(
         getHistoryEvent,
         event.uid,
-        historyEvent.remoteDid,
+        claimOffer.remotePairwiseDID,
         CLAIM_OFFER_RECEIVED
       )
+      historyEvent = convertClaimOfferDenyToHistoryEvent(event, claimOffer, claimOfferReceivedEvent)
       yield put(deleteHistoryEvent(claimOfferReceivedEvent))
     }
 
     if (event.type === DENY_CLAIM_OFFER) {
       const claimOffer = yield select(getClaimOffer, event.uid)
-      historyEvent = convertClaimOfferDenyToHistoryEvent(event, claimOffer)
       const claimOfferReceivedEvent = yield select(
         getHistoryEvent,
         event.uid,
-        historyEvent.remoteDid,
+        claimOffer.remotePairwiseDID,
         CLAIM_OFFER_RECEIVED
       )
       const claimOfferDenyFailedEvent = yield select(
         getPendingHistory,
         event.uid,
-        historyEvent.remoteDid,
+        claimOffer.remotePairwiseDID,
         DENY_CLAIM_OFFER_FAIL
       )
       const oldHistoryEvent =
         claimOfferReceivedEvent || claimOfferDenyFailedEvent
+
+      historyEvent = convertClaimOfferDenyToHistoryEvent(event, claimOffer, oldHistoryEvent)
       if (oldHistoryEvent) yield put(deleteHistoryEvent(oldHistoryEvent))
+
+      const denyClaimOfferEvent = yield select(
+        getPendingHistory,
+        event.uid,
+        historyEvent.remoteDid,
+        DENY_CLAIM_OFFER,
+      )
+      if (denyClaimOfferEvent) {
+        historyEvent = undefined
+      }
     }
 
     if (event.type === DENY_CLAIM_OFFER_FAIL) {
       const claimOffer = yield select(getClaimOffer, event.uid)
-      historyEvent = convertClaimOfferDenyToHistoryEvent(event, claimOffer)
       const oldHistoryEvent = yield select(
         getPendingHistory,
         event.uid,
-        historyEvent.remoteDid,
+        claimOffer.remotePairwiseDID,
         DENY_CLAIM_OFFER
       )
+      historyEvent = convertClaimOfferDenyToHistoryEvent(event, claimOffer, oldHistoryEvent)
       if (oldHistoryEvent) yield put(deleteHistoryEvent(oldHistoryEvent))
     }
 
     if (event.type === DENY_CLAIM_OFFER_SUCCESS) {
       const claimOffer = yield select(getClaimOffer, event.uid)
-      historyEvent = convertClaimOfferDenyToHistoryEvent(event, claimOffer)
       const oldHistoryEvent = yield select(
         getPendingHistory,
         event.uid,
-        historyEvent.remoteDid,
+        claimOffer.remotePairwiseDID,
         DENY_CLAIM_OFFER
       )
+      historyEvent = convertClaimOfferDenyToHistoryEvent(event, claimOffer, oldHistoryEvent)
       if (oldHistoryEvent) yield put(deleteHistoryEvent(oldHistoryEvent))
     }
 
@@ -903,6 +1201,16 @@ export function* historyEventOccurredSaga(
         yield put(deleteHistoryEvent(existingEvent))
       }
       historyEvent = credentialOfferAcceptedEvent
+
+      const existingCredentialOfferAcceptedEvent = yield select(
+        getPendingHistory,
+        event.uid,
+        event.remoteDid,
+        CLAIM_OFFER_ACCEPTED,
+      )
+      if (existingCredentialOfferAcceptedEvent) {
+        historyEvent = undefined
+      }
     }
 
     if (
@@ -934,13 +1242,13 @@ export function* historyEventOccurredSaga(
     }
 
     if (event.type === SEND_CLAIM_REQUEST_SUCCESS) {
-      historyEvent = convertSendClaimRequestSuccessToHistoryEvent(event)
       const claimOfferAcceptedEvent = yield select(
         getPendingHistory,
-        historyEvent.originalPayload.uid,
-        historyEvent.remoteDid,
+        event.uid,
+        event.payload.remotePairwiseDID,
         CLAIM_OFFER_ACCEPTED
       )
+      historyEvent = convertSendClaimRequestSuccessToHistoryEvent(event, claimOfferAcceptedEvent)
 
       const existingEvent = yield select(
         getPendingHistory,
@@ -959,17 +1267,21 @@ export function* historyEventOccurredSaga(
         getClaimOffer,
         event.messageId
       )
-      historyEvent = convertClaimStorageSuccessToHistoryEvent(event, claim)
       const existingEvent = yield select(
         getClaimReceivedHistory,
-        historyEvent.originalPayload.messageId,
-        historyEvent.remoteDid,
+        event.messageId,
+        claim.remotePairwiseDID,
         CLAIM_STORAGE_SUCCESS
       )
+
       if (existingEvent) historyEvent = null
       const pendingHistory = yield select(getPendingHistoryEvent, claim)
 
-      if (pendingHistory) yield put(deleteHistoryEvent(pendingHistory))
+      historyEvent = convertClaimStorageSuccessToHistoryEvent(event, claim, pendingHistory)
+
+      if (pendingHistory) {
+        yield put(deleteHistoryEvent(pendingHistory))
+      }
     }
 
     if (event.type === DELETE_CLAIM_SUCCESS) {
@@ -977,13 +1289,13 @@ export function* historyEventOccurredSaga(
         getClaimOffer,
         event.messageId
       )
-      historyEvent = convertDeleteClaimSuccessToHistoryEvent(event, claim)
       const claimReceivedEvent = yield select(
         getClaimReceivedHistory,
-        historyEvent.originalPayload.messageId,
-        historyEvent.remoteDid,
+        event.messageId,
+        claim.remotePairwiseDID,
         CLAIM_STORAGE_SUCCESS
       )
+      historyEvent = convertDeleteClaimSuccessToHistoryEvent(event, claim, claimReceivedEvent)
       if (claimReceivedEvent) {
         // Delete attributes from received credential history item
         const event = {
@@ -1069,6 +1381,15 @@ export function* historyEventOccurredSaga(
         yield put(deleteHistoryEvent(existingEvent))
       }
       historyEvent = updateAttributeClaimEvent
+      const existingUpdateAttributeEvent = yield select(
+        getPendingHistory,
+        event.uid,
+        event.remoteDid,
+        UPDATE_ATTRIBUTE_CLAIM,
+      )
+      if (existingUpdateAttributeEvent) {
+        historyEvent = undefined
+      }
     }
 
     if (event.type === ERROR_SEND_PROOF) {
@@ -1094,13 +1415,13 @@ export function* historyEventOccurredSaga(
         event.uid
       )
       const proof: Proof = yield select(getProof, event.uid)
-      historyEvent = convertProofSendToHistoryEvent(event, proofRequest, proof)
       const oldHistoryEvent = yield select(
         getPendingHistory,
-        historyEvent.originalPayload.uid,
-        historyEvent.remoteDid,
+        event.uid,
+        proofRequest.remotePairwiseDID,
         UPDATE_ATTRIBUTE_CLAIM
       )
+      historyEvent = convertProofSendToHistoryEvent(event, proofRequest, proof, oldHistoryEvent)
       if (oldHistoryEvent) yield put(deleteHistoryEvent(oldHistoryEvent))
     }
 
@@ -1109,21 +1430,30 @@ export function* historyEventOccurredSaga(
         getProofRequest,
         event.uid
       )
-      historyEvent = convertProofDenyToHistoryEvent(event, proofRequest)
       const proofRequestReceivedEvent = yield select(
         getHistoryEvent,
         event.uid,
-        historyEvent.remoteDid,
+        proofRequest.remotePairwiseDID,
         PROOF_REQUEST_RECEIVED
       )
       const proofDenyFailedEvent = yield select(
         getPendingHistory,
         event.uid,
-        historyEvent.remoteDid,
+        proofRequest.remotePairwiseDID,
         DENY_PROOF_REQUEST_FAIL
       )
       const oldHistoryEvent = proofRequestReceivedEvent || proofDenyFailedEvent
+      historyEvent = convertProofDenyToHistoryEvent(event, proofRequest, oldHistoryEvent)
       if (oldHistoryEvent) yield put(deleteHistoryEvent(oldHistoryEvent))
+      const existingDenyProofRequestEvent = yield select(
+        getPendingHistory,
+        event.uid,
+        historyEvent.remoteDid,
+        DENY_PROOF_REQUEST,
+      )
+      if (existingDenyProofRequestEvent) {
+        historyEvent = undefined
+      }
     }
 
     if (event.type === DENY_PROOF_REQUEST_FAIL) {
@@ -1131,13 +1461,13 @@ export function* historyEventOccurredSaga(
         getProofRequest,
         event.uid
       )
-      historyEvent = convertProofDenyToHistoryEvent(event, proofRequest)
       const oldHistoryEvent = yield select(
         getPendingHistory,
         event.uid,
-        historyEvent.remoteDid,
+        proofRequest.remotePairwiseDID,
         DENY_PROOF_REQUEST
       )
+      historyEvent = convertProofDenyToHistoryEvent(event, proofRequest, oldHistoryEvent)
       if (oldHistoryEvent) yield put(deleteHistoryEvent(oldHistoryEvent))
     }
 
@@ -1146,18 +1476,22 @@ export function* historyEventOccurredSaga(
         getProofRequest,
         event.uid
       )
-      historyEvent = convertProofDenyToHistoryEvent(event, proofRequest)
       const oldHistoryEvent = yield select(
         getPendingHistory,
         event.uid,
-        historyEvent.remoteDid,
+        proofRequest.remotePairwiseDID,
         DENY_PROOF_REQUEST
       )
+      historyEvent = convertProofDenyToHistoryEvent(event, proofRequest, oldHistoryEvent)
       if (oldHistoryEvent) yield put(deleteHistoryEvent(oldHistoryEvent))
     }
 
     if (event.type === QUESTION_RECEIVED) {
-      historyEvent = convertQuestionReceivedToHistoryEvent(event)
+      const connection: Array<Connection> = yield select(
+        getConnection,
+        event.question.remotePairwiseDID || event.question.from_did
+      )
+      historyEvent = convertQuestionReceivedToHistoryEvent(event, connection[0])
     }
 
     if (event.type === UPDATE_QUESTION_ANSWER) {
@@ -1165,13 +1499,13 @@ export function* historyEventOccurredSaga(
         selectQuestion,
         event.uid
       )
-      historyEvent = convertQuestionAnswerToHistoryEvent(event, questionPayload)
       const oldHistoryEvent = yield select(
         getHistoryEvent,
         event.uid,
-        historyEvent.remoteDid,
+        questionPayload.remotePairwiseDID,
         MESSAGE_TYPE.QUESTION
       )
+      historyEvent = convertQuestionAnswerToHistoryEvent(event, questionPayload, oldHistoryEvent)
       if (oldHistoryEvent) yield put(deleteHistoryEvent(oldHistoryEvent))
     }
 
@@ -1340,9 +1674,9 @@ export default function connectionHistoryReducer(
         state.data.connections[remoteDid] &&
         state.data.connections[remoteDid].data
           ? state.data.connections[remoteDid].data.filter((item) => {
-              // $FlowFixMe
-              return item !== action.historyEvent
-            })
+            // $FlowFixMe
+            return item !== action.historyEvent
+          })
           : []
       return {
         ...state,
@@ -1370,11 +1704,11 @@ export default function connectionHistoryReducer(
         state.data.connections[remoteDid] &&
         state.data.connections[remoteDid].data
           ? state.data.connections[remoteDid].data.map((item) => {
-              // $FlowFixMe
-              return item.id === action.historyEvent.id
-                ? action.historyEvent
-                : item
-            })
+            // $FlowFixMe
+            return item.id === action.historyEvent.id
+              ? action.historyEvent
+              : item
+          })
           : []
       return {
         ...state,
@@ -1385,6 +1719,34 @@ export default function connectionHistoryReducer(
               ? state.data.connections
               : {}),
             [remoteDid]: {
+              data: filteredDataArr,
+              newBadge: false,
+            },
+          },
+          connectionsUpdated: true,
+        },
+      }
+    }
+
+    case DELETE_PENDING_HISTORY_EVENTS: {
+      const { senderDID } = action
+      const filteredDataArr =
+        state.data &&
+        state.data.connections &&
+        state.data.connections[senderDID] &&
+        state.data.connections[senderDID].data
+          ? state.data.connections[senderDID].data.filter((item) =>
+            !PENDING_ACTIONS.includes(item.action))
+          : []
+      return {
+        ...state,
+        data: {
+          ...(state.data ? state.data : {}),
+          connections: {
+            ...(state.data && state.data.connections
+              ? state.data.connections
+              : {}),
+            [senderDID]: {
               data: filteredDataArr,
               newBadge: false,
             },

@@ -83,7 +83,7 @@ import {
 } from '../proof/proof-store'
 import { secureSet, getHydrationItem } from '../services/storage'
 import { retrySaga } from '../api/api-utils'
-import { ensureVcxInitAndPoolConnectSuccess } from '../store/route-store'
+import { ensureVcxInitAndPoolConnectSuccess, ensureVcxInitSuccess } from '../store/route-store'
 import { PROOF_FAIL } from '../proof/type-proof'
 
 const proofRequestInitialState = {}
@@ -357,6 +357,15 @@ function* denyProofRequestSaga(
         'Connection not found while trying to deny proof request.'
       )
 
+      return
+    }
+
+    const vcxResult = yield* ensureVcxInitSuccess()
+    if (vcxResult && vcxResult.fail) {
+      yield put({
+        type: DENY_PROOF_REQUEST_FAIL,
+        uid,
+      })
       return
     }
 

@@ -663,7 +663,7 @@ export function* initVcx(findingWallet?: any): Generator<*, *, *> {
         registerWithTokenError,
         userOneTimeInfoWithToken,
       ] = yield* registerCloudAgentWithToken(agencyConfig)
-      
+
       if (registerWithTokenError || !userOneTimeInfoWithToken) {
         yield put({
           type: 'REGISTER_CLOUD_AGENT_WITH_TOKEN_FAIL',
@@ -1202,6 +1202,10 @@ function* handleAriesMessage(
     const payload = JSON.parse(decryptedPayload)
     const payloadType = payload['@type']
 
+    const redirect = notificationOpenOptions &&
+      notificationOpenOptions.uid === uid &&
+      notificationOpenOptions.openMessageDirectly
+
     if (
       payloadType.name === 'CRED_OFFER' ||
       payloadType.name === 'credential-offer'
@@ -1212,7 +1216,7 @@ function* handleAriesMessage(
       const messageId = uid
 
       if (parseMessage && parseMessage[0]) {
-        uid = parseMessage[0]["thread_id"]
+        uid = parseMessage[0]['thread_id']
       }
 
       // update type so that messages can be processed and added
@@ -1232,7 +1236,9 @@ function* handleAriesMessage(
         from_did: senderDID,
         to_did: forDID,
       }
-      yield fork(updateMessageStatus, [{ pairwiseDID: forDID, uids: [messageId] }])
+      yield fork(updateMessageStatus, [
+        { pairwiseDID: forDID, uids: [messageId] },
+      ])
     }
 
     if (
@@ -1340,11 +1346,7 @@ function* handleAriesMessage(
       return
     }
 
-    if (
-      notificationOpenOptions &&
-      notificationOpenOptions.uid === uid &&
-      notificationOpenOptions.openMessageDirectly
-    ) {
+    if (redirect) {
       yield put(
         pushNotificationReceived({
           type: messageType || type,

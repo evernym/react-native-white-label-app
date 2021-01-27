@@ -2,15 +2,12 @@
 import React, { Component } from 'react'
 import {
   ActivityIndicator,
-  Alert,
   Switch,
   StyleSheet,
   Platform,
   ScrollView,
-  Image,
   View,
 } from 'react-native'
-import * as RNLocalize from 'react-native-localize'
 import { verticalScale, moderateScale } from 'react-native-size-matters'
 import { Apptentive } from 'apptentive-react-native'
 import moment from 'moment'
@@ -31,7 +28,7 @@ import {
   lockTouchIdSetupRoute,
   aboutAppRoute,
   designStyleGuideRoute,
-  onfidoRoute,
+  // onfidoRoute,
   genRecoveryPhraseRoute,
   walletRoute,
   exportBackupFileRoute,
@@ -276,32 +273,32 @@ export class Settings extends Component<SettingsProps, SettingsState> {
     }
   }
 
-  openOnfido = () => {
-    const locales = RNLocalize.getLocales()
-    let showComingSoonAlert = false
-
-    if (locales.length > 0) {
-      const countryCode = locales[0].countryCode
-      if (['US', 'GB', 'CA'].includes(countryCode)) {
-        this.props.navigation.navigate(onfidoRoute, {})
-      } else {
-        showComingSoonAlert = true
-      }
-    } else {
-      showComingSoonAlert = true
-    }
-
-    if (showComingSoonAlert) {
-      Alert.alert(
-        'Coming Soon',
-        'The Onfido digital credential feature is not yet available in your region',
-        [{ text: 'OK' }],
-        {
-          cancelable: false,
-        }
-      )
-    }
-  }
+  // openOnfido = () => {
+  //   const locales = RNLocalize.getLocales()
+  //   let showComingSoonAlert = false
+  //
+  //   if (locales.length > 0) {
+  //     const countryCode = locales[0].countryCode
+  //     if (['US', 'GB', 'CA'].includes(countryCode)) {
+  //       this.props.navigation.navigate(onfidoRoute, {})
+  //     } else {
+  //       showComingSoonAlert = true
+  //     }
+  //   } else {
+  //     showComingSoonAlert = true
+  //   }
+  //
+  //   if (showComingSoonAlert) {
+  //     Alert.alert(
+  //       'Coming Soon',
+  //       'The Onfido digital credential feature is not yet available in your region',
+  //       [{ text: 'OK' }],
+  //       {
+  //         cancelable: false,
+  //       }
+  //     )
+  //   }
+  // }
 
   openStyleGuide = () => {
     this.props.navigation.navigate(designStyleGuideRoute, {})
@@ -676,28 +673,22 @@ export class Settings extends Component<SettingsProps, SettingsState> {
         rightIcon: <EvaIcon name={ARROW_RIGHT_ICON} color={colors.cmGray3} />,
         onPress: this.openAboutApp,
       },
-      ...(modules.onfido
-        ? [
-            {
-              id: 8,
-              title: 'Get your ID verified by Onfido',
-              subtitle: 'ONFIDO',
-              avatar: (
-                <View style={styles.avatarView}>
-                  <Image
-                    style={styles.onfidoIcon}
-                    source={require('../images/onfido-logo.png')}
-                  />
-                </View>
-              ),
-
-              rightIcon: (
-                <EvaIcon name={ARROW_RIGHT_ICON} color={colors.cmGray3} />
-              ),
-              onPress: this.openOnfido,
-            },
-          ]
-        : []),
+      // {
+      //   id: 8,
+      //   title: 'Get your ID verified by Onfido',
+      //   subtitle: 'ONFIDO',
+      //   avatar: (
+      //     <View style={styles.avatarView}>
+      //       <Image
+      //         style={styles.onfidoIcon}
+      //         source={require('../images/onfido-logo.png')}
+      //       />
+      //     </View>
+      //   ),
+      //
+      //   rightIcon: <EvaIcon name={ARROW_RIGHT_ICON} color={colors.cmGray3} />,
+      //   onPress: this.openOnfido,
+      // },
     ]
     if (__DEV__ === true) {
       settingsItemList.push({
@@ -845,10 +836,10 @@ const styles = StyleSheet.create({
     color: colors.cmGray2,
     fontFamily: fontFamily,
   },
-  onfidoIcon: {
-    width: verticalScale(22),
-    height: verticalScale(22),
-  },
+  // onfidoIcon: {
+  //   width: verticalScale(22),
+  //   height: verticalScale(22),
+  // },
   avatarView: {
     width: moderateScale(40),
     alignItems: 'center',

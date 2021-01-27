@@ -24,6 +24,9 @@ const QuestionSenderDetail = (props: {
           style={[props.questionStyles.questionSenderLogo]}
           source={props.source}
           resizeMode="cover"
+          testID={`question-sender-logo`}
+          accessible={true}
+          accessibilityLabel={`question-sender-logo`}
         />
       ) : (
         <DefaultLogo
@@ -32,7 +35,14 @@ const QuestionSenderDetail = (props: {
           fontSize={props.questionStyles.placeholderIfNoImage.fontSize}
         />
       )}
-      <QuestionScreenText size="h4b" numberOfLines={2} color={'#A5A5A5'}>
+      <QuestionScreenText 
+        size="h4b" 
+        numberOfLines={2} 
+        color={'#A5A5A5'}
+        testID={`question-sender-namr`}
+        accessible={true}
+        accessibilityLabel={`question-sender-namr`}
+      >
         {props.senderName}
       </QuestionScreenText>
     </CustomView>

@@ -38,6 +38,9 @@ import {
   keyExtractor,
   prepareCredentials,
 } from './attributes-values'
+import { ModalLeftToRight } from '../utils/modal-animation'
+import { ExpandableText } from '../../components/expandable-text/expandable-text'
+import { BLANK_ATTRIBUTE_DATA_TEXT } from '../type-connection-details'
 
 export const renderAvatarWithSource = (avatarSource: number | ImageSource) => {
   return <Avatar radius={18} src={avatarSource} />
@@ -53,7 +56,7 @@ const AttributeValues = ({
     )
   )
   const [data] = useState(prepareCredentials(params.items, params.claimMap))
-  const [customValue, setCustomValue] = useState('Default')
+  const [customValue, setCustomValue] = useState(params.customValue)
 
   const { key, self_attest_allowed } = params.items[0]
 
@@ -79,7 +82,7 @@ const AttributeValues = ({
   const handleCustomValuesNavigation = () => {
     return navigate(customValuesRoute, {
       label: params.label,
-      labelValue: params.labelValue,
+      labelValue: customValue,
       key: key,
       onTextChange: onCustomValueChange,
     })
@@ -87,13 +90,13 @@ const AttributeValues = ({
 
   const renderItem = ({ item, index }: { item: Object, index: number }) => {
     return (
-      <View>
-        <TouchableOpacity
-          onPress={() => {
-            setSelectedValueIndex(index)
-          }}
-        >
-          <View style={styles.itemContainer}>
+      <TouchableOpacity
+        onPress={() => {
+          setSelectedValueIndex(index)
+        }}
+      >
+        <View style={styles.itemContainer}>
+          <View style={styles.itemInnerContainer}>
             <View style={styles.avatarSection}>
               {typeof item.logoUrl === 'string' ? (
                 <Avatar radius={18} src={{ uri: item.logoUrl }} />
@@ -102,28 +105,28 @@ const AttributeValues = ({
               )}
             </View>
             <View style={styles.infoSection}>
-              <View style={styles.infoSectionTopRow}>
-                <Text
-                  style={styles.credentialNameText}
-                  numberOfLines={1}
-                  ellipsizeMode="tail"
-                >
-                  {item.label.toLowerCase().endsWith('_link')
-                    ? `${getFileExtensionName(
-                        JSON.parse(item.data)['mime-type']
-                      )} file`
-                    : item.data}
-                </Text>
+              <View style={styles.infoSection}>
+                {
+                  !item.data || item.data === '' ?
+                    <Text style={styles.contentGray}>{BLANK_ATTRIBUTE_DATA_TEXT}</Text> :
+                    <ExpandableText
+                      style={styles.credentialNameText}
+                      text={item.label.toLowerCase().endsWith('_link')
+                        ? `${getFileExtensionName(
+                          JSON.parse(item.data)['mime-type']
+                        )} file`
+                        : item.data}
+                      lines={1}
+                    />
+                }
               </View>
-              <View style={styles.infoSectionBottomRow}>
+              <View style={styles.infoSection}>
                 <View style={styles.attributesSection}>
-                  <Text
+                  <ExpandableText
                     style={styles.attributesText}
-                    numberOfLines={1}
-                    ellipsizeMode="tail"
-                  >
-                    {item.credentialName}
-                  </Text>
+                    text={item.credentialName}
+                    lines={1}
+                  />
                 </View>
               </View>
               {item.label.toLowerCase().endsWith('_link') && (
@@ -139,93 +142,95 @@ const AttributeValues = ({
                 </View>
               )}
             </View>
-            {index === selectedValueIndex && (
-              <View style={styles.iconWrapper}>
-                <EvaIcon name={CHECKMARK_ICON} color={colors.cmBlack} />
-              </View>
-            )}
           </View>
-        </TouchableOpacity>
-      </View>
+          {index === selectedValueIndex && (
+            <View style={styles.iconWrapper}>
+              <EvaIcon name={CHECKMARK_ICON} color={colors.cmBlack} />
+            </View>
+          )}
+        </View>
+      </TouchableOpacity>
     )
   }
 
-  return (
+  const renderHeader = () => (
     <>
-      <View style={styles.modalWrapper}>
-        <StatusBar
-          backgroundColor={colors.cmBlack}
-          barStyle={'light-content'}
-        />
-        <View style={styles.descriptionWrapper}>
-          <Text style={styles.labelText}>{params?.label || 'Attribute'}</Text>
+      <StatusBar
+        backgroundColor={colors.cmBlack}
+        barStyle={'light-content'}
+      />
+      <View style={styles.descriptionWrapper}>
+        <ExpandableText style={styles.labelText} text={params?.label || 'Attribute'} />
+        <Text style={styles.descriptionTitle}>
+          {params.items.length} sources
+        </Text>
+      </View>
+      {self_attest_allowed && params.onTextChange && (
+        <TouchableOpacity
+          onPress={() => {
+            handleCustomValuesNavigation()
+          }}
+        >
+          <View style={styles.itemContainer}>
+            <View style={styles.inputContainer}>
+              <View style={styles.inputAvatarSection}>
+                <UserAvatar>{renderAvatarWithSource}</UserAvatar>
+              </View>
+              <View style={styles.infoSection}>
+                <TextInput
+                  style={styles.contentInput}
+                  autoCorrect={false}
+                  blurOnSubmit={true}
+                  clearButtonMode="always"
+                  numberOfLines={3}
+                  multiline={true}
+                  maxLength={200}
+                  defaultValue={customValue || 'Default'}
+                  placeholder={`Enter`}
+                  returnKeyType="done"
+                  accessible={true}
+                  underlineColorAndroid="transparent"
+                  editable={false}
+                  pointerEvents="none"
+                />
+                <Text style={styles.attributesText}>Manual input value</Text>
+              </View>
+              {selectedValueIndex === -1 && (
+                <View style={styles.iconWrapper}>
+                  <EvaIcon name={CHECKMARK_ICON} color={colors.cmBlack} />
+                </View>
+              )}
+            </View>
+          </View>
+        </TouchableOpacity>
+      )}
+      {!self_attest_allowed && params.onTextChange && (
+        <View style={[styles.itemContainer]}>
+          <View style={styles.inputAvatarSection}>
+            <EvaIcon name={ALERT_ICON} color={colors.cmRed} />
+          </View>
           <Text style={styles.descriptionTitle}>
-            {params.items.length} sources
+            Manual input is disabled for this attribute.
           </Text>
         </View>
-        {self_attest_allowed && params.onTextChange && (
-          <TouchableOpacity
-            onPress={() => {
-              handleCustomValuesNavigation()
-            }}
-          >
-            <View style={styles.itemContainer}>
-              <View style={styles.inputContainer}>
-                <View style={styles.inputAvatarSection}>
-                  <UserAvatar>{renderAvatarWithSource}</UserAvatar>
-                </View>
-                <View style={styles.infoSection}>
-                  <TextInput
-                    style={styles.contentInput}
-                    autoCorrect={false}
-                    blurOnSubmit={true}
-                    clearButtonMode="always"
-                    numberOfLines={3}
-                    multiline={true}
-                    maxLength={200}
-                    defaultValue={customValue}
-                    placeholder={`Enter`}
-                    returnKeyType="done"
-                    accessible={true}
-                    underlineColorAndroid="transparent"
-                    editable={false}
-                    pointerEvents="none"
-                  />
-                  <Text style={styles.attributesText}>Manual input value</Text>
-                </View>
-                {selectedValueIndex === -1 && (
-                  <View style={styles.iconWrapper}>
-                    <EvaIcon name={CHECKMARK_ICON} color={colors.cmBlack} />
-                  </View>
-                )}
-              </View>
-            </View>
-          </TouchableOpacity>
-        )}
-        {!self_attest_allowed && params.onTextChange && (
-          <View style={[styles.itemContainer]}>
-            <View style={styles.inputAvatarSection}>
-              <EvaIcon name={ALERT_ICON} color={colors.cmRed} />
-            </View>
-            <Text style={styles.descriptionTitle}>
-              Manual input is disabled for this attribute.
-            </Text>
-          </View>
-        )}
-        <View style={styles.customValuesWrapper}>
-          <FlatList
-            keyExtractor={keyExtractor}
-            style={styles.container}
-            data={data}
-            renderItem={renderItem}
-          />
-        </View>
-      </View>
+      )}
+    </>
+  )
+
+  return (
+    <>
+      <FlatList
+        keyExtractor={keyExtractor}
+        style={styles.container}
+        data={data}
+        renderItem={renderItem}
+        ListHeaderComponent={renderHeader}
+      />
       <ModalButtons
         onPress={onDone}
         onIgnore={hideModal}
-        topBtnText="Cancel"
-        bottomBtnText="Done"
+        denyButtonText="Cancel"
+        acceptBtnText="Done"
         disableAccept={false}
         colorBackground={colors.cmGreen1}
         numberOfLines={3}
@@ -259,18 +264,10 @@ AttributeValuesScreen.screen.navigationOptions = ({
       onPress={() => goBack(null)}
     />
   ),
+  ...ModalLeftToRight,
 })
 
 const styles = StyleSheet.create({
-  textInnerWrapper: {
-    width: '90%',
-  },
-  wrapper: {
-    flex: 1,
-    width: '100%',
-    height: '100%',
-    backgroundColor: colors.cmWhite,
-  },
   contentInput: {
     padding: 0,
     height: verticalScale(23),
@@ -281,9 +278,6 @@ const styles = StyleSheet.create({
     width: '100%',
     textAlign: 'left',
     fontFamily: fontFamily,
-  },
-  customValuesWrapper: {
-    flex: 1,
   },
   descriptionWrapper: {
     ...Platform.select({
@@ -305,11 +299,6 @@ const styles = StyleSheet.create({
     fontFamily: fontFamily,
     lineHeight: verticalScale(17),
   },
-  modalWrapper: {
-    flex: 1,
-    paddingLeft: '5%',
-    paddingRight: '5%',
-  },
   labelText: {
     fontSize: verticalScale(fontSizes.size4),
     fontWeight: '700',
@@ -322,6 +311,9 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     backgroundColor: colors.cmWhite,
+    flex: 1,
+    paddingLeft: '5%',
+    paddingRight: '5%',
   },
   inputContainer: {
     width: '100%',
@@ -337,8 +329,13 @@ const styles = StyleSheet.create({
     borderBottomColor: colors.cmGray5,
     paddingVertical: moderateScale(12),
   },
+  itemInnerContainer: {
+    width: '90%',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   avatarSection: {
-    alignItems: 'flex-start',
+    alignItems: 'flex-end',
     marginTop: moderateScale(3),
     marginRight: moderateScale(10),
   },
@@ -352,15 +349,6 @@ const styles = StyleSheet.create({
   infoSection: {
     flex: 1,
   },
-  infoSectionTopRow: {
-    flex: 1,
-    flexDirection: 'row',
-    height: verticalScale(20),
-  },
-  infoSectionBottomRow: {
-    flex: 1,
-    height: verticalScale(17),
-  },
   attributesSection: {
     width: '96%',
     height: '100%',
@@ -371,21 +359,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: colors.cmGray1,
   },
-  credentialNameWrapper: {
-    paddingBottom: moderateScale(0),
-  },
   attributesText: {
     fontFamily: fontFamily,
     fontSize: verticalScale(fontSizes.size6),
     color: colors.cmGray2,
-  },
-  content: {
-    fontSize: verticalScale(fontSizes.size4),
-    fontWeight: '700',
-    color: '#505050',
-    width: '100%',
-    textAlign: 'left',
-    fontFamily: fontFamily,
   },
   iconWrapper: {
     marginTop: verticalScale(8),
@@ -393,4 +370,12 @@ const styles = StyleSheet.create({
   attachmentWrapper: {
     marginTop: verticalScale(16),
   },
+  contentGray: {
+    fontSize: verticalScale(fontSizes.size5),
+    fontWeight: '400',
+    color: colors.cmGray1,
+    width: '100%',
+    textAlign: 'left',
+    fontFamily: fontFamily,
+  }
 })

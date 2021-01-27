@@ -3,6 +3,7 @@ import React, { PureComponent } from 'react'
 import { Text, Image, View, StyleSheet } from 'react-native'
 import { moderateScale } from 'react-native-size-matters'
 import { colors, fontSizes, fontFamily } from '../../common/styles/constant'
+import { ExpandableText } from '../expandable-text/expandable-text'
 
 // TODO: Fix the <any, {}> to be the correct types for props and state
 class ConnectionPending extends PureComponent<any, {}> {
@@ -24,7 +25,11 @@ class ConnectionPending extends PureComponent<any, {}> {
             <View style={styles.absolute} />
           </View>
           <View style={styles.textWrapper}>
-            <Text style={styles.title}>{this.props.title}</Text>
+            <ExpandableText
+              text={this.props.title}
+              style={styles.title}
+              lines={1}
+            />
             <Text style={styles.content}>{this.props.content}</Text>
           </View>
         </View>

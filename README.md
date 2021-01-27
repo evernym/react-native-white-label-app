@@ -68,11 +68,6 @@ Next let's configure babel, add the following presets to `babel.config.js`
   ],
 ```
 
-And setup environment. Create files `.env` and `.env.production` with the following content:
-```shell
-detox=no
-```
-
 Next steps is configuring build for the platforms.
 
 ### Android
@@ -273,6 +268,7 @@ export const colors = {
   cmGray3: '#A5A5A5',
   cmGray2: '#777777',
   cmGray1: '#505050',
+  cmGray0: '#404040',
   cmBlack: '#000000',
   cmBlue: '#236BAE',
 }
@@ -285,16 +281,40 @@ Local assets are also supported and used when there are connectivity issues.
 
 ### Home screen
 
-You can provide component to be displayed at the home and connections screens when there is no other information to show, in cases of no connections made yet and no recent notifications.
+You can provide component to be displayed at the home screen in cases of no recent notifications.
 
 This will usually happen after new installation of the application.
 
 You can provide a greeting message as in this example:
 
 ```javascript
-export const HomeInstructionsContent = () => {
+export const HomeViewEmptyState = () => {
   return (
     <Text>Hello, you now have a digital wallet!</Text>
+  )
+}
+```
+
+### Connections screen
+
+You can provide component to be displayed at the connections screen in cases of no connections made yet.
+
+```javascript
+export const MyConnectionsViewEmptyState = () => {
+  return (
+    <Text>You do not have connections yet!</Text>
+  )
+}
+```
+
+### Credentials screen
+
+You can provide component to be displayed at the credentials screen in cases of no credentials made yet.
+
+```javascript
+export const MyCredentialsViewEmptyState = () => {
+  return (
+    <Text>You do not have credentials yet!</Text>
   )
 }
 ```
@@ -367,4 +387,4 @@ export let CUSTOM_LOG_UTILS = {
 
 ### Further customization
 
-For further customizations, you can refer to provided samle configuration or the source code.
+For further customizations, you can refer to provided sample configuration or the source code.

@@ -1,18 +1,17 @@
 // @flow
 import React, { Component } from 'react'
 import moment from 'moment'
-import { StyleSheet, View, FlatList } from 'react-native'
+import { StyleSheet, View, FlatList, ImageBackground } from 'react-native'
 import { bindActionCreators } from 'redux'
 import { moderateScale } from 'react-native-size-matters'
 import { connect } from 'react-redux'
 import Snackbar from 'react-native-snackbar'
 
 // $FlowExpectedError[cannot-resolve-module] external file
-import { HomeInstructionsContent } from '../../../../../app/evernym-sdk/home'
+import { HomeViewEmptyState } from '../../../../../app/evernym-sdk/home'
 
 import type { Store } from '../store/type-store'
 import type { HomeProps } from './type-home'
-import type { Connection } from '../store/type-connection-store'
 
 import { HISTORY_EVENT_STATUS } from '../connection-history/type-connection-history'
 import { HomeHeader, CameraButton } from '../components'
@@ -24,17 +23,14 @@ import {
   questionRoute,
 } from '../common'
 import {
-  getConnections,
   sendConnectionRedirect,
   sendConnectionReuse,
 } from '../store/connections-store'
-import { HomeInstructions } from './home-instructions/home-instructions'
 import {
   getEnvironmentName,
   getUnacknowledgedMessages,
 } from '../store/config-store'
 import {
-  SERVER_ENVIRONMENT,
   GET_MESSAGES_LOADING,
 } from '../store/type-config-store'
 import { colors } from '../common/styles/constant'
@@ -127,9 +123,10 @@ export class HomeScreen extends Component<HomeProps, void> {
           this.props.route.params.qrCodeInvitationPayload
 
         if (
-          (invite.type === CONNECTION_INVITE_TYPES.ARIES_V1_QR ||
-            invite.type === undefined) &&
-          this.props.route.params.sendRedirectMessage
+          (
+            invite.type === CONNECTION_INVITE_TYPES.ARIES_V1_QR ||
+            invite.type === undefined
+          ) && this.props.route.params.sendRedirectMessage
         ) {
           this.props.sendConnectionRedirect(invite, {
             senderDID:
@@ -187,22 +184,9 @@ export class HomeScreen extends Component<HomeProps, void> {
   keyExtractor = (item: Object) => item.id
 
   renderNewBannerCard = (item: Object) => {
-    const issuerName =
-      (item.originalPayload &&
-        item.originalPayload.payload &&
-        item.originalPayload.payload.issuer &&
-        item.originalPayload.payload.issuer.name) ||
-      (item.originalPayload &&
-        item.originalPayload.payload &&
-        item.originalPayload.payload.requester &&
-        item.originalPayload.payload.requester.name) ||
-      (item.data && item.data.remoteName)
+    const issuerName = item.senderName
+    const logoUrl = item.senderLogoUrl
     const formattedTimestamp = this.formatTimestamp(item.timestamp)
-    const logoUrl =
-      this.props.mappedDidToLogoAndName &&
-      this.props.mappedDidToLogoAndName[item.remoteDid] &&
-      this.props.mappedDidToLogoAndName[item.remoteDid].logoUrl
-
     let navigationRoute = ''
     if (item.status === HISTORY_EVENT_STATUS.CLAIM_OFFER_RECEIVED)
       navigationRoute = claimOfferRoute
@@ -224,16 +208,10 @@ export class HomeScreen extends Component<HomeProps, void> {
   }
 
   renderRecentCard = (item: Object) => {
-    const status = item.status
+    const status = item.action
     const action = item.name
-    const issuerName =
-      this.props.mappedDidToLogoAndName &&
-      this.props.mappedDidToLogoAndName[item.remoteDid] &&
-      this.props.mappedDidToLogoAndName[item.remoteDid].issuerName
-    const logoUrl =
-      this.props.mappedDidToLogoAndName &&
-      this.props.mappedDidToLogoAndName[item.remoteDid] &&
-      this.props.mappedDidToLogoAndName[item.remoteDid].logoUrl
+    const issuerName = item.senderName
+    const logoUrl = item.senderLogoUrl
     const formattedTimestamp = this.formatTimestamp(item.timestamp)
 
     let statusMessage = ''
@@ -241,8 +219,11 @@ export class HomeScreen extends Component<HomeProps, void> {
       statusMessage = `You connected with "${issuerName}".`
     else if (status === HISTORY_EVENT_STATUS.INVITATION_ACCEPTED) {
       statusMessage = `Making secure connection...`
-    } else if (status === HISTORY_EVENT_STATUS.CONNECTION_FAIL)
+    }
+    else if (status === HISTORY_EVENT_STATUS.CONNECTION_FAIL)
       statusMessage = `Failed to make secure connection`
+    else if (status === HISTORY_EVENT_STATUS.DELETE_CONNECTION_SUCCESS)
+      statusMessage = `You deleted your connection with "${issuerName}"`
     else if (status === HISTORY_EVENT_STATUS.CLAIM_STORAGE_SUCCESS)
       statusMessage = `You have been issued a "${action}".`
     else if (status === HISTORY_EVENT_STATUS.SEND_PROOF_SUCCESS)
@@ -282,7 +263,7 @@ export class HomeScreen extends Component<HomeProps, void> {
     else if (status === HISTORY_EVENT_STATUS.DELETE_CLAIM_SUCCESS)
       statusMessage = `You deleted the credential "${action}"`
     else {
-      return <View />
+      return <View/>
     }
 
     return (
@@ -313,13 +294,14 @@ export class HomeScreen extends Component<HomeProps, void> {
           accessible={false}
           accessibilityLabel="home-container"
         >
-          {this.props.hasNoConnection && HomeInstructionsContent && (
-            <HomeInstructions
-              usingProductionNetwork={
-                this.props.environmentName === SERVER_ENVIRONMENT.PROD
-              }
-            />
-          )}
+          {this.props.hasNoConnection && (
+            <ImageBackground
+              source={require('../images/connection-items-placeholder.png')}
+              style={styles.backgroundImage}
+            >
+              {HomeViewEmptyState ? (<HomeViewEmptyState/>) : (<View/>)}
+            </ImageBackground>
+            )}
           <View style={styles.checkmarkContainer}>
             <FlatList
               keyExtractor={this.keyExtractor}
@@ -387,51 +369,21 @@ const mapStateToProps = (state: Store) => {
     } else return false
   }
 
-  // TODO: Replace this with flatMap when we update flow-bin
-  const customFlat = (array: Array<Array<Object>>) => [].concat(...array)
-
-  const receivedConnections: Connection[] = (getConnections(
-    state.connections.data
-  ): any)
-
-  const receivedOneTimeConnections: Connection[] = (getConnections(
-    state.connections.oneTimeConnections
-  ): any)
-
-  const allConnections = [...receivedConnections, ...receivedOneTimeConnections]
-
   // Once the credential is accepted or proof is shared, that object does not contain logoUrl and issuerName
   // so we need to store them here.
   const mappedDidToLogoAndName = {}
-  allConnections.map((connection) => {
-    mappedDidToLogoAndName[connection.senderDID] = {
-      logoUrl: connection.logoUrl,
-      issuerName: connection.senderName,
-    }
-  })
-
-  // TODO: Replace this with flatMap when we update flow-bin
   const placeholderArray = []
-  const connections = allConnections.map((connection) => {
-    const connectionHistory =
-      (state.history.data &&
-        state.history.data.connections &&
-        state.history.data.connections[connection.senderDID] &&
-        state.history.data.connections[connection.senderDID].data) ||
-      []
 
-    const timestamp = connection.timestamp
+  if (state.history && state.history.data && state.history.data.connections) {
+    Object.values(state.history.data.connections)
+      .forEach((connectionHistory: any) => {
+        if (connectionHistory && connectionHistory.data && connectionHistory.data.length){
+          placeholderArray.push(...connectionHistory.data)
+        }
+      })
+  }
 
-    const filteredEvents = timestamp
-      ? connectionHistory.filter(
-          (event) => new Date(event.timestamp) >= new Date(timestamp)
-        )
-      : connectionHistory.slice()
-
-    placeholderArray.push(filteredEvents)
-  })
-
-  const flattenPlaceholderArray = customFlat(placeholderArray).sort((a, b) => {
+  const flattenPlaceholderArray = placeholderArray.sort((a, b) => {
     if (!b.timestamp) {
       return 0
     }
@@ -452,7 +404,7 @@ const mapStateToProps = (state: Store) => {
     } else recentConnections.push(connection)
   })
   const hasNoConnection = state.connections.hydrated
-    ? connections.length === 0
+    ? placeholderArray.length === 0
     : false
 
   return {
@@ -489,6 +441,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     backgroundColor: colors.cmWhite,
+    flex: 1,
   },
   checkmarkContainer: {
     width: '100%',
@@ -505,5 +458,11 @@ const styles = StyleSheet.create({
   recentFlatListInnerContainer: {
     paddingBottom: moderateScale(70, 0.12),
     paddingTop: moderateScale(10, 0.28),
+  },
+  backgroundImage: {
+    width: '100%',
+    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 })

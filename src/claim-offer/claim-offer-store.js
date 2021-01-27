@@ -94,7 +94,7 @@ import type { LedgerFeesData } from '../ledger/type-ledger-store'
 import moment from 'moment'
 import { captureError } from '../services/error/error-handler'
 import { retrySaga } from '../api/api-utils'
-import { ensureVcxInitAndPoolConnectSuccess } from '../store/route-store'
+import { ensureVcxInitAndPoolConnectSuccess, ensureVcxInitSuccess } from '../store/route-store'
 import {
   ACTION_IS_NOT_SUPPORTED,
   CREDENTIAL_DEFINITION_NOT_FOUND,
@@ -289,6 +289,12 @@ export function* denyClaimOfferSaga(
     ),
   ])
 
+  const vcxResult = yield* ensureVcxInitSuccess()
+  if (vcxResult && vcxResult.fail) {
+    yield put(denyClaimOfferFail(uid))
+    return
+  }
+
   try {
     yield call(credentialReject, claimHandle, connectionHandle, '')
     yield put(denyClaimOfferSuccess(uid))
@@ -407,22 +413,6 @@ export function* claimOfferAccepted(
       yield* retrySaga(
         call(sendClaimRequestApi, claimHandle, connectionHandle, paymentHandle)
       )
-      yield put(sendClaimRequestSuccess(messageId, claimOfferPayload))
-      // if we are able to send claim request successfully,
-      // then we can raise an action to show that we have sent claim request
-      // so that our history middleware can record this event
-      if (isPaidCredential) {
-        // it also means payment was successful and we can show success to user in modal
-        yield put(paidCredentialRequestSuccess(messageId))
-        yield put(refreshWalletBalance())
-      }
-
-      yield call(
-        checkCredentialStatus,
-        messageId,
-        claimOfferPayload.issuer.name,
-        claimOfferPayload.remotePairwiseDID
-      )
     } catch (e) {
       const showSnackError = (text) => {
         Snackbar.show({
@@ -459,6 +449,24 @@ export function* claimOfferAccepted(
       connection.identifier,
       messageId
     )
+
+    yield put(sendClaimRequestSuccess(messageId, claimOfferPayload))
+    // if we are able to send claim request successfully,
+    // then we can raise an action to show that we have sent claim request
+    // so that our history middleware can record this event
+    if (isPaidCredential) {
+      // it also means payment was successful and we can show success to user in modal
+      yield put(paidCredentialRequestSuccess(messageId))
+      yield put(refreshWalletBalance())
+    }
+
+    yield call(
+      checkCredentialStatus,
+      messageId,
+      claimOfferPayload.issuer.name,
+      claimOfferPayload.remotePairwiseDID
+    )
+
     // now the updated claim offer is secure stored now we can update claim request
   } catch (e) {
     captureError(e)
@@ -640,15 +648,6 @@ export function* hydrateClaimOffersSaga(): Generator<*, *, *> {
       // iterate over offers and do
       for (let uid of Object.keys(offers)) {
         const offer = offers[uid]
-        // 1. check whether it in progress
-        if (!isIssuanceCompleted(offer)) {
-          yield call(
-            checkCredentialStatus,
-            offer.uid,
-            offer.issuer.name,
-            offer.remotePairwiseDID,
-          )
-        }
         // 2. set missing data
         if (!offer.issueDate) {
           const historyEvent = storageSuccessHistory.find(

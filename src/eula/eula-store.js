@@ -5,15 +5,19 @@ import {
   EULA_ACCEPT,
   STORAGE_KEY_EULA_ACCEPTANCE,
   HYDRATE_EULA_ACCEPT,
+  SHARE_EULA,
+  title,
 } from './type-eula'
 import type {
   EulaAccept,
   EulaStore,
   EulaActions,
   HydrateEulaAcceptAction,
+  ShareEula,
 } from './type-eula'
 import { captureError } from '../services/error/error-handler'
 import { customLogger } from '../store/custom-logger'
+import Share from "react-native-share"
 
 const initialState: EulaStore = {
   isEulaAccept: false,
@@ -22,6 +26,11 @@ const initialState: EulaStore = {
 export const eulaAccept = (isEulaAccept: boolean): EulaAccept => ({
   type: EULA_ACCEPT,
   isEulaAccept,
+})
+
+export const shareEula = (uri: string): ShareEula => ({
+  type: SHARE_EULA,
+  uri,
 })
 
 // if we see that both this action and eulaAccept action creator
@@ -37,11 +46,15 @@ export const hydrateEulaAccept = (
 })
 
 export function* watchEula(): any {
-  yield all([watchEulaAcceptance()])
+  yield all([watchEulaAcceptance(), watchShareEula()])
 }
 
 export function* watchEulaAcceptance(): any {
   yield takeLatest(EULA_ACCEPT, eulaAcceptanceSaga)
+}
+
+export function* watchShareEula(): any {
+  yield takeLatest(SHARE_EULA, shareEulaSaga)
 }
 
 export function* eulaAcceptanceSaga(action: EulaAccept): Generator<*, *, *> {
@@ -56,6 +69,19 @@ export function* eulaAcceptanceSaga(action: EulaAccept): Generator<*, *, *> {
   } catch (e) {
     captureError(e)
     customLogger.error(`eulaAcceptanceSaga: ${e}`)
+  }
+}
+
+export function* shareEulaSaga({ uri }: ShareEula): Generator<*, *, *> {
+  try {
+    yield call(Share.open, {
+      title,
+      subject: title,
+      url: uri,
+      type: 'text/plain',
+    })
+  } catch (e) {
+    // ignore error if user did not share
   }
 }
 

@@ -28,6 +28,7 @@ import {
   ATTACHMENT_ICON,
   PHOTO_ATTACHMENT_ICON,
 } from '../../common/icons'
+import { ExpandableText } from '../../components/expandable-text/expandable-text'
 
 export const CredentialList = ({
   uid,
@@ -60,9 +61,10 @@ function DataRenderer(props: {
 }) {
   const { label, data, uid, remotePairwiseDID } = props
   const labelComponent = (
-    <Text style={styles.label}>
-      {label.toLowerCase().endsWith('_link') ? label.slice(0, -5) : label}
-    </Text>
+    <ExpandableText
+      style={styles.label}
+      text={label.toLowerCase().endsWith('_link') ? label.slice(0, -5) : label}
+    />
   )
 
   if (!data) {
@@ -128,7 +130,7 @@ function DataRenderer(props: {
   return (
     <View>
       {labelComponent}
-      <Text style={styles.content}>{data}</Text>
+      <ExpandableText style={styles.content} text={data} />
     </View>
   )
 }

@@ -1,10 +1,9 @@
 // @flow
 import React, { Component } from 'react'
-import { StyleSheet, FlatList, View, Text } from 'react-native'
+import { StyleSheet, FlatList, View } from 'react-native'
 import { connect } from 'react-redux'
 import type { CustomListProps, Item } from './type-custom-list'
 import type { Store } from '../../store/type-store'
-import { BLANK_ATTRIBUTE_DATA_TEXT } from '../../connection-details/type-connection-details'
 
 import Icon from '../icon'
 import { getUserAvatarSource } from '../../store/store-selector'
@@ -36,9 +35,6 @@ export class CustomListProofRequest extends Component<CustomListProps, void> {
       item = item[0]
     }
 
-    // If the item has data, even if it is just a blank string, it exists. If it has no data it will be null and not show the icon.
-    const isDataEmptyString = item.data === ''
-
     let claim =
       item.claimUuid &&
       this.props.claimMap &&
@@ -65,18 +61,11 @@ export class CustomListProofRequest extends Component<CustomListProps, void> {
         <View style={styles.textAvatarWrapper}>
           <View style={styles.textWrapper}>
             {
-              // Show (none) in a lighter gray if the data is actually a blank string
-              isDataEmptyString ? (
-                <Text style={styles.contentGray}>
-                  {BLANK_ATTRIBUTE_DATA_TEXT}
-                </Text>
-              ) : (
-                renderAttachmentIcon(
-                  item.label || '',
-                  data,
-                  item.claimUuid || '',
-                  item.claimUuid || ''
-                )
+              renderAttachmentIcon(
+                item.label || '',
+                data,
+                item.claimUuid || '',
+                item.claimUuid || ''
               )
             }
           </View>
@@ -114,8 +103,6 @@ export class CustomListProofRequest extends Component<CustomListProps, void> {
         value = item.values[label]
       }
 
-      const isDataEmptyString = value === ''
-
       if (!claim) {
         claim =
           item.claimUuid &&
@@ -129,15 +116,12 @@ export class CustomListProofRequest extends Component<CustomListProps, void> {
 
       return (
         <View key={`${index}_${keyIndex}`} style={styles.textInnerItemWrapper}>
-          <Text style={styles.title}>{label}</Text>
           {
-            // Show (none) in a lighter gray if the data is actually a blank string
-            isDataEmptyString ? (
-              <Text style={styles.contentGray}>
-                {BLANK_ATTRIBUTE_DATA_TEXT}
-              </Text>
-            ) : (
-              <Text style={styles.content}>{value}</Text>
+            renderAttachmentIcon(
+              label || '',
+              value,
+              item.claimUuid || '',
+              item.claimUuid || ''
             )
           }
         </View>
@@ -176,7 +160,6 @@ export class CustomListProofRequest extends Component<CustomListProps, void> {
   render() {
     return (
       <FlatList
-        style={styles.keyboardFlatList}
         data={this.props.items}
         keyExtractor={this.keyExtractor}
         renderItem={({ item, index }: { item: Item, index: number }) => {
@@ -233,14 +216,13 @@ const styles = StyleSheet.create({
     fontFamily: fontFamily,
   },
   textAvatarWrapper: {
-    width: '98.5%',
     flexDirection: 'row',
   },
   textWrapper: {
-    width: '85%',
+    width: '90%',
   },
   textInnerWrapper: {
-    width: '85%',
+    width: '90%',
   },
   textInnerItemWrapper: {
     paddingBottom: moderateScale(12),
@@ -250,9 +232,5 @@ const styles = StyleSheet.create({
     paddingTop: moderateScale(5),
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
-  },
-  keyboardFlatList: {
-    paddingLeft: '5%',
-    paddingRight: '5%',
   },
 })

@@ -352,3 +352,13 @@ jest.mock('react-native-file-viewer', () => ({
 jest.mock('react-native-reanimated', () =>
   jest.requireActual('../node_modules/react-native-reanimated/mock')
 )
+
+jest.mock('react-native-redash/lib/module/v1', () => ({
+  min: jest.fn(),
+  mix: jest.fn(),
+  snapPoint: jest.fn(),
+  timing: jest.fn(),
+  usePanGestureHandler: jest.fn(),
+  useTransition: jest.fn(),
+  useValue: jest.fn(),
+}))

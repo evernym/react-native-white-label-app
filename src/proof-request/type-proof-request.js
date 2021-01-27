@@ -21,6 +21,7 @@ import type {
 } from '../push-notification/type-push-notification'
 import type { ClaimMap } from '../claim/type-claim'
 import { updateAttributeClaim } from '../proof/proof-store'
+import type { LockStore } from '../lock/type-lock'
 import { applyAttributesForPresentationRequest } from './proof-request-store'
 import { getPredicateTitle } from '../connection-details/utils/getPredicateTitle'
 
@@ -190,6 +191,7 @@ export type ProofRequestProps = {
   invitation?: any,
   invitationPayload?: any,
   attachedRequest?: any,
+  lock: LockStore,
   isOOBInvitation?: boolean,
 } & ReactNavigation
 
@@ -455,12 +457,6 @@ export type AriesPresentationRequest = {
 }
 
 export const PRIMARY_ACTION_SEND = 'Share Attributes'
-
-export const MESSAGE_MISSING_ATTRIBUTES_TITLE = 'Missing information'
-export const MESSAGE_MISSING_ATTRIBUTES_DESCRIPTION = (
-  connectionName: string
-) =>
-  `You don't have all the attributes ${connectionName} is asking you to share with them. Manually fill in the missing attributes and tap Share Attributes.`
 
 export const MESSAGE_ERROR_PROOF_GENERATION_TITLE = 'Error generating proof'
 export const MESSAGE_ERROR_PROOF_GENERATION_DESCRIPTION = 'Please try again.'

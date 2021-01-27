@@ -5,7 +5,7 @@
 // on click accept take user to lock selection screen
 
 import React, { useState, useCallback, useMemo } from 'react'
-import { Alert, View, StyleSheet, Platform } from 'react-native'
+import { Alert, View, StyleSheet, Platform, TouchableOpacity } from 'react-native'
 import WebView from 'react-native-webview'
 
 import { TermsAndConditionsTitle } from '../common/privacyTNC-constants'
@@ -18,12 +18,14 @@ import type { Store } from '../store/type-store'
 
 import { Container, FooterActions } from '../components'
 import { eulaRoute, homeRoute } from '../common'
-import { eulaAccept } from './eula-store'
+import { eulaAccept, shareEula } from './eula-store'
 import { EULA_URL, localEulaSource } from './type-eula'
 import { OrangeLoader } from '../components/loader-gif/loader-gif'
 import { connect } from 'react-redux'
 import { clearPendingRedirect, unlockApp } from '../lock/lock-store'
 import { vcxInitStart } from '../store/route-store'
+import { moderateScale, verticalScale } from 'react-native-size-matters'
+import { EvaIcon, SHARE_ICON } from '../common/icons'
 
 export const EulaScreen = ({
   dispatch,
@@ -70,8 +72,19 @@ export const EulaScreen = ({
   const webViewUri = error ? localEulaSource : EULA_URL
   const source = useMemo(() => ({ uri: webViewUri }), [webViewUri])
 
+  const onShareEula = useCallback(() => {
+    dispatch(shareEula(webViewUri))
+  }, [webViewUri])
+
   return (
     <Container fifth>
+      <TouchableOpacity style={style.shareLinkContainer} onPress={onShareEula}>
+        <EvaIcon
+          name={SHARE_ICON}
+          width={moderateScale(32)}
+          height={moderateScale(32)}
+        />
+      </TouchableOpacity>
       <WebView
         source={source}
         startInLoadingState={true}
@@ -104,6 +117,13 @@ const style = StyleSheet.create({
   loaderContainer: {
     flex: 1,
   },
+  shareLinkContainer: {
+    zIndex: 900,
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    padding: verticalScale(20),
+  }
 })
 const Loader = <View style={style.loaderContainer}>{OrangeLoader}</View>
 const emptyError = <View />
