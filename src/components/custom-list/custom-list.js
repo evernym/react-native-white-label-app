@@ -13,8 +13,7 @@ import Icon from '../icon'
 import Separator from '../separator'
 import { OFFSET_3X } from '../../common/styles'
 import { getUserAvatarSource } from '../../store/store-selector'
-
-const defaultAvatar = require('../../../../../../app/evernym-sdk/images/UserAvatar.png')
+import { defaultUserAvatar } from '../user-avatar/user-avatar'
 
 export class CustomList extends Component<CustomListProps, void> {
   keyExtractor = ({ label, values }: Item, index: number) => {
@@ -70,7 +69,7 @@ export class CustomList extends Component<CustomListProps, void> {
           this.props.claimMap[item.claimUuid] &&
           this.props.claimMap[item.claimUuid].logoUrl
           ? { uri: this.props.claimMap[item.claimUuid].logoUrl }
-          : this.props.avatarSource || defaultAvatar
+          : this.props.avatarSource || defaultUserAvatar
         : null
 
       return (

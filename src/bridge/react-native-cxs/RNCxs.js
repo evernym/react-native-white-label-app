@@ -159,7 +159,8 @@ export async function createOneTimeInfo(
 
 export async function getProvisionToken(
   agencyConfig: AgencyPoolConfig,
-  comMethod: { type: number, id: string, value: string }
+  comMethod: { type: number, id: string, value: string },
+  sponsorId: string
 ): Promise<[null | string, null | string]> {
   try {
     const walletPoolName = await getWalletPoolName()
@@ -172,7 +173,7 @@ export async function getProvisionToken(
       source_id: 'someSourceId',
       com_method: comMethod,
       sponsee_id: comMethod.id,
-      sponsor_id: 'connectme',
+      sponsor_id: sponsorId,
     }
     let provisionToken: string = await RNIndy.getProvisionToken(
       JSON.stringify(vcxProvisionConfig)
@@ -523,8 +524,14 @@ export async function updateClaimOfferState(claimHandle: number) {
   return updatedState
 }
 
-export async function updateClaimOfferStateWithMessage(claimHandle: number, message: string) {
-  const updatedState: number = await RNIndy.updateClaimOfferStateWithMessage(claimHandle, message)
+export async function updateClaimOfferStateWithMessage(
+  claimHandle: number,
+  message: string
+) {
+  const updatedState: number = await RNIndy.updateClaimOfferStateWithMessage(
+    claimHandle,
+    message
+  )
 
   return updatedState
 }
@@ -888,7 +895,10 @@ export async function connectionUpdateState(connectionHandle: number) {
   return RNIndy.connectionUpdateState(connectionHandle)
 }
 
-export async function connectionUpdateStateWithMessage(connectionHandle: number, message: string) {
+export async function connectionUpdateStateWithMessage(
+  connectionHandle: number,
+  message: string
+) {
   return RNIndy.connectionUpdateStateWithMessage(connectionHandle, message)
 }
 

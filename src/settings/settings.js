@@ -17,7 +17,12 @@ import get from 'lodash.get'
 // $FlowExpectedError[cannot-resolve-module] external file
 import { APP_NAME } from '../../../../../app/evernym-sdk/app'
 // $FlowExpectedError[cannot-resolve-module] external file
-import { modules } from '../../../../../app/evernym-sdk/settings'
+import {
+  settingsOptions,
+  HEADLINE,
+} from '../../../../../app/evernym-sdk/settings'
+// $FlowExpectedError[cannot-resolve-module] external file
+import { APPTENTIVE_CREDENTIALS } from '../../../../../app/evernym-sdk/feedback'
 
 import { CustomText, HomeHeader, CameraButton } from '../components'
 import { CustomView, Container } from '../components/layout'
@@ -81,6 +86,8 @@ import {
   SAVE_ICON,
   BACKUP_ICON,
 } from '../common/icons'
+
+const headline = HEADLINE || 'Settings'
 
 // Hate to put below logic for height and padding calculations here.
 // Ideally, these things should automatically adjusted by flex
@@ -364,9 +371,11 @@ export class Settings extends Component<SettingsProps, SettingsState> {
   }
 
   componentDidMount() {
-    setupApptentive().catch((e) => {
-      customLogger.log(e)
-    })
+    if (settingsOptions['feedback'] && APPTENTIVE_CREDENTIALS) {
+      setupApptentive().catch((e) => {
+        customLogger.log(e)
+      })
+    }
   }
 
   getLastBackupTitle = () => {
@@ -606,31 +615,45 @@ export class Settings extends Component<SettingsProps, SettingsState> {
             ? () => {}
             : this.onCloudBackupPressed,
       },
-      {
-        id: 3,
-        title: 'Biometrics',
-        subtitle: 'Use your finger or face to secure app',
-        avatar: <SvgCustomIcon fill={colors.cmGray2} name="Biometrics" />,
-        rightIcon: toggleSwitch,
-        onPress: this.onChangeTouchId,
-      },
-      {
-        id: 4,
-        title: 'Passcode',
-        subtitle: `View/Change your ${APP_NAME} passcode`,
-        avatar: (
-          <View style={styles.avatarView}>
-            <SvgCustomIcon
-              name="Passcode"
-              fill={colors.cmGray2}
-              width={verticalScale(32)}
-              height={verticalScale(19)}
-            />
-          </View>
-        ),
-        rightIcon: <EvaIcon name={ARROW_RIGHT_ICON} color={colors.cmGray3} />,
-        onPress: this.onChangePinClick,
-      },
+      ...(settingsOptions['biometrics']
+        ? [
+            {
+              id: 3,
+              title: settingsOptions['biometrics']['title'] || 'Biometrics',
+              subtitle:
+                settingsOptions['biometrics']['subtitle'] ||
+                'Use your finger or face to secure app',
+              avatar: <SvgCustomIcon fill={colors.cmGray2} name="Biometrics" />,
+              rightIcon: toggleSwitch,
+              onPress: this.onChangeTouchId,
+            },
+          ]
+        : []),
+      ...(settingsOptions['passcode']
+        ? [
+            {
+              id: 4,
+              title: settingsOptions['passcode']['title'] || 'Passcode',
+              subtitle:
+                settingsOptions['passcode']['subtitle'] ||
+                `View/Change your ${APP_NAME} passcode`,
+              avatar: (
+                <View style={styles.avatarView}>
+                  <SvgCustomIcon
+                    name="Passcode"
+                    fill={colors.cmGray2}
+                    width={verticalScale(32)}
+                    height={verticalScale(19)}
+                  />
+                </View>
+              ),
+              rightIcon: (
+                <EvaIcon name={ARROW_RIGHT_ICON} color={colors.cmGray3} />
+              ),
+              onPress: this.onChangePinClick,
+            },
+          ]
+        : []),
       {
         id: 5,
         title: 'Recovery Phrase',
@@ -643,12 +666,15 @@ export class Settings extends Component<SettingsProps, SettingsState> {
         rightIcon: <EvaIcon name={ARROW_RIGHT_ICON} color={colors.cmGray3} />,
         onPress: this.viewRecoveryPhrase,
       },
-      ...(modules.apptentive
+      ...(settingsOptions['feedback']
         ? [
             {
               id: 6,
-              title: 'Give app feedback',
-              subtitle: `Tell us what you think of ${APP_NAME}`,
+              title:
+                settingsOptions['feedback']['title'] || 'Give app feedback',
+              subtitle:
+                settingsOptions['feedback']['subtitle'] ||
+                `Tell us what you think of ${APP_NAME}`,
               avatar: (
                 <View style={styles.avatarView}>
                   <EvaIcon name={CHAT_ICON} />
@@ -661,18 +687,26 @@ export class Settings extends Component<SettingsProps, SettingsState> {
             },
           ]
         : []),
-      {
-        id: 7,
-        title: 'About',
-        subtitle: 'Legal, Version, and Network Information',
-        avatar: (
-          <View style={styles.avatarView}>
-            <EvaIcon name={INFO_ICON} />
-          </View>
-        ),
-        rightIcon: <EvaIcon name={ARROW_RIGHT_ICON} color={colors.cmGray3} />,
-        onPress: this.openAboutApp,
-      },
+      ...(settingsOptions['about']
+        ? [
+            {
+              id: 7,
+              title: settingsOptions['about']['title'] || 'About',
+              subtitle:
+                settingsOptions['about']['subtitle'] ||
+                'Legal, Version, and Network Information',
+              avatar: (
+                <View style={styles.avatarView}>
+                  <EvaIcon name={INFO_ICON} />
+                </View>
+              ),
+              rightIcon: (
+                <EvaIcon name={ARROW_RIGHT_ICON} color={colors.cmGray3} />
+              ),
+              onPress: this.openAboutApp,
+            },
+          ]
+        : []),
       // {
       //   id: 8,
       //   title: 'Get your ID verified by Onfido',
@@ -716,7 +750,7 @@ export class Settings extends Component<SettingsProps, SettingsState> {
           accessibilityLabel="settings-container"
         >
           <HomeHeader
-            headline="Settings"
+            headline={headline}
             navigation={this.props.navigation}
             route={this.props.route}
           />

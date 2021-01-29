@@ -1,6 +1,6 @@
 // @flow
-// Here you can change the application colors
 
+// Application color theme
 export const colors = {
   cmGreen1: '#86B93B',
   cmGreen2: '#6C8E3A',

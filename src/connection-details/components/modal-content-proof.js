@@ -55,6 +55,12 @@ import { colors } from '../../common/styles/constant'
 import { hasMissingAttributes } from '../utils'
 import { authForAction } from '../../lock/lock-auth-for-action.js'
 
+// $FlowExpectedError[cannot-resolve-module] external file
+import {
+  ACCEPT_BUTTON_TEXT,
+  DENY_BUTTON_TEXT,
+} from '../../../../../../app/evernym-sdk/proof-request-dialog'
+
 class ModalContentProof extends Component<
   ProofRequestAndHeaderProps,
   ProofRequestState & { scheduledDeletion: boolean }
@@ -301,6 +307,10 @@ class ModalContentProof extends Component<
       (this.props.dissatisfiedAttributes &&
         this.props.dissatisfiedAttributes.length > 0)
 
+    let acceptButtonText = ACCEPT_BUTTON_TEXT || PRIMARY_ACTION_SEND
+    let denyButtonText =
+      DENY_BUTTON_TEXT || (this.props.isOOBInvitation ? 'Cancel' : 'Reject')
+
     const {
       canEnablePrimaryAction,
       updateAttributesFilledFromCredentials,
@@ -333,8 +343,8 @@ class ModalContentProof extends Component<
         <ModalButtons
           onPress={this.onSend}
           onIgnore={this.onDeny}
-          denyButtonText={this.props.isOOBInvitation ? 'Cancel' : 'Reject'}
-          acceptBtnText={PRIMARY_ACTION_SEND}
+          denyButtonText={denyButtonText}
+          acceptBtnText={acceptButtonText}
           disableAccept={disableAccept}
           svgIcon="Send"
           colorBackground={colors.cmGreen1}

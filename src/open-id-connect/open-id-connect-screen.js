@@ -37,6 +37,7 @@ import {
   getConnectionByProp,
   getDIDFromFullyQualifiedDID,
 } from '../store/store-selector'
+import { defaultUserAvatar } from '../components/user-avatar/user-avatar'
 
 export const OpenIdConnectScreen = ({
   request,
@@ -153,7 +154,7 @@ export const OpenIdConnectScreen = ({
     )
   }
 
-  let senderLogoUrl = defaultAvatar
+  let senderLogoUrl = defaultUserAvatar
   let senderName = 'Anonymous'
   if (connection) {
     senderLogoUrl = connection.logoUrl
@@ -257,8 +258,6 @@ const OpenIdConnectActions = ({
     </CustomView>
   )
 }
-
-const defaultAvatar = require('../../../../../app/evernym-sdk/images/UserAvatar.png')
 
 export type OpenIdConnectNavigation = {
   route: {

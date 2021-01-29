@@ -2,7 +2,13 @@
 
 // packages
 import React, { Component } from 'react'
-import { Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import {
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native'
 import { KeyboardAwareFlatList } from 'react-native-keyboard-aware-scroll-view'
 import { moderateScale, verticalScale } from 'react-native-size-matters'
 // types
@@ -12,9 +18,15 @@ import type {
 } from '../../proof-request/type-proof-request'
 import { ATTRIBUTE_TYPE } from '../../proof-request/type-proof-request'
 import type { Attribute } from '../../push-notification/type-push-notification'
-import type { ReactNavigation, RequestedAttrsJson } from '../../common/type-common'
+import type {
+  ReactNavigation,
+  RequestedAttrsJson,
+} from '../../common/type-common'
 // constants
-import { attributeValueRoute, customValuesRoute } from '../../common/route-constants'
+import {
+  attributeValueRoute,
+  customValuesRoute,
+} from '../../common/route-constants'
 import {
   DISSATISFIED_ATTRIBUTE_DATA_TEXT,
   MISSING_ATTRIBUTE_DATA_TEXT,
@@ -33,12 +45,14 @@ import { isSelected } from './attributes-values'
 import { DefaultLogo } from '../../components/default-logo/default-logo'
 import { getPredicateTitle } from '../utils/getPredicateTitle'
 import { ExpandableText } from '../../components/expandable-text/expandable-text'
+import { defaultUserAvatar } from '../../components/user-avatar/user-avatar'
 
-class ProofRequestAttributeList extends Component<ProofRequestAttributeListAndHeaderProps & ReactNavigation,
-  ProofRequestAttributeListState> {
-
+class ProofRequestAttributeList extends Component<
+  ProofRequestAttributeListAndHeaderProps & ReactNavigation,
+  ProofRequestAttributeListState
+> {
   UNSAFE_componentWillReceiveProps(
-    nextProps: ProofRequestAttributeListAndHeaderProps,
+    nextProps: ProofRequestAttributeListAndHeaderProps
   ) {
     if (this.props.missingAttributes !== nextProps.missingAttributes) {
       // once we know that there are missing attributes
@@ -140,7 +154,7 @@ class ProofRequestAttributeList extends Component<ProofRequestAttributeListAndHe
   handlePredicateValuesNavigation = (
     label: string,
     items: any,
-    attributesFilledFromCredential: RequestedAttrsJson,
+    attributesFilledFromCredential: RequestedAttrsJson
   ) => {
     const {
       navigation: { navigate },
@@ -164,7 +178,7 @@ class ProofRequestAttributeList extends Component<ProofRequestAttributeListAndHe
   renderFilledAttribute = (
     { item, index }: any,
     attributesFilledFromCredential: RequestedAttrsJson,
-    attributesFilledByUser: any,
+    attributesFilledByUser: any
   ) => {
     let logoUrl
 
@@ -200,7 +214,7 @@ class ProofRequestAttributeList extends Component<ProofRequestAttributeListAndHe
               handleAttributeValuesNavigation(
                 label,
                 items,
-                attributesFilledFromCredential,
+                attributesFilledFromCredential
               )
             }
             accessible={false}
@@ -215,7 +229,7 @@ class ProofRequestAttributeList extends Component<ProofRequestAttributeListAndHe
                           label,
                           value,
                           selectedItem.claimUuid || '',
-                          selectedItem.claimUuid || '',
+                          selectedItem.claimUuid || ''
                         )}
                       </View>
                       {keyIndex === 0 && (
@@ -271,7 +285,7 @@ class ProofRequestAttributeList extends Component<ProofRequestAttributeListAndHe
             handleAttributeValuesNavigation(
               attribute.label,
               items,
-              attributesFilledFromCredential,
+              attributesFilledFromCredential
             )
           }
         >
@@ -284,16 +298,11 @@ class ProofRequestAttributeList extends Component<ProofRequestAttributeListAndHe
                       attribute.label,
                       value,
                       attribute.claimUuid || '',
-                      attribute.claimUuid || '',
+                      attribute.claimUuid || ''
                     )}
                   </View>
                   <View style={styles.avatarWrapper}>
-                    <Icon
-                      medium
-                      round
-                      resizeMode="cover"
-                      src={logoUrl}
-                    />
+                    <Icon medium round resizeMode="cover" src={logoUrl} />
                   </View>
                 </View>
               </View>
@@ -327,10 +336,8 @@ class ProofRequestAttributeList extends Component<ProofRequestAttributeListAndHe
       const value = attribute.values[label]
         ? attribute.values[label]
         : this.state?.[adjustedLabel]
-          ? this.state?.[adjustedLabel]
-          : undefined
-
-      const logoUrl = require('../../../../../../app/evernym-sdk/images/UserAvatar.png')
+        ? this.state?.[adjustedLabel]
+        : undefined
 
       return (
         <TouchableOpacity
@@ -338,35 +345,25 @@ class ProofRequestAttributeList extends Component<ProofRequestAttributeListAndHe
           testID={value}
           accessible={false}
           onPress={() =>
-            handleCustomValuesNavigation(
-              label,
-              adjustedLabel,
-              attribute.key,
-            )
+            handleCustomValuesNavigation(label, adjustedLabel, attribute.key)
           }
         >
           <View style={styles.textAvatarWrapper}>
             <View style={styles.textWrapper}>
               <ExpandableText style={styles.title} text={label} />
-              {
-                value ?
-                  <ExpandableText style={styles.contentInput} text={value}/> :
-                  <Text style={styles.dissatisfiedAttribute}>
-                    {MISSING_ATTRIBUTE_DATA_TEXT}
-                  </Text>
-              }
+              {value ? (
+                <ExpandableText style={styles.contentInput} text={value} />
+              ) : (
+                <Text style={styles.dissatisfiedAttribute}>
+                  {MISSING_ATTRIBUTE_DATA_TEXT}
+                </Text>
+              )}
             </View>
-            {
-              value &&
+            {value && (
               <View style={[styles.avatarWrapper, { paddingLeft: 4 }]}>
-                <Icon
-                  medium
-                  round
-                  resizeMode="cover"
-                  src={logoUrl}
-                />
+                <Icon medium round resizeMode="cover" src={defaultUserAvatar} />
               </View>
-            }
+            )}
             <View style={styles.iconWrapper}>
               <EvaIcon
                 name={ARROW_FORWARD_ICON}
@@ -424,7 +421,7 @@ class ProofRequestAttributeList extends Component<ProofRequestAttributeListAndHe
 
   renderFilledPredicate = (
     { item, index }: any,
-    attributesFilledFromCredential: RequestedAttrsJson,
+    attributesFilledFromCredential: RequestedAttrsJson
   ) => {
     const items = item
     const attribute = items[0]
@@ -436,7 +433,7 @@ class ProofRequestAttributeList extends Component<ProofRequestAttributeListAndHe
     }
 
     const selectedItem = items.find((item) =>
-      isSelected(item, attributesFilledFromCredential),
+      isSelected(item, attributesFilledFromCredential)
     )
 
     let claim =
@@ -453,7 +450,7 @@ class ProofRequestAttributeList extends Component<ProofRequestAttributeListAndHe
           handlePredicateValuesNavigation(
             attribute.label,
             items,
-            attributesFilledFromCredential,
+            attributesFilledFromCredential
           )
         }
         accessible={false}
@@ -466,9 +463,11 @@ class ProofRequestAttributeList extends Component<ProofRequestAttributeListAndHe
                   <View style={styles.textInnerWrapper}>
                     {renderAttachmentIcon(
                       attribute.label,
-                      `${getPredicateTitle(attribute.p_type)} ${attribute.p_value}`,
+                      `${getPredicateTitle(attribute.p_type)} ${
+                        attribute.p_value
+                      }`,
                       selectedItem.claimUuid || '',
-                      selectedItem.claimUuid || '',
+                      selectedItem.claimUuid || ''
                     )}
                   </View>
                   <View style={styles.avatarWrapper}>
@@ -522,7 +521,7 @@ class ProofRequestAttributeList extends Component<ProofRequestAttributeListAndHe
               '',
               '',
               undefined,
-              {color: colors.cmRed}
+              { color: colors.cmRed }
             )}
           </View>
           <View style={styles.iconWrapper}>
@@ -559,7 +558,7 @@ class ProofRequestAttributeList extends Component<ProofRequestAttributeListAndHe
       return this.renderFilledAttribute(
         { item, index },
         attributesFilledFromCredential,
-        attributesFilledByUser,
+        attributesFilledByUser
       )
     } else if (attribute.type === ATTRIBUTE_TYPE.SELF_ATTESTED_ATTRIBUTE) {
       return this.renderSelfAttestedAttribute({ attribute, index })
@@ -568,12 +567,12 @@ class ProofRequestAttributeList extends Component<ProofRequestAttributeListAndHe
     } else if (attribute.type === ATTRIBUTE_TYPE.FILLED_PREDICATE) {
       return this.renderFilledPredicate(
         { item, index },
-        attributesFilledFromCredential,
+        attributesFilledFromCredential
       )
     } else if (attribute.type === ATTRIBUTE_TYPE.DISSATISFIED_PREDICATE) {
       return this.renderDissatisfiedPredicate({ attribute, index })
     } else {
-      return <View/>
+      return <View />
     }
   }
 
@@ -602,7 +601,8 @@ class ProofRequestAttributeList extends Component<ProofRequestAttributeListAndHe
           this.renderValues(
             item,
             attributesFilledFromCredential,
-            attributesFilledByUser,)
+            attributesFilledByUser
+          )
         }
         extraData={this.props}
         extraScrollHeight={Platform.OS === 'ios' ? 170 : null}

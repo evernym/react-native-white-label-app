@@ -11,7 +11,11 @@ import Icon from '../icon'
 import { selectUserAvatar } from '../../store/user/user-store'
 import { getUserAvatarSource } from '../../store/store-selector'
 
-const defaultAvatar = require('../../../../../../app/evernym-sdk/images/UserAvatar.png')
+// $FlowExpectedError[cannot-resolve-module] external file
+import { DEFAULT_USER_AVATAR } from '../../../../../../app/evernym-sdk/app'
+
+export const defaultUserAvatar =
+  DEFAULT_USER_AVATAR || require('../../images/UserAvatar.png')
 
 export class UserAvatar extends Component<UserAvatarProps, void> {
   changeAvatar = () => {
@@ -23,7 +27,7 @@ export class UserAvatar extends Component<UserAvatarProps, void> {
   }
 
   render() {
-    let avatarSource = this.props.avatarName || defaultAvatar
+    let avatarSource = this.props.avatarName || defaultUserAvatar
 
     if (this.props.children) {
       // if we are using children as render prop

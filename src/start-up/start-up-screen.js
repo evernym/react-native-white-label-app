@@ -13,11 +13,15 @@ import { headerOptionsWithNoBack } from '../navigation/navigation-header-config'
 import { startUpRoute, lockPinSetupRoute } from '../common'
 import { OFFSET_2X, colors } from '../common/styles'
 
+// $FlowExpectedError[cannot-resolve-module] external file
+import { BACKGROUND_IMAGE } from '../../../../../app/evernym-sdk/startup'
+
 const { width } = Dimensions.get('screen')
+
+const image = BACKGROUND_IMAGE || require('../images/setup.png')
 
 function StartUpScreen(props: { navigation: Function }) {
   const { navigation } = props
-  const image = require('../../../../../app/evernym-sdk/images/setup.png')
   const animation = useRef(new Animated.Value(width * 2)).current
   const handlePress = useCallback(() => {
     navigation.navigate(lockPinSetupRoute)

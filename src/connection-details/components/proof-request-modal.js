@@ -24,6 +24,11 @@ import { ModalHeaderBar } from '../../components/modal-header-bar/modal-header-b
 // styles
 import { colors } from '../../common/styles/constant'
 
+// $FlowExpectedError[cannot-resolve-module] external file
+import { HEADLINE } from '../../../../../../app/evernym-sdk/proof-request-dialog'
+
+const headline = HEADLINE || 'Proof Request'
+
 // TODO: Fix any type
 const ProofRequestModal = (props: any) => {
   const hideModal = useCallback(() => {
@@ -72,7 +77,7 @@ const mapStateToProps = (state: Store, props: ClaimProofNavigation) => {
     data,
     requester = {},
     remotePairwiseDID,
-    senderLogoUrl
+    senderLogoUrl,
   } = proofRequestData
   const { name } = requester
 
@@ -111,7 +116,7 @@ proofRequestScreen.screen.navigationOptions = ({
   cardOverlay: () => {
     return (
       <ModalHeaderBar
-        headerTitle={isFocused() ? 'Proof Request' : ''}
+        headerTitle={headline}
         dismissIconType={isFocused() ? 'CloseIcon' : null}
         onPress={() => goBack(null)}
       />

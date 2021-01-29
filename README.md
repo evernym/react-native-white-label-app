@@ -1,381 +1,276 @@
 # react-native-evernym-sdk
 
+* [Creating a new application](#creating-a-new-application)
+    * [Create base app](#create-base-app)
+    * [Base app configuration](#base-app-configuration)
+    * [Android](#android)
+    * [iOS](#ios)
+* [Issues](#issues)
+    * [Android](#android-issues)
+    * [iOS](#ios-issues)
+* [Customization](#customization)
+
 ## Creating a new application
 
-To create a new project, you would need to use the same react native version as in peer dependencies of the evernym SDK and go through the following steps.
+To create a new project, you would need to go through the following steps.
 
-Create new react native project called "AwesomeProject":
+#### Create base app
+Create new react native project. We will call it `awesomeMsdkProject` for this guide.
 ```shell
-npx react-native init AwesomeProject --version 0.61.4
+npx react-native init awesomeMsdkProject --version 0.61.4
 ```
 
-### Build configuration
+**NOTE**: you need to use the same version of `react-native` as specified in `peerDependencies` section of `package.json` file for the evernym react-native-sdk.
+By using a different version you are taking a risk of having issues with sdk.
 
-To include SDK in your new application, you need to setup it's dependencies.  
-Replace dependecies section leaving only `react-native-evernym-sdk` dependency to your `package.json`.
+#### Base app configuration
 
-```json
-"dependencies": {
-    "react-native-evernym-sdk": "git+ssh://git@gitlab.corp.evernym.com/dev/connectme/react-native-evernym-sdk.git",
-  },
-```
+1. To include SDK in your new application, you need to set up it's dependencies.  
+Replace dependencies section leaving only `@dev/react-native-evernym-sdk` dependency to your `package.json`.
 
-Native dependecies should be put in app dependencies (see [issue](https://github.com/react-native-community/cli/issues/870)). They are listed as peer dependencies in SDK.  
-Add all peer dependencies from react-native-evernym-sdk to your app `package.json` dependencies section.
+    ```json
+    "dependencies": {
+        "@dev/react-native-evernym-sdk": "git+ssh://git@gitlab.corp.evernym.com/dev/connectme/react-native-evernym-sdk.git",
+      },
+    ```
+1. Native dependencies should be put in app dependencies (see [issue](https://github.com/react-native-community/cli/issues/870)). They are listed as peer dependencies in SDK.  
+Add all peer dependencies from `react-native-evernym-sdk` into `dependencies` section of your app `package.json`.
 
-```json
-"dependencies": {
-    "@react-native-community/async-storage": "x",
-    ...
-    "react-native-zip-archive": "x",
-    "react-native": "0.61.4",
-    "rn-fetch-blob": "x"
-  },
-```
-
-Some of the dependencies listed are dev dependecies. Move the following packages to dev dependecies section:
-
-```json
-"devDependencies": {
-    ...
-    "copyfiles": "x"
-  },
-```
-
-To configure required MSDK modules, add the following to your scripts section:
-
-```json
-  "scripts": {
-    ...
-    "evernym-sdk:configure": "yarn --cwd node_modules/react-native-evernym-sdk run configure"
-  },
-```
-
-Now you can install all dependecies and do automatic configuration, run following commands in your project directory:
-```shell
-yarn
-yarn evernym-sdk:configure
-```
-
-This will install all dependecies and add required modules to the `AwesomeProject/app/evernym-sdk` directory.
-
-Next steps is configuring build for the platforms.
-
-### Android
-
-To build app with SDK, increase the available jvm memory in `gradle.properties`:
-```properties
-org.gradle.jvmargs=-Xmx4608m -XX:MaxPermSize=512m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8
-```
-
-Setup your `AndroidManifest.xml` with `allowBackup` property set to `true`:
-
-```xml
-<manifest ...
-  xmlns:tools="http://schemas.android.com/tools"
-  ...>
-  ...
-    <application
-      ...
-      tools:replace="android:allowBackup"
-      android:allowBackup="true"
-      ...
-    </application>
-</manifest>
-```
-
-In your `android/build.gradle`, set the minimum SDK version:
-```groovy
-buildscript {
-    ext {
+    ```json
+    "dependencies": {
+        "@react-native-community/async-storage": "x",
         ...
-        minSdkVersion = 23
+        "react-native-zip-archive": "x",
+        "react-native": "0.61.4",
+        "rn-fetch-blob": "x",
         ...
-    }
-    ...
-```
+      },
+    ```
 
-And add the libvcx android repository:
-```groovy
-allprojects {
-    repositories {
+1. Add dev dependencies to `devDependencies` section of your app `package.json`:
+
+    ```json
+    "devDependencies": {
         ...
-        maven {
-            url 'https://evernym.mycloudrepo.io/public/repositories/libvcx-android'
+        "copyfiles": "x"
+      },
+    ```
+
+1. Add the following command to your `scripts` section of your app `package.json`:
+
+    ```json
+      "scripts": {
+        ...
+        "evernym-sdk:configure": "yarn --cwd node_modules/@dev/react-native-evernym-sdk run configure"
+      },
+    ```
+
+    This command will add necessary modules for future application customization via `evernym-sdk`.
+
+1. Now you can install all dependencies and do the automatic configuration, run following commands in your project directory:
+    ```shell
+    yarn
+    yarn evernym-sdk:configure
+    ```
+
+    This will install all dependencies and add required modules to the `awesomeMsdkProject/app/evernym-sdk` directory.
+
+* Remove default `App.js` and put the following in `index.js`: 
+  ```javascript
+    import * as EvernymSdk from '@dev/react-native-evernym-sdk'
+    import {name as appName} from './app.json';
+    
+    EvernymSdk.createApp(appName)
+  ```
+  
+1. Congrats! Now we have ready JS part of the application. As the next steps, we need to configure the build for the target platforms.
+
+#### Android
+
+1. To build app with SDK, you need to increase the available jvm memory in `android/gradle.properties`
+
+    ```properties
+    org.gradle.jvmargs=-Xmx4608m -XX:MaxPermSize=512m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8
+    ```
+
+1. Set the minimum supported SDK version in your `android/build.gradle`:
+    ```groovy
+    buildscript {
+        ext {
+            ...
+            minSdkVersion = 23
+            ...
+        }
+        ...
+    ```
+
+1. Add the libvcx android repository in your `android/build.gradle`:
+    ```groovy
+    allprojects {
+        repositories {
+            ...
+            maven {
+                url 'https://evernym.mycloudrepo.io/public/repositories/libvcx-android'
+            }
         }
     }
-}
-```
+    ```
 
-In your `android/app/build.gradle` setup packaging options:
-```groovy
-android {
-    ...
-    packagingOptions{
-        pickFirst 'lib/armeabi-v7a/libc++_shared.so'
-        pickFirst 'lib/arm64-v8a/libc++_shared.so'
-        pickFirst 'lib/x86_64/libc++_shared.so'
-        pickFirst 'lib/x86/libc++_shared.so'
+1. Setup packaging options in your `android/app/build.gradle`:
+   ```groovy
+   android {
+       ...
+       packagingOptions{
+           pickFirst 'lib/armeabi-v7a/libc++_shared.so'
+           pickFirst 'lib/arm64-v8a/libc++_shared.so'
+           pickFirst 'lib/x86_64/libc++_shared.so'
+           pickFirst 'lib/x86/libc++_shared.so'
+   
+           if (enableHermes) {
+               exclude '**/libjsc*.so'
+           }
+       }
+       ...
+   }
+   ```
 
-        if (enableHermes) {
-            exclude '**/libjsc*.so'
+1. Set default configuration for the camera in your `android/app/build.gradle`:
+   ```groovy
+   android {
+       ...
+       defaultConfig {
+           ...
+           missingDimensionStrategy 'react-native-camera', 'general'
+       }
+       ...
+   }
+   ```
+   
+1. Replace your `android/app/src/main/AndroidManifest.xml` with [AndroidManifest.xml](./files/AndroidManifest.xml)
+
+1. Change placeholders (`react-native-evernym-sdk-placeholder`) in copied `AndroidManifest.xml`:
+    * `package` - your original android package name
+   
+1. Update your `MainActivity` by adding the following code (it's needed to configure your app storage): 
+    ```
+    import android.content.ContextWrapper;
+    import android.system.Os;
+   ```
+    ```
+    @Override
+    protected void onStart() {
+        super.onStart();
+        try {
+            ContextWrapper c = new ContextWrapper(this);
+            Os.setenv("EXTERNAL_STORAGE", c.getFilesDir().toString(), true);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
-    ...
-}
-```
+   ```
+   
+1. Added Google Firebase configuration:
+    * Put `google-services.json` file into your `android/app` folder.
+    * Add `google-services` dependencies into your `android/build.gradle` file.
+        ```
+        dependencies {
+            ...
+            classpath 'com.google.gms:google-services:4.2.0'
+        }
+        ```
+    * Add `google-services` plugin into your `android/app/build.gradle` file.
+        ```
+         apply plugin: 'com.google.gms.google-services'
+        ```
+    * Uncomment the text located under `Firebase configuration` in `AndroidManifest.xml`:
+    
+1. Deep linking configuration:
+    * Uncomment the text located under `Deep Linking configuration` in `AndroidManifest.xml`:
 
-And default configuration:
-```groovy
-android {
-    ...
-    defaultConfig {
-        ...
-        missingDimensionStrategy 'react-native-camera', 'general'
-    }
-    ...
-}
-```
+    * Set Branch keys in your `android/app/build.gradle` file:
+        ```
+       manifestPlaceholders = [BRANCH_LIVE_KEY: "key_live_gcrCKTHBKlx7N31qxgq33bpmzupAwr1q",
+                               BRANCH_TEST_KEY:"key_test_fnzEMTMuTnr6HZWEBbJVOmfhsymtrs8S"]
+       ```
 
-### Usage
-You can remove default `App.js` and put the following in `index.js`: 
-```javascript
-// @flow
+    * Change placeholders (`react-native-evernym-sdk-placeholder`) for `Branch URI Scheme` and `Branch App Links` in `AndroidManifest.xml`:
 
-import * as EvernymSdk from 'react-native-evernym-sdk';
-import {name as appName} from './app.json';
+    * Added branch import into your `MainApplication.java`:
+        ```
+       // branch needs to have a referral in initializing
+       import io.branch.referral.Branch;
+       ```
 
-EvernymSdk.createApp(appName);
-```
+#### iOS
 
-## Adding VCX library
+> Note:
+>
+> Current version of Evernym RN MobileSDK is not supported by Xcode 12, last supported version is Xcode 11.7. Also, make sure your **Command line tools** are set to version **Xcode 11.7 (11E801a)**
 
-In the moment (until VCX is published publicly), please add VCX pod in your podfile in this way:
+1. Open iOS project in Xcode and in Build Settings update `iOS deployment target` to 10.0. Also, change version in `Podfile`:
 
-```ruby
-source 'git@gitlab.corp.evernym.com:dev/vcx/indy-sdk.git'
+    ```ruby 
+        platform :ios, '10.0'
+    ```
 
-def vcx_version_for_debug_or_release
-    if ENV['CONNECTME_DEBUG'] == "true"
-        '0.0.176'
-    else
-        '0.0.175'
-    end
-end
+1. Create new swift file and add it to your Xcode project. When offered, also accept creating `*-Bridging-Header.h` file too. You can leave the content of both files empty.
 
-target '[your target]' do
+1.  Add `Lato` fonts to Xcode project located here: `node_modules/@dev/react-native-evernym-sdk/src/fonts/Lato` and update `info.plist` with configuration related to fonts:
+    ```plist
+    	<key>UIAppFonts</key>
+    	<array>
+    		<string>Lato-Bold.ttf</string>
+    		<string>Lato-BoldItalic.ttf</string>
+    		<string>Lato-Italic.ttf</string>
+    		<string>Lato-Medium.ttf</string>
+    		<string>Lato-MediumItalic.ttf</string>
+    		<string>Lato-Regular.ttf</string>
+    		<string>Lato-Semibold.ttf</string>
+    		<string>Lato-SemiboldItalic.ttf</string>
+    	</array>
+    ```
+    In case you already added custom fonts to Xcode project, just expand list by adding Lato fonts.
+    
+1. Add VCX library:
 
-    pod 'vcx', vcx_version_for_debug_or_release
+    VCX Cocoapods library is necessary to be added to iOS Podfile too. For instructions how to download and link it with your iOS RN project, please follow instructions from native MobileSDK  documentation.
 
-end
+    In short:
+    - create vcx local folder on your machine
+    - download vcx `vcx.libvcxall_` library from [MobileSDK Releases](https://github.com/evernym/mobile-sdk/releases) section, extract and drag `vcx.framework` to vcx folder
+    - download and copy `vcx.podspec` file (from [MobileSDK](https://github.com/evernym/mobile-sdk/blob/master/vcx.podspec)) and copy to `iOS` folder inside your project directory
+    - update `vcx.podspec` as instructed in [MobileSDK documentation](https://github.com/evernym/mobile-sdk/blob/master/1.ProjectSetup.md#2-add-dependency-libraries)
+    - in `iOS/Podfile` add this line:
 
-```
+        ```ruby
+          pod 'vcx', :path => 'path_to_extracted_vcx_folder/vcx.podspec'
+        ```
+
+    - Run in terminal:
+    
+        ```shell
+        yarn install 
+        pod install --repo-update
+        ```
+      
+1. TODO: Configure Google Firebase and app permission.
 
 ## Issues
 
-### Missing FS in DotEnv libary
+##### Android issues
 
-**iOS version **
+##### iOS issues
 
-In case you experience issue with missing fs library `node_modules/react-native-dotenv/index.js`, this can be resolution: 
+* **Missing FS in DotEnv library** 
 
-1. Add react-native-fs using yarn or npm 
-2. Open DotEnv library in /node_modules/dotenv/lib/main.js 
-3. Replace const `fs = require('fs')` to `fs = require('react-native-fs')`
+    In case you experience issue with missing fs library `node_modules/react-native-dotenv/index.js`, this can be resolution: 
 
-Note: Unfortunately, if you rebuild node_modules, same steps will be necessary again, just to keep in mind.
+    1. Add react-native-fs using yarn or npm 
+    2. Open DotEnv library in /node_modules/dotenv/lib/main.js 
+    3. Replace const `fs = require('fs')` to `fs = require('react-native-fs')`
 
-## Configuration
+    Note: Unfortunately, if you rebuild node_modules, same steps will be necessary again, just to keep in mind.
 
-### Splash screen and app icon
+## Customization
 
-These are configured inside your application for specific platforms.
-
-### Default preset
-
-To configure required MSDK modules, add the following to your scripts section:
-
-```json
-  "scripts": {
-    ...
-    "evernym-sdk:configure": "yarn --cwd node_modules/react-native-evernym-sdk run configure"
-  },
-```
-
-After running the script, all required modules and assets will be setup with defaults.
-Configuration will be stored inside `app/evernym-sdk` project subfolder.
-You can run application at this point or proceed to modify provided configuration.
-
-### Application name
-
-Application name is set by constant string `APP_NAME` provided in the `app.js` module inside configuration folder.
-
-```javascript
-export const APP_NAME = 'AppName'
-```
-
-### Images
-You can configure images used in app, replacing the provided default ones in the project subdirectory
-`app/evernym-sdk/images`
-
-`cb_app.png` - small app logo.  
-`logo_app` - big app logo.  
-`setup.png` - configuration screen background for the first app install.  
-`UserAvatar.png` - default user avatar placeholder.
-
-### App banner icon
-
-The SVG icon of the application is used in several places.
-You can provide component `AppSvgIcon` in the `app-icon.js` module.
-It takes the width, height and color as parameters.
-
-```javascript
-export function AppSvgIcon(props: {
-  height: number,
-  width: number,
-  fill: string,
-}) {
-  return <AppIcon color={fill} {...props} />
-}
-```
-
-### Color theme
-
-Application color theme is set by a group of constants provided in `colors.js` configuration module. It is used throughout the whole application.
-
-Three shades for the primary color are used.
-Rest of the colors are for special cases like warnings and decision buttons.
-
-```javascript
-export const colors = {
-  cmGreen1: '#86B93B',
-  cmGreen2: '#6C8E3A',
-  cmGreen3: 'rgba(134, 185, 59, 0.15)',
-  cmRed: '#CE0B24',
-  cmOrange: '#EB9B2D',
-  cmWhite: '#FFFFFF',
-  cmGray5: '#F2F2F2',
-  cmGray4: '#EAEAEA',
-  cmGray3: '#A5A5A5',
-  cmGray2: '#777777',
-  cmGray1: '#505050',
-  cmGray0: '#404040',
-  cmBlack: '#000000',
-  cmBlue: '#236BAE',
-}
-```
-
-### End User License Agreement
-
-You can provide links to your EULA and privacy terms inside the `eula.js` module.
-Local assets are also supported and used when there are connectivity issues.
-
-### Home screen
-
-You can provide component to be displayed at the home screen in cases of no recent notifications.
-
-This will usually happen after new installation of the application.
-
-You can provide a greeting message as in this example:
-
-```javascript
-export const HomeViewEmptyState = () => {
-  return (
-    <Text>Hello, you now have a digital wallet!</Text>
-  )
-}
-```
-
-### Connections screen
-
-You can provide component to be displayed at the connections screen in cases of no connections made yet.
-
-```javascript
-export const MyConnectionsViewEmptyState = () => {
-  return (
-    <Text>You do not have connections yet!</Text>
-  )
-}
-```
-
-### Credentials screen
-
-You can provide component to be displayed at the credentials screen in cases of no credentials made yet.
-
-```javascript
-export const MyCredentialsViewEmptyState = () => {
-  return (
-    <Text>You do not have credentials yet!</Text>
-  )
-}
-```
-
-### Navigation drawer
-
-You can rename navigation options by providing following object in `navigator.js`:
-```javascript
-export const navigationOptions = {
-  connections: { label: 'Label for Connections' },
-  credentials: { label: 'Label for Credentials' },
-}
-```
-
-You can provide component to be displayed in the navigation drawer at the bottom, below the navigation section.
-
-You can provide contents for the footer like this:
-
-```javascript
-export function DrawerFooterContent() {
-  return (
-    <Text>You are using wallet 1.0.0</Text>
-  )
-}
-```
-
-### Server environment
-
-You can override used environment in the `provision.js` module.
-
-Let's define our own production and development configuration:
-
-```javascript
-export const SERVER_ENVIRONMENTS = {
-  'PROD': {
-    agencyUrl: 'https://agency.app.com',
-    agencyDID: 'did',
-    agencyVerificationKey: 'verkey',
-    poolConfig:
-      '{"reqSignature":{},"txn":{"data": pool config data},"ver":"1"}',
-    paymentMethod: 'sov',
-  },
-  'DEVTEAM1': {
-    agencyUrl: 'https://dev.agency.app.com',
-    agencyDID: 'did',
-    agencyVerificationKey: 'verkey',
-    poolConfig:
-      '{"reqSignature":{},"txn":{"data": pool config data},"ver":"1"}',
-    paymentMethod: 'sov',
-  },
-```
-
-### Collecting log information
-
-You can collect encrypted log information by email.
-Email and encryption information is provided in `logs.js`.
-
-You can provide key or URL to the file containing key.
-
-Sample configuration could be:
-
-```javascript
-export const SEND_LOGS_EMAIL = 'support@app.com'
-export let CUSTOM_LOG_UTILS = {
-  publicKeyUrl: 'https://app.com/sendlogs.public.encryption.key.txt',
-  encryptionKey: '',
-}
-
-```
-
-### Further customization
-
-For further customizations, you can refer to provided sample configuration or the source code.
+See [documentation](./Configuration.md) to get an overview of available configuration options.

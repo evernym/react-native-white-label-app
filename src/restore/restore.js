@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 // $FlowExpectedError[cannot-resolve-module] external file
-import { APP_NAME } from '../../../../../app/evernym-sdk/app'
+import { APP_NAME, APP_LOGO } from '../../../../../app/evernym-sdk/app'
 
 import { Container, CustomView, CustomText, CustomButton } from '../components'
 import {
@@ -28,6 +28,8 @@ import type { RestoreProps } from './type-restore'
 import { saveFileToAppDirectory } from './restore-store'
 import type { Store } from '../store/type-store'
 import { RestoreStatus } from './type-restore'
+
+const appImage = APP_LOGO || require('../images/logo_app.png')
 
 export class RestoreStartScreen extends Component<RestoreProps, void> {
   restoreBackup = () => {
@@ -67,7 +69,7 @@ export class RestoreStartScreen extends Component<RestoreProps, void> {
       this.props.restore.status === RestoreStatus.RESTORE_FAILED ||
       (this.props.restore.status === RestoreStatus.FILE_SAVE_ERROR &&
         this.props.restore.error)
-    let restoreIcon = require('../../../../../app/evernym-sdk/images/logo_app.png')
+    let restoreIcon = appImage
     let restoreBackground = require('../images/wave2.png')
     let restoreButtonTitle = 'Restore From A Backup'
     let restoreButtonColor = cornFlowerBlue

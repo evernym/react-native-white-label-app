@@ -8,6 +8,11 @@ import { Container, CustomView, CustomText, CustomButton } from '../components'
 import { isBiggerThanShortDevice } from '../common/styles'
 import { homeRoute, expiredTokenRoute } from '../common'
 
+// $FlowExpectedError[cannot-resolve-module] external file
+import { APP_LOGO } from '../../../../../app/evernym-sdk/startup'
+
+const appImage = APP_LOGO || require('../images/logo_app.png')
+
 class ExpiredToken extends PureComponent<ReactNavigation, void> {
   onOk = () => {
     this.props.navigation.navigate(homeRoute)
@@ -20,7 +25,7 @@ class ExpiredToken extends PureComponent<ReactNavigation, void> {
           <CustomView vCenter>
             <Image
               style={styles.connectMeLogo}
-              source={require('../../../../../app/evernym-sdk/images/logo_app.png')}
+              source={appImage}
               resizeMode="contain"
             />
           </CustomView>

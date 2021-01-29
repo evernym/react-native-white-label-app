@@ -10,6 +10,12 @@ import Snackbar from 'react-native-snackbar'
 // $FlowExpectedError[cannot-resolve-module] external file
 import { HomeViewEmptyState } from '../../../../../app/evernym-sdk/home'
 
+// $FlowExpectedError[cannot-resolve-module] external file
+import { HEADLINE } from '../../../../../app/evernym-sdk/home'
+
+// $FlowExpectedError[cannot-resolve-module] external file
+import { SHOW_EVENTS_HISTORY } from '../../../../../app/evernym-sdk/home'
+
 import type { Store } from '../store/type-store'
 import type { HomeProps } from './type-home'
 
@@ -30,9 +36,7 @@ import {
   getEnvironmentName,
   getUnacknowledgedMessages,
 } from '../store/config-store'
-import {
-  GET_MESSAGES_LOADING,
-} from '../store/type-config-store'
+import { GET_MESSAGES_LOADING } from '../store/type-config-store'
 import { colors } from '../common/styles/constant'
 import { NewBannerCard } from './new-banner-card/new-banner-card'
 import { RecentCard } from './recent-card/recent-card'
@@ -47,6 +51,10 @@ import type { AriesOutOfBandInvite } from '../invitation/type-invitation'
 import { UPDATE_ATTRIBUTE_CLAIM, ERROR_SEND_PROOF } from '../proof/type-proof'
 import { MESSAGE_TYPE } from '../api/api-constants'
 import { CONNECTION_ALREADY_EXIST } from '../connection-details/type-connection-details'
+
+const showHistoryEvents =
+  SHOW_EVENTS_HISTORY !== null ? SHOW_EVENTS_HISTORY : true
+const headline = HEADLINE || 'Home'
 
 export class HomeScreen extends Component<HomeProps, void> {
   unsubscribe = null
@@ -123,10 +131,9 @@ export class HomeScreen extends Component<HomeProps, void> {
           this.props.route.params.qrCodeInvitationPayload
 
         if (
-          (
-            invite.type === CONNECTION_INVITE_TYPES.ARIES_V1_QR ||
-            invite.type === undefined
-          ) && this.props.route.params.sendRedirectMessage
+          (invite.type === CONNECTION_INVITE_TYPES.ARIES_V1_QR ||
+            invite.type === undefined) &&
+          this.props.route.params.sendRedirectMessage
         ) {
           this.props.sendConnectionRedirect(invite, {
             senderDID:
@@ -219,8 +226,7 @@ export class HomeScreen extends Component<HomeProps, void> {
       statusMessage = `You connected with "${issuerName}".`
     else if (status === HISTORY_EVENT_STATUS.INVITATION_ACCEPTED) {
       statusMessage = `Making secure connection...`
-    }
-    else if (status === HISTORY_EVENT_STATUS.CONNECTION_FAIL)
+    } else if (status === HISTORY_EVENT_STATUS.CONNECTION_FAIL)
       statusMessage = `Failed to make secure connection`
     else if (status === HISTORY_EVENT_STATUS.DELETE_CONNECTION_SUCCESS)
       statusMessage = `You deleted your connection with "${issuerName}"`
@@ -263,7 +269,7 @@ export class HomeScreen extends Component<HomeProps, void> {
     else if (status === HISTORY_EVENT_STATUS.DELETE_CLAIM_SUCCESS)
       statusMessage = `You deleted the credential "${action}"`
     else {
-      return <View/>
+      return <View />
     }
 
     return (
@@ -284,7 +290,7 @@ export class HomeScreen extends Component<HomeProps, void> {
     return (
       <View style={styles.outerContainer}>
         <HomeHeader
-          headline="Home"
+          headline={headline}
           navigation={this.props.navigation}
           route={this.props.route}
         />
@@ -299,9 +305,9 @@ export class HomeScreen extends Component<HomeProps, void> {
               source={require('../images/connection-items-placeholder.png')}
               style={styles.backgroundImage}
             >
-              {HomeViewEmptyState ? (<HomeViewEmptyState/>) : (<View/>)}
+              {HomeViewEmptyState ? <HomeViewEmptyState /> : <View />}
             </ImageBackground>
-            )}
+          )}
           <View style={styles.checkmarkContainer}>
             <FlatList
               keyExtractor={this.keyExtractor}
@@ -316,16 +322,20 @@ export class HomeScreen extends Component<HomeProps, void> {
             />
           </View>
 
-          <RecentCardSeparator />
+          {showHistoryEvents && (
+            <>
+              <RecentCardSeparator />
 
-          <View style={styles.recentFlatListContainer}>
-            <FlatList
-              keyExtractor={this.keyExtractor}
-              contentContainerStyle={styles.recentFlatListInnerContainer}
-              data={this.props.recentConnections}
-              renderItem={({ item }) => this.renderRecentCard(item)}
-            />
-          </View>
+              <View style={styles.recentFlatListContainer}>
+                <FlatList
+                  keyExtractor={this.keyExtractor}
+                  contentContainerStyle={styles.recentFlatListInnerContainer}
+                  data={this.props.recentConnections}
+                  renderItem={({ item }) => this.renderRecentCard(item)}
+                />
+              </View>
+            </>
+          )}
         </View>
         <CameraButton
           onPress={() => this.props.navigation.navigate(qrCodeScannerTabRoute)}
@@ -375,12 +385,17 @@ const mapStateToProps = (state: Store) => {
   const placeholderArray = []
 
   if (state.history && state.history.data && state.history.data.connections) {
-    Object.values(state.history.data.connections)
-      .forEach((connectionHistory: any) => {
-        if (connectionHistory && connectionHistory.data && connectionHistory.data.length){
+    Object.values(state.history.data.connections).forEach(
+      (connectionHistory: any) => {
+        if (
+          connectionHistory &&
+          connectionHistory.data &&
+          connectionHistory.data.length
+        ) {
           placeholderArray.push(...connectionHistory.data)
         }
-      })
+      }
+    )
   }
 
   const flattenPlaceholderArray = placeholderArray.sort((a, b) => {

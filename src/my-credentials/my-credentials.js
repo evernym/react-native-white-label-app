@@ -5,10 +5,10 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 // $FlowExpectedError[cannot-resolve-module] external file
-import { navigationOptions } from '../../../../../app/evernym-sdk/navigator'
-
-// $FlowExpectedError[cannot-resolve-module] external file
-import { MyCredentialsViewEmptyState } from '../../../../../app/evernym-sdk/my-credentials'
+import {
+  HEADLINE,
+  MyCredentialsViewEmptyState,
+} from '../../../../../app/evernym-sdk/my-credentials'
 
 import type { Store } from '../store/type-store'
 import type { MyCredentialsProps, CredentialItem } from './type-my-credentials'
@@ -21,6 +21,8 @@ import { colors } from '../common/styles/constant'
 import { getEnvironmentName } from '../store/config-store'
 import { CLAIM_REQUEST_STATUS } from '../claim-offer/type-claim-offer'
 import { deleteClaim } from '../claim/claim-store'
+
+const headline = HEADLINE || 'MY Credentials'
 
 class MyCredentialsComponent extends Component<MyCredentialsProps, void> {
   render() {
@@ -52,19 +54,21 @@ class MyCredentialsComponent extends Component<MyCredentialsProps, void> {
     return (
       <View style={styles.outerContainer}>
         <HomeHeader
-          headline={navigationOptions.credentials?.label ?? 'My Credentials'}
+          headline={headline}
           navigation={this.props.navigation}
           route={this.props.route}
         />
-        <View
-          style={styles.container}
-        >
+        <View style={styles.container}>
           {hasNoCredentials && (
             <ImageBackground
               source={require('../images/connection-items-placeholder.png')}
               style={styles.backgroundImage}
             >
-              {MyCredentialsViewEmptyState ? (<MyCredentialsViewEmptyState/>) : (<View/>)}
+              {MyCredentialsViewEmptyState ? (
+                <MyCredentialsViewEmptyState />
+              ) : (
+                <View />
+              )}
             </ImageBackground>
           )}
           {!hasNoCredentials && (
@@ -76,6 +80,9 @@ class MyCredentialsComponent extends Component<MyCredentialsProps, void> {
             />
           )}
         </View>
+        <CameraButton
+          onPress={() => this.props.navigation.navigate(qrCodeScannerTabRoute)}
+        />
       </View>
     )
   }

@@ -8,6 +8,11 @@ import { ListItem } from 'react-native-elements'
 // $FlowExpectedError[cannot-resolve-module] external file
 import { displaySovrin } from '../../../../../app/evernym-sdk/about'
 
+// $FlowExpectedError[cannot-resolve-module] external file
+import { APP_LOGO } from '../../../../../app/evernym-sdk/app'
+
+const appImage = APP_LOGO || require('../images/logo_app.png')
+
 import {
   TermsAndConditionsTitle,
   PrivacyPolicyTitle,
@@ -64,11 +69,7 @@ export const AboutAppListItem = ({
 
 const rightIcon = <EvaIcon name={ARROW_RIGHT_ICON} color={colors.cmGray3} />
 
-const logoApp = (
-  <Image
-    source={require('../../../../../app/evernym-sdk/images/logo_app.png')}
-  />
-)
+const logoApp = <Image source={appImage} />
 const logoEvernym = <Image source={require('../images/logo_evernym.png')} />
 const logoSovrin = <Image source={require('../images/logo_sovrin.png')} />
 const versionNumber = VersionNumber

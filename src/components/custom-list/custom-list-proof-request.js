@@ -13,8 +13,7 @@ import { renderAttachmentIcon } from '../../connection-details/components/modal-
 import { DefaultLogo } from '../default-logo/default-logo'
 import { ATTRIBUTE_TYPE } from '../../proof-request/type-proof-request'
 import { getPredicateTitle } from '../../connection-details/utils/getPredicateTitle'
-
-const defaultAvatar = require('../../../../../../app/evernym-sdk/images/UserAvatar.png')
+import { defaultUserAvatar } from '../user-avatar/user-avatar'
 
 export class CustomListProofRequest extends Component<CustomListProps, void> {
   keyExtractor = ({ label, values }: Item, index: number) => {
@@ -47,27 +46,24 @@ export class CustomListProofRequest extends Component<CustomListProps, void> {
     }
 
     if (!claim) {
-      logoUrl = this.props.avatarSource || defaultAvatar
+      logoUrl = this.props.avatarSource || defaultUserAvatar
     }
 
-    const data = (
-      item.type === ATTRIBUTE_TYPE.FILLED_PREDICATE ?
-        `${getPredicateTitle(item.p_type || '')} ${item.p_value || ''}` :
-        item.data
-    ) || ''
+    const data =
+      (item.type === ATTRIBUTE_TYPE.FILLED_PREDICATE
+        ? `${getPredicateTitle(item.p_type || '')} ${item.p_value || ''}`
+        : item.data) || ''
 
     return (
       <View key={index} style={styles.wrapper}>
         <View style={styles.textAvatarWrapper}>
           <View style={styles.textWrapper}>
-            {
-              renderAttachmentIcon(
-                item.label || '',
-                data,
-                item.claimUuid || '',
-                item.claimUuid || ''
-              )
-            }
+            {renderAttachmentIcon(
+              item.label || '',
+              data,
+              item.claimUuid || '',
+              item.claimUuid || ''
+            )}
           </View>
           <View style={styles.avatarWrapper}>
             {logoUrl ? (
@@ -116,20 +112,18 @@ export class CustomListProofRequest extends Component<CustomListProps, void> {
 
       return (
         <View key={`${index}_${keyIndex}`} style={styles.textInnerItemWrapper}>
-          {
-            renderAttachmentIcon(
-              label || '',
-              value,
-              item.claimUuid || '',
-              item.claimUuid || ''
-            )
-          }
+          {renderAttachmentIcon(
+            label || '',
+            value,
+            item.claimUuid || '',
+            item.claimUuid || ''
+          )}
         </View>
       )
     })
 
     if (!claim) {
-      logoUrl = this.props.avatarSource || defaultAvatar
+      logoUrl = this.props.avatarSource || defaultUserAvatar
     }
 
     return (
