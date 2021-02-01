@@ -6,11 +6,11 @@ Parameters
 
 Licensor:             Evernym, Inc.
 
-Licensed Work:        Mobile SDK 
-                      and the components thereof, to the extent and only to  
-                      the extent contained in the code repository set forth at  
-                      https://github.com/evernym/verity  
-                      ("Code Repository").  
+Licensed Work:        Mobile SDK
+                      and the components thereof, to the extent and only to
+                      the extent contained in the code repository set forth at
+                      https://github.com/evernym/react-native-evernym-sdk
+                      ("Code Repository").
                       The Licensed Work is (c) 2020 Evernym, Inc.
 
 Additional Use Grant: You may make use of the Licensed Work, including
