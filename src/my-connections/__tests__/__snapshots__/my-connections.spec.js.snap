@@ -668,6 +668,7 @@ exports[`<MyConnectionsScreen /> should render MyConnections and redirect user t
                           style={
                             Object {
                               "backgroundColor": "#FFFFFF",
+                              "flex": 1,
                               "height": "100%",
                               "width": "100%",
                             }
@@ -1520,6 +1521,7 @@ exports[`<MyConnectionsScreen /> should render MyConnections and show introducto
                           style={
                             Object {
                               "backgroundColor": "#FFFFFF",
+                              "flex": 1,
                               "height": "100%",
                               "width": "100%",
                             }

@@ -45,6 +45,15 @@ import { colors } from '../../common/styles/constant'
 import { acceptOutOfBandInvitation } from '../../invitation/invitation-store'
 import { authForAction } from '../../lock/lock-auth-for-action'
 
+// $FlowExpectedError[cannot-resolve-module] external file
+import {
+  HEADLINE,
+  ACCEPT_BUTTON_TEXT,
+  DENY_BUTTON_TEXT,
+} from '../../../../../../app/evernym-sdk/credential-offer-dialog'
+
+const headline = HEADLINE || 'Credential Offer'
+
 export class ClaimOfferModal extends Component<any, *> {
   constructor(props: any) {
     super(props)
@@ -80,7 +89,12 @@ export class ClaimOfferModal extends Component<any, *> {
     // as soon as user accepts the cred offer, redux state will change
     const isClaimOfferAccepted = status === CLAIM_OFFER_STATUS.ACCEPTED
 
-    let acceptButtonText = payTokenValue ? 'Accept & Pay' : 'Accept Credential'
+    let acceptButtonText =
+      ACCEPT_BUTTON_TEXT ||
+      (payTokenValue ? 'Accept & Pay' : 'Accept Credential')
+    let denyButtonText =
+      DENY_BUTTON_TEXT || (this.props.isOOBInvitation ? 'Cancel' : 'Reject')
+
     // NOTE: Just to be safe, we changed the hasNotAcceptedTAA to hardcoded false, so we can be sure 0 tokens doesn't affect the flow.
     const hasNotAcceptedTAA = false
     // (!this.props.alreadySignedAgreement || this.props.thereIsANewAgreement) &&
@@ -183,7 +197,7 @@ export class ClaimOfferModal extends Component<any, *> {
               onIgnore={this.onDeny}
               colorBackground={colors.cmGreen1}
               secondColorBackground={claimThemeSecondary}
-              denyButtonText={this.props.isOOBInvitation ? 'Cancel' : 'Reject'}
+              denyButtonText={denyButtonText}
               acceptBtnText={acceptButtonText}
               svgIcon="Download"
             >
@@ -432,7 +446,7 @@ claimOfferScreen.screen.navigationOptions = ({
   },
   cardOverlay: () => (
     <ModalHeaderBar
-      headerTitle="Credential Offer"
+      headerTitle={headline}
       dismissIconType={isFocused() ? 'CloseIcon' : null}
       onPress={() => goBack(null)}
     />

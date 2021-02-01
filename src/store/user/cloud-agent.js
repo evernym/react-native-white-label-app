@@ -12,6 +12,8 @@ import AlertAsync from 'react-native-alert-async'
 import { APP_NAME } from '../../../../../../app/evernym-sdk/app'
 // $FlowExpectedError[cannot-resolve-module] external file
 import { VCX_PUSH_TYPE } from '../../../../../../app/evernym-sdk/provision'
+// $FlowExpectedError[cannot-resolve-module] external file
+import { SPONSOR_ID } from '../../../../../../app/evernym-sdk/provision'
 
 import type { UserOneTimeInfo } from './type-user-store'
 import type { RouteUpdateAction } from '../route-store'
@@ -396,7 +398,8 @@ function* askForProvisionToken(
         type: VCX_PUSH_TYPE, // 1 means push notification to default app. 4 means that this is a sponsor configured app
         id,
         value: `FCM:${notificationToken}`,
-      }
+      },
+      SPONSOR_ID
     )
     if (provisionTokenError) {
       // remove any wallet that might have been created

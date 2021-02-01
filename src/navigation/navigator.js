@@ -176,7 +176,7 @@ const drawerComponent = (props: Object) => (
     <DrawerItemList {...props} />
     <View style={styles.drawerFooterContainer}>
       <View style={styles.drawerFooter}>
-        <DrawerFooterContent />
+        {DrawerFooterContent ? <DrawerFooterContent /> : <View />}
       </View>
     </View>
   </SafeAreaView>
@@ -240,7 +240,7 @@ const credentialsDrawerItemOptions = {
 }
 const settingsDrawerItemOptions = {
   drawerIcon: drawerEvaIcon(SETTINGS_ICON),
-  drawerLabel: drawerItemLabel('Settings'),
+  drawerLabel: drawerItemLabel(navigationOptions.settings?.label ?? 'Settings'),
 }
 function AppDrawer() {
   return (
@@ -269,11 +269,13 @@ function AppDrawer() {
           options={credentialsDrawerItemOptions}
         />
       ) : null}
-      <Drawer.Screen
-        name={settingsDrawerRoute}
-        component={SettingsScreen}
-        options={settingsDrawerItemOptions}
-      />
+      {navigationOptions.settings ? (
+        <Drawer.Screen
+          name={settingsDrawerRoute}
+          component={SettingsScreen}
+          options={settingsDrawerItemOptions}
+        />
+      ) : null}
     </Drawer.Navigator>
   )
 }

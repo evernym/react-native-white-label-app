@@ -358,8 +358,8 @@ RCT_EXPORT_METHOD(connectionGetState: (NSInteger) connectionHandle
                   rejecter: (RCTPromiseRejectBlock) reject)
 {
   [[[ConnectMeVcx alloc] init] connectionGetState:connectionHandle
-                                   withCompletion:^(NSError *error, NSInteger state) {
-    if (error != nil) {
+                                   completion:^(NSError *error, NSInteger state) {
+    if (error != nil && error.code != 0) {
       NSString *indyErrorCode = [NSString stringWithFormat:@"%ld", (long)error.code];
       reject(indyErrorCode, @"Error occurred while getting connection state", error);
     } else {
@@ -375,7 +375,25 @@ RCT_EXPORT_METHOD(connectionUpdateState: (NSInteger) connectionHandle
   [[[ConnectMeVcx alloc] init] connectionUpdateState:connectionHandle
                                       withCompletion:^(NSError *error, NSInteger state)
   {
-    if (error != nil) {
+    if (error != nil && error.code != 0) {
+      NSString *indyErrorCode = [NSString stringWithFormat:@"%ld", (long)error.code];
+      reject(indyErrorCode, @"Error occurred while updating connection state", error);
+    } else {
+      resolve(@(state));
+    }
+  }];
+}
+
+RCT_EXPORT_METHOD(connectionUpdateStateWithMessage: (NSInteger) connectionHandle
+                  message: (NSString *)message
+                  resolver: (RCTPromiseResolveBlock) resolve
+                  rejecter: (RCTPromiseRejectBlock) reject)
+{
+  [[[ConnectMeVcx alloc] init] connectionUpdateStateWithMessage:connectionHandle
+                                                        message:message
+                                                 withCompletion:^(NSError *error, NSInteger state)
+  {
+    if (error != nil && error.code != 0) {
       NSString *indyErrorCode = [NSString stringWithFormat:@"%ld", (long)error.code];
       reject(indyErrorCode, @"Error occurred while updating connection state", error);
     } else {
@@ -591,11 +609,8 @@ RCT_EXPORT_METHOD(deserializeClaimOffer: (NSString *)serializedCredential
                   resolver: (RCTPromiseResolveBlock) resolve
                   rejecter: (RCTPromiseRejectBlock) reject)
 {
-  //NSString serializedCredential must be converted to cString because special characters in NSString
-  const char *cLetter = (const char *)[serializedCredential cStringUsingEncoding:NSUTF8StringEncoding];
-  NSString *serializedCredential_cString = [[NSString alloc] initWithCString:cLetter];
   // it would return an error code and an integer credential handle in callback
-  [[[ConnectMeVcx alloc] init] credentialDeserialize:serializedCredential_cString
+  [[[ConnectMeVcx alloc] init] credentialDeserialize:serializedCredential
                                           completion:^(NSError *error, NSInteger credentailHandle) {
     if (error != nil && error.code != 0) {
       NSString *indyErrorCode = [NSString stringWithFormat:@"%ld", (long)error.code];
@@ -664,14 +679,14 @@ RCT_EXPORT_METHOD(getProvisionToken: (NSString *)config
                                       rejecter: (RCTPromiseRejectBlock) reject)
 {
   [[[ConnectMeVcx alloc] init] getProvisionToken:config
-                                completion:^(NSError *error) {
+                                completion:^(NSError *error, NSString *token) {
     NSLog(@"CONFIG OBJECT", config);
     if (error != nil && error.code != 0)
     {
       NSString *indyErrorCode = [NSString stringWithFormat:@"%ld", (long)error.code];
       reject(indyErrorCode, @"Error occurred while getting provision token", error);
     } else {
-      resolve(@{});
+      resolve(token);
     }
   }];
 }
@@ -781,6 +796,25 @@ RCT_EXPORT_METHOD(updateClaimOfferState: (int)credentialHandle
 {
   [[[ConnectMeVcx alloc] init] credentialUpdateState:credentialHandle
                                           completion:^(NSError *error, NSInteger state)
+  {
+    if (error != nil && error.code != 0) {
+      NSString *indyErrorCode = [NSString stringWithFormat:@"%ld", (long)error.code];
+      reject(indyErrorCode, @"Error occurred while updating claim offer state", error);
+    }
+    else {
+      resolve(@(state));
+    }
+  }];
+}
+
+RCT_EXPORT_METHOD(updateClaimOfferStateWithMessage: (int)credentialHandle
+                  message: (NSString *)message
+                  resolver: (RCTPromiseResolveBlock) resolve
+                  rejecter: (RCTPromiseRejectBlock) reject)
+{
+  [[[ConnectMeVcx alloc] init] credentialUpdateStateWithMessage:credentialHandle
+                                                        message:message
+                                          withCompletion:^(NSError *error, NSInteger state)
   {
     if (error != nil && error.code != 0) {
       NSString *indyErrorCode = [NSString stringWithFormat:@"%ld", (long)error.code];
@@ -1525,6 +1559,20 @@ RCT_EXPORT_METHOD(deleteCredential:(NSInteger) credentialHandle
      } else {
         resolve(@{});
      }
+  }];
+}
+
+ RCT_EXPORT_METHOD(vcxInitPool: (NSString *)config
+                   resolver: (RCTPromiseResolveBlock) resolve
+                   rejecter: (RCTPromiseRejectBlock) reject)
+{
+  [[[ConnectMeVcx alloc] init] initPool:config completion:^(NSError *error) {
+    if (error != nil && error.code !=0) {
+      NSString *indyErrorCode = [NSString stringWithFormat:@"%ld", (long)error.code];
+      reject(indyErrorCode, @"Error occurred while updating message status", error);
+    } else {
+      resolve(@{});
+    }
   }];
 }
 

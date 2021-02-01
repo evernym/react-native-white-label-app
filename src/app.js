@@ -3,7 +3,6 @@ import 'react-native-gesture-handler'
 import React, { Component } from 'react'
 import { Provider } from 'react-redux'
 import { AppRegistry, Platform, UIManager, StatusBar } from 'react-native'
-import { detox } from 'react-native-dotenv'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { CommonActions, NavigationContainer } from '@react-navigation/native'
 import RNShake from 'react-native-shake'
@@ -34,12 +33,6 @@ if (Platform.Version < 29) {
   // useScreens()
 }
 
-if (detox === 'yes') {
-  // we are disabling flow check only because this line will come into effect
-  // only in detox tests, for all other builds we will not come inside this IF
-  // $FlowFixMe
-  console.disableYellowBox = true
-}
 // FIXME: I disable warnings because they affect appium test. We rather should fix all warnings.
 // $FlowFixMe
 console.disableYellowBox = true

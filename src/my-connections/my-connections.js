@@ -7,10 +7,10 @@ import Snackbar from 'react-native-snackbar'
 import PushNotificationIOS from '@react-native-community/push-notification-ios'
 
 // $FlowExpectedError[cannot-resolve-module] external file
-import { navigationOptions } from '../../../../../app/evernym-sdk/navigator'
-
-// $FlowExpectedError[cannot-resolve-module] external file
-import { MyConnectionsViewEmptyState } from '../../../../../app/evernym-sdk/my-connections'
+import {
+  MyConnectionsViewEmptyState,
+  HEADLINE,
+} from '../../../../../app/evernym-sdk/my-connections'
 
 import type { Store } from '../store/type-store'
 import type {
@@ -31,12 +31,12 @@ import {
   getEnvironmentName,
   getUnacknowledgedMessages,
 } from '../store/config-store'
-import {
-  GET_MESSAGES_LOADING,
-} from '../store/type-config-store'
+import { GET_MESSAGES_LOADING } from '../store/type-config-store'
 import { withStatusBar } from '../components/status-bar/status-bar'
 import { NotificationCard } from '../in-app-notification/in-app-notification-card'
 import { colors } from '../common/styles'
+
+const headline = HEADLINE || 'MY Connections'
 
 export class MyConnections extends Component<
   MyConnectionsProps,
@@ -130,7 +130,7 @@ export class MyConnections extends Component<
     return (
       <View style={outerContainer}>
         <HomeHeader
-          headline={navigationOptions.connections?.label ?? 'My Connections'}
+          headline={headline}
           navigation={this.props.navigation}
           route={this.props.route}
         />
@@ -141,7 +141,11 @@ export class MyConnections extends Component<
               source={require('../images/connection-items-placeholder.png')}
               style={backgroundImage}
             >
-              {MyConnectionsViewEmptyState ? (<MyConnectionsViewEmptyState/>) : (<View/>)}
+              {MyConnectionsViewEmptyState ? (
+                <MyConnectionsViewEmptyState />
+              ) : (
+                <View />
+              )}
             </ImageBackground>
           )}
           <FlatList

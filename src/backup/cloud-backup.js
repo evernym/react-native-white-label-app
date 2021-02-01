@@ -13,7 +13,7 @@ import { connect } from 'react-redux'
 import { PanGestureHandler, State } from 'react-native-gesture-handler'
 
 // $FlowExpectedError[cannot-resolve-module] external file
-import { APP_NAME } from '../../../../../app/evernym-sdk/app'
+import { APP_NAME, APP_IMAGE } from '../../../../../app/evernym-sdk/app'
 
 import type { Store } from '../store/type-store'
 
@@ -31,7 +31,7 @@ import { setAutoCloudBackupEnabled } from './backup-actions'
 import { color } from '../common/styles/constant'
 
 import { questionStyles } from './styles'
-const appImage = require('../../../../../app/evernym-sdk/images/cb_app.png')
+const appImage = APP_IMAGE || require('../images/cb_app.png')
 const downloadImage = require('../images/Group.png')
 
 const successImg = require('../images/Success.png')

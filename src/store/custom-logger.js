@@ -4,7 +4,6 @@ import uniqueId from 'react-native-unique-id'
 import _flatten from 'lodash.flatten'
 import _merge from 'lodash.merge'
 import { NativeModules } from 'react-native'
-import { detox } from 'react-native-dotenv'
 
 // $FlowExpectedError[cannot-resolve-module] external file
 import { CUSTOM_LOG_UTILS } from '../../../../../app/evernym-sdk/logs'
@@ -192,7 +191,7 @@ export const customLogger = {
   },
   error: function (...allArgs: any[]) {
     this.addRecord({ levelName: 'error', args: allArgs })
-    if (this.alsoLogToConsole && detox !== 'yes') {
+    if (this.alsoLogToConsole) {
       console.error.apply(null, allArgs)
     }
   },

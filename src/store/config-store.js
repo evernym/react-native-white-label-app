@@ -18,6 +18,9 @@ import PushNotificationIOS from '@react-native-community/push-notification-ios'
 // $FlowExpectedError[cannot-resolve-module] external file
 import { SERVER_ENVIRONMENTS } from '../../../../../app/evernym-sdk/provision'
 
+// $FlowExpectedError[cannot-resolve-module] external file
+import { DEFAULT_SERVER_ENVIRONMENT } from '../../../../../app/evernym-sdk/provision'
+
 import { secureSet, getHydrationItem } from '../services/storage'
 import {
   getErrorAlertsSwitchValue,
@@ -271,7 +274,9 @@ export const cloudBackupEnvironments = [
 // making defaults sane so that developers don't need to remember
 // what settings should be in dev environment
 const isDevEnvironment = __DEV__ && process.env.NODE_ENV !== 'test'
-export const defaultEnvironment = isDevEnvironment
+export const defaultEnvironment = DEFAULT_SERVER_ENVIRONMENT
+  ? SERVER_ENVIRONMENT[DEFAULT_SERVER_ENVIRONMENT]
+  : isDevEnvironment
   ? SERVER_ENVIRONMENT.DEVTEAM1
   : SERVER_ENVIRONMENT.PROD
 
@@ -670,7 +675,7 @@ export function* initVcx(findingWallet?: any): Generator<*, *, *> {
           error: registerWithTokenError,
         })
 
-        console.log("WARN: Fallback to old provisioning protocol")
+        console.log('WARN: Fallback to old provisioning protocol')
 
         // if agency does not yet support creating cloud agent with token
         // then we try second option to try creating cloud agent without token
@@ -1202,7 +1207,8 @@ function* handleAriesMessage(
     const payload = JSON.parse(decryptedPayload)
     const payloadType = payload['@type']
 
-    const redirect = notificationOpenOptions &&
+    const redirect =
+      notificationOpenOptions &&
       notificationOpenOptions.uid === uid &&
       notificationOpenOptions.openMessageDirectly
 

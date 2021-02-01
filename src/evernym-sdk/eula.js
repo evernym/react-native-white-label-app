@@ -1,5 +1,9 @@
 // @flow
 
+/*
+ * Here is you can customize path to your EULA and privacy terms .
+ * */
+
 export const ANDROID_EULA_URL = 'https://www.connect.me/google.html'
 export const IOS_EULA_URL = 'https://www.connect.me/ios_eula.html'
 export const ANDROID_EULA_LOCAL =
