@@ -90,7 +90,6 @@
 				01D3544BC1B1DE3E56E84280 /* Pods-ReactNativeMobileSDK.debug.xcconfig */,
 				45E1C5759FA9B22E25963AEC /* Pods-ReactNativeMobileSDK.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
