@@ -1,7 +1,7 @@
 // @flow
 
 import { StyleSheet, Dimensions } from 'react-native'
-import { font, color, cmRed } from '../common/styles'
+import { font, color, red } from '../common/styles'
 
 const { height } = Dimensions.get('window')
 const CONTENT_CONTAINER_HEIGHT = (height * 30) / 100 // keep content height at 30%
@@ -35,7 +35,7 @@ export const openIdStyles = StyleSheet.create({
     marginTop: '5%',
   },
   verificationFailedText: {
-    color: cmRed,
+    color: red,
     marginBottom: '3%',
   },
   errorContainer: {

@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     paddingBottom: moderateScale(20),
     alignItems: 'stretch',
     borderBottomWidth: 1,
-    borderBottomColor: colors.cmGray5,
+    borderBottomColor: colors.gray5,
   },
   contentRow: {
     flex: 1,
@@ -56,19 +56,19 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   messageDate: {
-    color: colors.cmGray2,
+    color: colors.gray2,
     fontSize: moderateScale(fontSizes.size9),
     textAlign: 'left',
     fontFamily: fontFamily,
   },
   requestStatus: {
-    color: colors.cmGray2,
+    color: colors.gray2,
     fontSize: moderateScale(fontSizes.size9),
     textAlign: 'left',
     fontFamily: fontFamily,
   },
   requestAction: {
-    color: colors.cmGray3,
+    color: colors.gray3,
     fontSize: moderateScale(fontSizes.size7),
     fontWeight: '700',
     paddingTop: verticalScale(3),

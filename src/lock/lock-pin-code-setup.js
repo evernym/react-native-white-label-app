@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { useDispatch } from 'react-redux'
 
 // $FlowExpectedError[cannot-resolve-module] external file
-import { AppSvgIcon } from '../../../../../app/evernym-sdk/app-icon'
+import { LockHeader } from '../../../../../app/evernym-sdk/lock'
 
 import {
   lockPinSetupRoute,
@@ -144,10 +144,10 @@ export function LockPinSetup(props: ReactNavigation) {
         transparent={true}
       />
       <CustomView center>
-        <AppSvgIcon
+        <LockHeader
           width={moderateScale(218.54)}
           height={moderateScale(28)}
-          fill={colors.cmGray2}
+          fill={colors.gray2}
         />
       </CustomView>
       <CustomText center h4 bg="tertiary" style={[styles.title]} tertiary thick>
@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
     fontSize: moderateScale(17, 0.1),
     lineHeight: moderateScale(20, 0.1),
     justifyContent: 'center',
-    color: colors.cmRed,
+    color: colors.red,
   },
 })
 

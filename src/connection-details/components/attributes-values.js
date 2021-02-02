@@ -31,7 +31,7 @@ import { Avatar } from '../../components'
 import { DefaultLogo } from '../../components/default-logo/default-logo'
 import { CHECKMARK_ICON, EvaIcon } from '../../common/icons'
 import { renderAttachmentIcon } from './modal-content'
-import { ModalLeftToRight } from '../utils/modal-animation'
+import { ModalPushLeft } from '../utils/modal-animation'
 import { ExpandableText } from '../../components/expandable-text/expandable-text'
 
 export const keyExtractor = (item: Object) => item.claimUuid.toString()
@@ -122,7 +122,7 @@ const AttributesValues = ({
         </View>
         {index === selectedValueIndex && (
           <View style={styles.iconWrapper}>
-            <EvaIcon name={CHECKMARK_ICON} color={colors.cmBlack} />
+            <EvaIcon name={CHECKMARK_ICON} color={colors.black} />
           </View>
         )}
       </TouchableOpacity>
@@ -159,7 +159,7 @@ const AttributesValues = ({
         denyButtonText="Cancel"
         acceptBtnText="Done"
         disableAccept={false}
-        colorBackground={colors.cmGreen1}
+        colorBackground={colors.main}
         numberOfLines={3}
         multiline={true}
         maxLength={200}
@@ -182,7 +182,7 @@ AttributesValuesScreen.screen.navigationOptions = ({
     marginRight: '2.5%',
     marginBottom: '4%',
     borderRadius: 10,
-    backgroundColor: colors.cmWhite,
+    backgroundColor: colors.white,
   },
   cardOverlay: () => (
     <ModalHeaderBar
@@ -191,25 +191,25 @@ AttributesValuesScreen.screen.navigationOptions = ({
       onPress={() => goBack(null)}
     />
   ),
-  ...ModalLeftToRight,
+  ...ModalPushLeft,
 })
 
 const styles = StyleSheet.create({
   descriptionWrapper: {
     ...Platform.select({
       ios: {
-        borderBottomColor: colors.cmGray1,
+        borderBottomColor: colors.gray1,
         borderBottomWidth: 1,
       },
       android: {
-        borderBottomColor: colors.cmGray1,
+        borderBottomColor: colors.gray1,
         borderBottomWidth: 1,
       },
     }),
     paddingVertical: moderateScale(16),
   },
   descriptionTitle: {
-    color: colors.cmGray1,
+    color: colors.gray1,
     fontSize: verticalScale(fontSizes.size6),
     fontWeight: '300',
     fontFamily: fontFamily,
@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
   labelText: {
     fontSize: verticalScale(fontSizes.size4),
     fontWeight: '700',
-    color: colors.cmGray1,
+    color: colors.gray1,
     fontFamily: fontFamily,
     marginTop: verticalScale(6),
     lineHeight: verticalScale(20),
@@ -227,7 +227,7 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     height: '100%',
-    backgroundColor: colors.cmWhite,
+    backgroundColor: colors.white,
     flex: 1,
     paddingLeft: '5%',
     paddingRight: '5%',
@@ -236,7 +236,7 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     borderBottomWidth: 1,
-    borderBottomColor: colors.cmGray5,
+    borderBottomColor: colors.gray5,
     paddingVertical: moderateScale(12),
   },
   itemInnerContainer: {
@@ -264,12 +264,12 @@ const styles = StyleSheet.create({
     fontFamily: fontFamily,
     fontSize: verticalScale(fontSizes.size6),
     fontWeight: 'bold',
-    color: colors.cmGray1,
+    color: colors.gray1,
     lineHeight: verticalScale(17),
   },
   title: {
     fontSize: verticalScale(fontSizes.size6),
-    color: colors.cmGray3,
+    color: colors.gray3,
     width: '100%',
     textAlign: 'left',
     fontFamily: fontFamily,

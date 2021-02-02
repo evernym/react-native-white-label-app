@@ -23,7 +23,7 @@ export type CustomError = {
   // with success
   // However, if server responds with 4XX, then the problem was on client
   // and it might not be possible to repeat the same action because
-  // ConnectMe will create request second time as well
+  // MSDK will create request second time as well
   // Or there might be some error that are related to signing or encryption
   // which even if we retry won't be resolved
   isResolvableByRetry?: boolean,
@@ -86,7 +86,8 @@ export type ImageSource = {
 export type NotificationPayload = {
   forDID: string,
   uid: string,
-  type: string,
+  type?: string,
+  msgType?: string,
   remotePairwiseDID: string,
   senderLogoUrl?: ?string,
   pushNotifMsgText?: ?string,

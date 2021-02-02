@@ -44,7 +44,7 @@ export const greyRGB = '119, 119, 119'
 export const white = '#ffffff'
 export const whisper = '#EAEAEA'
 export const cardBorder = '#f2f2f2'
-export const cmGrey4 = whisper
+export const grey4 = whisper
 export const lightDarkBlue = '#4A8FE3'
 export const darkGray = '#505050'
 export const maroonRed = '#d1021b'
@@ -87,12 +87,12 @@ const jordyBlue = '#79ade7'
 const palePink = '#FFD5DB'
 export const whiteTransparent = 'rgba(255, 255, 255, 0.85)'
 export const whiteSolid = 'rgba(255, 255, 255, 255)'
-export const cmGrey5 = '#F2F2F2'
+export const grey5 = '#F2F2F2'
 export const lightWhite = '#E5E5EA'
 export const blackTransparent = `rgba(0, 0, 0, 0.8)`
-export const cmGrey1 = '#505050'
-export const cmGrey2 = grey
-export const cmRed = '#CE0B24'
+export const grey1 = '#505050'
+export const grey2 = grey
+export const red = '#CE0B24'
 
 // color shades
 const primaryShade = '1.0'
@@ -135,7 +135,7 @@ export const color = {
       ninth: white,
       tenth: atlantis,
       eleventh: white,
-      twelfth: cmGrey2,
+      twelfth: grey2,
     },
   },
   bg: {
@@ -165,7 +165,7 @@ export const color = {
         quaternary: yellowSea,
         fifth: nobelSecondary,
         sixth: dimGraySecondary,
-        seventh: cmGrey1,
+        seventh: grey1,
       },
     },
     quaternary: {

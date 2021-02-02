@@ -255,7 +255,7 @@ function PhotoAttachment(props: { base64: string }) {
 
 function Attachment(props: AttachmentPropType) {
   // This component renders icon only and not render content itself
-  // ConnectMe is not rendering and opening items inside ConnectMe
+  // MSDK is not rendering and opening items inside MSDK
   // because it is not safe from security perspective
   // Also, we don't have much time to implement, audio, video, pdf, doc, excel etc.
   // So, for file types whose mime type is known to us, we will render it's icon
@@ -391,30 +391,30 @@ type AttachmentPropType = {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.cmWhite,
+    backgroundColor: colors.white,
   },
   scrollViewWrapper: {
-    backgroundColor: colors.cmWhite,
+    backgroundColor: colors.white,
     paddingLeft: '5%',
     paddingRight: '5%',
   },
   wrapper: {
-    backgroundColor: colors.cmWhite,
+    backgroundColor: colors.white,
     paddingTop: moderateScale(12),
     ...Platform.select({
       ios: {
-        borderBottomColor: colors.cmGray5,
+        borderBottomColor: colors.gray5,
         borderBottomWidth: StyleSheet.hairlineWidth,
       },
       android: {
-        borderBottomColor: colors.cmGray5,
+        borderBottomColor: colors.gray5,
         borderBottomWidth: 1,
       },
     }),
   },
   title: {
     fontSize: verticalScale(fontSizes.size6),
-    color: colors.cmGray3,
+    color: colors.gray3,
     width: '100%',
     textAlign: 'left',
     marginBottom: moderateScale(2),
@@ -433,7 +433,7 @@ const styles = StyleSheet.create({
   contentGray: {
     fontSize: verticalScale(fontSizes.size5),
     fontWeight: '700',
-    color: colors.cmGray1,
+    color: colors.gray1,
     width: '100%',
     textAlign: 'left',
     fontFamily: fontFamily,
@@ -477,7 +477,7 @@ const styles = StyleSheet.create({
   extensionNameStyle: {
     fontSize: verticalScale(fontSizes.size6),
     fontWeight: '600',
-    color: colors.cmGray1,
+    color: colors.gray1,
     width: '100%',
     textAlign: 'left',
     fontFamily: fontFamily,

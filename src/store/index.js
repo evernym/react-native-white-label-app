@@ -75,6 +75,7 @@ import {
   inAppNotificationReducer,
 } from '../in-app-notification/in-app-notification-store'
 import { watchMessageDownload } from '../message-download/message-download'
+import { watchLongPollingHome } from '../home/long-polling-home'
 
 const sagaMiddleware = createSagaMiddleware()
 
@@ -171,6 +172,7 @@ sagaMiddleware.run(function* (): Generator<*, *, *> {
     watchInAppNotificationActions(),
     watchMessageDownload(),
     watchOutOfBandConnectionForPresentationEstablished(),
+    watchLongPollingHome(),
   ])
 })
 

@@ -591,11 +591,8 @@ RCT_EXPORT_METHOD(deserializeClaimOffer: (NSString *)serializedCredential
                   resolver: (RCTPromiseResolveBlock) resolve
                   rejecter: (RCTPromiseRejectBlock) reject)
 {
-  //NSString serializedCredential must be converted to cString because special characters in NSString
-  const char *cLetter = (const char *)[serializedCredential cStringUsingEncoding:NSUTF8StringEncoding];
-  NSString *serializedCredential_cString = [[NSString alloc] initWithCString:cLetter];
   // it would return an error code and an integer credential handle in callback
-  [[[ConnectMeVcx alloc] init] credentialDeserialize:serializedCredential_cString
+  [[[ConnectMeVcx alloc] init] credentialDeserialize:serializedCredential
                                           completion:^(NSError *error, NSInteger credentailHandle) {
     if (error != nil && error.code != 0) {
       NSString *indyErrorCode = [NSString stringWithFormat:@"%ld", (long)error.code];

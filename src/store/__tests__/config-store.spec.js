@@ -96,7 +96,7 @@ import * as errorHandler from './../../services/error/error-handler'
 import { addSerializedClaimOffer } from './../../claim-offer/claim-offer-store'
 import { claimReceivedVcx } from './../../claim/claim-store'
 import { NativeModules } from 'react-native'
-import { FETCH_ADDITIONAL_DATA } from '../../push-notification/type-push-notification'
+import { FETCH_ADDITIONAL_DATA, PUSH_NOTIFICATION_PERMISSION } from '../../push-notification/type-push-notification'
 import AlertAsync from 'react-native-alert-async'
 
 const getConfigStoreInitialState = () =>
@@ -486,6 +486,10 @@ describe('config-store:saga', () => {
     return expectSaga(initVcx)
       .withState(notHydratedNoOneTimeInfoState)
       .dispatch({ type: HYDRATED })
+      .dispatch({
+        type: PUSH_NOTIFICATION_PERMISSION,
+        isAllowed: true,
+      })
       .provide([
         [
           matchers.call.fn(createOneTimeInfo, agencyConfig),
@@ -514,6 +518,10 @@ describe('config-store:saga', () => {
     return expectSaga(initVcx)
       .withState(notHydratedNoOneTimeInfoState)
       .dispatch({ type: HYDRATED })
+      .dispatch({
+        type: PUSH_NOTIFICATION_PERMISSION,
+        isAllowed: true,
+      })
       .provide([
         [
           matchers.call.fn(createOneTimeInfo, agencyConfig),
@@ -534,6 +542,10 @@ describe('config-store:saga', () => {
     return expectSaga(initVcx)
       .withState(notHydratedNoOneTimeInfoState)
       .dispatch({ type: HYDRATED })
+      .dispatch({
+        type: PUSH_NOTIFICATION_PERMISSION,
+        isAllowed: true,
+      })
       .provide([
         [matchers.call.fn(getProvisionToken), ['error', null]],
         [

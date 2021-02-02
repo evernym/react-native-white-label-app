@@ -38,7 +38,7 @@ import {
   keyExtractor,
   prepareCredentials,
 } from './attributes-values'
-import { ModalLeftToRight } from '../utils/modal-animation'
+import { ModalPushLeft } from '../utils/modal-animation'
 import { ExpandableText } from '../../components/expandable-text/expandable-text'
 import { BLANK_ATTRIBUTE_DATA_TEXT } from '../type-connection-details'
 
@@ -47,9 +47,9 @@ export const renderAvatarWithSource = (avatarSource: number | ImageSource) => {
 }
 
 const AttributeValues = ({
-  navigation: { goBack, navigate },
-  route: { params },
-}: ReactNavigation) => {
+                           navigation: { goBack, navigate },
+                           route: { params },
+                         }: ReactNavigation) => {
   const [selectedValueIndex, setSelectedValueIndex] = useState(
     params.items.findIndex((item: Object) =>
       isSelected(item, params.attributesFilledFromCredential)
@@ -145,7 +145,7 @@ const AttributeValues = ({
           </View>
           {index === selectedValueIndex && (
             <View style={styles.iconWrapper}>
-              <EvaIcon name={CHECKMARK_ICON} color={colors.cmBlack} />
+              <EvaIcon name={CHECKMARK_ICON} color={colors.black} />
             </View>
           )}
         </View>
@@ -156,7 +156,7 @@ const AttributeValues = ({
   const renderHeader = () => (
     <>
       <StatusBar
-        backgroundColor={colors.cmBlack}
+        backgroundColor={colors.black}
         barStyle={'light-content'}
       />
       <View style={styles.descriptionWrapper}>
@@ -197,7 +197,7 @@ const AttributeValues = ({
               </View>
               {selectedValueIndex === -1 && (
                 <View style={styles.iconWrapper}>
-                  <EvaIcon name={CHECKMARK_ICON} color={colors.cmBlack} />
+                  <EvaIcon name={CHECKMARK_ICON} color={colors.black} />
                 </View>
               )}
             </View>
@@ -207,7 +207,7 @@ const AttributeValues = ({
       {!self_attest_allowed && params.onTextChange && (
         <View style={[styles.itemContainer]}>
           <View style={styles.inputAvatarSection}>
-            <EvaIcon name={ALERT_ICON} color={colors.cmRed} />
+            <EvaIcon name={ALERT_ICON} color={colors.red} />
           </View>
           <Text style={styles.descriptionTitle}>
             Manual input is disabled for this attribute.
@@ -232,7 +232,7 @@ const AttributeValues = ({
         denyButtonText="Cancel"
         acceptBtnText="Done"
         disableAccept={false}
-        colorBackground={colors.cmGreen1}
+        colorBackground={colors.main}
         numberOfLines={3}
         multiline={true}
         maxLength={200}
@@ -247,15 +247,15 @@ export const AttributeValuesScreen = {
 }
 
 AttributeValuesScreen.screen.navigationOptions = ({
-  navigation: { goBack, isFocused },
-}) => ({
+                                                    navigation: { goBack, isFocused },
+                                                  }) => ({
   safeAreaInsets: { top: 85 },
   cardStyle: {
     marginLeft: '2.5%',
     marginRight: '2.5%',
     marginBottom: '4%',
     borderRadius: 10,
-    backgroundColor: colors.cmWhite,
+    backgroundColor: colors.white,
   },
   cardOverlay: () => (
     <ModalHeaderBar
@@ -264,7 +264,7 @@ AttributeValuesScreen.screen.navigationOptions = ({
       onPress={() => goBack(null)}
     />
   ),
-  ...ModalLeftToRight,
+  ...ModalPushLeft,
 })
 
 const styles = StyleSheet.create({
@@ -282,18 +282,18 @@ const styles = StyleSheet.create({
   descriptionWrapper: {
     ...Platform.select({
       ios: {
-        borderBottomColor: colors.cmGray1,
+        borderBottomColor: colors.gray1,
         borderBottomWidth: 1,
       },
       android: {
-        borderBottomColor: colors.cmGray1,
+        borderBottomColor: colors.gray1,
         borderBottomWidth: 1,
       },
     }),
     paddingVertical: moderateScale(16),
   },
   descriptionTitle: {
-    color: colors.cmGray1,
+    color: colors.gray1,
     fontSize: verticalScale(fontSizes.size6),
     fontWeight: '300',
     fontFamily: fontFamily,
@@ -302,7 +302,7 @@ const styles = StyleSheet.create({
   labelText: {
     fontSize: verticalScale(fontSizes.size4),
     fontWeight: '700',
-    color: colors.cmGray1,
+    color: colors.gray1,
     fontFamily: fontFamily,
     marginVertical: verticalScale(6),
     lineHeight: verticalScale(20),
@@ -310,7 +310,7 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     height: '100%',
-    backgroundColor: colors.cmWhite,
+    backgroundColor: colors.white,
     flex: 1,
     paddingLeft: '5%',
     paddingRight: '5%',
@@ -318,7 +318,7 @@ const styles = StyleSheet.create({
   inputContainer: {
     width: '100%',
     height: '100%',
-    backgroundColor: colors.cmWhite,
+    backgroundColor: colors.white,
     flexDirection: 'row',
   },
   itemContainer: {
@@ -326,7 +326,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     borderBottomWidth: 1,
-    borderBottomColor: colors.cmGray5,
+    borderBottomColor: colors.gray5,
     paddingVertical: moderateScale(12),
   },
   itemInnerContainer: {
@@ -357,12 +357,12 @@ const styles = StyleSheet.create({
     fontFamily: fontFamily,
     fontSize: verticalScale(fontSizes.size4),
     fontWeight: 'bold',
-    color: colors.cmGray1,
+    color: colors.gray1,
   },
   attributesText: {
     fontFamily: fontFamily,
     fontSize: verticalScale(fontSizes.size6),
-    color: colors.cmGray2,
+    color: colors.gray2,
   },
   iconWrapper: {
     marginTop: verticalScale(8),
@@ -373,7 +373,7 @@ const styles = StyleSheet.create({
   contentGray: {
     fontSize: verticalScale(fontSizes.size5),
     fontWeight: '400',
-    color: colors.cmGray1,
+    color: colors.gray1,
     width: '100%',
     textAlign: 'left',
     fontFamily: fontFamily,

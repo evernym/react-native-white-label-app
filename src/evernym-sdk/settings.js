@@ -5,7 +5,7 @@
  * */
 
 // text which will be used for the header.
-export const HEADLINE = 'Settings'
+export const HEADLINE = null
 
 // the set of options (and their labels) to be shown.
 export const settingsOptions = {
@@ -20,6 +20,10 @@ export const settingsOptions = {
   feedback: {
     title: 'Give app feedback',
     subtitle: `Tell us what you think of app`,
+  },
+  logs: {
+    title: 'Send Logs',
+    subtitle: `Help us improve our app by sending your errors`,
   },
   about: {
     title: 'About',

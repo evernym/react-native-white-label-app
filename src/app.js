@@ -20,7 +20,7 @@ import { Container } from './components'
 import { PushNotification } from './push-notification'
 import DeepLink from './deep-link'
 import { colors } from './common/styles/constant'
-import { ConnectMeAppNavigator } from './navigation/navigator'
+import { MSDKAppNavigator } from './navigation/navigator'
 import { sendLogsRoute } from './common'
 import AppStatus from './app-status/app-status'
 import Offline from './offline/offline'
@@ -45,7 +45,7 @@ if (
   UIManager.setLayoutAnimationEnabledExperimental(true)
 }
 
-export class ConnectMeApp extends Component<AppProps, void> {
+export class MSDKMeApp extends Component<AppProps, void> {
   currentRouteKey: string = ''
   currentRoute: string = ''
   navigatorRef = React.createRef<NavigationContainer>()
@@ -114,7 +114,7 @@ export class ConnectMeApp extends Component<AppProps, void> {
         <SafeAreaProvider>
           <Container>
             <StatusBar
-              backgroundColor={colors.cmWhite}
+              backgroundColor={colors.white}
               barStyle="dark-content"
             />
             <PushNotification navigateToRoute={this.navigateToRoute} />
@@ -124,7 +124,7 @@ export class ConnectMeApp extends Component<AppProps, void> {
               ref={this.navigatorRef}
               onStateChange={this.navigationChangeHandler}
             >
-              <ConnectMeAppNavigator />
+              <MSDKAppNavigator />
             </NavigationContainer>
             <Offline overlay />
           </Container>
@@ -135,5 +135,5 @@ export class ConnectMeApp extends Component<AppProps, void> {
 }
 
 export function createApp(appName: string) {
-  return AppRegistry.registerComponent(appName, () => ConnectMeApp)
+  return AppRegistry.registerComponent(appName, () => MSDKMeApp)
 }

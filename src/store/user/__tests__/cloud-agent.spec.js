@@ -20,7 +20,6 @@ import {
   getProvisionToken,
   createOneTimeInfoWithToken,
 } from '../../../bridge/react-native-cxs/RNCxs'
-import { FETCH_ADDITIONAL_DATA } from '../../../push-notification/type-push-notification'
 import { safeDelete } from '../../../services/storage'
 
 describe('cloud-agent:saga', () => {
@@ -41,9 +40,6 @@ describe('cloud-agent:saga', () => {
     offline: {
       offline: false,
     },
-    pushNotification: {
-      isAllowed: true,
-    },
   }
 
   it('should return success, and ask to allow push permission only on specific routes', () => {
@@ -53,30 +49,6 @@ describe('cloud-agent:saga', () => {
         [matchers.call.fn(getProvisionToken), [null, 'token']],
         [matchers.call.fn(createOneTimeInfoWithToken), [null, userOneTimeInfo]],
       ])
-      .dispatch({
-        type: FETCH_ADDITIONAL_DATA,
-        notificationPayload: {
-          msg: 'token-msg',
-        },
-      })
-      .returns([null, userOneTimeInfo])
-      .run()
-  })
-
-  it('should show native push permission dialogue only if app dialogue is allowed', () => {
-    return expectSaga(registerCloudAgentWithToken, agencyConfig)
-      .withState(unlockedState)
-      .provide([
-        [matchers.call.fn(getProvisionToken), [null, 'token']],
-        [matchers.call.fn(createOneTimeInfoWithToken), [null, userOneTimeInfo]],
-      ])
-      .dispatch({
-        type: FETCH_ADDITIONAL_DATA,
-        notificationPayload: {
-          msg: 'token-msg',
-        },
-      })
-      .put({ type: 'REGISTER_CLOUD_AGENT_PUSH_PERMISSION_SUCCESS' })
       .returns([null, userOneTimeInfo])
       .run()
   })

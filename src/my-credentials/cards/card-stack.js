@@ -4,7 +4,7 @@ import Animated from 'react-native-reanimated'
 import { mix, useTransition } from 'react-native-redash/lib/module/v1'
 import { verticalScale } from 'react-native-size-matters'
 import { EvaIcon, CLOSE_ICON } from '../../common/icons'
-import { cmGrey2 } from '../../common/styles'
+import { grey2 } from '../../common/styles'
 import { CardStackProps } from '../type-my-credentials'
 import CredentialCard from './card-item/credential-card-item'
 import {
@@ -137,5 +137,5 @@ const styles = StyleSheet.create({
     borderRadius: HIDE_ICON_HIGHT / 2,
   },
   moreTextRow: { alignItems: 'center' },
-  moreText: { fontSize: verticalScale(14), color: cmGrey2 },
+  moreText: { fontSize: verticalScale(14), color: grey2 },
 })

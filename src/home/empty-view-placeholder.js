@@ -13,7 +13,7 @@ export const EmptyViewPlaceholder = () => {
         name={CHECK_MARK_ICON}
         width={moderateScale(100)}
         height={moderateScale(100)}
-        color={colors.cmGray5}
+        color={colors.gray5}
       />
       <Text style={styles.infoText}>No new notifications.</Text>
     </View>
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     fontFamily: fontFamily,
     fontSize: verticalScale(fontSizes.size4),
     fontWeight: '500',
-    color: colors.cmGray3,
+    color: colors.gray3,
     marginTop: verticalScale(50),
   },
 })

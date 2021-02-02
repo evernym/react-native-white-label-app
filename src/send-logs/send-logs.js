@@ -103,13 +103,13 @@ export class SendLogs extends Component<SendLogsProps, any> {
         const sentButton = {
           text: 'OK',
           onPress: () => {
-            //customLogger.log('SENT: ConnectMe Logs via Email')
+            //customLogger.log('SENT: MSDK Logs via Email')
           },
         }
         const cancelButton = {
           text: 'OK',
           onPress: () => {
-            //customLogger.log('CANCELLED: ConnectMe Logs NOT sent via Email')
+            //customLogger.log('CANCELLED: MSDK Logs NOT sent via Email')
           },
         }
         const notAvailableMsg =

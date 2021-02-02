@@ -593,26 +593,16 @@ exports[`<LockPinCodeSetup /> should render pin code box 1`] = `
                                 }
                                 testID="pin-code-digit-0-touchable"
                               >
-                                <Text
-                                  allowFontScaling={false}
+                                <View
                                   style={
-                                    Array [
-                                      Object {
-                                        "color": "#EAEAEA",
-                                        "fontSize": 26,
-                                      },
-                                      undefined,
-                                      Object {
-                                        "fontFamily": "Material Icons",
-                                        "fontStyle": "normal",
-                                        "fontWeight": "normal",
-                                      },
-                                      Object {},
-                                    ]
+                                    Object {
+                                      "backgroundColor": "#EAEAEA",
+                                      "borderRadius": 20,
+                                      "height": 26,
+                                      "width": 26,
+                                    }
                                   }
-                                >
-                                  
-                                </Text>
+                                />
                               </View>
                               <View
                                 accessibilityLabel="pin-code-digit-1-touchable"
@@ -645,26 +635,16 @@ exports[`<LockPinCodeSetup /> should render pin code box 1`] = `
                                 }
                                 testID="pin-code-digit-1-touchable"
                               >
-                                <Text
-                                  allowFontScaling={false}
+                                <View
                                   style={
-                                    Array [
-                                      Object {
-                                        "color": "#EAEAEA",
-                                        "fontSize": 26,
-                                      },
-                                      undefined,
-                                      Object {
-                                        "fontFamily": "Material Icons",
-                                        "fontStyle": "normal",
-                                        "fontWeight": "normal",
-                                      },
-                                      Object {},
-                                    ]
+                                    Object {
+                                      "backgroundColor": "#EAEAEA",
+                                      "borderRadius": 20,
+                                      "height": 26,
+                                      "width": 26,
+                                    }
                                   }
-                                >
-                                  
-                                </Text>
+                                />
                               </View>
                               <View
                                 accessibilityLabel="pin-code-digit-2-touchable"
@@ -697,26 +677,16 @@ exports[`<LockPinCodeSetup /> should render pin code box 1`] = `
                                 }
                                 testID="pin-code-digit-2-touchable"
                               >
-                                <Text
-                                  allowFontScaling={false}
+                                <View
                                   style={
-                                    Array [
-                                      Object {
-                                        "color": "#EAEAEA",
-                                        "fontSize": 26,
-                                      },
-                                      undefined,
-                                      Object {
-                                        "fontFamily": "Material Icons",
-                                        "fontStyle": "normal",
-                                        "fontWeight": "normal",
-                                      },
-                                      Object {},
-                                    ]
+                                    Object {
+                                      "backgroundColor": "#EAEAEA",
+                                      "borderRadius": 20,
+                                      "height": 26,
+                                      "width": 26,
+                                    }
                                   }
-                                >
-                                  
-                                </Text>
+                                />
                               </View>
                               <View
                                 accessibilityLabel="pin-code-digit-3-touchable"
@@ -749,26 +719,16 @@ exports[`<LockPinCodeSetup /> should render pin code box 1`] = `
                                 }
                                 testID="pin-code-digit-3-touchable"
                               >
-                                <Text
-                                  allowFontScaling={false}
+                                <View
                                   style={
-                                    Array [
-                                      Object {
-                                        "color": "#EAEAEA",
-                                        "fontSize": 26,
-                                      },
-                                      undefined,
-                                      Object {
-                                        "fontFamily": "Material Icons",
-                                        "fontStyle": "normal",
-                                        "fontWeight": "normal",
-                                      },
-                                      Object {},
-                                    ]
+                                    Object {
+                                      "backgroundColor": "#EAEAEA",
+                                      "borderRadius": 20,
+                                      "height": 26,
+                                      "width": 26,
+                                    }
                                   }
-                                >
-                                  
-                                </Text>
+                                />
                               </View>
                               <View
                                 accessibilityLabel="pin-code-digit-4-touchable"
@@ -801,26 +761,16 @@ exports[`<LockPinCodeSetup /> should render pin code box 1`] = `
                                 }
                                 testID="pin-code-digit-4-touchable"
                               >
-                                <Text
-                                  allowFontScaling={false}
+                                <View
                                   style={
-                                    Array [
-                                      Object {
-                                        "color": "#EAEAEA",
-                                        "fontSize": 26,
-                                      },
-                                      undefined,
-                                      Object {
-                                        "fontFamily": "Material Icons",
-                                        "fontStyle": "normal",
-                                        "fontWeight": "normal",
-                                      },
-                                      Object {},
-                                    ]
+                                    Object {
+                                      "backgroundColor": "#EAEAEA",
+                                      "borderRadius": 20,
+                                      "height": 26,
+                                      "width": 26,
+                                    }
                                   }
-                                >
-                                  
-                                </Text>
+                                />
                               </View>
                               <View
                                 accessibilityLabel="pin-code-digit-5-touchable"
@@ -853,26 +803,16 @@ exports[`<LockPinCodeSetup /> should render pin code box 1`] = `
                                 }
                                 testID="pin-code-digit-5-touchable"
                               >
-                                <Text
-                                  allowFontScaling={false}
+                                <View
                                   style={
-                                    Array [
-                                      Object {
-                                        "color": "#EAEAEA",
-                                        "fontSize": 26,
-                                      },
-                                      undefined,
-                                      Object {
-                                        "fontFamily": "Material Icons",
-                                        "fontStyle": "normal",
-                                        "fontWeight": "normal",
-                                      },
-                                      Object {},
-                                    ]
+                                    Object {
+                                      "backgroundColor": "#EAEAEA",
+                                      "borderRadius": 20,
+                                      "height": 26,
+                                      "width": 26,
+                                    }
                                   }
-                                >
-                                  
-                                </Text>
+                                />
                               </View>
                             </View>
                             <TextInput
@@ -1509,26 +1449,16 @@ exports[`<LockPinCodeSetup /> should set pinSetupState and pinReEnterSuccessPin 
                                 }
                                 testID="pin-code-digit-0-touchable"
                               >
-                                <Text
-                                  allowFontScaling={false}
+                                <View
                                   style={
-                                    Array [
-                                      Object {
-                                        "color": "#EAEAEA",
-                                        "fontSize": 26,
-                                      },
-                                      undefined,
-                                      Object {
-                                        "fontFamily": "Material Icons",
-                                        "fontStyle": "normal",
-                                        "fontWeight": "normal",
-                                      },
-                                      Object {},
-                                    ]
+                                    Object {
+                                      "backgroundColor": "#EAEAEA",
+                                      "borderRadius": 20,
+                                      "height": 26,
+                                      "width": 26,
+                                    }
                                   }
-                                >
-                                  
-                                </Text>
+                                />
                               </View>
                               <View
                                 accessibilityLabel="pin-code-digit-1-touchable"
@@ -1561,26 +1491,16 @@ exports[`<LockPinCodeSetup /> should set pinSetupState and pinReEnterSuccessPin 
                                 }
                                 testID="pin-code-digit-1-touchable"
                               >
-                                <Text
-                                  allowFontScaling={false}
+                                <View
                                   style={
-                                    Array [
-                                      Object {
-                                        "color": "#EAEAEA",
-                                        "fontSize": 26,
-                                      },
-                                      undefined,
-                                      Object {
-                                        "fontFamily": "Material Icons",
-                                        "fontStyle": "normal",
-                                        "fontWeight": "normal",
-                                      },
-                                      Object {},
-                                    ]
+                                    Object {
+                                      "backgroundColor": "#EAEAEA",
+                                      "borderRadius": 20,
+                                      "height": 26,
+                                      "width": 26,
+                                    }
                                   }
-                                >
-                                  
-                                </Text>
+                                />
                               </View>
                               <View
                                 accessibilityLabel="pin-code-digit-2-touchable"
@@ -1613,26 +1533,16 @@ exports[`<LockPinCodeSetup /> should set pinSetupState and pinReEnterSuccessPin 
                                 }
                                 testID="pin-code-digit-2-touchable"
                               >
-                                <Text
-                                  allowFontScaling={false}
+                                <View
                                   style={
-                                    Array [
-                                      Object {
-                                        "color": "#EAEAEA",
-                                        "fontSize": 26,
-                                      },
-                                      undefined,
-                                      Object {
-                                        "fontFamily": "Material Icons",
-                                        "fontStyle": "normal",
-                                        "fontWeight": "normal",
-                                      },
-                                      Object {},
-                                    ]
+                                    Object {
+                                      "backgroundColor": "#EAEAEA",
+                                      "borderRadius": 20,
+                                      "height": 26,
+                                      "width": 26,
+                                    }
                                   }
-                                >
-                                  
-                                </Text>
+                                />
                               </View>
                               <View
                                 accessibilityLabel="pin-code-digit-3-touchable"
@@ -1665,26 +1575,16 @@ exports[`<LockPinCodeSetup /> should set pinSetupState and pinReEnterSuccessPin 
                                 }
                                 testID="pin-code-digit-3-touchable"
                               >
-                                <Text
-                                  allowFontScaling={false}
+                                <View
                                   style={
-                                    Array [
-                                      Object {
-                                        "color": "#EAEAEA",
-                                        "fontSize": 26,
-                                      },
-                                      undefined,
-                                      Object {
-                                        "fontFamily": "Material Icons",
-                                        "fontStyle": "normal",
-                                        "fontWeight": "normal",
-                                      },
-                                      Object {},
-                                    ]
+                                    Object {
+                                      "backgroundColor": "#EAEAEA",
+                                      "borderRadius": 20,
+                                      "height": 26,
+                                      "width": 26,
+                                    }
                                   }
-                                >
-                                  
-                                </Text>
+                                />
                               </View>
                               <View
                                 accessibilityLabel="pin-code-digit-4-touchable"
@@ -1717,26 +1617,16 @@ exports[`<LockPinCodeSetup /> should set pinSetupState and pinReEnterSuccessPin 
                                 }
                                 testID="pin-code-digit-4-touchable"
                               >
-                                <Text
-                                  allowFontScaling={false}
+                                <View
                                   style={
-                                    Array [
-                                      Object {
-                                        "color": "#EAEAEA",
-                                        "fontSize": 26,
-                                      },
-                                      undefined,
-                                      Object {
-                                        "fontFamily": "Material Icons",
-                                        "fontStyle": "normal",
-                                        "fontWeight": "normal",
-                                      },
-                                      Object {},
-                                    ]
+                                    Object {
+                                      "backgroundColor": "#EAEAEA",
+                                      "borderRadius": 20,
+                                      "height": 26,
+                                      "width": 26,
+                                    }
                                   }
-                                >
-                                  
-                                </Text>
+                                />
                               </View>
                               <View
                                 accessibilityLabel="pin-code-digit-5-touchable"
@@ -1769,26 +1659,16 @@ exports[`<LockPinCodeSetup /> should set pinSetupState and pinReEnterSuccessPin 
                                 }
                                 testID="pin-code-digit-5-touchable"
                               >
-                                <Text
-                                  allowFontScaling={false}
+                                <View
                                   style={
-                                    Array [
-                                      Object {
-                                        "color": "#EAEAEA",
-                                        "fontSize": 26,
-                                      },
-                                      undefined,
-                                      Object {
-                                        "fontFamily": "Material Icons",
-                                        "fontStyle": "normal",
-                                        "fontWeight": "normal",
-                                      },
-                                      Object {},
-                                    ]
+                                    Object {
+                                      "backgroundColor": "#EAEAEA",
+                                      "borderRadius": 20,
+                                      "height": 26,
+                                      "width": 26,
+                                    }
                                   }
-                                >
-                                  
-                                </Text>
+                                />
                               </View>
                             </View>
                             <TextInput
@@ -2427,26 +2307,16 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
                                 }
                                 testID="pin-code-digit-0-touchable"
                               >
-                                <Text
-                                  allowFontScaling={false}
+                                <View
                                   style={
-                                    Array [
-                                      Object {
-                                        "color": "#EAEAEA",
-                                        "fontSize": 26,
-                                      },
-                                      undefined,
-                                      Object {
-                                        "fontFamily": "Material Icons",
-                                        "fontStyle": "normal",
-                                        "fontWeight": "normal",
-                                      },
-                                      Object {},
-                                    ]
+                                    Object {
+                                      "backgroundColor": "#EAEAEA",
+                                      "borderRadius": 20,
+                                      "height": 26,
+                                      "width": 26,
+                                    }
                                   }
-                                >
-                                  
-                                </Text>
+                                />
                               </View>
                               <View
                                 accessibilityLabel="pin-code-digit-1-touchable"
@@ -2479,26 +2349,16 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
                                 }
                                 testID="pin-code-digit-1-touchable"
                               >
-                                <Text
-                                  allowFontScaling={false}
+                                <View
                                   style={
-                                    Array [
-                                      Object {
-                                        "color": "#EAEAEA",
-                                        "fontSize": 26,
-                                      },
-                                      undefined,
-                                      Object {
-                                        "fontFamily": "Material Icons",
-                                        "fontStyle": "normal",
-                                        "fontWeight": "normal",
-                                      },
-                                      Object {},
-                                    ]
+                                    Object {
+                                      "backgroundColor": "#EAEAEA",
+                                      "borderRadius": 20,
+                                      "height": 26,
+                                      "width": 26,
+                                    }
                                   }
-                                >
-                                  
-                                </Text>
+                                />
                               </View>
                               <View
                                 accessibilityLabel="pin-code-digit-2-touchable"
@@ -2531,26 +2391,16 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
                                 }
                                 testID="pin-code-digit-2-touchable"
                               >
-                                <Text
-                                  allowFontScaling={false}
+                                <View
                                   style={
-                                    Array [
-                                      Object {
-                                        "color": "#EAEAEA",
-                                        "fontSize": 26,
-                                      },
-                                      undefined,
-                                      Object {
-                                        "fontFamily": "Material Icons",
-                                        "fontStyle": "normal",
-                                        "fontWeight": "normal",
-                                      },
-                                      Object {},
-                                    ]
+                                    Object {
+                                      "backgroundColor": "#EAEAEA",
+                                      "borderRadius": 20,
+                                      "height": 26,
+                                      "width": 26,
+                                    }
                                   }
-                                >
-                                  
-                                </Text>
+                                />
                               </View>
                               <View
                                 accessibilityLabel="pin-code-digit-3-touchable"
@@ -2583,26 +2433,16 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
                                 }
                                 testID="pin-code-digit-3-touchable"
                               >
-                                <Text
-                                  allowFontScaling={false}
+                                <View
                                   style={
-                                    Array [
-                                      Object {
-                                        "color": "#EAEAEA",
-                                        "fontSize": 26,
-                                      },
-                                      undefined,
-                                      Object {
-                                        "fontFamily": "Material Icons",
-                                        "fontStyle": "normal",
-                                        "fontWeight": "normal",
-                                      },
-                                      Object {},
-                                    ]
+                                    Object {
+                                      "backgroundColor": "#EAEAEA",
+                                      "borderRadius": 20,
+                                      "height": 26,
+                                      "width": 26,
+                                    }
                                   }
-                                >
-                                  
-                                </Text>
+                                />
                               </View>
                               <View
                                 accessibilityLabel="pin-code-digit-4-touchable"
@@ -2635,26 +2475,16 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
                                 }
                                 testID="pin-code-digit-4-touchable"
                               >
-                                <Text
-                                  allowFontScaling={false}
+                                <View
                                   style={
-                                    Array [
-                                      Object {
-                                        "color": "#EAEAEA",
-                                        "fontSize": 26,
-                                      },
-                                      undefined,
-                                      Object {
-                                        "fontFamily": "Material Icons",
-                                        "fontStyle": "normal",
-                                        "fontWeight": "normal",
-                                      },
-                                      Object {},
-                                    ]
+                                    Object {
+                                      "backgroundColor": "#EAEAEA",
+                                      "borderRadius": 20,
+                                      "height": 26,
+                                      "width": 26,
+                                    }
                                   }
-                                >
-                                  
-                                </Text>
+                                />
                               </View>
                               <View
                                 accessibilityLabel="pin-code-digit-5-touchable"
@@ -2687,26 +2517,16 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
                                 }
                                 testID="pin-code-digit-5-touchable"
                               >
-                                <Text
-                                  allowFontScaling={false}
+                                <View
                                   style={
-                                    Array [
-                                      Object {
-                                        "color": "#EAEAEA",
-                                        "fontSize": 26,
-                                      },
-                                      undefined,
-                                      Object {
-                                        "fontFamily": "Material Icons",
-                                        "fontStyle": "normal",
-                                        "fontWeight": "normal",
-                                      },
-                                      Object {},
-                                    ]
+                                    Object {
+                                      "backgroundColor": "#EAEAEA",
+                                      "borderRadius": 20,
+                                      "height": 26,
+                                      "width": 26,
+                                    }
                                   }
-                                >
-                                  
-                                </Text>
+                                />
                               </View>
                             </View>
                             <TextInput
@@ -3343,26 +3163,16 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
                                 }
                                 testID="pin-code-digit-0-touchable"
                               >
-                                <Text
-                                  allowFontScaling={false}
+                                <View
                                   style={
-                                    Array [
-                                      Object {
-                                        "color": "#EAEAEA",
-                                        "fontSize": 26,
-                                      },
-                                      undefined,
-                                      Object {
-                                        "fontFamily": "Material Icons",
-                                        "fontStyle": "normal",
-                                        "fontWeight": "normal",
-                                      },
-                                      Object {},
-                                    ]
+                                    Object {
+                                      "backgroundColor": "#EAEAEA",
+                                      "borderRadius": 20,
+                                      "height": 26,
+                                      "width": 26,
+                                    }
                                   }
-                                >
-                                  
-                                </Text>
+                                />
                               </View>
                               <View
                                 accessibilityLabel="pin-code-digit-1-touchable"
@@ -3395,26 +3205,16 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
                                 }
                                 testID="pin-code-digit-1-touchable"
                               >
-                                <Text
-                                  allowFontScaling={false}
+                                <View
                                   style={
-                                    Array [
-                                      Object {
-                                        "color": "#EAEAEA",
-                                        "fontSize": 26,
-                                      },
-                                      undefined,
-                                      Object {
-                                        "fontFamily": "Material Icons",
-                                        "fontStyle": "normal",
-                                        "fontWeight": "normal",
-                                      },
-                                      Object {},
-                                    ]
+                                    Object {
+                                      "backgroundColor": "#EAEAEA",
+                                      "borderRadius": 20,
+                                      "height": 26,
+                                      "width": 26,
+                                    }
                                   }
-                                >
-                                  
-                                </Text>
+                                />
                               </View>
                               <View
                                 accessibilityLabel="pin-code-digit-2-touchable"
@@ -3447,26 +3247,16 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
                                 }
                                 testID="pin-code-digit-2-touchable"
                               >
-                                <Text
-                                  allowFontScaling={false}
+                                <View
                                   style={
-                                    Array [
-                                      Object {
-                                        "color": "#EAEAEA",
-                                        "fontSize": 26,
-                                      },
-                                      undefined,
-                                      Object {
-                                        "fontFamily": "Material Icons",
-                                        "fontStyle": "normal",
-                                        "fontWeight": "normal",
-                                      },
-                                      Object {},
-                                    ]
+                                    Object {
+                                      "backgroundColor": "#EAEAEA",
+                                      "borderRadius": 20,
+                                      "height": 26,
+                                      "width": 26,
+                                    }
                                   }
-                                >
-                                  
-                                </Text>
+                                />
                               </View>
                               <View
                                 accessibilityLabel="pin-code-digit-3-touchable"
@@ -3499,26 +3289,16 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
                                 }
                                 testID="pin-code-digit-3-touchable"
                               >
-                                <Text
-                                  allowFontScaling={false}
+                                <View
                                   style={
-                                    Array [
-                                      Object {
-                                        "color": "#EAEAEA",
-                                        "fontSize": 26,
-                                      },
-                                      undefined,
-                                      Object {
-                                        "fontFamily": "Material Icons",
-                                        "fontStyle": "normal",
-                                        "fontWeight": "normal",
-                                      },
-                                      Object {},
-                                    ]
+                                    Object {
+                                      "backgroundColor": "#EAEAEA",
+                                      "borderRadius": 20,
+                                      "height": 26,
+                                      "width": 26,
+                                    }
                                   }
-                                >
-                                  
-                                </Text>
+                                />
                               </View>
                               <View
                                 accessibilityLabel="pin-code-digit-4-touchable"
@@ -3551,26 +3331,16 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
                                 }
                                 testID="pin-code-digit-4-touchable"
                               >
-                                <Text
-                                  allowFontScaling={false}
+                                <View
                                   style={
-                                    Array [
-                                      Object {
-                                        "color": "#EAEAEA",
-                                        "fontSize": 26,
-                                      },
-                                      undefined,
-                                      Object {
-                                        "fontFamily": "Material Icons",
-                                        "fontStyle": "normal",
-                                        "fontWeight": "normal",
-                                      },
-                                      Object {},
-                                    ]
+                                    Object {
+                                      "backgroundColor": "#EAEAEA",
+                                      "borderRadius": 20,
+                                      "height": 26,
+                                      "width": 26,
+                                    }
                                   }
-                                >
-                                  
-                                </Text>
+                                />
                               </View>
                               <View
                                 accessibilityLabel="pin-code-digit-5-touchable"
@@ -3603,26 +3373,16 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
                                 }
                                 testID="pin-code-digit-5-touchable"
                               >
-                                <Text
-                                  allowFontScaling={false}
+                                <View
                                   style={
-                                    Array [
-                                      Object {
-                                        "color": "#EAEAEA",
-                                        "fontSize": 26,
-                                      },
-                                      undefined,
-                                      Object {
-                                        "fontFamily": "Material Icons",
-                                        "fontStyle": "normal",
-                                        "fontWeight": "normal",
-                                      },
-                                      Object {},
-                                    ]
+                                    Object {
+                                      "backgroundColor": "#EAEAEA",
+                                      "borderRadius": 20,
+                                      "height": 26,
+                                      "width": 26,
+                                    }
                                   }
-                                >
-                                  
-                                </Text>
+                                />
                               </View>
                             </View>
                             <TextInput
@@ -4259,26 +4019,16 @@ exports[`<LockPinCodeSetup /> should show re enter pass code after first entry 1
                                 }
                                 testID="pin-code-digit-0-touchable"
                               >
-                                <Text
-                                  allowFontScaling={false}
+                                <View
                                   style={
-                                    Array [
-                                      Object {
-                                        "color": "#EAEAEA",
-                                        "fontSize": 26,
-                                      },
-                                      undefined,
-                                      Object {
-                                        "fontFamily": "Material Icons",
-                                        "fontStyle": "normal",
-                                        "fontWeight": "normal",
-                                      },
-                                      Object {},
-                                    ]
+                                    Object {
+                                      "backgroundColor": "#EAEAEA",
+                                      "borderRadius": 20,
+                                      "height": 26,
+                                      "width": 26,
+                                    }
                                   }
-                                >
-                                  
-                                </Text>
+                                />
                               </View>
                               <View
                                 accessibilityLabel="pin-code-digit-1-touchable"
@@ -4311,26 +4061,16 @@ exports[`<LockPinCodeSetup /> should show re enter pass code after first entry 1
                                 }
                                 testID="pin-code-digit-1-touchable"
                               >
-                                <Text
-                                  allowFontScaling={false}
+                                <View
                                   style={
-                                    Array [
-                                      Object {
-                                        "color": "#EAEAEA",
-                                        "fontSize": 26,
-                                      },
-                                      undefined,
-                                      Object {
-                                        "fontFamily": "Material Icons",
-                                        "fontStyle": "normal",
-                                        "fontWeight": "normal",
-                                      },
-                                      Object {},
-                                    ]
+                                    Object {
+                                      "backgroundColor": "#EAEAEA",
+                                      "borderRadius": 20,
+                                      "height": 26,
+                                      "width": 26,
+                                    }
                                   }
-                                >
-                                  
-                                </Text>
+                                />
                               </View>
                               <View
                                 accessibilityLabel="pin-code-digit-2-touchable"
@@ -4363,26 +4103,16 @@ exports[`<LockPinCodeSetup /> should show re enter pass code after first entry 1
                                 }
                                 testID="pin-code-digit-2-touchable"
                               >
-                                <Text
-                                  allowFontScaling={false}
+                                <View
                                   style={
-                                    Array [
-                                      Object {
-                                        "color": "#EAEAEA",
-                                        "fontSize": 26,
-                                      },
-                                      undefined,
-                                      Object {
-                                        "fontFamily": "Material Icons",
-                                        "fontStyle": "normal",
-                                        "fontWeight": "normal",
-                                      },
-                                      Object {},
-                                    ]
+                                    Object {
+                                      "backgroundColor": "#EAEAEA",
+                                      "borderRadius": 20,
+                                      "height": 26,
+                                      "width": 26,
+                                    }
                                   }
-                                >
-                                  
-                                </Text>
+                                />
                               </View>
                               <View
                                 accessibilityLabel="pin-code-digit-3-touchable"
@@ -4415,26 +4145,16 @@ exports[`<LockPinCodeSetup /> should show re enter pass code after first entry 1
                                 }
                                 testID="pin-code-digit-3-touchable"
                               >
-                                <Text
-                                  allowFontScaling={false}
+                                <View
                                   style={
-                                    Array [
-                                      Object {
-                                        "color": "#EAEAEA",
-                                        "fontSize": 26,
-                                      },
-                                      undefined,
-                                      Object {
-                                        "fontFamily": "Material Icons",
-                                        "fontStyle": "normal",
-                                        "fontWeight": "normal",
-                                      },
-                                      Object {},
-                                    ]
+                                    Object {
+                                      "backgroundColor": "#EAEAEA",
+                                      "borderRadius": 20,
+                                      "height": 26,
+                                      "width": 26,
+                                    }
                                   }
-                                >
-                                  
-                                </Text>
+                                />
                               </View>
                               <View
                                 accessibilityLabel="pin-code-digit-4-touchable"
@@ -4467,26 +4187,16 @@ exports[`<LockPinCodeSetup /> should show re enter pass code after first entry 1
                                 }
                                 testID="pin-code-digit-4-touchable"
                               >
-                                <Text
-                                  allowFontScaling={false}
+                                <View
                                   style={
-                                    Array [
-                                      Object {
-                                        "color": "#EAEAEA",
-                                        "fontSize": 26,
-                                      },
-                                      undefined,
-                                      Object {
-                                        "fontFamily": "Material Icons",
-                                        "fontStyle": "normal",
-                                        "fontWeight": "normal",
-                                      },
-                                      Object {},
-                                    ]
+                                    Object {
+                                      "backgroundColor": "#EAEAEA",
+                                      "borderRadius": 20,
+                                      "height": 26,
+                                      "width": 26,
+                                    }
                                   }
-                                >
-                                  
-                                </Text>
+                                />
                               </View>
                               <View
                                 accessibilityLabel="pin-code-digit-5-touchable"
@@ -4519,26 +4229,16 @@ exports[`<LockPinCodeSetup /> should show re enter pass code after first entry 1
                                 }
                                 testID="pin-code-digit-5-touchable"
                               >
-                                <Text
-                                  allowFontScaling={false}
+                                <View
                                   style={
-                                    Array [
-                                      Object {
-                                        "color": "#EAEAEA",
-                                        "fontSize": 26,
-                                      },
-                                      undefined,
-                                      Object {
-                                        "fontFamily": "Material Icons",
-                                        "fontStyle": "normal",
-                                        "fontWeight": "normal",
-                                      },
-                                      Object {},
-                                    ]
+                                    Object {
+                                      "backgroundColor": "#EAEAEA",
+                                      "borderRadius": 20,
+                                      "height": 26,
+                                      "width": 26,
+                                    }
                                   }
-                                >
-                                  
-                                </Text>
+                                />
                               </View>
                             </View>
                             <TextInput

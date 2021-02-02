@@ -7,7 +7,7 @@ import { bindActionCreators } from 'redux'
 // $FlowExpectedError[cannot-resolve-module] external file
 import { APP_NAME } from '../../../../../app/evernym-sdk/app'
 // $FlowExpectedError[cannot-resolve-module] external file
-import { AppSvgIcon } from '../../../../../app/evernym-sdk/app-icon'
+import { LockHeader } from '../../../../../app/evernym-sdk/lock'
 
 import {
   Container,
@@ -36,7 +36,7 @@ import { ENTER_YOUR_PASS_CODE_MESSAGE } from '../common/message-constants'
 import {
   isBiggerThanShortDevice,
   matterhornSecondary,
-  cmRed,
+  red,
 } from '../common/styles/constant'
 import { moderateScale, verticalScale } from 'react-native-size-matters'
 
@@ -160,10 +160,10 @@ export class LockEnter extends Component<LockEnterProps, LockEnterState> {
         {this.props.fromRecovery ? (
           <Container safeArea fifth>
             <CustomView center>
-              <AppSvgIcon
+              <LockHeader
                 width={moderateScale(218.54)}
                 height={moderateScale(28)}
-                fill={colors.cmGray2}
+                fill={colors.gray2}
               />
             </CustomView>
             <Image
@@ -216,10 +216,10 @@ export class LockEnter extends Component<LockEnterProps, LockEnterState> {
         ) : (
           <Container tertiary>
             <CustomView center>
-              <AppSvgIcon
+              <LockHeader
                 width={moderateScale(218.54)}
                 height={moderateScale(28)}
-                fill={colors.cmGray2}
+                fill={colors.gray2}
               />
             </CustomView>
             <CustomView
@@ -252,7 +252,7 @@ export class LockEnter extends Component<LockEnterProps, LockEnterState> {
 
 const stylesRecovery = StyleSheet.create({
   failedAttemptsText: {
-    color: cmRed,
+    color: red,
     fontSize: 17,
     fontWeight: '500',
     fontFamily: fontFamily,

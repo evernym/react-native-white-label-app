@@ -54,13 +54,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'stretch',
     borderWidth: 1,
-    borderColor: colors.cmGray5,
+    borderColor: colors.gray5,
     borderRadius: 3,
     width: '100%',
     padding: moderateScale(12),
   },
   date: {
-    color: colors.cmGray2,
+    color: colors.gray2,
     fontSize: moderateScale(fontSizes.size10),
     textAlign: 'left',
     fontFamily: fontFamily,
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
   absolute: {
     width: moderateScale(14),
     height: moderateScale(14),
-    backgroundColor: colors.cmWhite,
+    backgroundColor: colors.white,
     borderRadius: 7,
     position: 'absolute',
   },
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   title: {
-    color: colors.cmGray1,
+    color: colors.gray1,
     fontWeight: '700',
     fontSize: moderateScale(fontSizes.size7),
     textAlign: 'left',
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     fontFamily: fontFamily,
   },
   content: {
-    color: colors.cmGray2,
+    color: colors.gray2,
     fontWeight: '400',
     fontSize: moderateScale(fontSizes.size9),
     textAlign: 'left',

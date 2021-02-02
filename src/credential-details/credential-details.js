@@ -1,5 +1,5 @@
 //@flow
-import React from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { Text, View, ScrollView, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import { verticalScale, moderateScale } from 'react-native-size-matters'
@@ -13,6 +13,7 @@ import { HeaderWithDeletion } from '../components'
 import { ExpandableText } from '../components/expandable-text/expandable-text'
 import { bindActionCreators } from "redux"
 import { deleteClaim } from '../claim/claim-store'
+import { ViewPushLeft } from '../connection-details/utils/modal-animation'
 
 const CredentialDetails = (props: CredentialDetailsProps) => {
   const {
@@ -26,15 +27,17 @@ const CredentialDetails = (props: CredentialDetailsProps) => {
     claimOfferUuid,
   } = props.route.params
 
-  const data = attributes.map((attribute) => ({
-    label: attribute.label,
-    data: attribute.data,
-  }))
+  const data = useMemo(() => (
+    attributes.map((attribute) => ({
+      label: attribute.label,
+      data: attribute.data,
+    }))
+  ), [attributes])
 
-  const onDelete = () => {
+  const onDelete = useCallback(() => {
     props.deleteClaim(claimOfferUuid)
     props.navigation.goBack(null)
-  }
+  }, [claimOfferUuid])
 
   return (
     <View style={styles.container}>
@@ -91,21 +94,22 @@ export const credentialDetailsScreen = {
   screen: connect(null, mapDispatchToProps)(CredentialDetails),
 }
 
+credentialDetailsScreen.screen.navigationOptions = () => ViewPushLeft
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.cmWhite,
+    backgroundColor: colors.white,
   },
   headerWrapper: {
     marginStart: moderateScale(8),
     marginEnd: moderateScale(8),
-    borderBottomColor: colors.cmGray1,
+    borderBottomColor: colors.gray1,
     borderBottomWidth: verticalScale(1),
   },
   headerSubText: {
     marginTop: verticalScale(16),
     fontSize: verticalScale(fontSizes.size5),
-    color: colors.cmGray2,
+    color: colors.gray2,
     width: '100%',
     textAlign: 'center',
     fontFamily: fontFamily,
@@ -116,7 +120,7 @@ const styles = StyleSheet.create({
     marginEnd: moderateScale(8),
     fontSize: verticalScale(fontSizes.size5),
     fontWeight: 'bold',
-    color: colors.cmGray1,
+    color: colors.gray1,
     textAlign: 'center',
     fontFamily: fontFamily,
   },
@@ -129,7 +133,7 @@ const styles = StyleSheet.create({
     marginStart: moderateScale(8),
     marginEnd: moderateScale(8),
     fontSize: verticalScale(fontSizes.size2),
-    color: colors.cmGray1,
+    color: colors.gray1,
     textAlign: 'center',
     fontFamily: fontFamily,
   },

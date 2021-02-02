@@ -10,8 +10,8 @@ import {
   updateStatusBarTheme,
   sendConnectionRedirect,
   sendConnectionReuse,
-} from '../store/connections-store'
-import { newConnectionSeen } from '../connection-history/connection-history-store'
+} from '../../src/store/connections-store'
+import { newConnectionSeen } from '../../src/connection-history/connection-history-store'
 import { connect } from 'react-redux'
 import moment from 'moment'
 import { bindActionCreators } from 'redux'
@@ -46,11 +46,12 @@ import { UPDATE_ATTRIBUTE_CLAIM, ERROR_SEND_PROOF } from '../proof/type-proof'
 import { INVITATION_ACCEPTED } from '../invitation/type-invitation'
 import { CONNECTION_FAIL } from '../store/type-connection-store'
 import { deleteConnectionAction } from '../store/connections-store'
+import { ViewPushLeft } from './utils/modal-animation'
 
 export class ConnectionDetails extends Component<
   ConnectionHistoryProps,
   ConnectionHistoryState
-> {
+  > {
   state = {
     newMessageLine: false,
   }
@@ -89,7 +90,7 @@ export class ConnectionDetails extends Component<
           noOfAttributes={item.data.length}
           buttonText={'RETRY'}
           showBadge={false}
-          colorBackground={colors.cmRed}
+          colorBackground={colors.red}
           uid={item.originalPayload.uid}
           proof={true}
           navigation={this.props.navigation}
@@ -177,14 +178,14 @@ export class ConnectionDetails extends Component<
           noOfAttributes={item.data.length}
           buttonText={'RETRY'}
           showBadge={false}
-          colorBackground={colors.cmRed}
+          colorBackground={colors.red}
           navigation={this.props.navigation}
           received={true}
           data={item}
           imageUrl={this.props.route.params.image}
           institutionalName={this.props.route.params.senderName}
-          colorBackground={colors.cmRed}
-          secondColorBackground={colors.cmRed}
+          colorBackground={colors.red}
+          secondColorBackground={colors.red}
         />
       )
     } else if (item.action === 'RECEIVED') {
@@ -288,14 +289,14 @@ export class ConnectionDetails extends Component<
           infoDate={formattedDate}
           buttonText={'RETRY'}
           showBadge={false}
-          colorBackground={colors.cmRed}
+          colorBackground={colors.red}
           navigation={this.props.navigation}
           received={true}
           data={item}
           imageUrl={this.props.navigation.state.params.image}
           institutialName={this.props.navigation.state.params.senderName}
-          colorBackground={colors.cmRed}
-          secondColorBackground={colors.cmRed}
+          colorBackground={colors.red}
+          secondColorBackground={colors.red}
         />
       )
     } else if (item.action === 'DELETED') {
@@ -324,7 +325,7 @@ export class ConnectionDetails extends Component<
           infoDate={formattedDate}
           buttonText={'RETRY'}
           showBadge={false}
-          colorBackground={colors.cmRed}
+          colorBackground={colors.red}
           received={true}
           data={item}
           repeatable={true}
@@ -344,7 +345,7 @@ export class ConnectionDetails extends Component<
   scrollToEnd = () => {
     setTimeout(() => {
       this.flatList.current &&
-        this.flatList.current.scrollToEnd({ animated: true })
+      this.flatList.current.scrollToEnd({ animated: true })
     }, 300)
   }
 
@@ -383,9 +384,9 @@ const mapStateToProps = (state: Store, props: ConnectionHistoryNavigation) => {
   const connection: any =
     state.connections && state.connections.data
       ? Object.values(state.connections.data).find(
-          (connection: any) =>
-            connection.senderDID === props.route.params.senderDID
-        )
+      (connection: any) =>
+        connection.senderDID === props.route.params.senderDID
+      )
       : undefined
 
   const timestamp = connection ? connection.timestamp : null
@@ -400,8 +401,8 @@ const mapStateToProps = (state: Store, props: ConnectionHistoryNavigation) => {
 
   connectionHistory = timestamp
     ? connectionHistory.filter(
-        (event) => new Date(event.timestamp) >= new Date(timestamp)
-      )
+      (event) => new Date(event.timestamp) >= new Date(timestamp)
+    )
     : connectionHistory.slice()
 
   const themeForLogo = getConnectionTheme(
@@ -434,16 +435,17 @@ export const connectionHistoryScreen = {
   screen: connect(mapStateToProps, mapDispatchToProps)(ConnectionDetails),
 }
 
+connectionHistoryScreen.screen.navigationOptions = () => ViewPushLeft
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colors.cmWhite,
+    backgroundColor: colors.white,
   },
   flatListContainer: {
     width: '100%',
     height: '100%',
-    backgroundColor: colors.cmWhite,
+    backgroundColor: colors.white,
   },
 })

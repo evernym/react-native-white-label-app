@@ -13,7 +13,7 @@ import Icon from '../icon'
 import Separator from '../separator'
 import { OFFSET_3X } from '../../common/styles'
 import { getUserAvatarSource } from '../../store/store-selector'
-import { defaultUserAvatar } from '../user-avatar/user-avatar'
+import { renderUserAvatar } from '../user-avatar/user-avatar'
 
 export class CustomList extends Component<CustomListProps, void> {
   keyExtractor = ({ label, values }: Item, index: number) => {
@@ -63,14 +63,17 @@ export class CustomList extends Component<CustomListProps, void> {
         </CustomView>
       )
     } else {
-      const logoUrl = item.data
-        ? item.claimUuid &&
-          this.props.claimMap &&
-          this.props.claimMap[item.claimUuid] &&
-          this.props.claimMap[item.claimUuid].logoUrl
-          ? { uri: this.props.claimMap[item.claimUuid].logoUrl }
-          : this.props.avatarSource || defaultUserAvatar
-        : null
+      const logoUrl = item.data &&
+        item.claimUuid &&
+        this.props.claimMap &&
+        this.props.claimMap[item.claimUuid] &&
+        this.props.claimMap[item.claimUuid].logoUrl
+          ? { uri: this.props.claimMap[item.claimUuid].logoUrl } :
+          null
+
+      const logo = logoUrl ?
+        <Icon center medium round resizeMode="cover" src={logoUrl} />:
+        renderUserAvatar({ size: 'superSmall'})
 
       return (
         <Container fifth style={[styles.list]} row>
@@ -100,7 +103,7 @@ export class CustomList extends Component<CustomListProps, void> {
               </CustomText>
             </CustomView>
           </Container>
-          <Icon center medium round resizeMode="cover" src={logoUrl} />
+          {logo}
         </Container>
       )
     }

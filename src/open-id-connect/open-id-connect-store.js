@@ -88,12 +88,12 @@ export function* openIdConnectYesSaga(
   const senderFullyQualifiedPublicDID = jwtAuthenticationRequest.body.iss
   // DID inside JWT body is in fully qualified format did:sov:<pairwise-did>
   // while, when we establish a connection it is without did:sov:
-  // so, when we compare publicDID in ConnectMe with publicDID sent in JWT
+  // so, when we compare publicDID in MSDK with publicDID sent in JWT
   // we need to remove did:sov: and take just DID part
   const senderPublicDID = senderFullyQualifiedPublicDID.split(':').slice(-1)[0]
 
   // get pairwise connection, so that we should have details such as
-  // public key of sender, connectme side pairwise key, verKey
+  // public key of sender, MSDK side pairwise key, verKey
   const possibleConnections: Connection[] = yield select(
     getConnectionByProp,
     'publicDID',
@@ -356,7 +356,7 @@ export function* addArtificialDelayIfNeeded(
     // it would be shown to user and immediately success would be shown
     // it would not be a good user experience
     // so we are ensuring that user sees Loader for at least two seconds
-    // so that ConnectMe can avoid showing UI jumps
+    // so that MSDK can avoid showing UI jumps
 
     // Now, since we know that less than 1.5 seconds has passed since
     // we started sending request, and hence we know that user will see

@@ -29,7 +29,7 @@ const ProofRequestModal = (props: any) => {
   return (
     <View style={styles.modalWrapper}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <StatusBar backgroundColor={colors.cmBlack} barStyle={'light-content'}/>
+        <StatusBar backgroundColor={colors.black} barStyle={'light-content'}/>
         <ModalHeader
           institutionalName={props.name}
           credentialName={props.data.name}
@@ -84,7 +84,7 @@ proofScreen.screen.navigationOptions = ({
     marginRight: '2.5%',
     marginBottom: '4%',
     borderRadius: 10,
-    backgroundColor: colors.cmWhite,
+    backgroundColor: colors.white,
   },
   cardOverlay: () => (
     <ModalHeaderBar
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
   },
   innerModalWrapper: {
     flex: 1,
-    backgroundColor: colors.cmWhite,
+    backgroundColor: colors.white,
     paddingTop: moderateScale(5),
   },
 })

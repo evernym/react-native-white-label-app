@@ -219,7 +219,7 @@ export class ClaimRequestStatusModal extends PureComponent<
               fifth
               onPress={this.onContinue}
               title={'Continue'}
-              textStyle={{ fontWeight: 'bold', color: colors.cmGreen1 }}
+              textStyle={{ fontWeight: 'bold', color: colors.main }}
             />
           </CustomView>
         )}
@@ -255,18 +255,18 @@ const styles = StyleSheet.create({
   innerContainer: {
     ...Platform.select({
       ios: {
-        borderBottomColor: colors.cmGray1,
+        borderBottomColor: colors.gray1,
         borderBottomWidth: moderateScale(StyleSheet.hairlineWidth / 2),
       },
       android: {
-        borderBottomColor: colors.cmGray4,
+        borderBottomColor: colors.gray4,
         borderBottomWidth: 1,
       },
     }),
     padding: moderateScale(20),
   },
   backgroundColor: {
-    backgroundColor: colors.cmWhite,
+    backgroundColor: colors.white,
   },
   loaderHeading: { height: '84%' },
 })

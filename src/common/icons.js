@@ -50,7 +50,7 @@ export const EvaIcon = (props: CommonIconProps) => {
       {...props}
       width={width ? width : moderateScale(24)}
       height={height ? height : moderateScale(24)}
-      fill={color ? color : colors.cmGray2}
+      fill={color ? color : colors.gray2}
     />
   )
 }

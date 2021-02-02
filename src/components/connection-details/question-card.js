@@ -16,7 +16,7 @@ export const QuestionCard = ({
 }: QuestionCardProps) => {
   const navigation = useNavigation()
   const navigateToQuestionScreen = useCallback(() => {
-    navigation.navigate(questionRoute, { uid })
+    navigation.navigate(questionRoute, { uid, redirectBack: true })
   }, [])
 
   return (
@@ -65,13 +65,13 @@ const styles = StyleSheet.create({
     height: moderateScale(45),
   },
   messageDate: {
-    color: colors.cmGray2,
+    color: colors.gray2,
     fontSize: verticalScale(fontSizes.size9),
     textAlign: 'left',
     fontFamily: fontFamily,
   },
   messageTitle: {
-    color: colors.cmGray1,
+    color: colors.gray1,
     fontWeight: '500',
     fontSize: moderateScale(fontSizes.size5),
     textAlign: 'left',
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     fontFamily: fontFamily,
   },
   messageContent: {
-    color: colors.cmGray1,
+    color: colors.gray1,
     fontSize: moderateScale(fontSizes.size7),
     textAlign: 'left',
     fontFamily: fontFamily,
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     borderRadius: moderateScale(5),
   },
   viewText: {
-    color: colors.cmWhite,
+    color: colors.white,
     fontSize: verticalScale(fontSizes.size5),
     fontWeight: '700',
     fontFamily: fontFamily,
@@ -110,14 +110,14 @@ const styles = StyleSheet.create({
     borderRadius: moderateScale(5),
   },
   ignoreText: {
-    color: colors.cmGray2,
+    color: colors.gray2,
     fontSize: moderateScale(fontSizes.size7),
     fontWeight: '700',
     fontFamily: fontFamily,
   },
   helperView: {
     borderBottomWidth: 1,
-    borderBottomColor: colors.cmGray5,
+    borderBottomColor: colors.gray5,
     width: '100%',
     paddingTop: moderateScale(15),
   },

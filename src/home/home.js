@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from 'react'
 import moment from 'moment'
-import { StyleSheet, View, FlatList, ImageBackground } from 'react-native'
+import { StyleSheet, View, FlatList } from 'react-native'
 import { bindActionCreators } from 'redux'
 import { moderateScale } from 'react-native-size-matters'
 import { connect } from 'react-redux'
@@ -51,6 +51,7 @@ import type { AriesOutOfBandInvite } from '../invitation/type-invitation'
 import { UPDATE_ATTRIBUTE_CLAIM, ERROR_SEND_PROOF } from '../proof/type-proof'
 import { MESSAGE_TYPE } from '../api/api-constants'
 import { CONNECTION_ALREADY_EXIST } from '../connection-details/type-connection-details'
+import { EmptyState } from './empty-state'
 
 const showHistoryEvents =
   SHOW_EVENTS_HISTORY !== null ? SHOW_EVENTS_HISTORY : true
@@ -301,12 +302,9 @@ export class HomeScreen extends Component<HomeProps, void> {
           accessibilityLabel="home-container"
         >
           {this.props.hasNoConnection && (
-            <ImageBackground
-              source={require('../images/connection-items-placeholder.png')}
-              style={styles.backgroundImage}
-            >
-              {HomeViewEmptyState ? <HomeViewEmptyState /> : <View />}
-            </ImageBackground>
+            HomeViewEmptyState ?
+              <HomeViewEmptyState /> :
+              <EmptyState />
           )}
           <View style={styles.checkmarkContainer}>
             <FlatList
@@ -327,10 +325,10 @@ export class HomeScreen extends Component<HomeProps, void> {
               <RecentCardSeparator />
 
               <View style={styles.recentFlatListContainer}>
-                <FlatList
-                  keyExtractor={this.keyExtractor}
-                  contentContainerStyle={styles.recentFlatListInnerContainer}
-                  data={this.props.recentConnections}
+            <FlatList
+              keyExtractor={this.keyExtractor}
+              contentContainerStyle={styles.recentFlatListInnerContainer}
+              data={this.props.recentConnections}
                   renderItem={({ item }) => this.renderRecentCard(item)}
                 />
               </View>
@@ -338,7 +336,9 @@ export class HomeScreen extends Component<HomeProps, void> {
           )}
         </View>
         <CameraButton
-          onPress={() => this.props.navigation.navigate(qrCodeScannerTabRoute)}
+          onPress={() => this.props.navigation.navigate(qrCodeScannerTabRoute, {
+            backRedirectRoute: homeDrawerRoute
+          })}
         />
       </View>
     )
@@ -356,7 +356,7 @@ export class HomeScreen extends Component<HomeProps, void> {
       Snackbar.dismiss()
       Snackbar.show({
         text: this.props.snackError,
-        backgroundColor: colors.cmRed,
+        backgroundColor: colors.red,
         duration: Snackbar.LENGTH_LONG,
       })
     }
@@ -385,17 +385,12 @@ const mapStateToProps = (state: Store) => {
   const placeholderArray = []
 
   if (state.history && state.history.data && state.history.data.connections) {
-    Object.values(state.history.data.connections).forEach(
-      (connectionHistory: any) => {
-        if (
-          connectionHistory &&
-          connectionHistory.data &&
-          connectionHistory.data.length
-        ) {
+    Object.values(state.history.data.connections)
+      .forEach((connectionHistory: any) => {
+        if (connectionHistory && connectionHistory.data && connectionHistory.data.length){
           placeholderArray.push(...connectionHistory.data)
         }
-      }
-    )
+      })
   }
 
   const flattenPlaceholderArray = placeholderArray.sort((a, b) => {
@@ -455,7 +450,7 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     height: '100%',
-    backgroundColor: colors.cmWhite,
+    backgroundColor: colors.white,
     flex: 1,
   },
   checkmarkContainer: {
@@ -479,5 +474,9 @@ const styles = StyleSheet.create({
     height: '100%',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  image: {
+    resizeMode: 'contain',
+    alignSelf: 'center',
   },
 })

@@ -144,7 +144,7 @@ function PhotoAttachment(props: PhotoAttachmentPropType) {
         <EvaIcon
           style={styles.attachmentIcon}
           name={PHOTO_ATTACHMENT_ICON}
-          color={colors.cmGray1}
+          color={colors.gray1}
         />
         <View>
           <Text style={styles.label}>{props.label}</Text>
@@ -164,7 +164,7 @@ function PhotoAttachment(props: PhotoAttachmentPropType) {
 
 function Attachment(props: AttachmentPropType) {
   // This component renders icon only and not render content itself
-  // ConnectMe is not rendering and opening items inside ConnectMe
+  // MSDK is not rendering and opening items inside MSDK
   // because it is not safe from security perspective
   // Also, we don't have much time to implement, audio, video, pdf, doc, excel etc.
   // So, for file types whose mime type is known to us, we will render it's icon
@@ -227,7 +227,7 @@ function Attachment(props: AttachmentPropType) {
         <EvaIcon
           style={styles.attachmentIcon}
           name={ATTACHMENT_ICON}
-          color={colors.cmGray1}
+          color={colors.gray1}
         />
         <View>
           <Text style={styles.label}>{props.label}</Text>
@@ -244,7 +244,7 @@ const styles = StyleSheet.create({
   },
   wrapper: {
     paddingTop: moderateScale(12),
-    borderBottomColor: colors.cmGray2,
+    borderBottomColor: colors.gray2,
     borderBottomWidth: StyleSheet.hairlineWidth,
     width: '90%',
     marginLeft: '5%',
@@ -253,7 +253,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: verticalScale(fontSizes.size7),
-    color: colors.cmGray3,
+    color: colors.gray3,
     width: '100%',
     textAlign: 'left',
     marginBottom: moderateScale(2),
@@ -262,7 +262,7 @@ const styles = StyleSheet.create({
   content: {
     fontSize: moderateScale(fontSizes.size4),
     fontWeight: '700',
-    color: colors.cmGray1,
+    color: colors.gray1,
     width: '100%',
     textAlign: 'left',
     fontFamily: fontFamily,
@@ -270,7 +270,7 @@ const styles = StyleSheet.create({
   attachmentContent: {
     fontSize: moderateScale(fontSizes.size7),
     fontWeight: '700',
-    color: colors.cmGray1,
+    color: colors.gray1,
     width: '100%',
     textAlign: 'left',
     fontFamily: fontFamily,
@@ -278,7 +278,7 @@ const styles = StyleSheet.create({
   contentGray: {
     fontSize: verticalScale(fontSizes.size4),
     fontWeight: '700',
-    color: colors.cmGray2,
+    color: colors.gray2,
     width: '100%',
     textAlign: 'left',
     fontFamily: fontFamily,

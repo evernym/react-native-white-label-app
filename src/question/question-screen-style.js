@@ -2,15 +2,15 @@
 import { StyleSheet, Dimensions, Platform, StatusBar } from 'react-native'
 import {
   blackTransparent,
-  cmGrey5,
+  grey5,
   OFFSET_3X,
   OFFSET_1X,
-  cmGrey4,
+  grey4,
   font,
-  cmGrey1,
+  grey1,
   white,
   color,
-  cmRed,
+  red,
   deviceHeight,
   primaryGreen,
 } from '../common/styles'
@@ -35,7 +35,7 @@ export const getQuestionStylesObject = (
     width: 51,
     height: 6,
     borderRadius: 6,
-    backgroundColor: cmGrey5,
+    backgroundColor: grey5,
   },
   mainContainer: {
     backgroundColor: blackTransparent,
@@ -78,7 +78,7 @@ export const getQuestionStylesObject = (
   },
   questionResponseRadio: {
     borderWidth: 0,
-    backgroundColor: cmGrey4,
+    backgroundColor: grey4,
   },
   questionResponseRadioWrapper: {
     marginLeft: 0,
@@ -86,7 +86,7 @@ export const getQuestionStylesObject = (
   questionResponseRadioLabel: {
     fontFamily: font.family,
     fontSize: font.size.M,
-    color: cmGrey1,
+    color: grey1,
     fontWeight: 'normal',
   },
   questionResponseRadioLabelWrapper: {
@@ -131,7 +131,7 @@ export const getQuestionStylesObject = (
     backgroundColor: primaryGreen,
   },
   cancelButton: {
-    borderColor: cmRed,
+    borderColor: red,
   },
   feedbackIcon: {
     width: 150,
@@ -164,7 +164,7 @@ export const getQuestionStylesObject = (
     marginTop: Platform.OS !== 'android' ? StatusBar.currentHeight || 30 : 0,
   },
   cancelBtnColor: {
-    color: cmRed,
+    color: red,
     backgroundColor: 'white',
   },
   listContainer: {

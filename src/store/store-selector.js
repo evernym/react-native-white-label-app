@@ -22,7 +22,6 @@ import type { ConnectionStore } from './type-connection-store'
 import RNFetchBlob from 'rn-fetch-blob'
 import { Platform } from 'react-native'
 import { colors, whiteSmoke } from '../common/styles/constant'
-import memoize from 'lodash.memoize'
 import { CLAIM_OFFER_STATUS } from './../claim-offer/type-claim-offer'
 import { PROOF_REQUEST_STATUS } from './../proof-request/type-proof-request'
 import { QUESTION_STATUS } from '../question/type-question'
@@ -48,6 +47,8 @@ export const getAllInvitations = (state: Store) => state.invitation
 
 export const getAllConnection = (state: Store) => state.connections.data
 
+export const getConnectionHydrationState = (state: Store) => state.connections.hydrated
+
 export const getAllOneTimeConnection = (state: Store) =>
   state.connections.oneTimeConnections
 
@@ -57,7 +58,7 @@ export const getConnectionTheme = (state: Store, logoUrl: string) =>
 
 export const getConnectionColorTheme = (state: Store, remoteDid: string) => {
   const [connection] = getConnection(state, remoteDid)
-  return connection ? connection.colorTheme : colors.cmGreen2
+  return connection ? connection.colorTheme : colors.secondary
 }
 
 export const getErrorAlertsSwitchValue = (state: Store) =>
@@ -489,40 +490,33 @@ const addUidsWithStatusToConnections = (
 }
 
 //  getUnseenMessages should take a connection, and parse though claim store and proof requests for unseen messages and return a json object like bellow.
-export const getUnseenMessages = memoize(
-  (state: Store) => {
-    const { claimOffer, proofRequest, question } = state
-    let obj = {}
+export const getUnseenMessages = (state: Store) => {
+  const { claimOffer, proofRequest, question } = state
+  let obj = {}
 
-    addUidsWithStatusToConnections(
-      claimOffer,
-      CLAIM_OFFER_STATUS.RECEIVED,
-      obj,
-      (claimOfferMessage: ClaimOfferPayload) =>
-        claimOfferMessage.remotePairwiseDID
-    )
-    addUidsWithStatusToConnections(
-      proofRequest,
-      PROOF_REQUEST_STATUS.RECEIVED,
-      obj,
-      (proofRequestMessage: ProofRequestPayload) =>
-        proofRequestMessage.remotePairwiseDID
-    )
-    addUidsWithStatusToConnections(
-      question.data,
-      QUESTION_STATUS.RECEIVED,
-      obj,
-      (questionMessage: QuestionStoreMessage) =>
-        questionMessage.payload.from_did
-    )
-    return obj
-  },
-  ({ claimOffer, proofRequest, question }) => ({
-    ...claimOffer,
-    ...proofRequest,
-    ...question.data,
-  })
-)
+  addUidsWithStatusToConnections(
+    claimOffer,
+    CLAIM_OFFER_STATUS.RECEIVED,
+    obj,
+    (claimOfferMessage: ClaimOfferPayload) =>
+      claimOfferMessage.remotePairwiseDID
+  )
+  addUidsWithStatusToConnections(
+    proofRequest,
+    PROOF_REQUEST_STATUS.RECEIVED,
+    obj,
+    (proofRequestMessage: ProofRequestPayload) =>
+      proofRequestMessage.remotePairwiseDID
+  )
+  addUidsWithStatusToConnections(
+    question.data,
+    QUESTION_STATUS.RECEIVED,
+    obj,
+    (questionMessage: QuestionStoreMessage) =>
+      questionMessage.payload.from_did
+  )
+  return obj
+}
 
 export const getLastSuccessfulBackupTimeStamp = (state: Store) =>
   state.backup.lastSuccessfulBackup
@@ -665,3 +659,7 @@ export const getNewMessagesCount = (state: Store) => {
 
   return numberOfNewMessages
 }
+
+export const getMessageDownloadStatus = (state: Store) => state.config.messageDownloadStatus
+export const getSnackError = (state: Store) => state.config.snackError
+

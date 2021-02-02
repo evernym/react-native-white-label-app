@@ -25,7 +25,7 @@ import type { ComponentStatus, CustomError } from '../common/type-common'
 import type { Connection } from '../store/type-connection-store'
 
 import { CustomView } from '../components'
-import { questionRoute } from '../common/route-constants'
+import { homeDrawerRoute, homeRoute, questionRoute } from '../common/route-constants'
 import { colors } from '../common/styles/constant'
 import { QUESTION_STATUS } from './type-question'
 import {
@@ -43,7 +43,7 @@ import { customLogger } from '../store/custom-logger'
 export class Question extends Component<
   QuestionScreenProps,
   QuestionScreenState
-> {
+  > {
   state = {
     response: null,
   }
@@ -194,6 +194,17 @@ export class Question extends Component<
     })
   }
 
+  navigateOnSuccess = () => {
+    const redirectBack = this.props.route.params?.redirectBack
+    if (redirectBack) {
+      this.props.navigation.goBack(null)
+    } else {
+      this.props.navigation.navigate(homeRoute, {
+        screen: homeDrawerRoute,
+      })
+    }
+  }
+
   onSubmit = () => {
     if (!this.props.question) {
       return
@@ -204,7 +215,7 @@ export class Question extends Component<
       this.props.question.status
     )
     if (success) {
-      this.onGoBack()
+      this.navigateOnSuccess()
       return
     }
 
@@ -303,15 +314,15 @@ export const questionScreen = {
 }
 
 questionScreen.screen.navigationOptions = ({
-  navigation: { goBack, isFocused },
-}) => ({
+                                             navigation: { goBack, isFocused },
+                                           }) => ({
   safeAreaInsets: { top: 85 },
   cardStyle: {
     marginLeft: '2.5%',
     marginRight: '2.5%',
     marginBottom: '4%',
     borderRadius: 10,
-    backgroundColor: colors.cmWhite,
+    backgroundColor: colors.white,
   },
   cardOverlay: () => (
     <ModalHeaderBar

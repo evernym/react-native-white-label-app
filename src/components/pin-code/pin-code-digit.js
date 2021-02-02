@@ -1,7 +1,6 @@
 // @flow
 import React, { PureComponent } from 'react'
-import { StyleSheet } from 'react-native'
-import Icon from 'react-native-vector-icons/MaterialIcons'
+import { StyleSheet, View} from 'react-native'
 
 import { CustomView } from '../../components/layout/custom-view'
 import { color, OFFSET_1X } from '../../common/styles'
@@ -10,7 +9,7 @@ import type { PinCodeDigitProps } from './type-pin-code-box'
 export default class PinCodeDigit extends PureComponent<
   PinCodeDigitProps,
   void
-> {
+  > {
   render() {
     const { entered, testID = undefined, onPress } = this.props
     const style = entered ? styles.entered : null
@@ -22,10 +21,13 @@ export default class PinCodeDigit extends PureComponent<
         style={[styles.digit, style]}
         testID={testID}
       >
-        <Icon
-          size={styles.icon.height}
-          name="brightness-1"
-          color={entered ? styles.icon.color : '#EAEAEA'}
+        <View
+          style={{
+            height: iconDimension,
+            width: iconDimension,
+            borderRadius: 20,
+            backgroundColor: entered ? styles.icon.color : '#EAEAEA'
+          }}
         />
       </CustomView>
     )

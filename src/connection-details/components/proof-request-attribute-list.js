@@ -45,12 +45,12 @@ import { isSelected } from './attributes-values'
 import { DefaultLogo } from '../../components/default-logo/default-logo'
 import { getPredicateTitle } from '../utils/getPredicateTitle'
 import { ExpandableText } from '../../components/expandable-text/expandable-text'
-import { defaultUserAvatar } from '../../components/user-avatar/user-avatar'
+import { renderUserAvatar } from '../../components/user-avatar/user-avatar'
 
 class ProofRequestAttributeList extends Component<
   ProofRequestAttributeListAndHeaderProps & ReactNavigation,
   ProofRequestAttributeListState
-> {
+  > {
   UNSAFE_componentWillReceiveProps(
     nextProps: ProofRequestAttributeListAndHeaderProps
   ) {
@@ -264,7 +264,7 @@ class ProofRequestAttributeList extends Component<
                 <View style={styles.iconWrapper}>
                   <EvaIcon
                     name={ARROW_FORWARD_ICON}
-                    fill={colors.cmBlack}
+                    fill={colors.black}
                     testID="arrow-forward-icon"
                     accessible={true}
                     accessibilityLabel="arrow-forward-icon"
@@ -277,7 +277,6 @@ class ProofRequestAttributeList extends Component<
       })
     } else {
       const value = attributesFilledByUser[attribute.key]
-      const logoUrl = require('../../../../../../app/evernym-sdk/images/UserAvatar.png')
 
       views = (
         <TouchableOpacity
@@ -302,7 +301,7 @@ class ProofRequestAttributeList extends Component<
                     )}
                   </View>
                   <View style={styles.avatarWrapper}>
-                    <Icon medium round resizeMode="cover" src={logoUrl} />
+                    {renderUserAvatar({ size: 'superSmall'})}
                   </View>
                 </View>
               </View>
@@ -310,7 +309,7 @@ class ProofRequestAttributeList extends Component<
             <View style={styles.iconWrapper}>
               <EvaIcon
                 name={ARROW_FORWARD_ICON}
-                fill={colors.cmBlack}
+                fill={colors.black}
                 testID="arrow-forward-icon"
                 accessible={true}
                 accessibilityLabel="arrow-forward-icon"
@@ -336,8 +335,8 @@ class ProofRequestAttributeList extends Component<
       const value = attribute.values[label]
         ? attribute.values[label]
         : this.state?.[adjustedLabel]
-        ? this.state?.[adjustedLabel]
-        : undefined
+          ? this.state?.[adjustedLabel]
+          : undefined
 
       return (
         <TouchableOpacity
@@ -361,13 +360,13 @@ class ProofRequestAttributeList extends Component<
             </View>
             {value && (
               <View style={[styles.avatarWrapper, { paddingLeft: 4 }]}>
-                <Icon medium round resizeMode="cover" src={defaultUserAvatar} />
+                {renderUserAvatar({ size: 'superSmall'})}
               </View>
             )}
             <View style={styles.iconWrapper}>
               <EvaIcon
                 name={ARROW_FORWARD_ICON}
-                fill={colors.cmBlack}
+                fill={colors.black}
                 testID="arrow-forward-icon"
                 accessible={true}
                 accessibilityLabel="arrow-forward-icon"
@@ -401,7 +400,7 @@ class ProofRequestAttributeList extends Component<
             <View style={styles.iconWrapper}>
               <EvaIcon
                 name={ALERT_ICON}
-                color={colors.cmRed}
+                color={colors.red}
                 testID="alert-icon"
                 accessible={true}
                 accessibilityLabel="alert-icon"
@@ -498,7 +497,7 @@ class ProofRequestAttributeList extends Component<
             <View style={styles.iconWrapper}>
               <EvaIcon
                 name={ARROW_FORWARD_ICON}
-                fill={colors.cmBlack}
+                fill={colors.black}
                 testID="arrow-forward-icon"
                 accessible={true}
                 accessibilityLabel="arrow-forward-icon"
@@ -521,13 +520,13 @@ class ProofRequestAttributeList extends Component<
               '',
               '',
               undefined,
-              { color: colors.cmRed }
+              { color: colors.red }
             )}
           </View>
           <View style={styles.iconWrapper}>
             <EvaIcon
               name={ALERT_ICON}
-              color={colors.cmRed}
+              color={colors.red}
               testID="alert-icon"
               accessible={true}
               accessibilityLabel="alert-icon"
@@ -627,15 +626,15 @@ export default ProofRequestAttributeList
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
-    backgroundColor: colors.cmWhite,
+    backgroundColor: colors.white,
     paddingTop: moderateScale(12),
     ...Platform.select({
       ios: {
-        borderBottomColor: colors.cmGray5,
+        borderBottomColor: colors.gray5,
         borderBottomWidth: StyleSheet.hairlineWidth,
       },
       android: {
-        borderBottomColor: colors.cmGray5,
+        borderBottomColor: colors.gray5,
         borderBottomWidth: 1,
       },
     }),
@@ -655,7 +654,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: verticalScale(fontSizes.size6),
     fontWeight: '400',
-    color: colors.cmGray3,
+    color: colors.gray3,
     width: '100%',
     textAlign: 'left',
     fontFamily: fontFamily,
@@ -675,7 +674,7 @@ const styles = StyleSheet.create({
     fontSize: verticalScale(fontSizes.size5),
     marginBottom: moderateScale(12),
     fontWeight: '400',
-    color: colors.cmGray1,
+    color: colors.gray1,
     width: '100%',
     textAlign: 'left',
     fontFamily: fontFamily,
@@ -685,7 +684,7 @@ const styles = StyleSheet.create({
     marginTop: moderateScale(4),
     marginBottom: moderateScale(6),
     fontWeight: '700',
-    color: colors.cmRed,
+    color: colors.red,
     width: '100%',
     textAlign: 'left',
     fontFamily: fontFamily,

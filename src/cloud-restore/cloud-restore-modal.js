@@ -36,10 +36,7 @@ import type { CloudBackupScreenProps } from '../backup/type-backup'
 import { QuestionScreenHeader } from '../question/components/question-screen-header'
 import { RestoreStatus } from '../restore/type-restore'
 
-// $FlowExpectedError[cannot-resolve-module] external file
-import { APP_IMAGE } from '../../../../../app/evernym-sdk/app'
-
-const appImage = APP_IMAGE || require('../images/cb_app.png')
+const appImage = require('../images/cb_app.png')
 const { height } = Dimensions.get('window')
 export class CloudRestoreModal extends Component<CloudBackupScreenProps, void> {
   _translateY = new Animated.Value(0)

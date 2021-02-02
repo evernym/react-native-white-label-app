@@ -37,6 +37,7 @@ export const remoteMessageParser = (message: RemoteMessage) => {
     pushNotifMsgTitle,
     senderLogoUrl,
     msg,
+    msgType,
   } = message.data
 
   return {
@@ -48,6 +49,7 @@ export const remoteMessageParser = (message: RemoteMessage) => {
     pushNotifMsgText,
     pushNotifMsgTitle,
     msg,
+    msgType,
   }
 }
 
@@ -79,7 +81,11 @@ export class PushNotification extends Component<PushNotificationProps, void> {
     )
 
     this.messageListener = messaging().onMessage((message: RemoteMessage) => {
-      this.onPushNotificationReceived(remoteMessageParser(message))
+      const payload = remoteMessageParser(message)
+      this.onPushNotificationReceived(payload, {
+        openMessageDirectly: true,
+        uid: payload.uid,
+      })
     })
 
     try {

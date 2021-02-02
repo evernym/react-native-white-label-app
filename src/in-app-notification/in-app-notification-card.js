@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 10,
-    backgroundColor: colors.cmWhite,
+    backgroundColor: colors.white,
     elevation: Platform.OS === 'android' ? 9 : 0,
   },
   buttonContainer: {
@@ -226,13 +226,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
-    borderColor: colors.cmGray5,
+    borderColor: colors.gray5,
   },
   initialsText: {
     fontFamily: 'Lato',
     fontSize: 17,
     fontWeight: 'bold',
-    color: colors.cmGray1,
+    color: colors.gray1,
   },
   avatarSection: {
     height: '100%',
@@ -272,17 +272,17 @@ const styles = StyleSheet.create({
     fontFamily: fontFamily,
     fontSize: verticalScale(fontSizes.size5),
     fontWeight: 'bold',
-    color: colors.cmGray1,
+    color: colors.gray1,
   },
   descriptionText: {
     fontFamily: fontFamily,
     fontSize: verticalScale(fontSizes.size8),
-    color: colors.cmGray2,
+    color: colors.gray2,
   },
   dateText: {
     fontFamily: fontFamily,
     fontSize: verticalScale(fontSizes.size9),
-    color: colors.cmGray3,
+    color: colors.gray3,
     marginBottom: 5,
   },
 })

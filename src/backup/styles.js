@@ -7,17 +7,17 @@ import {
   color,
   grey,
   atlantis,
-  cmRed,
+  red,
   isBiggerThanMediumDevice,
 } from '../common/styles/constant'
 import {
   blackTransparent,
-  cmGrey5,
+  grey5,
   OFFSET_3X,
   OFFSET_1X,
-  cmGrey4,
+  grey4,
   font,
-  cmGrey1,
+  grey1,
   darkGray2,
 } from '../common/styles'
 
@@ -307,7 +307,7 @@ export const questionStyles = StyleSheet.create({
     width: 51,
     height: 6,
     borderRadius: 6,
-    backgroundColor: cmGrey5,
+    backgroundColor: grey5,
   },
   mainContainer: {
     backgroundColor: blackTransparent,
@@ -343,7 +343,7 @@ export const questionStyles = StyleSheet.create({
   },
   questionResponseRadio: {
     borderWidth: 0,
-    backgroundColor: cmGrey4,
+    backgroundColor: grey4,
   },
   questionResponseRadioWrapper: {
     marginLeft: '5%',
@@ -351,7 +351,7 @@ export const questionStyles = StyleSheet.create({
   questionResponseRadioLabel: {
     fontFamily: font.family,
     fontSize: font.size.M,
-    color: cmGrey1,
+    color: grey1,
     fontWeight: 'bold',
   },
   questionResponseRadioLabelWrapper: {
@@ -382,8 +382,8 @@ export const questionStyles = StyleSheet.create({
     borderColor: atlantis,
   },
   errorButton: {
-    backgroundColor: cmRed,
-    borderColor: cmRed,
+    backgroundColor: red,
+    borderColor: red,
   },
   feedbackIcon: {
     width: 150,

@@ -222,14 +222,14 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: '5%',
     paddingTop: 20,
-    backgroundColor: colors.cmGray5,
+    backgroundColor: colors.gray5,
   },
   statusText: {
-    color: colors.cmGray3,
+    color: colors.gray3,
     textAlign: 'center',
     marginTop: 40,
     fontSize: scale(15),
-    backgroundColor: colors.cmRed,
+    backgroundColor: colors.red,
   },
   errorContainer: {
     flex: 1,

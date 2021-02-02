@@ -12,7 +12,7 @@ export const headerTitleStyle = StyleSheet.create({
   title: {
     fontSize: fontSizes.size4,
     fontFamily: fontFamily,
-    color: colors.cmGray2,
+    color: colors.gray2,
     fontWeight: Platform.OS === 'ios' ? '600' : '500',
   },
 })

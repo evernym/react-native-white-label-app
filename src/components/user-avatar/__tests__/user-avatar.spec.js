@@ -9,7 +9,7 @@ import {
   userAvatarImageName,
 } from '../../../../__mocks__/static-data'
 
-import ConnectedUserAvatar, { UserAvatar } from '../user-avatar'
+import UserAvatar, { UserAvatarComponent } from '../user-avatar'
 import type { GenericObject } from '../../../common/type-common'
 import { getUserAvatarSource } from '../../../store/store-selector'
 
@@ -25,7 +25,7 @@ describe('<ConnectedUserAvatar />', () => {
 
   function setup(extraProps?: GenericObject = {}) {
     const props = getProps(extraProps)
-    const component = renderer.create(<UserAvatar {...props} />)
+    const component = renderer.create(<UserAvatarComponent {...props} />)
     const instance = component.getInstance()
 
     return { props, component, instance }
@@ -39,7 +39,7 @@ describe('<ConnectedUserAvatar />', () => {
   it('should match snapshot when user image is selected', () => {
     const component = renderer.create(
       <Provider store={store}>
-        <ConnectedUserAvatar />
+        <UserAvatar />
       </Provider>
     )
     expect(component.toJSON()).toMatchSnapshot()
@@ -54,7 +54,7 @@ describe('<ConnectedUserAvatar />', () => {
     const props = getProps({
       avatarName: getUserAvatarSource(userAvatarImageName),
     })
-    renderer.create(<UserAvatar {...props}>{child}</UserAvatar>)
+    renderer.create(<UserAvatarComponent {...props}>{child}</UserAvatarComponent>)
     expect(functionAsChild).toHaveBeenCalled()
     expect(functionAsChild).toHaveBeenCalledWith({
       uri: userAvatarImagePath,

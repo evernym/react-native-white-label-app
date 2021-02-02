@@ -40,11 +40,11 @@ const styles = StyleSheet.create({
   line: {
     height: 1,
     width: '100%',
-    backgroundColor: colors.cmGray3,
+    backgroundColor: colors.gray3,
   },
   text: {
     fontFamily: fontFamily,
-    color: colors.cmGray3,
+    color: colors.gray3,
     fontSize: moderateScale(13, 0.1),
   },
 })

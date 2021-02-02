@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
   moreText: {
     fontSize: verticalScale(fontSizes.size7),
     fontWeight: '300',
-    color: colors.cmBlue,
+    color: colors.blue,
     padding: 0,
     margin: 0,
   },

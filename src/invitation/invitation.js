@@ -18,12 +18,14 @@ import type {
 import { CONNECTION_INVITE_TYPES } from './type-invitation'
 import { schemaValidator } from '../services/schema-validator'
 import { Container } from '../components'
-import { homeRoute, invitationRoute } from '../common'
+import { homeDrawerRoute, homeRoute, invitationRoute } from '../common'
 import { ResponseType } from '../components/request/type-request'
 import { sendInvitationResponse, invitationRejected } from './invitation-store'
 import { smsPendingInvitationSeen } from '../sms-pending-invitation/sms-pending-invitation-store'
 import { SMSPendingInvitationStatus } from '../sms-pending-invitation/type-sms-pending-invitation'
 import { Request } from '../components/request/request'
+import { Platform } from 'react-native'
+import { allowPushNotifications } from '../push-notification/push-notification-store'
 
 export class Invitation extends Component<InvitationProps, void> {
   render() {
@@ -62,8 +64,15 @@ export class Invitation extends Component<InvitationProps, void> {
     }
   }
 
-  navigate = () => {
-    this.props.navigation.navigate(homeRoute)
+  hideModal = () => {
+    const backRedirectRoute = this.props.route.params?.backRedirectRoute
+    if (backRedirectRoute) {
+      this.props.navigation.navigate(backRedirectRoute)
+    } else {
+      this.props.navigation.navigate(homeRoute, {
+        screen: homeDrawerRoute,
+      })
+    }
   }
 
   onAction = (response: ResponseTypes) => {
@@ -72,17 +81,27 @@ export class Invitation extends Component<InvitationProps, void> {
       const { payload } = invitation
       if (payload) {
         if (response === ResponseType.accepted) {
+          if (Platform.OS === 'android') {
+            // for android, we don't need to show push permission screen
+            // so we can safely register push notification on Android
+            // For ios, we are already showing permission screen
+            // and if user click on allow permission, then our saga would request
+            // permission and update the FCM token
+            this.props.allowPushNotifications()
+          }
           this.props.sendInvitationResponse({
             response,
             senderDID: payload.senderDID,
           })
-          this.navigate()
+          this.props.navigation.navigate(homeRoute, {
+            screen: homeDrawerRoute,
+          })
         } else if (response === ResponseType.rejected) {
           this.props.invitationRejected(payload.senderDID)
-          this.navigate()
+          this.hideModal()
         }
       } else {
-        this.navigate()
+        this.hideModal()
       }
     }
   }
@@ -264,7 +283,7 @@ const mapStateToProps = (
     smsToken &&
     state.smsPendingInvitation[smsToken] &&
     state.smsPendingInvitation[smsToken].status !==
-      SMSPendingInvitationStatus.SEEN
+    SMSPendingInvitationStatus.SEEN
 
   return {
     invitation: state.invitation[senderDID],
@@ -275,7 +294,12 @@ const mapStateToProps = (
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
-    { sendInvitationResponse, invitationRejected, smsPendingInvitationSeen },
+    {
+      sendInvitationResponse,
+      invitationRejected,
+      smsPendingInvitationSeen,
+      allowPushNotifications,
+    },
     dispatch
   )
 

@@ -22,8 +22,7 @@ import {
   MESSAGE_ERROR_PROOF_GENERATION_TITLE,
   MESSAGE_ERROR_PROOF_GENERATION_DESCRIPTION,
   MESSAGE_ERROR_DISSATISFIED_ATTRIBUTES_TITLE,
-  MESSAGE_ERROR_DISSATISFIED_ATTRIBUTES_DESCRIPTION,
-  PRIMARY_ACTION_SEND,
+  MESSAGE_ERROR_DISSATISFIED_ATTRIBUTES_DESCRIPTION, PRIMARY_ACTION_SEND,
 } from '../../proof-request/type-proof-request'
 import type { SelectedAttribute } from '../../push-notification/type-push-notification'
 
@@ -54,12 +53,10 @@ import { colors } from '../../common/styles/constant'
 // utils
 import { hasMissingAttributes } from '../utils'
 import { authForAction } from '../../lock/lock-auth-for-action.js'
+import { homeDrawerRoute, homeRoute } from '../../common'
 
 // $FlowExpectedError[cannot-resolve-module] external file
-import {
-  ACCEPT_BUTTON_TEXT,
-  DENY_BUTTON_TEXT,
-} from '../../../../../../app/evernym-sdk/proof-request-dialog'
+import { ACCEPT_BUTTON_TEXT, DENY_BUTTON_TEXT, } from '../../../../../../app/evernym-sdk/proof-request-dialog'
 
 class ModalContentProof extends Component<
   ProofRequestAndHeaderProps,
@@ -213,6 +210,17 @@ class ModalContentProof extends Component<
     }
   }
 
+  navigateOnSuccess = () => {
+    const redirectBack = this.props.route.params?.redirectBack
+    if (redirectBack) {
+      this.props.navigation.goBack(null)
+    } else {
+      this.props.navigation.navigate(homeRoute, {
+        screen: homeDrawerRoute,
+      })
+    }
+  }
+
   onIgnore = () => {
     if (this.props.invitationPayload) {
       this.setState({ scheduledDeletion: true })
@@ -232,21 +240,23 @@ class ModalContentProof extends Component<
   }
 
   onDeny = () => {
-    authForAction({
-      lock: this.props.lock,
-      navigation: this.props.navigation,
-      onSuccess: this.onDenyAuthSuccess,
-    })
+    if (this.props.isOOBInvitation) {
+      // on cancel
+      this.setState({ scheduledDeletion: true })
+      this.props.hideModal()
+    } else {
+      // on reject
+      authForAction({
+        lock: this.props.lock,
+        navigation: this.props.navigation,
+        onSuccess: this.onDenyAuthSuccess,
+      })
+    }
   }
 
   onDenyAuthSuccess = () => {
-    if (this.props.invitationPayload) {
-      this.setState({ scheduledDeletion: true })
-    } else {
-      this.props.denyProofRequest(this.props.uid)
-    }
-
-    this.props.hideModal()
+    this.props.denyProofRequest(this.props.uid)
+    this.navigateOnSuccess()
   }
 
   onSend = () => {
@@ -280,7 +290,7 @@ class ModalContentProof extends Component<
       )
     }
 
-    this.props.hideModal()
+    this.navigateOnSuccess()
   }
 
   render() {
@@ -347,7 +357,7 @@ class ModalContentProof extends Component<
           acceptBtnText={acceptButtonText}
           disableAccept={disableAccept}
           svgIcon="Send"
-          colorBackground={colors.cmGreen1}
+          colorBackground={colors.main}
           {...{ secondColorBackground }}
         />
       </View>
@@ -408,15 +418,15 @@ export default connect(mapStateToProps, mapDispatchToProps)(ModalContentProof)
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
-    backgroundColor: colors.cmWhite,
+    backgroundColor: colors.white,
     paddingTop: moderateScale(12),
     ...Platform.select({
       ios: {
-        borderBottomColor: colors.cmGray5,
+        borderBottomColor: colors.gray5,
         borderBottomWidth: StyleSheet.hairlineWidth,
       },
       android: {
-        borderBottomColor: colors.cmGray5,
+        borderBottomColor: colors.gray5,
         borderBottomWidth: 1,
       },
     }),
@@ -431,6 +441,6 @@ const styles = StyleSheet.create({
   },
   innerModalWrapper: {
     flex: 1,
-    backgroundColor: colors.cmWhite,
+    backgroundColor: colors.white,
   },
 })

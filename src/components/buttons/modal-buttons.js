@@ -167,7 +167,7 @@ export { ModalButtons }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.cmWhite,
+    backgroundColor: colors.white,
     width: '100%',
     maxWidth: '100%',
     padding: moderateScale(15),
@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
   },
   buttonIgnore: {
     borderWidth: 1,
-    borderColor: colors.cmRed,
+    borderColor: colors.red,
     padding: moderateScale(17),
     paddingLeft: moderateScale(10),
     paddingRight: moderateScale(10),
@@ -204,13 +204,13 @@ const styles = StyleSheet.create({
   ignoreTextStyle: {
     fontSize: verticalScale(fontSizes.size5),
     fontWeight: '700',
-    color: colors.cmRed,
+    color: colors.red,
     fontFamily: fontFamily,
   },
   acceptTextStyle: {
     fontSize: verticalScale(fontSizes.size5),
     fontWeight: '700',
-    color: colors.cmWhite,
+    color: colors.white,
     fontFamily: fontFamily,
   },
   fullWidth: {

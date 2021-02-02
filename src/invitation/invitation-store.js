@@ -351,18 +351,18 @@ export function* getConnectionColorTheme(
   senderLogoUrl: any
 ): Generator<*, *, *> {
   if (!senderLogoUrl) {
-    return colors.cmGreen2
+    return colors.default
   }
 
   try {
     const foundColors = yield call(ImageColors.getColors, senderLogoUrl, {
-      fallback: colors.cmGreen2,
+      fallback: colors.default,
     })
     return Platform.OS === 'android'
       ? pickAndroidColor(foundColors)
       : pickIosColor(foundColors)
   } catch (e) {
-    return colors.cmGreen2
+    return colors.default
   }
 }
 
@@ -520,8 +520,7 @@ export function* sendResponseOnAriesOutOfBandInvitationWithoutHandshake(
 export function* updateAriesConnectionState(
   identifier: string,
   vcxSerializedConnection: string,
-  // eslint-disable-next-line no-unused-vars
-  message: string // TODO: must be used since we replace connectionUpdateState
+  message: string,
 ): Generator<*, *, *> {
   const connection = yield select(getConnectionByUserDid, identifier)
 
@@ -542,7 +541,7 @@ export function* updateAriesConnectionState(
     )
 
     // we need to take serialized connection state again
-    // and update serialized state on connectme side
+    // and update serialized state on MSDK side
     const updateVcxSerializedConnection = yield call(
       serializeConnection,
       connectionHandle

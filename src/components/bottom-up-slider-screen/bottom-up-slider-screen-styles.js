@@ -1,7 +1,7 @@
 // @flow
 
 import { StyleSheet } from 'react-native'
-import { blackTransparent, cmGrey5, color } from '../../common/styles'
+import { blackTransparent, grey5, color } from '../../common/styles'
 
 export const styles = StyleSheet.create({
   container: {
@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
     width: 51,
     height: 6,
     borderRadius: 6,
-    backgroundColor: cmGrey5,
+    backgroundColor: grey5,
   },
   mainContainer: {
     backgroundColor: blackTransparent,

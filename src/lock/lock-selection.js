@@ -16,7 +16,7 @@ import ToggleSwitch from 'react-native-flip-toggle-button'
 import { verticalScale, moderateScale } from 'react-native-size-matters'
 
 // $FlowExpectedError[cannot-resolve-module] external file
-import { AppSvgIcon } from '../../../../../app/evernym-sdk/app-icon'
+import { LockHeader } from '../../../../../app/evernym-sdk/lock'
 
 import type { Store } from '../store/type-store'
 import { Container, CustomText, CustomView } from '../components'
@@ -118,10 +118,10 @@ export class LockSelection extends Component<LockSelectionProps, *> {
           />
           <Container tertiary style={[style.pinSelectionContainer]}>
             <CustomView center>
-              <AppSvgIcon
+              <LockHeader
                 width={moderateScale(218.54)}
                 height={moderateScale(28)}
-                fill={colors.cmGray2}
+                fill={colors.gray2}
               />
             </CustomView>
             <CustomText
@@ -299,14 +299,14 @@ const style = StyleSheet.create({
     borderRadius: 5,
     marginTop: verticalScale(50),
     marginBottom: verticalScale(17.5),
-    backgroundColor: colors.cmGreen1,
+    backgroundColor: colors.main,
     width: width - OFFSET_2X * 2,
     padding: moderateScale(17),
     paddingLeft: moderateScale(10),
     paddingRight: moderateScale(10),
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: colors.cmGray2,
+    shadowColor: colors.gray2,
     shadowOffset: {
       width: 1,
       height: 2,
@@ -316,7 +316,7 @@ const style = StyleSheet.create({
     elevation: 7,
   },
   noThanks: {
-    color: colors.cmGreen1,
+    color: colors.main,
     lineHeight: moderateScale(34),
   },
   image: {

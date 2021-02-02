@@ -54,7 +54,7 @@ export const getPushNotificationAuthorizationStatus = async () => {
 class PushNotificationPermission extends Component<
   PushNotificationPermissionProps,
   PushNotificationPermissionState
-> {
+  > {
   state = {
     appState: AppState.currentState,
     isPushNotificationsAuthorized: -1,
@@ -71,7 +71,7 @@ class PushNotificationPermission extends Component<
   componentDidUpdate(prevProps) {
     if (
       this.props.isAllowedPushNotification !==
-        prevProps.isAllowedPushNotification &&
+      prevProps.isAllowedPushNotification &&
       this.props.isAllowedPushNotification === true
     ) {
       this.props.navigation.navigate(
@@ -114,6 +114,7 @@ class PushNotificationPermission extends Component<
             senderName: this.props.route.params?.intendedPayload?.senderName,
           }
         )
+        this.props.allowPushNotifications()
       } else return
     }
     this.setState({ appState: nextAppState })
@@ -161,7 +162,7 @@ class PushNotificationPermission extends Component<
           You have disabled push notifications.
         </Text>
       )
-    } else return <Text style={styles.emptyWarningText}></Text>
+    } else return <Text style={styles.emptyWarningText}/>
   }
 
   renderCorrectButton = () => {
@@ -199,8 +200,6 @@ class PushNotificationPermission extends Component<
       pushNotificationPermissionAction,
     } = this.props
 
-    pushNotificationPermissionAction(false)
-
     navigate(this.props.route.params.intendedRoute || invitationRoute, {
       senderDID,
       backRedirectRoute: this.props.route.params?.intendedPayload
@@ -212,6 +211,8 @@ class PushNotificationPermission extends Component<
         ?.attachedRequest,
       senderName: this.props.route.params?.intendedPayload?.senderName,
     })
+
+    setTimeout(() => pushNotificationPermissionAction(false), 100)
   }
 
   closeModalAndAllowPushNotifications = () => {
@@ -287,7 +288,7 @@ const mapDispatchToProps = (dispatch) =>
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.cmWhite,
+    backgroundColor: colors.white,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -315,13 +316,13 @@ const styles = StyleSheet.create({
     fontFamily: fontFamily,
     fontSize: moderateScale(fontSizes.size2),
     marginTop: moderateScale(5),
-    color: colors.cmGray2,
+    color: colors.gray2,
     fontWeight: '700',
   },
   informationText: {
     fontFamily: fontFamily,
     fontSize: moderateScale(fontSizes.size3),
-    color: colors.cmGray1,
+    color: colors.gray1,
     fontWeight: '700',
     flexWrap: 'wrap',
   },
@@ -332,13 +333,13 @@ const styles = StyleSheet.create({
   warningText: {
     fontFamily: fontFamily,
     fontSize: moderateScale(fontSizes.size3),
-    color: colors.cmRed,
+    color: colors.red,
     fontWeight: '700',
     marginTop: moderateScale(12),
     marginBottom: moderateScale(12),
   },
   greenButton: {
-    backgroundColor: colors.cmGreen1,
+    backgroundColor: colors.main,
     alignItems: 'center',
     justifyContent: 'center',
     height: moderateScale(56),
@@ -357,12 +358,12 @@ const styles = StyleSheet.create({
     paddingRight: 15,
     paddingTop: 10,
     paddingBottom: 10,
-    backgroundColor: colors.cmWhite,
+    backgroundColor: colors.white,
   },
   greenButtonText: {
     fontFamily: fontFamily,
     fontSize: moderateScale(fontSizes.size4),
-    color: colors.cmWhite,
+    color: colors.white,
     fontWeight: 'bold',
   },
   redButton: {
@@ -371,14 +372,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     height: moderateScale(56),
     borderRadius: 5,
-    borderColor: colors.cmRed,
+    borderColor: colors.red,
     borderWidth: 1,
     width: '100%',
   },
   redButtonText: {
     fontFamily: fontFamily,
     fontSize: moderateScale(fontSizes.size4),
-    color: colors.cmRed,
+    color: colors.red,
     fontWeight: 'bold',
   },
 })
@@ -400,7 +401,7 @@ pushNotificationPermissionScreen.screen.navigationOptions = ({
     marginRight: '2.5%',
     marginBottom: '4%',
     borderRadius: 10,
-    backgroundColor: colors.cmWhite,
+    backgroundColor: colors.white,
   },
   cardOverlay: () => (
     <ModalHeaderBar

@@ -6,7 +6,7 @@ const applicantParams = {
   // would be extracted from documents that user uploads
   // this paramter is needed because onFido API needs this param
   first_name: 'Evernym',
-  last_name: 'connectme',
+  last_name: 'msdk',
 }
 
 const onFidoBaseUrl = 'https://api.onfido.com/v2/applicants/'

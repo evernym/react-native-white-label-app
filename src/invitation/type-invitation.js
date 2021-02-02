@@ -15,6 +15,7 @@ import type {
   NavigationScreenProp,
   NavigationLeafRoute,
 } from '@react-navigation/native'
+import { allowPushNotifications } from '../push-notification/push-notification-store'
 
 export const CONNECTION_INVITE_TYPES = {
   ARIES_V1_QR: 'ARIES_V1_QR',
@@ -194,6 +195,7 @@ export type InvitationNavigation = {
     params: {|
       senderDID: string,
       token: ?string,
+      backRedirectRoute?: string,
     |},
   },
 }
@@ -205,6 +207,7 @@ export type InvitationProps = {
   showErrorAlerts: boolean,
   smsToken: ?string,
   isSmsInvitationNotSeen: boolean,
+  allowPushNotifications: typeof allowPushNotifications,
 } & InvitationNavigation
 
 export const ERROR_INVITATION_VCX_INIT = {

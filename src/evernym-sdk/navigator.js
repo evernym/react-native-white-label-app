@@ -11,6 +11,15 @@ export const navigationOptions = {
   settings: { label: 'Settings' },
 }
 
+// component to be displayed in the navigation drawer at the top, above the navigation section
+export function DrawerHeaderContent(props: {
+  height: number,
+  width: number,
+  fill: string,
+}) {
+  return null
+}
+
 // component to be displayed in the navigation drawer at the bottom, below the navigation section
 export function DrawerFooterContent() {
   return null

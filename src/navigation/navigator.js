@@ -7,18 +7,13 @@ import {
 } from '@react-navigation/stack'
 import { createDrawerNavigator, DrawerItemList } from '@react-navigation/drawer'
 import { enableScreens } from 'react-native-screens'
-// $FlowFixMe Not sure how this can be fixed. Maybe we can add type definition
-import { createNativeStackNavigator } from 'react-native-screens/native-stack'
 
-// $FlowExpectedError[cannot-resolve-module] external file
-import { AppSvgIcon } from '../../../../../app/evernym-sdk/app-icon'
 import {
+  DrawerHeaderContent,
   DrawerFooterContent,
   navigationOptions,
   // $FlowExpectedError[cannot-resolve-module] external file
 } from '../../../../../app/evernym-sdk/navigator'
-
-import type { ImageSource } from '../common/type-common'
 
 import { aboutAppScreen } from '../about-app/about-app'
 import { homeScreen } from '../home/home'
@@ -85,7 +80,7 @@ import {
   SETTINGS_ICON,
 } from '../common/icons'
 import { colors, fontFamily } from '../common/styles/constant'
-import { UserAvatar, Avatar, UnreadMessagesBadge } from '../components'
+import { UnreadMessagesBadge } from '../components'
 import { unreadMessageContainerCommonStyle } from '../components/unread-messages-badge/unread-messages-badge'
 import { verticalScale, moderateScale } from 'react-native-size-matters'
 import { startUpScreen } from '../start-up/start-up-screen'
@@ -94,6 +89,7 @@ import { CustomValuesScreen } from '../connection-details/components/custom-valu
 import { AttributeValuesScreen } from '../connection-details/components/attribute-values'
 import { AttributesValuesScreen } from '../connection-details/components/attributes-values'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { renderUserAvatar } from '../components/user-avatar/user-avatar'
 
 enableScreens()
 
@@ -129,7 +125,7 @@ export const styles = StyleSheet.create({
   text: {
     fontFamily: fontFamily,
     fontSize: verticalScale(10),
-    color: colors.cmGray3,
+    color: colors.gray3,
     fontWeight: 'bold',
   },
   labelContainer: {
@@ -141,20 +137,16 @@ export const styles = StyleSheet.create({
     fontFamily: fontFamily,
     fontSize: verticalScale(15),
     fontWeight: '500',
-    color: colors.cmGray3,
+    color: colors.gray3,
   },
   labelTextFocusedColor: {
-    color: colors.cmGreen1,
+    color: colors.main,
   },
   customGreenBadgeContainer: {
     ...unreadMessageContainerCommonStyle,
     marginRight: '30%',
   },
 })
-
-const renderAvatarWithSource = (avatarSource: number | ImageSource) => {
-  return <Avatar medium round src={avatarSource} />
-}
 
 const drawerComponent = (props: Object) => (
   <SafeAreaView
@@ -164,14 +156,16 @@ const drawerComponent = (props: Object) => (
     accessibilityLabel="menu-container"
   >
     <View style={styles.drawerHeader}>
-      <AppSvgIcon
-        width={verticalScale(136)}
-        height={verticalScale(18)}
-        fill={colors.cmGray3}
-      />
-      <UserAvatar userCanChange testID={'user-avatar'}>
-        {renderAvatarWithSource}
-      </UserAvatar>
+      {
+        DrawerHeaderContent ?
+          <DrawerHeaderContent
+            width={verticalScale(136)}
+            height={verticalScale(18)}
+            fill={colors.gray3}
+          /> :
+          <View />
+      }
+      {renderUserAvatar({size: 'medium', userCanChange: true, testID: 'user-avatar'})}
     </View>
     <DrawerItemList {...props} />
     <View style={styles.drawerFooterContainer}>
@@ -184,8 +178,8 @@ const drawerComponent = (props: Object) => (
 
 const Drawer = createDrawerNavigator()
 const drawerContentOptions = {
-  activeTintColor: colors.cmGreen1,
-  inactiveTintColor: colors.cmGray2,
+  activeTintColor: colors.main,
+  inactiveTintColor: colors.gray2,
 }
 const drawerStyle = {
   width: verticalScale(0.75 * width),
@@ -279,7 +273,7 @@ function AppDrawer() {
     </Drawer.Navigator>
   )
 }
-const CardStack = createNativeStackNavigator()
+const CardStack = createStackNavigator()
 const cardStackOptions = {
   // we are using headerShown property instead of headerMode: 'none'
   // to hide header from screen
@@ -417,6 +411,7 @@ function CardStackScreen() {
       <CardStack.Screen
         name={connectionHistoryScreen.routeName}
         component={connectionHistoryScreen.screen}
+        options={connectionHistoryScreen.screen.navigationOptions}
       />
       <CardStack.Screen
         name={eulaScreen.routeName}
@@ -442,6 +437,7 @@ function CardStackScreen() {
       <CardStack.Screen
         name={credentialDetailsScreen.routeName}
         component={credentialDetailsScreen.screen}
+        options={credentialDetailsScreen.screen.navigationOptions}
       />
     </CardStack.Navigator>
   )
@@ -457,7 +453,7 @@ const modalStackOptions = {
   ...TransitionPresets.ModalPresentationIOS,
 }
 
-export function ConnectMeAppNavigator() {
+export function MSDKAppNavigator() {
   return (
     <ModalStack.Navigator mode="modal" screenOptions={modalStackOptions}>
       <ModalStack.Screen name="CardStack" component={CardStackScreen} />
