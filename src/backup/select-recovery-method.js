@@ -26,7 +26,7 @@ import {
   Icon,
   CustomHeader,
 } from '../components'
-import { color } from '../common/styles/constant'
+import { color, colors } from '../common/styles/constant'
 import styles from './styles'
 import {
   hasVerifiedRecoveryPhrase,
@@ -108,7 +108,7 @@ export class SelectRecoveryMethod extends Component<
               size="14"
               center
               transparentBg
-              style={{ color: 'white' }}
+              style={{ color: colors.white }}
             >
               Store an encrypted, anonymous backup of {APP_NAME} in the Evernym
               Cloud. You will need your Recovery Phrase and a fresh {APP_NAME}
@@ -139,7 +139,7 @@ export class SelectRecoveryMethod extends Component<
               size="14"
               transparentBg
               center
-              style={[{ color: 'white' }]}
+              style={[{ color: colors.white }]}
             >
               Manually choose where to store your backup file. You will need
               your Recovery Phrase, a fresh install of {APP_NAME} and your
@@ -163,7 +163,7 @@ const mapDispatchToProps = (dispatch) =>
 
 export const selectRecoveryMethodScreen = {
   routeName: selectRecoveryMethodRoute,
-  screen: withStatusBar({ color: 'white' })(
+  screen: withStatusBar({ color: colors.white })(
     connect(null, mapDispatchToProps)(SelectRecoveryMethod)
   ),
 }

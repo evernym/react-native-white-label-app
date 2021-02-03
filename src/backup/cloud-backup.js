@@ -28,7 +28,7 @@ import {
 import { connectionHistoryBackedUp } from '../connection-history/connection-history-store'
 import { cloudBackupStart, resetCloudBackupStatus } from './backup-store'
 import { setAutoCloudBackupEnabled } from './backup-actions'
-import { color } from '../common/styles/constant'
+import { color, colors } from '../common/styles/constant'
 
 import { questionStyles } from './styles'
 const appImage = require('../images/cb_app.png')
@@ -375,7 +375,7 @@ const mapStateToProps = (state: Store) => {
 
 export const cloudBackupScreen = {
   routeName: cloudBackupRoute,
-  screen: withStatusBar({ color: 'white' })(
+  screen: withStatusBar({ color: colors.white })(
     connect(mapStateToProps, mapDispatchToProps)(CloudBackup)
   ),
 }

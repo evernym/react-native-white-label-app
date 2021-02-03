@@ -101,7 +101,7 @@ export const styles = StyleSheet.create({
   },
   drawerOuterContainer: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: colors.white,
     borderTopRightRadius: verticalScale(14),
     borderBottomRightRadius: verticalScale(14),
   },

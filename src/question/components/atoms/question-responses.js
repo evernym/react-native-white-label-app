@@ -5,7 +5,7 @@ import RadioForm, {
   RadioButtonInput,
   RadioButtonLabel,
 } from 'react-native-simple-radio-button'
-import { caribbeanGreen, grey4 } from '../../../common/styles'
+import { caribbeanGreen, colors } from '../../../common/styles'
 import type { QuestionResponse } from '../../type-question'
 
 const QuestionResponses = (props: {
@@ -44,8 +44,8 @@ const QuestionResponses = (props: {
               index={i}
               isSelected={isSelected}
               onPress={props.onResponseSelect}
-              buttonInnerColor={isSelected ? caribbeanGreen : grey4}
-              buttonOuterColor={grey4}
+              buttonInnerColor={isSelected ? caribbeanGreen : colors.gray4}
+              buttonOuterColor={colors.gray4}
               buttonSize={16}
               buttonOuterSize={24}
               buttonStyle={questionStyles.questionResponseRadio}

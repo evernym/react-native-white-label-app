@@ -9,7 +9,7 @@ For example `home.js` contains options for `Home`.
 
 You should be able to run the application at this point or proceed to modify provided default configuration.
 
-##### Application
+#### Application
 
 The base application settings should be specified in `app.js` file.
 
@@ -28,7 +28,7 @@ The base application settings should be specified in `app.js` file.
     export const DEFAULT_USER_AVATAR = require('./images/user_avatar.png')
     ``` 
 
-##### Color theme
+#### Color theme
 
 Application color theme is set by a group of constants provided in `colors.js` configuration module. 
 It is used throughout the whole application.
@@ -55,7 +55,36 @@ export const colors = {
 }
 ```
 
-##### End User License Agreement
+#### Font
+
+You can specify the font which will be used in the app inside the `font.js` module.
+
+* `FONT_FAMILY` - (string) font family to use.
+
+    ```javascript
+    export const FONT_FAMILY = 'Lato'
+    ```
+  
+* `FONT_SIZES` - (object) - grid to use for fonts.
+
+    ```javascript
+    export const FONT_SIZES = {
+        size0: 42,
+        size1: 26,
+        size2: 23,
+        size3: 19,
+        size4: 17,
+        size5: 15,
+        size6: 14,
+        size7: 13,
+        size8: 11,
+        size9: 10,
+        size10: 9,
+        size11: 8,
+      }
+    ```
+
+#### End User License Agreement
 
 You can configure EULA and privacy terms inside the `eula.js` module.
 
@@ -104,7 +133,7 @@ There are two type variables used for specifying documents location:
 
 Note: By default, MSDK tries to use web versions of documents. Local assets will be used when there are connectivity issues.
 
-##### Start up
+#### Start up
 
 You can configure application startup wizard which is shown for the newly installed application inside the `startup.js` module. 
 
@@ -114,7 +143,7 @@ You can configure application startup wizard which is shown for the newly instal
     export const BACKGROUND_IMAGE = require('./images/setup.png')
     ``` 
 
-##### Lock
+#### Lock
 
 You can configure application locking screens (set up / enter / change password) inside the `lock.js` module.
 
@@ -129,7 +158,7 @@ You can configure application locking screens (set up / enter / change password)
     }
     ```
 
-##### Home screen
+#### Home screen
 
 You can configure application `Home` screen inside the `home.js` module.
 
@@ -159,7 +188,7 @@ You can configure application `Home` screen inside the `home.js` module.
     export const SHOW_EVENTS_HISTORY = true
     ```
 
-##### Connections screen
+#### Connections screen
 
 You can configure application `Connections` screen inside the `my-connections.js` module.
 
@@ -178,7 +207,7 @@ You can configure application `Connections` screen inside the `my-connections.js
     }
     ```
 
-##### Credentials screen
+#### Credentials screen
 
 You can configure application `Credentials` screen inside the `my-credentials.js` module.
 
@@ -197,7 +226,7 @@ You can configure application `Credentials` screen inside the `my-credentials.js
     }
     ```
 
-##### Navigation drawer
+#### Navigation drawer
 
 You can configure navigation menu inside the `navigator.js` module.
 
@@ -236,7 +265,7 @@ You can configure navigation menu inside the `navigator.js` module.
     }
     ```
 
-##### Server environment
+#### Server environment
 
 You can configure a server environment used for agent provisioning inside the `provision.js` module.
 
@@ -284,7 +313,7 @@ You can configure a server environment used for agent provisioning inside the `p
           export const SPONSOR_ID = 'sponsorid'
           ```
 
-##### Collecting log information
+#### Collecting log information
 
 You can configure data used for logging in the `logs.js` module.
 
@@ -306,7 +335,7 @@ You can receive encrypted log file by email.
     }
     ```
 
-##### Credential Offer dialog
+#### Credential Offer dialog
 
 You can customize `Credential Offer` dialog in the `credential-offer-dialog.js` module.
 
@@ -328,7 +357,7 @@ You can customize `Credential Offer` dialog in the `credential-offer-dialog.js` 
     export const DENY_BUTTON_TEXT = 'Deny'
     ```
 
-##### Proof Request dialog 
+#### Proof Request dialog 
 
 You can customize `Proof Request Offer` dialog in the `proof-request-dialog.js` module.
 
@@ -350,7 +379,7 @@ You can customize `Proof Request Offer` dialog in the `proof-request-dialog.js` 
     export const DENY_BUTTON_TEXT = 'Deny'
     ```
 
-##### Settings
+#### Settings
 
 You can customize `Settings` view in the `settings.js` module.
 
@@ -370,7 +399,7 @@ You can customize `Settings` view in the `settings.js` module.
     }
     ```
 
-##### Feedback
+#### Feedback
 
 In order to gather application feedback is used `Apptentive`. 
 You can provide credentials to be used for setting up `Apptentive` module in `feedback.js` file.
@@ -388,7 +417,7 @@ export const APPTENTIVE_CREDENTIALS = Platform.select({
 })
 ```
 
-##### Splash screen and app icon
+#### Splash screen and app icon
 
 These are configured inside your application for specific platforms.
 
@@ -419,6 +448,6 @@ These are configured inside your application for specific platforms.
     
 * iOS: TODO
 
-##### Further customization
+#### Further customization
 
 For further customizations, you can refer to provided sample configuration or the source code.

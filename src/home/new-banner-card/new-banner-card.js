@@ -4,8 +4,8 @@ import { TouchableOpacity, Text, View, Image, StyleSheet } from 'react-native'
 import { isiPhone5 } from '../../common/styles'
 import {
   colors,
-  font,
   fontFamily,
+  fontSizes as fonts,
   fontSizes,
 } from '../../common/styles/constant'
 import { scale, moderateScale } from 'react-native-size-matters'
@@ -49,7 +49,7 @@ const NewBannerCardComponent = (props: NewBannerCardProps) => {
               <DefaultLogo
                 text={props.issuerName[0]}
                 size={moderateScale(34, 0.15)}
-                fontSize={isiPhone5 ? font.size.M : font.size.ML}
+                fontSize={isiPhone5 ? fonts.size4 : fonts.size3}
               />
             )}
           </View>

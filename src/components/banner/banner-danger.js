@@ -5,6 +5,7 @@ import { CustomView, Icon, CustomText } from '../index'
 import { IMAGE_WIDTH, IMAGE_HEIGHT } from './banner-constants'
 import { color } from '../../common/styles'
 import type { DangerBannerProps } from './type-banner'
+import { colors } from '../../common/styles/constant'
 
 export default class DangerBanner extends PureComponent<
   DangerBannerProps,
@@ -22,7 +23,7 @@ export default class DangerBanner extends PureComponent<
         testID={this.props.testID}
       >
         <Icon
-          iconStyle={[styles.labelImage, { tintColor: 'white' }]}
+          iconStyle={[styles.labelImage, { tintColor: colors.white }]}
           src={require('../../images/Alert.png')}
         />
         <CustomView horizontalSpace>

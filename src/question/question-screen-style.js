@@ -2,17 +2,13 @@
 import { StyleSheet, Dimensions, Platform, StatusBar } from 'react-native'
 import {
   blackTransparent,
-  grey5,
   OFFSET_3X,
   OFFSET_1X,
-  grey4,
-  font,
-  grey1,
-  white,
+  fontSizes,
+  fontFamily,
   color,
-  red,
   deviceHeight,
-  primaryGreen,
+  colors,
 } from '../common/styles'
 
 const QUESTION_SENDER_LOGO_DIMENSION = 100
@@ -35,7 +31,7 @@ export const getQuestionStylesObject = (
     width: 51,
     height: 6,
     borderRadius: 6,
-    backgroundColor: grey5,
+    backgroundColor: colors.gray5,
   },
   mainContainer: {
     backgroundColor: blackTransparent,
@@ -78,15 +74,15 @@ export const getQuestionStylesObject = (
   },
   questionResponseRadio: {
     borderWidth: 0,
-    backgroundColor: grey4,
+    backgroundColor: colors.gray4,
   },
   questionResponseRadioWrapper: {
     marginLeft: 0,
   },
   questionResponseRadioLabel: {
-    fontFamily: font.family,
-    fontSize: font.size.M,
-    color: grey1,
+    fontFamily: fontFamily,
+    fontSize: fontSizes.size4,
+    color: colors.gray1,
     fontWeight: 'normal',
   },
   questionResponseRadioLabelWrapper: {
@@ -116,7 +112,7 @@ export const getQuestionStylesObject = (
   actionButtonContainer: {
     marginBottom: 15,
     borderRadius: 5,
-    borderColor: white,
+    borderColor: colors.white,
     borderWidth: 1,
     minHeight: 56,
   },
@@ -127,11 +123,11 @@ export const getQuestionStylesObject = (
     borderRadius: 5,
   },
   submitButton: {
-    borderColor: primaryGreen,
-    backgroundColor: primaryGreen,
+    borderColor: colors.main,
+    backgroundColor: colors.main,
   },
   cancelButton: {
-    borderColor: red,
+    borderColor: colors.red,
   },
   feedbackIcon: {
     width: 150,
@@ -164,12 +160,12 @@ export const getQuestionStylesObject = (
     marginTop: Platform.OS !== 'android' ? StatusBar.currentHeight || 30 : 0,
   },
   cancelBtnColor: {
-    color: red,
-    backgroundColor: 'white',
+    color: colors.red,
+    backgroundColor: colors.white,
   },
   listContainer: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: colors.white,
     position: 'relative',
   },
   listStyle: { flex: 1, padding: 20 },
@@ -185,7 +181,7 @@ export const getQuestionStylesObject = (
   },
   placeholderIfNoImage: {
     width: QUESTION_SENDER_LOGO_DIMENSION,
-    fontSize: font.size.L,
+    fontSize: fontSizes.size0,
   },
 })
 
@@ -194,13 +190,13 @@ export const questionStyles = StyleSheet.create(
 )
 
 export const questionActionButtonDefaultProps = {
-  fontSize: font.size.M,
+  fontSize: fontSizes.size4,
   fontWeight: 'bold',
-  fontFamily: font.family,
+  fontFamily: fontFamily,
 }
 
 export const disabledStyle = {
-  backgroundColor: primaryGreen,
+  backgroundColor: colors.main,
 }
 
 function getQuestionResponsesHeight(singleResponse: ?boolean) {

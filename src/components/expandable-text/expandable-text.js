@@ -1,8 +1,8 @@
 // @flow
 import React, { useCallback, useState } from 'react'
 import { StyleSheet, Text, TouchableWithoutFeedback } from 'react-native'
-import { colors, fontSizes } from '../../common/styles'
 import { verticalScale } from 'react-native-size-matters'
+import { colors, fontSizes } from '../../common/styles/constant'
 
 export function ExpandableText({ text, style, lines, ...rest }: {
   text: string,

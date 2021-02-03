@@ -1,7 +1,7 @@
 // @flow
 import React from 'react'
 import { Text, View, Dimensions, StyleSheet } from 'react-native'
-import { fontFamily } from '../../common/styles/constant'
+import { colors, fontFamily } from '../../common/styles/constant'
 
 let ScreenWidth = Dimensions.get('window').width
 
@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     height: 26,
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    backgroundColor: 'white',
+    backgroundColor: colors.white,
     marginTop: -15,
     marginBottom: -15,
     alignItems: 'center',
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     borderWidth: 1,
     borderColor: '#eaeaea',
-    backgroundColor: 'white',
+    backgroundColor: colors.white,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: '7%',

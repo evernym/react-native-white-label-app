@@ -21,7 +21,7 @@ import {
   Header,
 } from '../components'
 import { launchOnfidoSDK, resetOnfidoStatues } from './onfido-store'
-import { white, toryBlue } from '../common/styles'
+import { colors, toryBlue } from '../common/styles'
 import {
   onfidoProcessStatus,
   onfidoConnectionStatus,
@@ -308,7 +308,7 @@ function getActionButtonText(
 
 const styles = StyleSheet.create({
   buttonStyle: {
-    borderLeftColor: white,
+    borderLeftColor: colors.white,
     borderLeftWidth: StyleSheet.hairlineWidth,
     marginHorizontal: '5%',
     marginBottom: 15,

@@ -14,8 +14,8 @@ import { SwipeRow } from 'react-native-swipe-list-view'
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters'
 import {
   colors,
-  font,
   fontFamily,
+  fontSizes as fonts,
   fontSizes,
 } from '../../common/styles/constant'
 import { isiPhone5 } from '../../common/styles'
@@ -131,7 +131,7 @@ const renderImageOrText = (logoUrl: string, issuerName: string) => {
     <DefaultLogo
       text={issuerName}
       size={moderateScale(30)}
-      fontSize={isiPhone5 ? font.size.S : font.size.M}
+      fontSize={isiPhone5 ? fonts.size5 : fonts.size4}
     />
   )
 }

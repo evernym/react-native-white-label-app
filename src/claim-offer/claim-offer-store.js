@@ -105,7 +105,7 @@ import {
   SCHEMA_NOT_FOUND_MESSAGE,
 } from '../bridge/react-native-cxs/error-cxs'
 import Snackbar from 'react-native-snackbar'
-import { venetianRed, white } from '../common/styles'
+import { colors, venetianRed } from '../common/styles/constant'
 import { checkProtocolStatus } from '../store/protocol-status'
 
 const claimOfferInitialState = {
@@ -311,7 +311,7 @@ export function* denyClaimOfferSaga(
         text: 'Failed to reject Credential Offer.',
         duration: Snackbar.LENGTH_LONG,
         backgroundColor: venetianRed,
-        textColor: white,
+        textColor: colors.white,
       })
     }
   }
@@ -419,7 +419,7 @@ export function* claimOfferAccepted(
           text: text,
           duration: Snackbar.LENGTH_LONG,
           backgroundColor: venetianRed,
-          textColor: white,
+          textColor: colors.white,
         })
       }
 

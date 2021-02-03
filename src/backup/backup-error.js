@@ -17,10 +17,9 @@ import {
   CustomHeader,
 } from '../components'
 import {
+  colors,
   isBiggerThanShortDevice,
-  grey,
   venetianRed,
-  white,
 } from '../common/styles/constant'
 import { updateStatusBarTheme } from '../store/connections-store'
 import { generateBackupFile } from '../backup/backup-store'
@@ -148,7 +147,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   buttonShadow: {
-    shadowColor: grey,
+    shadowColor: colors.gray2,
     shadowOffset: {
       width: 0,
       height: 5,
@@ -162,7 +161,7 @@ const styles = StyleSheet.create({
     zIndex: -1,
   },
   errorText: {
-    color: white,
+    color: colors.white,
   },
 })
 

@@ -21,7 +21,7 @@ import type {
 import type { ConnectionStore } from './type-connection-store'
 import RNFetchBlob from 'rn-fetch-blob'
 import { Platform } from 'react-native'
-import { colors, whiteSmoke } from '../common/styles/constant'
+import { colors } from '../common/styles/constant'
 import { CLAIM_OFFER_STATUS } from './../claim-offer/type-claim-offer'
 import { PROOF_REQUEST_STATUS } from './../proof-request/type-proof-request'
 import { QUESTION_STATUS } from '../question/type-question'
@@ -326,15 +326,6 @@ export const getWalletAddresses = (state: Store) =>
 export const getTokenAmount = (state: Store) => state.wallet.payment.tokenAmount
 
 export const getWalletHistory = (state: Store) => state.wallet.walletHistory
-
-export const getStatusBarTheme = (state: Store) => {
-  const statusBarTheme =
-    state.connections !== undefined &&
-    state.connections.statusBarTheme != undefined
-      ? state.connections.statusBarTheme
-      : whiteSmoke
-  return statusBarTheme
-}
 
 export const getUserAvatarSource = (name: ?string) => {
   if (name) {

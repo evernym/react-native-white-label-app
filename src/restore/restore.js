@@ -11,10 +11,9 @@ import { APP_NAME, APP_LOGO } from '../../../../../app/evernym-sdk/app'
 import { Container, CustomView, CustomText, CustomButton } from '../components'
 import {
   isBiggerThanShortDevice,
-  grey,
   venetianRed,
   cornFlowerBlue,
-  white,
+  colors,
 } from '../common/styles/constant'
 import {
   lockSelectionRoute,
@@ -51,13 +50,13 @@ export class RestoreStartScreen extends Component<RestoreProps, void> {
     let statusBarColor =
       this.props.restore.error && this.props.route === restoreRoute
         ? venetianRed
-        : white
+        : colors.white
     this.props.updateStatusBarTheme(statusBarColor)
   }
 
   componentDidMount() {
     if (!this.props.restore.error) {
-      this.props.updateStatusBarTheme(white)
+      this.props.updateStatusBarTheme(colors.white)
     } else {
       this.props.updateStatusBarTheme(venetianRed)
     }
@@ -181,7 +180,7 @@ export class RestoreStartScreen extends Component<RestoreProps, void> {
 
 const styles = StyleSheet.create({
   restoreMainContainer: {
-    backgroundColor: white,
+    backgroundColor: colors.white,
   },
   restoreErrorContainer: {
     backgroundColor: venetianRed,
@@ -201,7 +200,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   buttonShadow: {
-    shadowColor: grey,
+    shadowColor: colors.gray2,
     shadowOffset: {
       width: 0,
       height: 5,
@@ -225,7 +224,7 @@ const styles = StyleSheet.create({
     marginBottom: '6%',
   },
   errorText: {
-    color: white,
+    color: colors.white,
     paddingLeft: '5%',
     paddingRight: '5%',
   },

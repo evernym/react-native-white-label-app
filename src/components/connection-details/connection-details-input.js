@@ -7,6 +7,7 @@ import {
   TextInput,
   StyleSheet,
 } from 'react-native'
+import { colors } from '../../common/styles/constant'
 
 class ConnectionDetailsInput extends PureComponent<void, void> {
   render() {
@@ -59,7 +60,7 @@ const styles = StyleSheet.create({
     paddingRight: 14,
     paddingLeft: 14,
     color: '#a5a5a5',
-    backgroundColor: 'white',
+    backgroundColor: colors.white,
   },
   absolute: {
     position: 'absolute',

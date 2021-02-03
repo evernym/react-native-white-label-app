@@ -27,7 +27,7 @@ import {
   resetCloudBackupStatus,
 } from '../backup/backup-store'
 import { setAutoCloudBackupEnabled } from '../backup/backup-actions'
-import { color } from '../common/styles/constant'
+import { color, colors } from '../common/styles/constant'
 //TODO: jy-copy and pasted questionStyles from the question modal, should put these in on place once generic modal is made
 import { questionStyles } from '../backup/styles'
 
@@ -168,7 +168,7 @@ const mapStateToProps = (state: Store) => {
 
 export const cloudRestoreModalScreen = {
   routeName: cloudRestoreModalRoute,
-  screen: withStatusBar({ color: 'white' })(
+  screen: withStatusBar({ color: colors.white })(
     connect(mapStateToProps, mapDispatchToProps)(CloudRestoreModal)
   ),
 }

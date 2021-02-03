@@ -98,7 +98,7 @@ import {
   outOfBandConnectionForPresentationEstablished,
 } from '../proof-request/proof-request-store'
 import Snackbar from 'react-native-snackbar'
-import { colors, venetianRed, white } from '../common/styles'
+import { colors, venetianRed } from '../common/styles'
 import { getHydrationItem, secureSet } from '../services/storage'
 import { INVITATIONS } from '../common'
 import { customLogger } from '../store/custom-logger'
@@ -597,7 +597,7 @@ export function* handleConnectionError(
     text: message,
     duration: Snackbar.LENGTH_LONG,
     backgroundColor: venetianRed,
-    textColor: white,
+    textColor: colors.white,
   })
 }
 

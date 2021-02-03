@@ -14,7 +14,6 @@ import type { Store } from '../store/type-store'
 import type { ReactNavigation } from '../common/type-common'
 
 import { Container, CustomView, CustomText, CustomButton } from '../components'
-import { atlantis } from '../common/styles'
 import { sendLogsRoute } from '../common/route-constants'
 import Mailer from 'react-native-mail'
 import { customLogger } from '../store/custom-logger'
@@ -27,6 +26,7 @@ import {
 import store from '../store'
 import { BackButton } from '../components/back-button/back-button'
 import { headerNavigationOptions } from '../navigation/navigation-header-config'
+import { colors } from '../common/styles/constant'
 
 export class SendLogs extends Component<SendLogsProps, any> {
   constructor(props: SendLogsProps) {
@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
   },
   startTutorialButton: {
     borderRadius: 5,
-    color: 'white',
+    color: colors.white,
     marginHorizontal: '6%',
   },
 })
@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
 const buttonColor = {
   fontWeight: '600',
   fontSize: 18,
-  backgroundColor: atlantis,
+  backgroundColor: colors.main,
 }
 
 export const sendLogsScreen = {

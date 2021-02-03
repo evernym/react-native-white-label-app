@@ -34,7 +34,6 @@ import {
   isiPhone5,
   mantis,
   lightWhite,
-  white,
   colors,
   fontFamily,
 } from '../common/styles/constant'
@@ -198,8 +197,8 @@ export class LockSelection extends Component<LockSelectionProps, *> {
                       sliderRadius={58}
                       buttonOnColor={mantis}
                       buttonOffColor={lightWhite}
-                      sliderOnColor={white}
-                      sliderOffColor={white}
+                      sliderOnColor={colors.white}
+                      sliderOffColor={colors.white}
                     />
                   )}
                 </CustomView>

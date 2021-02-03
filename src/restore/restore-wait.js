@@ -3,13 +3,13 @@
 import React, { Component } from 'react'
 import { Image, StyleSheet } from 'react-native'
 import { Container, CustomView, CustomText, Icon } from '../components'
-import { darkGray } from '../common/styles/constant'
 import { connect } from 'react-redux'
 import { restoreRoute, restoreWaitRoute, lockEnterPinRoute } from '../common'
 import type { RestoreWaitScreenProps } from './type-restore'
 import type { Store } from '../store/type-store'
 import { RestoreStatus } from './type-restore'
 import { withStatusBar } from '../components/status-bar/status-bar'
+import { colors } from '../common/styles'
 
 export class RestoreWaitScreen extends Component<RestoreWaitScreenProps, void> {
   componentDidUpdate(prevProps: RestoreWaitScreenProps) {
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     marginBottom: '6%',
     marginTop: '15%',
     paddingHorizontal: '5%',
-    color: darkGray,
+    color: colors.gray1,
     fontSize: 23,
   },
   backgroundImage: {
@@ -91,13 +91,13 @@ const styles = StyleSheet.create({
   iconStyle: {
     borderRadius: 80,
     padding: 15,
-    backgroundColor: darkGray,
+    backgroundColor: colors.gray1,
   },
   strip: {
     position: 'absolute',
     width: '110%',
     height: 8,
-    backgroundColor: darkGray,
+    backgroundColor: colors.gray1,
   },
 })
 

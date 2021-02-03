@@ -1,7 +1,7 @@
 // @flow
 import React, { PureComponent } from 'react'
 import { View, StyleSheet, Platform } from 'react-native'
-import { HAIRLINE_WIDTH, maroonRed, white } from '../common/styles/constant'
+import { colors, HAIRLINE_WIDTH, maroonRed } from '../common/styles/constant'
 
 type DotProps = {
   size: string,
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
       },
     }),
-    borderColor: white,
+    borderColor: colors.white,
   },
   badgeSmall: {
     width: 15,

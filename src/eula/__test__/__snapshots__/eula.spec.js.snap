@@ -239,7 +239,7 @@ exports[`Eula screen should render properly and snapshot should match 1`] = `
               onStartShouldSetResponder={[Function]}
               style={
                 Object {
-                  "borderColor": "#ffffff",
+                  "borderColor": "#FFFFFF",
                   "borderLeftWidth": 0.5,
                   "opacity": 1,
                 }
@@ -251,7 +251,7 @@ exports[`Eula screen should render properly and snapshot should match 1`] = `
                   Object {
                     "alignItems": "center",
                     "backgroundColor": "rgba(119, 119, 119, 1.0)",
-                    "borderColor": "#ffffff",
+                    "borderColor": "#FFFFFF",
                     "borderLeftWidth": 0.5,
                     "borderRadius": 3,
                     "borderWidth": 0,

@@ -221,7 +221,7 @@ exports[`Restore Passphrase screen should render properly and match the snapshot
             Array [
               Object {
                 "backgroundColor": "rgba(0,0,0,0.33)",
-                "color": "white",
+                "color": "#FFFFFF",
                 "fontSize": 20,
                 "fontStyle": "italic",
                 "height": 137,

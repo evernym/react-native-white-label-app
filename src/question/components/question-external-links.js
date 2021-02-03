@@ -19,9 +19,8 @@ import { CustomView, CustomText } from '../../components'
 import {
   OFFSET_1X,
   alertCancel,
-  white,
   venetianRed,
-  color,
+  color, colors,
 } from '../../common/styles'
 
 export class QuestionExternalLinks extends PureComponent<QuestionExternalLinksProps> {
@@ -89,7 +88,7 @@ export class QuestionExternalLink extends PureComponent<QuestionExternalLinkProp
         text: 'Could not open this link. Link seems to be incorrect.',
         duration: Snackbar.LENGTH_LONG,
         backgroundColor: venetianRed,
-        textColor: white,
+        textColor: colors.white,
       })
     })
   }

@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { Text, StyleSheet, Platform } from 'react-native'
-import { colors, fontFamily, fontSizes } from '../../common/styles'
+import { colors, fontFamily, fontSizes } from '../../common/styles/constant'
 
 export const HeaderTitle = ({ title }: { title: string }) => {
   return <Text style={headerTitleStyle.title}>{title}</Text>

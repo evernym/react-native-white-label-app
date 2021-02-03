@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     marginBottom: 35,
     borderRadius: 20,
     shadowOffset: { width: 0, height: 2.5 },
-    shadowColor: 'black',
+    shadowColor: colors.black,
     shadowOpacity: Platform.OS === 'android' ? 0.05 : 0.1,
     elevation: Platform.OS === 'android' ? 10 : 20,
     backgroundColor: colors.white,

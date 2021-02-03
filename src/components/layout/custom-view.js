@@ -27,7 +27,6 @@ export const CustomView = (props: GenericObject) => {
     quaternary,
     fifth,
     senary,
-    septenary,
     dark,
     row,
     left,
@@ -69,7 +68,6 @@ export const CustomView = (props: GenericObject) => {
     quaternary ? style.quaternaryBg : null,
     fifth ? style.fifthBg : null,
     senary ? style.senaryBg : null,
-    septenary ? style.septenaryBg : null,
     dark ? style.darkBg : null,
     // the reason for doing `${bg}Bg` is that if user passes bg="primary"
     // then our styles are named as `primaryBg` so we add `Bg` to bg value

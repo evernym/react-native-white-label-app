@@ -33,11 +33,7 @@ import {
 import { switchErrorAlerts } from '../store/config-store'
 import type { Store } from '../store/type-store'
 import { ENTER_YOUR_PASS_CODE_MESSAGE } from '../common/message-constants'
-import {
-  isBiggerThanShortDevice,
-  matterhornSecondary,
-  red,
-} from '../common/styles/constant'
+import { isBiggerThanShortDevice, } from '../common/styles/constant'
 import { moderateScale, verticalScale } from 'react-native-size-matters'
 
 const lockImage = require('../images/lockCombo.png')
@@ -252,7 +248,7 @@ export class LockEnter extends Component<LockEnterProps, LockEnterState> {
 
 const stylesRecovery = StyleSheet.create({
   failedAttemptsText: {
-    color: red,
+    color: colors.red,
     fontSize: 17,
     fontWeight: '500',
     fontFamily: fontFamily,
@@ -276,11 +272,11 @@ const stylesRecovery = StyleSheet.create({
   blackStrip: {
     position: 'absolute',
     height: 8,
-    backgroundColor: matterhornSecondary,
+    backgroundColor: colors.gray1,
     width: '100%',
   },
   lockIconWrapper: {
-    backgroundColor: matterhornSecondary,
+    backgroundColor: colors.gray1,
     borderRadius: 50,
   },
   lockHeading: {
