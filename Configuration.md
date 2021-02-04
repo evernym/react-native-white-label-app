@@ -34,7 +34,7 @@ Application color theme is set by a group of constants provided in `colors.js` c
 It is used throughout the whole application.
 
 ```javascript
-export const colors = {
+export const COLORS = {
   main: '#86B93B',
   secondary: '#6C8E3A',
   green1: '#86B93B',
@@ -51,7 +51,6 @@ export const colors = {
   gray0: '#404040',
   black: '#000000',
   blue: '#236BAE',
-  default: '#6C8E3A',
 }
 ```
 
