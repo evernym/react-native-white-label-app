@@ -351,18 +351,18 @@ export function* getConnectionColorTheme(
   senderLogoUrl: any
 ): Generator<*, *, *> {
   if (!senderLogoUrl) {
-    return colors.default
+    return colors.main
   }
 
   try {
     const foundColors = yield call(ImageColors.getColors, senderLogoUrl, {
-      fallback: colors.default,
+      fallback: colors.main,
     })
     return Platform.OS === 'android'
       ? pickAndroidColor(foundColors)
       : pickIosColor(foundColors)
   } catch (e) {
-    return colors.default
+    return colors.main
   }
 }
 

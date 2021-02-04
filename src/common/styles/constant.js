@@ -27,7 +27,6 @@ export const colors = COLORS || {
   gray0: '#404040',
   black: '#000000',
   blue: '#236BAE',
-  default: '#6C8E3A',
 }
 
 // Fonts
