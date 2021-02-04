@@ -27,7 +27,7 @@ import {
   resetCloudBackupStatus,
 } from '../backup/backup-store'
 import { setAutoCloudBackupEnabled } from '../backup/backup-actions'
-import { color } from '../common/styles/constant'
+import { color, colors } from '../common/styles/constant'
 //TODO: jy-copy and pasted questionStyles from the question modal, should put these in on place once generic modal is made
 import { questionStyles } from '../backup/styles'
 
@@ -36,10 +36,7 @@ import type { CloudBackupScreenProps } from '../backup/type-backup'
 import { QuestionScreenHeader } from '../question/components/question-screen-header'
 import { RestoreStatus } from '../restore/type-restore'
 
-// $FlowExpectedError[cannot-resolve-module] external file
-import { APP_IMAGE } from '../../../../../app/evernym-sdk/app'
-
-const appImage = APP_IMAGE || require('../images/cb_app.png')
+const appImage = require('../images/cb_app.png')
 const { height } = Dimensions.get('window')
 export class CloudRestoreModal extends Component<CloudBackupScreenProps, void> {
   _translateY = new Animated.Value(0)
@@ -171,7 +168,7 @@ const mapStateToProps = (state: Store) => {
 
 export const cloudRestoreModalScreen = {
   routeName: cloudRestoreModalRoute,
-  screen: withStatusBar({ color: 'white' })(
+  screen: withStatusBar({ color: colors.white })(
     connect(mapStateToProps, mapDispatchToProps)(CloudRestoreModal)
   ),
 }

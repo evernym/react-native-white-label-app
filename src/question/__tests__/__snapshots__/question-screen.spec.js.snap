@@ -5,7 +5,7 @@ exports[`<QuestionScreen /> should match error snapshot 1`] = `
   emulateUnlessSupported={true}
   style={
     Object {
-      "backgroundColor": "white",
+      "backgroundColor": "#FFFFFF",
       "flex": 1,
       "position": "relative",
     }
@@ -223,7 +223,7 @@ exports[`<QuestionScreen /> should match error snapshot 1`] = `
     <View
       style={
         Object {
-          "borderColor": "#ffffff",
+          "borderColor": "#FFFFFF",
           "borderRadius": 5,
           "borderWidth": 1,
           "marginBottom": 15,
@@ -315,7 +315,7 @@ exports[`<QuestionScreen /> should match idle state snapshot 1`] = `
   emulateUnlessSupported={true}
   style={
     Object {
-      "backgroundColor": "white",
+      "backgroundColor": "#FFFFFF",
       "flex": 1,
       "position": "relative",
     }
@@ -1001,7 +1001,7 @@ exports[`<QuestionScreen /> should match idle state snapshot 1`] = `
     <View
       style={
         Object {
-          "borderColor": "#ffffff",
+          "borderColor": "#FFFFFF",
           "borderRadius": 5,
           "borderWidth": 1,
           "marginBottom": 15,
@@ -1094,7 +1094,7 @@ exports[`<QuestionScreen /> should match invalid data 1`] = `
   emulateUnlessSupported={true}
   style={
     Object {
-      "backgroundColor": "white",
+      "backgroundColor": "#FFFFFF",
       "flex": 1,
       "position": "relative",
     }
@@ -1490,7 +1490,7 @@ exports[`<QuestionScreen /> should match loading snapshot 1`] = `
   emulateUnlessSupported={true}
   style={
     Object {
-      "backgroundColor": "white",
+      "backgroundColor": "#FFFFFF",
       "flex": 1,
       "position": "relative",
     }
@@ -1697,7 +1697,7 @@ exports[`<QuestionScreen /> should match success snapshot 1`] = `
   emulateUnlessSupported={true}
   style={
     Object {
-      "backgroundColor": "white",
+      "backgroundColor": "#FFFFFF",
       "flex": 1,
       "position": "relative",
     }

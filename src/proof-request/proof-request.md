@@ -64,7 +64,7 @@ await proof.request_proof(connection)
     to: Option<u64>
   }>,
   // optional
-  // by default ConnectMe will interpret that self attested value is allowed if this attribute is omitted
+  // by default MSDK will interpret that self attested value is allowed if this attribute is omitted
   self_attest_allowed: Option<bool>
 }
 ```

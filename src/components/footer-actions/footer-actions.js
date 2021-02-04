@@ -13,8 +13,8 @@ import CustomButton from '../button'
 import ImageColorPicker from '../image-color-picker/image-color-picker'
 import { DENY, CONNECT } from '../../common'
 import { noop } from '../../common'
-import { white } from '../../common/styles/constant'
 import { getConnectionTheme } from '../../store/store-selector'
+import { colors } from '../../common/styles'
 
 export const FooterActions = (props: FooterActionsProps) => {
   const {
@@ -90,7 +90,7 @@ export default connect(mapStateToProps)(FooterActions)
 const styles = StyleSheet.create({
   buttonStyle: {
     // borderLeftColor is broken on android https://github.com/facebook/react-native/issues/19981
-    borderColor: white,
+    borderColor: colors.white,
     borderLeftWidth: StyleSheet.hairlineWidth,
   },
 })

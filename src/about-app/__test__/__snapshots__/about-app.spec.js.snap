@@ -302,7 +302,7 @@ exports[`user about app screen should render properly and snapshot should match 
         style={
           Array [
             Object {
-              "fontSize": 12,
+              "fontSize": 11,
             },
             Object {
               "fontFamily": "Lato",

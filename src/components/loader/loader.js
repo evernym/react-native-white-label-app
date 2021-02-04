@@ -6,7 +6,7 @@ import { StyleSheet } from 'react-native'
 import { LoadingIndicator } from './loading-indicator'
 import type { LoaderProps, LoaderState } from './type-loader'
 import { DARK } from './type-loader'
-import { color, font, OFFSET_2X } from '../../common/styles'
+import { color, fontSizes, OFFSET_2X } from '../../common/styles'
 import CustomText from '../text'
 import { Container } from '../layout/container'
 
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
     padding: OFFSET_2X,
   },
   loadingText: {
-    fontSize: font.size.M,
+    fontSize: fontSizes.size4,
     fontWeight: '500',
     lineHeight: 21,
     letterSpacing: -0.42,

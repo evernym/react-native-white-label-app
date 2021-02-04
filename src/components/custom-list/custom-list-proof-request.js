@@ -13,7 +13,7 @@ import { renderAttachmentIcon } from '../../connection-details/components/modal-
 import { DefaultLogo } from '../default-logo/default-logo'
 import { ATTRIBUTE_TYPE } from '../../proof-request/type-proof-request'
 import { getPredicateTitle } from '../../connection-details/utils/getPredicateTitle'
-import { defaultUserAvatar } from '../user-avatar/user-avatar'
+import { renderUserAvatar } from '../../components/user-avatar/user-avatar'
 
 export class CustomListProofRequest extends Component<CustomListProps, void> {
   keyExtractor = ({ label, values }: Item, index: number) => {
@@ -39,14 +39,20 @@ export class CustomListProofRequest extends Component<CustomListProps, void> {
       this.props.claimMap &&
       this.props.claimMap[item.claimUuid]
 
-    let logoUrl
+    let logo
 
-    if (!logoUrl && claim) {
-      logoUrl = claim.logoUrl ? { uri: claim.logoUrl } : null
-    }
-
-    if (!claim) {
-      logoUrl = this.props.avatarSource || defaultUserAvatar
+    if (claim) {
+      logo = claim.logoUrl ?
+        <Icon
+          medium
+          round
+          resizeMode="cover"
+          src={{ uri: claim.logoUrl }}
+          testID={`proof-requester-logo-${index}`}
+        /> :
+        <DefaultLogo text={claim.senderName || ''} size={30} fontSize={18} />
+    } else {
+      logo = renderUserAvatar({ size: 'superSmall'})
     }
 
     const data =
@@ -66,20 +72,7 @@ export class CustomListProofRequest extends Component<CustomListProps, void> {
             )}
           </View>
           <View style={styles.avatarWrapper}>
-            {logoUrl ? (
-              <Icon
-                medium
-                round
-                resizeMode="cover"
-                src={logoUrl}
-                testID={`proof-requester-logo-${index}`}
-              />
-            ) : (
-              claim &&
-              claim.senderName && (
-                <DefaultLogo text={claim.senderName} size={30} fontSize={18} />
-              )
-            )}
+            {logo}
           </View>
         </View>
       </View>
@@ -106,9 +99,11 @@ export class CustomListProofRequest extends Component<CustomListProps, void> {
           this.props.claimMap[item.claimUuid]
       }
 
-      if (!logoUrl && claim) {
-        logoUrl = claim.logoUrl ? { uri: claim.logoUrl } : null
+      if (!claim) {
+        return
       }
+
+      logoUrl = claim.logoUrl ? { uri: claim.logoUrl } : null
 
       return (
         <View key={`${index}_${keyIndex}`} style={styles.textInnerItemWrapper}>
@@ -121,10 +116,6 @@ export class CustomListProofRequest extends Component<CustomListProps, void> {
         </View>
       )
     })
-
-    if (!claim) {
-      logoUrl = this.props.avatarSource || defaultUserAvatar
-    }
 
     return (
       <View key={index} style={styles.wrapper}>
@@ -176,17 +167,17 @@ export default connect(mapStateToProps)(CustomListProofRequest)
 
 const styles = StyleSheet.create({
   wrapper: {
-    backgroundColor: colors.cmWhite,
+    backgroundColor: colors.white,
     width: '100%',
     position: 'relative',
     paddingTop: moderateScale(12),
-    borderBottomColor: colors.cmGray3,
+    borderBottomColor: colors.gray3,
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
   title: {
     fontSize: verticalScale(fontSizes.size6),
     fontWeight: '400',
-    color: colors.cmGray3,
+    color: colors.gray3,
     width: '100%',
     textAlign: 'left',
     marginBottom: moderateScale(2),
@@ -195,7 +186,7 @@ const styles = StyleSheet.create({
   content: {
     fontSize: verticalScale(fontSizes.size3),
     fontWeight: '700',
-    color: colors.cmGray1,
+    color: colors.gray1,
     width: '100%',
     textAlign: 'left',
     fontFamily: fontFamily,
@@ -204,7 +195,7 @@ const styles = StyleSheet.create({
   contentGray: {
     fontSize: verticalScale(fontSizes.size5),
     fontWeight: '400',
-    color: colors.cmGray1,
+    color: colors.gray1,
     width: '100%',
     textAlign: 'left',
     fontFamily: fontFamily,

@@ -6,7 +6,7 @@ exports[`<Dot /> should render with large Dot 1`] = `
     Array [
       Object {
         "backgroundColor": "#d1021b",
-        "borderColor": "#ffffff",
+        "borderColor": "#FFFFFF",
         "borderWidth": 0.25,
       },
       Object {
@@ -25,7 +25,7 @@ exports[`<Dot /> should render with medium Dot 1`] = `
     Array [
       Object {
         "backgroundColor": "#d1021b",
-        "borderColor": "#ffffff",
+        "borderColor": "#FFFFFF",
         "borderWidth": 0.25,
       },
       Object {
@@ -44,7 +44,7 @@ exports[`<Dot /> should render with small Dot 1`] = `
     Array [
       Object {
         "backgroundColor": "#d1021b",
-        "borderColor": "#ffffff",
+        "borderColor": "#FFFFFF",
         "borderWidth": 0.25,
       },
       Object {

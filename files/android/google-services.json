@@ -1,0 +1,25 @@
+{
+  "project_info": {
+    "project_number": "587891114080",
+    "firebase_url": "https://connectmecloudmsgservice.firebaseio.com",
+    "project_id": "connectmecloudmsgservice",
+    "storage_bucket": "connectmecloudmsgservice.appspot.com"
+  },
+  "client": [{
+    "client_info": {
+      "mobilesdk_app_id": "1:587891114080:android:be30b7f3a5945b65",
+      "android_client_info": {
+        "package_name": "react-native-evernym-sdk-placeholder"
+      }
+    },
+    "oauth_client": [{
+      "client_id": "587891114080-nmqr9o4epga5c98dj4ae7l41h745tnkb.apps.googleusercontent.com",
+      "client_type": 3
+    }],
+    "api_key": [{
+      "current_key": "AIzaSyBAHeSoFamwu3XhQ13snjZYJ08vclnj-Cs"
+    }],
+    "services": {}
+  }],
+  "configuration_version": "1"
+}

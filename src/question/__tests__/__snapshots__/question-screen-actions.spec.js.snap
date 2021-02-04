@@ -12,7 +12,7 @@ exports[`<QuestionActions /> when more than two responses are present match snap
   <View
     style={
       Object {
-        "borderColor": "#ffffff",
+        "borderColor": "#FFFFFF",
         "borderRadius": 5,
         "borderWidth": 1,
         "marginBottom": 15,
@@ -110,7 +110,7 @@ exports[`<QuestionActions /> when more than two responses are present match snap
   <View
     style={
       Object {
-        "borderColor": "#ffffff",
+        "borderColor": "#FFFFFF",
         "borderRadius": 5,
         "borderWidth": 1,
         "marginBottom": 15,
@@ -208,7 +208,7 @@ exports[`<QuestionActions /> when more than two responses are present render Ign
   <View
     style={
       Object {
-        "borderColor": "#ffffff",
+        "borderColor": "#FFFFFF",
         "borderRadius": 5,
         "borderWidth": 1,
         "marginBottom": 15,
@@ -307,7 +307,7 @@ exports[`<QuestionActions /> when one response is present match snapshot if in e
   <View
     style={
       Object {
-        "borderColor": "#ffffff",
+        "borderColor": "#FFFFFF",
         "borderRadius": 5,
         "borderWidth": 1,
         "marginBottom": 15,
@@ -405,7 +405,7 @@ exports[`<QuestionActions /> when one response is present match snapshot if in s
   <View
     style={
       Object {
-        "borderColor": "#ffffff",
+        "borderColor": "#FFFFFF",
         "borderRadius": 5,
         "borderWidth": 1,
         "marginBottom": 15,
@@ -503,7 +503,7 @@ exports[`<QuestionActions /> when one response is present render Ignore and resp
   <View
     style={
       Object {
-        "borderColor": "#ffffff",
+        "borderColor": "#FFFFFF",
         "borderRadius": 5,
         "borderWidth": 1,
         "marginBottom": 15,
@@ -618,7 +618,7 @@ exports[`<QuestionActions /> when two responses are present match snapshot if in
   <View
     style={
       Object {
-        "borderColor": "#ffffff",
+        "borderColor": "#FFFFFF",
         "borderRadius": 5,
         "borderWidth": 1,
         "marginBottom": 15,
@@ -716,7 +716,7 @@ exports[`<QuestionActions /> when two responses are present match snapshot if in
   <View
     style={
       Object {
-        "borderColor": "#ffffff",
+        "borderColor": "#FFFFFF",
         "borderRadius": 5,
         "borderWidth": 1,
         "marginBottom": 15,
@@ -814,7 +814,7 @@ exports[`<QuestionActions /> when two responses are present render both response
   <View
     style={
       Object {
-        "borderColor": "#ffffff",
+        "borderColor": "#FFFFFF",
         "borderRadius": 5,
         "borderWidth": 1,
         "marginBottom": 15,
@@ -983,7 +983,7 @@ exports[`<QuestionActions /> when two responses are present render both response
               <Text
                 style={
                   Object {
-                    "backgroundColor": "white",
+                    "backgroundColor": "#FFFFFF",
                     "color": "#CE0B24",
                     "fontSize": 18,
                     "paddingBottom": 1,

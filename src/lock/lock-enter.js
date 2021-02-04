@@ -7,7 +7,7 @@ import { bindActionCreators } from 'redux'
 // $FlowExpectedError[cannot-resolve-module] external file
 import { APP_NAME } from '../../../../../app/evernym-sdk/app'
 // $FlowExpectedError[cannot-resolve-module] external file
-import { AppSvgIcon } from '../../../../../app/evernym-sdk/app-icon'
+import { LockHeader } from '../../../../../app/evernym-sdk/lock'
 
 import {
   Container,
@@ -33,11 +33,7 @@ import {
 import { switchErrorAlerts } from '../store/config-store'
 import type { Store } from '../store/type-store'
 import { ENTER_YOUR_PASS_CODE_MESSAGE } from '../common/message-constants'
-import {
-  isBiggerThanShortDevice,
-  matterhornSecondary,
-  cmRed,
-} from '../common/styles/constant'
+import { isBiggerThanShortDevice, } from '../common/styles/constant'
 import { moderateScale, verticalScale } from 'react-native-size-matters'
 
 const lockImage = require('../images/lockCombo.png')
@@ -160,10 +156,10 @@ export class LockEnter extends Component<LockEnterProps, LockEnterState> {
         {this.props.fromRecovery ? (
           <Container safeArea fifth>
             <CustomView center>
-              <AppSvgIcon
+              <LockHeader
                 width={moderateScale(218.54)}
                 height={moderateScale(28)}
-                fill={colors.cmGray2}
+                fill={colors.gray2}
               />
             </CustomView>
             <Image
@@ -216,10 +212,10 @@ export class LockEnter extends Component<LockEnterProps, LockEnterState> {
         ) : (
           <Container tertiary>
             <CustomView center>
-              <AppSvgIcon
+              <LockHeader
                 width={moderateScale(218.54)}
                 height={moderateScale(28)}
-                fill={colors.cmGray2}
+                fill={colors.gray2}
               />
             </CustomView>
             <CustomView
@@ -252,7 +248,7 @@ export class LockEnter extends Component<LockEnterProps, LockEnterState> {
 
 const stylesRecovery = StyleSheet.create({
   failedAttemptsText: {
-    color: cmRed,
+    color: colors.red,
     fontSize: 17,
     fontWeight: '500',
     fontFamily: fontFamily,
@@ -276,11 +272,11 @@ const stylesRecovery = StyleSheet.create({
   blackStrip: {
     position: 'absolute',
     height: 8,
-    backgroundColor: matterhornSecondary,
+    backgroundColor: colors.gray1,
     width: '100%',
   },
   lockIconWrapper: {
-    backgroundColor: matterhornSecondary,
+    backgroundColor: colors.gray1,
     borderRadius: 50,
   },
   lockHeading: {

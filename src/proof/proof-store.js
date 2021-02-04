@@ -78,7 +78,7 @@ import {
 } from '../proof-request/type-proof-request'
 import { ensureVcxInitAndPoolConnectSuccess } from '../store/route-store'
 import Snackbar from 'react-native-snackbar'
-import { venetianRed, white } from '../common/styles'
+import { colors, venetianRed } from '../common/styles/constant'
 
 export const updateAttributeClaim = (
   uid: string,
@@ -673,7 +673,7 @@ export function* updateAttributeClaimAndSendProof(
       text: 'Error generating proof. Please try again.',
       duration: Snackbar.LENGTH_LONG,
       backgroundColor: venetianRed,
-      textColor: white,
+      textColor: colors.white,
     })
   }
 }

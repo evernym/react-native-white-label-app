@@ -1,16 +1,8 @@
 // @flow
-import React, { Component } from 'react'
-import { View, StyleSheet, ImageBackground } from 'react-native'
+import React, { useMemo } from 'react'
+import { View, StyleSheet } from 'react-native'
 import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
-
-// $FlowExpectedError[cannot-resolve-module] external file
-import {
-  HEADLINE,
-  MyCredentialsViewEmptyState,
-} from '../../../../../app/evernym-sdk/my-credentials'
-
-import type { Store } from '../store/type-store'
+import { connect, useSelector } from 'react-redux'
 import type { MyCredentialsProps, CredentialItem } from './type-my-credentials'
 import type { ClaimOfferPayload } from '../claim-offer/type-claim-offer'
 
@@ -18,15 +10,28 @@ import { HomeHeader, CameraButton } from '../components'
 import { CredentialsCards } from './cards/credentials-cards'
 import { myCredentialsRoute, qrCodeScannerTabRoute } from '../common'
 import { colors } from '../common/styles/constant'
-import { getEnvironmentName } from '../store/config-store'
 import { CLAIM_REQUEST_STATUS } from '../claim-offer/type-claim-offer'
 import { deleteClaim } from '../claim/claim-store'
+import { getClaimOffers } from '../store/store-selector'
+
+// $FlowExpectedError[cannot-resolve-module] external file
+import { HEADLINE, MyCredentialsViewEmptyState } from '../../../../../app/evernym-sdk/my-credentials'
+import { EmptyState } from '../home/empty-state'
 
 const headline = HEADLINE || 'MY Credentials'
 
-class MyCredentialsComponent extends Component<MyCredentialsProps, void> {
-  render() {
-    const { offers } = this.props
+const MyCredentialsComponent = ({
+                                  route,
+                                  navigation,
+                                }: MyCredentialsProps) => {
+  const claimOffer = useSelector(getClaimOffers)
+
+  const credentials = useMemo(() => {
+    const {
+      vcxSerializedClaimOffers: serializedOffers,
+      ...offers
+    } = claimOffer
+
     const credentials: Array<CredentialItem> = []
 
     Object.keys(offers).forEach((uid) => {
@@ -49,63 +54,47 @@ class MyCredentialsComponent extends Component<MyCredentialsProps, void> {
 
     credentials.sort((a, b) => a.credentialName.localeCompare(b.credentialName))
 
-    const hasNoCredentials = credentials.length == 0
+    return credentials
+  }, [claimOffer])
 
-    return (
-      <View style={styles.outerContainer}>
-        <HomeHeader
-          headline={headline}
-          navigation={this.props.navigation}
-          route={this.props.route}
-        />
-        <View style={styles.container}>
-          {hasNoCredentials && (
-            <ImageBackground
-              source={require('../images/connection-items-placeholder.png')}
-              style={styles.backgroundImage}
-            >
-              {MyCredentialsViewEmptyState ? (
-                <MyCredentialsViewEmptyState />
-              ) : (
-                <View />
-              )}
-            </ImageBackground>
-          )}
-          {!hasNoCredentials && (
-            <CredentialsCards
-              credentials={credentials}
-              deleteClaim={this.props.deleteClaim}
-              navigation={this.props.navigation}
-              route={this.props.route}
-            />
-          )}
-        </View>
-        <CameraButton
-          onPress={() => this.props.navigation.navigate(qrCodeScannerTabRoute)}
-        />
+  const hasNoCredentials = useMemo(() => credentials.length === 0, [credentials])
+
+  return (
+    <View style={styles.outerContainer}>
+      <HomeHeader
+        headline={headline}
+        navigation={navigation}
+        route={route}
+      />
+      <View
+        style={styles.container}
+      >
+        {hasNoCredentials && (
+          MyCredentialsViewEmptyState ? <MyCredentialsViewEmptyState /> : <EmptyState />
+        )}
+        {!hasNoCredentials && (
+          <CredentialsCards
+            credentials={credentials}
+            deleteClaim={deleteClaim}
+            navigation={navigation}
+            route={route}
+          />
+        )}
       </View>
-    )
-  }
-}
 
-const mapStateToProps = (state: Store) => {
-  const {
-    vcxSerializedClaimOffers: serializedOffers,
-    ...offers
-  } = state.claimOffer
-
-  return {
-    offers,
-    environmentName: getEnvironmentName(state.config),
-  }
+      <CameraButton
+        onPress={() => navigation.navigate(qrCodeScannerTabRoute)}
+      />
+    </View>
+  )
 }
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators({ deleteClaim }, dispatch)
 
 export const MyCredentials = connect(
-  mapStateToProps,
-  mapDispatchToProps
+  null,
+  mapDispatchToProps,
 )(MyCredentialsComponent)
 
 export const myCredentialsScreen = {
@@ -118,9 +107,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   container: {
-    width: '100%',
-    height: '100%',
-    backgroundColor: colors.cmWhite,
+    backgroundColor: colors.white,
     flex: 1,
   },
   backgroundImage: {

@@ -16,7 +16,7 @@ import type { ReactNavigation } from '../../common/type-common'
 
 // styles
 import { colors, fontFamily, fontSizes } from '../../common/styles/constant'
-import { ModalLeftToRight } from '../utils/modal-animation'
+import { ModalPushLeft } from '../utils/modal-animation'
 import { ExpandableText } from '../../components/expandable-text/expandable-text'
 
 const CustomValues = ({
@@ -45,7 +45,7 @@ const CustomValues = ({
           onChangeText={setValue}
           autoFocus
           placeholder="Please type..."
-          placeholderTextColor={colors.cmGray2}
+          placeholderTextColor={colors.gray2}
           defaultValue={params?.labelValue ? params?.labelValue : ''}
           style={styles.contentInput}
           keyboardType="default"
@@ -76,7 +76,7 @@ CustomValuesScreen.screen.navigationOptions = ({
     marginRight: '2.5%',
     marginBottom: '4%',
     borderRadius: 10,
-    backgroundColor: colors.cmWhite,
+    backgroundColor: colors.white,
   },
   cardOverlay: () => (
     <ModalHeaderBar
@@ -85,7 +85,7 @@ CustomValuesScreen.screen.navigationOptions = ({
       onPress={() => goBack(null)}
     />
   ),
-  ...ModalLeftToRight
+  ...ModalPushLeft
 })
 
 const styles = StyleSheet.create({
@@ -95,11 +95,11 @@ const styles = StyleSheet.create({
   descriptionWrapper: {
     ...Platform.select({
       ios: {
-        borderBottomColor: colors.cmGray1,
+        borderBottomColor: colors.gray1,
         borderBottomWidth: 1,
       },
       android: {
-        borderBottomColor: colors.cmGray1,
+        borderBottomColor: colors.gray1,
         borderBottomWidth: 1,
       },
     }),
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
     marginTop: moderateScale(16),
   },
   descriptionTitle: {
-    color: colors.cmGray1,
+    color: colors.gray1,
     fontSize: verticalScale(fontSizes.size8),
     fontWeight: '300',
     marginBottom: moderateScale(16),
@@ -117,20 +117,20 @@ const styles = StyleSheet.create({
   contentInput: {
     fontSize: verticalScale(fontSizes.size5),
     fontWeight: '400',
-    color: colors.cmGray2,
+    color: colors.gray2,
     width: '100%',
     textAlign: 'left',
     paddingLeft: 10,
     paddingTop: 8,
     paddingBottom: 8,
     fontFamily: fontFamily,
-    borderTopColor: colors.cmGray3,
+    borderTopColor: colors.gray3,
     borderTopWidth: 1,
-    borderRightColor: colors.cmGray3,
+    borderRightColor: colors.gray3,
     borderRightWidth: 1,
-    borderBottomColor: colors.cmGray3,
+    borderBottomColor: colors.gray3,
     borderBottomWidth: 1,
-    borderLeftColor: colors.cmGray3,
+    borderLeftColor: colors.gray3,
     borderLeftWidth: 1,
     borderRadius: 5,
   },
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
     fontFamily: fontFamily,
     fontSize: verticalScale(fontSizes.size6),
     fontWeight: '700',
-    color: colors.cmGray1,
+    color: colors.gray1,
     width: '100%',
     textAlign: 'left',
   },

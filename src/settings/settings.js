@@ -7,6 +7,7 @@ import {
   Platform,
   ScrollView,
   View,
+  TouchableOpacity,
 } from 'react-native'
 import { verticalScale, moderateScale } from 'react-native-size-matters'
 import { Apptentive } from 'apptentive-react-native'
@@ -16,10 +17,10 @@ import get from 'lodash.get'
 
 // $FlowExpectedError[cannot-resolve-module] external file
 import { APP_NAME } from '../../../../../app/evernym-sdk/app'
-// $FlowExpectedError[cannot-resolve-module] external file
 import {
   settingsOptions,
   HEADLINE,
+// $FlowExpectedError[cannot-resolve-module] external file
 } from '../../../../../app/evernym-sdk/settings'
 // $FlowExpectedError[cannot-resolve-module] external file
 import { APPTENTIVE_CREDENTIALS } from '../../../../../app/evernym-sdk/feedback'
@@ -86,6 +87,7 @@ import {
   SAVE_ICON,
   BACKUP_ICON,
 } from '../common/icons'
+import { sendLogsRoute } from '../common'
 
 const headline = HEADLINE || 'Settings'
 
@@ -102,52 +104,58 @@ const headline = HEADLINE || 'Settings'
 
 const style = StyleSheet.create({
   secondaryContainer: {
-    backgroundColor: colors.cmGray5,
+    backgroundColor: colors.gray5,
     flex: 1,
   },
   listContainer: {
     borderBottomWidth: 0,
     borderTopWidth: 0,
-    backgroundColor: colors.cmGray5,
+    backgroundColor: colors.gray5,
     padding: 0,
   },
   listItemContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
     borderBottomWidth: 1,
     borderTopWidth: 0,
-    borderBottomColor: colors.cmGray4,
-    backgroundColor: colors.cmGray5,
+    borderBottomColor: colors.gray4,
+    backgroundColor: colors.gray5,
     minHeight: verticalScale(52),
-    justifyContent: 'center',
-    paddingTop: 0,
-    paddingBottom: 0,
-    paddingRight: moderateScale(10),
+    paddingVertical: verticalScale(10),
+    paddingHorizontal: moderateScale(16),
+  },
+  listItemText: {
+    flex: 1,
+    paddingHorizontal: verticalScale(10),
   },
   titleStyle: {
     fontFamily: fontFamily,
     fontSize: verticalScale(fontSizes.size5),
     fontWeight: 'bold',
-    color: colors.cmGray2,
+    color: colors.gray2,
   },
   walletNotBackedUpTitleStyle: {
     fontFamily: fontFamily,
     fontSize: verticalScale(fontSizes.size5),
     fontWeight: 'bold',
-    color: colors.cmRed,
+    color: colors.red,
   },
   subtitleStyle: {
     fontFamily: fontFamily,
     fontSize: verticalScale(fontSizes.size8),
-    color: colors.cmGray2,
+    color: colors.gray2,
   },
   walletNotBackedUpSubtitleStyle: {
     fontFamily: fontFamily,
     fontSize: verticalScale(fontSizes.size8),
-    color: colors.cmRed,
+    color: colors.red,
   },
   subtitleFail: {
-    color: colors.cmRed,
+    color: colors.red,
   },
-  avatarStyle: { backgroundColor: colors.cmGray5, padding: moderateScale(5) },
+  avatarStyle: { backgroundColor: colors.gray5, padding: moderateScale(5) },
   username: {
     fontSize: verticalScale(fontSizes.size4),
     padding: '3%',
@@ -166,16 +174,16 @@ const style = StyleSheet.create({
     marginRight: moderateScale(10),
   },
   floatTokenAmount: {
-    color: colors.cmGray1,
+    color: colors.gray1,
     paddingHorizontal: moderateScale(8),
   },
   backupTimeSubtitleStyle: {
     marginLeft: moderateScale(10),
-    color: colors.cmGray2,
+    color: colors.gray2,
     fontFamily: fontFamily,
   },
   subtitleColor: {
-    color: colors.cmGray2,
+    color: colors.gray2,
     fontFamily: fontFamily,
   },
   onfidoIcon: {
@@ -278,6 +286,13 @@ export class Settings extends Component<SettingsProps, SettingsState> {
     if (this.props.navigation.isFocused()) {
       this.props.navigation.navigate(aboutAppRoute, {})
     }
+  }
+
+  openSendErrorLogs = () => {
+    const {
+      navigation: { navigate },
+    } = this.props
+    navigate(sendLogsRoute)
   }
 
   // openOnfido = () => {
@@ -529,7 +544,7 @@ export class Settings extends Component<SettingsProps, SettingsState> {
       Platform.OS === 'ios' ? (
         <Switch
           disabled={this.state.disableTouchIdSwitch}
-          trackColor={{ true: colors.cmGreen1 }}
+          trackColor={{ true: colors.main }}
           onValueChange={this.onChangeTouchId}
           value={this.props.touchIdActive}
         />
@@ -543,17 +558,17 @@ export class Settings extends Component<SettingsProps, SettingsState> {
           sliderWidth={moderateScale(28)}
           sliderHeight={moderateScale(28)}
           sliderRadius={moderateScale(58)}
-          buttonOnColor={colors.cmGreen1}
-          buttonOffColor={colors.cmGray4}
-          sliderOnColor={colors.cmWhite}
-          sliderOffColor={colors.cmWhite}
+          buttonOnColor={colors.main}
+          buttonOffColor={colors.gray4}
+          sliderOnColor={colors.white}
+          sliderOffColor={colors.white}
         />
       )
     const cloudToggleSwitch =
       Platform.OS === 'ios' ? (
         <Switch
           disabled={this.state.disableTouchIdSwitch}
-          trackColor={{ true: colors.cmGreen1 }}
+          trackColor={{ true: colors.main }}
           onValueChange={this.toggleAutoCloudBackupEnabled}
           value={this.props.autoCloudBackupEnabled}
         />
@@ -568,10 +583,10 @@ export class Settings extends Component<SettingsProps, SettingsState> {
           sliderWidth={moderateScale(28)}
           sliderHeight={moderateScale(28)}
           sliderRadius={moderateScale(58)}
-          buttonOnColor={colors.cmGreen1}
-          buttonOffColor={colors.cmGray4}
-          sliderOnColor={colors.cmWhite}
-          sliderOffColor={colors.cmWhite}
+          buttonOnColor={colors.main}
+          buttonOffColor={colors.gray4}
+          sliderOnColor={colors.white}
+          sliderOffColor={colors.white}
         />
       )
 
@@ -586,8 +601,8 @@ export class Settings extends Component<SettingsProps, SettingsState> {
             color={
               this.props.connectionsUpdated && !this.props.isAutoBackupEnabled
                 ? // || (this.props.connectionsUpdated && this.props.isAutoBackupEnabled && hasCloudBackupFailed)
-                  colors.cmRed
-                : colors.cmGray2
+                  colors.red
+                : colors.gray2
             }
           />
         ),
@@ -601,7 +616,7 @@ export class Settings extends Component<SettingsProps, SettingsState> {
         avatar: (
           <EvaIcon
             name={BACKUP_ICON}
-            color={hasCloudBackupFailed ? colors.cmRed : colors.cmGray2}
+            color={hasCloudBackupFailed ? colors.red : colors.gray2}
           />
         ),
         rightIcon:
@@ -623,9 +638,9 @@ export class Settings extends Component<SettingsProps, SettingsState> {
               subtitle:
                 settingsOptions['biometrics']['subtitle'] ||
                 'Use your finger or face to secure app',
-              avatar: <SvgCustomIcon fill={colors.cmGray2} name="Biometrics" />,
+              avatar: <SvgCustomIcon fill={colors.gray2} name="Biometrics" />,
               rightIcon: toggleSwitch,
-              onPress: this.onChangeTouchId,
+              onPress: () => {},
             },
           ]
         : []),
@@ -641,14 +656,14 @@ export class Settings extends Component<SettingsProps, SettingsState> {
                 <View style={styles.avatarView}>
                   <SvgCustomIcon
                     name="Passcode"
-                    fill={colors.cmGray2}
+                    fill={colors.gray2}
                     width={verticalScale(32)}
                     height={verticalScale(19)}
                   />
                 </View>
               ),
               rightIcon: (
-                <EvaIcon name={ARROW_RIGHT_ICON} color={colors.cmGray3} />
+                <EvaIcon name={ARROW_RIGHT_ICON} color={colors.gray3} />
               ),
               onPress: this.onChangePinClick,
             },
@@ -660,10 +675,10 @@ export class Settings extends Component<SettingsProps, SettingsState> {
         subtitle: 'View your Recovery Phrase',
         avatar: (
           <View style={styles.avatarView}>
-            <SvgCustomIcon name="ViewPassPhrase" fill={colors.cmGray2} />
+            <SvgCustomIcon name="ViewPassPhrase" fill={colors.gray2} />
           </View>
         ),
-        rightIcon: <EvaIcon name={ARROW_RIGHT_ICON} color={colors.cmGray3} />,
+        rightIcon: <EvaIcon name={ARROW_RIGHT_ICON} color={colors.gray3} />,
         onPress: this.viewRecoveryPhrase,
       },
       ...(settingsOptions['feedback']
@@ -681,7 +696,7 @@ export class Settings extends Component<SettingsProps, SettingsState> {
                 </View>
               ),
               rightIcon: (
-                <EvaIcon name={ARROW_RIGHT_ICON} color={colors.cmGray3} />
+                <EvaIcon name={ARROW_RIGHT_ICON} color={colors.gray3} />
               ),
               onPress: this.openFeedback,
             },
@@ -701,11 +716,34 @@ export class Settings extends Component<SettingsProps, SettingsState> {
                 </View>
               ),
               rightIcon: (
-                <EvaIcon name={ARROW_RIGHT_ICON} color={colors.cmGray3} />
+                <EvaIcon name={ARROW_RIGHT_ICON} color={colors.gray3} />
               ),
               onPress: this.openAboutApp,
             },
           ]
+        : []),
+      ...(settingsOptions['logs']
+        ? [
+          {
+            id: 9,
+            title: settingsOptions['logs']['title'] || 'Send Logs',
+            subtitle: settingsOptions['logs']['subtitle'] || 'Help us improve our app by sending your errors',
+            avatar: (
+              <View style={styles.avatarView}>
+                <SvgCustomIcon
+                  name="About"
+                  fill={colors.gray2}
+                  width={verticalScale(27)}
+                  height={verticalScale(27)}
+                />
+              </View>
+            ),
+            rightIcon: (
+              <EvaIcon name={ARROW_RIGHT_ICON} color={colors.gray3} />
+            ),
+            onPress: this.openSendErrorLogs,
+          },
+        ]
         : []),
       // {
       //   id: 8,
@@ -720,7 +758,7 @@ export class Settings extends Component<SettingsProps, SettingsState> {
       //     </View>
       //   ),
       //
-      //   rightIcon: <EvaIcon name={ARROW_RIGHT_ICON} color={colors.cmGray3} />,
+      //   rightIcon: <EvaIcon name={ARROW_RIGHT_ICON} color={colors.gray3} />,
       //   onPress: this.openOnfido,
       // },
     ]
@@ -735,7 +773,7 @@ export class Settings extends Component<SettingsProps, SettingsState> {
           </View>
         ),
 
-        rightIcon: <EvaIcon name={ARROW_RIGHT_ICON} color={colors.cmGray3} />,
+        rightIcon: <EvaIcon name={ARROW_RIGHT_ICON} color={colors.gray3} />,
         onPress: this.openStyleGuide,
       })
     }
@@ -757,7 +795,7 @@ export class Settings extends Component<SettingsProps, SettingsState> {
           <ScrollView>
             <CustomView style={[style.secondaryContainer, style.listContainer]}>
               {settingsItemList.map((item, index) => {
-                // disable manual backup as well. Remove below line to enable manual backup in ConnectMe
+                // disable manual backup as well. Remove below line to enable manual backup in MSDK
                 if (index === 0) {
                   return
                 }
@@ -771,36 +809,38 @@ export class Settings extends Component<SettingsProps, SettingsState> {
                 if ((index === 1 || index === 4) && !hasVerifiedRecoveryPhrase)
                   return
                 return (
-                  <ListItem
-                    containerStyle={[style.listItemContainer]}
-                    titleStyle={[
-                      (this.props.connectionsUpdated &&
-                        item.id === 1 &&
-                        !this.props.isAutoBackupEnabled) ||
-                      (item.id === 2 && hasCloudBackupFailed)
-                        ? style.walletNotBackedUpTitleStyle
-                        : style.titleStyle,
-                    ]}
-                    subtitleStyle={[
-                      (this.props.connectionsUpdated &&
-                        item.id === 1 &&
-                        !this.props.isAutoBackupEnabled) ||
-                      (item.id === 2 && hasBackupError)
-                        ? // && this.props.lastSuccessfulCloudBackup === 'error'
-                          style.walletNotBackedUpSubtitleStyle
-                        : style.subtitleStyle,
-                    ]}
-                    key={index}
-                    title={item && item.title}
-                    subtitle={item && item.subtitle}
-                    leftAvatar={item && item.avatar}
-                    rightIcon={
-                      item.rightIcon !== ''
+                  <TouchableOpacity onPress={item.onPress}  key={index}>
+                    <ListItem.Content style={style.listItemContainer}>
+                      {item && item.avatar}
+                      <ListItem.Content style={style.listItemText}>
+                        <ListItem.Title style={[
+                          (this.props.connectionsUpdated &&
+                            item.id === 1 &&
+                            !this.props.isAutoBackupEnabled) ||
+                          (item.id === 2 && hasCloudBackupFailed)
+                            ? style.walletNotBackedUpTitleStyle
+                            : style.titleStyle,
+                        ]}>
+                          {item && item.title}
+                        </ListItem.Title>
+                        <ListItem.Subtitle style={[
+                          (this.props.connectionsUpdated &&
+                            item.id === 1 &&
+                            !this.props.isAutoBackupEnabled) ||
+                          (item.id === 2 && hasBackupError)
+                            ? // && this.props.lastSuccessfulCloudBackup === 'error'
+                            style.walletNotBackedUpSubtitleStyle
+                            : style.subtitleStyle,
+                        ]}>
+                          {item && item.subtitle}
+                        </ListItem.Subtitle>
+                      </ListItem.Content>
+                      {item.rightIcon !== ''
                         ? item.rightIcon
-                        : { name: 'chevron-right' }
-                    }
-                    onPress={item && item.onPress}
-                  />
+                        : { name: 'chevron-right' }}
+                    </ListItem.Content>
+                  </TouchableOpacity>
+
                 )
               })}
             </CustomView>
@@ -859,15 +899,15 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'stretch',
     justifyContent: 'flex-start',
-    backgroundColor: colors.cmWhite,
+    backgroundColor: colors.white,
   },
   subtitleColor: {
-    color: colors.cmGray2,
+    color: colors.gray2,
     fontFamily: fontFamily,
   },
   backupTimeSubtitleStyle: {
     marginLeft: moderateScale(10),
-    color: colors.cmGray2,
+    color: colors.gray2,
     fontFamily: fontFamily,
   },
   // onfidoIcon: {

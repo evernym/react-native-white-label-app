@@ -38,7 +38,7 @@ const Modal = (props: CredentialReceivedProps) => {
 
   return (
     <View style={styles.modalWrapper}>
-      <StatusBar backgroundColor={colors.cmBlack} barStyle={'light-content'} />
+      <StatusBar backgroundColor={colors.black} barStyle={'light-content'} />
       <ModalContent
         content={data.data}
         imageUrl={imageUrl}
@@ -71,7 +71,7 @@ fulfilledMessageScreen.screen.navigationOptions = ({
     marginRight: '2.5%',
     marginBottom: '4%',
     borderRadius: 10,
-    backgroundColor: colors.cmWhite,
+    backgroundColor: colors.white,
   },
   cardOverlay: () => (
     <ModalHeaderBar

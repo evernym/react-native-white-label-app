@@ -22,9 +22,9 @@ const styles = StyleSheet.create({
     width: moderateScale(42, 3),
     height: moderateScale(42, 3),
     borderRadius: moderateScale(42, 3) / 2,
-    backgroundColor: colors.cmWhite,
+    backgroundColor: colors.white,
     position: 'absolute',
-    shadowColor: colors.cmBlack,
+    shadowColor: colors.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.5,
     shadowRadius: 5,
@@ -38,6 +38,6 @@ const styles = StyleSheet.create({
   text: {
     fontFamily: fontFamily,
     fontSize: moderateScale(9, 0.1),
-    color: colors.cmGray2,
+    color: colors.gray2,
   },
 })

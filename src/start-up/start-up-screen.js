@@ -18,7 +18,7 @@ import { BACKGROUND_IMAGE } from '../../../../../app/evernym-sdk/startup'
 
 const { width } = Dimensions.get('screen')
 
-const image = BACKGROUND_IMAGE || require('../images/setup.png')
+const image = BACKGROUND_IMAGE || require('../images/setup_background.png')
 
 function StartUpScreen(props: { navigation: Function }) {
   const { navigation } = props
@@ -85,7 +85,7 @@ const style = StyleSheet.create({
     paddingRight: moderateScale(10),
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: colors.cmGreen1,
+    backgroundColor: colors.main,
     width: width - OFFSET_2X * 2,
     alignSelf: 'flex-end',
     marginBottom: 100,

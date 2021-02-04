@@ -2,7 +2,7 @@
 import React from 'react'
 import { Image, Text, StyleSheet, TouchableWithoutFeedback } from 'react-native'
 import { CustomView } from './layout/custom-view'
-import { color, font } from '../common/styles/constant'
+import { color, fontFamily, fontSizes as fonts } from '../common/styles/constant'
 import empty from '../common/empty'
 
 // We need both type of ribbon and it is better to load them once
@@ -51,9 +51,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.9,
   },
   label: {
-    fontSize: font.size.XS,
+    fontSize: fonts.size7,
     fontWeight: 'bold',
-    fontFamily: font.family,
+    fontFamily: fontFamily,
   },
   primary: {
     color: color.bg.secondary.font.tertiary,

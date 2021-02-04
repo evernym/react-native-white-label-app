@@ -13,7 +13,7 @@ import { connect } from 'react-redux'
 import { PanGestureHandler, State } from 'react-native-gesture-handler'
 
 // $FlowExpectedError[cannot-resolve-module] external file
-import { APP_NAME, APP_IMAGE } from '../../../../../app/evernym-sdk/app'
+import { APP_NAME } from '../../../../../app/evernym-sdk/app'
 
 import type { Store } from '../store/type-store'
 
@@ -28,10 +28,10 @@ import {
 import { connectionHistoryBackedUp } from '../connection-history/connection-history-store'
 import { cloudBackupStart, resetCloudBackupStatus } from './backup-store'
 import { setAutoCloudBackupEnabled } from './backup-actions'
-import { color } from '../common/styles/constant'
+import { color, colors } from '../common/styles/constant'
 
 import { questionStyles } from './styles'
-const appImage = APP_IMAGE || require('../images/cb_app.png')
+const appImage = require('../images/cb_app.png')
 const downloadImage = require('../images/Group.png')
 
 const successImg = require('../images/Success.png')
@@ -375,7 +375,7 @@ const mapStateToProps = (state: Store) => {
 
 export const cloudBackupScreen = {
   routeName: cloudBackupRoute,
-  screen: withStatusBar({ color: 'white' })(
+  screen: withStatusBar({ color: colors.white })(
     connect(mapStateToProps, mapDispatchToProps)(CloudBackup)
   ),
 }

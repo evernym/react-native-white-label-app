@@ -6,6 +6,9 @@ import _merge from 'lodash.merge'
 import { NativeModules } from 'react-native'
 
 // $FlowExpectedError[cannot-resolve-module] external file
+import { APP_NAME } from '../../../../../app/evernym-sdk/app'
+
+// $FlowExpectedError[cannot-resolve-module] external file
 import { CUSTOM_LOG_UTILS } from '../../../../../app/evernym-sdk/logs'
 ;(CUSTOM_LOG_UTILS: {
   encryptionKey: string,
@@ -368,7 +371,7 @@ export const customLogger = {
 
     if (recordAsString.indexOf('%c prev state') === -1) {
       writeToVcxLog(
-        'ConnectMe.ReactNative',
+        `${APP_NAME}.ReactNative`,
         record.levelName,
         recordAsString,
         rotatingLog

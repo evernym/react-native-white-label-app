@@ -29,7 +29,7 @@ export { ModalButton }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.cmWhite,
+    backgroundColor: colors.white,
     width: '100%',
     padding: moderateScale(15),
     paddingBottom: moderateScale(1),
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
   close: {
     fontSize: verticalScale(fontSizes.size5),
     fontWeight: '700',
-    color: colors.cmWhite,
+    color: colors.white,
     fontFamily: fontFamily,
   },
 })

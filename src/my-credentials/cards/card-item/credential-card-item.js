@@ -55,15 +55,15 @@ import {
 import { brightnessByColor } from '../utils'
 import { getConnectionColorTheme } from '../../../store/store-selector'
 
-const textColor = colors.cmWhite
+const textColor = colors.white
 
 const CredentialCard = ({
   item,
-  isExpanded,
-  setActiveStack,
-  isHidden,
-  elevation,
-}: CredentialCardProps) => {
+                          isExpanded,
+                          setActiveStack,
+                          isHidden,
+                          elevation,
+                        }: CredentialCardProps) => {
   const {
     logoUrl,
     date,
@@ -74,6 +74,7 @@ const CredentialCard = ({
     claimOfferUuid,
   } = item
   const [isOpen, setIsOpen] = useState(false)
+  const [shouldRemove, setShouldRemove] = useState(false)
   const navigation = useNavigation()
   const dispatch = useDispatch()
   const offsetX = useValue(0)
@@ -82,7 +83,7 @@ const CredentialCard = ({
     getConnectionColorTheme(state, remoteDid)
   )
 
-  const hiddenTransition = useTransition(isHidden, {
+  const collapseTransition = useTransition(isHidden || shouldRemove, {
     duration: TRANSITION_DURATION,
   })
   const {
@@ -94,8 +95,8 @@ const CredentialCard = ({
 
   const snapPoints = [0, CARD_OFFSET]
   const to = snapPoint(translateX, velocity.x, snapPoints)
-  const hiddenHight = mix(hiddenTransition, CARD_TOTAL_HEIGHT, 0)
-  const hiddenOpacity = mix(hiddenTransition, 1, 0)
+  const hiddenHight = mix(collapseTransition, CARD_TOTAL_HEIGHT, 0)
+  const hiddenOpacity = mix(collapseTransition, 1, 0)
 
   // Manage animations and gesture handler
   useCode(
@@ -128,8 +129,8 @@ const CredentialCard = ({
   const getTextColor = useCallback(() => {
     const brightness = brightnessByColor(cardColor)
     return brightness > WHITE_TEXT_BRIGHTNESS_LIMIT
-      ? colors.cmGray0
-      : colors.cmWhite
+      ? colors.gray0
+      : colors.white
   }, [cardColor])
 
   const onPress = () => {
@@ -165,7 +166,10 @@ const CredentialCard = ({
           {
             text: 'Delete',
             onPress: () => {
-              dispatch(deleteClaim(item.claimOfferUuid))
+              setShouldRemove(true)
+              setTimeout(() => {
+                dispatch(deleteClaim(item.claimOfferUuid))
+              }, TRANSITION_DURATION)
             },
           },
         ],
@@ -192,7 +196,7 @@ const CredentialCard = ({
             width={moderateScale(32)}
             height={moderateScale(32)}
           />
-          <Text style={{ color: colors.cmGray2 }}>Delete</Text>
+          <Text style={{ color: colors.gray2 }}>Delete</Text>
         </TouchableOpacity>
       </View>
 
@@ -288,7 +292,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     height: CARD_HEIGHT,
     width: CARD_HEIGHT,
-    backgroundColor: colors.cmWhite,
+    backgroundColor: colors.white,
     opacity: 0.1,
     borderRadius: CARD_HEIGHT / 2,
     transform: [{ scaleX: 2.3 }, { translateY: -CARD_HEIGHT / 1.8 }],

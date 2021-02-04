@@ -67,7 +67,7 @@ export const AboutAppListItem = ({
   )
 }
 
-const rightIcon = <EvaIcon name={ARROW_RIGHT_ICON} color={colors.cmGray3} />
+const rightIcon = <EvaIcon name={ARROW_RIGHT_ICON} color={colors.gray3} />
 
 const logoApp = <Image source={appImage} />
 const logoEvernym = <Image source={require('../images/logo_evernym.png')} />

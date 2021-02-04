@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
     height: moderateScale(88, 0.25),
     flexDirection: 'row',
     borderBottomWidth: 1,
-    borderBottomColor: colors.cmGray5,
+    borderBottomColor: colors.gray5,
   },
   avatarSection: {
     height: '100%',
@@ -194,18 +194,18 @@ const styles = StyleSheet.create({
     fontFamily: fontFamily,
     fontSize: verticalScale(fontSizes.size5),
     fontWeight: 'bold',
-    color: colors.cmGray1,
+    color: colors.gray1,
   },
   attributesText: {
     fontFamily: fontFamily,
     fontSize: verticalScale(fontSizes.size8),
-    color: colors.cmGray2,
+    color: colors.gray2,
   },
   dateText: {
     fontFamily: fontFamily,
     fontStyle: 'italic',
     fontSize: verticalScale(fontSizes.size9),
-    color: colors.cmGray3,
+    color: colors.gray3,
   },
 })
 

@@ -376,6 +376,8 @@ export const GET_UN_ACKNOWLEDGED_MESSAGES = 'GET_UN_ACKNOWLEDGED_MESSAGES'
 
 export type GetUnacknowledgedMessagesAction = {
   type: typeof GET_UN_ACKNOWLEDGED_MESSAGES,
+  uid?: string,
+  forDid?: string,
 }
 export type GetMessagesLoadingAction = {
   type: typeof GET_MESSAGES_LOADING,

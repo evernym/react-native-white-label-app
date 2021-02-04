@@ -1,23 +1,10 @@
 // @flow
-import React, { Component } from 'react'
-import { Platform, View, FlatList, ImageBackground } from 'react-native'
-import { connect } from 'react-redux'
+import React, { useCallback, useEffect, useMemo } from 'react'
+import { Platform, View, FlatList } from 'react-native'
+import { connect, useSelector } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import Snackbar from 'react-native-snackbar'
 import PushNotificationIOS from '@react-native-community/push-notification-ios'
-
-// $FlowExpectedError[cannot-resolve-module] external file
-import {
-  MyConnectionsViewEmptyState,
-  HEADLINE,
-} from '../../../../../app/evernym-sdk/my-connections'
-
-import type { Store } from '../store/type-store'
-import type {
-  MyConnectionsProps,
-  MyConnectionsState,
-} from './type-my-connections'
-import type { Connection } from '../store/type-connection-store'
 
 import { newConnectionSeen } from '../connection-history/connection-history-store'
 import { HomeHeader, CameraButton } from '../components'
@@ -25,56 +12,140 @@ import { ConnectionCard } from './connection-card/connection-card'
 import { qrCodeScannerTabRoute } from '../common'
 import { getConnections } from '../store/connections-store'
 import { connectionHistRoute } from '../common'
-import { getUnseenMessages } from '../store/store-selector'
-import { externalStyles } from './styles'
 import {
-  getEnvironmentName,
-  getUnacknowledgedMessages,
-} from '../store/config-store'
+  getAllConnection,
+  getConnectionHydrationState,
+  getHistory,
+  getMessageDownloadStatus,
+  getSnackError,
+  getUnseenMessages,
+} from '../store/store-selector'
+import { externalStyles } from './styles'
+import { getUnacknowledgedMessages } from '../store/config-store'
 import { GET_MESSAGES_LOADING } from '../store/type-config-store'
 import { withStatusBar } from '../components/status-bar/status-bar'
 import { NotificationCard } from '../in-app-notification/in-app-notification-card'
 import { colors } from '../common/styles'
+import type { MyConnectionsProps } from './type-my-connections'
 
-const headline = HEADLINE || 'MY Connections'
+// $FlowExpectedError[cannot-resolve-module] external file
+import { MyConnectionsViewEmptyState, HEADLINE } from '../../../../../app/evernym-sdk/my-connections'
+import { EmptyState } from '../home/empty-state'
 
-export class MyConnections extends Component<
-  MyConnectionsProps,
-  MyConnectionsState
-> {
-  componentDidUpdate(prevProps: MyConnectionsProps) {
-    const noUnSeenMessages =
-      prevProps.unSeenMessagesCount && !this.props.unSeenMessagesCount
+const headline = HEADLINE || 'My Connections'
 
-    if (noUnSeenMessages) {
+const {
+  container,
+  flatListContainer,
+  flatListInnerContainer,
+  outerContainer,
+} = externalStyles
+
+const numColumns = 2
+
+const MyConnections = ({
+                         route,
+                         navigation,
+                         onNewConnectionSeen,
+                         getUnacknowledgedMessages,
+                       }: MyConnectionsProps) => {
+  const allConnections = useSelector(getAllConnection)
+  const history = useSelector(getHistory)
+  const hydrated = useSelector(getConnectionHydrationState)
+  const messageDownloadStatus = useSelector(getMessageDownloadStatus)
+  const snackError = useSelector(getSnackError)
+  const unseenMessages = useSelector(getUnseenMessages)
+
+  const connections = useMemo(() => {
+    return getConnections(allConnections)
+      .map((connection: any, index) => {
+        if (history &&
+          history.connections &&
+          history.connections[connection.senderDID] &&
+          history.connections[connection.senderDID].data &&
+          history.connections[connection.senderDID].data.length) {
+          const event = history.connections[connection.senderDID].data[
+          history.connections[connection.senderDID].data.length - 1]
+          return {
+            ...connection,
+            index,
+            date: event.timestamp,
+            status: event.status,
+            questionTitle: event.name,
+            credentialName: event.name,
+            type: event.type,
+            events:
+              history &&
+              history.connections &&
+              history.connections[connection.senderDID] &&
+              history.connections[connection.senderDID].data
+                ? history.connections[connection.senderDID].data
+                : [],
+            senderDID: connection.senderDID,
+          }
+        }
+        return {
+          ...connection,
+          index,
+          date: undefined,
+          status: undefined,
+          questionTitle: undefined,
+          credentialName: undefined,
+          type: undefined,
+          events:
+            history &&
+            history.connections &&
+            history.connections[connection.senderDID] &&
+            history.connections[connection.senderDID].data
+              ? history.connections[connection.senderDID].data
+              : [],
+          senderDID: connection.senderDID,
+        }
+      })
+      .sort((a, b) => {
+        if (!b.date) {
+          return 0
+        }
+        let bTimestamp = new Date(b.date).getTime()
+        if (!a.date) {
+          return 0
+        }
+        let aTimestamp = new Date(a.date).getTime()
+        return bTimestamp - aTimestamp
+      })
+  }, [allConnections, history])
+
+  const hasNoConnection = useMemo(() => {
+    return hydrated ? connections.length === 0 : false
+  }, [connections, hydrated])
+
+  useEffect(() => {
+    if (snackError) {
+      Snackbar.dismiss()
+      Snackbar.show({
+        text: snackError,
+        backgroundColor: colors.red,
+        duration: Snackbar.LENGTH_LONG,
+      })
+    }
+  }, [snackError])
+
+  useEffect(() => {
+    if (!Object.keys(unseenMessages).length) {
       if (Platform.OS === 'ios') {
         // Sets the current badge number on the app icon to zero. iOS only for now.
         PushNotificationIOS.setApplicationIconBadgeNumber(0)
       }
     }
+  }, [unseenMessages])
 
-    if (
-      prevProps.snackError !== this.props.snackError &&
-      this.props.snackError
-    ) {
-      Snackbar.dismiss()
-      Snackbar.show({
-        text: this.props.snackError,
-        backgroundColor: colors.cmRed,
-        duration: Snackbar.LENGTH_LONG,
-      })
-    }
-  }
-
-  keyExtractor = (item: Object) => item.index.toString()
-
-  onCardPress = (
+  const onCardPress = (
     senderName: string,
     image: ?string,
     senderDID: string,
-    identifier: string
+    identifier: string,
   ) => {
-    this.props.navigation.navigate(connectionHistRoute, {
+    navigation.navigate(connectionHistRoute, {
       senderName,
       image,
       senderDID,
@@ -82,7 +153,13 @@ export class MyConnections extends Component<
     })
   }
 
-  renderItem = ({ item }: { item: Object }) => {
+  const keyExtractor = (item: Object) => item.index.toString()
+
+  const onRefresh = useCallback(() => {
+    getUnacknowledgedMessages()
+  })
+
+  const renderItem = ({ item }: { item: Object }) => {
     const {
       senderName,
       logoUrl,
@@ -95,11 +172,10 @@ export class MyConnections extends Component<
       events,
       identifier,
     } = item
-    const { onNewConnectionSeen } = this.props
     return (
       <ConnectionCard
         onPress={() => {
-          this.onCardPress(senderName, logoUrl, senderDID, identifier)
+          onCardPress(senderName, logoUrl, senderDID, identifier)
         }}
         image={logoUrl}
         question={questionTitle}
@@ -117,166 +193,34 @@ export class MyConnections extends Component<
     )
   }
 
-  render() {
-    const {
-      container,
-      flatListContainer,
-      flatListInnerContainer,
-      outerContainer,
-      backgroundImage,
-    } = externalStyles
-
-    const numColumns = 2
-    return (
-      <View style={outerContainer}>
-        <HomeHeader
-          headline={headline}
-          navigation={this.props.navigation}
-          route={this.props.route}
-        />
-        <NotificationCard />
-        <View style={container}>
-          {this.props.hasNoConnection && (
-            <ImageBackground
-              source={require('../images/connection-items-placeholder.png')}
-              style={backgroundImage}
-            >
-              {MyConnectionsViewEmptyState ? (
-                <MyConnectionsViewEmptyState />
-              ) : (
-                <View />
-              )}
-            </ImageBackground>
-          )}
-          <FlatList
-            keyExtractor={this.keyExtractor}
-            style={flatListContainer}
-            contentContainerStyle={flatListInnerContainer}
-            data={this.props.connections}
-            renderItem={this.renderItem}
-            onRefresh={this.onRefresh}
-            refreshing={
-              this.props.messageDownloadStatus === GET_MESSAGES_LOADING
-            }
-            {...{ numColumns }}
-          />
-        </View>
-        <CameraButton
-          onPress={() => this.props.navigation.navigate(qrCodeScannerTabRoute)}
+  return (
+    <View style={outerContainer}>
+      <HomeHeader
+        headline={headline}
+        navigation={navigation}
+        route={route}
+      />
+      <NotificationCard/>
+      <View style={container}>
+        {hasNoConnection && (
+          MyConnectionsViewEmptyState ? <MyConnectionsViewEmptyState /> : <EmptyState />
+        )}
+        <FlatList
+          keyExtractor={keyExtractor}
+          style={flatListContainer}
+          contentContainerStyle={flatListInnerContainer}
+          data={connections}
+          renderItem={renderItem}
+          onRefresh={onRefresh}
+          refreshing={messageDownloadStatus === GET_MESSAGES_LOADING}
+          {...{ numColumns }}
         />
       </View>
-    )
-  }
-
-  onRefresh = () => {
-    this.props.getUnacknowledgedMessages()
-  }
-}
-
-const mapStateToProps = (state: Store) => {
-  // when ever there is change in claimOffer state and proof request state
-  // getUnseenMessages selector will return updated data
-  // type casting from Array<mixed> to any and then to what we need
-  // because flow Array<mixed> can't be directly type casted as of now
-  const receivedConnections: Connection[] = (getConnections(
-    state.connections.data
-  ): any)
-  const connections = receivedConnections
-    .map((connection, index) => {
-      return {
-        ...connection,
-        index,
-        date:
-          state.history.data &&
-          state.history.data.connections &&
-          state.history.data.connections[connection.senderDID] &&
-          state.history.data.connections[connection.senderDID].data &&
-          state.history.data.connections[connection.senderDID].data[
-            state.history.data.connections[connection.senderDID].data.length - 1
-          ] &&
-          state.history.data.connections[connection.senderDID].data[
-            state.history.data.connections[connection.senderDID].data.length - 1
-          ].timestamp,
-        status:
-          state.history.data &&
-          state.history.data.connections &&
-          state.history.data.connections[connection.senderDID] &&
-          state.history.data.connections[connection.senderDID].data &&
-          state.history.data.connections[connection.senderDID].data[
-            state.history.data.connections[connection.senderDID].data.length - 1
-          ] &&
-          state.history.data.connections[connection.senderDID].data[
-            state.history.data.connections[connection.senderDID].data.length - 1
-          ].status,
-        questionTitle:
-          state.history.data &&
-          state.history.data.connections &&
-          state.history.data.connections[connection.senderDID] &&
-          state.history.data.connections[connection.senderDID].data &&
-          state.history.data.connections[connection.senderDID].data[
-            state.history.data.connections[connection.senderDID].data.length - 1
-          ] &&
-          state.history.data.connections[connection.senderDID].data[
-            state.history.data.connections[connection.senderDID].data.length - 1
-          ].name,
-        credentialName:
-          state.history.data &&
-          state.history.data.connections &&
-          state.history.data.connections[connection.senderDID] &&
-          state.history.data.connections[connection.senderDID].data &&
-          state.history.data.connections[connection.senderDID].data[
-            state.history.data.connections[connection.senderDID].data.length - 1
-          ] &&
-          state.history.data.connections[connection.senderDID].data[
-            state.history.data.connections[connection.senderDID].data.length - 1
-          ].name,
-        type:
-          state.history.data &&
-          state.history.data.connections &&
-          state.history.data.connections[connection.senderDID] &&
-          state.history.data.connections[connection.senderDID].data &&
-          state.history.data.connections[connection.senderDID].data[
-            state.history.data.connections[connection.senderDID].data.length - 1
-          ] &&
-          state.history.data.connections[connection.senderDID].data[
-            state.history.data.connections[connection.senderDID].data.length - 1
-          ].type,
-        events:
-          state.history.data &&
-          state.history.data.connections &&
-          state.history.data.connections[connection.senderDID] &&
-          state.history.data.connections[connection.senderDID].data
-            ? state.history.data.connections[connection.senderDID].data
-            : [],
-        senderDID: connection.senderDID,
-      }
-    })
-    .sort((a, b) => {
-      if (!b.date) {
-        return 0
-      }
-      let bTimestamp = new Date(b.date).getTime()
-      if (!a.date) {
-        return 0
-      }
-      let aTimestamp = new Date(a.date).getTime()
-      return bTimestamp - aTimestamp
-    })
-
-  const hasNoConnection = state.connections.hydrated
-    ? connections.length === 0
-    : false
-
-  let unSeenMessagesCount = Object.keys(getUnseenMessages(state)).length
-
-  return {
-    unSeenMessagesCount,
-    environmentName: getEnvironmentName(state.config),
-    hasNoConnection,
-    connections,
-    messageDownloadStatus: state.config.messageDownloadStatus,
-    snackError: state.config.snackError,
-  }
+      <CameraButton
+        onPress={() => navigation.navigate(qrCodeScannerTabRoute)}
+      />
+    </View>
+  )
 }
 
 const mapDispatchToProps = (dispatch) =>
@@ -285,9 +229,9 @@ const mapDispatchToProps = (dispatch) =>
       onNewConnectionSeen: newConnectionSeen,
       getUnacknowledgedMessages,
     },
-    dispatch
+    dispatch,
   )
 
 export const MyConnectionsScreen = withStatusBar()(
-  connect(mapStateToProps, mapDispatchToProps)(MyConnections)
+  connect(null, mapDispatchToProps)(MyConnections),
 )

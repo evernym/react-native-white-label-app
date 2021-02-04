@@ -55,8 +55,8 @@ export const Request = ({
       <ModalButtons
         onPress={onAccept}
         onIgnore={onDecline}
-        colorBackground={colors.cmGreen1}
-        secondColorBackground={colors.cmGreen1}
+        colorBackground={colors.main}
+        secondColorBackground={colors.main}
         denyButtonText={DENY}
         acceptBtnText={CONNECT}
         disableDeny={disableActions}

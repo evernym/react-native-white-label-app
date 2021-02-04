@@ -17,7 +17,7 @@
   "scripts": {
     "test": "jest --detectOpenHandles --forceExit",
     "lint": "flow && eslint src",
-    "configure": "yarn --cwd ../../.. copyfiles -su 4 'node_modules/@dev/react-native-evernym-sdk/src/evernym-sdk/*.js' 'node_modules/@dev/react-native-evernym-sdk/src/evernym-sdk/images/*.png' ./app/evernym-sdk && echo 'Evernym React Native SDK configured successfully'",
+    "configure": "yarn --cwd ../../.. copyfiles -su 4 'node_modules/@dev/react-native-evernym-sdk/src/evernym-sdk/*.js' ./app && echo 'Evernym React Native SDK configured successfully'",
     "pod:update": "pod repo update",
     "pod:dev:install": "cd ios && CONNECTME_DEBUG=true pod install"
   },
@@ -44,8 +44,8 @@
     "@react-native-community/masked-view": "^0.1.10",
     "@react-native-community/netinfo": "^5.9.2",
     "@react-native-community/push-notification-ios": "^1.4.0",
-    "@react-native-firebase/app": "8.4.3",
-    "@react-native-firebase/messaging": "7.8.6",
+    "@react-native-firebase/app": "10.5.0",
+    "@react-native-firebase/messaging": "10.5.1",
     "@react-navigation/compat": "^5.1.26",
     "@react-navigation/drawer": "5.8.2",
     "@react-navigation/native": "^5.5.1",

@@ -5,20 +5,14 @@ import {
   PADDING_VERTICAL,
   isBiggerThanShortDevice,
   color,
-  grey,
-  atlantis,
-  cmRed,
   isBiggerThanMediumDevice,
+  fontSizes as fonts,
+  fontFamily, colors,
 } from '../common/styles/constant'
 import {
   blackTransparent,
-  cmGrey5,
   OFFSET_3X,
   OFFSET_1X,
-  cmGrey4,
-  font,
-  cmGrey1,
-  darkGray2,
 } from '../common/styles'
 
 const SPACE_FILLER = 50
@@ -140,7 +134,7 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     height: inputBoxHeight,
     backgroundColor: 'rgba(0,0,0,0.33)',
-    color: 'white',
+    color: colors.white,
     padding: 10,
     textAlignVertical: 'top',
   },
@@ -149,7 +143,7 @@ const styles = StyleSheet.create({
     marginRight: '2%',
     marginBottom: 15,
     borderRadius: 5,
-    shadowColor: grey,
+    shadowColor: colors.gray2,
     shadowOffset: {
       width: 1,
       height: 1,
@@ -269,7 +263,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     marginBottom: 10,
     width: '100%',
-    color: 'white',
+    color: colors.white,
   },
   backuptitle: {
     fontWeight: '400',
@@ -307,7 +301,7 @@ export const questionStyles = StyleSheet.create({
     width: 51,
     height: 6,
     borderRadius: 6,
-    backgroundColor: cmGrey5,
+    backgroundColor: colors.grey5,
   },
   mainContainer: {
     backgroundColor: blackTransparent,
@@ -343,15 +337,15 @@ export const questionStyles = StyleSheet.create({
   },
   questionResponseRadio: {
     borderWidth: 0,
-    backgroundColor: cmGrey4,
+    backgroundColor: colors.gray4,
   },
   questionResponseRadioWrapper: {
     marginLeft: '5%',
   },
   questionResponseRadioLabel: {
-    fontFamily: font.family,
-    fontSize: font.size.M,
-    color: cmGrey1,
+    fontFamily: fontFamily,
+    fontSize: fonts.size4,
+    color: colors.gray1,
     fontWeight: 'bold',
   },
   questionResponseRadioLabelWrapper: {
@@ -375,15 +369,15 @@ export const questionStyles = StyleSheet.create({
     borderWidth: 1,
   },
   cancelButton: {
-    borderColor: darkGray2,
+    borderColor: colors.gray3,
   },
   submitButton: {
-    backgroundColor: atlantis,
-    borderColor: atlantis,
+    backgroundColor: colors.main,
+    borderColor: colors.main,
   },
   errorButton: {
-    backgroundColor: cmRed,
-    borderColor: cmRed,
+    backgroundColor: colors.red,
+    borderColor: colors.red,
   },
   feedbackIcon: {
     width: 150,

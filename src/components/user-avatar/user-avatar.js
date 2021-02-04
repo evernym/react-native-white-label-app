@@ -13,11 +13,13 @@ import { getUserAvatarSource } from '../../store/store-selector'
 
 // $FlowExpectedError[cannot-resolve-module] external file
 import { DEFAULT_USER_AVATAR } from '../../../../../../app/evernym-sdk/app'
+import type { ImageSource } from '../../common/type-common'
+import { Avatar } from '..'
 
 export const defaultUserAvatar =
-  DEFAULT_USER_AVATAR || require('../../images/UserAvatar.png')
+  DEFAULT_USER_AVATAR || require('../../images/noImage.png')
 
-export class UserAvatar extends Component<UserAvatarProps, void> {
+export class UserAvatarComponent extends Component<UserAvatarProps, void> {
   changeAvatar = () => {
     if (!this.props.userCanChange) {
       return
@@ -28,6 +30,12 @@ export class UserAvatar extends Component<UserAvatarProps, void> {
 
   render() {
     let avatarSource = this.props.avatarName || defaultUserAvatar
+    const size = this.props.size || 'xxLarge'
+    const props = {
+      [size]: true,
+      round: this.props.round || true,
+      resizeMode: "cover"
+    }
 
     if (this.props.children) {
       // if we are using children as render prop
@@ -40,7 +48,7 @@ export class UserAvatar extends Component<UserAvatarProps, void> {
           onPress={this.changeAvatar}
         >
           <View pointerEvents="box-only">
-            {this.props.children(avatarSource)}
+            {this.props.children(avatarSource, props)}
           </View>
         </TouchableWithoutFeedback>
       )
@@ -50,22 +58,32 @@ export class UserAvatar extends Component<UserAvatarProps, void> {
       <Icon
         src={avatarSource}
         onPress={this.changeAvatar}
-        xxLarge
-        round
-        resizeMode="cover"
         testID={this.props.testID}
         accessible={true}
         accessibilityLabel={this.props.testID}
+        {...props}
       />
     )
   }
 }
 
-const mapStateToProps = (state: Store) => ({
-  avatarName: getUserAvatarSource(state.user.avatarName),
+const mapStateToProps = (state: Store, props) => ({
+  avatarName: props.source || getUserAvatarSource(state.user.avatarName),
 })
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators({ selectUserAvatar }, dispatch)
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserAvatar)
+const UserAvatar = connect(mapStateToProps, mapDispatchToProps)(UserAvatarComponent)
+
+export default UserAvatar
+
+export const renderUserAvatar = (props: any) => (
+  <UserAvatar {...props}>
+    {renderAvatarWithSource}
+  </UserAvatar>
+)
+
+const renderAvatarWithSource = (avatarSource: number | ImageSource, props) => {
+  return <Avatar src={avatarSource} {...props} />
+}

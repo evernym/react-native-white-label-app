@@ -120,7 +120,7 @@ class ConnectionCardComponent extends PureComponent<
                 <View style={styles.iconWrapper}>
                   <SvgCustomIcon
                     name="CheckmarkBadge"
-                    fill={colors.cmGray1}
+                    fill={colors.gray1}
                     width={moderateScale(22)}
                     height={moderateScale(33)}
                   />
@@ -228,9 +228,9 @@ const styles = StyleSheet.create({
   },
   innerWrapper: {
     marginTop: moderateScale(15),
-    borderBottomColor: colors.cmGray4,
-    backgroundColor: colors.cmWhite,
-    shadowColor: colors.cmBlack,
+    borderBottomColor: colors.gray4,
+    backgroundColor: colors.white,
+    shadowColor: colors.black,
     shadowOpacity: 0.2,
     shadowRadius: 7,
     shadowOffset: {
@@ -245,7 +245,7 @@ const styles = StyleSheet.create({
     padding: moderateScale(15),
   },
   messageDate: {
-    color: colors.cmGray2,
+    color: colors.gray2,
     fontSize: moderateScale(fontSizes.size9),
     textAlign: 'left',
     fontFamily: fontFamily,
@@ -254,7 +254,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'stretch',
     paddingBottom: moderateScale(15),
-    borderBottomColor: colors.cmGray3,
+    borderBottomColor: colors.gray3,
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
   badge: {
@@ -275,7 +275,7 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     fontSize: moderateScale(fontSizes.size7),
     fontWeight: '700',
-    color: colors.cmGray1,
+    color: colors.gray1,
     fontFamily: fontFamily,
   },
   infoWrapper: {
@@ -288,7 +288,7 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     fontSize: moderateScale(fontSizes.size9),
     fontWeight: '500',
-    color: colors.cmGray2,
+    color: colors.gray2,
     flex: 1,
     fontFamily: fontFamily,
   },
@@ -296,13 +296,13 @@ const styles = StyleSheet.create({
     textAlign: 'right',
     fontSize: moderateScale(fontSizes.size9),
     fontWeight: '500',
-    color: colors.cmGray1,
+    color: colors.gray1,
     fontFamily: fontFamily,
   },
   bottom: {
     width: '100%',
     paddingTop: moderateScale(15),
-    backgroundColor: colors.cmWhite,
+    backgroundColor: colors.white,
   },
   attributesWrapper: {
     flexDirection: 'row',
@@ -312,7 +312,7 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     fontSize: moderateScale(fontSizes.size7),
     fontWeight: '400',
-    color: colors.cmGray1,
+    color: colors.gray1,
     fontFamily: fontFamily,
   },
   button: {
@@ -331,7 +331,7 @@ const styles = StyleSheet.create({
   },
   helperView: {
     borderBottomWidth: 1,
-    borderBottomColor: colors.cmGray5,
+    borderBottomColor: colors.gray5,
     width: '100%',
     paddingTop: moderateScale(15),
   },

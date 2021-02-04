@@ -5,7 +5,7 @@
  * */
 
 // text which will be used as the header
-export const HEADLINE = 'Proof Request'
+export const HEADLINE = null
 
 // text which will be used for top (accept) button.
 export const ACCEPT_BUTTON_TEXT = null

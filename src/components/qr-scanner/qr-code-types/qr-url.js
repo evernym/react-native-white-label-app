@@ -47,7 +47,7 @@ export async function getUrlQrCodeData(
     )
   ]
 > {
-  // if we get url qr code, then there are three ways as of now that ConnectMe supports
+  // if we get url qr code, then there are three ways as of now that MSDK supports
   // to get data from url qr code
 
   // Three ways are to get data directly from URL query params

@@ -86,9 +86,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     borderTopLeftRadius: 6,
     borderTopRightRadius: 6,
-    backgroundColor: colors.cmWhite,
+    backgroundColor: colors.white,
     height: verticalScale(96),
-    shadowColor: colors.cmBlack,
+    shadowColor: colors.black,
     shadowOpacity: 0.1,
     shadowRadius: 14,
     shadowOffset: {
@@ -113,12 +113,12 @@ const styles = StyleSheet.create({
     fontFamily: fontFamily,
   },
   slideHeaderUpText: {
-    color: colors.cmGray1,
+    color: colors.gray1,
     fontWeight: '600',
     fontFamily: fontFamily,
   },
   slideHeaderUpAboutText: {
-    color: colors.cmGray2,
+    color: colors.gray2,
     fontSize: verticalScale(10),
     fontFamily: fontFamily,
   },

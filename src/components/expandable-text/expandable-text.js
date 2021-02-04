@@ -1,8 +1,8 @@
 // @flow
 import React, { useCallback, useState } from 'react'
 import { StyleSheet, Text, TouchableWithoutFeedback } from 'react-native'
-import { colors, fontSizes } from '../../common/styles'
 import { verticalScale } from 'react-native-size-matters'
+import { colors, fontSizes } from '../../common/styles/constant'
 
 export function ExpandableText({ text, style, lines, ...rest }: {
   text: string,
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
   moreText: {
     fontSize: verticalScale(fontSizes.size7),
     fontWeight: '300',
-    color: colors.cmBlue,
+    color: colors.blue,
     padding: 0,
     margin: 0,
   },

@@ -8,7 +8,7 @@ exports[`Restore screen should render properly and match the snapshot 1`] = `
   safeArea={true}
   style={
     Object {
-      "backgroundColor": "#ffffff",
+      "backgroundColor": "#FFFFFF",
       "flex": 1,
     }
   }
@@ -94,7 +94,7 @@ exports[`Restore screen should render properly and match the snapshot 1`] = `
         style={
           Array [
             Object {
-              "fontSize": 18,
+              "fontSize": 17,
             },
             Object {
               "fontFamily": "Lato",
@@ -138,7 +138,7 @@ exports[`Restore screen should render properly and match the snapshot 1`] = `
         style={
           Array [
             Object {
-              "fontSize": 18,
+              "fontSize": 17,
             },
             Object {
               "fontFamily": "Lato",
@@ -182,7 +182,7 @@ exports[`Restore screen should render properly and match the snapshot 1`] = `
         style={
           Array [
             Object {
-              "fontSize": 18,
+              "fontSize": 17,
             },
             Object {
               "fontFamily": "Lato",

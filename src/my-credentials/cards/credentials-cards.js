@@ -9,11 +9,18 @@ import type { CredentialsCardsProps } from '../type-my-credentials'
 import { colors, fontFamily } from '../../common/styles'
 import CardStack from './card-stack'
 import { ScrollView } from 'react-native-gesture-handler'
+import { useFocusEffect } from '@react-navigation/native'
 
 export const CredentialsCards = (props: CredentialsCardsProps) => {
   const { credentials } = props
   const [activeStack, setActiveStack] = useState(null)
   const scrollViewRef = useRef<any>(null)
+
+  useFocusEffect(
+    React.useCallback(() => {
+      return () => {setActiveStack(null)}
+    }, [credentials])
+  )
 
   const updateActiveStack = (stackName) => {
     setActiveStack(stackName)
@@ -47,34 +54,34 @@ export const CredentialsCards = (props: CredentialsCardsProps) => {
   return (
     <ScrollView scrollEnabled ref={scrollViewRef}>
       {credentialsData.length > 0 &&
-        credentialsData.map((credentialGroup) => {
-          const stackCredentialName = credentialGroup[0].credentialName
-          const isHidden =
-            stackCredentialName !== activeStack && activeStack !== null
+      credentialsData.map((credentialGroup) => {
+        const stackCredentialName = credentialGroup[0].credentialName
+        const isHidden =
+          stackCredentialName !== activeStack && activeStack !== null
 
-          if (credentialGroup.length === 1) {
-            return (
-              <CredentialCard
-                item={credentialGroup[0]}
-                key={credentialGroup[0].uid}
-                isExpanded={true}
-                isHidden={isHidden}
-              />
-            )
-          } else {
-            const isExpanded = stackCredentialName === activeStack
-            return (
-              <CardStack
-                credentials={credentialGroup}
-                key={credentialGroup[0].uid}
-                isExpanded={isExpanded}
-                setActiveStack={updateActiveStack}
-                stackCredentialName={stackCredentialName}
-                isHidden={isHidden}
-              />
-            )
-          }
-        })}
+        if (credentialGroup.length === 1) {
+          return (
+            <CredentialCard
+              item={credentialGroup[0]}
+              key={credentialGroup[0].uid}
+              isExpanded={true}
+              isHidden={isHidden}
+            />
+          )
+        } else {
+          const isExpanded = stackCredentialName === activeStack
+          return (
+            <CardStack
+              credentials={credentialGroup}
+              key={credentialGroup[0].uid}
+              isExpanded={isExpanded}
+              setActiveStack={updateActiveStack}
+              stackCredentialName={stackCredentialName}
+              isHidden={isHidden}
+            />
+          )
+        }
+      })}
     </ScrollView>
   )
 }
@@ -96,6 +103,6 @@ export const styles = StyleSheet.create({
   deleteText: {
     fontFamily: fontFamily,
     fontWeight: 'bold',
-    color: colors.cmGray1,
+    color: colors.gray1,
   },
 })

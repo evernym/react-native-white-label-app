@@ -13,7 +13,7 @@ import {
   cloudRestoreRoute,
   restorePassphraseRoute,
 } from '../common'
-import { venetianRed, white } from '../common/styles/constant'
+import { colors, venetianRed } from '../common/styles/constant'
 import { withStatusBar } from '../components/status-bar/status-bar'
 import { updateStatusBarTheme } from '../store/connections-store'
 import type { Store } from '../store/type-store'
@@ -76,7 +76,7 @@ export class SelectRestoreMethod extends Component<RestoreProps, void> {
     let statusBarColor =
       this.props.restore.error && this.props.route === selectRestoreMethodRoute
         ? venetianRed
-        : white
+        : colors.white
     this.props.updateStatusBarTheme(statusBarColor)
   }
 
@@ -134,7 +134,7 @@ export class SelectRestoreMethod extends Component<RestoreProps, void> {
                 size="14"
                 center
                 transparentBg
-                style={{ color: 'white' }}
+                style={{ color: colors.white }}
               >
                 You have a backup in the Evernym Cloud and you have your
                 Recovery Phrase.
@@ -167,7 +167,7 @@ export class SelectRestoreMethod extends Component<RestoreProps, void> {
               size="14"
               transparentBg
               center
-              style={[{ color: 'white' }]}
+              style={[{ color: colors.white }]}
             >
               You have a {APP_NAME} backup .zip file on this device and your
               Recovery Phrase ready.
@@ -192,7 +192,7 @@ const mapDispatchToProps = (dispatch) =>
 
 export const selectRestoreMethodScreen = {
   routeName: selectRestoreMethodRoute,
-  screen: withStatusBar({ color: 'white' })(
+  screen: withStatusBar({ color: colors.white })(
     connect(mapStateToProps, mapDispatchToProps)(SelectRestoreMethod)
   ),
 }

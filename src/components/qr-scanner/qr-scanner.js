@@ -117,7 +117,7 @@ export default class QRScanner extends PureComponent<
     const urlQrCode = isValidUrlQrCode(event.data)
 
     if (urlQrCode) {
-      // update UI to reflect that ConnectMe has read url and now downloading data
+      // update UI to reflect that MSDK has read url and now downloading data
       this.setState({ scanStatus: SCAN_STATUS.DOWNLOADING })
 
       // we have different url type qr codes as well,
@@ -339,7 +339,7 @@ export class CameraMarker extends PureComponent<CameraMarkerProps, void> {
             accessible={true}
             accessibilityLabel="close-qr-scanner-icon"
             onPress={onClose}
-            color={colors.cmWhite}
+            color={colors.white}
           />
         </CustomView>
       </CustomView>

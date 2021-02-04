@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     margin: OFFSET_1X,
     fontWeight: 'bold',
     textAlign: 'center',
-    color: colors.cmGray1,
+    color: colors.gray1,
     fontSize: moderateScale(fontSizes.size6),
     fontFamily: fontFamily,
   },

@@ -8,11 +8,10 @@ import Color from 'color'
 
 import type { StatusBarStyle } from '../../common/type-common'
 
-import { white } from '../../common/styles'
-import { barStyleDark, barStyleLight } from '../../common/styles/constant'
+import { barStyleDark, barStyleLight, colors } from '../../common/styles/constant'
 
 const defaultStatusBarConfig = {
-  color: white,
+  color: colors.white,
 }
 
 /**

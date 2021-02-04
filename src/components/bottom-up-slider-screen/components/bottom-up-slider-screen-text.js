@@ -13,7 +13,7 @@ export function BottomUpSliderText(props: GenericObject) {
       bg={false}
       bold
       {...props}
-      style={[{ color: colors.cmOrange }, ...(props.style || [])]}
+      style={[{ color: colors.orange }, ...(props.style || [])]}
     >
       {props.children}
     </CustomText>

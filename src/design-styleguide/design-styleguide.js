@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { View, StyleSheet, ScrollView } from 'react-native'
 import { ModalButtons } from '../components/buttons/modal-buttons'
 import CredentialPriceInfo from '../components/labels/credential-price-info'
-import { buttonGreen } from '../common/styles/constant'
+import { colors } from '../common/styles/constant'
 import { CustomText } from '../components'
 import Loader from '../components/loader/loader'
 import { Error } from '../components/error/error'
@@ -22,7 +22,7 @@ class DesignStyleguide extends Component<void, void> {
             onPress={() => {}}
             disableAccept={false}
             payTokenValue={0}
-            colorBackground={buttonGreen}
+            colorBackground={colors.green1}
             denyButtonText={'Ignore'}
             acceptBtnText={'Read and Sign TAA'}
             buttonsWrapperStyles={{
@@ -72,7 +72,7 @@ export const designStyleGuideScreen = {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: colors.white,
   },
   title: {
     fontWeight: 'bold',

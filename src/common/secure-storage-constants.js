@@ -1,8 +1,11 @@
 // @flow
 
+// $FlowExpectedError[cannot-resolve-module] external file
+import { STORAGE_KEY } from '../../../../../app/evernym-sdk/app'
+
 export const PUSH_COM_METHOD = 'pushComMethod'
-export const CONNECT_ME_STORAGE_KEY = '@connectmeDefaults'
-export const IS_ALREADY_INSTALLED = `${CONNECT_ME_STORAGE_KEY}:IS_ALREADY_INSTALLED`
+export const MSDK_STORAGE_KEY = STORAGE_KEY || '@msdkDefaults'
+export const IS_ALREADY_INSTALLED = `${MSDK_STORAGE_KEY}:IS_ALREADY_INSTALLED`
 export const INVITATIONS = 'INVITATIONS'
 export const CONNECTIONS = 'CONNECTIONS'
 export const CLAIM_MAP = `CLAIM_MAP`

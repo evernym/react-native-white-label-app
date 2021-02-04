@@ -701,7 +701,11 @@ exports[`user settings screen should render properly and snapshot should match i
                                   onResponderTerminate={[Function]}
                                   onResponderTerminationRequest={[Function]}
                                   onStartShouldSetResponder={[Function]}
-                                  style={null}
+                                  style={
+                                    Object {
+                                      "opacity": 1,
+                                    }
+                                  }
                                 >
                                   <View
                                     style={
@@ -710,18 +714,57 @@ exports[`user settings screen should render properly and snapshot should match i
                                         "backgroundColor": "#F2F2F2",
                                         "borderBottomColor": "#EAEAEA",
                                         "borderBottomWidth": 1,
-                                        "borderColor": "#bcbbc1",
                                         "borderTopWidth": 0,
+                                        "flex": 1,
                                         "flexDirection": "row",
                                         "justifyContent": "center",
                                         "minHeight": 41.29411764705882,
-                                        "padding": 14,
-                                        "paddingBottom": 0,
-                                        "paddingRight": 9.571428571428571,
-                                        "paddingTop": 0,
+                                        "paddingHorizontal": 15.314285714285713,
+                                        "paddingVertical": 7.941176470588235,
                                       }
                                     }
-                                    testID="padView"
+                                    theme={
+                                      Object {
+                                        "colors": Object {
+                                          "black": "#242424",
+                                          "disabled": "hsl(208, 8%, 90%)",
+                                          "divider": "#bcbbc1",
+                                          "error": "#ff190c",
+                                          "grey0": "#393e42",
+                                          "grey1": "#43484d",
+                                          "grey2": "#5e6977",
+                                          "grey3": "#86939e",
+                                          "grey4": "#bdc6cf",
+                                          "grey5": "#e1e8ee",
+                                          "greyOutline": "#bbb",
+                                          "platform": Object {
+                                            "android": Object {
+                                              "error": "#f44336",
+                                              "grey": "rgba(0, 0, 0, 0.54)",
+                                              "primary": "#2196f3",
+                                              "secondary": "#9C27B0",
+                                              "success": "#4caf50",
+                                              "warning": "#ffeb3b",
+                                            },
+                                            "ios": Object {
+                                              "error": "#ff3b30",
+                                              "grey": "#7d7d7d",
+                                              "primary": "#007aff",
+                                              "searchBg": "#dcdce1",
+                                              "secondary": "#5856d6",
+                                              "success": "#4cd964",
+                                              "warning": "#ffcc00",
+                                            },
+                                          },
+                                          "primary": "#2089dc",
+                                          "searchBg": "#303337",
+                                          "secondary": "#ca71eb",
+                                          "success": "#52c41a",
+                                          "warning": "#faad14",
+                                          "white": "#ffffff",
+                                        },
+                                      }
+                                    }
                                   >
                                     <RNSVGSvgView
                                       align="xMidYMid"
@@ -767,16 +810,10 @@ exports[`user settings screen should render properly and snapshot should match i
                                     <View
                                       style={
                                         Object {
-                                          "paddingLeft": 16,
-                                        }
-                                      }
-                                    />
-                                    <View
-                                      style={
-                                        Object {
                                           "alignItems": "flex-start",
                                           "flex": 1,
                                           "justifyContent": "center",
+                                          "paddingHorizontal": 7.941176470588235,
                                         }
                                       }
                                       theme={
@@ -850,13 +887,6 @@ exports[`user settings screen should render properly and snapshot should match i
                                         Use your finger or face to secure app
                                       </Text>
                                     </View>
-                                    <View
-                                      style={
-                                        Object {
-                                          "paddingLeft": 16,
-                                        }
-                                      }
-                                    />
                                     <RCTSwitch
                                       accessibilityRole="button"
                                       disabled={false}
@@ -885,7 +915,11 @@ exports[`user settings screen should render properly and snapshot should match i
                                   onResponderTerminate={[Function]}
                                   onResponderTerminationRequest={[Function]}
                                   onStartShouldSetResponder={[Function]}
-                                  style={null}
+                                  style={
+                                    Object {
+                                      "opacity": 1,
+                                    }
+                                  }
                                 >
                                   <View
                                     style={
@@ -894,18 +928,57 @@ exports[`user settings screen should render properly and snapshot should match i
                                         "backgroundColor": "#F2F2F2",
                                         "borderBottomColor": "#EAEAEA",
                                         "borderBottomWidth": 1,
-                                        "borderColor": "#bcbbc1",
                                         "borderTopWidth": 0,
+                                        "flex": 1,
                                         "flexDirection": "row",
                                         "justifyContent": "center",
                                         "minHeight": 41.29411764705882,
-                                        "padding": 14,
-                                        "paddingBottom": 0,
-                                        "paddingRight": 9.571428571428571,
-                                        "paddingTop": 0,
+                                        "paddingHorizontal": 15.314285714285713,
+                                        "paddingVertical": 7.941176470588235,
                                       }
                                     }
-                                    testID="padView"
+                                    theme={
+                                      Object {
+                                        "colors": Object {
+                                          "black": "#242424",
+                                          "disabled": "hsl(208, 8%, 90%)",
+                                          "divider": "#bcbbc1",
+                                          "error": "#ff190c",
+                                          "grey0": "#393e42",
+                                          "grey1": "#43484d",
+                                          "grey2": "#5e6977",
+                                          "grey3": "#86939e",
+                                          "grey4": "#bdc6cf",
+                                          "grey5": "#e1e8ee",
+                                          "greyOutline": "#bbb",
+                                          "platform": Object {
+                                            "android": Object {
+                                              "error": "#f44336",
+                                              "grey": "rgba(0, 0, 0, 0.54)",
+                                              "primary": "#2196f3",
+                                              "secondary": "#9C27B0",
+                                              "success": "#4caf50",
+                                              "warning": "#ffeb3b",
+                                            },
+                                            "ios": Object {
+                                              "error": "#ff3b30",
+                                              "grey": "#7d7d7d",
+                                              "primary": "#007aff",
+                                              "searchBg": "#dcdce1",
+                                              "secondary": "#5856d6",
+                                              "success": "#4cd964",
+                                              "warning": "#ffcc00",
+                                            },
+                                          },
+                                          "primary": "#2089dc",
+                                          "searchBg": "#303337",
+                                          "secondary": "#ca71eb",
+                                          "success": "#52c41a",
+                                          "warning": "#faad14",
+                                          "white": "#ffffff",
+                                        },
+                                      }
+                                    }
                                   >
                                     <View
                                       style={
@@ -960,16 +1033,10 @@ exports[`user settings screen should render properly and snapshot should match i
                                     <View
                                       style={
                                         Object {
-                                          "paddingLeft": 16,
-                                        }
-                                      }
-                                    />
-                                    <View
-                                      style={
-                                        Object {
                                           "alignItems": "flex-start",
                                           "flex": 1,
                                           "justifyContent": "center",
+                                          "paddingHorizontal": 7.941176470588235,
                                         }
                                       }
                                       theme={
@@ -1043,13 +1110,6 @@ exports[`user settings screen should render properly and snapshot should match i
                                         View/Change your AppName passcode
                                       </Text>
                                     </View>
-                                    <View
-                                      style={
-                                        Object {
-                                          "paddingLeft": 16,
-                                        }
-                                      }
-                                    />
                                     <View
                                       style={
                                         Object {
@@ -1138,7 +1198,11 @@ exports[`user settings screen should render properly and snapshot should match i
                                   onResponderTerminate={[Function]}
                                   onResponderTerminationRequest={[Function]}
                                   onStartShouldSetResponder={[Function]}
-                                  style={null}
+                                  style={
+                                    Object {
+                                      "opacity": 1,
+                                    }
+                                  }
                                 >
                                   <View
                                     style={
@@ -1147,18 +1211,57 @@ exports[`user settings screen should render properly and snapshot should match i
                                         "backgroundColor": "#F2F2F2",
                                         "borderBottomColor": "#EAEAEA",
                                         "borderBottomWidth": 1,
-                                        "borderColor": "#bcbbc1",
                                         "borderTopWidth": 0,
+                                        "flex": 1,
                                         "flexDirection": "row",
                                         "justifyContent": "center",
                                         "minHeight": 41.29411764705882,
-                                        "padding": 14,
-                                        "paddingBottom": 0,
-                                        "paddingRight": 9.571428571428571,
-                                        "paddingTop": 0,
+                                        "paddingHorizontal": 15.314285714285713,
+                                        "paddingVertical": 7.941176470588235,
                                       }
                                     }
-                                    testID="padView"
+                                    theme={
+                                      Object {
+                                        "colors": Object {
+                                          "black": "#242424",
+                                          "disabled": "hsl(208, 8%, 90%)",
+                                          "divider": "#bcbbc1",
+                                          "error": "#ff190c",
+                                          "grey0": "#393e42",
+                                          "grey1": "#43484d",
+                                          "grey2": "#5e6977",
+                                          "grey3": "#86939e",
+                                          "grey4": "#bdc6cf",
+                                          "grey5": "#e1e8ee",
+                                          "greyOutline": "#bbb",
+                                          "platform": Object {
+                                            "android": Object {
+                                              "error": "#f44336",
+                                              "grey": "rgba(0, 0, 0, 0.54)",
+                                              "primary": "#2196f3",
+                                              "secondary": "#9C27B0",
+                                              "success": "#4caf50",
+                                              "warning": "#ffeb3b",
+                                            },
+                                            "ios": Object {
+                                              "error": "#ff3b30",
+                                              "grey": "#7d7d7d",
+                                              "primary": "#007aff",
+                                              "searchBg": "#dcdce1",
+                                              "secondary": "#5856d6",
+                                              "success": "#4cd964",
+                                              "warning": "#ffcc00",
+                                            },
+                                          },
+                                          "primary": "#2089dc",
+                                          "searchBg": "#303337",
+                                          "secondary": "#ca71eb",
+                                          "success": "#52c41a",
+                                          "warning": "#faad14",
+                                          "white": "#ffffff",
+                                        },
+                                      }
+                                    }
                                   >
                                     <View
                                       style={
@@ -1250,16 +1353,10 @@ exports[`user settings screen should render properly and snapshot should match i
                                     <View
                                       style={
                                         Object {
-                                          "paddingLeft": 16,
-                                        }
-                                      }
-                                    />
-                                    <View
-                                      style={
-                                        Object {
                                           "alignItems": "flex-start",
                                           "flex": 1,
                                           "justifyContent": "center",
+                                          "paddingHorizontal": 7.941176470588235,
                                         }
                                       }
                                       theme={
@@ -1336,13 +1433,6 @@ exports[`user settings screen should render properly and snapshot should match i
                                     <View
                                       style={
                                         Object {
-                                          "paddingLeft": 16,
-                                        }
-                                      }
-                                    />
-                                    <View
-                                      style={
-                                        Object {
                                           "transform": Array [
                                             Object {
                                               "scale": 1,
@@ -1428,7 +1518,11 @@ exports[`user settings screen should render properly and snapshot should match i
                                   onResponderTerminate={[Function]}
                                   onResponderTerminationRequest={[Function]}
                                   onStartShouldSetResponder={[Function]}
-                                  style={null}
+                                  style={
+                                    Object {
+                                      "opacity": 1,
+                                    }
+                                  }
                                 >
                                   <View
                                     style={
@@ -1437,18 +1531,57 @@ exports[`user settings screen should render properly and snapshot should match i
                                         "backgroundColor": "#F2F2F2",
                                         "borderBottomColor": "#EAEAEA",
                                         "borderBottomWidth": 1,
-                                        "borderColor": "#bcbbc1",
                                         "borderTopWidth": 0,
+                                        "flex": 1,
                                         "flexDirection": "row",
                                         "justifyContent": "center",
                                         "minHeight": 41.29411764705882,
-                                        "padding": 14,
-                                        "paddingBottom": 0,
-                                        "paddingRight": 9.571428571428571,
-                                        "paddingTop": 0,
+                                        "paddingHorizontal": 15.314285714285713,
+                                        "paddingVertical": 7.941176470588235,
                                       }
                                     }
-                                    testID="padView"
+                                    theme={
+                                      Object {
+                                        "colors": Object {
+                                          "black": "#242424",
+                                          "disabled": "hsl(208, 8%, 90%)",
+                                          "divider": "#bcbbc1",
+                                          "error": "#ff190c",
+                                          "grey0": "#393e42",
+                                          "grey1": "#43484d",
+                                          "grey2": "#5e6977",
+                                          "grey3": "#86939e",
+                                          "grey4": "#bdc6cf",
+                                          "grey5": "#e1e8ee",
+                                          "greyOutline": "#bbb",
+                                          "platform": Object {
+                                            "android": Object {
+                                              "error": "#f44336",
+                                              "grey": "rgba(0, 0, 0, 0.54)",
+                                              "primary": "#2196f3",
+                                              "secondary": "#9C27B0",
+                                              "success": "#4caf50",
+                                              "warning": "#ffeb3b",
+                                            },
+                                            "ios": Object {
+                                              "error": "#ff3b30",
+                                              "grey": "#7d7d7d",
+                                              "primary": "#007aff",
+                                              "searchBg": "#dcdce1",
+                                              "secondary": "#5856d6",
+                                              "success": "#4cd964",
+                                              "warning": "#ffcc00",
+                                            },
+                                          },
+                                          "primary": "#2089dc",
+                                          "searchBg": "#303337",
+                                          "secondary": "#ca71eb",
+                                          "success": "#52c41a",
+                                          "warning": "#faad14",
+                                          "white": "#ffffff",
+                                        },
+                                      }
+                                    }
                                   >
                                     <View
                                       style={
@@ -1543,16 +1676,10 @@ exports[`user settings screen should render properly and snapshot should match i
                                     <View
                                       style={
                                         Object {
-                                          "paddingLeft": 16,
-                                        }
-                                      }
-                                    />
-                                    <View
-                                      style={
-                                        Object {
                                           "alignItems": "flex-start",
                                           "flex": 1,
                                           "justifyContent": "center",
+                                          "paddingHorizontal": 7.941176470588235,
                                         }
                                       }
                                       theme={
@@ -1629,10 +1756,286 @@ exports[`user settings screen should render properly and snapshot should match i
                                     <View
                                       style={
                                         Object {
-                                          "paddingLeft": 16,
+                                          "transform": Array [
+                                            Object {
+                                              "scale": 1,
+                                            },
+                                          ],
                                         }
                                       }
-                                    />
+                                    >
+                                      <RNSVGSvgView
+                                        align="xMidYMid"
+                                        bbHeight={22.97142857142857}
+                                        bbWidth={22.97142857142857}
+                                        color={4289045925}
+                                        fill="#A5A5A5"
+                                        focusable={false}
+                                        height={22.97142857142857}
+                                        meetOrSlice={0}
+                                        minX={0}
+                                        minY={0}
+                                        style={
+                                          Array [
+                                            Object {
+                                              "backgroundColor": "transparent",
+                                              "borderWidth": 0,
+                                            },
+                                            Object {
+                                              "flex": 0,
+                                              "height": 22,
+                                              "width": 22,
+                                            },
+                                          ]
+                                        }
+                                        tintColor={4289045925}
+                                        vbHeight={24}
+                                        vbWidth={24}
+                                        width={22.97142857142857}
+                                      >
+                                        <RNSVGGroup
+                                          fill={4289045925}
+                                          propList={
+                                            Array [
+                                              "fill",
+                                            ]
+                                          }
+                                        >
+                                          <RNSVGGroup>
+                                            <RNSVGGroup>
+                                              <RNSVGRect
+                                                height="24"
+                                                matrix={
+                                                  Array [
+                                                    6.123233995736766e-17,
+                                                    -1,
+                                                    1,
+                                                    6.123233995736766e-17,
+                                                    0,
+                                                    24,
+                                                  ]
+                                                }
+                                                opacity={0}
+                                                width="24"
+                                                x={0}
+                                                y={0}
+                                              />
+                                              <RNSVGPath
+                                                d="M10.5 17a1 1 0 0 1-.71-.29 1 1 0 0 1 0-1.42L13.1 12 9.92 8.69a1 1 0 0 1 0-1.41 1 1 0 0 1 1.42 0l3.86 4a1 1 0 0 1 0 1.4l-4 4a1 1 0 0 1-.7.32z"
+                                              />
+                                            </RNSVGGroup>
+                                          </RNSVGGroup>
+                                        </RNSVGGroup>
+                                      </RNSVGSvgView>
+                                    </View>
+                                  </View>
+                                </View>
+                                <View
+                                  accessible={true}
+                                  focusable={true}
+                                  isTVSelectable={true}
+                                  onClick={[Function]}
+                                  onResponderGrant={[Function]}
+                                  onResponderMove={[Function]}
+                                  onResponderRelease={[Function]}
+                                  onResponderTerminate={[Function]}
+                                  onResponderTerminationRequest={[Function]}
+                                  onStartShouldSetResponder={[Function]}
+                                  style={
+                                    Object {
+                                      "opacity": 1,
+                                    }
+                                  }
+                                >
+                                  <View
+                                    style={
+                                      Object {
+                                        "alignItems": "center",
+                                        "backgroundColor": "#F2F2F2",
+                                        "borderBottomColor": "#EAEAEA",
+                                        "borderBottomWidth": 1,
+                                        "borderTopWidth": 0,
+                                        "flex": 1,
+                                        "flexDirection": "row",
+                                        "justifyContent": "center",
+                                        "minHeight": 41.29411764705882,
+                                        "paddingHorizontal": 15.314285714285713,
+                                        "paddingVertical": 7.941176470588235,
+                                      }
+                                    }
+                                    theme={
+                                      Object {
+                                        "colors": Object {
+                                          "black": "#242424",
+                                          "disabled": "hsl(208, 8%, 90%)",
+                                          "divider": "#bcbbc1",
+                                          "error": "#ff190c",
+                                          "grey0": "#393e42",
+                                          "grey1": "#43484d",
+                                          "grey2": "#5e6977",
+                                          "grey3": "#86939e",
+                                          "grey4": "#bdc6cf",
+                                          "grey5": "#e1e8ee",
+                                          "greyOutline": "#bbb",
+                                          "platform": Object {
+                                            "android": Object {
+                                              "error": "#f44336",
+                                              "grey": "rgba(0, 0, 0, 0.54)",
+                                              "primary": "#2196f3",
+                                              "secondary": "#9C27B0",
+                                              "success": "#4caf50",
+                                              "warning": "#ffeb3b",
+                                            },
+                                            "ios": Object {
+                                              "error": "#ff3b30",
+                                              "grey": "#7d7d7d",
+                                              "primary": "#007aff",
+                                              "searchBg": "#dcdce1",
+                                              "secondary": "#5856d6",
+                                              "success": "#4cd964",
+                                              "warning": "#ffcc00",
+                                            },
+                                          },
+                                          "primary": "#2089dc",
+                                          "searchBg": "#303337",
+                                          "secondary": "#ca71eb",
+                                          "success": "#52c41a",
+                                          "warning": "#faad14",
+                                          "white": "#ffffff",
+                                        },
+                                      }
+                                    }
+                                  >
+                                    <View
+                                      style={
+                                        Object {
+                                          "alignItems": "center",
+                                          "width": 38.285714285714285,
+                                        }
+                                      }
+                                    >
+                                      <RNSVGSvgView
+                                        align="xMidYMid"
+                                        bbHeight="21.441176470588236"
+                                        bbWidth="21.441176470588236"
+                                        focusable={false}
+                                        height="21.441176470588236"
+                                        meetOrSlice={0}
+                                        minX={0}
+                                        minY={0}
+                                        style={
+                                          Array [
+                                            Object {
+                                              "backgroundColor": "transparent",
+                                              "borderWidth": 0,
+                                            },
+                                            Object {
+                                              "flex": 0,
+                                              "height": 21,
+                                              "width": 21,
+                                            },
+                                          ]
+                                        }
+                                        vbHeight={28}
+                                        vbWidth={28}
+                                        width="21.441176470588236"
+                                      >
+                                        <RNSVGGroup>
+                                          <RNSVGPath
+                                            clipRule={0}
+                                            d="M14 .667C6.64.667.667 6.64.667 14S6.64 27.333 14 27.333 27.333 21.36 27.333 14 21.36.667 14 .667zm-1.334 6.666V10h2.667V7.333h-2.667zm0 5.333v8h2.667v-8h-2.667zM3.333 14c0 5.88 4.787 10.666 10.667 10.666S24.666 19.88 24.666 14C24.666 8.12 19.88 3.333 14 3.333 8.12 3.333 3.333 8.12 3.333 14z"
+                                            fill={4286019447}
+                                            fillRule={0}
+                                            propList={
+                                              Array [
+                                                "fill",
+                                                "fillRule",
+                                              ]
+                                            }
+                                          />
+                                        </RNSVGGroup>
+                                      </RNSVGSvgView>
+                                    </View>
+                                    <View
+                                      style={
+                                        Object {
+                                          "alignItems": "flex-start",
+                                          "flex": 1,
+                                          "justifyContent": "center",
+                                          "paddingHorizontal": 7.941176470588235,
+                                        }
+                                      }
+                                      theme={
+                                        Object {
+                                          "colors": Object {
+                                            "black": "#242424",
+                                            "disabled": "hsl(208, 8%, 90%)",
+                                            "divider": "#bcbbc1",
+                                            "error": "#ff190c",
+                                            "grey0": "#393e42",
+                                            "grey1": "#43484d",
+                                            "grey2": "#5e6977",
+                                            "grey3": "#86939e",
+                                            "grey4": "#bdc6cf",
+                                            "grey5": "#e1e8ee",
+                                            "greyOutline": "#bbb",
+                                            "platform": Object {
+                                              "android": Object {
+                                                "error": "#f44336",
+                                                "grey": "rgba(0, 0, 0, 0.54)",
+                                                "primary": "#2196f3",
+                                                "secondary": "#9C27B0",
+                                                "success": "#4caf50",
+                                                "warning": "#ffeb3b",
+                                              },
+                                              "ios": Object {
+                                                "error": "#ff3b30",
+                                                "grey": "#7d7d7d",
+                                                "primary": "#007aff",
+                                                "searchBg": "#dcdce1",
+                                                "secondary": "#5856d6",
+                                                "success": "#4cd964",
+                                                "warning": "#ffcc00",
+                                              },
+                                            },
+                                            "primary": "#2089dc",
+                                            "searchBg": "#303337",
+                                            "secondary": "#ca71eb",
+                                            "success": "#52c41a",
+                                            "warning": "#faad14",
+                                            "white": "#ffffff",
+                                          },
+                                        }
+                                      }
+                                    >
+                                      <Text
+                                        style={
+                                          Object {
+                                            "backgroundColor": "transparent",
+                                            "color": "#777777",
+                                            "fontFamily": "Lato",
+                                            "fontSize": 11.911764705882351,
+                                            "fontWeight": "bold",
+                                          }
+                                        }
+                                        testID="listItemTitle"
+                                      >
+                                        Send Logs
+                                      </Text>
+                                      <Text
+                                        style={
+                                          Object {
+                                            "backgroundColor": "transparent",
+                                            "color": "#777777",
+                                            "fontFamily": "Lato",
+                                            "fontSize": 8.735294117647058,
+                                          }
+                                        }
+                                        testID="listItemTitle"
+                                      >
+                                        Help us improve our app by sending your errors
+                                      </Text>
+                                    </View>
                                     <View
                                       style={
                                         Object {
@@ -1721,7 +2124,11 @@ exports[`user settings screen should render properly and snapshot should match i
                                   onResponderTerminate={[Function]}
                                   onResponderTerminationRequest={[Function]}
                                   onStartShouldSetResponder={[Function]}
-                                  style={null}
+                                  style={
+                                    Object {
+                                      "opacity": 1,
+                                    }
+                                  }
                                 >
                                   <View
                                     style={
@@ -1730,18 +2137,57 @@ exports[`user settings screen should render properly and snapshot should match i
                                         "backgroundColor": "#F2F2F2",
                                         "borderBottomColor": "#EAEAEA",
                                         "borderBottomWidth": 1,
-                                        "borderColor": "#bcbbc1",
                                         "borderTopWidth": 0,
+                                        "flex": 1,
                                         "flexDirection": "row",
                                         "justifyContent": "center",
                                         "minHeight": 41.29411764705882,
-                                        "padding": 14,
-                                        "paddingBottom": 0,
-                                        "paddingRight": 9.571428571428571,
-                                        "paddingTop": 0,
+                                        "paddingHorizontal": 15.314285714285713,
+                                        "paddingVertical": 7.941176470588235,
                                       }
                                     }
-                                    testID="padView"
+                                    theme={
+                                      Object {
+                                        "colors": Object {
+                                          "black": "#242424",
+                                          "disabled": "hsl(208, 8%, 90%)",
+                                          "divider": "#bcbbc1",
+                                          "error": "#ff190c",
+                                          "grey0": "#393e42",
+                                          "grey1": "#43484d",
+                                          "grey2": "#5e6977",
+                                          "grey3": "#86939e",
+                                          "grey4": "#bdc6cf",
+                                          "grey5": "#e1e8ee",
+                                          "greyOutline": "#bbb",
+                                          "platform": Object {
+                                            "android": Object {
+                                              "error": "#f44336",
+                                              "grey": "rgba(0, 0, 0, 0.54)",
+                                              "primary": "#2196f3",
+                                              "secondary": "#9C27B0",
+                                              "success": "#4caf50",
+                                              "warning": "#ffeb3b",
+                                            },
+                                            "ios": Object {
+                                              "error": "#ff3b30",
+                                              "grey": "#7d7d7d",
+                                              "primary": "#007aff",
+                                              "searchBg": "#dcdce1",
+                                              "secondary": "#5856d6",
+                                              "success": "#4cd964",
+                                              "warning": "#ffcc00",
+                                            },
+                                          },
+                                          "primary": "#2089dc",
+                                          "searchBg": "#303337",
+                                          "secondary": "#ca71eb",
+                                          "success": "#52c41a",
+                                          "warning": "#faad14",
+                                          "white": "#ffffff",
+                                        },
+                                      }
+                                    }
                                   >
                                     <View
                                       style={
@@ -1836,16 +2282,10 @@ exports[`user settings screen should render properly and snapshot should match i
                                     <View
                                       style={
                                         Object {
-                                          "paddingLeft": 16,
-                                        }
-                                      }
-                                    />
-                                    <View
-                                      style={
-                                        Object {
                                           "alignItems": "flex-start",
                                           "flex": 1,
                                           "justifyContent": "center",
+                                          "paddingHorizontal": 7.941176470588235,
                                         }
                                       }
                                       theme={
@@ -1919,13 +2359,6 @@ exports[`user settings screen should render properly and snapshot should match i
                                         Development only
                                       </Text>
                                     </View>
-                                    <View
-                                      style={
-                                        Object {
-                                          "paddingLeft": 16,
-                                        }
-                                      }
-                                    />
                                     <View
                                       style={
                                         Object {

@@ -7,6 +7,7 @@ import { color } from '../common/styles'
 
 import type { Store } from '../store/type-store'
 import { styles } from '../navigation/navigator'
+import { colors } from '../common/styles/constant'
 
 class SettingsTab extends Component<any> {
   render() {
@@ -28,7 +29,7 @@ class SettingsTab extends Component<any> {
                 height: 10,
                 right: 0,
                 borderRadius: 50,
-                backgroundColor: 'red',
+                backgroundColor: colors.red,
                 zIndex: 10002,
               }}
             />
