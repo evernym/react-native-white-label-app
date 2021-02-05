@@ -7,7 +7,8 @@ import {
   ImageBackground,
   Dimensions,
   Animated,
-} from 'react-native'
+  Image,
+} from 'react-native';
 import { moderateScale } from 'react-native-size-matters'
 import { headerOptionsWithNoBack } from '../navigation/navigation-header-config'
 import { startUpRoute, lockPinSetupRoute } from '../common'
@@ -49,6 +50,14 @@ function StartUpScreen(props: { navigation: Function }) {
               Set Up
             </CustomText>
           </TouchableOpacity>
+          {
+            !BACKGROUND_IMAGE &&
+            <Image
+              source={require('../images/powered_by_logo.png')}
+              style={style.image}
+              resizeMode="contain"
+            />
+          }
         </Animated.View>
       </ImageBackground>
     </Container>
@@ -90,5 +99,10 @@ const style = StyleSheet.create({
     alignSelf: 'flex-end',
     marginBottom: 100,
     borderRadius: 5,
+  },
+  image: {
+    position: 'absolute',
+    bottom: moderateScale(32),
+    right: moderateScale(0),
   },
 })

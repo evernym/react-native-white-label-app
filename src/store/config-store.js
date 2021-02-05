@@ -16,10 +16,7 @@ import delay from '@redux-saga/delay-p'
 import PushNotificationIOS from '@react-native-community/push-notification-ios'
 
 // $FlowExpectedError[cannot-resolve-module] external file
-import { SERVER_ENVIRONMENTS } from '../../../../../app/evernym-sdk/provision'
-
-// $FlowExpectedError[cannot-resolve-module] external file
-import { DEFAULT_SERVER_ENVIRONMENT } from '../../../../../app/evernym-sdk/provision'
+import { SERVER_ENVIRONMENTS, DEFAULT_SERVER_ENVIRONMENT } from '../../../../../app/evernym-sdk/provision'
 
 import { secureSet, getHydrationItem } from '../services/storage'
 import {
@@ -117,7 +114,6 @@ import type { Connection } from './type-connection-store'
 import {
   updatePushToken,
   fetchAdditionalDataError,
-  updatePayloadToRelevantStoreSaga,
   setFetchAdditionalDataPendingKeys,
   updatePayloadToRelevantStoreAndRedirect,
 } from '../push-notification/push-notification-store'
@@ -1054,11 +1050,6 @@ function* handleProprietaryMessage(
 
     let messageType = null
 
-    const redirect =
-      notificationOpenOptions &&
-      notificationOpenOptions.uid === uid &&
-      notificationOpenOptions.openMessageDirectly
-
     // toLowerCase here to handle type 'question' and 'Question'
     if (type.toLowerCase() === MESSAGE_TYPE.QUESTION.toLowerCase()) {
       additionalData = convertDecryptedPayloadToQuestion(
@@ -1138,14 +1129,13 @@ function* handleProprietaryMessage(
       senderLogoUrl,
       remotePairwiseDID,
       forDID,
-      notificationOpenOptions,
+      notificationOpenOptions: {
+        uid,
+        openMessageDirectly: true,
+      },
     }
 
-    if (redirect) {
-      yield put(updatePayloadToRelevantStoreAndRedirect(message))
-    } else {
-      yield* updatePayloadToRelevantStoreSaga(message)
-    }
+    yield put(updatePayloadToRelevantStoreAndRedirect(message))
   } catch (e) {
     captureError(e)
     yield put(
@@ -1195,11 +1185,6 @@ function* handleAriesMessage(
     // now we can try to look inside decryptedpayload
     const payload = JSON.parse(decryptedPayload)
     const payloadType = payload['@type']
-
-    const redirect =
-      notificationOpenOptions &&
-      notificationOpenOptions.uid === uid &&
-      notificationOpenOptions.openMessageDirectly
 
     if (
       payloadType.name === 'CRED_OFFER' ||
@@ -1351,14 +1336,13 @@ function* handleAriesMessage(
       senderLogoUrl,
       remotePairwiseDID,
       forDID,
-      notificationOpenOptions,
+      notificationOpenOptions: {
+        uid,
+        openMessageDirectly: true,
+      },
     }
 
-    if (redirect) {
-      yield put(updatePayloadToRelevantStoreAndRedirect(message))
-    } else {
-      yield* updatePayloadToRelevantStoreSaga(message)
-    }
+    yield put(updatePayloadToRelevantStoreAndRedirect(message))
   } catch (e) {
     captureError(e)
     yield put(

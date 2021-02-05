@@ -1,17 +1,21 @@
 // @flow
 import * as React from 'react'
-import { View, StyleSheet, Dimensions, Text } from 'react-native'
+import {View, StyleSheet, Dimensions, Text, Image} from 'react-native';
 import {
   createStackNavigator,
   TransitionPresets,
 } from '@react-navigation/stack'
 import { createDrawerNavigator, DrawerItemList } from '@react-navigation/drawer'
 import { enableScreens } from 'react-native-screens'
+import VersionNumber from 'react-native-version-number'
+
+// $FlowExpectedError[cannot-resolve-module] external file
+import { APP_ICON, COMPANY_NAME } from '../../../../../app/evernym-sdk/app'
 
 import {
   DrawerHeaderContent,
   DrawerFooterContent,
-  navigationOptions,
+  NAVIGATION_OPTIONS,
   // $FlowExpectedError[cannot-resolve-module] external file
 } from '../../../../../app/evernym-sdk/navigator'
 
@@ -146,7 +150,33 @@ export const styles = StyleSheet.create({
     ...unreadMessageContainerCommonStyle,
     marginRight: '30%',
   },
+  companyIconImage: {
+    width: verticalScale(26),
+    height: verticalScale(26),
+    marginLeft: moderateScale(20),
+    marginRight: moderateScale(10),
+    marginBottom: moderateScale(20),
+  },
+  companyIconTextContainer: {
+    height: verticalScale(26),
+    marginBottom: moderateScale(20),
+  },
+  companyIconLogoText: {
+    height: '50%',
+    justifyContent: 'flex-start',
+  },
+  companyIconBuildText: {
+    height: '50%',
+    justifyContent: 'flex-end',
+  },
+  drawerIconWrapper: {
+    width: moderateScale(22),
+    alignItems: 'center',
+  },
 })
+
+const footerIcon = APP_ICON || require('../images/app_icon.png')
+const builtBy = COMPANY_NAME || 'Your Company'
 
 const drawerComponent = (props: Object) => (
   <SafeAreaView
@@ -163,14 +193,35 @@ const drawerComponent = (props: Object) => (
             height={verticalScale(18)}
             fill={colors.gray3}
           /> :
-          <View />
+          <Image
+            source={require('../images/powered_by_logo.png')}
+            resizeMode="contain"
+          />
       }
       {renderUserAvatar({size: 'medium', userCanChange: true, testID: 'user-avatar'})}
     </View>
     <DrawerItemList {...props} />
     <View style={styles.drawerFooterContainer}>
       <View style={styles.drawerFooter}>
-        {DrawerFooterContent ? <DrawerFooterContent /> : <View />}
+        {DrawerFooterContent ?
+          <DrawerFooterContent /> :
+          <>
+            <Image
+              source={footerIcon}
+              style={styles.companyIconImage}
+            />
+            <View style={styles.companyIconTextContainer}>
+              <View style={styles.companyIconLogoText}>
+                <Text style={styles.text}>built by {builtBy}</Text>
+              </View>
+              <View style={styles.companyIconBuildText}>
+                <Text style={styles.text}>
+                  Version {VersionNumber.appVersion}.{VersionNumber.buildVersion}
+                </Text>
+              </View>
+            </View>
+          </>
+        }
       </View>
     </View>
   </SafeAreaView>
@@ -187,16 +238,25 @@ const drawerStyle = {
 }
 
 const drawerEvaIcon = (title: string) => ({ color }) => (
-  <EvaIcon name={title} color={color} />
+  <View style={styles.drawerIconWrapper}>
+    <EvaIcon
+      name={title}
+      color={color}
+      width={moderateScale(22)}
+      height={verticalScale(22)}
+    />
+  </View>
 )
 
 const drawerItemIcon = (title: string) => ({ color }) => (
-  <SvgCustomIcon
-    name={title}
-    width={verticalScale(22)}
-    height={verticalScale(22)}
-    fill={color}
-  />
+  <View style={styles.drawerIconWrapper}>
+    <SvgCustomIcon
+      name={title}
+      width={verticalScale(22)}
+      height={verticalScale(22)}
+      fill={color}
+    />
+  </View>
 )
 
 const drawerItemLabel = (
@@ -219,6 +279,13 @@ const homeDrawerItemOptions = {
     />
   ),
 }
+
+const navigationOptions = NAVIGATION_OPTIONS || {
+  connections: { label: 'My Connections' },
+  credentials: { label: 'My Credentials' },
+  settings: { label: 'Settings' },
+}
+
 const connectionDrawerItemOptions = {
   drawerIcon: drawerEvaIcon(CONNECTIONS_ICON),
   drawerLabel: drawerItemLabel(

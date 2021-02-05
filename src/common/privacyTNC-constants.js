@@ -13,10 +13,10 @@ import {
 
 const isAndroid = Platform.OS === 'android'
 export { EULA_URL as TermsAndConditionUrl } from '../eula/type-eula'
-export const TermsAndConditionsTitle = TERMS_AND_CONDITIONS_TITLE
+export const TermsAndConditionsTitle = TERMS_AND_CONDITIONS_TITLE || 'Terms and Conditions'
 
-export const PrivacyPolicyUrl = PRIVACY_POLICY_URL
+export const PrivacyPolicyUrl = PRIVACY_POLICY_URL || 'https://www.connect.me/privacy.html'
 export const localPrivacyPolicySource = isAndroid
   ? ANDROID_PRIVACY_POLICY_LOCAL
   : IOS_PRIVACY_POLICY_LOCAL
-export const PrivacyPolicyTitle = PRIVACY_POLICY_TITLE
+export const PrivacyPolicyTitle = PRIVACY_POLICY_TITLE || 'Privacy Policy'

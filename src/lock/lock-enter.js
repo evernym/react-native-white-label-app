@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react'
-import { StyleSheet, Platform, Image, Text } from 'react-native'
+import { StyleSheet, Platform, Image, Text, View } from 'react-native'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
@@ -34,7 +34,7 @@ import { switchErrorAlerts } from '../store/config-store'
 import type { Store } from '../store/type-store'
 import { ENTER_YOUR_PASS_CODE_MESSAGE } from '../common/message-constants'
 import { isBiggerThanShortDevice, } from '../common/styles/constant'
-import { moderateScale, verticalScale } from 'react-native-size-matters'
+import { verticalScale } from 'react-native-size-matters'
 
 const lockImage = require('../images/lockCombo.png')
 const backgroundImg = require('../images/wave1.png')
@@ -156,11 +156,7 @@ export class LockEnter extends Component<LockEnterProps, LockEnterState> {
         {this.props.fromRecovery ? (
           <Container safeArea fifth>
             <CustomView center>
-              <LockHeader
-                width={moderateScale(218.54)}
-                height={moderateScale(28)}
-                fill={colors.gray2}
-              />
+              {LockHeader ? <LockHeader/> : <View/> }
             </CustomView>
             <Image
               source={backgroundImg}
@@ -212,11 +208,7 @@ export class LockEnter extends Component<LockEnterProps, LockEnterState> {
         ) : (
           <Container tertiary>
             <CustomView center>
-              <LockHeader
-                width={moderateScale(218.54)}
-                height={moderateScale(28)}
-                fill={colors.gray2}
-              />
+              {LockHeader ? <LockHeader/> : <View/> }
             </CustomView>
             <CustomView
               style={[styles.text]}

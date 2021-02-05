@@ -174,12 +174,52 @@ exports[`user about app screen should render properly and snapshot should match 
     }
   >
     <Image
-      source={
+      source={null}
+    />
+    <View
+      center={true}
+      doubleVerticalSpace={true}
+      style={
         Object {
-          "default": "RelativeImageStub",
+          "alignItems": "center",
+          "justifyContent": "center",
+          "paddingVertical": 16,
         }
       }
-    />
+    >
+      <Text
+        allowFontScaling={false}
+        style={
+          Array [
+            Object {
+              "fontSize": 17,
+            },
+            Object {
+              "fontFamily": "Lato",
+            },
+            Object {
+              "backgroundColor": "#ffffff",
+              "color": "#777777",
+            },
+            Object {
+              "fontWeight": "bold",
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        AppName
+      </Text>
+    </View>
     <View
       center={true}
       doubleVerticalSpace={true}
@@ -209,9 +249,7 @@ exports[`user about app screen should render properly and snapshot should match 
               "fontWeight": "600",
             },
             null,
-            Object {
-              "backgroundColor": "transparent",
-            },
+            null,
             null,
             null,
             null,
@@ -289,57 +327,6 @@ exports[`user about app screen should render properly and snapshot should match 
       vCenter={true}
       verticalSpace={true}
     />
-    <View
-      doubleVerticalSpace={true}
-      style={
-        Object {
-          "paddingVertical": 16,
-        }
-      }
-    >
-      <Text
-        allowFontScaling={false}
-        style={
-          Array [
-            Object {
-              "fontSize": 11,
-            },
-            Object {
-              "fontFamily": "Lato",
-            },
-            Object {
-              "backgroundColor": "#ffffff",
-              "color": "#777777",
-            },
-            null,
-            null,
-            Object {
-              "backgroundColor": "transparent",
-            },
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            Object {
-              "paddingBottom": 10,
-            },
-          ]
-        }
-      >
-        built by
-      </Text>
-      <Image
-        source={
-          Object {
-            "default": "RelativeImageStub",
-          }
-        }
-      />
-    </View>
   </View>
   <View
     style={

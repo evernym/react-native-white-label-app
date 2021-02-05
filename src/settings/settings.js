@@ -18,7 +18,7 @@ import get from 'lodash.get'
 // $FlowExpectedError[cannot-resolve-module] external file
 import { APP_NAME } from '../../../../../app/evernym-sdk/app'
 import {
-  settingsOptions,
+  SETTINGS_OPTIONS,
   HEADLINE,
 // $FlowExpectedError[cannot-resolve-module] external file
 } from '../../../../../app/evernym-sdk/settings'
@@ -84,7 +84,6 @@ import {
   CHAT_ICON,
   INFO_ICON,
   ARROW_RIGHT_ICON,
-  SAVE_ICON,
   BACKUP_ICON,
 } from '../common/icons'
 import { sendLogsRoute } from '../common'
@@ -193,6 +192,13 @@ const style = StyleSheet.create({
   },
 })
 
+const settingsOptions = SETTINGS_OPTIONS || {
+    biometrics: {},
+    passcode: {},
+    logs: {},
+    about: {},
+  }
+
 export class Settings extends Component<SettingsProps, SettingsState> {
   state = {
     walletBackupModalVisible: false,
@@ -220,9 +226,9 @@ export class Settings extends Component<SettingsProps, SettingsState> {
     // this confirms to make the onChangeTouchId function to invoke only once at all the times
     if (this.props.touchIdActive !== switchState && navigation.isFocused()) {
       navigation.push &&
-        navigation.push(lockTouchIdSetupRoute, {
-          fromSettings: true,
-        })
+      navigation.push(lockTouchIdSetupRoute, {
+        fromSettings: true,
+      })
     }
   }
   toggleAutoCloudBackupEnabled = (switchState: boolean) => {
@@ -438,20 +444,20 @@ export class Settings extends Component<SettingsProps, SettingsState> {
   getLastCloudBackupTime() {
     // return this.props.lastSuccessfulCloudBackup === 'error' ? (
     return this.props.cloudBackupError === WALLET_BACKUP_FAILURE ? (
-      'Backup failed, size limit exceeded'
-    ) : // ) : this.props.lastSuccessfulCloudBackup === 'Failed to create backup: Timed out in push notifications' ? (
-    this.props.cloudBackupStatus === CLOUD_BACKUP_FAILURE ? (
-      'Backup failed. Tap to retry'
-    ) : this.props.lastSuccessfulCloudBackup !== '' ? (
-      <CustomText transparentBg h7 bold style={[style.backupTimeSubtitleStyle]}>
-        Last backup was{' '}
-        <CustomText transparentBg h7 bold style={[style.subtitleColor]}>
-          {this.formatBackupString(this.props.lastSuccessfulCloudBackup)}
+        'Backup failed, size limit exceeded'
+      ) : // ) : this.props.lastSuccessfulCloudBackup === 'Failed to create backup: Timed out in push notifications' ? (
+      this.props.cloudBackupStatus === CLOUD_BACKUP_FAILURE ? (
+        'Backup failed. Tap to retry'
+      ) : this.props.lastSuccessfulCloudBackup !== '' ? (
+        <CustomText transparentBg h7 bold style={[style.backupTimeSubtitleStyle]}>
+          Last backup was{' '}
+          <CustomText transparentBg h7 bold style={[style.subtitleColor]}>
+            {this.formatBackupString(this.props.lastSuccessfulCloudBackup)}
+          </CustomText>
         </CustomText>
-      </CustomText>
-    ) : (
-      'Sync your app backup in the cloud.'
-    )
+      ) : (
+        'Sync your app backup in the cloud.'
+      )
   }
 
   onCloudBackupPressed = () => {
@@ -591,136 +597,131 @@ export class Settings extends Component<SettingsProps, SettingsState> {
       )
 
     const settingsItemList = [
-      {
-        id: 1,
-        title: this.renderBackupTitleText(),
-        subtitle: this.getLastBackupTitle(),
-        avatar: (
-          <EvaIcon
-            name={SAVE_ICON}
-            color={
-              this.props.connectionsUpdated && !this.props.isAutoBackupEnabled
-                ? // || (this.props.connectionsUpdated && this.props.isAutoBackupEnabled && hasCloudBackupFailed)
-                  colors.red
-                : colors.gray2
+      // disable manual backup. Remove below line to enable manual backup
+      // {
+      //   id: 1,
+      //   title: this.renderBackupTitleText(),
+      //   subtitle: this.getLastBackupTitle(),
+      //   avatar: (
+      //     <EvaIcon
+      //       name={SAVE_ICON}
+      //       color={
+      //         this.props.connectionsUpdated && !this.props.isAutoBackupEnabled
+      //           ? // || (this.props.connectionsUpdated && this.props.isAutoBackupEnabled && hasCloudBackupFailed)
+      //             colors.red
+      //           : colors.gray2
+      //       }
+      //     />
+      //   ),
+      //   rightIcon: '',
+      //   onPress: this.onBackup,
+      // },
+      ...(
+        settingsOptions['cloudBackups'] && this.props.isCloudBackupEnabled && hasVerifiedRecoveryPhrase ?
+          [
+            {
+              id: 2,
+              title: settingsOptions['cloudBackups']['title'] || 'Automatic Cloud Backups',
+              subtitle: settingsOptions['cloudBackups']['subtitle'] || this.getCloudBackupSubtitle(),
+              avatar: settingsOptions['cloudBackups']['icon'] ||
+                <EvaIcon
+                  name={BACKUP_ICON}
+                  color={hasCloudBackupFailed ? colors.red : colors.gray2}
+                />,
+              rightIcon:
+                cloudBackupStatus === CLOUD_BACKUP_LOADING ? (
+                  <ActivityIndicator />
+                ) : (
+                  cloudToggleSwitch
+                ),
+              onPress:
+                cloudBackupStatus === CLOUD_BACKUP_LOADING
+                  ? () => {}
+                  : this.onCloudBackupPressed,
             }
-          />
-        ),
-        rightIcon: '',
-        onPress: this.onBackup,
-      },
-      {
-        id: 2,
-        title: 'Automatic Cloud Backups',
-        subtitle: this.getCloudBackupSubtitle(),
-        avatar: (
-          <EvaIcon
-            name={BACKUP_ICON}
-            color={hasCloudBackupFailed ? colors.red : colors.gray2}
-          />
-        ),
-        rightIcon:
-          cloudBackupStatus === CLOUD_BACKUP_LOADING ? (
-            <ActivityIndicator />
-          ) : (
-            cloudToggleSwitch
-          ),
-        onPress:
-          cloudBackupStatus === CLOUD_BACKUP_LOADING
-            ? () => {}
-            : this.onCloudBackupPressed,
-      },
+          ]
+          : []),
       ...(settingsOptions['biometrics']
         ? [
-            {
-              id: 3,
-              title: settingsOptions['biometrics']['title'] || 'Biometrics',
-              subtitle:
-                settingsOptions['biometrics']['subtitle'] ||
-                'Use your finger or face to secure app',
-              avatar: <SvgCustomIcon fill={colors.gray2} name="Biometrics" />,
-              rightIcon: toggleSwitch,
-              onPress: () => {},
-            },
-          ]
+          {
+            id: 3,
+            title: settingsOptions['biometrics']['title'] || 'Biometrics',
+            subtitle:
+              settingsOptions['biometrics']['subtitle'] ||
+              'Use your finger or face to secure app',
+            avatar: settingsOptions['biometrics']['icon'] ||
+              <SvgCustomIcon fill={colors.gray2} name="Biometrics" />,
+            rightIcon: toggleSwitch,
+            onPress: () => {},
+          },
+        ]
         : []),
       ...(settingsOptions['passcode']
         ? [
-            {
-              id: 4,
-              title: settingsOptions['passcode']['title'] || 'Passcode',
-              subtitle:
-                settingsOptions['passcode']['subtitle'] ||
-                `View/Change your ${APP_NAME} passcode`,
-              avatar: (
-                <View style={styles.avatarView}>
-                  <SvgCustomIcon
-                    name="Passcode"
-                    fill={colors.gray2}
-                    width={verticalScale(32)}
-                    height={verticalScale(19)}
-                  />
-                </View>
-              ),
-              rightIcon: (
-                <EvaIcon name={ARROW_RIGHT_ICON} color={colors.gray3} />
-              ),
-              onPress: this.onChangePinClick,
-            },
-          ]
+          {
+            id: 4,
+            title: settingsOptions['passcode']['title'] || 'Passcode',
+            subtitle:
+              settingsOptions['passcode']['subtitle'] ||
+              `View/Change your ${APP_NAME} passcode`,
+            avatar: settingsOptions['passcode']['icon'] ||
+              <SvgCustomIcon
+                name="Passcode"
+                fill={colors.gray2}
+                width={verticalScale(32)}
+                height={verticalScale(19)}
+              />,
+            rightIcon: (
+              <EvaIcon name={ARROW_RIGHT_ICON} color={colors.gray3} />
+            ),
+            onPress: this.onChangePinClick,
+          },
+        ]
         : []),
-      {
-        id: 5,
-        title: 'Recovery Phrase',
-        subtitle: 'View your Recovery Phrase',
-        avatar: (
-          <View style={styles.avatarView}>
-            <SvgCustomIcon name="ViewPassPhrase" fill={colors.gray2} />
-          </View>
-        ),
-        rightIcon: <EvaIcon name={ARROW_RIGHT_ICON} color={colors.gray3} />,
-        onPress: this.viewRecoveryPhrase,
-      },
+      ...(settingsOptions['cloudBackups'] && settingsOptions['backupRecovery'] && hasVerifiedRecoveryPhrase
+        ? [
+          {
+            id: 5,
+            title: settingsOptions['backupRecovery']['title'] || 'Recovery Phrase',
+            subtitle: settingsOptions['backupRecovery']['title'] || 'View your Recovery Phrase',
+            avatar: settingsOptions['backupRecovery']['icon'] || <SvgCustomIcon name="ViewPassPhrase" fill={colors.gray2} />,
+            rightIcon: <EvaIcon name={ARROW_RIGHT_ICON} color={colors.gray3} />,
+            onPress: this.viewRecoveryPhrase,
+          }
+        ]
+        :[]),
       ...(settingsOptions['feedback']
         ? [
-            {
-              id: 6,
-              title:
-                settingsOptions['feedback']['title'] || 'Give app feedback',
-              subtitle:
-                settingsOptions['feedback']['subtitle'] ||
-                `Tell us what you think of ${APP_NAME}`,
-              avatar: (
-                <View style={styles.avatarView}>
-                  <EvaIcon name={CHAT_ICON} />
-                </View>
-              ),
-              rightIcon: (
-                <EvaIcon name={ARROW_RIGHT_ICON} color={colors.gray3} />
-              ),
-              onPress: this.openFeedback,
-            },
-          ]
+          {
+            id: 6,
+            title:
+              settingsOptions['feedback']['title'] || 'Give app feedback',
+            subtitle:
+              settingsOptions['feedback']['subtitle'] ||
+              `Tell us what you think of ${APP_NAME}`,
+            avatar: settingsOptions['feedback']['icon'] || <EvaIcon name={CHAT_ICON} />,
+            rightIcon: (
+              <EvaIcon name={ARROW_RIGHT_ICON} color={colors.gray3} />
+            ),
+            onPress: this.openFeedback,
+          },
+        ]
         : []),
       ...(settingsOptions['about']
         ? [
-            {
-              id: 7,
-              title: settingsOptions['about']['title'] || 'About',
-              subtitle:
-                settingsOptions['about']['subtitle'] ||
-                'Legal, Version, and Network Information',
-              avatar: (
-                <View style={styles.avatarView}>
-                  <EvaIcon name={INFO_ICON} />
-                </View>
-              ),
-              rightIcon: (
-                <EvaIcon name={ARROW_RIGHT_ICON} color={colors.gray3} />
-              ),
-              onPress: this.openAboutApp,
-            },
-          ]
+          {
+            id: 7,
+            title: settingsOptions['about']['title'] || 'About',
+            subtitle:
+              settingsOptions['about']['subtitle'] ||
+              'Legal, Version, and Network Information',
+            avatar: settingsOptions['about']['icon'] || <EvaIcon name={INFO_ICON} />,
+            rightIcon: (
+              <EvaIcon name={ARROW_RIGHT_ICON} color={colors.gray3} />
+            ),
+            onPress: this.openAboutApp,
+          },
+        ]
         : []),
       ...(settingsOptions['logs']
         ? [
@@ -728,16 +729,7 @@ export class Settings extends Component<SettingsProps, SettingsState> {
             id: 9,
             title: settingsOptions['logs']['title'] || 'Send Logs',
             subtitle: settingsOptions['logs']['subtitle'] || 'Help us improve our app by sending your errors',
-            avatar: (
-              <View style={styles.avatarView}>
-                <SvgCustomIcon
-                  name="About"
-                  fill={colors.gray2}
-                  width={verticalScale(27)}
-                  height={verticalScale(27)}
-                />
-              </View>
-            ),
+            avatar: settingsOptions['logs']['icon'] || <EvaIcon name={INFO_ICON} />,
             rightIcon: (
               <EvaIcon name={ARROW_RIGHT_ICON} color={colors.gray3} />
             ),
@@ -767,12 +759,7 @@ export class Settings extends Component<SettingsProps, SettingsState> {
         id: 9,
         title: 'Design styleguide',
         subtitle: 'Development only',
-        avatar: (
-          <View style={styles.avatarView}>
-            <EvaIcon name={INFO_ICON} />
-          </View>
-        ),
-
+        avatar: (<EvaIcon name={INFO_ICON} />),
         rightIcon: <EvaIcon name={ARROW_RIGHT_ICON} color={colors.gray3} />,
         onPress: this.openStyleGuide,
       })
@@ -795,23 +782,14 @@ export class Settings extends Component<SettingsProps, SettingsState> {
           <ScrollView>
             <CustomView style={[style.secondaryContainer, style.listContainer]}>
               {settingsItemList.map((item, index) => {
-                // disable manual backup as well. Remove below line to enable manual backup in MSDK
-                if (index === 0) {
-                  return
-                }
-
-                if (!this.props.isCloudBackupEnabled) {
-                  if (index === 1) {
-                    // if cloud backup is not enabled, then we hide cloud backup option
-                    return
-                  }
-                }
-                if ((index === 1 || index === 4) && !hasVerifiedRecoveryPhrase)
-                  return
                 return (
                   <TouchableOpacity onPress={item.onPress}  key={index}>
                     <ListItem.Content style={style.listItemContainer}>
-                      {item && item.avatar}
+                      {item && item.avatar &&
+                      <View style={styles.avatarView}>
+                        {item.avatar}
+                      </View>
+                      }
                       <ListItem.Content style={style.listItemText}>
                         <ListItem.Title style={[
                           (this.props.connectionsUpdated &&
