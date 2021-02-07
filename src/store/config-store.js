@@ -30,7 +30,6 @@ import {
   getConnection,
   getAgencyUrl,
   getConnectionByProp,
-  getNotificationOpenOptions,
 } from '../store/store-selector'
 import {
   SERVER_ENVIRONMENT,
@@ -126,7 +125,6 @@ import { GENESIS_FILE_NAME } from '../api/api-constants'
 import type {
   ClaimOfferMessagePayload,
   ClaimPushPayload,
-  NotificationOpenOptions,
 } from './../push-notification/type-push-notification'
 import type { ProofRequestPushPayload } from '../proof-request/type-proof-request'
 import type { ClaimPushPayloadVcx } from './../claim/type-claim'
@@ -881,9 +879,6 @@ export function* processMessages(
   // additional data will be fetched and passed to relevant( claim, claimOffer, proofRequest,etc )store.
   const messages: Array<DownloadedMessage> = traverseAndGetAllMessages(data)
   const dataAlreadyExists = yield select(getPendingFetchAdditionalDataKey)
-  const notificationOpenOptionsFromStore = yield select(
-    getNotificationOpenOptions
-  )
 
   for (let i = 0; i < messages.length; i++) {
     try {
@@ -931,13 +926,11 @@ export function* processMessages(
               ...messages[i],
               senderDID,
             },
-            notificationOpenOptionsFromStore
           )
         } else {
           yield fork(
             handleProprietaryMessage,
             messages[i],
-            notificationOpenOptionsFromStore
           )
         }
       }
@@ -1018,7 +1011,6 @@ export const convertDecryptedPayloadToAriesQuestion = (
 
 function* handleProprietaryMessage(
   downloadedMessage: DownloadedMessage,
-  notificationOpenOptions: NotificationOpenOptions
 ): Generator<*, *, *> {
   const { senderDID, uid, type, decryptedPayload } = downloadedMessage
   const remotePairwiseDID = senderDID
@@ -1149,7 +1141,6 @@ function* handleProprietaryMessage(
 
 function* handleAriesMessage(
   message: DownloadedMessage,
-  notificationOpenOptions: NotificationOpenOptions
 ): Generator<*, *, *> {
   let { senderDID, uid, type, decryptedPayload } = message
   const remotePairwiseDID = senderDID

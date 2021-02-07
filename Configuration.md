@@ -686,7 +686,7 @@ export const APPTENTIVE_CREDENTIALS = Platform.select({
 The information about the application which will be shown on `About` screen can be configured in `app.js` file.
 
 * `INFO` - (object) object specifying which information need to be show
-    * to use default - `appLogo, appName, appVersion, appEnvironment, poweredBy`
+    * to use default - `appLogo, appName, appVersion, appEnvironment, builtBy, poweredBy, termsAndConditions, privacyPolicy`
         ```javascript
         export const INFO = null
         ```
@@ -705,6 +705,8 @@ The information about the application which will be shown on `About` screen can 
         * `appEnvironment` - show application environment
         * `builtBy` - show company label/name built application 
         * `poweredBy` - powered by Evernym label
+        * `termsAndConditions` - end user license agreement
+        * `privacyPolicy` - privacy policy document
 
 * `AdditionalInfo` - (React Component) some additional information which will be show on the screen
     * to omit

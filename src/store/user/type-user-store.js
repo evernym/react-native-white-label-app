@@ -17,14 +17,6 @@ export type UserStore = {
   avatarName: ?string,
 }
 
-export type ChangeEnvironment = {
-  agencyUrl: string,
-  poolConfig: string,
-  agencyDID: string,
-  agencyVerificationKey: string,
-  paymentHandle: string,
-}
-
 export const CONNECT_REGISTER_CREATE_AGENT_DONE =
   'CONNECT_REGISTER_CREATE_AGENT_DONE'
 
@@ -89,8 +81,6 @@ export type SelectUserAvatarFailAction = {
   type: typeof SELECT_USER_AVATAR_FAIL,
   error: CustomError,
 }
-
-export const USER_AVATAR_IMAGE_NAME = 'user-avatar'
 
 export type UserStoreAction =
   | ConnectRegisterCreateAgentDoneAction

@@ -46,7 +46,6 @@ import ToggleSwitch from 'react-native-flip-toggle-button'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { colors, fontFamily, fontSizes } from '../common/styles/constant'
-import { EDIT_ICON_DIMENSIONS } from './settings-constant'
 import type { Store } from '../store/type-store'
 import type { SettingsProps, SettingsState } from './type-settings'
 import { selectUserAvatar } from '../store/user/user-store'
@@ -166,8 +165,8 @@ const style = StyleSheet.create({
     textAlign: 'center',
   },
   editIcon: {
-    width: EDIT_ICON_DIMENSIONS,
-    height: EDIT_ICON_DIMENSIONS,
+    width: 30,
+    height: 30,
   },
   labelImage: {
     marginRight: moderateScale(10),

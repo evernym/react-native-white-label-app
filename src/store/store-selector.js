@@ -32,14 +32,7 @@ export const getConfig = (state: Store) => state.config
 
 export const getAgencyUrl = (state: Store) => state.config.agencyUrl
 
-export const getAgencyDID = (state: Store) => state.config.agencyDID
-
 export const getPoolConfig = (state: Store) => state.config.poolConfig
-
-export const getPaymentMethod = (state: Store) => state.config.paymentMethod
-
-export const getAgencyVerificationKey = (state: Store) =>
-  state.config.agencyVerificationKey
 
 export const getPushToken = (state: Store) => state.pushNotification.pushToken
 
@@ -124,14 +117,7 @@ export const getConnection = (
 export const getConnectionsCount = (state: Store) =>
   Object.keys(state.connections.data || {}).length
 
-export const isDuplicateConnection = (state: Store, senderDID: string) => {
-  const [connection] = getConnection(state, senderDID)
-  return connection && (connection.isFetching || connection.isCompleted)
-}
-
 export const getHydrationState = (state: Store) => state.config.isHydrated
-
-export const getInitializedState = (state: Store) => state.config.isInitialized
 
 export const getClaimOffer = (state: Store, claimOfferId: string) =>
   state.claimOffer[claimOfferId]
@@ -314,9 +300,6 @@ export const getClaimForOffer = (state: Store, offer: ClaimOfferPayload) =>
 
 export const getCurrentScreen = (state: Store) => state.route.currentScreen
 
-export const getNotificationOpenOptions = (state: Store) =>
-  state.pushNotification.notificationOpenOptions
-
 export const getWalletBalance = (state: Store) =>
   state.wallet.walletBalance.data
 
@@ -352,11 +335,7 @@ export const getVcxInitializationState = (state: Store) =>
 export const getVcxPoolInitializationState = (state: Store) =>
   state.config.vcxPoolInitializationState
 
-export const getIsLockEnabledState = (state: Store) => state.lock.isLockEnabled
 export const getIsAppLocked = (state: Store) => state.lock.isAppLocked
-
-export const getIsAlreadyInstalledState = (state: Store) =>
-  state.config.isAlreadyInstalled
 
 export const getClaimOffers = (state: Store) => state.claimOffer
 
@@ -424,10 +403,6 @@ export const getConnectionByUserDid = (state: Store, userDID: string) => {
 
 export const getOfflineStatus = (state: Store) => state.offline.offline
 
-export const getInvitations = (state: Store) => state.invitation
-
-export const getDeepLinkTokens = (state: Store) => state.deepLink.tokens
-
 export const getBackupPassphrase = (state: Store) => state.backup.passphrase
 
 export const getBackupStatus = (state: Store) => state.backup.status
@@ -440,27 +415,17 @@ export const getCloudBackupStatus = (state: Store) =>
 export const getCloudBackupPending = (state: Store) =>
   state.backup.cloudBackupPending
 
-export const getLastCloudBackup = (state: Store) =>
-  state.backup.lastSuccessfulCloudBackup
-
 export const getAutoCloudBackupEnabled = (state: Store) =>
   state.backup.autoCloudBackupEnabled
 
 export const getHasVerifiedRecoveryPhrase = (state: Store) =>
   state.backup.hasVerifiedRecoveryPhrase
 
-export const getLastBackup = (state: Store) => state.backup.lastSuccessfulBackup
-
 export const getBackupWalletPath = (state: Store) =>
   state.backup.backupWalletPath
 
-export const getEncryptedFileLocation = (state: Store) =>
-  state.backup.encryptedFileLocation
-
 export const getLogEncryptionStatus = (state: Store) =>
   state.sendlogs.encryptLogStatus
-
-export const getBackupShowBanner = (state: Store) => state.backup.showBanner
 
 export const getTaaAcceptedVersion = (state: Store) =>
   state.txnAuthorAgreement.taaAcceptedVersion
@@ -509,18 +474,7 @@ export const getUnseenMessages = (state: Store) => {
   return obj
 }
 
-export const getLastSuccessfulBackupTimeStamp = (state: Store) =>
-  state.backup.lastSuccessfulBackup
-
 export const getRestoreStatus = (state: Store) => state.restore.status
-
-export const getRestoreFileSize = (state: Store) =>
-  state.restore.restoreFile.fileSize
-
-export const getRouteCurrentScreen = (state: Store) => state.route.currentScreen
-
-export const getRestoreFilePath = (state: Store) =>
-  state.restore.restoreFile.uri
 
 export const getRestoreFileName = (state: Store) =>
   state.restore.restoreFile.fileName
@@ -531,12 +485,6 @@ export const getHistory = (state: Store) => state.history.data
 
 export const getPendingFetchAdditionalDataKey = (state: Store) =>
   state.pushNotification.pendingFetchAdditionalDataKey
-
-export const getPushNotifactionNotification = (state: Store) =>
-  state.pushNotification.notification
-
-export const getPushNotificationPermissionState = (state: Store) =>
-  state.pushNotification.isAllowed
 
 export const getProofData = (state: Store, proofRequestId: string) =>
   state.proof[proofRequestId] ? state.proof[proofRequestId].proofData : {}
@@ -614,8 +562,6 @@ export const getConnectionByProp = (
 
 export const getDIDFromFullyQualifiedDID = (did: string) =>
   did.split(':').slice(-1)[0]
-
-export const getPushNotificationStore = (state: Store) => state.pushNotification
 
 export const isNewConnection = (status: string, show?: boolean) => {
   if (

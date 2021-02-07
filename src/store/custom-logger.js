@@ -20,6 +20,7 @@ import {
   CLAIM_RECEIVED,
   CLAIM_RECEIVED_VCX,
   HYDRATE_CLAIM_MAP,
+  HYDRATE_CLAIM_MAP_FAIL,
   MAP_CLAIM_TO_SENDER,
 } from '../claim/type-claim'
 import { GENERATE_RECOVERY_PHRASE_SUCCESS } from '../backup/type-backup'
@@ -75,6 +76,7 @@ import {
   PROOF_SUCCESS,
   PROOF_REQUEST_SEND_PROOF_HANDLE,
   RETRY_SEND_PROOF,
+  ERROR_SEND_PROOF,
 } from '../proof/type-proof'
 import {
   ACCEPT_OUTOFBAND_PRESENTATION_REQUEST,
@@ -112,8 +114,6 @@ import {
 import { SHOW_IN_APP_NOTIFICATION } from '../in-app-notification/in-app-notification-type'
 import { RESTORE_SUBMIT_PASSPHRASE } from '../restore/type-restore'
 import { RESTORE_CLOUD_SUBMIT_PASSPHRASE } from '../cloud-restore/cloud-restore-type'
-import { HYDRATE_CLAIM_MAP_FAIL } from '../connection-details/components/types/type-details-claim'
-import { ERROR_SEND_PROOF } from '../connection-details/components/types/type-details-proof'
 import {
   HYDRATE_INVITATIONS,
   INVITATION_ACCEPTED,

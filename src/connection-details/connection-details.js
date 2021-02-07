@@ -21,7 +21,6 @@ import type { Store } from '../store/type-store'
 import type {
   ConnectionHistoryProps,
   ConnectionHistoryState,
-  ConnectionHistoryEvent,
   ConnectionHistoryNavigation,
 } from './type-connection-details'
 import { getConnectionTheme } from '../store/store-selector'
@@ -47,6 +46,7 @@ import { INVITATION_ACCEPTED } from '../invitation/type-invitation'
 import { CONNECTION_FAIL } from '../store/type-connection-store'
 import { deleteConnectionAction } from '../store/connections-store'
 import { ViewPushLeft } from './utils/modal-animation'
+import type { ConnectionHistoryEvent } from '../connection-history/type-connection-history'
 
 export class ConnectionDetails extends Component<
   ConnectionHistoryProps,

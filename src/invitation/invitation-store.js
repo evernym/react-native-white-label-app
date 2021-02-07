@@ -24,7 +24,6 @@ import {
 } from './type-invitation'
 import { ResponseType } from '../components/request/type-request'
 import {
-  ERROR_INVITATION_ALREADY_ACCEPTED_MESSAGE,
   ERROR_INVITATION_RESPONSE_FAILED,
 } from '../api/api-constants'
 import {
@@ -91,7 +90,7 @@ import {
 } from '../claim-offer/claim-offer-store'
 import {
   CONNECTION_ALREADY_EXISTS,
-  CLOUD_AGENT_UNAVAILABLE,
+  CLOUD_AGENT_UNAVAILABLE, CONNECTION_ALREADY_EXISTS_MESSAGE,
 } from '../bridge/react-native-cxs/error-cxs'
 import {
   acceptOutofbandPresentationRequest,
@@ -587,7 +586,7 @@ export function* handleConnectionError(
     yield put(
       invitationFail(ERROR_INVITATION_ALREADY_ACCEPTED(e.message), senderDID)
     )
-    message = ERROR_INVITATION_ALREADY_ACCEPTED_MESSAGE
+    message = CONNECTION_ALREADY_EXISTS_MESSAGE
   } else {
     yield put(invitationFail(ERROR_INVITATION_CONNECT(e.message), senderDID))
     message = ERROR_INVITATION_RESPONSE_FAILED

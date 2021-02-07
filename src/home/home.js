@@ -19,7 +19,7 @@ import { SHOW_EVENTS_HISTORY } from '../../../../../app/evernym-sdk/home'
 import type { Store } from '../store/type-store'
 import type { HomeProps } from './type-home'
 
-import { HISTORY_EVENT_STATUS } from '../connection-history/type-connection-history'
+import { CONNECTION_ALREADY_EXIST, HISTORY_EVENT_STATUS } from '../connection-history/type-connection-history'
 import { HomeHeader, CameraButton } from '../components'
 import {
   homeDrawerRoute,
@@ -50,7 +50,6 @@ import { CONNECTION_INVITE_TYPES } from '../invitation/type-invitation'
 import type { AriesOutOfBandInvite } from '../invitation/type-invitation'
 import { UPDATE_ATTRIBUTE_CLAIM, ERROR_SEND_PROOF } from '../proof/type-proof'
 import { MESSAGE_TYPE } from '../api/api-constants'
-import { CONNECTION_ALREADY_EXIST } from '../connection-details/type-connection-details'
 import { EmptyState } from './empty-state'
 
 const showHistoryEvents =

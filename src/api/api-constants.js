@@ -3,8 +3,6 @@
 export const TOKEN_EXPIRED_CODE = 'VES-101'
 export const SERVER_ERROR_CODE = 'OCS-000'
 export const SERVER_API_CALL_ERROR = 'OCS-001'
-export const PENDING_CONNECTION_REQUEST_CODE = 'CRS-103'
-export const PUSH_NOTIFICATION_SENT_CODE = 'push-notification-sent'
 
 export const QR_CODE_REQUEST_ID = 'id'
 export const QR_CODE_SENDER_DETAIL = 's'
@@ -38,28 +36,6 @@ export const MESSAGE_TYPE = {
   ARIES: 'aries',
 }
 
-export const PAYLOAD_TYPE = {
-  GET_MESSAGE: 'GET_MSGS',
-  UPDATE_PUSH_COM_METHOD: 'UPDATE_PUSH_COM_METHOD',
-  SEND_MESSAGE: 'SEND_MSG',
-}
-
-export const STATUS_CODE = {
-  ACCEPT: 'MS-104',
-}
-
-export const ERROR_ALREADY_EXIST = {
-  code: 'OCS',
-  message: 'You already have a relationship with ',
-}
-
-export const ERROR_ALREADY_EXIST_TITLE = 'Relationship already established'
-
-export const ERROR_INVITATION_RESPONSE_PARSE_CODE = 'RN-100'
-
-export const ERROR_INVITATION_RESPONSE_PARSE =
-  'Error parsing error message in invitation response'
-
 export const ERROR_PENDING_INVITATION_RESPONSE_PARSE_CODE = 'RN-101'
 
 export const ERROR_PENDING_INVITATION_RESPONSE_PARSE =
@@ -67,10 +43,3 @@ export const ERROR_PENDING_INVITATION_RESPONSE_PARSE =
 
 export const ERROR_INVITATION_RESPONSE_FAILED =
   'Failed to establish connection. Please try again later.'
-
-export const ERROR_INVITATION_ALREADY_ACCEPTED_TITLE =
-  'Invitation already accepted'
-
-export const ERROR_INVITATION_ALREADY_ACCEPTED_MESSAGE =
-  'The connection invitation has already been accepted. ' +
-  'Please, request a new invitation.'

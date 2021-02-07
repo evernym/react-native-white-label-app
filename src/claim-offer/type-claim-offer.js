@@ -12,7 +12,6 @@ import type {
 } from '../common/type-common'
 import type {
   AdditionalDataPayload,
-  Attribute,
   NotificationPayloadInfo,
 } from '../push-notification/type-push-notification'
 import type { LedgerFeesStateEnum } from '../ledger/components/ledger-fees/ledger-fees-type'
@@ -321,32 +320,6 @@ export type ClaimProofNavigation = {
   },
 }
 
-export type ClaimOfferProps = {
-  claimOfferShown: (uid: string) => void,
-  acceptClaimOffer: (uid: string) => void,
-  claimOfferRejected: (uid: string) => void,
-  claimOfferIgnored: (uid: string) => void,
-  updateStatusBarTheme: (color?: string) => void,
-  claimOfferShowStart: (uid: string) => ClaimOfferShowStartAction,
-  resetClaimRequestStatus: (uid: string) => ResetClaimRequestStatusAction,
-  uid: string,
-  claimOfferData: ClaimOfferPayload,
-  isValid: boolean,
-  logoUrl?: string,
-  claimThemePrimary: string,
-  claimThemeSecondary: string,
-} & ClaimProofNavigation
-
-export type ClaimOfferState = {
-  disableAcceptButton?: boolean,
-  credentialOfferModalStatus?: CredentialOfferModalStatus,
-}
-
-export type ClaimPaidOfferState = {
-  offerStatus: string,
-  shouldShowTransactionInfo: boolean,
-}
-
 export type ClaimRequestStatusModalProps = {
   claimRequestStatus: ClaimRequestStatus,
   payload: ClaimOfferPayload,
@@ -386,22 +359,6 @@ export type CredentialOfferModalState = {
 }
 export type ClaimRequestStatusModalState = {
   modalText: string,
-}
-
-export type ClaimOfferResponse = {
-  msgs: [
-    {
-      statusCode: string,
-      edgeAgentPayload: string,
-      typ: string,
-      statusMsg: string,
-      uid: string,
-    }
-  ],
-}
-
-export type ClaimOfferAttributeListProps = {
-  list: Array<Attribute>,
 }
 
 export const SAVE_CLAIM_OFFERS_SUCCESS = 'SAVE_CLAIM_OFFERS_SUCCESS'

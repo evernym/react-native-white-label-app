@@ -37,10 +37,6 @@ export type ClaimOffers = {
   +[string]: ClaimOfferPayload,
 }
 
-export type NewCredentialInstructionsProps = {
-  usingProductionNetwork: boolean,
-}
-
 export type CardStackProps = {
   credentials: Array<CredentialItem>,
   isExpanded: boolean,

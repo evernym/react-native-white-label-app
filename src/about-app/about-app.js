@@ -87,6 +87,8 @@ const info = INFO || {
   appEnvironment: true,
   builtBy: true,
   poweredBy: true,
+  termsAndConditions: true,
+  privacyPolicy: true,
 };
 
 const rightIcon = <EvaIcon name={ARROW_RIGHT_ICON} color={colors.gray3}/>;
@@ -178,15 +180,20 @@ export class AboutApp extends Component<AboutAppProps, void> {
           )}
         </CustomView>
         <Container>
-          {/* TODO: move the below titles also to constants */}
-          <AboutAppListItem
-            titleValue={TermsAndConditionsTitle}
-            onPress={this.openTermsAndConditions}
-          />
-          <AboutAppListItem
-            titleValue={PrivacyPolicyTitle}
-            onPress={this.openPrivacyPolicy}
-          />
+          {
+            info.termsAndConditions &&
+            <AboutAppListItem
+              titleValue={TermsAndConditionsTitle}
+              onPress={this.openTermsAndConditions}
+            />
+          }
+          {
+            info.privacyPolicy &&
+            <AboutAppListItem
+              titleValue={PrivacyPolicyTitle}
+              onPress={this.openPrivacyPolicy}
+            />
+          }
         </Container>
       </Container>
     );

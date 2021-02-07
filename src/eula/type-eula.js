@@ -1,5 +1,4 @@
 // @flow
-import type { CustomError } from '../common/type-common'
 import { Platform } from 'react-native'
 
 import {
@@ -39,10 +38,6 @@ export type ShareEula = {
 export type HydrateEulaAcceptAction = {
   type: typeof HYDRATE_EULA_ACCEPT,
   isEulaAccept: boolean,
-}
-
-export type EulaScreenState = {
-  error: null | CustomError,
 }
 
 export const title = 'END USER LICENSE AGREEMENT'

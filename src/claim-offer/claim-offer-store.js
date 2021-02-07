@@ -79,8 +79,6 @@ import {
 } from '../bridge/react-native-cxs/RNCxs'
 import { CLAIM_STORAGE_FAIL, CLAIM_STORAGE_SUCCESS } from '../claim/type-claim'
 import { CLAIM_STORAGE_ERROR } from '../services/error/error-code'
-import { MESSAGE_TYPE } from '../api/api-constants'
-import type { ApiClaimRequest, EdgeClaimRequest } from '../api/type-api'
 import type { Connection } from '../store/type-connection-store'
 import { RESET } from '../common/type-common'
 import { secureSet, secureDelete, getHydrationItem } from '../services/storage'
@@ -234,25 +232,6 @@ export const deleteOutOfBandClaimOffer = (uid: string) => ({
   type: DELETE_OUTOFBAND_CLAIM_OFFER,
   uid,
 })
-
-export function convertClaimRequestToEdgeClaimRequest(
-  claimRequest: ApiClaimRequest
-): EdgeClaimRequest {
-  const { blinded_ms, schema_seq_no, issuer_did } = claimRequest
-
-  return {
-    blinded_ms,
-    issuer_did,
-    schema_seq_no,
-    msg_type: MESSAGE_TYPE.CLAIM_REQUEST,
-    // hard coded version as of now, update once versioning is implemented
-    version: '0.1',
-    to_did: claimRequest.remoteDid,
-    from_did: claimRequest.userPairwiseDid,
-    tid: '1',
-    mid: '1',
-  }
-}
 
 export function* denyClaimOfferSaga(
   action: ClaimOfferDenyAction

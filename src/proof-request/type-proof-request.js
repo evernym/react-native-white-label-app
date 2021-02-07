@@ -396,6 +396,7 @@ export type OutOfBandConnectionForPresentationEstablishedAction = {
 export type ProofRequestAction =
   | ProofRequestReceivedAction
   | SendProofSuccessAction
+  | HydrateProofRequestsAction
   | SendProofFailAction
   | SendProofAction
   | ProofRequestIgnoredAction
