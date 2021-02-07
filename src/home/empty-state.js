@@ -10,6 +10,7 @@ export const EmptyState = () => {
       <ImageBackground
         source={require('../images/home_background.png')}
         style={styles.backgroundImage}
+        resizeMode="contain"
       >
         <Text style={styles.infoText}>
           You design goes here
@@ -33,7 +34,6 @@ const styles = StyleSheet.create({
     height: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-    resizeMode: 'center',
   },
   infoText: {
     textAlign: 'center',
@@ -41,7 +41,6 @@ const styles = StyleSheet.create({
     fontSize: verticalScale(fontSizes.size0),
     fontWeight: '700',
     color: colors.gray3,
-    marginTop: moderateScale(-98),
     marginHorizontal: moderateScale(36),
   },
   image: {

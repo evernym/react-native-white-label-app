@@ -28,7 +28,7 @@ import { saveFileToAppDirectory } from './restore-store'
 import type { Store } from '../store/type-store'
 import { RestoreStatus } from './type-restore'
 
-const appImage = APP_LOGO || require('../images/logo_app.png')
+const appImage = APP_LOGO || require('../images/logo_evernym.png')
 
 export class RestoreStartScreen extends Component<RestoreProps, void> {
   restoreBackup = () => {

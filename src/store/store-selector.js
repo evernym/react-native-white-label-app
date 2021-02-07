@@ -51,7 +51,7 @@ export const getConnectionTheme = (state: Store, logoUrl: string) =>
 
 export const getConnectionColorTheme = (state: Store, remoteDid: string) => {
   const [connection] = getConnection(state, remoteDid)
-  return connection ? connection.colorTheme : colors.secondary
+  return connection ? connection.colorTheme : colors.main
 }
 
 export const getErrorAlertsSwitchValue = (state: Store) =>

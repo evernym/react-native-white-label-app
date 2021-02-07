@@ -19,22 +19,17 @@ type CredentialReceivedProps = {
       institutionalName: string,
       imageUrl: string,
       secondColorBackground: string,
-      data: any, // TODO Add type from ConnectionHistoryEvent, make this type as Generic
+      data: any,
     },
   },
 } & ReduxConnect
 
 const Modal = (props: CredentialReceivedProps) => {
-  const { institutionalName, imageUrl } = props.route.params
+  const { data, institutionalName, imageUrl, colorBackground } = props.route.params
   const navigation = useNavigation()
   const hideModal = useCallback(() => {
     navigation.goBack(null)
   }, [])
-
-  const { data } = props.route.params
-  if (data.action !== 'RECEIVED') {
-    return null
-  }
 
   return (
     <View style={styles.modalWrapper}>
@@ -47,11 +42,11 @@ const Modal = (props: CredentialReceivedProps) => {
         institutionalName={institutionalName}
         credentialName={data.name}
         credentialText="Accepted Credential"
-        colorBackground={props.route.params.colorBackground}
+        colorBackground={colorBackground}
       />
       <ModalButton
         onClose={hideModal}
-        colorBackground={props.route.params.colorBackground}
+        colorBackground={colorBackground}
       />
     </View>
   )
@@ -63,8 +58,8 @@ export const fulfilledMessageScreen = {
 }
 
 fulfilledMessageScreen.screen.navigationOptions = ({
-  navigation: { goBack, isFocused },
-}) => ({
+                                                     navigation: { goBack, isFocused },
+                                                   }) => ({
   safeAreaInsets: { top: 85 },
   cardStyle: {
     marginLeft: '2.5%',
