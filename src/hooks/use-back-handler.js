@@ -4,23 +4,20 @@ import {
   useFocusEffect,
   useNavigationState,
   CommonActions,
+  useNavigation,
+  StackActions,
 } from '@react-navigation/native'
 import { BackHandler, Platform, ToastAndroid } from 'react-native'
 import { exitAppAndroid } from '../bridge/react-native-cxs/RNCxs'
 import type { NavigationState, NavigationRoute } from '../common/type-common'
 
 import {
-  qrCodeScannerTabRoute,
   homeRoute,
   genRecoveryPhraseRoute,
   backupCompleteRoute,
-  lockPinSetupHomeRoute,
-  settingsRoute,
   lockSetupSuccessRoute,
-  invitationRoute,
   lockEnterPinRoute,
   splashScreenRoute,
-  eulaRoute,
   lockSelectionRoute,
   lockAuthorizationHomeRoute,
   restoreRoute,
@@ -28,18 +25,17 @@ import {
   expiredTokenRoute,
   startUpRoute,
   homeDrawerRoute,
+  connectionsDrawerRoute,
+  settingsDrawerRoute,
+  credentialsDrawerRoute,
+  lockPinSetupHomeRoute,
 } from '../common'
 import { useDispatch } from 'react-redux'
 
 const backButtonDisableRoutes = [
   lockEnterPinRoute,
   homeRoute,
-  settingsRoute,
-  qrCodeScannerTabRoute,
-  invitationRoute,
   lockSetupSuccessRoute,
-  eulaRoute,
-  lockSelectionRoute,
   lockPinSetupHomeRoute,
   lockAuthorizationHomeRoute,
   genRecoveryPhraseRoute,
@@ -54,15 +50,18 @@ const backButtonDisableRoutes = [
 
 const backButtonExitRoutes = [
   homeRoute,
-  settingsRoute,
-  qrCodeScannerTabRoute,
-  eulaRoute,
-  lockSelectionRoute,
+  startUpRoute,
 ]
 
 const backButtonConditionalRoutes = [
   lockPinSetupHomeRoute,
   lockAuthorizationHomeRoute,
+]
+
+const homeRedirectRoutes = [
+  connectionsDrawerRoute,
+  credentialsDrawerRoute,
+  settingsDrawerRoute,
 ]
 
 function getCurrentRoute(navigationState: NavigationState) {
@@ -80,6 +79,7 @@ export default function useBackHandler() {
   const { key, name, params } = useNavigationState(getCurrentRoute)
   const dispatch = useDispatch()
   const [exitTimeout, setExitTimeout] = useState()
+  const navigation = useNavigation()
 
   const onBack = () => {
     if (key !== '' && name !== '') {
@@ -103,9 +103,9 @@ export default function useBackHandler() {
             return true
           case lockAuthorizationHomeRoute:
             params &&
-              params.onAvoid &&
-              typeof params.onAvoid === 'function' &&
-              params.onAvoid()
+            params.onAvoid &&
+            typeof params.onAvoid === 'function' &&
+            params.onAvoid()
             return false
         }
       }
@@ -117,6 +117,13 @@ export default function useBackHandler() {
         }
         setExitTimeout(Date.now())
         ToastAndroid.show('Press again to exit!', ToastAndroid.SHORT)
+      }
+
+      if (homeRedirectRoutes.includes(name)) {
+        navigation.dispatch(
+          StackActions.replace(homeRoute)
+        )
+        return true
       }
 
       if (!backButtonDisableRoutes.includes(name)) {

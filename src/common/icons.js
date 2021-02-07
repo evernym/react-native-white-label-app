@@ -39,6 +39,7 @@ export const ALERT_ICON = 'alert-circle-outline'
 export const ARROW_FORWARD_ICON = 'arrow-ios-forward-outline'
 export const CHECKMARK_ICON = 'checkmark-outline'
 export const SHARE_ICON = 'share-outline'
+export const NO_WIFI = 'wifi-off-outline'
 
 // common icon class is implemented to set default values (except name) for icons
 // in that case we should only set icon name and get an icon with default color and size

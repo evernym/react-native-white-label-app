@@ -10,7 +10,7 @@ import {
 import { moderateScale } from 'react-native-size-matters'
 import { DefaultLogo } from '../../../components/default-logo/default-logo'
 import { styles } from '../type-header'
-import ActionSheet from 'react-native-action-sheet';
+import ActionSheet from 'react-native-action-sheet'
 
 type HeaderWithDeletionProps = {
   headline: string,
@@ -18,6 +18,7 @@ type HeaderWithDeletionProps = {
   onDelete: any,
   onDeleteButtonTitle: string,
   showImage?: boolean,
+  newBadge?: boolean,
   image?: any,
   onViewedAction?: any,
 }
@@ -25,16 +26,17 @@ type HeaderWithDeletionProps = {
 const iOS = Platform.OS === 'ios'
 
 export const HeaderWithDeletion = ({
-                                    headline,
-                                    showImage,
-                                    image,
-                                    onDelete,
-                                    onViewedAction,
-                                    navigation,
-                                    onDeleteButtonTitle,
-                                  }: HeaderWithDeletionProps) => {
+                                     headline,
+                                     showImage,
+                                     image,
+                                     newBadge,
+                                     onDelete,
+                                     onViewedAction,
+                                     navigation,
+                                     onDeleteButtonTitle,
+                                   }: HeaderWithDeletionProps) => {
   const goBack = () => {
-    if (onViewedAction) {
+    if (newBadge && onViewedAction) {
       onViewedAction()
     }
     navigation.goBack(null)
@@ -44,17 +46,17 @@ export const HeaderWithDeletion = ({
     ActionSheet.showActionSheetWithOptions({
         options: [
           onDeleteButtonTitle,
-          'Cancel'
+          'Cancel',
         ],
         destructiveButtonIndex: 0,
         cancelButtonIndex: 1,
-        tintColor: 'blue'
+        tintColor: 'blue',
       },
       (buttonIndex) => {
         if (buttonIndex === 0) {
           onDelete()
         }
-      });
+      })
   })
 
   return (

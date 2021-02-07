@@ -182,15 +182,6 @@ export type AgencyPoolConfig = {
   paymentMethod: string,
 }
 
-export type ProvisionToken = {
-  id: string,
-  sponsor: string,
-  nonce: string,
-  timestamp: string,
-  sig: string,
-  sponsorVerKey: string,
-}
-
 export type ConfigStore = {
   isAlreadyInstalled: boolean,
   isHydrated: boolean,
@@ -314,58 +305,11 @@ export const MESSAGE_RESPONSE_CODE = {
   MESSAGE_ANSWERED: 'MS-106',
 }
 
-export type MessageClaimOfferDetails = {|
-  claim_id: string,
-  claim_name: string,
-  cred_def_id: string,
-  credential_attrs: {
-    [string]: string,
-  },
-  from_did: string,
-  libindy_offer: string,
-  msg_ref_id: ?string,
-  msg_type: string,
-  schema_seq_no: number,
-  to_did: string,
-  version: string,
-|}
-
-export type SerializedClaimOfferData = {
-  agent_did: null,
-  agent_vk: null,
-  cred_id: null,
-  credential: null,
-  credential_name: null,
-  credential_offer: ?MessageClaimOfferDetails,
-  credential_request: null,
-  msg_uid: null,
-  my_did: null,
-  my_vk: null,
-  payment_info: ?MessagePaymentDetails,
-  payment_txn: null,
-  source_id: string,
-  state: number,
-  their_did: null,
-  their_vk: null,
-}
-
 export type MessagePaymentDetails = {|
   payment_addr: string,
   payment_required: string,
   price: number,
 |}
-
-export type ParsedDecryptedPayloadMessage = Array<
-  MessageClaimOfferDetails | MessagePaymentDetails
->
-export type ParsedDecryptedPayload = {
-  '@msg': string,
-  '@type': {
-    fmt: string,
-    name: string,
-    ver: string,
-  },
-}
 
 export const ACKNOWLEDGE_MESSAGES_FAIL = 'ACKNOWLEDGE_MESSAGES_FAIL'
 export const GET_MESSAGES_FAIL = 'GET_MESSAGES_FAIL'

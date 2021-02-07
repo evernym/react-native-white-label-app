@@ -1,58 +1,98 @@
 // @flow
-import React, { useEffect, useRef, useCallback } from 'react'
-import { Container, CustomText } from '../components'
+import React, {useEffect, useRef, useCallback} from 'react';
+import {CustomText} from '../components';
 import {
   TouchableOpacity,
   StyleSheet,
   ImageBackground,
   Dimensions,
   Animated,
-} from 'react-native'
-import { moderateScale } from 'react-native-size-matters'
-import { headerOptionsWithNoBack } from '../navigation/navigation-header-config'
-import { startUpRoute, lockPinSetupRoute } from '../common'
-import { OFFSET_2X, colors } from '../common/styles'
+  Image,
+  Text, View,
+} from 'react-native';
+import {headerOptionsWithNoBack} from '../navigation/navigation-header-config';
+import {startUpRoute, lockPinSetupRoute} from '../common';
+import {OFFSET_2X, colors, fontFamily, fontSizes} from '../common/styles';
+import {verticalScale, moderateScale} from 'react-native-size-matters';
 
 // $FlowExpectedError[cannot-resolve-module] external file
-import { BACKGROUND_IMAGE } from '../../../../../app/evernym-sdk/startup'
+import {BACKGROUND_IMAGE} from '../../../../../app/evernym-sdk/startup';
 
-const { width } = Dimensions.get('screen')
+const {width} = Dimensions.get('screen');
 
-const image = BACKGROUND_IMAGE || require('../images/setup_background.png')
+const defaultBackground = require('../images/home_background.png');
+const powerByLogo = require('../images/powered_by_logo.png');
 
 function StartUpScreen(props: { navigation: Function }) {
-  const { navigation } = props
-  const animation = useRef(new Animated.Value(width * 2)).current
+  const {navigation} = props;
+  const animation = useRef(new Animated.Value(width * 2)).current;
   const handlePress = useCallback(() => {
-    navigation.navigate(lockPinSetupRoute)
-  })
+    navigation.navigate(lockPinSetupRoute);
+  });
 
   useEffect(() => {
     Animated.timing(animation, {
       toValue: 0,
       duration: 300,
       useNativeDriver: true,
-    }).start()
-  }, [animation])
+    }).start();
+  }, [animation]);
 
-  return (
-    <Container tertiary>
-      <ImageBackground source={image} style={style.backgroundImage}>
+  const renderButton = useCallback(() => (
+    <TouchableOpacity style={style.button} onPress={handlePress}>
+      <CustomText h4 transparentBg thick>
+        Set Up
+      </CustomText>
+    </TouchableOpacity>
+  ), [handlePress]);
+
+  const renderCustomStartUpScreen = useCallback(() => (
+    <View style={style.container}>
+      <ImageBackground
+        source={BACKGROUND_IMAGE}
+        style={style.background}
+        resizeMode="cover">
         <Animated.View
           style={{
-            ...style.buttonWrapper,
-            transform: [{ translateX: animation }],
+            ...style.wrapper,
+            transform: [{translateX: animation}],
           }}
         >
-          <TouchableOpacity style={style.button} onPress={handlePress}>
-            <CustomText h4 transparentBg thick>
-              Set Up
-            </CustomText>
-          </TouchableOpacity>
+          {renderButton()}
         </Animated.View>
       </ImageBackground>
-    </Container>
-  )
+    </View>
+  ), [BACKGROUND_IMAGE]);
+
+  const renderDefaultStartUpScreen = useCallback(() => (
+    <View style={style.container}>
+      <ImageBackground
+        source={defaultBackground}
+        style={style.background}
+        resizeMode="contain"
+      >
+        <Animated.View
+          style={{
+            ...style.wrapper,
+            transform: [{translateX: animation}],
+          }}
+        >
+          <Text style={style.infoText}>
+            You splash screen goes here
+          </Text>
+          {renderButton()}
+          <Image
+            source={powerByLogo}
+            style={style.image}
+          />
+        </Animated.View>
+      </ImageBackground>
+    </View>
+  ), [BACKGROUND_IMAGE]);
+
+  return BACKGROUND_IMAGE ?
+    renderCustomStartUpScreen() :
+    renderDefaultStartUpScreen();
 }
 
 export const startUpScreen = {
@@ -62,22 +102,25 @@ export const startUpScreen = {
     title: '',
     headerShown: false,
   }),
-}
+};
 
 const style = StyleSheet.create({
-  startUpContainer: {
-    paddingTop: 0,
-  },
-  backgroundImage: {
+  container: {
     width: '100%',
     height: '100%',
-    alignItems: 'center',
+    backgroundColor: colors.white,
     justifyContent: 'center',
     flexDirection: 'row',
   },
-  buttonWrapper: {
-    alignSelf: 'flex-end',
-    position: 'relative',
+  background: {
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    flexDirection: 'row',
+  },
+  wrapper: {
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
   },
   button: {
     padding: moderateScale(17),
@@ -87,8 +130,22 @@ const style = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: colors.main,
     width: width - OFFSET_2X * 2,
-    alignSelf: 'flex-end',
+    alignSelf: 'center',
     marginBottom: 100,
     borderRadius: 5,
   },
-})
+  image: {
+    position: 'absolute',
+    bottom: moderateScale(32),
+    right: moderateScale(10),
+  },
+  infoText: {
+    textAlign: 'center',
+    fontFamily: fontFamily,
+    fontSize: verticalScale(fontSizes.size0),
+    fontWeight: '700',
+    color: colors.gray3,
+    marginHorizontal: moderateScale(36),
+    marginBottom: verticalScale(100),
+  },
+});

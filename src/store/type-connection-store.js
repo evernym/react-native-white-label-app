@@ -7,8 +7,6 @@ import type {
 import type { CustomError, GenericObject } from '../common/type-common'
 
 export const UPDATE_CONNECTION_THEME = 'UPDATE_CONNECTION_THEME'
-export const UPDATE_CONNECTION_BACKGROUND_THEME =
-  'UPDATE_CONNECTION_BACKGROUND_THEME'
 export const UPDATE_STATUS_BAR_THEME = 'UPDATE_STATUS_BAR_THEME'
 export const HYDRATE_CONNECTIONS = 'HYDRATE_CONNECTIONS'
 export const UPDATE_CONNECTION_SERIALIZED_STATE =
@@ -89,12 +87,6 @@ export const CONNECTION_REQUEST_SENT = 'CONNECTION_REQUEST_SENT'
 
 export type NewConnectionAction = {
   type: typeof NEW_CONNECTION,
-  identifier: string,
-  logoUrl?: ?string,
-} & InvitationPayload
-
-export type UpdateConnectionAction = {
-  type: typeof UPDATE_CONNECTION,
   identifier: string,
   logoUrl?: ?string,
 } & InvitationPayload

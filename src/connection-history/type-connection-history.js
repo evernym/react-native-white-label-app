@@ -2,7 +2,6 @@
 
 import type { Item } from '../components/custom-list/type-custom-list'
 import type {
-  ReactNavigation,
   GenericObject,
   CustomError,
   ResetAction,
@@ -28,15 +27,8 @@ import type {
 import type {
   ProofRequestReceivedAction,
   SendProofSuccessAction,
-  AdditionalProofDataPayload,
 } from '../proof-request/type-proof-request'
 import type { UpdateAttributeClaimAction } from '../proof/type-proof'
-import type {
-  Attribute,
-  AdditionalDataPayload,
-  NotificationPayloadInfo,
-} from '../push-notification/type-push-notification'
-import type { ClaimMap } from '../claim/type-claim'
 
 import {
   INVITATION_ACCEPTED,
@@ -116,8 +108,6 @@ export const HISTORY_EVENT_STATUS = {
   [DELETE_CONNECTION_SUCCESS]: DELETE_CONNECTION_SUCCESS,
 }
 
-export type HistoryEventStatus = $Keys<typeof HISTORY_EVENT_STATUS>
-
 export const HISTORY_EVENT_TYPE = {
   INVITATION: 'INVITATION',
   CLAIM: 'CLAIM',
@@ -127,36 +117,6 @@ export const HISTORY_EVENT_TYPE = {
 }
 
 export type HistoryEventType = $Keys<typeof HISTORY_EVENT_TYPE>
-
-export const EventTypeToEventStatusMap = {
-  INVITATION: [
-    INVITATION_RECEIVED,
-    INVITATION_ACCEPTED,
-    CONNECTION_REQUEST_SENT,
-    NEW_CONNECTION_SUCCESS,
-    INVITATION_REJECTED,
-    CONNECTION_FAIL,
-    DELETE_CONNECTION_SUCCESS,
-  ],
-  CLAIM: [
-    CLAIM_OFFER_RECEIVED,
-    CLAIM_OFFER_ACCEPTED,
-    CLAIM_OFFER_IGNORED,
-    CLAIM_OFFER_REJECTED,
-    CLAIM_STORAGE_SUCCESS,
-    PAID_CREDENTIAL_REQUEST_FAIL,
-    SEND_CLAIM_REQUEST_FAIL,
-  ],
-  PROOF: [
-    PROOF_REQUEST_RECEIVED,
-    PROOF_REQUEST_ACCEPTED,
-    PROOF_REQUEST_IGNORED,
-    PROOF_REQUEST_REJECTED,
-    DENY_PROOF_REQUEST_SUCCESS,
-    UPDATE_ATTRIBUTE_CLAIM,
-  ],
-  QUESTION: [QUESTION_RECEIVED, UPDATE_QUESTION_ANSWER],
-}
 
 export type ConnectionHistoryEvent = {
   action: string,
@@ -172,39 +132,6 @@ export type ConnectionHistoryEvent = {
   payTokenValue?: string,
   senderName?: ?string,
   senderLogoUrl?: ?string,
-}
-
-export type ConnectionHistoryItem = {
-  action: string,
-  data: Array<Attribute>,
-  id: string,
-  name: string,
-  originalPayload: {
-    type: typeof CLAIM_OFFER_RECEIVED | typeof PROOF_REQUEST_RECEIVED,
-    payload: AdditionalDataPayload | AdditionalProofDataPayload,
-    payloadInfo: NotificationPayloadInfo,
-  },
-  remoteDid: string,
-  status: string,
-  timestamp: string,
-  type: string,
-}
-
-export type ConnectionHistoryDetailsProps = {
-  navigation: {},
-  route: {
-    params: {
-      type: string,
-      id?: string,
-      type?: string,
-      icon?: string,
-      action?: string,
-      status?: string,
-      timestamp?: string,
-      data?: Array<Item>,
-      claimMap?: ?ClaimMap,
-    },
-  },
 }
 
 export type ConnectionHistoryData = {
@@ -228,7 +155,6 @@ export type LoadHistorySuccessAction = {
 }
 
 export const LOAD_HISTORY_FAIL = 'LOAD_HISTORY_FAIL'
-export const LOAD_HISTORY_EVENT_OCCURED_FAIL = 'LOAD_HISTORY_EVENT_OCCURED_FAIL'
 
 export type LoadHistoryFailAction = {
   type: typeof LOAD_HISTORY_FAIL,
@@ -320,26 +246,6 @@ export type ConnectionHistoryStore = {
 }
 
 export const HISTORY_EVENT_STORAGE_KEY = 'HISTORY_EVENT_STORAGE_KEY'
-
-export type ConnectionHistoryState = {
-  disableTaps: boolean,
-}
-
-export type ConnectionHistoryProps = {
-  claimMap: ?ClaimMap,
-  activeConnectionThemePrimary: string,
-  activeConnectionThemeSecondary: string,
-  connectionHistory: {
-    [string]: { data: ConnectionHistoryEvent[], newBadge: boolean },
-  },
-  updateStatusBarTheme: (color?: string) => void,
-  deleteConnectionAction: (senderDID: string) => void,
-  goToUIScreen: (
-    string,
-    string,
-    $PropertyType<ReactNavigation, 'navigation'>
-  ) => void,
-} & ReactNavigation
 
 export const CONNECTION_ALREADY_EXIST = 'Connection already exists.'
 

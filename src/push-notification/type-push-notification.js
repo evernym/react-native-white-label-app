@@ -60,6 +60,7 @@ export type FetchAdditionalDataErrorAction = {
 }
 
 export type PushNotificationAction =
+  | AllowPushNotificationsAction
   | PushNotificationPermissionAction
   | PushNotificationReceivedAction
   | PushNotificationUpdateTokenAction
@@ -97,14 +98,6 @@ export type PushNotificationStore = {
     params: GenericObject,
   },
   notificationOpenOptions?: Object | null,
-}
-
-export type AdditionalDataResponse = {
-  statusCode: string,
-  payload: string,
-  type: string,
-  uid: string,
-  senderDID: string,
 }
 
 export type Attribute = {
@@ -223,12 +216,6 @@ export type NextPropsPushNotificationNavigator = {
     },
   },
   navigateToRoute: (routeName: string, params: NavigationParams) => void,
-}
-
-export type PairwiseIdentifyingInfo = {
-  uid: string,
-  senderLogoUrl?: ?string,
-  remotePairwiseDID?: ?string,
 }
 
 export type PushNotificationNavigatorProps = {

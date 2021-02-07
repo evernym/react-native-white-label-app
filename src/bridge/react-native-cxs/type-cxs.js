@@ -4,61 +4,6 @@ import type { SMSPendingInvitationPayload } from '../../sms-pending-invitation/t
 import type { UserOneTimeInfo } from '../../store/user/type-user-store'
 import type { AgencyPoolConfig } from '../../store/type-config-store'
 import type { ClaimOfferPushPayload } from '../../push-notification/type-push-notification'
-import type { ProofRequestPushPayload } from '../../proof-request/type-proof-request'
-
-export type Metadata = {
-  [string]: any,
-}
-
-export type IndyClaimOffer = {
-  issuerDid: string,
-  schemaSequenceNumber: number,
-}
-
-export type IndyConnectionHistory = {
-  issuerDid: string,
-  schemaSequenceNumber: number,
-}
-
-export type IndyClaimRequest = {
-  blinded_ms: {
-    prover_did: string,
-    u: string,
-    ur?: string,
-  },
-  issuer_did: string,
-  schema_seq_no: number,
-}
-
-export type ConnectAgencyResponse = {
-  '@type': {
-    name: string,
-    ver: string,
-  },
-  withPairwiseDID: string,
-  withPairwiseDIDVerKey: string,
-}
-
-export type RegisterAgencyResponse = {
-  '@type': { name: string, ver: string },
-}
-
-export type CreateOneTimeAgentResponse = {
-  '@type': { name: string, ver: string },
-  withPairwiseDID: string,
-  withPairwiseDIDVerKey: string,
-}
-
-export type CreatePairwiseAgentResponse = {
-  '@type': { name: string, ver: string },
-  withPairwiseDID: string,
-  withPairwiseDIDVerKey: string,
-}
-
-export type AcceptInvitationResponse = {
-  '@type': { name: string, ver: string },
-  uid: string,
-}
 
 export type AriesProtocolConfig = {
   protocol_type: string,
@@ -92,8 +37,6 @@ export type VcxProvisionResult = {
 }
 
 export type CxsInitConfig = UserOneTimeInfo & AgencyPoolConfig
-
-export type InitWithGenesisPathConfig = CxsInitConfig & { genesis_path: string }
 
 export type VcxInitConfig = {
   agency_endpoint: string,
@@ -137,8 +80,6 @@ export type VcxCreateConnection = {
   invite_details: SMSPendingInvitationPayload,
 }
 
-export type VcxConnectionCreateResult = number
-
 export type VcxConnectionConnectResult = {|
   source_id: string,
   pw_did: string,
@@ -150,32 +91,6 @@ export type VcxConnectionConnectResult = {|
   their_pw_did: string,
   their_pw_verkey: string,
 |}
-
-export type VcxConnectionConnectV2Result = {|
-  state: {
-    agent_info: {
-      pw_did: string,
-      pw_verkey: string,
-      agent_did: string,
-      agent_vk: string,
-    },
-    state: {
-      Invitee: {
-        Requested: {
-          remote_info: {
-            recipientKeys: Array<string>,
-            routingKeys: Array<string>,
-          },
-        },
-      },
-    },
-  },
-|}
-
-export type VcxCredentialOfferResult = {
-  credential_handle: number,
-  credential_offer: string,
-}
 
 export type VcxCredentialOffer = {
   msg_type: string,
@@ -197,15 +112,11 @@ export type CxsCredentialOfferResult = {
   claimOffer: ClaimOfferPushPayload,
 }
 
-export type VcxSendCredentialRequest = {}
-
 export type VcxClaimInfo = {
   credential_id?: string,
   credential?: string,
   credential_offer?: string,
 }
-
-export type VcxProofRequest = ProofRequestPushPayload
 
 export type WalletPoolName = {
   walletName: string,

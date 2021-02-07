@@ -11,7 +11,7 @@ import { homeRoute, expiredTokenRoute } from '../common'
 // $FlowExpectedError[cannot-resolve-module] external file
 import { APP_LOGO } from '../../../../../app/evernym-sdk/app'
 
-const appImage = APP_LOGO || require('../images/logo_app.png')
+const appImage = APP_LOGO || require('../images/logo_evernym.png')
 
 class ExpiredToken extends PureComponent<ReactNavigation, void> {
   onOk = () => {

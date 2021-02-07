@@ -16,10 +16,7 @@ import delay from '@redux-saga/delay-p'
 import PushNotificationIOS from '@react-native-community/push-notification-ios'
 
 // $FlowExpectedError[cannot-resolve-module] external file
-import { SERVER_ENVIRONMENTS } from '../../../../../app/evernym-sdk/provision'
-
-// $FlowExpectedError[cannot-resolve-module] external file
-import { DEFAULT_SERVER_ENVIRONMENT } from '../../../../../app/evernym-sdk/provision'
+import { SERVER_ENVIRONMENTS, DEFAULT_SERVER_ENVIRONMENT } from '../../../../../app/evernym-sdk/provision'
 
 import { secureSet, getHydrationItem } from '../services/storage'
 import {
@@ -33,7 +30,6 @@ import {
   getConnection,
   getAgencyUrl,
   getConnectionByProp,
-  getNotificationOpenOptions,
 } from '../store/store-selector'
 import {
   SERVER_ENVIRONMENT,
@@ -117,7 +113,6 @@ import type { Connection } from './type-connection-store'
 import {
   updatePushToken,
   fetchAdditionalDataError,
-  updatePayloadToRelevantStoreSaga,
   setFetchAdditionalDataPendingKeys,
   updatePayloadToRelevantStoreAndRedirect,
 } from '../push-notification/push-notification-store'
@@ -130,7 +125,6 @@ import { GENESIS_FILE_NAME } from '../api/api-constants'
 import type {
   ClaimOfferMessagePayload,
   ClaimPushPayload,
-  NotificationOpenOptions,
 } from './../push-notification/type-push-notification'
 import type { ProofRequestPushPayload } from '../proof-request/type-proof-request'
 import type { ClaimPushPayloadVcx } from './../claim/type-claim'
@@ -885,9 +879,6 @@ export function* processMessages(
   // additional data will be fetched and passed to relevant( claim, claimOffer, proofRequest,etc )store.
   const messages: Array<DownloadedMessage> = traverseAndGetAllMessages(data)
   const dataAlreadyExists = yield select(getPendingFetchAdditionalDataKey)
-  const notificationOpenOptionsFromStore = yield select(
-    getNotificationOpenOptions
-  )
 
   for (let i = 0; i < messages.length; i++) {
     try {
@@ -935,13 +926,11 @@ export function* processMessages(
               ...messages[i],
               senderDID,
             },
-            notificationOpenOptionsFromStore
           )
         } else {
           yield fork(
             handleProprietaryMessage,
             messages[i],
-            notificationOpenOptionsFromStore
           )
         }
       }
@@ -1022,7 +1011,6 @@ export const convertDecryptedPayloadToAriesQuestion = (
 
 function* handleProprietaryMessage(
   downloadedMessage: DownloadedMessage,
-  notificationOpenOptions: NotificationOpenOptions
 ): Generator<*, *, *> {
   const { senderDID, uid, type, decryptedPayload } = downloadedMessage
   const remotePairwiseDID = senderDID
@@ -1053,11 +1041,6 @@ function* handleProprietaryMessage(
       | null = null
 
     let messageType = null
-
-    const redirect =
-      notificationOpenOptions &&
-      notificationOpenOptions.uid === uid &&
-      notificationOpenOptions.openMessageDirectly
 
     // toLowerCase here to handle type 'question' and 'Question'
     if (type.toLowerCase() === MESSAGE_TYPE.QUESTION.toLowerCase()) {
@@ -1138,14 +1121,13 @@ function* handleProprietaryMessage(
       senderLogoUrl,
       remotePairwiseDID,
       forDID,
-      notificationOpenOptions,
+      notificationOpenOptions: {
+        uid,
+        openMessageDirectly: true,
+      },
     }
 
-    if (redirect) {
-      yield put(updatePayloadToRelevantStoreAndRedirect(message))
-    } else {
-      yield* updatePayloadToRelevantStoreSaga(message)
-    }
+    yield put(updatePayloadToRelevantStoreAndRedirect(message))
   } catch (e) {
     captureError(e)
     yield put(
@@ -1159,7 +1141,6 @@ function* handleProprietaryMessage(
 
 function* handleAriesMessage(
   message: DownloadedMessage,
-  notificationOpenOptions: NotificationOpenOptions
 ): Generator<*, *, *> {
   let { senderDID, uid, type, decryptedPayload } = message
   const remotePairwiseDID = senderDID
@@ -1195,11 +1176,6 @@ function* handleAriesMessage(
     // now we can try to look inside decryptedpayload
     const payload = JSON.parse(decryptedPayload)
     const payloadType = payload['@type']
-
-    const redirect =
-      notificationOpenOptions &&
-      notificationOpenOptions.uid === uid &&
-      notificationOpenOptions.openMessageDirectly
 
     if (
       payloadType.name === 'CRED_OFFER' ||
@@ -1351,14 +1327,13 @@ function* handleAriesMessage(
       senderLogoUrl,
       remotePairwiseDID,
       forDID,
-      notificationOpenOptions,
+      notificationOpenOptions: {
+        uid,
+        openMessageDirectly: true,
+      },
     }
 
-    if (redirect) {
-      yield put(updatePayloadToRelevantStoreAndRedirect(message))
-    } else {
-      yield* updatePayloadToRelevantStoreSaga(message)
-    }
+    yield put(updatePayloadToRelevantStoreAndRedirect(message))
   } catch (e) {
     captureError(e)
     yield put(

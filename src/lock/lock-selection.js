@@ -8,7 +8,7 @@ import {
   Switch,
   Dimensions,
   TouchableOpacity,
-  ScrollView,
+  ScrollView, View,
 } from 'react-native'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -117,11 +117,7 @@ export class LockSelection extends Component<LockSelectionProps, *> {
           />
           <Container tertiary style={[style.pinSelectionContainer]}>
             <CustomView center>
-              <LockHeader
-                width={moderateScale(218.54)}
-                height={moderateScale(28)}
-                fill={colors.gray2}
-              />
+              {LockHeader ? <LockHeader/> : <View/> }
             </CustomView>
             <CustomText
               center

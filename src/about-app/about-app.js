@@ -1,34 +1,40 @@
 // @flow
-import React, { Component } from 'react'
-import { StyleSheet, Image } from 'react-native'
-import { connect } from 'react-redux'
-import VersionNumber from 'react-native-version-number'
-import { ListItem } from 'react-native-elements'
+import React, {Component} from 'react';
+import {StyleSheet, Image, View, Text} from 'react-native';
+import {connect} from 'react-redux';
+import VersionNumber from 'react-native-version-number';
+import {ListItem} from 'react-native-elements';
 
-// $FlowExpectedError[cannot-resolve-module] external file
-import { displaySovrin } from '../../../../../app/evernym-sdk/about'
+import {
+  INFO,
+  AdditionalInfo,
+  // $FlowExpectedError[cannot-resolve-module] external file
+} from '../../../../../app/evernym-sdk/about';
 
-// $FlowExpectedError[cannot-resolve-module] external file
-import { APP_LOGO } from '../../../../../app/evernym-sdk/app'
-
-const appImage = APP_LOGO || require('../images/logo_app.png')
+import {
+  APP_LOGO,
+  APP_NAME,
+  COMPANY_LOGO,
+  COMPANY_NAME,
+  // $FlowExpectedError[cannot-resolve-module] external file
+} from '../../../../../app/evernym-sdk/app';
 
 import {
   TermsAndConditionsTitle,
   PrivacyPolicyTitle,
-} from '../common/privacyTNC-constants'
-import { EvaIcon, ARROW_RIGHT_ICON } from '../common/icons'
+} from '../common/privacyTNC-constants';
+import {EvaIcon, ARROW_RIGHT_ICON} from '../common/icons';
 
-import type { AboutAppProps, AboutAppListItemProps } from './type-about-app'
-import type { Store } from '../store/type-store'
+import type {AboutAppProps, AboutAppListItemProps} from './type-about-app';
+import type {Store} from '../store/type-store';
 
-import { Container, CustomText, CustomView } from '../components'
-import { OFFSET_1X, OFFSET_2X, lightGray } from '../common/styles'
-import { aboutAppRoute, privacyTNCRoute } from '../common'
-import { PrivacyTNC } from '../privacy-tnc/privacy-tnc-screen'
-import { getEnvironmentName } from '../store/config-store'
-import { Header } from '../components/header/common-header/header'
-import { colors } from '../common/styles/constant'
+import {Container, CustomText, CustomView} from '../components';
+import { OFFSET_1X, OFFSET_2X, lightGray, fontFamily, fontSizes } from '../common/styles'
+import {aboutAppRoute, privacyTNCRoute} from '../common';
+import {PrivacyTNC} from '../privacy-tnc/privacy-tnc-screen';
+import {getEnvironmentName} from '../store/config-store';
+import {Header} from '../components/header/common-header/header';
+import { color, colors } from '../common/styles/constant'
 
 const styles = StyleSheet.create({
   headerLeft: {
@@ -46,12 +52,19 @@ const styles = StyleSheet.create({
   bottomFloatText: {
     paddingBottom: OFFSET_1X / 2,
   },
-})
+  text: {
+    fontFamily: fontFamily,
+    fontWeight: '600',
+    fontSize: fontSizes.size2,
+    color: color.bg.tertiary.font.tertiary,
+    marginTop: -12,
+  }
+});
 
 export const AboutAppListItem = ({
-  titleValue,
-  onPress,
-}: AboutAppListItemProps) => {
+                                   titleValue,
+                                   onPress,
+                                 }: AboutAppListItemProps) => {
   return (
     <ListItem
       title={
@@ -64,27 +77,37 @@ export const AboutAppListItem = ({
       onPress={onPress}
       rightIcon={rightIcon}
     />
-  )
-}
+  );
+};
 
-const rightIcon = <EvaIcon name={ARROW_RIGHT_ICON} color={colors.gray3} />
+const info = INFO || {
+  appLogo: true,
+  appName: true,
+  appVersion: true,
+  appEnvironment: true,
+  builtBy: true,
+  poweredBy: true,
+  termsAndConditions: true,
+  privacyPolicy: true,
+};
 
-const logoApp = <Image source={appImage} />
-const logoEvernym = <Image source={require('../images/logo_evernym.png')} />
-const logoSovrin = <Image source={require('../images/logo_sovrin.png')} />
-const versionNumber = VersionNumber
+const rightIcon = <EvaIcon name={ARROW_RIGHT_ICON} color={colors.gray3}/>;
+const logoApp = <Image source={APP_LOGO}/>;
+const logoEvernym = <Image source={require('../images/logo_evernym.png')}/>;
+const versionNumber = VersionNumber;
+const companyLogo = <Image source={COMPANY_LOGO}/>;
 
 export class AboutApp extends Component<AboutAppProps, void> {
   openTermsAndConditions = () => {
-    this.props.navigation.navigate(privacyTNCRoute, PrivacyTNC.INFO_TYPE.TNC)
-  }
+    this.props.navigation.navigate(privacyTNCRoute, PrivacyTNC.INFO_TYPE.TNC);
+  };
 
   openPrivacyPolicy = () => {
     this.props.navigation.navigate(
       privacyTNCRoute,
-      PrivacyTNC.INFO_TYPE.PRIVACY
-    )
-  }
+      PrivacyTNC.INFO_TYPE.PRIVACY,
+    );
+  };
 
   render() {
     return (
@@ -95,31 +118,53 @@ export class AboutApp extends Component<AboutAppProps, void> {
           route={this.props.route}
         />
         <CustomView center doubleVerticalSpace>
-          {logoApp}
-          <CustomView center doubleVerticalSpace>
-            <CustomText bg="tertiary" tertiary transparentBg semiBold>
-              VERSION # {versionNumber.appVersion}.{versionNumber.buildVersion}
-            </CustomText>
-          </CustomView>
-          <CustomView center verticalSpace>
-            <CustomText bg="tertiary" tertiary transparentBg semiBold>
-              {this.props.environmentName}
-            </CustomText>
-          </CustomView>
-          <CustomView verticalSpace vCenter style={[styles.thickLine]} />
-          <CustomView doubleVerticalSpace>
-            <CustomText
-              bg="tertiary"
-              tertiary
-              transparentBg
-              h7
-              style={[styles.topFloatText]}
-            >
-              built by
-            </CustomText>
-            {logoEvernym}
-          </CustomView>
-          {displaySovrin && (
+          {info.appLogo && logoApp}
+          {
+            info.appName &&
+            <CustomView center doubleVerticalSpace>
+              <CustomText bg="tertiary" tertiary bold>
+                {APP_NAME}
+              </CustomText>
+            </CustomView>
+          }
+          {
+            info.appVersion &&
+            <CustomView center doubleVerticalSpace>
+              <CustomText bg="tertiary" tertiary semiBold>
+                VERSION # {versionNumber.appVersion}.{versionNumber.buildVersion}
+              </CustomText>
+            </CustomView>
+          }
+          {
+            info.appEnvironment &&
+            <CustomView center verticalSpace>
+              <CustomText bg="tertiary" tertiary transparentBg semiBold>
+                {this.props.environmentName}
+              </CustomText>
+            </CustomView>
+          }
+          {AdditionalInfo ? <AdditionalInfo/> : <View/>}
+          <CustomView verticalSpace vCenter style={[styles.thickLine]}/>
+          {
+            info.builtBy && (
+              <CustomView doubleVerticalSpace>
+                <CustomText
+                  bg="tertiary"
+                  tertiary
+                  transparentBg
+                  h7
+                  style={[styles.topFloatText]}
+                >
+                  built by
+                </CustomText>
+                {
+                  COMPANY_LOGO ?
+                    companyLogo :
+                    <Text style={styles.text}>{COMPANY_NAME}</Text>
+                }
+              </CustomView>
+            )}
+          {info.poweredBy && (
             <CustomView verticalSpace>
               <CustomText
                 bg="tertiary"
@@ -130,33 +175,38 @@ export class AboutApp extends Component<AboutAppProps, void> {
               >
                 powered by
               </CustomText>
-              {logoSovrin}
+              {logoEvernym}
             </CustomView>
           )}
         </CustomView>
         <Container>
-          {/* TODO: move the below titles also to constants */}
-          <AboutAppListItem
-            titleValue={TermsAndConditionsTitle}
-            onPress={this.openTermsAndConditions}
-          />
-          <AboutAppListItem
-            titleValue={PrivacyPolicyTitle}
-            onPress={this.openPrivacyPolicy}
-          />
+          {
+            info.termsAndConditions &&
+            <AboutAppListItem
+              titleValue={TermsAndConditionsTitle}
+              onPress={this.openTermsAndConditions}
+            />
+          }
+          {
+            info.privacyPolicy &&
+            <AboutAppListItem
+              titleValue={PrivacyPolicyTitle}
+              onPress={this.openPrivacyPolicy}
+            />
+          }
         </Container>
       </Container>
-    )
+    );
   }
 }
 
 const mapStateToProps = (state: Store) => ({
   environmentName: getEnvironmentName(state.config),
-})
+});
 
-const AboutAppScreen = connect(mapStateToProps)(AboutApp)
+const AboutAppScreen = connect(mapStateToProps)(AboutApp);
 
 export const aboutAppScreen = {
   routeName: aboutAppRoute,
   screen: AboutAppScreen,
-}
+};

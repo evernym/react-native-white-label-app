@@ -210,19 +210,9 @@ export type InvitationProps = {
   allowPushNotifications: typeof allowPushNotifications,
 } & InvitationNavigation
 
-export const ERROR_INVITATION_VCX_INIT = {
-  code: 'INVITATION-001',
-  message: 'Could not initialize vcx while creating a connection',
-}
-
 export const ERROR_INVITATION_CONNECT = (message: string) => ({
   code: 'INVITATION-002',
   message: `Error while establishing a connection ${message}`,
-})
-
-export const ERROR_INVITATION_SERIALIZE_UPDATE = (message: string) => ({
-  code: 'INVITATION-003',
-  message: `Error while getting serialized connection for aries: ${message}`,
 })
 
 export const ERROR_INVITATION_ALREADY_ACCEPTED_CODE = 'INVITATION-004'
