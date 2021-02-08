@@ -19,13 +19,13 @@ import { proofRequestRoute } from '../../common/route-constants'
 
 // components
 import ModalContentProof from './modal-content-proof'
-import { ModalHeaderBar } from '../../components/modal-header-bar/modal-header-bar'
 
 // styles
 import { colors } from '../../common/styles/constant'
 
 // $FlowExpectedError[cannot-resolve-module] external file
-import { HEADLINE } from '../../../../../../app/evernym-sdk/proof-request-dialog'
+import { HEADLINE, CustomProofRequestModal } from '../../../../../../app/evernym-sdk/proof-request'
+import { modalOptions } from '../utils/modalOptions'
 
 const headline = HEADLINE || 'Proof Request'
 
@@ -97,32 +97,18 @@ const mapStateToProps = (state: Store, props: ClaimProofNavigation) => {
   }
 }
 
+const screen = CustomProofRequestModal || ProofRequestModal
+const navigationOptions =
+  CustomProofRequestModal ?
+    null :
+    modalOptions(headline, 'CloseIcon')
+
 export const proofRequestScreen = {
   routeName: proofRequestRoute,
-  screen: connect(mapStateToProps)(ProofRequestModal),
+  screen: connect(mapStateToProps)(screen),
 }
 
-proofRequestScreen.screen.navigationOptions = ({
-  navigation: { goBack, isFocused },
-}) => ({
-  safeAreaInsets: { top: 85 },
-  cardStyle: {
-    marginLeft: '2.5%',
-    marginRight: '2.5%',
-    marginBottom: '4%',
-    borderRadius: 10,
-    backgroundColor: colors.white,
-  },
-  cardOverlay: () => {
-    return (
-      <ModalHeaderBar
-        headerTitle={headline}
-        dismissIconType={isFocused() ? 'CloseIcon' : null}
-        onPress={() => goBack(null)}
-      />
-    )
-  },
-})
+proofRequestScreen.screen.navigationOptions = navigationOptions
 
 const styles = StyleSheet.create({
   modalWrapper: {

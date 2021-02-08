@@ -28,11 +28,17 @@ import { NotificationCard } from '../in-app-notification/in-app-notification-car
 import { colors } from '../common/styles'
 import type { MyConnectionsProps } from './type-my-connections'
 
+import {
+  HEADLINE,
+  SHOW_CAMERA_BUTTON,
+  MyConnectionsViewEmptyState,
+  CustomMyConnectionsScreen,
 // $FlowExpectedError[cannot-resolve-module] external file
-import { MyConnectionsViewEmptyState, HEADLINE } from '../../../../../app/evernym-sdk/my-connections'
+} from '../../../../../app/evernym-sdk/connections'
 import { EmptyState } from '../home/empty-state'
 
 const headline = HEADLINE || 'My Connections'
+const showCameraButton = typeof SHOW_CAMERA_BUTTON === 'boolean' ? SHOW_CAMERA_BUTTON : true
 
 const {
   container,
@@ -216,9 +222,12 @@ const MyConnections = ({
           {...{ numColumns }}
         />
       </View>
-      <CameraButton
-        onPress={() => navigation.navigate(qrCodeScannerTabRoute)}
-      />
+      {
+        showCameraButton &&
+        <CameraButton
+          onPress={() => navigation.navigate(qrCodeScannerTabRoute)}
+        />
+      }
     </View>
   )
 }
@@ -232,6 +241,8 @@ const mapDispatchToProps = (dispatch) =>
     dispatch,
   )
 
+const screen = CustomMyConnectionsScreen || MyConnections
+
 export const MyConnectionsScreen = withStatusBar()(
-  connect(null, mapDispatchToProps)(MyConnections),
+  connect(null, mapDispatchToProps)(screen),
 )

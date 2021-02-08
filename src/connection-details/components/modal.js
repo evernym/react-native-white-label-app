@@ -10,7 +10,10 @@ import { colors } from '../../common/styles/constant'
 import { ModalContent } from './modal-content'
 import { ModalButton } from '../../components/connection-details/modal-button'
 import { modalScreenRoute } from '../../common/route-constants'
-import { ModalHeaderBar } from '../../components/modal-header-bar/modal-header-bar'
+import { modalOptions } from '../utils/modalOptions'
+
+// $FlowExpectedError[cannot-resolve-module] external file
+import { HEADLINE, CustomCredentialModal } from '../../../../../../app/evernym-sdk/credential-offer'
 
 type CredentialReceivedProps = {
   route: {
@@ -24,7 +27,7 @@ type CredentialReceivedProps = {
   },
 } & ReduxConnect
 
-const Modal = (props: CredentialReceivedProps) => {
+const CredentialModal = (props: CredentialReceivedProps) => {
   const { data, institutionalName, imageUrl, colorBackground } = props.route.params
   const navigation = useNavigation()
   const hideModal = useCallback(() => {
@@ -52,30 +55,19 @@ const Modal = (props: CredentialReceivedProps) => {
   )
 }
 
+const headline = HEADLINE || 'My Credential'
+const screen = CustomCredentialModal || CredentialModal
+const navigationOptions =
+  CustomCredentialModal ?
+    null :
+    modalOptions(headline, 'Arrow')
+
 export const fulfilledMessageScreen = {
   routeName: modalScreenRoute,
-  screen: connect()(Modal),
+  screen: connect()(screen),
 }
 
-fulfilledMessageScreen.screen.navigationOptions = ({
-                                                     navigation: { goBack, isFocused },
-                                                   }) => ({
-  safeAreaInsets: { top: 85 },
-  cardStyle: {
-    marginLeft: '2.5%',
-    marginRight: '2.5%',
-    marginBottom: '4%',
-    borderRadius: 10,
-    backgroundColor: colors.white,
-  },
-  cardOverlay: () => (
-    <ModalHeaderBar
-      headerTitle={isFocused() ? 'My Credential' : ''}
-      dismissIconType={isFocused() ? 'Arrow' : null}
-      onPress={() => goBack(null)}
-    />
-  ),
-})
+fulfilledMessageScreen.screen.navigationOptions = navigationOptions
 
 const styles = StyleSheet.create({
   modalWrapper: {

@@ -9,22 +9,22 @@ You should be able to run the application at this point or proceed to modify pro
 For more convenience, we grouped all configuration options by files representing either a corresponding application screen or piece of functionality.
 For example `home.js` contains options for `Home` screen.
 
-
 **Content:**
 * [Application](#application)
 * [Color theme](#color-theme)
 * [Font](#font)
+* [Environment](#environment)
 * [End User License Agreement](#end-user-license-agreement)
 * [Start up](#start-up)
 * [Lock](#lock)
+* [Navigation Menu](#navigation-menu)
 * [Home](#home)
 * [Connections](#connections)
 * [Credentials](#credentials)
-* [Navigation Menu](#navigation-menu)
-* [Environment](#environment)
 * [Collecting log information](#collecting-log-information)
-* [Credential Offer dialog](#credential-offer-dialog)
-* [Proof Request dialog](#proof-request-dialog)
+* [Credential Offer](#credential-offer-dialog)
+* [Proof Request](#proof-request-dialog)
+* [Question dialog](#question-dialog)
 * [Settings](#settings)
 * [Feedback](#feedback)
 * [Application information](#application-information)
@@ -176,6 +176,63 @@ You can specify the font which will be used in the app inside the `font.js` modu
           ...
         ```
 
+#### Environment
+
+You can configure a server environment used for agent provisioning inside the `provision.js` module.
+
+* `SERVER_ENVIRONMENTS` - (object) additional custom server configurations:
+    * to use default 
+        ```javascript
+        export const SERVER_ENVIRONMENTS = {}
+        ```
+    * to add custom environments
+        ```javascript
+        export const SERVER_ENVIRONMENTS = {
+          'PROD2': {
+            agencyUrl: 'https://agency.app.com',
+            agencyDID: 'did',
+            agencyVerificationKey: 'verkey',
+            poolConfig:
+              '{"reqSignature":{},"txn":{"data": pool config data},"ver":"1"}',
+            paymentMethod: 'sov',
+          },
+          'DEVTEAM2': {
+            agencyUrl: 'https://dev.agency.app.com',
+            agencyDID: 'did',
+            agencyVerificationKey: 'verkey',
+            poolConfig:
+              '{"reqSignature":{},"txn":{"data": pool config data},"ver":"1"}',
+            paymentMethod: 'sov',
+          }
+        }
+        ```
+
+* `DEFAULT_SERVER_ENVIRONMENT` - (string, Optional) the name of environment to use by default.
+    * to use default - (`DEVTEAM1` for development / `PROD` for production)
+        ```javascript
+        export const DEFAULT_SERVER_ENVIRONMENT = null
+        ```
+    * to use custom 
+        ```javascript
+        export const DEFAULT_SERVER_ENVIRONMENT = 'PROD2'
+        ```
+
+* Information used for application provisioning
+    * `VCX_PUSH_TYPE` -  type of push notifications
+        * 1 - push notification to default app
+        * 3 - forwarding
+        * 4 - sponsor configured app
+       
+          ```javascript
+          export const VCX_PUSH_TYPE = 1
+          ```
+        
+    * `SPONSOR_ID` - An ID given to you from Evernym's Support Team after the Sponsor onboarding process is complete.
+
+          ```javascript
+          export const SPONSOR_ID = 'sponsorid'
+          ```
+
 #### End User License Agreement
 
 You can configure EULA and privacy terms inside the `eula.js` module.
@@ -199,6 +256,16 @@ You can configure EULA and privacy terms inside the `eula.js` module.
         ```javascript
         export const PRIVACY_POLICY_TITLE = 'Custom Privacy Policy'
         ```
+  
+* `CustomEulaScreen` - (React Component) custom component for Eula screen rendering (instead of predefined one).
+    * to use default
+        ```javascript
+        export const CustomEulaScreen = null
+        ```    
+    * to use custom 
+        ```javascript
+        export const CustomEulaScreen = () => <Text>Custom Eula</Text>
+        ```  
   
 There are two type variables used for specifying documents location:
 * URL - url address leading to web document version (is used by default)
@@ -288,6 +355,16 @@ You can configure application startup wizard which is shown for the newly instal
         ```javascript
         export const BACKGROUND_IMAGE = require('setup.png')
         ```
+  
+* `CustomStartUpScreen` - (React Component) custom component for Start Up screen rendering (instead of predefined one).
+    * to use default
+        ```javascript
+        export const CustomStartUpScreen = null
+        ```    
+    * to use custom 
+        ```javascript
+        export const CustomStartUpScreen = () => <Text>Custom Start Up</Text>
+        ```  
 
 #### Lock
 
@@ -340,7 +417,6 @@ You can configure application `Home` screen inside the `home.js` module.
         }
         ```
 
-
 * `SHOW_EVENTS_HISTORY` - (boolean, Optional) a flag indicating whether you want to show the history of events on the Home view.   
     * to use default - `show`
         ```javascript
@@ -353,7 +429,7 @@ You can configure application `Home` screen inside the `home.js` module.
 
 #### Connections
 
-You can configure application `Connections` screen inside the `my-connections.js` module.
+You can configure application `Connections` screen inside the `connections.js` module.
 
 * `HEADLINE` - (string, Optional) the text which will be used for the header.
     * to use default - `show`
@@ -383,9 +459,39 @@ You can configure application `Connections` screen inside the `my-connections.js
         }
         ```
 
+* `SHOW_CAMERA_BUTTON` - (boolean, Optional) flag indicating whether you want to show camera button.
+    * to use default - `true`
+        ```javascript
+        export const SHOW_CAMERA_BUTTON = null
+        ```
+    * to use custom
+        ```javascript
+        export const SHOW_CAMERA_BUTTON = false
+        ```
+
+* `CustomMyConnectionsScreen` - (React Component) custom component for Connections screen rendering (instead of predefined one).
+    * to use default
+        ```javascript
+        export const CustomMyConnectionsScreen = null
+        ```    
+    * to use custom 
+        ```javascript
+        export const CustomMyConnectionsScreen = () => <Text>Custom Connections</Text>
+        ``` 
+
+* `CustomConnectionDetailsScreen` - (React Component) custom component for Connection Details screen rendering (instead of predefined one).
+    * to use default
+        ```javascript
+        export const CustomConnectionDetailsScreen = null
+        ```    
+    * to use custom 
+        ```javascript
+        export const CustomConnectionDetailsScreen = () => <Text>Custom Connection Details</Text>
+        ``` 
+
 #### Credentials
 
-You can configure application `Credentials` screen inside the `my-credentials.js` module.
+You can configure application `Credentials` screen inside the `credentials.js` module.
 
 * `HEADLINE` - (string, Optional) the text which will be used for the header.
     * to use default - `show`
@@ -414,6 +520,36 @@ You can configure application `Credentials` screen inside the `my-credentials.js
           )
         }
         ```
+
+* `SHOW_CAMERA_BUTTON` - (boolean, Optional) flag indicating whether you want to show camera button.
+    * to use default - `true`
+        ```javascript
+        export const SHOW_CAMERA_BUTTON = null
+        ```
+    * to use custom
+        ```javascript
+        export const SHOW_CAMERA_BUTTON = false
+        ```
+
+* `CustomMyCredentialsScreen` - (React Component) custom component for Credentials screen rendering (instead of predefined one).
+    * to use default
+        ```javascript
+        export const CustomMyCredentialsScreen = null
+        ```    
+    * to use custom 
+        ```javascript
+        export const CustomMyCredentialsScreen = () => <Text>Custom Credentials</Text>
+        ``` 
+
+* `CustomMyCredentialsScreen` - (React Component) custom component for Credential Details screen rendering (instead of predefined one).
+    * to use default
+        ```javascript
+        export const CustomCredentialDetailsScreen = null
+        ```    
+    * to use custom 
+        ```javascript
+        export const CustomCredentialDetailsScreen = () => <Text>Custom Credential Details</Text>
+        ``` 
 
 #### Navigation Menu
 
@@ -465,63 +601,6 @@ You can configure navigation menu inside the `navigator.js` module.
         export const DrawerFooterContent = () => <Text>You are using wallet 1.0.0</Text>
         ```
 
-#### Environment
-
-You can configure a server environment used for agent provisioning inside the `provision.js` module.
-
-* `SERVER_ENVIRONMENTS` - (object) additional custom server configurations:
-    * to use default 
-        ```javascript
-        export const SERVER_ENVIRONMENTS = {}
-        ```
-    * to add custom environments
-        ```javascript
-        export const SERVER_ENVIRONMENTS = {
-          'PROD2': {
-            agencyUrl: 'https://agency.app.com',
-            agencyDID: 'did',
-            agencyVerificationKey: 'verkey',
-            poolConfig:
-              '{"reqSignature":{},"txn":{"data": pool config data},"ver":"1"}',
-            paymentMethod: 'sov',
-          },
-          'DEVTEAM2': {
-            agencyUrl: 'https://dev.agency.app.com',
-            agencyDID: 'did',
-            agencyVerificationKey: 'verkey',
-            poolConfig:
-              '{"reqSignature":{},"txn":{"data": pool config data},"ver":"1"}',
-            paymentMethod: 'sov',
-          }
-        }
-        ```
-
-* `DEFAULT_SERVER_ENVIRONMENT` - (string, Optional) the name of environment to use by default.
-    * to use default - (`DEVTEAM1` for development / `PROD` for production)
-        ```javascript
-        export const DEFAULT_SERVER_ENVIRONMENT = null
-        ```
-    * to use custom 
-        ```javascript
-        export const DEFAULT_SERVER_ENVIRONMENT = 'PROD2'
-        ```
-
-* Information used for application provisioning
-    * `VCX_PUSH_TYPE` -  type of push notifications
-        * 1 - push notification to default app
-        * 3 - forwarding
-        * 4 - sponsor configured app
-       
-          ```javascript
-          export const VCX_PUSH_TYPE = 1
-          ```
-        
-    * `SPONSOR_ID` - An ID given to you from Evernym's Support Team after the Sponsor onboarding process is complete.
-
-          ```javascript
-          export const SPONSOR_ID = 'sponsorid'
-          ```
-
 #### Collecting log information
 
 You can configure data used for logging in the `logs.js` module.
@@ -547,9 +626,9 @@ You can receive encrypted log file by email.
     }
     ```
 
-#### Credential Offer dialog
+#### Credential Offer
 
-You can customize `Credential Offer` dialog in the `credential-offer-dialog.js` module.
+You can customize `Credential Offer` dialog in the `credential-offer.js` module.
 
 * `HEADLINE` - (string) the text which will be used for the header.
     * to use default - `Credential Offer`
@@ -581,9 +660,29 @@ You can customize `Credential Offer` dialog in the `credential-offer-dialog.js` 
         export const DENY_BUTTON_TEXT = 'Deny'
         ```
 
-#### Proof Request dialog 
+* `CustomCredentialOfferModal` - (React Component) custom component for Credential Offer dialog rendering (instead of predefined one).
+    * to use default
+        ```javascript
+        export const CustomCredentialOfferModal = null
+        ```    
+    * to use custom 
+        ```javascript
+        export const CustomCredentialOfferModal = () => <Text>Custom Credential Offer Dialog</Text>
+        ``` 
 
-You can customize `Proof Request Offer` dialog in the `proof-request-dialog.js` module.
+* `CustomCredentialOfferModal` - (React Component) custom component for received Credential dialog rendering (instead of predefined one).
+    * to use default
+        ```javascript
+        export const CustomCredentialModal = null
+        ```    
+    * to use custom 
+        ```javascript
+        export const CustomCredentialModal = () => <Text>Custom Credential Dialog</Text>
+        ``` 
+
+#### Proof Request 
+
+You can customize `Proof Request` dialog in the `proof-request.js` module.
 
 * `HEADLINE` - (string) the text which will be used for the header.
     * to use default - `Proof Request`
@@ -614,6 +713,80 @@ You can customize `Proof Request Offer` dialog in the `proof-request-dialog.js` 
         ```javascript
         export const DENY_BUTTON_TEXT = 'Deny'
         ```
+      
+* `CustomProofRequestModal` - (React Component) custom component for received Proof Request dialog rendering (instead of predefined one).
+    * to use default
+        ```javascript
+        export const CustomProofRequestModal = null
+        ```    
+    * to use custom 
+        ```javascript
+        export const CustomProofRequestModal = () => <Text>Custom Proof Request Dialog</Text>
+        ``` 
+
+* `CustomSharedProofModal` - (React Component) custom component for shared Proof dialog rendering (instead of predefined one).
+    * to use default
+        ```javascript
+        export const CustomSharedProofModal = null
+        ```    
+    * to use custom 
+        ```javascript
+        export const CustomSharedProofModal = () => <Text>Custom Proof Dialog</Text>
+        ``` 
+
+* `CustomSelectAttributeValueModal` - (React Component) custom component for selecting a credential for filling a requested attribute in Proof (instead of predefined one).
+    * to use default
+        ```javascript
+        export const CustomSelectAttributeValueModal = null
+        ```    
+    * to use custom 
+        ```javascript
+        export const CustomSelectAttributeValueModal = () => <Text>Custom Dialog</Text>
+        ``` 
+
+* `CustomSelectAttributesValuesModal` - (React Component) custom component for selecting a credential for filling a requested attribute group in Proof (instead of predefined one).
+    * to use default
+        ```javascript
+        export const CustomSelectAttributesValuesModal = null
+        ```    
+    * to use custom 
+        ```javascript
+        export const CustomSelectAttributesValuesModal = () => <Text>Custom Dialog</Text>
+        ``` 
+
+* `CustomSelectAttributesValuesModal` - (React Component) custom component for entering a custom value for a requested attribute which can be self attested in Proof (instead of predefined one).
+    * to use default
+        ```javascript
+        export const CustomEnterAttributeValueModal = null
+        ```    
+    * to use custom 
+        ```javascript
+        export const CustomEnterAttributeValueModal = () => <Text>Custom Dialog</Text>
+        ``` 
+
+#### Question dialog 
+
+You can customize `Question` dialog in the `question-dialog.js` module.
+
+* `HEADLINE` - (string) the text which will be used for the header.
+    * to use default - `Proof Request`
+        ```javascript
+        export const HEADLINE = null
+        ```
+    * to use custom 
+        ```javascript
+        export const HEADLINE = 'Custom Request'
+        ```
+
+* `CustomQuestionModal` - (React Component) custom component for rendering of Question dialog (instead of predefined one).
+    * to use default
+        ```javascript
+        export const CustomQuestionModal = null
+        ```    
+    * to use custom 
+        ```javascript
+        export const CustomQuestionModal = () => <Text>Custom Question Dialog</Text>
+        ``` 
 
 #### Settings
 
@@ -661,6 +834,25 @@ You can customize `Settings` view in the `settings.js` module.
         * `about` - application information
         * `feedback` - give the app a feedback
 
+* `SHOW_CAMERA_BUTTON` - (boolean, Optional) flag indicating whether you want to show camera button.
+    * to use default - `true`
+        ```javascript
+        export const SHOW_CAMERA_BUTTON = null
+        ```
+    * to use custom
+        ```javascript
+        export const SHOW_CAMERA_BUTTON = false
+        ```
+
+* `CustomSettingsScreen` - (React Component) custom component for rendering of Settings screen (instead of predefined one).
+    * to use default
+        ```javascript
+        export const CustomSettingsScreen = null
+        ```    
+    * to use custom 
+        ```javascript
+        export const CustomSettingsScreen = () => <Text>Custom Settings</Text>
+        ``` 
 
 #### Feedback
 
@@ -716,6 +908,16 @@ The information about the application which will be shown on `About` screen can 
     * to use custom 
         ```javascript
         export const AdditionalInfo = () => <Text>Extra data</Text>
+        ```
+
+* `CustomAboutAppScreen` - (React Component) custom component for rendering of About screen (instead of predefined one).
+    * to use default
+        ```javascript
+        export const CustomAboutAppScreen = null
+        ```    
+    * to use custom 
+        ```javascript
+        export const CustomAboutAppScreen = () => <Text>Custom About</Text>
         ```
 
 #### Splash screen and app icon

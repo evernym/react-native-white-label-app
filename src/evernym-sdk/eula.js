@@ -21,3 +21,6 @@ export const IOS_EULA_LOCAL = null
 export const PRIVACY_POLICY_URL = null
 export const ANDROID_PRIVACY_POLICY_LOCAL = null
 export const IOS_PRIVACY_POLICY_LOCAL = null
+
+// custom component to use for Eula screen rendering (instead of predefined one)
+export const CustomEulaScreen = null

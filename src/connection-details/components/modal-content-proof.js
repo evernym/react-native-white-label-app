@@ -56,7 +56,7 @@ import { authForAction } from '../../lock/lock-auth-for-action.js'
 import { homeDrawerRoute, homeRoute } from '../../common'
 
 // $FlowExpectedError[cannot-resolve-module] external file
-import { ACCEPT_BUTTON_TEXT, DENY_BUTTON_TEXT, } from '../../../../../../app/evernym-sdk/proof-request-dialog'
+import { ACCEPT_BUTTON_TEXT, DENY_BUTTON_TEXT, } from '../../../../../../app/evernym-sdk/proof-request'
 
 class ModalContentProof extends Component<
   ProofRequestAndHeaderProps,

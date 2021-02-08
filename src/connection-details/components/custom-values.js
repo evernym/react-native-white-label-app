@@ -8,9 +8,6 @@ import { verticalScale, moderateScale } from 'react-native-size-matters'
 // constants
 import { customValuesRoute } from '../../common/route-constants'
 
-// components
-import { ModalHeaderBar } from '../../components/modal-header-bar/modal-header-bar'
-
 // types
 import type { ReactNavigation } from '../../common/type-common'
 
@@ -18,6 +15,10 @@ import type { ReactNavigation } from '../../common/type-common'
 import { colors, fontFamily, fontSizes } from '../../common/styles/constant'
 import { ModalPushLeft } from '../utils/modal-animation'
 import { ExpandableText } from '../../components/expandable-text/expandable-text'
+import { modalOptions } from '../utils/modalOptions'
+
+// $FlowExpectedError[cannot-resolve-module] external file
+import { CustomEnterAttributeValueModal } from '../../../../../../app/evernym-sdk/proof-request'
 
 const CustomValues = ({
                         navigation: { goBack },
@@ -62,31 +63,18 @@ const CustomValues = ({
   )
 }
 
+const screen = CustomEnterAttributeValueModal || CustomValues
+const navigationOptions =
+  CustomEnterAttributeValueModal ?
+    null :
+    modalOptions('Custom Values', 'Arrow', ModalPushLeft)
+
 export const CustomValuesScreen = {
   routeName: customValuesRoute,
-  screen: CustomValues,
+  screen,
 }
 
-CustomValuesScreen.screen.navigationOptions = ({
-                                                 navigation: { goBack, isFocused },
-                                               }) => ({
-  safeAreaInsets: { top: 85 },
-  cardStyle: {
-    marginLeft: '2.5%',
-    marginRight: '2.5%',
-    marginBottom: '4%',
-    borderRadius: 10,
-    backgroundColor: colors.white,
-  },
-  cardOverlay: () => (
-    <ModalHeaderBar
-      headerTitle={isFocused() ? 'Custom Values' : ''}
-      dismissIconType={isFocused() ? 'Arrow' : null}
-      onPress={() => goBack(null)}
-    />
-  ),
-  ...ModalPushLeft
-})
+CustomValuesScreen.screen.navigationOptions = navigationOptions
 
 const styles = StyleSheet.create({
   customValuesWrapper: {
