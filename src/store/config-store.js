@@ -16,10 +16,7 @@ import delay from '@redux-saga/delay-p'
 import PushNotificationIOS from '@react-native-community/push-notification-ios'
 
 // $FlowExpectedError[cannot-resolve-module] external file
-import { SERVER_ENVIRONMENTS } from '../../../../../app/evernym-sdk/provision'
-
-// $FlowExpectedError[cannot-resolve-module] external file
-import { DEFAULT_SERVER_ENVIRONMENT } from '../../../../../app/evernym-sdk/provision'
+import { SERVER_ENVIRONMENTS, DEFAULT_SERVER_ENVIRONMENT } from '../../../../../app/evernym-sdk/provision'
 
 import { secureSet, getHydrationItem } from '../services/storage'
 import {
@@ -33,7 +30,6 @@ import {
   getConnection,
   getAgencyUrl,
   getConnectionByProp,
-  getNotificationOpenOptions,
 } from '../store/store-selector'
 import {
   SERVER_ENVIRONMENT,
@@ -117,9 +113,8 @@ import type { Connection } from './type-connection-store'
 import {
   updatePushToken,
   fetchAdditionalDataError,
-  updatePayloadToRelevantStoreSaga,
-  pushNotificationReceived,
   setFetchAdditionalDataPendingKeys,
+  updatePayloadToRelevantStoreAndRedirect,
 } from '../push-notification/push-notification-store'
 import type { CxsPoolConfig } from '../bridge/react-native-cxs/type-cxs'
 import type { UserOneTimeInfo } from './user/type-user-store'
@@ -130,7 +125,6 @@ import { GENESIS_FILE_NAME } from '../api/api-constants'
 import type {
   ClaimOfferMessagePayload,
   ClaimPushPayload,
-  NotificationOpenOptions,
 } from './../push-notification/type-push-notification'
 import type { ProofRequestPushPayload } from '../proof-request/type-proof-request'
 import type { ClaimPushPayloadVcx } from './../claim/type-claim'
@@ -803,7 +797,9 @@ export function* watchVcxInitPoolStart(): any {
   yield takeLeading(VCX_INIT_POOL_START, connectToPool)
 }
 
-export function* getMessagesSaga(): Generator<*, *, *> {
+export function* getMessagesSaga(
+  params: ?GetUnacknowledgedMessagesAction
+): Generator<*, *, *> {
   try {
     //make sure vcx is initialized
     const vcxResult = yield* ensureVcxInitAndPoolConnectSuccess()
@@ -823,8 +819,8 @@ export function* getMessagesSaga(): Generator<*, *, *> {
     const data = yield call(
       downloadMessages,
       MESSAGE_RESPONSE_CODE.MESSAGE_PENDING,
-      null,
-      allConnectionsPairwiseDids.join(',')
+      params?.uid || null,
+      params?.forDid || allConnectionsPairwiseDids.join(',')
     )
     if (data && data.length != 0) {
       try {
@@ -883,9 +879,6 @@ export function* processMessages(
   // additional data will be fetched and passed to relevant( claim, claimOffer, proofRequest,etc )store.
   const messages: Array<DownloadedMessage> = traverseAndGetAllMessages(data)
   const dataAlreadyExists = yield select(getPendingFetchAdditionalDataKey)
-  const notificationOpenOptionsFromStore = yield select(
-    getNotificationOpenOptions
-  )
 
   for (let i = 0; i < messages.length; i++) {
     try {
@@ -914,7 +907,7 @@ export function* processMessages(
       }
 
       let { myPairwiseDid: pairwiseDID, senderDID } =
-        connection && connection[0]
+      connection && connection[0]
 
       if (
         !(
@@ -933,13 +926,11 @@ export function* processMessages(
               ...messages[i],
               senderDID,
             },
-            notificationOpenOptionsFromStore
           )
         } else {
           yield fork(
             handleProprietaryMessage,
             messages[i],
-            notificationOpenOptionsFromStore
           )
         }
       }
@@ -1019,10 +1010,9 @@ export const convertDecryptedPayloadToAriesQuestion = (
 }
 
 function* handleProprietaryMessage(
-  message: DownloadedMessage,
-  notificationOpenOptions: NotificationOpenOptions
+  downloadedMessage: DownloadedMessage,
 ): Generator<*, *, *> {
-  const { senderDID, uid, type, decryptedPayload } = message
+  const { senderDID, uid, type, decryptedPayload } = downloadedMessage
   const remotePairwiseDID = senderDID
   const connection: Connection[] = yield select(getConnection, senderDID)
   const {
@@ -1054,7 +1044,6 @@ function* handleProprietaryMessage(
 
     // toLowerCase here to handle type 'question' and 'Question'
     if (type.toLowerCase() === MESSAGE_TYPE.QUESTION.toLowerCase()) {
-      if (!decryptedPayload) return
       additionalData = convertDecryptedPayloadToQuestion(
         connectionHandle,
         decryptedPayload,
@@ -1068,8 +1057,7 @@ function* handleProprietaryMessage(
 
     // proprietary credential offer
     if (type === MESSAGE_TYPE.CLAIM_OFFER) {
-      // TODO: remove once https://gitlab.corp.evernym.com/dev/vcx/indy-sdk/-/merge_requests/220 get merged
-      const message = addClaimOfferMessageRefId(decryptedPayload, uid)
+      const message = JSON.parse(decryptedPayload)['@msg']
 
       // update type so that messages can be processed and added
       messageType = MESSAGE_TYPE.CLAIM_OFFER
@@ -1102,8 +1090,7 @@ function* handleProprietaryMessage(
 
     // proprietary proof request
     if (type === MESSAGE_TYPE.PROOF_REQUEST) {
-      // TODO: remove once https://gitlab.corp.evernym.com/dev/vcx/indy-sdk/-/merge_requests/220 get merged
-      const message = addProofRequestMessageRefId(decryptedPayload, uid)
+      const message = JSON.parse(decryptedPayload)['@msg']
 
       messageType = MESSAGE_TYPE.PROOF_REQUEST
 
@@ -1124,29 +1111,7 @@ function* handleProprietaryMessage(
       return
     }
 
-    if (
-      notificationOpenOptions &&
-      notificationOpenOptions.uid === uid &&
-      notificationOpenOptions.openMessageDirectly
-    ) {
-      yield put(
-        pushNotificationReceived({
-          type: messageType || type,
-          additionalData: {
-            remoteName: senderName,
-            ...additionalData,
-          },
-          uid,
-          senderLogoUrl,
-          remotePairwiseDID,
-          forDID,
-          notificationOpenOptions,
-        })
-      )
-      return
-    }
-
-    yield* updatePayloadToRelevantStoreSaga({
+    const message = {
       type: messageType || type,
       additionalData: {
         remoteName: senderName,
@@ -1156,7 +1121,13 @@ function* handleProprietaryMessage(
       senderLogoUrl,
       remotePairwiseDID,
       forDID,
-    })
+      notificationOpenOptions: {
+        uid,
+        openMessageDirectly: true,
+      },
+    }
+
+    yield put(updatePayloadToRelevantStoreAndRedirect(message))
   } catch (e) {
     captureError(e)
     yield put(
@@ -1170,7 +1141,6 @@ function* handleProprietaryMessage(
 
 function* handleAriesMessage(
   message: DownloadedMessage,
-  notificationOpenOptions: NotificationOpenOptions
 ): Generator<*, *, *> {
   let { senderDID, uid, type, decryptedPayload } = message
   const remotePairwiseDID = senderDID
@@ -1206,11 +1176,6 @@ function* handleAriesMessage(
     // now we can try to look inside decryptedpayload
     const payload = JSON.parse(decryptedPayload)
     const payloadType = payload['@type']
-
-    const redirect =
-      notificationOpenOptions &&
-      notificationOpenOptions.uid === uid &&
-      notificationOpenOptions.openMessageDirectly
 
     if (
       payloadType.name === 'CRED_OFFER' ||
@@ -1352,25 +1317,7 @@ function* handleAriesMessage(
       return
     }
 
-    if (redirect) {
-      yield put(
-        pushNotificationReceived({
-          type: messageType || type,
-          additionalData: {
-            remoteName: senderName,
-            ...additionalData,
-          },
-          uid,
-          senderLogoUrl,
-          remotePairwiseDID,
-          forDID,
-          notificationOpenOptions,
-        })
-      )
-      return
-    }
-
-    yield* updatePayloadToRelevantStoreSaga({
+    const message = {
       type: messageType || type,
       additionalData: {
         remoteName: senderName,
@@ -1380,8 +1327,13 @@ function* handleAriesMessage(
       senderLogoUrl,
       remotePairwiseDID,
       forDID,
-      notificationOpenOptions: null,
-    })
+      notificationOpenOptions: {
+        uid,
+        openMessageDirectly: true,
+      },
+    }
+
+    yield put(updatePayloadToRelevantStoreAndRedirect(message))
   } catch (e) {
     captureError(e)
     yield put(
@@ -1416,7 +1368,7 @@ export function* acknowledgeServer(
             isAries = decryptedPayload['@type']['name'] === 'aries'
             isMsgTypeAriesQuestion = JSON.parse(decryptedPayload['@msg'])[
               '@type'
-            ].includes('question')
+              ].includes('question')
           }
 
           if (isAries) {
@@ -1463,41 +1415,20 @@ export function* updateMessageStatus(
   }
 }
 
-function addClaimOfferMessageRefId(
-  decryptedPayload: string,
-  uid: string
-): string {
-  return JSON.stringify(
-    JSON.parse(JSON.parse(decryptedPayload)['@msg']).map((message) => {
-      if (message.hasOwnProperty('msg_ref_id')) {
-        message.msg_ref_id = uid
-      }
-      return message
-    })
+export function* watchGetMessagesSaga(): any {
+  yield takeLeading(
+    [VCX_INIT_SUCCESS, GET_UN_ACKNOWLEDGED_MESSAGES],
+    getMessagesSaga
   )
 }
 
-function addProofRequestMessageRefId(
-  decryptedPayload: string,
-  uid: string
-): string {
-  let message = JSON.parse(JSON.parse(decryptedPayload)['@msg'])
-  if (message.hasOwnProperty('msg_ref_id')) {
-    message.msg_ref_id = uid
-  }
-  return JSON.stringify(message)
-}
-
-export function* watchOnHydrationDownloadMessages(): any {
-  yield takeLeading(VCX_INIT_SUCCESS, getMessagesSaga)
-}
-
-export function* watchGetMessagesSaga(): any {
-  yield takeLeading(GET_UN_ACKNOWLEDGED_MESSAGES, getMessagesSaga)
-}
-
-export const getUnacknowledgedMessages = (): GetUnacknowledgedMessagesAction => ({
+export const getUnacknowledgedMessages = (
+  uid?: string,
+  forDid?: string
+): GetUnacknowledgedMessagesAction => ({
   type: GET_UN_ACKNOWLEDGED_MESSAGES,
+  uid,
+  forDid,
 })
 export const getMessagesLoading = (): GetMessagesLoadingAction => ({
   type: GET_MESSAGES_LOADING,
@@ -1529,7 +1460,6 @@ export function* watchConfig(): any {
     watchChangeEnvironmentUrl(),
     watchVcxInitStart(),
     watchVcxInitPoolStart(),
-    watchOnHydrationDownloadMessages(),
     persistEnvironmentDetails(),
   ])
 }

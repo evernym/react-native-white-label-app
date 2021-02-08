@@ -61,7 +61,7 @@ export const ModalHeader = ({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.cmWhite,
+    backgroundColor: colors.white,
     flexDirection: 'column',
     alignItems: 'center',
   },
@@ -83,14 +83,14 @@ const styles = StyleSheet.create({
   issuerNameText: {
     fontSize: verticalScale(fontSizes.size5),
     fontWeight: '700',
-    color: colors.cmGray1,
+    color: colors.gray1,
     fontFamily: fontFamily,
     textAlign: 'center',
   },
   infoText: {
     fontSize: verticalScale(fontSizes.size6),
     fontWeight: '400',
-    color: colors.cmGray2,
+    color: colors.gray2,
     fontFamily: fontFamily,
     textAlign: 'center',
     paddingBottom: moderateScale(16),
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
   },
   bottomSection: {
     width: '100%',
-    borderBottomColor: colors.cmGray1,
+    borderBottomColor: colors.gray1,
     borderBottomWidth: StyleSheet.hairlineWidth,
     paddingTop: moderateScale(24),
     justifyContent: 'center',
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
   credentialProofQuestionText: {
     fontSize: verticalScale(fontSizes.size3),
     fontWeight: '400',
-    color: colors.cmGray1,
+    color: colors.gray1,
     fontFamily: fontFamily,
     textAlign: 'center',
   },

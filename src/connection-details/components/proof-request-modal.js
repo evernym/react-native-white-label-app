@@ -41,7 +41,7 @@ const ProofRequestModal = (props: any) => {
 
   return props && props.data ? (
     <View style={styles.modalWrapper}>
-      <StatusBar backgroundColor={colors.cmBlack} barStyle={'light-content'} />
+      <StatusBar backgroundColor={colors.black} barStyle={'light-content'} />
       <ModalContentProof
         uid={props.uid}
         invitationPayload={props.invitationPayload}
@@ -105,13 +105,13 @@ export const proofRequestScreen = {
 proofRequestScreen.screen.navigationOptions = ({
   navigation: { goBack, isFocused },
 }) => ({
-  safeAreaInsets: { top: isFocused() ? 85 : 100 },
+  safeAreaInsets: { top: 85 },
   cardStyle: {
     marginLeft: '2.5%',
     marginRight: '2.5%',
     marginBottom: '4%',
     borderRadius: 10,
-    backgroundColor: colors.cmWhite,
+    backgroundColor: colors.white,
   },
   cardOverlay: () => {
     return (

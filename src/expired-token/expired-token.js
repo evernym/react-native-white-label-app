@@ -9,9 +9,9 @@ import { isBiggerThanShortDevice } from '../common/styles'
 import { homeRoute, expiredTokenRoute } from '../common'
 
 // $FlowExpectedError[cannot-resolve-module] external file
-import { APP_LOGO } from '../../../../../app/evernym-sdk/startup'
+import { APP_LOGO } from '../../../../../app/evernym-sdk/app'
 
-const appImage = APP_LOGO || require('../images/logo_app.png')
+const appImage = APP_LOGO || require('../images/logo_evernym.png')
 
 class ExpiredToken extends PureComponent<ReactNavigation, void> {
   onOk = () => {
@@ -24,7 +24,7 @@ class ExpiredToken extends PureComponent<ReactNavigation, void> {
         <Container center>
           <CustomView vCenter>
             <Image
-              style={styles.connectMeLogo}
+              style={styles.appLogo}
               source={appImage}
               resizeMode="contain"
             />
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     width: 90,
     height: 90,
   },
-  connectMeLogo: {
+  appLogo: {
     width: 200,
   },
   textContainer: {

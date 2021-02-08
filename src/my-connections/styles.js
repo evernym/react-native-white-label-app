@@ -10,13 +10,13 @@ const externalStyles = StyleSheet.create({
   container: {
     width: '100%',
     height: '100%',
-    backgroundColor: colors.cmWhite,
+    backgroundColor: colors.white,
     flex: 1,
   },
   flatListContainer: {
     width: '100%',
     height: '100%',
-    backgroundColor: colors.cmWhite,
+    backgroundColor: colors.white,
   },
   flatListInnerContainer: {
     paddingBottom: moderateScale(170, 0.25),

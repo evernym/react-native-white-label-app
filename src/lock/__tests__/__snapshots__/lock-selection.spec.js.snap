@@ -469,7 +469,7 @@ exports[`app lock selection page should render properly 1`] = `
                 style={
                   Array [
                     Object {
-                      "fontSize": 12,
+                      "fontSize": 11,
                     },
                     Object {
                       "fontFamily": "Lato",

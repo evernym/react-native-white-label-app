@@ -1,8 +1,4 @@
 // @flow
-import type {
-  NavigationScreenProp,
-  NavigationLeafRoute,
-} from '@react-navigation/native'
 import type { QuestionResponse } from '../question/type-question'
 import type { ReactNavigation } from '../common/type-common'
 export const TAA_STATUS = {
@@ -70,14 +66,3 @@ export type TxnAuthorAgreementStore = {
 export type TxnAuthorAgreementAction =
   | CheckTxnAuthorAgreementAction
   | TxnAuthorAgreementAcceptedAction
-
-export type TxnAuthorAgreementScreenNavigation = {
-  navigation: NavigationScreenProp<{|
-    ...NavigationLeafRoute,
-  |}>,
-  route: {
-    params: {|
-      uid: string,
-    |},
-  },
-}

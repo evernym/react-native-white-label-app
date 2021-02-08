@@ -84,15 +84,38 @@ Add all peer dependencies from `react-native-evernym-sdk` into `dependencies` se
 
 * Remove default `App.js` and put the following in `index.js`: 
   ```javascript
-    import * as EvernymSdk from '@dev/react-native-evernym-sdk'
+    import * as EvernymSdk from '@dev/react-native-evernym-sdk';
     import {name as appName} from './app.json';
     
-    EvernymSdk.createApp(appName)
+    EvernymSdk.createApp(appName);
   ```
   
 1. Congrats! Now we have ready JS part of the application. As the next steps, we need to configure the build for the target platforms.
 
 #### Android
+
+**Note**: At this point, you should already have completed [Base app configuration](#base-app-configuration) section.
+
+In order to configure the building of your application for an Android platform, you can either rely on [automatic](#automatic) command which will everything for you, or follow to [manual](#manual) steps.
+##### Automatic
+
+**Note**: Automatic configuration works only for Unix like OS.
+
+1. Add the following command to your `scripts` section of your app `package.json`:
+
+    ```json
+      "scripts": {
+        ...
+        "evernym-sdk:configure-android": "./node_modules/@dev/react-native-evernym-sdk/configure-android.sh"
+      },
+    ```
+
+1. Run the following command in your project directory:
+    ```shell
+    yarn evernym-sdk:configure-android
+    ```
+
+##### Manual
 
 1. To build app with SDK, you need to increase the available jvm memory in `android/gradle.properties`
 
@@ -153,16 +176,14 @@ Add all peer dependencies from `react-native-evernym-sdk` into `dependencies` se
    }
    ```
    
-1. Replace your `android/app/src/main/AndroidManifest.xml` with [AndroidManifest.xml](./files/AndroidManifest.xml)
-
-1. Change placeholders (`react-native-evernym-sdk-placeholder`) in copied `AndroidManifest.xml`:
+1. Replace your `android/app/src/main/AndroidManifest.xml` with [AndroidManifest.xml](files/android/AndroidManifest.xml) and  change placeholders (`react-native-evernym-sdk-placeholder`) in copied `AndroidManifest.xml`:
     * `package` - your original android package name
    
 1. Update your `MainActivity` by adding the following code (it's needed to configure your app storage): 
     ```
     import android.content.ContextWrapper;
     import android.system.Os;
-   ```
+    ```
     ```
     @Override
     protected void onStart() {
@@ -177,7 +198,10 @@ Add all peer dependencies from `react-native-evernym-sdk` into `dependencies` se
    ```
    
 1. Added Google Firebase configuration:
-    * Put `google-services.json` file into your `android/app` folder.
+    * Put `google-services.json` file into your `android/app` folder. 
+    As example, you can take [this](files/android/google-services.json) and replace placeholder `react-native-evernym-sdk-placeholder` on your app name. 
+    Note that push notifications will not work if you use this file, to get working notifications you need to provide your own account information.
+    
     * Add `google-services` dependencies into your `android/build.gradle` file.
         ```
         dependencies {
@@ -191,7 +215,7 @@ Add all peer dependencies from `react-native-evernym-sdk` into `dependencies` se
         ```
     * Uncomment the text located under `Firebase configuration` in `AndroidManifest.xml`:
     
-1. Deep linking configuration:
+1. Deep linking configuration (Optional):
     * Uncomment the text located under `Deep Linking configuration` in `AndroidManifest.xml`:
 
     * Set Branch keys in your `android/app/build.gradle` file:

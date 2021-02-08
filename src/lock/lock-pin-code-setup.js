@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { useDispatch } from 'react-redux'
 
 // $FlowExpectedError[cannot-resolve-module] external file
-import { AppSvgIcon } from '../../../../../app/evernym-sdk/app-icon'
+import { LockHeader } from '../../../../../app/evernym-sdk/lock'
 
 import {
   lockPinSetupRoute,
@@ -14,7 +14,7 @@ import type { ReactNavigation } from '../common/type-common'
 import { Container, CustomText, PinCodeBox, CustomView } from '../components'
 import { setPinAction } from './lock-store'
 import { PIN_SETUP_STATE } from './type-lock'
-import { Keyboard, StyleSheet, Platform } from 'react-native'
+import { Keyboard, StyleSheet, Platform, View } from 'react-native'
 import { colors, OFFSET_2X, fontFamily } from '../common/styles'
 import { moderateScale, scale, verticalScale } from 'react-native-size-matters'
 import { Header } from '../components'
@@ -130,8 +130,8 @@ export function LockPinSetup(props: ReactNavigation) {
       dispatch(setPinAction(confirmedPin || ''))
       existingPin
         ? navigation.navigate(lockSetupSuccessRoute, {
-            changePin: true,
-          })
+          changePin: true,
+        })
         : navigation.navigate(lockSelectionRoute)
     }
   }, [keyboardHidden, pinSetupState])
@@ -144,11 +144,7 @@ export function LockPinSetup(props: ReactNavigation) {
         transparent={true}
       />
       <CustomView center>
-        <AppSvgIcon
-          width={moderateScale(218.54)}
-          height={moderateScale(28)}
-          fill={colors.cmGray2}
-        />
+        {LockHeader ? <LockHeader/> : <View/> }
       </CustomView>
       <CustomText center h4 bg="tertiary" style={[styles.title]} tertiary thick>
         {`${enteredPin ? 'Re-enter passcode' : enterPasscodeText}`}
@@ -189,7 +185,7 @@ const styles = StyleSheet.create({
     fontSize: moderateScale(17, 0.1),
     lineHeight: moderateScale(20, 0.1),
     justifyContent: 'center',
-    color: colors.cmRed,
+    color: colors.red,
   },
 })
 

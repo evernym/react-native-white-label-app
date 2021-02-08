@@ -120,7 +120,7 @@ export function withBottomUpSliderScreen(
 
   return {
     routeName,
-    screen: withStatusBar({ color: colors.cmBlack })(BottomUpSliderScreen),
+    screen: withStatusBar({ color: colors.black })(BottomUpSliderScreen),
   }
 }
 

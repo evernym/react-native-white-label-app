@@ -1,6 +1,6 @@
 // @flow
 import * as React from 'react'
-import { Component } from 'react'
+import { useCallback, useMemo } from 'react'
 import { View, FlatList, StyleSheet } from 'react-native'
 import { HeaderWithDeletion } from '../components'
 import { CredentialCard } from '../components/connection-details/credential-card'
@@ -10,21 +10,15 @@ import {
   updateStatusBarTheme,
   sendConnectionRedirect,
   sendConnectionReuse,
-} from '../store/connections-store'
-import { newConnectionSeen } from '../connection-history/connection-history-store'
-import { connect } from 'react-redux'
+} from '../../src/store/connections-store'
+import { newConnectionSeen } from '../../src/connection-history/connection-history-store'
+import { connect, useSelector } from 'react-redux'
 import moment from 'moment'
 import { bindActionCreators } from 'redux'
 import { QuestionCard } from '../components/connection-details/question-card'
 import { QuestionViewCard } from '../components/connection-details/question-view-card'
-import type { Store } from '../store/type-store'
-import type {
-  ConnectionHistoryProps,
-  ConnectionHistoryState,
-  ConnectionHistoryEvent,
-  ConnectionHistoryNavigation,
-} from './type-connection-details'
-import { getConnectionTheme } from '../store/store-selector'
+import type { ConnectionHistoryProps, } from './type-connection-details'
+import { getAllConnection, getConnectionTheme, getHistory } from '../store/store-selector'
 import { colors } from '../common/styles/constant'
 import {
   DENY_PROOF_REQUEST_SUCCESS,
@@ -45,28 +39,70 @@ import {
 import { UPDATE_ATTRIBUTE_CLAIM, ERROR_SEND_PROOF } from '../proof/type-proof'
 import { INVITATION_ACCEPTED } from '../invitation/type-invitation'
 import { CONNECTION_FAIL } from '../store/type-connection-store'
-import { deleteConnectionAction } from '../store/connections-store'
+import { deleteConnectionAction, getConnections } from '../store/connections-store'
+import type { ConnectionHistoryEvent } from '../connection-history/type-connection-history'
 
-export class ConnectionDetails extends Component<
-  ConnectionHistoryProps,
-  ConnectionHistoryState
-> {
-  state = {
-    newMessageLine: false,
-  }
+const keyExtractor = (item: Object) => item.timestamp
 
-  flatList = React.createRef<FlatList<any>>()
+const ConnectionDetails = ({
+                             route,
+                             navigation,
+                             deleteConnectionAction,
+                             newConnectionSeen,
+                           }: ConnectionHistoryProps) => {
+  const flatList = React.createRef<FlatList<any>>()
 
-  componentDidMount() {
-    this.props.updateStatusBarTheme(this.props.activeConnectionThemePrimary)
-  }
+  const allConnections = useSelector(getAllConnection)
+  const history = useSelector(getHistory)
+  const themeForLogo = useSelector((store) => getConnectionTheme(store, route ? route.params.image : ''))
 
-  keyExtractor = (item: Object) => item.timestamp
+  const connectionHistory = useMemo(() => {
+    const connection: any =
+      getConnections(allConnections).find(
+        (connection: any) => connection.senderDID === route.params.senderDID,
+      )
 
-  renderItem = ({ item }: { item: Object }) => {
+    let connectionHistory: ConnectionHistoryEvent[] =
+      history && history.connections && route ?
+        history.connections[route.params.senderDID].data
+        : []
+
+    const timestamp = connection ? connection.timestamp : null
+
+    connectionHistory = timestamp
+      ? connectionHistory.filter(
+        (event) => new Date(event.timestamp) >= new Date(timestamp),
+      )
+      : connectionHistory.slice()
+
+    return connectionHistory
+  }, [allConnections, history])
+
+  const newBadge = useMemo(() => {
+    route &&
+    history &&
+    history.connections &&
+    history.connections[route.params.senderDID] &&
+    history.connections[route.params.senderDID].newBadge
+  }, [history])
+
+  const onDelete = useCallback(() => {
+    deleteConnectionAction(route.params.senderDID)
+    navigation.goBack(null)
+  }, [route])
+
+  const scrollToEnd = useCallback(() => {
+    setTimeout(() => {
+      flatList.current &&
+      flatList.current.scrollToEnd({ animated: true })
+    }, 300)
+  }, [flatList])
+
+  const renderItem = ({ item }: { item: Object }) => {
     const formattedDate = moment(item.timestamp)
       .format('DD MMM YYYY')
       .toUpperCase()
+
     const formattedTime =
       formattedDate + ' | ' + moment(item.timestamp).format('h:mm A')
 
@@ -77,6 +113,7 @@ export class ConnectionDetails extends Component<
           messageTitle={'Added Connection'}
           messageContent={'You added ' + item.name + ' as a Connection'}
           showButtons={false}
+          type={item.action}
         />
       )
     } else if (item.action === ERROR_SEND_PROOF) {
@@ -89,11 +126,10 @@ export class ConnectionDetails extends Component<
           noOfAttributes={item.data.length}
           buttonText={'RETRY'}
           showBadge={false}
-          colorBackground={colors.cmRed}
+          colorBackground={colors.red}
           uid={item.originalPayload.uid}
           proof={true}
-          navigation={this.props.navigation}
-          claimMap={this.props.claimMap}
+          navigation={navigation}
           data={item}
           type={item.action}
         />
@@ -108,12 +144,11 @@ export class ConnectionDetails extends Component<
           noOfAttributes={item.data.length}
           buttonText={'VIEW REQUEST DETAILS'}
           showBadge={false}
-          colorBackground={this.props.activeConnectionThemePrimary}
+          colorBackground={themeForLogo.primary}
           uid={item.originalPayload.uid}
           proof={true}
-          navigation={this.props.navigation}
-          claimMap={this.props.claimMap}
-          data={item.data}
+          navigation={navigation}
+          data={item}
           type={item.action}
         />
       )
@@ -140,9 +175,10 @@ export class ConnectionDetails extends Component<
           }
           messageContent={attributesText}
           showButtons={true}
-          navigation={this.props.navigation}
+          navigation={navigation}
           proof={true}
-          colorBackground={this.props.activeConnectionThemePrimary}
+          colorBackground={themeForLogo.primary}
+          type={item.action}
         />
       )
     } else if (item.action === UPDATE_ATTRIBUTE_CLAIM) {
@@ -177,14 +213,14 @@ export class ConnectionDetails extends Component<
           noOfAttributes={item.data.length}
           buttonText={'RETRY'}
           showBadge={false}
-          colorBackground={colors.cmRed}
-          navigation={this.props.navigation}
+          navigation={navigation}
           received={true}
           data={item}
-          imageUrl={this.props.route.params.image}
-          institutionalName={this.props.route.params.senderName}
-          colorBackground={colors.cmRed}
-          secondColorBackground={colors.cmRed}
+          imageUrl={route.params.image}
+          institutionalName={route.params.senderName}
+          colorBackground={colors.red}
+          secondColorBackground={colors.red}
+          type={item.action}
         />
       )
     } else if (item.action === 'RECEIVED') {
@@ -197,13 +233,14 @@ export class ConnectionDetails extends Component<
           noOfAttributes={item.data.length}
           buttonText={'VIEW CREDENTIAL'}
           showBadge={true}
-          colorBackground={this.props.activeConnectionThemePrimary}
-          navigation={this.props.navigation}
+          colorBackground={themeForLogo.primary}
+          navigation={navigation}
           received={true}
           data={item}
-          imageUrl={this.props.route.params.image}
-          institutionalName={this.props.route.params.senderName}
-          secondColorBackground={this.props.activeConnectionThemeSecondary}
+          imageUrl={route.params.image}
+          institutionalName={route.params.senderName}
+          secondColorBackground={themeForLogo.secondary}
+          type={item.action}
         />
       )
     } else if (item.action === 'QUESTION_RECEIVED') {
@@ -213,8 +250,8 @@ export class ConnectionDetails extends Component<
           uid={item.data.uid}
           messageTitle={item.data.messageTitle}
           messageContent={item.data.messageText}
-          navigation={this.props.navigation}
-          colorBackground={this.props.activeConnectionThemePrimary}
+          navigation={navigation}
+          colorBackground={themeForLogo.primary}
         />
       )
     } else if (item.action === 'UPDATE_QUESTION_ANSWER') {
@@ -237,8 +274,9 @@ export class ConnectionDetails extends Component<
           messageContent={item.name}
           showButtons={true}
           uid={item.originalPayload.payloadInfo.uid}
-          navigation={this.props.navigation}
-          colorBackground={this.props.activeConnectionThemePrimary}
+          navigation={navigation}
+          colorBackground={themeForLogo.primary}
+          type={item.action}
         />
       )
     } else if (
@@ -262,7 +300,7 @@ export class ConnectionDetails extends Component<
           uid={item.data.uid}
           requestStatus={'YOU REJECTED'}
           requestAction={'"' + item.name + '"'}
-          navigation={this.props.navigation}
+          navigation={navigation}
         />
       )
     } else if (
@@ -288,14 +326,14 @@ export class ConnectionDetails extends Component<
           infoDate={formattedDate}
           buttonText={'RETRY'}
           showBadge={false}
-          colorBackground={colors.cmRed}
-          navigation={this.props.navigation}
+          navigation={navigation}
           received={true}
           data={item}
-          imageUrl={this.props.navigation.state.params.image}
-          institutialName={this.props.navigation.state.params.senderName}
-          colorBackground={colors.cmRed}
-          secondColorBackground={colors.cmRed}
+          imageUrl={navigation.state.params.image}
+          institutialName={navigation.state.params.senderName}
+          colorBackground={colors.red}
+          secondColorBackground={colors.red}
+          type={item.action}
         />
       )
     } else if (item.action === 'DELETED') {
@@ -305,6 +343,7 @@ export class ConnectionDetails extends Component<
           messageTitle={'Deleted Credential'}
           messageContent={'You deleted the credential "' + item.name + '"'}
           showButtons={false}
+          type={item.action}
         />
       )
     } else if (item.action === INVITATION_ACCEPTED) {
@@ -324,11 +363,12 @@ export class ConnectionDetails extends Component<
           infoDate={formattedDate}
           buttonText={'RETRY'}
           showBadge={false}
-          colorBackground={colors.cmRed}
+          colorBackground={colors.red}
           received={true}
           data={item}
           repeatable={true}
-          navigation={this.props.navigation}
+          navigation={navigation}
+          type={item.action}
         />
       )
     }
@@ -336,85 +376,30 @@ export class ConnectionDetails extends Component<
     return null
   }
 
-  onDelete = () => {
-    this.props.deleteConnectionAction(this.props.route.params.senderDID)
-    this.props.navigation.goBack(null)
-  }
+  const onViewedAction = useCallback(() => newConnectionSeen(route.params.senderDID), [route])
 
-  scrollToEnd = () => {
-    setTimeout(() => {
-      this.flatList.current &&
-        this.flatList.current.scrollToEnd({ animated: true })
-    }, 300)
-  }
-
-  render() {
-    if (this.props.route) {
-      const { connectionHistory } = this.props
-
-      return (
-        <View style={styles.container}>
-          <HeaderWithDeletion
-            headline={this.props.route.params.senderName}
-            navigation={this.props.navigation}
-            showImage={true}
-            image={this.props.route.params.image}
-            onViewedAction={()=> this.props.newConnectionSeen(this.props.route.params.senderDID)}
-            onDeleteButtonTitle={'Delete Connection'}
-            onDelete={this.onDelete}
-          />
-          <FlatList
-            ref={this.flatList}
-            keyExtractor={this.keyExtractor}
-            style={styles.flatListContainer}
-            data={connectionHistory}
-            renderItem={this.renderItem}
-            onContentSizeChange={this.scrollToEnd}
-          />
-        </View>
-      )
-    } else {
-      return null
-    }
-  }
-}
-
-const mapStateToProps = (state: Store, props: ConnectionHistoryNavigation) => {
-  const connection: any =
-    state.connections && state.connections.data
-      ? Object.values(state.connections.data).find(
-          (connection: any) =>
-            connection.senderDID === props.route.params.senderDID
-        )
-      : undefined
-
-  const timestamp = connection ? connection.timestamp : null
-
-  let connectionHistory: ConnectionHistoryEvent[] =
-    state.history &&
-    state.history.data &&
-    state.history.data.connections &&
-    props.route
-      ? state.history.data.connections[props.route.params.senderDID].data
-      : []
-
-  connectionHistory = timestamp
-    ? connectionHistory.filter(
-        (event) => new Date(event.timestamp) >= new Date(timestamp)
-      )
-    : connectionHistory.slice()
-
-  const themeForLogo = getConnectionTheme(
-    state,
-    props.route ? props.route.params.image : ''
+  return (
+    <View style={styles.container}>
+      <HeaderWithDeletion
+        headline={route.params.senderName}
+        navigation={navigation}
+        showImage={true}
+        image={route.params.image}
+        newBadge={newBadge}
+        onViewedAction={onViewedAction}
+        onDeleteButtonTitle={'Delete Connection'}
+        onDelete={onDelete}
+      />
+      <FlatList
+        ref={flatList}
+        keyExtractor={keyExtractor}
+        style={styles.flatListContainer}
+        data={connectionHistory}
+        renderItem={renderItem}
+        onContentSizeChange={scrollToEnd}
+      />
+    </View>
   )
-
-  return {
-    activeConnectionThemePrimary: themeForLogo.primary,
-    activeConnectionThemeSecondary: themeForLogo.secondary,
-    connectionHistory: connectionHistory,
-    claimMap: state.claim.claimMap,
-  }
 }
 
 const mapDispatchToProps = (dispatch) =>
@@ -426,12 +411,12 @@ const mapDispatchToProps = (dispatch) =>
       sendConnectionReuse,
       deleteConnectionAction,
     },
-    dispatch
+    dispatch,
   )
 
 export const connectionHistoryScreen = {
   routeName: connectionHistRoute,
-  screen: connect(mapStateToProps, mapDispatchToProps)(ConnectionDetails),
+  screen: connect(null, mapDispatchToProps)(ConnectionDetails),
 }
 
 const styles = StyleSheet.create({
@@ -439,11 +424,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colors.cmWhite,
+    backgroundColor: colors.white,
   },
   flatListContainer: {
     width: '100%',
     height: '100%',
-    backgroundColor: colors.cmWhite,
+    backgroundColor: colors.white,
   },
 })

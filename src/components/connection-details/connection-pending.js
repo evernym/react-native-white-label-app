@@ -1,44 +1,44 @@
 // @flow
-import React, { PureComponent } from 'react'
+import React from 'react'
 import { Text, Image, View, StyleSheet } from 'react-native'
 import { moderateScale } from 'react-native-size-matters'
 import { colors, fontSizes, fontFamily } from '../../common/styles/constant'
 import { ExpandableText } from '../expandable-text/expandable-text'
 
-// TODO: Fix the <any, {}> to be the correct types for props and state
-class ConnectionPending extends PureComponent<any, {}> {
-  constructor(props: any) {
-    super(props)
-    this.state = {}
-  }
-
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.date}>{this.props.date}</Text>
-        <View style={styles.innerWrapper}>
-          <View style={styles.spinerWrapper}>
-            <Image
-              style={styles.spiner}
-              source={require('../../images/componentsDetails/spiner.gif')}
-            />
-            <View style={styles.absolute} />
-          </View>
-          <View style={styles.textWrapper}>
-            <ExpandableText
-              text={this.props.title}
-              style={styles.title}
-              lines={1}
-            />
-            <Text style={styles.content}>{this.props.content}</Text>
-          </View>
-        </View>
-      </View>
-    )
-  }
+type ConnectionPendingProps = {
+  date: string,
+  title: string,
+  content: string,
 }
 
-export { ConnectionPending }
+export const ConnectionPending = ({
+                                    date,
+                                    title,
+                                    content,
+                                  }: ConnectionPendingProps) => {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.date}>{date}</Text>
+      <View style={styles.innerWrapper}>
+        <View style={styles.spinerWrapper}>
+          <Image
+            style={styles.spiner}
+            source={require('../../images/spiner.gif')}
+          />
+          <View style={styles.absolute}/>
+        </View>
+        <View style={styles.textWrapper}>
+          <ExpandableText
+            text={title}
+            style={styles.title}
+            lines={1}
+          />
+          <Text style={styles.content}>{content}</Text>
+        </View>
+      </View>
+    </View>
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -54,13 +54,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'stretch',
     borderWidth: 1,
-    borderColor: colors.cmGray5,
+    borderColor: colors.gray5,
     borderRadius: 3,
     width: '100%',
     padding: moderateScale(12),
   },
   date: {
-    color: colors.cmGray2,
+    color: colors.gray2,
     fontSize: moderateScale(fontSizes.size10),
     textAlign: 'left',
     fontFamily: fontFamily,
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
   absolute: {
     width: moderateScale(14),
     height: moderateScale(14),
-    backgroundColor: colors.cmWhite,
+    backgroundColor: colors.white,
     borderRadius: 7,
     position: 'absolute',
   },
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   title: {
-    color: colors.cmGray1,
+    color: colors.gray1,
     fontWeight: '700',
     fontSize: moderateScale(fontSizes.size7),
     textAlign: 'left',
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     fontFamily: fontFamily,
   },
   content: {
-    color: colors.cmGray2,
+    color: colors.gray2,
     fontWeight: '400',
     fontSize: moderateScale(fontSizes.size9),
     textAlign: 'left',

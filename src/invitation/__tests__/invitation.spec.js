@@ -25,6 +25,7 @@ describe('<Invitation />', () => {
   let component
   let invitation
   let isSmsInvitationNotSeen
+  let allowPushNotifications
   let props
 
   const firstInvitation = {
@@ -120,6 +121,7 @@ describe('<Invitation />', () => {
     smsPendingInvitationSeen = jest.fn()
     invitationRejected = jest.fn()
     isSmsInvitationNotSeen = false
+    allowPushNotifications = jest.fn()
     props = {
       invitation,
       showErrorAlerts,
@@ -130,6 +132,7 @@ describe('<Invitation />', () => {
       invitationRejected,
       smsToken,
       isSmsInvitationNotSeen,
+      allowPushNotifications,
     }
     component = renderer.create(
       <Provider store={store}>

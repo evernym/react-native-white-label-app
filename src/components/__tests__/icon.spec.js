@@ -11,7 +11,7 @@ describe('<Icon />', () => {
     const wrapper = renderer
       .create(
         <Icon
-          src={require('../../images/about.png')}
+          src={require('../../images/audio_icon.png')}
           extraLarge
           testID="test-icon-test"
           halo

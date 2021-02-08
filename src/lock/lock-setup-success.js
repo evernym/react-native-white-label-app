@@ -70,7 +70,7 @@ export class LockSetupSuccess extends Component<
               name={LOCK_ICON}
               width={moderateScale(40)}
               height={moderateScale(40)}
-              color={colors.cmGreen1}
+              color={colors.main}
             />
           </View>
           <CustomText
@@ -146,7 +146,7 @@ const style = StyleSheet.create({
     width: moderateScale(72),
     height: moderateScale(72),
     borderWidth: 2,
-    borderColor: colors.cmGreen1,
+    borderColor: colors.main,
     borderRadius: moderateScale(36),
     alignItems: 'center',
     justifyContent: 'center',

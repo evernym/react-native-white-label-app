@@ -2,7 +2,7 @@
 import React, { PureComponent } from 'react'
 import { Text, View } from 'react-native'
 import type { DefaultLogoProps } from './type-default-logo'
-import { fontFamily, colors } from '../../common/styles'
+import { colors, fontFamily } from '../../common/styles/constant'
 
 export class DefaultLogo extends PureComponent<DefaultLogoProps, void> {
   render() {
@@ -24,7 +24,7 @@ export class DefaultLogo extends PureComponent<DefaultLogoProps, void> {
 
     return (
       <View style={customStyles.container}>
-        <Text 
+        <Text
           style={customStyles.text}
           testID={'default-logo'}
           accessible={true}
@@ -39,12 +39,12 @@ export class DefaultLogo extends PureComponent<DefaultLogoProps, void> {
 
 const styles = {
   defaultContainer: {
-    backgroundColor: colors.cmGray2,
+    backgroundColor: colors.gray2,
     alignItems: 'center',
     justifyContent: 'center',
   },
   shadow: {
-    shadowColor: colors.cmBlack,
+    shadowColor: colors.black,
     shadowOpacity: 0.25,
     elevation: 3,
     shadowOpacity: 1,
@@ -54,6 +54,6 @@ const styles = {
   defaultText: {
     fontFamily: fontFamily,
     fontWeight: 'bold',
-    color: colors.cmWhite,
+    color: colors.white,
   },
 }

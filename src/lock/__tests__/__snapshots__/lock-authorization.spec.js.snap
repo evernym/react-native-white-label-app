@@ -321,26 +321,16 @@ exports[`<LockAuthorization /> should match snapshot 1`] = `
               }
               testID="pin-code-digit-0-touchable"
             >
-              <Text
-                allowFontScaling={false}
+              <View
                 style={
-                  Array [
-                    Object {
-                      "color": "#EAEAEA",
-                      "fontSize": 26,
-                    },
-                    undefined,
-                    Object {
-                      "fontFamily": "Material Icons",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    Object {},
-                  ]
+                  Object {
+                    "backgroundColor": "#EAEAEA",
+                    "borderRadius": 20,
+                    "height": 26,
+                    "width": 26,
+                  }
                 }
-              >
-                
-              </Text>
+              />
             </View>
             <View
               accessibilityLabel="pin-code-digit-1-touchable"
@@ -373,26 +363,16 @@ exports[`<LockAuthorization /> should match snapshot 1`] = `
               }
               testID="pin-code-digit-1-touchable"
             >
-              <Text
-                allowFontScaling={false}
+              <View
                 style={
-                  Array [
-                    Object {
-                      "color": "#EAEAEA",
-                      "fontSize": 26,
-                    },
-                    undefined,
-                    Object {
-                      "fontFamily": "Material Icons",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    Object {},
-                  ]
+                  Object {
+                    "backgroundColor": "#EAEAEA",
+                    "borderRadius": 20,
+                    "height": 26,
+                    "width": 26,
+                  }
                 }
-              >
-                
-              </Text>
+              />
             </View>
             <View
               accessibilityLabel="pin-code-digit-2-touchable"
@@ -425,26 +405,16 @@ exports[`<LockAuthorization /> should match snapshot 1`] = `
               }
               testID="pin-code-digit-2-touchable"
             >
-              <Text
-                allowFontScaling={false}
+              <View
                 style={
-                  Array [
-                    Object {
-                      "color": "#EAEAEA",
-                      "fontSize": 26,
-                    },
-                    undefined,
-                    Object {
-                      "fontFamily": "Material Icons",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    Object {},
-                  ]
+                  Object {
+                    "backgroundColor": "#EAEAEA",
+                    "borderRadius": 20,
+                    "height": 26,
+                    "width": 26,
+                  }
                 }
-              >
-                
-              </Text>
+              />
             </View>
             <View
               accessibilityLabel="pin-code-digit-3-touchable"
@@ -477,26 +447,16 @@ exports[`<LockAuthorization /> should match snapshot 1`] = `
               }
               testID="pin-code-digit-3-touchable"
             >
-              <Text
-                allowFontScaling={false}
+              <View
                 style={
-                  Array [
-                    Object {
-                      "color": "#EAEAEA",
-                      "fontSize": 26,
-                    },
-                    undefined,
-                    Object {
-                      "fontFamily": "Material Icons",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    Object {},
-                  ]
+                  Object {
+                    "backgroundColor": "#EAEAEA",
+                    "borderRadius": 20,
+                    "height": 26,
+                    "width": 26,
+                  }
                 }
-              >
-                
-              </Text>
+              />
             </View>
             <View
               accessibilityLabel="pin-code-digit-4-touchable"
@@ -529,26 +489,16 @@ exports[`<LockAuthorization /> should match snapshot 1`] = `
               }
               testID="pin-code-digit-4-touchable"
             >
-              <Text
-                allowFontScaling={false}
+              <View
                 style={
-                  Array [
-                    Object {
-                      "color": "#EAEAEA",
-                      "fontSize": 26,
-                    },
-                    undefined,
-                    Object {
-                      "fontFamily": "Material Icons",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    Object {},
-                  ]
+                  Object {
+                    "backgroundColor": "#EAEAEA",
+                    "borderRadius": 20,
+                    "height": 26,
+                    "width": 26,
+                  }
                 }
-              >
-                
-              </Text>
+              />
             </View>
             <View
               accessibilityLabel="pin-code-digit-5-touchable"
@@ -581,26 +531,16 @@ exports[`<LockAuthorization /> should match snapshot 1`] = `
               }
               testID="pin-code-digit-5-touchable"
             >
-              <Text
-                allowFontScaling={false}
+              <View
                 style={
-                  Array [
-                    Object {
-                      "color": "#EAEAEA",
-                      "fontSize": 26,
-                    },
-                    undefined,
-                    Object {
-                      "fontFamily": "Material Icons",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    Object {},
-                  ]
+                  Object {
+                    "backgroundColor": "#EAEAEA",
+                    "borderRadius": 20,
+                    "height": 26,
+                    "width": 26,
+                  }
                 }
-              >
-                
-              </Text>
+              />
             </View>
           </View>
           <TextInput

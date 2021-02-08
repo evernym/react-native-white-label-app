@@ -53,8 +53,3 @@ export type OutOfBandNavigation = {
 export const MESSAGE_NO_CAMERA_PERMISSION = 'No Camera permission'
 
 export const MESSAGE_ALLOW_CAMERA_PERMISSION = `Please allow ${APP_NAME} to access camera from camera settings`
-
-export const MESSAGE_RESET_CONNECT_ME = `Reset ${APP_NAME}?`
-
-export const MESSAGE_RESET_DETAILS = (name: string) =>
-  `You are about to switch to ${name} which is a test network. This will reset ${APP_NAME} and you will PERMANENTLY lose all of your claims and connections. Proceed?`

@@ -5,13 +5,10 @@ import { scale } from 'react-native-size-matters'
 import { BigNumber } from 'bignumber.js'
 
 import {
-  grey,
   cardBorder,
-  whisper,
   yellowSea,
   whiteSolid,
-  darkGray,
-  isBiggerThanMediumDevice,
+  isBiggerThanMediumDevice, colors,
 } from '../../common/styles'
 import { ModalButtons } from '../../components/buttons/modal-buttons'
 import type { TokenFeesData } from '../type-claim-offer'
@@ -123,7 +120,7 @@ const CredentialCostInfo = (props: CredentialCostInfoProps) => {
 export default CredentialCostInfo
 
 const textStyle = {
-  color: darkGray,
+  color: colors.gray1,
   lineHeight: 20,
 }
 
@@ -134,7 +131,7 @@ const styles = StyleSheet.create({
     // flex: 1,
   },
   noteMessage: {
-    color: grey,
+    color: colors.gray2,
     textAlign: 'center',
     fontSize: isBiggerThanMediumDevice ? scale(15) : scale(12),
     paddingTop: isBiggerThanMediumDevice ? 15 : 5,
@@ -158,7 +155,7 @@ const styles = StyleSheet.create({
     fontSize: scale(14),
   },
   borderSeparator: {
-    backgroundColor: whisper,
+    backgroundColor: colors.gray4,
     width: '100%',
     height: 1,
   },

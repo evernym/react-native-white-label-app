@@ -16,7 +16,6 @@ import type {
   VcxConnectionConnectResult,
   VcxCredentialOffer,
   WalletPoolName,
-  VcxConnectionConnectV2Result,
   VcxPoolInitConfig,
   CxsPoolConfigWithGenesisPath,
 } from './type-cxs'
@@ -140,28 +139,6 @@ export function convertVcxConnectionToCxsConnection(
     myPairwiseAgentVerKey: vcxConnection.agent_vk,
     myPairwisePeerVerKey: vcxConnection.their_pw_verkey,
     senderDID: vcxConnection.their_pw_did,
-  }
-}
-
-export function convertVcxConnectionV2ToCMConnection(
-  vcxConnection: VcxConnectionConnectV2Result
-): MyPairwiseInfo {
-  const {
-    agent_info,
-    state: {
-      Invitee: {
-        Requested: { remote_info },
-      },
-    },
-  } = vcxConnection.state
-
-  return {
-    myPairwiseDid: agent_info.pw_did,
-    myPairwiseVerKey: agent_info.pw_verkey,
-    myPairwiseAgentDid: agent_info.agent_did,
-    myPairwiseAgentVerKey: agent_info.agent_vk,
-    myPairwisePeerVerKey: remote_info.routingKeys[0],
-    senderDID: remote_info.recipientKeys[0],
   }
 }
 

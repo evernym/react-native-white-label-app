@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux'
 import { Image, Keyboard, StyleSheet, TextInput, Platform } from 'react-native'
 import { Container, CustomView, CustomText } from '../index'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { color } from '../../common/styles/constant'
+import { color, colors } from '../../common/styles/constant'
 import {
   isBiggerThanShortDevice,
   inputBoxVerifyPassphraseHeight,
@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     height: inputBoxVerifyPassphraseHeight,
     backgroundColor: 'rgba(0,0,0,0.33)',
-    color: 'white',
+    color: colors.white,
     padding: 10,
     textAlignVertical: 'top',
     fontSize: 20,

@@ -13,6 +13,11 @@ import { toUtf8FromBase64 } from '../../../bridge/react-native-cxs/RNCxs'
 import { addBase64Padding } from '../../../common/base64-padding'
 import { flatTryCatch } from '../../../common/flat-try-catch'
 
+// $FlowExpectedError[cannot-resolve-module] external file
+import { OIDC_TRUSTED_DOMAINS } from '../../../../../../../app/evernym-sdk/app'
+
+const trustedDomains = OIDC_TRUSTED_DOMAINS || []
+
 export function isValidOIDCQrCode(parsedUrl: Url): QrCodeOIDC | false {
   const { protocol, query, hostname } = parsedUrl
 
@@ -74,7 +79,7 @@ export async function fetchValidateJWT(
     .split('.')
     .map(addBase64Padding)
 
-  // check if header is valid as per ConnectMe expectations
+  // check if header is valid as per MSDK expectations
   const [decodeError, header] = await decodeToJSON(encodedHeader)
   if (decodeError !== null || header === null) {
     return [null, SCAN_STATUS.AUTH_REQUEST_INVALID_HEADER_DECODE_ERROR]
@@ -157,9 +162,6 @@ async function sendValidationErrorToClient(
 
 // only trust if scheme is https, http is not allowed
 const validInvitationUrlScheme = ['https:']
-
-// only trust urls that has origin of connectme.app.link
-const trustedDomains = ['connectme.app.link']
 
 // required query string params
 const requiredQueryParams = ['response_type', 'client_id', 'request_uri']

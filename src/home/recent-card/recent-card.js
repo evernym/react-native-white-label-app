@@ -14,8 +14,8 @@ import { SwipeRow } from 'react-native-swipe-list-view'
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters'
 import {
   colors,
-  font,
   fontFamily,
+  fontSizes as fonts,
   fontSizes,
 } from '../../common/styles/constant'
 import { isiPhone5 } from '../../common/styles'
@@ -131,7 +131,7 @@ const renderImageOrText = (logoUrl: string, issuerName: string) => {
     <DefaultLogo
       text={issuerName}
       size={moderateScale(30)}
-      fontSize={isiPhone5 ? font.size.S : font.size.M}
+      fontSize={isiPhone5 ? fonts.size5 : fonts.size4}
     />
   )
 }
@@ -300,7 +300,7 @@ const commonCardStyles = {
 const styles = StyleSheet.create({
   messageContainer: { flex: 1 },
   container: {
-    backgroundColor: colors.cmWhite,
+    backgroundColor: colors.white,
     flexDirection: 'row',
     ...commonCardStyles,
   },
@@ -336,26 +336,26 @@ const styles = StyleSheet.create({
     fontSize: verticalScale(fontSizes.size8),
     fontWeight: 'normal',
     fontFamily: fontFamily,
-    color: colors.cmGray3,
+    color: colors.gray3,
   },
   textIssuer: {
     fontSize: verticalScale(fontSizes.size10),
     fontWeight: 'normal',
     fontFamily: fontFamily,
-    color: colors.cmGray3,
+    color: colors.gray3,
   },
   textDate: {
     fontSize: verticalScale(fontSizes.size11),
     fontWeight: 'normal',
     fontFamily: fontFamily,
     fontStyle: 'italic',
-    color: colors.cmGray3,
+    color: colors.gray3,
   },
   placeholderIfNoImage: {
     width: moderateScale(30),
     height: moderateScale(30),
     borderRadius: moderateScale(30) / 2,
-    backgroundColor: colors.cmGray3,
+    backgroundColor: colors.gray3,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -363,22 +363,22 @@ const styles = StyleSheet.create({
     fontFamily: fontFamily,
     fontSize: verticalScale(fontSizes.size7),
     fontWeight: 'bold',
-    color: colors.cmWhite,
+    color: colors.white,
   },
   retryText: {
-    color: colors.cmRed,
+    color: colors.red,
     marginRight: scale(3),
   },
   deleteButton: {
     flex: 1,
-    backgroundColor: colors.cmRed,
+    backgroundColor: colors.red,
     justifyContent: 'flex-end',
     alignItems: 'center',
     flexDirection: 'row',
     ...commonCardStyles,
   },
   deleteButtonText: {
-    color: colors.cmWhite,
+    color: colors.white,
     alignItems: 'center',
     marginRight: scale(30),
     fontFamily: fontFamily,

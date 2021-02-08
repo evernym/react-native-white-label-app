@@ -178,7 +178,7 @@ exports[`<SelectRecoveryMethod /> should match snapshot 1`] = `
             null,
             null,
             Object {
-              "color": "white",
+              "color": "#FFFFFF",
               "fontSize": 22,
               "fontWeight": "400",
               "lineHeight": 22,
@@ -387,7 +387,7 @@ exports[`<SelectRecoveryMethod /> should match snapshot 1`] = `
             null,
             null,
             Object {
-              "color": "white",
+              "color": "#FFFFFF",
               "fontSize": 22,
               "fontWeight": "400",
               "lineHeight": 22,
@@ -427,7 +427,7 @@ exports[`<SelectRecoveryMethod /> should match snapshot 1`] = `
             null,
             null,
             Object {
-              "color": "white",
+              "color": "#FFFFFF",
             },
           ]
         }

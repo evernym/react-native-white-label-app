@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { View, StyleSheet, StatusBar } from 'react-native'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { claimOfferRoute } from '../../common/route-constants'
+import { claimOfferRoute, homeDrawerRoute, homeRoute } from '../../common/route-constants'
 import { BigNumber } from 'bignumber.js'
 
 import type { Store } from '../../store/type-store'
@@ -45,11 +45,11 @@ import { colors } from '../../common/styles/constant'
 import { acceptOutOfBandInvitation } from '../../invitation/invitation-store'
 import { authForAction } from '../../lock/lock-auth-for-action'
 
-// $FlowExpectedError[cannot-resolve-module] external file
 import {
   HEADLINE,
   ACCEPT_BUTTON_TEXT,
   DENY_BUTTON_TEXT,
+  // $FlowExpectedError[cannot-resolve-module] external file
 } from '../../../../../../app/evernym-sdk/credential-offer-dialog'
 
 const headline = HEADLINE || 'Credential Offer'
@@ -103,7 +103,7 @@ export class ClaimOfferModal extends Component<any, *> {
     return (
       <View style={styles.modalWrapper}>
         <StatusBar
-          backgroundColor={colors.cmBlack}
+          backgroundColor={colors.black}
           barStyle={'light-content'}
         />
         {
@@ -126,7 +126,7 @@ export class ClaimOfferModal extends Component<any, *> {
             credentialText={
               hasNotAcceptedTAA ? 'is offering a paid credential' : 'Issued by'
             }
-            colorBackground={colors.cmGreen1}
+            colorBackground={colors.main}
             imageUrl={logoUrl}
           />
         )}
@@ -177,7 +177,7 @@ export class ClaimOfferModal extends Component<any, *> {
           <ModalButtons
             onPress={this.agree}
             onIgnore={this.onIgnore}
-            colorBackground={colors.cmGreen1}
+            colorBackground={colors.main}
             secondColorBackground={claimThemeSecondary}
             denyButtonText={'Close'}
             acceptBtnText={'Read and Sign TAA'}
@@ -195,7 +195,7 @@ export class ClaimOfferModal extends Component<any, *> {
             <ModalButtons
               onPress={this.onAccept}
               onIgnore={this.onDeny}
-              colorBackground={colors.cmGreen1}
+              colorBackground={colors.main}
               secondColorBackground={claimThemeSecondary}
               denyButtonText={denyButtonText}
               acceptBtnText={acceptButtonText}
@@ -271,23 +271,23 @@ export class ClaimOfferModal extends Component<any, *> {
   }
 
   onDeny = () => {
-    authForAction({
-      lock: this.props.lock,
-      navigation: this.props.navigation,
-      onSuccess: this.onDenyAuthSuccess,
-    })
+    if (this.props.isOOBInvitation) {
+      // on cancel
+      this.setState({ ...this.state, scheduledDeleteion: true })
+      this.hideModal()
+    } else {
+      // on reject
+      authForAction({
+        lock: this.props.lock,
+        navigation: this.props.navigation,
+        onSuccess: this.onDenyAuthSuccess,
+      })
+    }
   }
 
   onDenyAuthSuccess = () => {
-    const { invitationPayload } = this.props.route.params
-
-    if (!invitationPayload) {
-      this.props.denyClaimOffer(this.props.uid)
-    } else {
-      this.setState({ ...this.state, scheduledDeleteion: true })
-    }
-
-    this.hideModal()
+    this.props.denyClaimOffer(this.props.uid)
+    this.navigateOnSuccess()
   }
 
   onClose = () => {
@@ -333,6 +333,17 @@ export class ClaimOfferModal extends Component<any, *> {
     }
   }
 
+  navigateOnSuccess = () => {
+    const redirectBack = this.props.route.params?.redirectBack
+    if (redirectBack) {
+      this.props.navigation.goBack(null)
+    } else {
+      this.props.navigation.navigate(homeRoute, {
+        screen: homeDrawerRoute,
+      })
+    }
+  }
+
   updateState = (status: string) => {
     const claimOfferStatus =
       this.props.claimOfferData && this.props.claimOfferData.status
@@ -361,7 +372,7 @@ export class ClaimOfferModal extends Component<any, *> {
     }
 
     if (shouldHideModal === true) {
-      this.hideModal()
+      this.navigateOnSuccess()
     } else {
       animateLayout()
     }
@@ -442,7 +453,7 @@ claimOfferScreen.screen.navigationOptions = ({
     marginRight: '2.5%',
     marginBottom: '4%',
     borderRadius: 10,
-    backgroundColor: colors.cmWhite,
+    backgroundColor: colors.white,
   },
   cardOverlay: () => (
     <ModalHeaderBar

@@ -3,7 +3,7 @@ import 'react-native'
 import React from 'react'
 import { BackHandler, ToastAndroid, Platform } from 'react-native'
 import renderer from 'react-test-renderer'
-import { ConnectMeApp } from './../app'
+import { MSDKMeApp } from './../app'
 import delay from '@redux-saga/delay-p'
 import { NativeModules } from 'react-native'
 import {
@@ -18,7 +18,7 @@ describe.skip('<App/>', () => {
     let tree = null
 
     beforeAll(() => {
-      tree = renderer.create(<ConnectMeApp />)
+      tree = renderer.create(<MSDKMeApp />)
     })
 
     it('should render properly and snapshot should match', () => {
@@ -42,7 +42,7 @@ describe.skip('<App/>', () => {
     })
 
     beforeEach(() => {
-      tree = renderer.create(<ConnectMeApp />)
+      tree = renderer.create(<MSDKMeApp />)
     })
 
     it(`should have been called BackHandler addEventListener`, () => {

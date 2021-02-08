@@ -22,6 +22,7 @@ export class Avatar extends PureComponent<AvatarProps, void> {
 
   render() {
     const {
+      superSmall,
       small,
       medium,
       square,
@@ -37,14 +38,14 @@ export class Avatar extends PureComponent<AvatarProps, void> {
       clearBg,
       radius,
     } = this.props
-    const size = small ? 'small' : medium ? 'medium' : 'large'
+    const size = superSmall? 'superSmall' : small ? 'small' : medium ? 'medium' : 'large'
     const imageShadow = shadow ? 'imageShadow' : null
     const elementStyle = [
       ...style,
       square
         ? null
         : // $FlowFixMe flow does not support dynamic property lookup
-          avatarStyle[`${size}Round`],
+        avatarStyle[`${size}Round`],
       clearBg ? avatarStyle['clearBg'] : null,
     ]
     const elementContentStyle = [
@@ -61,7 +62,7 @@ export class Avatar extends PureComponent<AvatarProps, void> {
         : radius
         ? { borderRadius: radius }
         : // $FlowFixMe flow does not support dynamic property lookup
-          avatarStyle[`${size}Round`],
+        avatarStyle[`${size}Round`],
       ...imageStyle,
     ]
 

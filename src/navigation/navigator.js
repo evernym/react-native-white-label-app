@@ -1,24 +1,23 @@
 // @flow
 import * as React from 'react'
-import { View, StyleSheet, Dimensions, Text } from 'react-native'
+import {View, StyleSheet, Dimensions, Text, Image} from 'react-native';
 import {
   createStackNavigator,
   TransitionPresets,
 } from '@react-navigation/stack'
 import { createDrawerNavigator, DrawerItemList } from '@react-navigation/drawer'
 import { enableScreens } from 'react-native-screens'
-// $FlowFixMe Not sure how this can be fixed. Maybe we can add type definition
-import { createNativeStackNavigator } from 'react-native-screens/native-stack'
+import VersionNumber from 'react-native-version-number'
 
 // $FlowExpectedError[cannot-resolve-module] external file
-import { AppSvgIcon } from '../../../../../app/evernym-sdk/app-icon'
+import { APP_ICON, COMPANY_NAME } from '../../../../../app/evernym-sdk/app'
+
 import {
+  DrawerHeaderContent,
   DrawerFooterContent,
-  navigationOptions,
+  NAVIGATION_OPTIONS,
   // $FlowExpectedError[cannot-resolve-module] external file
 } from '../../../../../app/evernym-sdk/navigator'
-
-import type { ImageSource } from '../common/type-common'
 
 import { aboutAppScreen } from '../about-app/about-app'
 import { homeScreen } from '../home/home'
@@ -85,7 +84,7 @@ import {
   SETTINGS_ICON,
 } from '../common/icons'
 import { colors, fontFamily } from '../common/styles/constant'
-import { UserAvatar, Avatar, UnreadMessagesBadge } from '../components'
+import { UnreadMessagesBadge } from '../components'
 import { unreadMessageContainerCommonStyle } from '../components/unread-messages-badge/unread-messages-badge'
 import { verticalScale, moderateScale } from 'react-native-size-matters'
 import { startUpScreen } from '../start-up/start-up-screen'
@@ -94,6 +93,7 @@ import { CustomValuesScreen } from '../connection-details/components/custom-valu
 import { AttributeValuesScreen } from '../connection-details/components/attribute-values'
 import { AttributesValuesScreen } from '../connection-details/components/attributes-values'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { renderUserAvatar } from '../components/user-avatar/user-avatar'
 
 enableScreens()
 
@@ -105,7 +105,7 @@ export const styles = StyleSheet.create({
   },
   drawerOuterContainer: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: colors.white,
     borderTopRightRadius: verticalScale(14),
     borderBottomRightRadius: verticalScale(14),
   },
@@ -129,7 +129,7 @@ export const styles = StyleSheet.create({
   text: {
     fontFamily: fontFamily,
     fontSize: verticalScale(10),
-    color: colors.cmGray3,
+    color: colors.gray3,
     fontWeight: 'bold',
   },
   labelContainer: {
@@ -141,20 +141,42 @@ export const styles = StyleSheet.create({
     fontFamily: fontFamily,
     fontSize: verticalScale(15),
     fontWeight: '500',
-    color: colors.cmGray3,
+    color: colors.gray3,
   },
   labelTextFocusedColor: {
-    color: colors.cmGreen1,
+    color: colors.main,
   },
   customGreenBadgeContainer: {
     ...unreadMessageContainerCommonStyle,
     marginRight: '30%',
   },
+  companyIconImage: {
+    width: verticalScale(26),
+    height: verticalScale(26),
+    marginLeft: moderateScale(20),
+    marginRight: moderateScale(10),
+    marginBottom: moderateScale(20),
+  },
+  companyIconTextContainer: {
+    height: verticalScale(26),
+    marginBottom: moderateScale(20),
+  },
+  companyIconLogoText: {
+    height: '50%',
+    justifyContent: 'flex-start',
+  },
+  companyIconBuildText: {
+    height: '50%',
+    justifyContent: 'flex-end',
+  },
+  drawerIconWrapper: {
+    width: moderateScale(22),
+    alignItems: 'center',
+  },
 })
 
-const renderAvatarWithSource = (avatarSource: number | ImageSource) => {
-  return <Avatar medium round src={avatarSource} />
-}
+const footerIcon = APP_ICON || require('../images/app_icon.png')
+const builtBy = COMPANY_NAME || 'Your Company'
 
 const drawerComponent = (props: Object) => (
   <SafeAreaView
@@ -164,19 +186,42 @@ const drawerComponent = (props: Object) => (
     accessibilityLabel="menu-container"
   >
     <View style={styles.drawerHeader}>
-      <AppSvgIcon
-        width={verticalScale(136)}
-        height={verticalScale(18)}
-        fill={colors.cmGray3}
-      />
-      <UserAvatar userCanChange testID={'user-avatar'}>
-        {renderAvatarWithSource}
-      </UserAvatar>
+      {
+        DrawerHeaderContent ?
+          <DrawerHeaderContent
+            width={verticalScale(136)}
+            height={verticalScale(18)}
+            fill={colors.gray3}
+          /> :
+          <Image
+            source={require('../images/powered_by_logo.png')}
+            resizeMode="contain"
+          />
+      }
+      {renderUserAvatar({size: 'medium', userCanChange: true, testID: 'user-avatar'})}
     </View>
     <DrawerItemList {...props} />
     <View style={styles.drawerFooterContainer}>
       <View style={styles.drawerFooter}>
-        {DrawerFooterContent ? <DrawerFooterContent /> : <View />}
+        {DrawerFooterContent ?
+          <DrawerFooterContent /> :
+          <>
+            <Image
+              source={footerIcon}
+              style={styles.companyIconImage}
+            />
+            <View style={styles.companyIconTextContainer}>
+              <View style={styles.companyIconLogoText}>
+                <Text style={styles.text}>built by {builtBy}</Text>
+              </View>
+              <View style={styles.companyIconBuildText}>
+                <Text style={styles.text}>
+                  Version {VersionNumber.appVersion}.{VersionNumber.buildVersion}
+                </Text>
+              </View>
+            </View>
+          </>
+        }
       </View>
     </View>
   </SafeAreaView>
@@ -184,8 +229,8 @@ const drawerComponent = (props: Object) => (
 
 const Drawer = createDrawerNavigator()
 const drawerContentOptions = {
-  activeTintColor: colors.cmGreen1,
-  inactiveTintColor: colors.cmGray2,
+  activeTintColor: colors.main,
+  inactiveTintColor: colors.gray2,
 }
 const drawerStyle = {
   width: verticalScale(0.75 * width),
@@ -193,16 +238,25 @@ const drawerStyle = {
 }
 
 const drawerEvaIcon = (title: string) => ({ color }) => (
-  <EvaIcon name={title} color={color} />
+  <View style={styles.drawerIconWrapper}>
+    <EvaIcon
+      name={title}
+      color={color}
+      width={moderateScale(22)}
+      height={verticalScale(22)}
+    />
+  </View>
 )
 
 const drawerItemIcon = (title: string) => ({ color }) => (
-  <SvgCustomIcon
-    name={title}
-    width={verticalScale(22)}
-    height={verticalScale(22)}
-    fill={color}
-  />
+  <View style={styles.drawerIconWrapper}>
+    <SvgCustomIcon
+      name={title}
+      width={verticalScale(22)}
+      height={verticalScale(22)}
+      fill={color}
+    />
+  </View>
 )
 
 const drawerItemLabel = (
@@ -225,6 +279,13 @@ const homeDrawerItemOptions = {
     />
   ),
 }
+
+const navigationOptions = NAVIGATION_OPTIONS || {
+  connections: { label: 'My Connections' },
+  credentials: { label: 'My Credentials' },
+  settings: { label: 'Settings' },
+}
+
 const connectionDrawerItemOptions = {
   drawerIcon: drawerEvaIcon(CONNECTIONS_ICON),
   drawerLabel: drawerItemLabel(
@@ -279,7 +340,7 @@ function AppDrawer() {
     </Drawer.Navigator>
   )
 }
-const CardStack = createNativeStackNavigator()
+const CardStack = createStackNavigator()
 const cardStackOptions = {
   // we are using headerShown property instead of headerMode: 'none'
   // to hide header from screen
@@ -417,6 +478,7 @@ function CardStackScreen() {
       <CardStack.Screen
         name={connectionHistoryScreen.routeName}
         component={connectionHistoryScreen.screen}
+        options={connectionHistoryScreen.screen.navigationOptions}
       />
       <CardStack.Screen
         name={eulaScreen.routeName}
@@ -442,6 +504,7 @@ function CardStackScreen() {
       <CardStack.Screen
         name={credentialDetailsScreen.routeName}
         component={credentialDetailsScreen.screen}
+        options={credentialDetailsScreen.screen.navigationOptions}
       />
     </CardStack.Navigator>
   )
@@ -457,7 +520,7 @@ const modalStackOptions = {
   ...TransitionPresets.ModalPresentationIOS,
 }
 
-export function ConnectMeAppNavigator() {
+export function MSDKAppNavigator() {
   return (
     <ModalStack.Navigator mode="modal" screenOptions={modalStackOptions}>
       <ModalStack.Screen name="CardStack" component={CardStackScreen} />

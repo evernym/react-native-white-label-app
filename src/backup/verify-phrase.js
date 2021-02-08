@@ -50,7 +50,7 @@ export class VerifyRecoveryPhrase extends Component<
     navigation: { goBack },
   }: ReactNavigationBackup) => ({
     header: () => (
-      <CustomHeader backgroundColor={colors.cmGreen1} largeHeader flatHeader>
+      <CustomHeader backgroundColor={colors.main} largeHeader flatHeader>
         <CustomView style={[styles.headerSpacer]}>
           <Icon
             medium
@@ -141,7 +141,7 @@ const mapDispatchToProps = (dispatch) =>
 
 export const verifyRecoveryPhraseScreen = {
   routeName: verifyRecoveryPhraseRoute,
-  screen: withStatusBar({ color: colors.cmGreen1 })(
+  screen: withStatusBar({ color: colors.main })(
     connect(mapStateToProps, mapDispatchToProps)(VerifyRecoveryPhrase)
   ),
 }

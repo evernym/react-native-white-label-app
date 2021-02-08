@@ -208,7 +208,7 @@ exports[`<VerifyRecoveryPhrase /> should match snapshot 1`] = `
             Array [
               Object {
                 "backgroundColor": "rgba(0,0,0,0.33)",
-                "color": "white",
+                "color": "#FFFFFF",
                 "fontSize": 20,
                 "fontStyle": "italic",
                 "height": 137,

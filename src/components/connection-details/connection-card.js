@@ -1,5 +1,5 @@
 // @flow
-import React, { PureComponent } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import {
   Text,
   View,
@@ -36,164 +36,190 @@ import { ResponseType } from '../request/type-request'
 import { sendInvitationResponse } from '../../invitation/invitation-store'
 import { deleteConnectionAction } from '../../store/connections-store'
 import { ExpandableText } from '../expandable-text/expandable-text'
+import type { ReactNavigation } from '../../common/type-common'
 
-// TODO: Fix the <any, {}> to be the correct types for props and state
-class ConnectionCardComponent extends PureComponent<
-  any & {
-    deleteHistoryEvent: typeof deleteHistoryEvent,
-    denyProofRequest: typeof denyProofRequest,
-  },
-  {}
-> {
-  updateAndShowModal = () => {
-    const { data: event } = this.props
+type ConnectionCardProps = {
+  messageDate: string,
+  headerText: string,
+  infoType: string,
+  infoDate: string,
+  buttonText: string,
+  data: any,
+  type: string,
+  colorBackground?: string,
+  noOfAttributes?: number,
+  showBadge?: boolean,
+  institutionalName?: string,
+  imageUrl?: any,
+  secondColorBackground?: string,
+  payTokenValue?: any,
+  repeatable?: boolean,
+  acceptClaimOffer: typeof acceptClaimOffer,
+  reTrySendProof: typeof reTrySendProof,
+  deleteHistoryEvent: typeof deleteHistoryEvent,
+  denyProofRequest: typeof denyProofRequest,
+  sendInvitationResponse: typeof sendInvitationResponse,
+  deleteConnectionAction: typeof deleteConnectionAction,
+} & ReactNavigation
+
+const ConnectionCardComponent = ({
+                                   messageDate,
+                                   headerText,
+                                   infoType,
+                                   infoDate,
+                                   buttonText,
+                                   data,
+                                   type,
+                                   colorBackground,
+                                   noOfAttributes,
+                                   showBadge,
+                                   institutionalName,
+                                   imageUrl,
+                                   secondColorBackground,
+                                   payTokenValue,
+                                   repeatable,
+                                   navigation,
+                                   acceptClaimOffer,
+                                   reTrySendProof,
+                                   deleteHistoryEvent,
+                                   denyProofRequest,
+                                   sendInvitationResponse,
+                                   deleteConnectionAction,
+                                 }: ConnectionCardProps) => {
+  const updateAndShowModal = useCallback(() => {
     if (
-      event.action === SEND_CLAIM_REQUEST_FAIL ||
-      event.action === PAID_CREDENTIAL_REQUEST_FAIL
+      type === SEND_CLAIM_REQUEST_FAIL ||
+      type === PAID_CREDENTIAL_REQUEST_FAIL
     ) {
-      this.props.acceptClaimOffer(
-        event.originalPayload.uid,
-        event.originalPayload.remoteDid
+      acceptClaimOffer(
+        data.originalPayload.uid,
+        data.originalPayload.remoteDid,
       )
-      return
-    }
-
-    if (event.action === ERROR_SEND_PROOF) {
-      this.props.reTrySendProof(
-        event.originalPayload.selfAttestedAttributes,
-        event.originalPayload
+    } else if (type === ERROR_SEND_PROOF) {
+      reTrySendProof(
+        data.originalPayload.selfAttestedAttributes,
+        data.originalPayload,
       )
-      return
-    }
-
-    if (event.action === DENY_PROOF_REQUEST_FAIL) {
-      this.props.denyProofRequest(event.originalPayload.uid)
-      return
-    }
-
-    if (event.action === CONNECTION_FAIL) {
-      this.props.sendInvitationResponse({
+    } else if (type === DENY_PROOF_REQUEST_FAIL) {
+      denyProofRequest(data.originalPayload.uid)
+    } else if (type === CONNECTION_FAIL) {
+      sendInvitationResponse({
         response: ResponseType.accepted,
-        senderDID: event.remoteDid,
+        senderDID: data.remoteDid,
       })
-      return
-    }
-
-    if (this.props.proof) {
-      this.props.navigation.navigate(modalContentProofShared, {
-        uid: this.props.uid,
-        data: this.props.data,
-        claimMap: this.props.claimMap,
+    } else if (type === 'SHARED') {
+      navigation.navigate(modalContentProofShared, {
+        data,
+        colorBackground,
+      })
+    } else if (type === 'RECEIVED') {
+      navigation.navigate(modalScreenRoute, {
+        data,
+        imageUrl,
+        institutionalName,
+        colorBackground,
+        secondColorBackground,
       })
     } else {
-      this.props.navigation.navigate(modalScreenRoute, {
-        data: this.props.data,
-        imageUrl: this.props.imageUrl,
-        institutionalName: this.props.institutionalName,
-        colorBackground: this.props.colorBackground,
-        secondColorBackground: this.props.secondColorBackground,
-      })
+      return null
     }
-  }
+  }, [data, type])
 
-  render() {
-    const canDelete = reTryActions.includes(this.props.data.action)
-
-    return (
-      <View style={styles.container}>
-        <Text style={styles.messageDate}>{this.props.messageDate}</Text>
-        <View style={styles.innerWrapper}>
-          {this.props.payTokenValue && (
-            <CredentialPriceInfo
-              isPaid={true}
-              price={this.props.payTokenValue}
-            />
-          )}
-          <View style={styles.innerWrapperPadding}>
-            <View style={styles.top}>
-              <View
-                style={[
-                  styles.badge,
-                  { display: this.props.showBadge ? 'flex' : 'none' },
-                ]}
-              >
-                <View style={styles.iconWrapper}>
-                  <SvgCustomIcon
-                    name="CheckmarkBadge"
-                    fill={colors.cmGray1}
-                    width={moderateScale(22)}
-                    height={moderateScale(33)}
-                  />
-                </View>
-              </View>
-              <View style={styles.headerWrapper}>
-                <View style={styles.header}>
-                  <ExpandableText
-                    text={this.props.headerText}
-                    style={styles.headerText}
-                    lines={1}
-                  />
-                </View>
-                <View style={styles.infoWrapper}>
-                  <Text style={styles.infoType}>{this.props.infoType}</Text>
-                  <Text style={styles.infoDate}>{this.props.infoDate}</Text>
-                </View>
-              </View>
-            </View>
-
-            <View style={styles.bottom}>
-              {!!this.props.noOfAttributes && (
-                <View style={styles.attributesWrapper}>
-                  <Text style={styles.attributesText}>
-                    {this.props.noOfAttributes}
-                  </Text>
-                  <Text style={styles.attributesText}> Attributes</Text>
-                </View>
-              )}
-              <View style={styles.button}>
-                {(!!this.props.noOfAttributes || this.props.repeatable) && (
-                  <TouchableOpacity onPress={this.updateAndShowModal}>
-                    <Text
-                      style={[
-                        styles.buttonText,
-                        { color: this.props.colorBackground },
-                      ]}
-                    >
-                      {this.props.buttonText}
-                    </Text>
-                  </TouchableOpacity>
-                )}
-                {canDelete && (
-                  <Text
-                    style={[
-                      styles.buttonText,
-                      { color: this.props.colorBackground },
-                    ]}
-                    onPress={this.onDelete}
-                  >
-                    DELETE
-                  </Text>
-                )}
-              </View>
-            </View>
-          </View>
-        </View>
-        <View style={styles.helperView} />
-      </View>
-    )
-  }
-
-  onDelete = () => {
-    const { data: event } = this.props
-    if (event.action === CONNECTION_FAIL) {
-      this.props.deleteConnectionAction(event.remoteDid)
-      this.props.navigation.navigate(connectionsDrawerRoute)
+  const onDelete = useCallback(() => {
+    if (type === CONNECTION_FAIL) {
+      deleteConnectionAction(data.remoteDid)
+      navigation.navigate(connectionsDrawerRoute)
       return
     }
 
     LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
-    this.props.deleteHistoryEvent(this.props.data)
-  }
+    deleteHistoryEvent(data)
+  }, [data, type])
+
+  const canDelete = useMemo(() => reTryActions.includes(data.action), [data])
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.messageDate}>{messageDate}</Text>
+      <View style={styles.innerWrapper}>
+        {payTokenValue && (
+          <CredentialPriceInfo
+            isPaid={true}
+            price={payTokenValue}
+          />
+        )}
+        <View style={styles.innerWrapperPadding}>
+          <View style={styles.top}>
+            <View
+              style={[
+                styles.badge,
+                { display: showBadge ? 'flex' : 'none' },
+              ]}
+            >
+              <View style={styles.iconWrapper}>
+                <SvgCustomIcon
+                  name="CheckmarkBadge"
+                  fill={colors.gray1}
+                  width={moderateScale(22)}
+                  height={moderateScale(33)}
+                />
+              </View>
+            </View>
+            <View style={styles.headerWrapper}>
+              <View style={styles.header}>
+                <ExpandableText
+                  text={headerText}
+                  style={styles.headerText}
+                  lines={1}
+                />
+              </View>
+              <View style={styles.infoWrapper}>
+                <Text style={styles.infoType}>{infoType}</Text>
+                <Text style={styles.infoDate}>{infoDate}</Text>
+              </View>
+            </View>
+          </View>
+
+          <View style={styles.bottom}>
+            {!!noOfAttributes && (
+              <View style={styles.attributesWrapper}>
+                <Text style={styles.attributesText}>
+                  {noOfAttributes}
+                </Text>
+                <Text style={styles.attributesText}> Attributes</Text>
+              </View>
+            )}
+            <View style={styles.button}>
+              {(!!noOfAttributes || repeatable) && (
+                <TouchableOpacity onPress={updateAndShowModal}>
+                  <Text
+                    style={[
+                      styles.buttonText,
+                      { color: colorBackground },
+                    ]}
+                  >
+                    {buttonText}
+                  </Text>
+                </TouchableOpacity>
+              )}
+              {canDelete && (
+                <Text
+                  style={[
+                    styles.buttonText,
+                    { color: colorBackground },
+                  ]}
+                  onPress={onDelete}
+                >
+                  DELETE
+                </Text>
+              )}
+            </View>
+          </View>
+        </View>
+      </View>
+      <View style={styles.helperView}/>
+    </View>
+  )
 }
 
 const mapDispatchToProps = (dispatch) =>
@@ -206,12 +232,12 @@ const mapDispatchToProps = (dispatch) =>
       sendInvitationResponse,
       deleteConnectionAction,
     },
-    dispatch
+    dispatch,
   )
 
 export const ConnectionCard = connect(
   null,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(ConnectionCardComponent)
 
 const styles = StyleSheet.create({
@@ -228,9 +254,9 @@ const styles = StyleSheet.create({
   },
   innerWrapper: {
     marginTop: moderateScale(15),
-    borderBottomColor: colors.cmGray4,
-    backgroundColor: colors.cmWhite,
-    shadowColor: colors.cmBlack,
+    borderBottomColor: colors.gray4,
+    backgroundColor: colors.white,
+    shadowColor: colors.black,
     shadowOpacity: 0.2,
     shadowRadius: 7,
     shadowOffset: {
@@ -245,7 +271,7 @@ const styles = StyleSheet.create({
     padding: moderateScale(15),
   },
   messageDate: {
-    color: colors.cmGray2,
+    color: colors.gray2,
     fontSize: moderateScale(fontSizes.size9),
     textAlign: 'left',
     fontFamily: fontFamily,
@@ -254,16 +280,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'stretch',
     paddingBottom: moderateScale(15),
-    borderBottomColor: colors.cmGray3,
+    borderBottomColor: colors.gray3,
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
   badge: {
     height: moderateScale(38),
     width: moderateScale(35),
-  },
-  badgeImage: {
-    width: moderateScale(23),
-    height: moderateScale(34),
   },
   headerWrapper: {
     flex: 1,
@@ -275,7 +297,7 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     fontSize: moderateScale(fontSizes.size7),
     fontWeight: '700',
-    color: colors.cmGray1,
+    color: colors.gray1,
     fontFamily: fontFamily,
   },
   infoWrapper: {
@@ -288,7 +310,7 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     fontSize: moderateScale(fontSizes.size9),
     fontWeight: '500',
-    color: colors.cmGray2,
+    color: colors.gray2,
     flex: 1,
     fontFamily: fontFamily,
   },
@@ -296,13 +318,13 @@ const styles = StyleSheet.create({
     textAlign: 'right',
     fontSize: moderateScale(fontSizes.size9),
     fontWeight: '500',
-    color: colors.cmGray1,
+    color: colors.gray1,
     fontFamily: fontFamily,
   },
   bottom: {
     width: '100%',
     paddingTop: moderateScale(15),
-    backgroundColor: colors.cmWhite,
+    backgroundColor: colors.white,
   },
   attributesWrapper: {
     flexDirection: 'row',
@@ -312,7 +334,7 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     fontSize: moderateScale(fontSizes.size7),
     fontWeight: '400',
-    color: colors.cmGray1,
+    color: colors.gray1,
     fontFamily: fontFamily,
   },
   button: {
@@ -331,7 +353,7 @@ const styles = StyleSheet.create({
   },
   helperView: {
     borderBottomWidth: 1,
-    borderBottomColor: colors.cmGray5,
+    borderBottomColor: colors.gray5,
     width: '100%',
     paddingTop: moderateScale(15),
   },

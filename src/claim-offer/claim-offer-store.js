@@ -79,8 +79,6 @@ import {
 } from '../bridge/react-native-cxs/RNCxs'
 import { CLAIM_STORAGE_FAIL, CLAIM_STORAGE_SUCCESS } from '../claim/type-claim'
 import { CLAIM_STORAGE_ERROR } from '../services/error/error-code'
-import { MESSAGE_TYPE } from '../api/api-constants'
-import type { ApiClaimRequest, EdgeClaimRequest } from '../api/type-api'
 import type { Connection } from '../store/type-connection-store'
 import { RESET } from '../common/type-common'
 import { secureSet, secureDelete, getHydrationItem } from '../services/storage'
@@ -105,7 +103,7 @@ import {
   SCHEMA_NOT_FOUND_MESSAGE,
 } from '../bridge/react-native-cxs/error-cxs'
 import Snackbar from 'react-native-snackbar'
-import { venetianRed, white } from '../common/styles'
+import { colors, venetianRed } from '../common/styles/constant'
 import { checkProtocolStatus } from '../store/protocol-status'
 
 const claimOfferInitialState = {
@@ -235,25 +233,6 @@ export const deleteOutOfBandClaimOffer = (uid: string) => ({
   uid,
 })
 
-export function convertClaimRequestToEdgeClaimRequest(
-  claimRequest: ApiClaimRequest
-): EdgeClaimRequest {
-  const { blinded_ms, schema_seq_no, issuer_did } = claimRequest
-
-  return {
-    blinded_ms,
-    issuer_did,
-    schema_seq_no,
-    msg_type: MESSAGE_TYPE.CLAIM_REQUEST,
-    // hard coded version as of now, update once versioning is implemented
-    version: '0.1',
-    to_did: claimRequest.remoteDid,
-    from_did: claimRequest.userPairwiseDid,
-    tid: '1',
-    mid: '1',
-  }
-}
-
 export function* denyClaimOfferSaga(
   action: ClaimOfferDenyAction
 ): Generator<*, *, *> {
@@ -311,7 +290,7 @@ export function* denyClaimOfferSaga(
         text: 'Failed to reject Credential Offer.',
         duration: Snackbar.LENGTH_LONG,
         backgroundColor: venetianRed,
-        textColor: white,
+        textColor: colors.white,
       })
     }
   }
@@ -419,7 +398,7 @@ export function* claimOfferAccepted(
           text: text,
           duration: Snackbar.LENGTH_LONG,
           backgroundColor: venetianRed,
-          textColor: white,
+          textColor: colors.white,
         })
       }
 

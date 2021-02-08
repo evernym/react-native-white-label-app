@@ -1,78 +1,60 @@
 // @flow
 import React, { useCallback } from 'react'
 import { View, StyleSheet, StatusBar, ScrollView } from 'react-native'
-import { connect } from 'react-redux'
-
-import type { Store } from '../../store/type-store'
-import type { ClaimProofNavigation } from '../../claim-offer/type-claim-offer'
+import { useSelector } from 'react-redux'
 
 import { CustomListProofRequest } from '../../components'
 import { ModalHeader } from './modal-header'
 import { ModalButton } from '../../components/connection-details/modal-button'
-import {
-  getConnectionLogoUrl,
-  getConnectionTheme,
-} from '../../store/store-selector'
+import { getClaimMap } from '../../store/store-selector'
 import { modalContentProofShared } from '../../common/route-constants'
 import { moderateScale } from 'react-native-size-matters'
 import { colors } from '../../common/styles/constant'
 import { ModalHeaderBar } from '../../components/modal-header-bar/modal-header-bar'
+import type { ReactNavigation } from '../../common/type-common'
 
-// TODO: Fix any type
-const ProofRequestModal = (props: any) => {
+type ProofRequestModalProps = {} & ReactNavigation
+
+const ProofRequestModal = ({
+                             navigation,
+                             route,
+                           }: ProofRequestModalProps) => {
+  const { data, colorBackground } = route.params
+
+  const claimMap = useSelector(getClaimMap)
+
   const hideModal = useCallback(() => {
-    props.navigation.goBack(null)
+    navigation.goBack(null)
   }, [])
-
-  const { data, claimMap } = props.route.params
 
   return (
     <View style={styles.modalWrapper}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <StatusBar backgroundColor={colors.cmBlack} barStyle={'light-content'}/>
+        <StatusBar backgroundColor={colors.black} barStyle={'light-content'}/>
         <ModalHeader
-          institutionalName={props.name}
-          credentialName={props.data.name}
+          institutionalName={data.senderName}
+          credentialName={data.name}
           credentialText={'You shared this information'}
-          imageUrl={props.logoUrl}
-          colorBackground={props.claimThemePrimary}
+          imageUrl={data.senderLogoUrl}
+          colorBackground={colorBackground}
         />
         <View style={styles.outerModalWrapper}>
           <View style={styles.innerModalWrapper}>
-            <CustomListProofRequest items={data} claimMap={claimMap}/>
+            <CustomListProofRequest items={data.data} claimMap={claimMap}/>
           </View>
         </View>
       </ScrollView>
       <ModalButton
         onClose={hideModal}
-        colorBackground={props.claimThemePrimary}
+        colorBackground={colorBackground}
       />
     </View>
   )
 }
 
-const mapStateToProps = (state: Store, props: ClaimProofNavigation) => {
-  const { proofRequest } = state
-  const { uid } = props.route.params
-  const proofRequestData = proofRequest[uid] || {}
-  const { data, requester = {}, remotePairwiseDID } = proofRequestData
-  const { name } = requester
-  const logoUrl = getConnectionLogoUrl(state, remotePairwiseDID)
-  const themeForLogo = getConnectionTheme(state, logoUrl)
-
-  return {
-    claimThemePrimary: themeForLogo.primary,
-    data,
-    logoUrl,
-    name,
-    uid,
-    claimMap: state.claim.claimMap,
-  }
-}
-
 export const proofScreen = {
   routeName: modalContentProofShared,
-  screen: connect(mapStateToProps, null)(ProofRequestModal),
+  screen: ProofRequestModal,
 }
 
 proofScreen.screen.navigationOptions = ({
@@ -84,7 +66,7 @@ proofScreen.screen.navigationOptions = ({
     marginRight: '2.5%',
     marginBottom: '4%',
     borderRadius: 10,
-    backgroundColor: colors.cmWhite,
+    backgroundColor: colors.white,
   },
   cardOverlay: () => (
     <ModalHeaderBar
@@ -107,7 +89,7 @@ const styles = StyleSheet.create({
   },
   innerModalWrapper: {
     flex: 1,
-    backgroundColor: colors.cmWhite,
+    backgroundColor: colors.white,
     paddingTop: moderateScale(5),
   },
 })

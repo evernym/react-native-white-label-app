@@ -4,11 +4,10 @@ import { StyleSheet, Platform } from 'react-native'
 
 import {
   color,
-  font,
   OFFSET_1X,
   OFFSET_3X,
   OFFSET_2X,
-  OFFSET_9X,
+  OFFSET_9X, fontSizes as fonts,
 } from '../../common/styles/constant'
 
 // TODO:KS Move this file to common/styles
@@ -54,7 +53,7 @@ export const tertiaryHeaderStyles = StyleSheet.create({
   title: {
     alignSelf: 'center',
     textAlign: 'center',
-    fontSize: font.size.M,
+    fontSize: fonts.size4,
     fontWeight: '600',
     color: color.bg.tertiary.font.tertiary,
   },

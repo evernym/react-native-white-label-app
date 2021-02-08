@@ -3,6 +3,9 @@ import type { ReactNavigation } from '../common/type-common'
 import type { CustomError } from '../common/type-common'
 import type { RestoreStore, SaveToAppDirectory } from '../restore/type-restore'
 
+// $FlowExpectedError[cannot-resolve-module] external file
+import { APP_NAME } from '../../../../../app/evernym-sdk/app'
+
 export type ReactNavigationBackup = {
   navigation: {
     setParams: any,
@@ -225,7 +228,7 @@ export const HYDRATE_HAS_VERIFIED_RECOVERY_PHRASE =
 
 export const HYDRATE_BACKUP_FAILURE = 'HYDRATE_BACKUP_FAILURE'
 export const PROMPT_WALLET_BACKUP_BANNER = 'PROMPT_WALLET_BACKUP_BANNER'
-export const WALLET_FILE_NAME = 'ConnectMe'
+export const WALLET_FILE_NAME = APP_NAME
 
 // JY
 export const CLOUD_BACKUP_IDLE = 'CLOUD_BACKUP_IDLE'

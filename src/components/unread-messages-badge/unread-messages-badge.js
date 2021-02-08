@@ -50,7 +50,7 @@ export const unreadMessageContainerCommonStyle = {
   width: moderateScale(22),
   height: moderateScale(22),
   borderRadius: moderateScale(22) / 2,
-  backgroundColor: colors.cmGreen1,
+  backgroundColor: colors.main,
   alignItems: 'center',
   justifyContent: 'center',
 }
@@ -67,6 +67,6 @@ const styles = StyleSheet.create({
     fontFamily: fontFamily,
     fontSize: moderateScale(14),
     fontWeight: '500',
-    color: colors.cmWhite,
+    color: colors.white,
   },
 })

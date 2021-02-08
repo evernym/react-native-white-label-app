@@ -1,7 +1,7 @@
 // @flow
 import React from 'react'
 import { Text, Animated, StyleSheet } from 'react-native'
-import { color, font } from '../common/styles/constant'
+import { color, fontFamily, fontSizes as fonts } from '../common/styles/constant'
 import debounce from 'lodash.debounce'
 import type { GenericObject } from '../common/type-common'
 
@@ -213,31 +213,31 @@ export default CustomText
 //TODO h should start with h1 to h4
 export const styles = StyleSheet.create({
   h3: {
-    fontSize: font.size.L,
+    fontSize: fonts.size0,
   },
   h3a: {
-    fontSize: font.size.L1,
+    fontSize: fonts.size1,
   },
   h3b: {
-    fontSize: font.size.ML1,
+    fontSize: fonts.size2,
   },
   h4a: {
-    fontSize: font.size.M1,
+    fontSize: fonts.size4,
   },
   h4b: {
-    fontSize: font.size.ML2,
+    fontSize: fonts.size1,
   },
   h4: {
-    fontSize: font.size.ML,
+    fontSize: fonts.size3,
   },
   h5: {
-    fontSize: font.size.M,
+    fontSize: fonts.size4,
   },
   h6: {
-    fontSize: font.size.S,
+    fontSize: fonts.size5,
   },
   h7: {
-    fontSize: font.size.XS,
+    fontSize: fonts.size8,
   },
   medium: {
     fontWeight: '500',
@@ -292,10 +292,6 @@ export const styles = StyleSheet.create({
     color: color.bg.tertiary.font.seventh,
     backgroundColor: color.bg.tertiary.color,
   },
-  septenaryBgPrimary: {
-    color: color.bg.tertiary.font.primary,
-    backgroundColor: color.bg.seventh.color,
-  },
   transparentBg: {
     backgroundColor: 'transparent',
   },
@@ -313,7 +309,7 @@ export const styles = StyleSheet.create({
     color: color.bg.primary.color,
   },
   fontLato: {
-    fontFamily: font.family,
+    fontFamily: fontFamily,
   },
   fullWidth: {
     width: '100%',

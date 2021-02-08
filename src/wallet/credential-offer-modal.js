@@ -39,7 +39,7 @@ export default class CredentialOfferModal extends PureComponent<
     } = this.props
     return (
       <Modal
-        backdropColor={colors.cmGray5}
+        backdropColor={colors.gray5}
         isVisible={
           credentialOfferModalStatus !== CREDENTIAL_OFFER_MODAL_STATUS.NONE
         }
@@ -91,7 +91,7 @@ export default class CredentialOfferModal extends PureComponent<
                 fifth
                 onPress={this.props.onClose}
                 title={'Continue'}
-                textStyle={{ fontWeight: 'bold', color: colors.cmGreen1 }}
+                textStyle={{ fontWeight: 'bold', color: colors.main }}
               />
             </CustomView>
           )}
@@ -192,11 +192,11 @@ const styles = StyleSheet.create({
   innerContainer: {
     ...Platform.select({
       ios: {
-        borderBottomColor: colors.cmGray1,
+        borderBottomColor: colors.gray1,
         borderBottomWidth: StyleSheet.hairlineWidth,
       },
       android: {
-        borderBottomColor: colors.cmGray5,
+        borderBottomColor: colors.gray5,
         borderBottomWidth: 1,
       },
     }),
@@ -206,6 +206,6 @@ const styles = StyleSheet.create({
     marginBottom: moderateScale(5),
   },
   fontBlack: {
-    color: colors.cmGray2,
+    color: colors.gray2,
   },
 })

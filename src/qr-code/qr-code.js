@@ -484,7 +484,7 @@ export class QRCodeScannerScreen extends Component<
           // we already have accepted that offer
           Snackbar.show({
             text: "The credential offer has already been accepted.",
-            backgroundColor: colors.cmRed,
+            backgroundColor: colors.red,
             duration: Snackbar.LENGTH_LONG,
           })
 
@@ -537,7 +537,7 @@ export class QRCodeScannerScreen extends Component<
           // we already have accepted that proof request
           Snackbar.show({
             text: "The proof request has already been accepted.",
-            backgroundColor: colors.cmRed,
+            backgroundColor: colors.red,
             duration: Snackbar.LENGTH_LONG,
           })
 

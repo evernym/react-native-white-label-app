@@ -3,7 +3,7 @@ import React from 'react'
 import { StyleSheet, Image, View } from 'react-native'
 import { CustomView } from './layout/custom-view'
 import type { GenericObject } from '../common/type-common'
-import { white } from '../common/styles'
+import { colors } from '../common/styles'
 
 const empty = []
 
@@ -138,6 +138,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.07)',
   },
   backgroundWhite: {
-    backgroundColor: white,
+    backgroundColor: colors.white,
   },
 })

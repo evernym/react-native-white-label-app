@@ -31,26 +31,16 @@ exports[`<PinCodeDigit /> when digit is entered 1`] = `
     }
   }
 >
-  <Text
-    allowFontScaling={false}
+  <View
     style={
-      Array [
-        Object {
-          "color": "#777777",
-          "fontSize": 26,
-        },
-        undefined,
-        Object {
-          "fontFamily": "Material Icons",
-          "fontStyle": "normal",
-          "fontWeight": "normal",
-        },
-        Object {},
-      ]
+      Object {
+        "backgroundColor": "#777777",
+        "borderRadius": 20,
+        "height": 26,
+        "width": 26,
+      }
     }
-  >
-    
-  </Text>
+  />
 </View>
 `;
 
@@ -84,25 +74,15 @@ exports[`<PinCodeDigit /> when digit is not entered 1`] = `
     }
   }
 >
-  <Text
-    allowFontScaling={false}
+  <View
     style={
-      Array [
-        Object {
-          "color": "#EAEAEA",
-          "fontSize": 26,
-        },
-        undefined,
-        Object {
-          "fontFamily": "Material Icons",
-          "fontStyle": "normal",
-          "fontWeight": "normal",
-        },
-        Object {},
-      ]
+      Object {
+        "backgroundColor": "#EAEAEA",
+        "borderRadius": 20,
+        "height": 26,
+        "width": 26,
+      }
     }
-  >
-    
-  </Text>
+  />
 </View>
 `;

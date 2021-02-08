@@ -4,8 +4,8 @@ import { TouchableOpacity, Text, View, Image, StyleSheet } from 'react-native'
 import { isiPhone5 } from '../../common/styles'
 import {
   colors,
-  font,
   fontFamily,
+  fontSizes as fonts,
   fontSizes,
 } from '../../common/styles/constant'
 import { scale, moderateScale } from 'react-native-size-matters'
@@ -49,7 +49,7 @@ const NewBannerCardComponent = (props: NewBannerCardProps) => {
               <DefaultLogo
                 text={props.issuerName[0]}
                 size={moderateScale(34, 0.15)}
-                fontSize={isiPhone5 ? font.size.M : font.size.ML}
+                fontSize={isiPhone5 ? fonts.size4 : fonts.size3}
               />
             )}
           </View>
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
   rowFront: {
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: colors.cmWhite,
+    backgroundColor: colors.white,
     marginLeft: moderateScale(7, 0.1),
     marginRight: moderateScale(7, 0.1),
     marginTop: moderateScale(7, 0.1),
@@ -105,16 +105,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: colors.cmWhite,
+    backgroundColor: colors.white,
     marginLeft: moderateScale(7, 0.1),
     marginRight: moderateScale(7, 0.1),
     marginTop: moderateScale(7, 0.1),
   },
   cardContainer: {
     flexDirection: 'row',
-    backgroundColor: colors.cmGreen3,
+    backgroundColor: colors.secondary,
     borderWidth: 1,
-    borderColor: colors.cmGreen1,
+    borderColor: colors.main,
     height: moderateScale(70, 0.12),
     borderRadius: 8,
     alignItems: 'center',
@@ -147,14 +147,14 @@ const styles = StyleSheet.create({
     fontFamily: fontFamily,
     fontSize: moderateScale(fontSizes.size5, 0.1),
     fontWeight: 'bold',
-    color: colors.cmGray1,
+    color: colors.gray1,
     marginBottom: moderateScale(3, 0.1),
   },
   newMessageText: {
     fontFamily: fontFamily,
     fontSize: moderateScale(fontSizes.size8, 0.1),
     fontWeight: 'bold',
-    color: colors.cmGray1,
+    color: colors.gray1,
     marginTop: moderateScale(3, 0.1),
   },
   issuerLogo: {
@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     fontSize: moderateScale(fontSizes.size9, 0.1),
     fontStyle: 'italic',
-    color: colors.cmGray1,
+    color: colors.gray1,
     marginTop: moderateScale(8, 0.1),
     marginRight: moderateScale(8, 0.1),
   },
@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
     width: moderateScale(34, 0.15),
     height: moderateScale(34, 0.15),
     borderRadius: moderateScale(34, 0.15) / 2,
-    backgroundColor: colors.cmGray2,
+    backgroundColor: colors.gray2,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
     fontFamily: fontFamily,
     fontSize: moderateScale(fontSizes.size4, 0.1),
     fontWeight: 'bold',
-    color: colors.cmWhite,
+    color: colors.white,
   },
   deleteButton: {
     alignItems: 'center',
@@ -195,10 +195,10 @@ const styles = StyleSheet.create({
     width: moderateScale(75, 0.12),
     height: moderateScale(70, 0.12),
     borderRadius: 8,
-    backgroundColor: colors.cmRed,
+    backgroundColor: colors.red,
   },
   deleteButtonText: {
-    color: colors.cmWhite,
+    color: colors.white,
     alignItems: 'center',
     fontFamily: fontFamily,
     fontSize: scale(14),

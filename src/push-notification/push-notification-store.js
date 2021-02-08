@@ -1,5 +1,7 @@
 // @flow
-import messaging from '@react-native-firebase/messaging'
+import messaging, {
+  FirebaseMessagingTypes,
+} from '@react-native-firebase/messaging'
 import {
   call,
   all,
@@ -8,7 +10,9 @@ import {
   take,
   select,
   put,
+  race,
 } from 'redux-saga/effects'
+import delay from '@redux-saga/delay-p'
 import { MESSAGE_TYPE } from '../api/api-constants'
 import { captureError } from '../services/error/error-handler'
 import {
@@ -110,6 +114,8 @@ import { connectionHistoryBackedUp } from '../connection-history/connection-hist
 import RNFetchBlob from 'rn-fetch-blob'
 import { showInAppNotification } from '../in-app-notification/in-app-notification-actions'
 import { ATTRIBUTE_TYPE } from '../proof-request/type-proof-request'
+import { flattenAsync } from '../common/flatten-async'
+import { Platform } from 'react-native'
 
 const blackListedRoute = {
   [proofRequestRoute]: proofRequestRoute,
@@ -121,6 +127,7 @@ const blackListedRoute = {
   [lockEnterFingerprintRoute]: lockEnterFingerprintRoute,
   [lockAuthorizationHomeRoute]: lockAuthorizationHomeRoute,
   [invitationRoute]: invitationRoute,
+  [questionRoute]: questionRoute,
 }
 
 const initialState = {
@@ -217,7 +224,12 @@ export function convertProofRequestPushPayloadToAppProofRequest(
     ephemeralProofRequest,
     outofbandProofRequest,
   } = pushPayload
-  const { requested_attributes, name, version, requested_predicates } = proof_request_data
+  const {
+    requested_attributes,
+    name,
+    version,
+    requested_predicates,
+  } = proof_request_data
 
   const requestedAttributes = []
   Object.keys(requested_attributes).forEach((attributeKey) => {
@@ -251,7 +263,7 @@ export function convertProofRequestPushPayloadToAppProofRequest(
     }
   })
 
-  if (requested_predicates){
+  if (requested_predicates) {
     Object.keys(requested_predicates).forEach((predicateKey) => {
       let attribute = requested_predicates[predicateKey]
       if (attribute.name) {
@@ -302,11 +314,52 @@ export const allowPushNotifications = () => ({
 function* allowPushNotificationsSaga(): Generator<*, *, *> {
   const pushToken = yield call(safeGet, PUSH_COM_METHOD)
   if (!pushToken) {
-    const authorizationStatus = yield call(() =>
-      messaging().requestPermission()
+    const authorizationStatus: FirebaseMessagingTypes.AuthorizationStatus = yield call(
+      () => messaging().requestPermission()
     )
+    if (
+      Platform.OS === 'android' ||
+      [
+        messaging.AuthorizationStatus.AUTHORIZED,
+        messaging.AuthorizationStatus.PROVISIONAL,
+      ].includes(authorizationStatus)
+    ) {
+      // if user provides push notification permission
+      // then go ahead and get token from firebase
+      // if getting token from firebase takes more than 2 minute
+      // then cancel the task and return error
+      // race timeout and getFirebaseToken
+      const [
+        [notificationTokenError, notificationToken],
+        refreshedNotificationToken,
+        getTokenTimeout,
+      ] = yield race([
+        call(flattenAsync(() => messaging().getToken())),
+        call(onTokenRefresh),
+        call(delay, 120000),
+      ])
+      if (!notificationToken && !refreshedNotificationToken) {
+        console.log(
+          `PN-006::Failed to get notification token, ${
+            notificationTokenError || getTokenTimeout || ''
+          }`
+        )
+      } else {
+        // We might get notification token either from getToken, or from onRefresh
+        const fcmNotificationToken =
+          notificationToken || refreshedNotificationToken
+        if (fcmNotificationToken) {
+          yield put(updatePushToken(fcmNotificationToken))
+        }
+      }
+    }
+
     yield put(pushNotificationPermissionAction(!!authorizationStatus))
   }
+}
+
+function onTokenRefresh() {
+  return new Promise((resolve) => messaging().onTokenRefresh(resolve))
 }
 
 function* watchAllowPushNotification(): any {
@@ -357,11 +410,14 @@ export const saveNotificationOpenOptions = (
 export function* fetchAdditionalDataSaga(
   action: FetchAdditionalDataAction
 ): Generator<*, *, *> {
-  const { uid, type } = action.notificationPayload
+  const { uid, type, msgType, forDID } = action.notificationPayload
   const { notificationOpenOptions } = action
 
+  // Agency added new field `msgType` into push notification which should be used or go fallback to using `type`
+  const type_ = msgType || type || ''
+
   // NOTE: CLOUD-BACKUP wait for push notification after createWalletBackup
-  if (type === MESSAGE_TYPE.WALLET_BACKUP_READY) {
+  if (type_ === MESSAGE_TYPE.WALLET_BACKUP_READY) {
     try {
       // NOTE: CLOUD-BACKUP-STEP-2 get message
       const data = yield call(
@@ -375,7 +431,7 @@ export function* fetchAdditionalDataSaga(
       yield put(
         pushNotificationReceived({
           additionalData: message,
-          type,
+          type: type_,
           uid,
           remotePairwiseDID: 'NA',
           forDID: 'NA',
@@ -407,13 +463,13 @@ export function* fetchAdditionalDataSaga(
     }
   }
 
-  if (type === WALLET_BACKUP_FAILURE) {
+  if (type_ === WALLET_BACKUP_FAILURE) {
     yield put(
       pushNotificationReceived({
         pushNotifMsgText: action.notificationPayload.pushNotifMsgText,
         pushNotifMsgTitle: action.notificationPayload.pushNotifMsgTitle,
         uid,
-        type,
+        type: type_,
         remotePairwiseDID: 'NA',
         forDID: 'NA',
         additionalData: {},
@@ -430,7 +486,7 @@ export function* fetchAdditionalDataSaga(
   }
 
   // NOTE: CLOUD-BACKUP wait for push notification after backupWalletBackup
-  if (type === MESSAGE_TYPE.WALLET_BACKUP_ACK) {
+  if (type_ === MESSAGE_TYPE.WALLET_BACKUP_ACK) {
     try {
       //  NOTE: CLOUD-BACKUP-STEP-5
       const data = yield call(
@@ -443,7 +499,7 @@ export function* fetchAdditionalDataSaga(
       yield put(
         pushNotificationReceived({
           additionalData: message,
-          type,
+          type: type_,
           uid,
           remotePairwiseDID: 'NA',
           forDID: 'NA',
@@ -473,7 +529,7 @@ export function* fetchAdditionalDataSaga(
   // NotificationOpenOptions is used to identify which notification the user clicked on, which is used to open
   // the exact message.
   yield put(saveNotificationOpenOptions(notificationOpenOptions))
-  yield put(getUnacknowledgedMessages())
+  yield put(getUnacknowledgedMessages(uid, forDID))
 }
 
 export const updatePayloadToRelevantStoreAndRedirect = (
@@ -503,8 +559,8 @@ export const goToUIScreen = (
 
 function* watchUpdateRelevantPushPayloadStoreAndRedirect(): any {
   yield takeEvery(UPDATE_RELEVANT_PUSH_PAYLOAD_STORE_AND_REDIRECT, function* ({
-    notification,
-  }: updatePayloadToRelevantStoreAndRedirectAction) {
+                                                                                notification,
+                                                                              }: updatePayloadToRelevantStoreAndRedirectAction) {
     yield* updatePayloadToRelevantStoreSaga(notification)
     yield* redirectToRelevantScreen({ ...notification, uiType: null })
     const { forDID: pairwiseDID, uid } = notification

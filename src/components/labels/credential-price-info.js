@@ -30,7 +30,7 @@ const CredentialPriceInfo = ({
         }}
       >
         <SvgCustomIcon
-          fill={isPaid ? colors.cmGray2 : colors.cmWhite}
+          fill={isPaid ? colors.gray2 : colors.white}
           name="PaymentToken"
           height={isPaid ? '16' : '24'}
           width={isPaid ? '16' : '24'}
@@ -53,7 +53,7 @@ export default CredentialPriceInfo
 const styles = StyleSheet.create({
   priceContainer: {
     flexDirection: 'row',
-    backgroundColor: colors.cmOrange,
+    backgroundColor: colors.orange,
     maxWidth: '100%',
     justifyContent: 'space-between',
     borderTopLeftRadius: 7,
@@ -64,20 +64,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   paidContainer: {
-    backgroundColor: colors.cmGray5,
+    backgroundColor: colors.gray5,
     justifyContent: 'flex-start',
   },
   text: {
     fontSize: scale(14),
-    color: colors.cmWhite,
+    color: colors.white,
   },
   text1: {
     fontSize: scale(14),
-    color: colors.cmWhite,
+    color: colors.white,
   },
   paidText: {
     fontSize: scale(11),
-    color: colors.cmGray2,
+    color: colors.gray2,
     paddingRight: 5,
   },
   icon: {

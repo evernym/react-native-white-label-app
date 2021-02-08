@@ -2,9 +2,9 @@
 import React from 'react'
 
 import { TouchableOpacity } from 'react-native'
-import { grey } from '../../../common/styles'
 import SvgCustomIcon from '../../../components/svg-custom-icon'
 import { questionStyles } from '../../question-screen-style'
+import { colors } from '../../../common/styles'
 
 const CloseButton = (props: { onPress: () => void, icon: 'CloseIcon' }) => {
   return (
@@ -12,7 +12,7 @@ const CloseButton = (props: { onPress: () => void, icon: 'CloseIcon' }) => {
       style={questionStyles.closeButton}
       onPress={props.onPress}
     >
-      <SvgCustomIcon name={props.icon} fill={grey} height={20} width={20} />
+      <SvgCustomIcon name={props.icon} fill={colors.gray2} height={20} width={20} />
     </TouchableOpacity>
   )
 }

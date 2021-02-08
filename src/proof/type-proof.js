@@ -108,10 +108,6 @@ export type IndyRequestedAttributes = {
   +[attributeName: string]: [string, boolean, MatchingCredential],
 }
 
-export type IndyRequestedPredicates = {
-  +[predicateName: string]: [string, MatchingCredential],
-}
-
 export type VcxSelectedCredentials = {
   attrs?: {
     [attributeKey: string]: {

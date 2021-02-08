@@ -21,8 +21,7 @@ import type {
 import type { ConnectionStore } from './type-connection-store'
 import RNFetchBlob from 'rn-fetch-blob'
 import { Platform } from 'react-native'
-import { colors, whiteSmoke } from '../common/styles/constant'
-import memoize from 'lodash.memoize'
+import { colors } from '../common/styles/constant'
 import { CLAIM_OFFER_STATUS } from './../claim-offer/type-claim-offer'
 import { PROOF_REQUEST_STATUS } from './../proof-request/type-proof-request'
 import { QUESTION_STATUS } from '../question/type-question'
@@ -33,20 +32,15 @@ export const getConfig = (state: Store) => state.config
 
 export const getAgencyUrl = (state: Store) => state.config.agencyUrl
 
-export const getAgencyDID = (state: Store) => state.config.agencyDID
-
 export const getPoolConfig = (state: Store) => state.config.poolConfig
-
-export const getPaymentMethod = (state: Store) => state.config.paymentMethod
-
-export const getAgencyVerificationKey = (state: Store) =>
-  state.config.agencyVerificationKey
 
 export const getPushToken = (state: Store) => state.pushNotification.pushToken
 
 export const getAllInvitations = (state: Store) => state.invitation
 
 export const getAllConnection = (state: Store) => state.connections.data
+
+export const getConnectionHydrationState = (state: Store) => state.connections.hydrated
 
 export const getAllOneTimeConnection = (state: Store) =>
   state.connections.oneTimeConnections
@@ -57,7 +51,7 @@ export const getConnectionTheme = (state: Store, logoUrl: string) =>
 
 export const getConnectionColorTheme = (state: Store, remoteDid: string) => {
   const [connection] = getConnection(state, remoteDid)
-  return connection ? connection.colorTheme : colors.cmGreen2
+  return connection ? connection.colorTheme : colors.main
 }
 
 export const getErrorAlertsSwitchValue = (state: Store) =>
@@ -123,14 +117,7 @@ export const getConnection = (
 export const getConnectionsCount = (state: Store) =>
   Object.keys(state.connections.data || {}).length
 
-export const isDuplicateConnection = (state: Store, senderDID: string) => {
-  const [connection] = getConnection(state, senderDID)
-  return connection && (connection.isFetching || connection.isCompleted)
-}
-
 export const getHydrationState = (state: Store) => state.config.isHydrated
-
-export const getInitializedState = (state: Store) => state.config.isInitialized
 
 export const getClaimOffer = (state: Store, claimOfferId: string) =>
   state.claimOffer[claimOfferId]
@@ -313,9 +300,6 @@ export const getClaimForOffer = (state: Store, offer: ClaimOfferPayload) =>
 
 export const getCurrentScreen = (state: Store) => state.route.currentScreen
 
-export const getNotificationOpenOptions = (state: Store) =>
-  state.pushNotification.notificationOpenOptions
-
 export const getWalletBalance = (state: Store) =>
   state.wallet.walletBalance.data
 
@@ -325,15 +309,6 @@ export const getWalletAddresses = (state: Store) =>
 export const getTokenAmount = (state: Store) => state.wallet.payment.tokenAmount
 
 export const getWalletHistory = (state: Store) => state.wallet.walletHistory
-
-export const getStatusBarTheme = (state: Store) => {
-  const statusBarTheme =
-    state.connections !== undefined &&
-    state.connections.statusBarTheme != undefined
-      ? state.connections.statusBarTheme
-      : whiteSmoke
-  return statusBarTheme
-}
 
 export const getUserAvatarSource = (name: ?string) => {
   if (name) {
@@ -360,11 +335,7 @@ export const getVcxInitializationState = (state: Store) =>
 export const getVcxPoolInitializationState = (state: Store) =>
   state.config.vcxPoolInitializationState
 
-export const getIsLockEnabledState = (state: Store) => state.lock.isLockEnabled
 export const getIsAppLocked = (state: Store) => state.lock.isAppLocked
-
-export const getIsAlreadyInstalledState = (state: Store) =>
-  state.config.isAlreadyInstalled
 
 export const getClaimOffers = (state: Store) => state.claimOffer
 
@@ -432,10 +403,6 @@ export const getConnectionByUserDid = (state: Store, userDID: string) => {
 
 export const getOfflineStatus = (state: Store) => state.offline.offline
 
-export const getInvitations = (state: Store) => state.invitation
-
-export const getDeepLinkTokens = (state: Store) => state.deepLink.tokens
-
 export const getBackupPassphrase = (state: Store) => state.backup.passphrase
 
 export const getBackupStatus = (state: Store) => state.backup.status
@@ -448,27 +415,17 @@ export const getCloudBackupStatus = (state: Store) =>
 export const getCloudBackupPending = (state: Store) =>
   state.backup.cloudBackupPending
 
-export const getLastCloudBackup = (state: Store) =>
-  state.backup.lastSuccessfulCloudBackup
-
 export const getAutoCloudBackupEnabled = (state: Store) =>
   state.backup.autoCloudBackupEnabled
 
 export const getHasVerifiedRecoveryPhrase = (state: Store) =>
   state.backup.hasVerifiedRecoveryPhrase
 
-export const getLastBackup = (state: Store) => state.backup.lastSuccessfulBackup
-
 export const getBackupWalletPath = (state: Store) =>
   state.backup.backupWalletPath
 
-export const getEncryptedFileLocation = (state: Store) =>
-  state.backup.encryptedFileLocation
-
 export const getLogEncryptionStatus = (state: Store) =>
   state.sendlogs.encryptLogStatus
-
-export const getBackupShowBanner = (state: Store) => state.backup.showBanner
 
 export const getTaaAcceptedVersion = (state: Store) =>
   state.txnAuthorAgreement.taaAcceptedVersion
@@ -489,53 +446,35 @@ const addUidsWithStatusToConnections = (
 }
 
 //  getUnseenMessages should take a connection, and parse though claim store and proof requests for unseen messages and return a json object like bellow.
-export const getUnseenMessages = memoize(
-  (state: Store) => {
-    const { claimOffer, proofRequest, question } = state
-    let obj = {}
+export const getUnseenMessages = (state: Store) => {
+  const { claimOffer, proofRequest, question } = state
+  let obj = {}
 
-    addUidsWithStatusToConnections(
-      claimOffer,
-      CLAIM_OFFER_STATUS.RECEIVED,
-      obj,
-      (claimOfferMessage: ClaimOfferPayload) =>
-        claimOfferMessage.remotePairwiseDID
-    )
-    addUidsWithStatusToConnections(
-      proofRequest,
-      PROOF_REQUEST_STATUS.RECEIVED,
-      obj,
-      (proofRequestMessage: ProofRequestPayload) =>
-        proofRequestMessage.remotePairwiseDID
-    )
-    addUidsWithStatusToConnections(
-      question.data,
-      QUESTION_STATUS.RECEIVED,
-      obj,
-      (questionMessage: QuestionStoreMessage) =>
-        questionMessage.payload.from_did
-    )
-    return obj
-  },
-  ({ claimOffer, proofRequest, question }) => ({
-    ...claimOffer,
-    ...proofRequest,
-    ...question.data,
-  })
-)
-
-export const getLastSuccessfulBackupTimeStamp = (state: Store) =>
-  state.backup.lastSuccessfulBackup
+  addUidsWithStatusToConnections(
+    claimOffer,
+    CLAIM_OFFER_STATUS.RECEIVED,
+    obj,
+    (claimOfferMessage: ClaimOfferPayload) =>
+      claimOfferMessage.remotePairwiseDID
+  )
+  addUidsWithStatusToConnections(
+    proofRequest,
+    PROOF_REQUEST_STATUS.RECEIVED,
+    obj,
+    (proofRequestMessage: ProofRequestPayload) =>
+      proofRequestMessage.remotePairwiseDID
+  )
+  addUidsWithStatusToConnections(
+    question.data,
+    QUESTION_STATUS.RECEIVED,
+    obj,
+    (questionMessage: QuestionStoreMessage) =>
+      questionMessage.payload.from_did
+  )
+  return obj
+}
 
 export const getRestoreStatus = (state: Store) => state.restore.status
-
-export const getRestoreFileSize = (state: Store) =>
-  state.restore.restoreFile.fileSize
-
-export const getRouteCurrentScreen = (state: Store) => state.route.currentScreen
-
-export const getRestoreFilePath = (state: Store) =>
-  state.restore.restoreFile.uri
 
 export const getRestoreFileName = (state: Store) =>
   state.restore.restoreFile.fileName
@@ -546,12 +485,6 @@ export const getHistory = (state: Store) => state.history.data
 
 export const getPendingFetchAdditionalDataKey = (state: Store) =>
   state.pushNotification.pendingFetchAdditionalDataKey
-
-export const getPushNotifactionNotification = (state: Store) =>
-  state.pushNotification.notification
-
-export const getPushNotificationPermissionState = (state: Store) =>
-  state.pushNotification.isAllowed
 
 export const getProofData = (state: Store, proofRequestId: string) =>
   state.proof[proofRequestId] ? state.proof[proofRequestId].proofData : {}
@@ -630,8 +563,6 @@ export const getConnectionByProp = (
 export const getDIDFromFullyQualifiedDID = (did: string) =>
   did.split(':').slice(-1)[0]
 
-export const getPushNotificationStore = (state: Store) => state.pushNotification
-
 export const isNewConnection = (status: string, show?: boolean) => {
   if (
     (status === HISTORY_EVENT_STATUS.CLAIM_OFFER_RECEIVED ||
@@ -665,3 +596,7 @@ export const getNewMessagesCount = (state: Store) => {
 
   return numberOfNewMessages
 }
+
+export const getMessageDownloadStatus = (state: Store) => state.config.messageDownloadStatus
+export const getSnackError = (state: Store) => state.config.snackError
+

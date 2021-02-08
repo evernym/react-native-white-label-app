@@ -21,7 +21,7 @@ export async function validateEphemeralProofQrCode(
     null | { type: string, proofRequest: QrCodeEphemeralProofRequest }
   ]
 > {
-  // ConnectMe supports three types of data for ephemeral proof request
+  // MSDK supports three types of data for ephemeral proof request
   // 1. Url that returns an ephemeral proof request
   // 2. base64 encoded ephemeral proof request
   // 3. json formatted ephemeral proof request

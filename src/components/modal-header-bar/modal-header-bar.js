@@ -31,7 +31,7 @@ export const ModalHeaderBar = ({
           <SvgCustomIcon
             width={iconScale}
             height={iconScale}
-            fill={colors.cmWhite}
+            fill={colors.white}
             name={dismissIconType}
           />
         </TouchableOpacity>
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   headerTitle: {
-    color: 'white',
+    color: colors.white,
     fontSize: verticalScale(fontSizes.size3),
     fontFamily,
   },

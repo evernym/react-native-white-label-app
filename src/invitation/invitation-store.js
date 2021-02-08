@@ -24,7 +24,6 @@ import {
 } from './type-invitation'
 import { ResponseType } from '../components/request/type-request'
 import {
-  ERROR_INVITATION_ALREADY_ACCEPTED_MESSAGE,
   ERROR_INVITATION_RESPONSE_FAILED,
 } from '../api/api-constants'
 import {
@@ -91,14 +90,14 @@ import {
 } from '../claim-offer/claim-offer-store'
 import {
   CONNECTION_ALREADY_EXISTS,
-  CLOUD_AGENT_UNAVAILABLE,
+  CLOUD_AGENT_UNAVAILABLE, CONNECTION_ALREADY_EXISTS_MESSAGE,
 } from '../bridge/react-native-cxs/error-cxs'
 import {
   acceptOutofbandPresentationRequest,
   outOfBandConnectionForPresentationEstablished,
 } from '../proof-request/proof-request-store'
 import Snackbar from 'react-native-snackbar'
-import { colors, venetianRed, white } from '../common/styles'
+import { colors, venetianRed } from '../common/styles'
 import { getHydrationItem, secureSet } from '../services/storage'
 import { INVITATIONS } from '../common'
 import { customLogger } from '../store/custom-logger'
@@ -351,18 +350,18 @@ export function* getConnectionColorTheme(
   senderLogoUrl: any
 ): Generator<*, *, *> {
   if (!senderLogoUrl) {
-    return colors.cmGreen2
+    return colors.main
   }
 
   try {
     const foundColors = yield call(ImageColors.getColors, senderLogoUrl, {
-      fallback: colors.cmGreen2,
+      fallback: colors.main,
     })
     return Platform.OS === 'android'
       ? pickAndroidColor(foundColors)
       : pickIosColor(foundColors)
   } catch (e) {
-    return colors.cmGreen2
+    return colors.main
   }
 }
 
@@ -520,8 +519,7 @@ export function* sendResponseOnAriesOutOfBandInvitationWithoutHandshake(
 export function* updateAriesConnectionState(
   identifier: string,
   vcxSerializedConnection: string,
-  // eslint-disable-next-line no-unused-vars
-  message: string // TODO: must be used since we replace connectionUpdateState
+  message: string,
 ): Generator<*, *, *> {
   const connection = yield select(getConnectionByUserDid, identifier)
 
@@ -542,7 +540,7 @@ export function* updateAriesConnectionState(
     )
 
     // we need to take serialized connection state again
-    // and update serialized state on connectme side
+    // and update serialized state on MSDK side
     const updateVcxSerializedConnection = yield call(
       serializeConnection,
       connectionHandle
@@ -588,7 +586,7 @@ export function* handleConnectionError(
     yield put(
       invitationFail(ERROR_INVITATION_ALREADY_ACCEPTED(e.message), senderDID)
     )
-    message = ERROR_INVITATION_ALREADY_ACCEPTED_MESSAGE
+    message = CONNECTION_ALREADY_EXISTS_MESSAGE
   } else {
     yield put(invitationFail(ERROR_INVITATION_CONNECT(e.message), senderDID))
     message = ERROR_INVITATION_RESPONSE_FAILED
@@ -598,7 +596,7 @@ export function* handleConnectionError(
     text: message,
     duration: Snackbar.LENGTH_LONG,
     backgroundColor: venetianRed,
-    textColor: white,
+    textColor: colors.white,
   })
 }
 

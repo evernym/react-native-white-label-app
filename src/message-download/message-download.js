@@ -97,7 +97,7 @@ function* triggerDownloadSaga(action: { type: string }): Generator<*, *, *> {
   // We are waiting for an arbitrary number because sender might take some time
   // to generate a response, or to send a new message.
 
-  // It might also happen that ConnectMe receives Push Notification
+  // It might also happen that MSDK receives Push Notification
   // in this 15 seconds window.
 
   // We need to race "timeout" and push notification's "fetch additional data"
