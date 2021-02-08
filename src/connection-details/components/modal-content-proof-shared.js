@@ -10,8 +10,11 @@ import { getClaimMap } from '../../store/store-selector'
 import { modalContentProofShared } from '../../common/route-constants'
 import { moderateScale } from 'react-native-size-matters'
 import { colors } from '../../common/styles/constant'
-import { ModalHeaderBar } from '../../components/modal-header-bar/modal-header-bar'
 import type { ReactNavigation } from '../../common/type-common'
+import { modalOptions } from '../utils/modalOptions'
+
+// $FlowExpectedError[cannot-resolve-module] external file
+import { HEADLINE, CustomSharedProofModal } from '../../../../../../app/evernym-sdk/proof-request'
 
 type ProofRequestModalProps = {} & ReactNavigation
 
@@ -52,30 +55,19 @@ const ProofRequestModal = ({
   )
 }
 
+const headline = HEADLINE || 'Proof Request'
+const screen = CustomSharedProofModal || ProofRequestModal
+const navigationOptions =
+  CustomSharedProofModal ?
+    null :
+    modalOptions(headline, 'Arrow')
+
 export const proofScreen = {
   routeName: modalContentProofShared,
-  screen: ProofRequestModal,
+  screen,
 }
 
-proofScreen.screen.navigationOptions = ({
-                                          navigation: { goBack, isFocused },
-                                        }) => ({
-  safeAreaInsets: { top: 85 },
-  cardStyle: {
-    marginLeft: '2.5%',
-    marginRight: '2.5%',
-    marginBottom: '4%',
-    borderRadius: 10,
-    backgroundColor: colors.white,
-  },
-  cardOverlay: () => (
-    <ModalHeaderBar
-      headerTitle={isFocused() ? 'Proof Request' : ''}
-      dismissIconType={isFocused() ? 'Arrow' : null}
-      onPress={() => goBack(null)}
-    />
-  ),
-})
+proofScreen.screen.navigationOptions = navigationOptions
 
 const styles = StyleSheet.create({
   modalWrapper: {

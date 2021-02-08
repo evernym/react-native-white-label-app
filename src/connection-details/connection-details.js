@@ -42,6 +42,11 @@ import { CONNECTION_FAIL } from '../store/type-connection-store'
 import { deleteConnectionAction, getConnections } from '../store/connections-store'
 import type { ConnectionHistoryEvent } from '../connection-history/type-connection-history'
 
+import {
+  CustomConnectionDetailsScreen,
+// $FlowExpectedError[cannot-resolve-module] external file
+} from '../../../../../app/evernym-sdk/connections'
+
 const keyExtractor = (item: Object) => item.timestamp
 
 const ConnectionDetails = ({
@@ -414,9 +419,11 @@ const mapDispatchToProps = (dispatch) =>
     dispatch,
   )
 
+const screen = CustomConnectionDetailsScreen || ConnectionDetails
+
 export const connectionHistoryScreen = {
   routeName: connectionHistRoute,
-  screen: connect(null, mapDispatchToProps)(ConnectionDetails),
+  screen: connect(null, mapDispatchToProps)(screen),
 }
 
 const styles = StyleSheet.create({

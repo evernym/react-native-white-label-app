@@ -12,3 +12,9 @@ export const ACCEPT_BUTTON_TEXT = null
 
 // ext which will be used for bottom (deny) button.
 export const DENY_BUTTON_TEXT = null
+
+// custom component to use for Credential Offer dialog rendering (instead of predefined one)
+export const CustomCredentialOfferModal = null
+
+// custom component to use for received Credential dialog rendering (instead of predefined one)
+export const CustomCredentialModal = null

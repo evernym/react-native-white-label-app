@@ -6,7 +6,6 @@ import { bindActionCreators } from 'redux'
 import QuestionDetails from './components/atoms/question-details'
 import QuestionScreenText from './components/atoms/question-screen-text'
 import QuestionSenderDetail from './components/atoms/question-sender-details'
-import { ModalHeaderBar } from '../components/modal-header-bar/modal-header-bar'
 import {
   QuestionError,
   QuestionLoader,
@@ -26,7 +25,6 @@ import type { Connection } from '../store/type-connection-store'
 
 import { CustomView } from '../components'
 import { homeDrawerRoute, homeRoute, questionRoute } from '../common/route-constants'
-import { colors } from '../common/styles/constant'
 import { QUESTION_STATUS } from './type-question'
 import {
   updateQuestionStatus,
@@ -39,6 +37,15 @@ import { getConnection } from '../store/store-selector'
 import { QuestionActions } from './components/question-screen-actions'
 import { checkIfAnimationToUse } from '../bridge/react-native-cxs/RNCxs'
 import { customLogger } from '../store/custom-logger'
+
+import {
+  HEADLINE,
+  CustomQuestionModal,
+// $FlowExpectedError[cannot-resolve-module] external file
+} from '../../../../../app/evernym-sdk/question-dialog'
+import { modalOptions } from '../connection-details/utils/modalOptions'
+
+const headline = HEADLINE || 'Question'
 
 export class Question extends Component<
   QuestionScreenProps,
@@ -308,27 +315,15 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   )
 
+const screen = CustomQuestionModal || Question
+const navigationOptions =
+  CustomQuestionModal ?
+    null :
+    modalOptions(headline, 'CloseIcon')
+
 export const questionScreen = {
   routeName: questionRoute,
-  screen: connect(mapStateToProps, mapDispatchToProps)(Question),
+  screen: connect(mapStateToProps, mapDispatchToProps)(screen),
 }
 
-questionScreen.screen.navigationOptions = ({
-                                             navigation: { goBack, isFocused },
-                                           }) => ({
-  safeAreaInsets: { top: 85 },
-  cardStyle: {
-    marginLeft: '2.5%',
-    marginRight: '2.5%',
-    marginBottom: '4%',
-    borderRadius: 10,
-    backgroundColor: colors.white,
-  },
-  cardOverlay: () => (
-    <ModalHeaderBar
-      headerTitle={isFocused() ? 'Question' : ''}
-      dismissIconType={isFocused() ? 'CloseIcon' : null}
-      onPress={() => goBack(null)}
-    />
-  ),
-})
+questionScreen.screen.navigationOptions = navigationOptions

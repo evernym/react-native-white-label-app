@@ -20,6 +20,8 @@ import { APP_NAME } from '../../../../../app/evernym-sdk/app'
 import {
   SETTINGS_OPTIONS,
   HEADLINE,
+  SHOW_CAMERA_BUTTON,
+  CustomSettingsScreen,
 // $FlowExpectedError[cannot-resolve-module] external file
 } from '../../../../../app/evernym-sdk/settings'
 // $FlowExpectedError[cannot-resolve-module] external file
@@ -88,6 +90,7 @@ import {
 import { sendLogsRoute } from '../common'
 
 const headline = HEADLINE || 'Settings'
+const showCameraButton = typeof SHOW_CAMERA_BUTTON === 'boolean' ? SHOW_CAMERA_BUTTON : true
 
 // Hate to put below logic for height and padding calculations here.
 // Ideally, these things should automatically adjusted by flex
@@ -823,9 +826,12 @@ export class Settings extends Component<SettingsProps, SettingsState> {
             </CustomView>
           </ScrollView>
         </View>
-        <CameraButton
-          onPress={() => this.props.navigation.navigate(qrCodeScannerTabRoute)}
-        />
+        {
+          showCameraButton &&
+          <CameraButton
+            onPress={() => this.props.navigation.navigate(qrCodeScannerTabRoute)}
+          />
+        }
       </Container>
     )
   }
@@ -867,8 +873,10 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   )
 
+const screen = CustomSettingsScreen || Settings
+
 export const SettingsScreen = withStatusBar()(
-  connect(mapStateToProps, mapDispatchToProps)(Settings)
+  connect(mapStateToProps, mapDispatchToProps)(screen)
 )
 
 const styles = StyleSheet.create({

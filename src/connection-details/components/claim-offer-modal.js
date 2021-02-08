@@ -16,7 +16,6 @@ import type { LedgerFeesStateEnum } from '../../ledger/components/ledger-fees/le
 
 import CredentialPriceInfo from '../../components/labels/credential-price-info'
 import { ModalContent } from './modal-content'
-import { ModalHeaderBar } from '../../components/modal-header-bar/modal-header-bar'
 import { ModalButtons } from '../../components/buttons/modal-buttons'
 import { newConnectionSeen } from '../../connection-history/connection-history-store'
 import { LedgerFees } from '../../ledger/components/ledger-fees/ledger-fees'
@@ -49,8 +48,10 @@ import {
   HEADLINE,
   ACCEPT_BUTTON_TEXT,
   DENY_BUTTON_TEXT,
+  CustomCredentialOfferModal,
   // $FlowExpectedError[cannot-resolve-module] external file
-} from '../../../../../../app/evernym-sdk/credential-offer-dialog'
+} from '../../../../../../app/evernym-sdk/credential-offer'
+import { modalOptions } from '../utils/modalOptions'
 
 const headline = HEADLINE || 'Credential Offer'
 
@@ -439,30 +440,18 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   )
 
+const screen = CustomCredentialOfferModal || ClaimOfferModal
+const navigationOptions =
+  CustomCredentialOfferModal ?
+    null :
+    modalOptions(headline, 'CloseIcon')
+
 export const claimOfferScreen = {
   routeName: claimOfferRoute,
-  screen: connect(mapStateToProps, mapDispatchToProps)(ClaimOfferModal),
+  screen: connect(mapStateToProps, mapDispatchToProps)(screen),
 }
 
-claimOfferScreen.screen.navigationOptions = ({
-  navigation: { goBack, isFocused },
-}) => ({
-  safeAreaInsets: { top: 85 },
-  cardStyle: {
-    marginLeft: '2.5%',
-    marginRight: '2.5%',
-    marginBottom: '4%',
-    borderRadius: 10,
-    backgroundColor: colors.white,
-  },
-  cardOverlay: () => (
-    <ModalHeaderBar
-      headerTitle={headline}
-      dismissIconType={isFocused() ? 'CloseIcon' : null}
-      onPress={() => goBack(null)}
-    />
-  ),
-})
+claimOfferScreen.screen.navigationOptions = navigationOptions
 
 const styles = StyleSheet.create({
   modalWrapper: {

@@ -27,6 +27,8 @@ import { PROOF_REQUEST_STATUS } from './../proof-request/type-proof-request'
 import { QUESTION_STATUS } from '../question/type-question'
 import { getConnections } from './connections-store'
 import type { ConnectionHistoryEvent } from '../connection-history/type-connection-history'
+import { baseUrls } from './config-store'
+import findKey from 'lodash.findkey'
 
 export const getConfig = (state: Store) => state.config
 
@@ -600,3 +602,8 @@ export const getNewMessagesCount = (state: Store) => {
 export const getMessageDownloadStatus = (state: Store) => state.config.messageDownloadStatus
 export const getSnackError = (state: Store) => state.config.snackError
 
+export const getEnvironmentName = (state: Store) =>
+  findKey(baseUrls, (environment) => environment.agencyUrl === state.config.agencyUrl)
+
+export const getPendingRedirection = (state: Store) =>
+  state.lock.pendingRedirection

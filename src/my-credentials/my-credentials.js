@@ -14,13 +14,19 @@ import { CLAIM_REQUEST_STATUS } from '../claim-offer/type-claim-offer'
 import { deleteClaim } from '../claim/claim-store'
 import { getClaimOffers } from '../store/store-selector'
 
-// $FlowExpectedError[cannot-resolve-module] external file
-import { HEADLINE, MyCredentialsViewEmptyState } from '../../../../../app/evernym-sdk/my-credentials'
+import {
+  HEADLINE,
+  SHOW_CAMERA_BUTTON,
+  MyCredentialsViewEmptyState,
+  CustomMyCredentialsScreen,
+  // $FlowExpectedError[cannot-resolve-module] external file
+} from '../../../../../app/evernym-sdk/credentials'
 import { EmptyState } from '../home/empty-state'
 
 const headline = HEADLINE || 'MY Credentials'
+const showCameraButton = typeof SHOW_CAMERA_BUTTON === 'boolean' ? SHOW_CAMERA_BUTTON : true
 
-const MyCredentialsComponent = ({
+const MyCredentialsScreen = ({
                                   route,
                                   navigation,
                                 }: MyCredentialsProps) => {
@@ -82,9 +88,12 @@ const MyCredentialsComponent = ({
         )}
       </View>
 
-      <CameraButton
-        onPress={() => navigation.navigate(qrCodeScannerTabRoute)}
-      />
+      {
+        showCameraButton &&
+        <CameraButton
+          onPress={() => navigation.navigate(qrCodeScannerTabRoute)}
+        />
+      }
     </View>
   )
 }
@@ -92,10 +101,12 @@ const MyCredentialsComponent = ({
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators({ deleteClaim }, dispatch)
 
+const screen = CustomMyCredentialsScreen || MyCredentialsScreen
+
 export const MyCredentials = connect(
   null,
   mapDispatchToProps,
-)(MyCredentialsComponent)
+)(screen)
 
 export const myCredentialsScreen = {
   routeName: myCredentialsRoute,

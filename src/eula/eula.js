@@ -7,6 +7,7 @@
 import React, { useState, useCallback, useMemo } from 'react'
 import { Alert, View, StyleSheet, Platform, TouchableOpacity } from 'react-native'
 import WebView from 'react-native-webview'
+import { connect, useSelector } from 'react-redux'
 
 import { TermsAndConditionsTitle } from '../common/privacyTNC-constants'
 import type {
@@ -14,31 +15,31 @@ import type {
   ReactNavigation,
   ReduxConnect,
 } from '../common/type-common'
-import type { Store } from '../store/type-store'
 
 import { Container, FooterActions } from '../components'
 import { eulaRoute, homeRoute } from '../common'
 import { eulaAccept, shareEula } from './eula-store'
 import { EULA_URL, localEulaSource } from './type-eula'
 import { OrangeLoader } from '../components/loader-gif/loader-gif'
-import { connect } from 'react-redux'
 import { clearPendingRedirect, unlockApp } from '../lock/lock-store'
 import { vcxInitStart } from '../store/route-store'
 import { moderateScale, verticalScale } from 'react-native-size-matters'
 import { EvaIcon, SHARE_ICON } from '../common/icons'
 
+import {
+  CustomEulaScreen,
+  // $FlowExpectedError[cannot-resolve-module] external file
+} from '../../../../../app/evernym-sdk/eula';
+import { getPendingRedirection } from '../store/store-selector'
+
 export const EulaScreen = ({
   dispatch,
   navigation,
-  pendingRedirection,
-}: ReactNavigation &
-  ReduxConnect & {
-    pendingRedirection: $PropertyType<
-      $PropertyType<Store, 'lock'>,
-      'pendingRedirection'
-    >,
-  }) => {
+}: ReactNavigation & ReduxConnect) => {
+  const pendingRedirection = useSelector(getPendingRedirection)
+
   const [error, setError] = useState<CustomError | null>(null)
+
   const onReject = useCallback(() => {
     Alert.alert(
       'Alert',
@@ -104,13 +105,11 @@ export const EulaScreen = ({
   )
 }
 
-const mapProps = (store: Store) => ({
-  pendingRedirection: store.lock.pendingRedirection,
-})
+const screen = CustomEulaScreen || EulaScreen
 
 export const eulaScreen = {
   routeName: eulaRoute,
-  screen: connect(mapProps)(EulaScreen),
+  screen: connect()(screen),
 }
 
 const style = StyleSheet.create({

@@ -15,8 +15,11 @@ import {startUpRoute, lockPinSetupRoute} from '../common';
 import {OFFSET_2X, colors, fontFamily, fontSizes} from '../common/styles';
 import {verticalScale, moderateScale} from 'react-native-size-matters';
 
-// $FlowExpectedError[cannot-resolve-module] external file
-import {BACKGROUND_IMAGE} from '../../../../../app/evernym-sdk/startup';
+import {
+  BACKGROUND_IMAGE,
+  CustomStartUpScreen,
+  // $FlowExpectedError[cannot-resolve-module] external file
+} from '../../../../../app/evernym-sdk/startup';
 
 const {width} = Dimensions.get('screen');
 
@@ -95,9 +98,11 @@ function StartUpScreen(props: { navigation: Function }) {
     renderDefaultStartUpScreen();
 }
 
+const screen = CustomStartUpScreen || StartUpScreen
+
 export const startUpScreen = {
   routeName: startUpRoute,
-  screen: StartUpScreen,
+  screen,
   options: headerOptionsWithNoBack({
     title: '',
     headerShown: false,

@@ -17,7 +17,6 @@ import { attributesValueRoute } from '../../common/route-constants'
 
 // components
 import { ModalButtons } from '../../components/buttons/modal-buttons'
-import { ModalHeaderBar } from '../../components/modal-header-bar/modal-header-bar'
 
 // types
 import type {
@@ -33,6 +32,10 @@ import { CHECKMARK_ICON, EvaIcon } from '../../common/icons'
 import { renderAttachmentIcon } from './modal-content'
 import { ModalPushLeft } from '../utils/modal-animation'
 import { ExpandableText } from '../../components/expandable-text/expandable-text'
+import { modalOptions } from '../utils/modalOptions'
+
+// $FlowExpectedError[cannot-resolve-module] external file
+import { CustomSelectAttributesValuesModal } from '../../../../../../app/evernym-sdk/proof-request'
 
 export const keyExtractor = (item: Object) => item.claimUuid.toString()
 
@@ -168,31 +171,18 @@ const AttributesValues = ({
   )
 }
 
+const screen = CustomSelectAttributesValuesModal || AttributesValues
+const navigationOptions =
+  CustomSelectAttributesValuesModal ?
+    null :
+    modalOptions('Select Attributes Values', 'Arrow', ModalPushLeft)
+
 export const AttributesValuesScreen = {
   routeName: attributesValueRoute,
-  screen: AttributesValues,
+  screen,
 }
 
-AttributesValuesScreen.screen.navigationOptions = ({
-  navigation: { goBack, isFocused },
-}) => ({
-  safeAreaInsets: { top: 85 },
-  cardStyle: {
-    marginLeft: '2.5%',
-    marginRight: '2.5%',
-    marginBottom: '4%',
-    borderRadius: 10,
-    backgroundColor: colors.white,
-  },
-  cardOverlay: () => (
-    <ModalHeaderBar
-      headerTitle={isFocused() ? 'Select Attributes Values' : ''}
-      dismissIconType={isFocused() ? 'Arrow' : null}
-      onPress={() => goBack(null)}
-    />
-  ),
-  ...ModalPushLeft,
-})
+AttributesValuesScreen.screen.navigationOptions = navigationOptions
 
 const styles = StyleSheet.create({
   descriptionWrapper: {

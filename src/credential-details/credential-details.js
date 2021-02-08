@@ -15,6 +15,11 @@ import { bindActionCreators } from "redux"
 import { deleteClaim } from '../claim/claim-store'
 import { ViewPushLeft } from '../connection-details/utils/modal-animation'
 
+import {
+  CustomCredentialDetailsScreen,
+// $FlowExpectedError[cannot-resolve-module] external file
+} from '../../../../../app/evernym-sdk/credentials'
+
 const CredentialDetails = (props: CredentialDetailsProps) => {
   const {
     credentialName,
@@ -89,9 +94,11 @@ const CredentialDetails = (props: CredentialDetailsProps) => {
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators({ deleteClaim }, dispatch)
 
+const screen = CustomCredentialDetailsScreen || CredentialDetails
+
 export const credentialDetailsScreen = {
   routeName: credentialDetailsRoute,
-  screen: connect(null, mapDispatchToProps)(CredentialDetails),
+  screen: connect(null, mapDispatchToProps)(screen),
 }
 
 credentialDetailsScreen.screen.navigationOptions = () => ViewPushLeft
