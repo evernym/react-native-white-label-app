@@ -553,21 +553,60 @@ You can configure application `Credentials` screen inside the `credentials.js` m
 
 #### Navigation Menu
 
-You can configure navigation menu inside the `navigator.js` module.
+You can configure navigation menu and app navigation inside the `navigator.js` module.
 
-* `navigationOptions` - (object) The set of navigation options (and their labels) to be shown.
-    * to use default - `{ Home, Connections, Credentials, Settings }`
+* `MENU_NAVIGATION_OPTIONS` - (object) The set of navigation options (and their labels) to be shown.
+    * to use default
         ```javascript
-        export const HomeViewEmptyState = null
+        export const MENU_NAVIGATION_OPTIONS = null
         ```
-    * to use custom 
+        Default tabs:
+        * Home
+        * Connections
+        * Credentials
+        * Settings
+    * to change predefined (for predefined routes `name, label, route, icon` are optional fields / defaults will be used if they are not specified) 
         ```javascript
-        export const NAVIGATION_OPTIONS = {
-          settings: { label: 'Settings' },
+        // Menu contains Home and Connections tabs
+        export const MENU_NAVIGATION_OPTIONS = [
+          {
+            name: 'Connections',
+            label: 'Other Connection Label'
+          }
+        ]     
+        ```
+    * to change order
+        ```javascript
+        export const MENU_NAVIGATION_OPTIONS = [
+          {
+            name: 'Settings',
+          },
+          {
+            name: 'Connections',
+          },
+          {
+            name: 'Credentials',
+          }
+        ]     
+        ```
+    * to add new route
+        ```javascript
+        // Menu contains Home and My Route tabs
+        export const Component = () => {
+          return <Text style={{color: colors.black}}>MY SCREEN</Text>
         }
+        export const MENU_NAVIGATION_OPTIONS = [
+          { 
+            name: 'My Route', // id
+            label: 'My Route', // label to show
+            route: 'route', // route name
+            icon: <Icon name="my" />, // icon to use
+            component: Component // React Component to render
+          }
+        ]     
         ```
 
-**Note** - `Home` screen is always included.
+    **Note** - `Home` screen is always included.
 
 * `DrawerHeaderContent` - (React Component) You can provide component to be displayed in the navigation drawer at the top, above the navigation section.
     * to use default 
@@ -599,6 +638,46 @@ You can configure navigation menu inside the `navigator.js` module.
     * to use custom 
         ```javascript
         export const DrawerFooterContent = () => <Text>You are using wallet 1.0.0</Text>
+        ```
+
+* `EXTRA_SCREENS` - (object) additional routes need to be registered in the app navigator inside **Screens** Stack Navigator (see https://reactnavigation.org/docs/stack-navigator/)
+    * to use default
+        ```javascript
+        export const EXTRA_SCREENS = null
+        export const EXTRA_SCREENS = []
+        ```
+    * to add custom 
+        ```javascript
+        export const Component = () => {
+          return <Text style={{color: colors.black}}>MY SCREEN</Text>
+        }
+        export const EXTRA_SCREENS = [
+          { 
+            route: 'route', // route name
+            component: Component, // React Component to render
+            options: { title: 'Awesome app' } // see https://reactnavigation.org/docs/screen-options
+          }
+        ]
+        ```
+
+* `EXTRA_MODALS` - (object) additional routes need to be registered in the app navigator inside **Modal Windows** Stack Navigator (see https://reactnavigation.org/docs/stack-navigator/)
+    * to use default
+        ```javascript
+        export const EXTRA_MODALS = null
+        export const EXTRA_MODALS = []
+        ```
+    * to add custom 
+        ```javascript
+        export const Component = () => {
+          return <Text style={{color: colors.black}}>MY SCREEN</Text>
+        }
+        export const EXTRA_MODALS = [
+          { 
+            route: 'route', // route name
+            component: Component, // React Component to render
+            options: { title: 'Awesome app' } // see https://reactnavigation.org/docs/screen-options
+          }
+        ]
         ```
 
 #### Collecting log information
@@ -803,36 +882,63 @@ You can customize `Settings` view in the `settings.js` module.
         ```
    
 1. `settingsOptions` - (object) The set of options to be shown. Optionally, you can also specify option title, subtitle, and icon. 
-    * to use default - `{ biometrics, passcode, about }`
+    * to use default
         ```javascript
         export const SETTINGS_OPTIONS = null
         ```
-    * to use custom - Note, that `title`, `subtitle`, and `icon` are optional
+        Defaults:
+        * Biometrics
+        * Passcode
+        * Logs
+        * About
+        
+        Predefined Options: 
+        * `Biometrics` - enable/disable using finger or face to secure app 
+        * `Passcode` - change your app passcode
+        * `Logs` - send logs to development team
+        * `About` - application information
+        * `Feedback` - give the app a feedback
+    * to change predefined (for predefined options `title, subtitle, avatar, rightIcon, onPress` are optional fields / defaults will be used if they are not specified) 
         ```javascript
-        export const SETTINGS_OPTIONS = {
-          biometrics: { 
-            title: 'Biometrics', 
-            subtitle: 'Use your finger or face to secure app' 
-          },
-          passcode: {},
-          feedback: { 
-            title: 'Give app feedback' 
-          },
-          logs: {
-            icon: <EvaIcon name="message-square-outline" />
-          },
-          about: { 
-            title: 'Give app feedback' 
-          },
-        }
+        // Menu contains Home and Connections tabs
+        export const SETTINGS_OPTIONS = [
+          {
+            name: 'Biometrics',
+            label: 'Other Biometrics Label'
+          }
+        ]     
         ```
-      
-      Options: 
-        * `biometrics` - enable/disable using finger or face to secure app 
-        * `passcode` - change your app passcode
-        * `logs` - send logs to development team
-        * `about` - application information
-        * `feedback` - give the app a feedback
+    * to change order
+        ```javascript
+        export const SETTINGS_OPTIONS = [
+          {
+            name: 'About',
+          },
+          {
+            name: 'Biometrics',
+          },
+          {
+            name: 'Logs',
+          }
+        ]     
+        ```
+    * to add new setting
+        ```javascript
+        // Settings contains Biometrics and Custom settings
+        export const SETTINGS_OPTIONS = [
+            {
+              name: 'Biometrics',
+            },
+            {
+              name: 'Custom',
+              title: 'Custom Option', // title
+              subtitle: null, // (optional) - description 
+              avatar: null, // (optional) - icon to show on the left
+              rightIcon: null, // (optional) - icon to show on the right
+              onPress: null, // (optional) - handler on touch
+            },
+        ]     
+        ```
 
 * `SHOW_CAMERA_BUTTON` - (boolean, Optional) flag indicating whether you want to show camera button.
     * to use default - `true`

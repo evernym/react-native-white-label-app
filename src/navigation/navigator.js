@@ -1,10 +1,7 @@
 // @flow
 import * as React from 'react'
-import {View, StyleSheet, Dimensions, Text, Image} from 'react-native';
-import {
-  createStackNavigator,
-  TransitionPresets,
-} from '@react-navigation/stack'
+import { Dimensions, Image, Text, View } from 'react-native'
+import { createStackNavigator, TransitionPresets } from '@react-navigation/stack'
 import { createDrawerNavigator, DrawerItemList } from '@react-navigation/drawer'
 import { enableScreens } from 'react-native-screens'
 import VersionNumber from 'react-native-version-number'
@@ -13,10 +10,12 @@ import VersionNumber from 'react-native-version-number'
 import { APP_ICON, COMPANY_NAME } from '../../../../../app/evernym-sdk/app'
 
 import {
-  DrawerHeaderContent,
   DrawerFooterContent,
-  NAVIGATION_OPTIONS,
-  // $FlowExpectedError[cannot-resolve-module] external file
+  DrawerHeaderContent,
+  EXTRA_MODALS,
+  EXTRA_SCREENS,
+  MENU_NAVIGATION_OPTIONS,
+// $FlowExpectedError[cannot-resolve-module] external file
 } from '../../../../../app/evernym-sdk/navigator'
 
 import { aboutAppScreen } from '../about-app/about-app'
@@ -67,26 +66,20 @@ import { connectionHistoryScreen } from '../connection-details/connection-detail
 import { credentialDetailsScreen } from '../credential-details/credential-details'
 import { pushNotificationPermissionScreen } from '../push-notification/components/push-notification-permission-screen'
 import {
-  splashScreenRoute,
-  homeRoute,
   connectionsDrawerRoute,
   credentialsDrawerRoute,
   homeDrawerRoute,
+  homeRoute,
   settingsDrawerRoute,
+  splashScreenRoute,
 } from '../common'
 import { walletTabsScreen } from '../wallet/wallet-tab-send-details'
 import { checkIfAnimationToUse } from '../bridge/react-native-cxs/RNCxs'
 import SvgCustomIcon from '../components/svg-custom-icon'
-import {
-  EvaIcon,
-  HOME_ICON,
-  CONNECTIONS_ICON,
-  SETTINGS_ICON,
-} from '../common/icons'
-import { colors, fontFamily } from '../common/styles/constant'
+import { CONNECTIONS_ICON, EvaIcon, HOME_ICON, SETTINGS_ICON } from '../common/icons'
+import { colors } from '../common/styles/constant'
 import { UnreadMessagesBadge } from '../components'
-import { unreadMessageContainerCommonStyle } from '../components/unread-messages-badge/unread-messages-badge'
-import { verticalScale, moderateScale } from 'react-native-size-matters'
+import { moderateScale, verticalScale } from 'react-native-size-matters'
 import { startUpScreen } from '../start-up/start-up-screen'
 import useBackHandler from '../hooks/use-back-handler'
 import { CustomValuesScreen } from '../connection-details/components/custom-values'
@@ -94,86 +87,21 @@ import { AttributeValuesScreen } from '../connection-details/components/attribut
 import { AttributesValuesScreen } from '../connection-details/components/attributes-values'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { renderUserAvatar } from '../components/user-avatar/user-avatar'
+import {
+  CONNECTIONS,
+  CONNECTIONS_LABEL,
+  CREDENTIALS,
+  CREDENTIALS_LABEL,
+  DRAWER_ICON_HEIGHT,
+  DRAWER_ICON_WIDTH,
+  SETTINGS,
+  SETTINGS_LABEL,
+} from './navigator-constants'
+import { styles } from './navigator-styles'
 
 enableScreens()
 
 const { width } = Dimensions.get('screen')
-
-export const styles = StyleSheet.create({
-  icon: {
-    marginBottom: verticalScale(2),
-  },
-  drawerOuterContainer: {
-    flex: 1,
-    backgroundColor: colors.white,
-    borderTopRightRadius: verticalScale(14),
-    borderBottomRightRadius: verticalScale(14),
-  },
-  drawerHeader: {
-    width: '100%',
-    height: moderateScale(180),
-    justifyContent: 'space-evenly',
-    paddingLeft: moderateScale(20),
-    marginTop: moderateScale(20),
-  },
-  drawerFooterContainer: {
-    flex: 1,
-    justifyContent: 'flex-end',
-  },
-  drawerFooter: {
-    width: '100%',
-    height: moderateScale(50),
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  text: {
-    fontFamily: fontFamily,
-    fontSize: verticalScale(10),
-    color: colors.gray3,
-    fontWeight: 'bold',
-  },
-  labelContainer: {
-    flexDirection: 'row',
-    width: '100%',
-    justifyContent: 'space-between',
-  },
-  labelText: {
-    fontFamily: fontFamily,
-    fontSize: verticalScale(15),
-    fontWeight: '500',
-    color: colors.gray3,
-  },
-  labelTextFocusedColor: {
-    color: colors.main,
-  },
-  customGreenBadgeContainer: {
-    ...unreadMessageContainerCommonStyle,
-    marginRight: '30%',
-  },
-  companyIconImage: {
-    width: verticalScale(26),
-    height: verticalScale(26),
-    marginLeft: moderateScale(20),
-    marginRight: moderateScale(10),
-    marginBottom: moderateScale(20),
-  },
-  companyIconTextContainer: {
-    height: verticalScale(26),
-    marginBottom: moderateScale(20),
-  },
-  companyIconLogoText: {
-    height: '50%',
-    justifyContent: 'flex-start',
-  },
-  companyIconBuildText: {
-    height: '50%',
-    justifyContent: 'flex-end',
-  },
-  drawerIconWrapper: {
-    width: moderateScale(22),
-    alignItems: 'center',
-  },
-})
 
 const footerIcon = APP_ICON || require('../images/app_icon.png')
 const builtBy = COMPANY_NAME || 'Your Company'
@@ -198,13 +126,13 @@ const drawerComponent = (props: Object) => (
             resizeMode="contain"
           />
       }
-      {renderUserAvatar({size: 'medium', userCanChange: true, testID: 'user-avatar'})}
+      {renderUserAvatar({ size: 'medium', userCanChange: true, testID: 'user-avatar' })}
     </View>
     <DrawerItemList {...props} />
     <View style={styles.drawerFooterContainer}>
       <View style={styles.drawerFooter}>
         {DrawerFooterContent ?
-          <DrawerFooterContent /> :
+          <DrawerFooterContent/> :
           <>
             <Image
               source={footerIcon}
@@ -237,31 +165,33 @@ const drawerStyle = {
   backgroundColor: 'transparent',
 }
 
-const drawerEvaIcon = (title: string) => ({ color }) => (
+const drawerIcon = (icon: any) => ({ color }) => (
   <View style={styles.drawerIconWrapper}>
-    <EvaIcon
-      name={title}
-      color={color}
-      width={moderateScale(22)}
-      height={verticalScale(22)}
-    />
+    {icon ? icon(color): null}
   </View>
 )
 
-const drawerItemIcon = (title: string) => ({ color }) => (
-  <View style={styles.drawerIconWrapper}>
-    <SvgCustomIcon
-      name={title}
-      width={verticalScale(22)}
-      height={verticalScale(22)}
-      fill={color}
-    />
-  </View>
+const drawerEvaIcon = (title: string) => ({ color }) => (
+  <EvaIcon
+    name={title}
+    color={color}
+    width={moderateScale(DRAWER_ICON_WIDTH)}
+    height={verticalScale(DRAWER_ICON_HEIGHT)}
+  />
+)
+
+const drawerSvgIcon = (title: string) => ({ color }) => (
+  <SvgCustomIcon
+    name={title}
+    width={verticalScale(DRAWER_ICON_WIDTH)}
+    height={verticalScale(DRAWER_ICON_HEIGHT)}
+    fill={color}
+  />
 )
 
 const drawerItemLabel = (
   title: string,
-  extraComponent?: React.Node = null
+  extraComponent?: React.Node = null,
 ) => ({ focused }) => (
   <View style={styles.labelContainer}>
     <Text style={[styles.labelText, focused && styles.labelTextFocusedColor]}>
@@ -270,40 +200,61 @@ const drawerItemLabel = (
     {extraComponent}
   </View>
 )
+
 const homeDrawerItemOptions = {
-  drawerIcon: drawerEvaIcon(HOME_ICON),
+  drawerIcon: drawerIcon(drawerEvaIcon(HOME_ICON)),
   drawerLabel: drawerItemLabel(
     'Home',
     <UnreadMessagesBadge
       customContainerStyle={styles.customGreenBadgeContainer}
-    />
+    />,
   ),
 }
 
-const navigationOptions = NAVIGATION_OPTIONS || {
-  connections: { label: 'My Connections' },
-  credentials: { label: 'My Credentials' },
-  settings: { label: 'Settings' },
+const defaultDrawerItemOptions = {
+  [CONNECTIONS]: {
+    route: connectionsDrawerRoute,
+    component: MyConnectionsScreen,
+    icon: drawerEvaIcon(CONNECTIONS_ICON),
+    label: CONNECTIONS_LABEL,
+  },
+  [CREDENTIALS]: {
+    route: credentialsDrawerRoute,
+    component: myCredentialsScreen.screen,
+    icon: drawerSvgIcon('Credentials'),
+    label: CREDENTIALS_LABEL,
+  },
+  [SETTINGS]: {
+    route: settingsDrawerRoute,
+    component: SettingsScreen,
+    icon: drawerEvaIcon(SETTINGS_ICON),
+    label: SETTINGS_LABEL,
+  },
 }
 
-const connectionDrawerItemOptions = {
-  drawerIcon: drawerEvaIcon(CONNECTIONS_ICON),
-  drawerLabel: drawerItemLabel(
-    navigationOptions.connections?.label ?? 'My Connections'
-  ),
-}
-const credentialsDrawerItemOptions = {
-  // TODO: DA replace credentials icon
-  drawerIcon: drawerItemIcon('Credentials'),
-  drawerLabel: drawerItemLabel(
-    navigationOptions.credentials?.label ?? 'My Credentials'
-  ),
-}
-const settingsDrawerItemOptions = {
-  drawerIcon: drawerEvaIcon(SETTINGS_ICON),
-  drawerLabel: drawerItemLabel(navigationOptions.settings?.label ?? 'Settings'),
-}
+const menuNavigationOptions = MENU_NAVIGATION_OPTIONS || [
+  { name: CONNECTIONS },
+  { name: CREDENTIALS },
+  { name: SETTINGS },
+]
+const extraScreens = EXTRA_SCREENS || []
+const extraModals = EXTRA_MODALS || []
+
 function AppDrawer() {
+  const tabs = menuNavigationOptions.map((option) => {
+    const defaultOption = defaultDrawerItemOptions[option.name] || {}
+
+    return <Drawer.Screen
+      key={option.route || defaultOption.route}
+      name={option.route || defaultOption.route}
+      component={option.component || defaultOption.component}
+      options={{
+        drawerIcon: drawerIcon(option.icon || defaultOption.icon),
+        drawerLabel: drawerItemLabel(option.label || defaultOption.label),
+      }}
+    />
+  })
+
   return (
     <Drawer.Navigator
       drawerContent={drawerComponent}
@@ -316,30 +267,11 @@ function AppDrawer() {
         component={homeScreen.screen}
         options={homeDrawerItemOptions}
       />
-      {navigationOptions.connections ? (
-        <Drawer.Screen
-          name={connectionsDrawerRoute}
-          component={MyConnectionsScreen}
-          options={connectionDrawerItemOptions}
-        />
-      ) : null}
-      {navigationOptions.credentials ? (
-        <Drawer.Screen
-          name={credentialsDrawerRoute}
-          component={myCredentialsScreen.screen}
-          options={credentialsDrawerItemOptions}
-        />
-      ) : null}
-      {navigationOptions.settings ? (
-        <Drawer.Screen
-          name={settingsDrawerRoute}
-          component={SettingsScreen}
-          options={settingsDrawerItemOptions}
-        />
-      ) : null}
+      {tabs}
     </Drawer.Navigator>
   )
 }
+
 const CardStack = createStackNavigator()
 const cardStackOptions = {
   // we are using headerShown property instead of headerMode: 'none'
@@ -352,9 +284,10 @@ const cardStackOptions = {
   // if we want to have inside any of the screens added above
   // then we can add headerShown true in the options of screen
   // and add header using header: () => <Header /> property
-  // of navigationOptions
+  // of menuNavigationOptions
   headerShown: false,
 }
+
 function CardStackScreen() {
   // Back button press listening needs to be initialized on a screen inside of a navigator.
   // This is highest screen in the stack that we can put this hook in.
@@ -506,6 +439,16 @@ function CardStackScreen() {
         component={credentialDetailsScreen.screen}
         options={credentialDetailsScreen.screen.navigationOptions}
       />
+      {
+        extraScreens.map((screen) => (
+          <CardStack.Screen
+            key={screen.route}
+            name={screen.route}
+            component={screen.component}
+            options={screen.navigationOptions}
+          />
+        ))
+      }
     </CardStack.Navigator>
   )
 }
@@ -523,7 +466,7 @@ const modalStackOptions = {
 export function MSDKAppNavigator() {
   return (
     <ModalStack.Navigator mode="modal" screenOptions={modalStackOptions}>
-      <ModalStack.Screen name="CardStack" component={CardStackScreen} />
+      <ModalStack.Screen name="CardStack" component={CardStackScreen}/>
       <ModalStack.Screen
         name={claimOfferScreen.routeName}
         component={claimOfferScreen.screen}
@@ -599,6 +542,16 @@ export function MSDKAppNavigator() {
         component={pushNotificationPermissionScreen.screen}
         options={pushNotificationPermissionScreen.screen.navigationOptions}
       />
+      {
+        extraModals.map((screen) => (
+          <CardStack.Screen
+            key={screen.route}
+            name={screen.route}
+            component={screen.component}
+            options={screen.navigationOptions}
+          />
+        ))
+      }
     </ModalStack.Navigator>
   )
 }
