@@ -62,11 +62,11 @@ import type { CustomError } from '../common/type-common'
 import {
   getClaimOffer,
   getClaimOffers,
-  getConnection,
   getSerializedClaimOffer,
   getWalletBalance,
   getConnectionHistory,
-  isIssuanceCompleted,
+  getConnection,
+
 } from '../store/store-selector'
 import {
   getHandleBySerializedConnection,
@@ -105,6 +105,7 @@ import {
 import Snackbar from 'react-native-snackbar'
 import { colors, venetianRed } from '../common/styles/constant'
 import { checkProtocolStatus } from '../store/protocol-status'
+import { isIssuanceCompleted } from '../store/store-utils'
 
 const claimOfferInitialState = {
   vcxSerializedClaimOffers: {},

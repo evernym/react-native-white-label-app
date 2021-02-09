@@ -28,8 +28,10 @@ import {
 } from '../api/api-constants'
 import {
   getAllInvitations,
+  getConnection,
+  getConnectionByUserDid,
   getInvitationPayload,
-  isConnectionCompleted,
+
 } from '../store/store-selector'
 import {
   connectionDeleteAttachedRequest,
@@ -75,14 +77,13 @@ import {
 } from '../store/type-connection-store'
 import { flatJsonParse } from '../common/flat-json-parse'
 import { toUtf8FromBase64 } from '../bridge/react-native-cxs/RNCxs'
-import { getConnectionByUserDid } from '../store/store-selector'
 import type { Connection } from '../store/type-connection-store'
 import { ID, TYPE } from '../common/type-common'
 import {
   sendConnectionReuse,
   connectionAttachRequest,
 } from '../store/connections-store'
-import { getConnection, getConnectionExists } from '../store/store-selector'
+import { getConnectionExists } from '../store/store-selector'
 import {
   acceptClaimOffer,
   acceptOutofbandClaimOffer,
@@ -105,6 +106,7 @@ import { retrySaga } from '../api/api-utils'
 import { checkProtocolStatus } from '../store/protocol-status'
 import ImageColors from 'react-native-image-colors'
 import { pickAndroidColor, pickIosColor } from '../my-credentials/cards/utils'
+import { isConnectionCompleted } from '../store/store-utils'
 
 export const invitationInitialState = {}
 

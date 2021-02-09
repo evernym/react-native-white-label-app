@@ -4,8 +4,8 @@ import { View, Text, TouchableOpacity, Image } from 'react-native'
 import type { ConnectionCardProps } from './type-connection-card'
 import { styles } from './styles'
 import { DefaultLogo } from '../../components/default-logo/default-logo'
-import { isNewConnection } from '../../store/store-selector'
 import { UnreadMessagesBadge } from '../../components'
+import { isNewConnection } from '../../store/store-utils'
 
 const ConnectionCard = (props: ConnectionCardProps) => {
   const onButtonPress = useCallback(() => {

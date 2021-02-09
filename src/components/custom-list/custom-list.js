@@ -12,8 +12,8 @@ import CustomText from '../text'
 import Icon from '../icon'
 import Separator from '../separator'
 import { OFFSET_3X } from '../../common/styles'
-import { getUserAvatarSource } from '../../store/store-selector'
 import { renderUserAvatar } from '../user-avatar/user-avatar'
+import { getUserAvatarSource } from '../../store/store-utils'
 
 export class CustomList extends Component<CustomListProps, void> {
   keyExtractor = ({ label, values }: Item, index: number) => {
