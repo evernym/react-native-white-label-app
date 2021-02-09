@@ -11,7 +11,7 @@ import {
 
 import UserAvatar, { UserAvatarComponent } from '../user-avatar'
 import type { GenericObject } from '../../../common/type-common'
-import { getUserAvatarSource } from '../../../store/store-selector'
+import { getUserAvatarSource } from '../../../store/store-utils'
 
 describe('<ConnectedUserAvatar />', () => {
   const store = getStore()

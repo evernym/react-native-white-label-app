@@ -6,7 +6,6 @@ import type { CustomListProps, Item } from './type-custom-list'
 import type { Store } from '../../store/type-store'
 
 import Icon from '../icon'
-import { getUserAvatarSource } from '../../store/store-selector'
 import { verticalScale, moderateScale } from 'react-native-size-matters'
 import { colors, fontSizes, fontFamily } from '../../common/styles/constant'
 import { renderAttachmentIcon } from '../../connection-details/components/modal-content'
@@ -14,6 +13,7 @@ import { DefaultLogo } from '../default-logo/default-logo'
 import { ATTRIBUTE_TYPE } from '../../proof-request/type-proof-request'
 import { getPredicateTitle } from '../../connection-details/utils/getPredicateTitle'
 import { renderUserAvatar } from '../../components/user-avatar/user-avatar'
+import { getUserAvatarSource } from '../../store/store-utils'
 
 export class CustomListProofRequest extends Component<CustomListProps, void> {
   keyExtractor = ({ label, values }: Item, index: number) => {

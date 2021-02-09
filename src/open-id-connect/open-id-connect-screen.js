@@ -33,11 +33,9 @@ import {
 import { BottomUpSliderSuccess } from '../components/bottom-up-slider-screen/components/bottom-up-slider-success'
 import { BottomUpSliderError } from '../components/bottom-up-slider-screen/components/bottom-up-slider-error'
 import { GENERIC_ERROR_MESSAGE } from '../common/type-common'
-import {
-  getConnectionByProp,
-  getDIDFromFullyQualifiedDID,
-} from '../store/store-selector'
 import { defaultUserAvatar } from '../components/user-avatar/user-avatar'
+import { getDIDFromFullyQualifiedDID } from '../store/store-utils'
+import { getConnectionByProp } from '../store/store-selector'
 
 export const OpenIdConnectScreen = ({
   request,

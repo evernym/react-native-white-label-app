@@ -114,7 +114,8 @@ import {
   getHistoryEvent,
   getClaimReceivedHistory,
   getUniqueHistoryItem,
-  getConnection, getLastConnectionEvent,
+  getLastConnectionEvent,
+  getConnection,
 } from '../store/store-selector'
 import {
   CLAIM_STORAGE_SUCCESS,
