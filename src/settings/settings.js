@@ -1,205 +1,83 @@
 // @flow
 import React, { Component } from 'react'
-import {
-  ActivityIndicator,
-  Switch,
-  StyleSheet,
-  Platform,
-  ScrollView,
-  View,
-  TouchableOpacity,
-} from 'react-native'
-import { verticalScale, moderateScale } from 'react-native-size-matters'
+import { ActivityIndicator, Platform, ScrollView, Switch, TouchableOpacity, View } from 'react-native'
+import { moderateScale, verticalScale } from 'react-native-size-matters'
 import { Apptentive } from 'apptentive-react-native'
 import moment from 'moment'
 import { ListItem } from 'react-native-elements'
 import get from 'lodash.get'
 
+import { CameraButton, CustomText, HomeHeader } from '../components'
+import { Container, CustomView } from '../components/layout'
+import {
+  aboutAppRoute,
+  cloudBackupRoute,
+  designStyleGuideRoute,
+  exportBackupFileRoute,
+  genRecoveryPhraseRoute,
+  lockAuthorizationHomeRoute,
+  lockEnterPinRoute,
+  lockPinSetupRoute,
+  lockTouchIdSetupRoute,
+  qrCodeScannerTabRoute,
+  settingsRoute,
+} from '../common/route-constants'
+import ToggleSwitch from 'react-native-flip-toggle-button'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { colors } from '../common/styles/constant'
+import type { Store } from '../store/type-store'
+import type { SettingsProps, SettingsState } from './type-settings'
+import { selectUserAvatar } from '../store/user/user-store'
+import { cloudBackupStart, exportBackup, generateBackupFile, generateRecoveryPhrase } from '../backup/backup-store'
+import { cloudBackupFailure, setAutoCloudBackupEnabled, viewedWalletError } from '../backup/backup-actions'
+
+import { getHasVerifiedRecoveryPhrase, getWalletBalance } from '../store/store-selector'
+import SvgCustomIcon from '../components/svg-setting-icons'
+import { withStatusBar } from '../components/status-bar/status-bar'
+import {
+  AUTO_CLOUD_BACKUP_ENABLED,
+  CLOUD_BACKUP_FAILURE,
+  CLOUD_BACKUP_LOADING,
+  WALLET_BACKUP_FAILURE,
+} from '../backup/type-backup'
+import { safeSet, walletSet } from '../services/storage'
+import { addPendingRedirection } from '../lock/lock-store'
+import { setupApptentive } from '../feedback'
+import { customLogger } from '../store/custom-logger'
+import { NotificationCard } from '../in-app-notification/in-app-notification-card'
+import { ARROW_RIGHT_ICON, BACKUP_ICON, CHAT_ICON, EvaIcon, INFO_ICON } from '../common/icons'
+import { sendLogsRoute } from '../common'
+import { style } from './settings-styles'
+import { formatBackupString } from './settings-utils'
+import {
+  ABOUT,
+  BACKUP_RECOVERY,
+  BIOMETRICS,
+  CLOUD_BACKUP,
+  DEFAULT_OPTIONS,
+  DESIGN_STYLE_GUIDE,
+  FEEDBACK,
+  LOGS,
+  MANUAL_BACKUP,
+  PASSCODE,
+} from './settings-constants'
+
 // $FlowExpectedError[cannot-resolve-module] external file
 import { APP_NAME } from '../../../../../app/evernym-sdk/app'
 import {
-  SETTINGS_OPTIONS,
-  HEADLINE,
-  SHOW_CAMERA_BUTTON,
   CustomSettingsScreen,
+  HEADLINE,
+  SETTINGS_OPTIONS,
+  SHOW_CAMERA_BUTTON,
 // $FlowExpectedError[cannot-resolve-module] external file
 } from '../../../../../app/evernym-sdk/settings'
 // $FlowExpectedError[cannot-resolve-module] external file
 import { APPTENTIVE_CREDENTIALS } from '../../../../../app/evernym-sdk/feedback'
 
-import { CustomText, HomeHeader, CameraButton } from '../components'
-import { CustomView, Container } from '../components/layout'
-import {
-  cloudBackupRoute,
-  settingsRoute,
-  lockEnterPinRoute,
-  lockTouchIdSetupRoute,
-  aboutAppRoute,
-  designStyleGuideRoute,
-  // onfidoRoute,
-  genRecoveryPhraseRoute,
-  walletRoute,
-  exportBackupFileRoute,
-  qrCodeScannerTabRoute,
-  lockAuthorizationHomeRoute,
-  lockPinSetupRoute,
-} from '../common/route-constants'
-import ToggleSwitch from 'react-native-flip-toggle-button'
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-import { colors, fontFamily, fontSizes } from '../common/styles/constant'
-import type { Store } from '../store/type-store'
-import type { SettingsProps, SettingsState } from './type-settings'
-import { selectUserAvatar } from '../store/user/user-store'
-import {
-  exportBackup,
-  generateBackupFile,
-  generateRecoveryPhrase,
-} from '../backup/backup-store'
-import {
-  setAutoCloudBackupEnabled,
-  cloudBackupFailure,
-  viewedWalletError,
-} from '../backup/backup-actions'
-
-import {
-  getWalletBalance,
-  getHasVerifiedRecoveryPhrase,
-} from '../store/store-selector'
-import SvgCustomIcon from '../components/svg-setting-icons'
-import { withStatusBar } from '../components/status-bar/status-bar'
-import {
-  CLOUD_BACKUP_LOADING,
-  CLOUD_BACKUP_FAILURE,
-  AUTO_CLOUD_BACKUP_ENABLED,
-  WALLET_BACKUP_FAILURE,
-} from '../backup/type-backup'
-import { walletSet, safeSet } from '../services/storage'
-import { addPendingRedirection } from '../lock/lock-store'
-import { cloudBackupStart } from '../backup/backup-store'
-import { setupApptentive } from '../feedback'
-import { customLogger } from '../store/custom-logger'
-import { NotificationCard } from '../in-app-notification/in-app-notification-card'
-import {
-  EvaIcon,
-  CHAT_ICON,
-  INFO_ICON,
-  ARROW_RIGHT_ICON,
-  BACKUP_ICON,
-} from '../common/icons'
-import { sendLogsRoute } from '../common'
-
 const headline = HEADLINE || 'Settings'
 const showCameraButton = typeof SHOW_CAMERA_BUTTON === 'boolean' ? SHOW_CAMERA_BUTTON : true
-
-// Hate to put below logic for height and padding calculations here.
-// Ideally, these things should automatically adjusted by flex
-// but, when we redesigned settings view, we used View with absolute
-// positioning. In absolute positioning, we gave explicit height as well
-// and since we gave explicit heights, then we need to adjust other
-// elements to give padding similar to height, so other elements can be
-// positioned fine as well.
-// And now we have to show token balance in settings view, so we need to
-// take token height as well into consideration for height and padding
-// TODO: DA do we really need absolute positioning here? need to check
-
-const style = StyleSheet.create({
-  secondaryContainer: {
-    backgroundColor: colors.gray5,
-    flex: 1,
-  },
-  listContainer: {
-    borderBottomWidth: 0,
-    borderTopWidth: 0,
-    backgroundColor: colors.gray5,
-    padding: 0,
-  },
-  listItemContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderBottomWidth: 1,
-    borderTopWidth: 0,
-    borderBottomColor: colors.gray4,
-    backgroundColor: colors.gray5,
-    minHeight: verticalScale(52),
-    paddingVertical: verticalScale(10),
-    paddingHorizontal: moderateScale(16),
-  },
-  listItemText: {
-    flex: 1,
-    paddingHorizontal: verticalScale(10),
-  },
-  titleStyle: {
-    fontFamily: fontFamily,
-    fontSize: verticalScale(fontSizes.size5),
-    fontWeight: 'bold',
-    color: colors.gray2,
-  },
-  walletNotBackedUpTitleStyle: {
-    fontFamily: fontFamily,
-    fontSize: verticalScale(fontSizes.size5),
-    fontWeight: 'bold',
-    color: colors.red,
-  },
-  subtitleStyle: {
-    fontFamily: fontFamily,
-    fontSize: verticalScale(fontSizes.size8),
-    color: colors.gray2,
-  },
-  walletNotBackedUpSubtitleStyle: {
-    fontFamily: fontFamily,
-    fontSize: verticalScale(fontSizes.size8),
-    color: colors.red,
-  },
-  subtitleFail: {
-    color: colors.red,
-  },
-  avatarStyle: { backgroundColor: colors.gray5, padding: moderateScale(5) },
-  username: {
-    fontSize: verticalScale(fontSizes.size4),
-    padding: '3%',
-  },
-  tokenText: {
-    fontSize: verticalScale(fontSizes.size8),
-    paddingTop: moderateScale(5),
-    paddingBottom: moderateScale(5),
-    textAlign: 'center',
-  },
-  editIcon: {
-    width: 30,
-    height: 30,
-  },
-  labelImage: {
-    marginRight: moderateScale(10),
-  },
-  floatTokenAmount: {
-    color: colors.gray1,
-    paddingHorizontal: moderateScale(8),
-  },
-  backupTimeSubtitleStyle: {
-    marginLeft: moderateScale(10),
-    color: colors.gray2,
-    fontFamily: fontFamily,
-  },
-  subtitleColor: {
-    color: colors.gray2,
-    fontFamily: fontFamily,
-  },
-  onfidoIcon: {
-    width: verticalScale(24),
-    height: verticalScale(24),
-    marginHorizontal: moderateScale(10),
-  },
-})
-
-const settingsOptions = SETTINGS_OPTIONS || {
-    biometrics: {},
-    passcode: {},
-    logs: {},
-    about: {},
-  }
+const settingsOptions = SETTINGS_OPTIONS || DEFAULT_OPTIONS
 
 export class Settings extends Component<SettingsProps, SettingsState> {
   state = {
@@ -245,19 +123,6 @@ export class Settings extends Component<SettingsProps, SettingsState> {
       this.props.setAutoCloudBackupEnabled(switchState)
     }
   }
-  formatBackupString = (date?: string) => {
-    const now = moment().valueOf()
-    var lastBackupDate = moment(date).valueOf()
-    let minutes = Math.floor((now - lastBackupDate) / 1000 / 60)
-
-    if (minutes >= 24 * 60) {
-      return moment(date).format('h:mm a, MMMM Do YYYY')
-    } else if (minutes >= 120) return `${Math.floor(minutes / 60)} hours ago`
-    else if (minutes >= 60) return 'An hour ago'
-    else if (minutes >= 5) return `${minutes} minutes ago`
-    else if (minutes >= 2) return 'A few minutes ago'
-    else return 'Just now'
-  }
 
   onBackup = () => {
     const {
@@ -297,10 +162,7 @@ export class Settings extends Component<SettingsProps, SettingsState> {
   }
 
   openSendErrorLogs = () => {
-    const {
-      navigation: { navigate },
-    } = this.props
-    navigate(sendLogsRoute)
+    this.props.navigation.navigate(sendLogsRoute)
   }
 
   // openOnfido = () => {
@@ -334,10 +196,6 @@ export class Settings extends Component<SettingsProps, SettingsState> {
     this.props.navigation.navigate(designStyleGuideRoute, {})
   }
 
-  openTokenScreen = () => {
-    this.props.navigation.navigate(walletRoute)
-  }
-
   openFeedback = () => {
     try {
       Apptentive.presentMessageCenter()
@@ -345,15 +203,6 @@ export class Settings extends Component<SettingsProps, SettingsState> {
       customLogger.log(e)
     }
   }
-
-  static navigationOptions = {
-    header: null,
-  }
-
-  // renderAvatarWithSource = (avatarSource: number | ImageSource) => {
-  //   let medium = isIphoneXR || isIphoneX
-  //   return <Avatar medium={medium} small={!medium} round src={avatarSource} />
-  // }
 
   hideWalletPopupModal = () => {
     this.setState({
@@ -394,7 +243,8 @@ export class Settings extends Component<SettingsProps, SettingsState> {
   }
 
   componentDidMount() {
-    if (settingsOptions['feedback'] && APPTENTIVE_CREDENTIALS) {
+    const feedback = settingsOptions.find(setting => setting.name === FEEDBACK)
+    if (feedback && APPTENTIVE_CREDENTIALS) {
       setupApptentive().catch((e) => {
         customLogger.log(e)
       })
@@ -412,7 +262,7 @@ export class Settings extends Component<SettingsProps, SettingsState> {
         transparentBg
         h7
         bold
-        style={[styles.backupTimeSubtitleStyle]}
+        style={[style.backupTimeSubtitleStyle]}
       >
         Choose where to save a .zip backup file
       </CustomText>
@@ -454,7 +304,7 @@ export class Settings extends Component<SettingsProps, SettingsState> {
         <CustomText transparentBg h7 bold style={[style.backupTimeSubtitleStyle]}>
           Last backup was{' '}
           <CustomText transparentBg h7 bold style={[style.subtitleColor]}>
-            {this.formatBackupString(this.props.lastSuccessfulCloudBackup)}
+            {formatBackupString(this.props.lastSuccessfulCloudBackup)}
           </CustomText>
         </CustomText>
       ) : (
@@ -479,12 +329,12 @@ export class Settings extends Component<SettingsProps, SettingsState> {
 
   renderLastBackupText = () => {
     if (this.props.lastSuccessfulBackup !== '') {
-      const lastSuccessfulBackup = this.formatBackupString(
+      const lastSuccessfulBackup = formatBackupString(
         this.props.lastSuccessfulBackup
       )
 
       if (this.props.lastSuccessfulCloudBackup !== '') {
-        const lastSuccessfulCloudBackup = this.formatBackupString(
+        const lastSuccessfulCloudBackup = formatBackupString(
           this.props.lastSuccessfulCloudBackup
         )
 
@@ -500,12 +350,12 @@ export class Settings extends Component<SettingsProps, SettingsState> {
       }
       return `Last Backup: ${lastSuccessfulBackup}`
     } else if (this.props.lastSuccessfulCloudBackup !== '') {
-      const lastSuccessfulCloudBackup = this.formatBackupString(
+      const lastSuccessfulCloudBackup = formatBackupString(
         this.props.lastSuccessfulCloudBackup
       )
 
       if (this.props.lastSuccessfulBackup !== '') {
-        const lastSuccessfulBackup = this.formatBackupString(
+        const lastSuccessfulBackup = formatBackupString(
           this.props.lastSuccessfulBackup
         )
 
@@ -598,10 +448,8 @@ export class Settings extends Component<SettingsProps, SettingsState> {
         />
       )
 
-    const settingsItemList = [
-      // disable manual backup. Remove below line to enable manual backup
-      // {
-      //   id: 1,
+    const defaultSettingsItemList = {
+      // [MANUAL_BACKUP]: {
       //   title: this.renderBackupTitleText(),
       //   subtitle: this.getLastBackupTitle(),
       //   avatar: (
@@ -610,7 +458,7 @@ export class Settings extends Component<SettingsProps, SettingsState> {
       //       color={
       //         this.props.connectionsUpdated && !this.props.isAutoBackupEnabled
       //           ? // || (this.props.connectionsUpdated && this.props.isAutoBackupEnabled && hasCloudBackupFailed)
-      //             colors.red
+      //           colors.red
       //           : colors.gray2
       //       }
       //     />
@@ -618,154 +466,113 @@ export class Settings extends Component<SettingsProps, SettingsState> {
       //   rightIcon: '',
       //   onPress: this.onBackup,
       // },
-      ...(
-        settingsOptions['cloudBackups'] && this.props.isCloudBackupEnabled && hasVerifiedRecoveryPhrase ?
-          [
-            {
-              id: 2,
-              title: settingsOptions['cloudBackups']['title'] || 'Automatic Cloud Backups',
-              subtitle: settingsOptions['cloudBackups']['subtitle'] || this.getCloudBackupSubtitle(),
-              avatar: settingsOptions['cloudBackups']['icon'] ||
-                <EvaIcon
-                  name={BACKUP_ICON}
-                  color={hasCloudBackupFailed ? colors.red : colors.gray2}
-                />,
-              rightIcon:
-                cloudBackupStatus === CLOUD_BACKUP_LOADING ? (
-                  <ActivityIndicator />
-                ) : (
-                  cloudToggleSwitch
-                ),
-              onPress:
-                cloudBackupStatus === CLOUD_BACKUP_LOADING
-                  ? () => {}
-                  : this.onCloudBackupPressed,
-            }
-          ]
-          : []),
-      ...(settingsOptions['biometrics']
-        ? [
-          {
-            id: 3,
-            title: settingsOptions['biometrics']['title'] || 'Biometrics',
-            subtitle:
-              settingsOptions['biometrics']['subtitle'] ||
-              'Use your finger or face to secure app',
-            avatar: settingsOptions['biometrics']['icon'] ||
-              <SvgCustomIcon fill={colors.gray2} name="Biometrics" />,
-            rightIcon: toggleSwitch,
-            onPress: () => {},
-          },
-        ]
-        : []),
-      ...(settingsOptions['passcode']
-        ? [
-          {
-            id: 4,
-            title: settingsOptions['passcode']['title'] || 'Passcode',
-            subtitle:
-              settingsOptions['passcode']['subtitle'] ||
-              `View/Change your ${APP_NAME} passcode`,
-            avatar: settingsOptions['passcode']['icon'] ||
-              <SvgCustomIcon
-                name="Passcode"
-                fill={colors.gray2}
-                width={verticalScale(32)}
-                height={verticalScale(19)}
-              />,
-            rightIcon: (
-              <EvaIcon name={ARROW_RIGHT_ICON} color={colors.gray3} />
-            ),
-            onPress: this.onChangePinClick,
-          },
-        ]
-        : []),
-      ...(settingsOptions['cloudBackups'] && settingsOptions['backupRecovery'] && hasVerifiedRecoveryPhrase
-        ? [
-          {
-            id: 5,
-            title: settingsOptions['backupRecovery']['title'] || 'Recovery Phrase',
-            subtitle: settingsOptions['backupRecovery']['title'] || 'View your Recovery Phrase',
-            avatar: settingsOptions['backupRecovery']['icon'] || <SvgCustomIcon name="ViewPassPhrase" fill={colors.gray2} />,
-            rightIcon: <EvaIcon name={ARROW_RIGHT_ICON} color={colors.gray3} />,
-            onPress: this.viewRecoveryPhrase,
-          }
-        ]
-        :[]),
-      ...(settingsOptions['feedback']
-        ? [
-          {
-            id: 6,
-            title:
-              settingsOptions['feedback']['title'] || 'Give app feedback',
-            subtitle:
-              settingsOptions['feedback']['subtitle'] ||
-              `Tell us what you think of ${APP_NAME}`,
-            avatar: settingsOptions['feedback']['icon'] || <EvaIcon name={CHAT_ICON} />,
-            rightIcon: (
-              <EvaIcon name={ARROW_RIGHT_ICON} color={colors.gray3} />
-            ),
-            onPress: this.openFeedback,
-          },
-        ]
-        : []),
-      ...(settingsOptions['about']
-        ? [
-          {
-            id: 7,
-            title: settingsOptions['about']['title'] || 'About',
-            subtitle:
-              settingsOptions['about']['subtitle'] ||
-              'Legal, Version, and Network Information',
-            avatar: settingsOptions['about']['icon'] || <EvaIcon name={INFO_ICON} />,
-            rightIcon: (
-              <EvaIcon name={ARROW_RIGHT_ICON} color={colors.gray3} />
-            ),
-            onPress: this.openAboutApp,
-          },
-        ]
-        : []),
-      ...(settingsOptions['logs']
-        ? [
-          {
-            id: 9,
-            title: settingsOptions['logs']['title'] || 'Send Logs',
-            subtitle: settingsOptions['logs']['subtitle'] || 'Help us improve our app by sending your errors',
-            avatar: settingsOptions['logs']['icon'] || <EvaIcon name={INFO_ICON} />,
-            rightIcon: (
-              <EvaIcon name={ARROW_RIGHT_ICON} color={colors.gray3} />
-            ),
-            onPress: this.openSendErrorLogs,
-          },
-        ]
-        : []),
-      // {
-      //   id: 8,
-      //   title: 'Get your ID verified by Onfido',
-      //   subtitle: 'ONFIDO',
-      //   avatar: (
-      //     <View style={styles.avatarView}>
-      //       <Image
-      //         style={styles.onfidoIcon}
-      //         source={require('../images/onfido-logo.png')}
-      //       />
-      //     </View>
-      //   ),
-      //
-      //   rightIcon: <EvaIcon name={ARROW_RIGHT_ICON} color={colors.gray3} />,
-      //   onPress: this.openOnfido,
-      // },
-    ]
-    if (__DEV__ === true) {
-      settingsItemList.push({
-        id: 9,
+      [CLOUD_BACKUP]: {
+        title: 'Automatic Cloud Backups',
+        subtitle: this.getCloudBackupSubtitle(),
+        avatar: <EvaIcon
+          name={BACKUP_ICON}
+          color={hasCloudBackupFailed ? colors.red : colors.gray2}
+        />,
+        rightIcon: cloudBackupStatus === CLOUD_BACKUP_LOADING ? (
+          <ActivityIndicator />
+        ) : (
+          cloudToggleSwitch
+        ),
+        onPress: cloudBackupStatus === CLOUD_BACKUP_LOADING
+          ? () => {}
+          : this.onCloudBackupPressed,
+      },
+      [BIOMETRICS]: {
+        title: 'Biometrics',
+        subtitle: 'Use your finger or face to secure app',
+        avatar: <SvgCustomIcon fill={colors.gray2} name="Biometrics" />,
+        rightIcon: toggleSwitch,
+        onPress: () => {},
+      },
+      [PASSCODE]: {
+        title: 'Passcode',
+        subtitle: `View/Change your ${APP_NAME} passcode`,
+        avatar: <SvgCustomIcon
+          name="Passcode"
+          fill={colors.gray2}
+          width={verticalScale(32)}
+          height={verticalScale(19)}
+        />,
+        rightIcon: <EvaIcon name={ARROW_RIGHT_ICON} color={colors.gray3} />,
+        onPress: this.onChangePinClick,
+      },
+      [BACKUP_RECOVERY]: {
+        title: 'Recovery Phrase',
+        subtitle: `View your Recovery Phrase`,
+        avatar: <SvgCustomIcon name="ViewPassPhrase" fill={colors.gray2} />,
+        rightIcon: <EvaIcon name={ARROW_RIGHT_ICON} color={colors.gray3} />,
+        onPress: this.viewRecoveryPhrase,
+      },
+      [FEEDBACK]: {
+        title: 'Give app feedback',
+        subtitle: `Tell us what you think of ${APP_NAME}`,
+        avatar: <EvaIcon name={CHAT_ICON} />,
+        rightIcon: <EvaIcon name={ARROW_RIGHT_ICON} color={colors.gray3} />,
+        onPress: this.openFeedback,
+      },
+      [ABOUT]: {
+        title: 'About',
+        subtitle: `Legal, Version, and Network Information`,
+        avatar: <EvaIcon name={INFO_ICON} />,
+        rightIcon: <EvaIcon name={ARROW_RIGHT_ICON} color={colors.gray3} />,
+        onPress: this.openAboutApp,
+      },
+      [LOGS]: {
+        title: 'Send Logs',
+        subtitle: `Help us improve our app by sending your errors`,
+        avatar: <EvaIcon name={INFO_ICON} />,
+        rightIcon: <EvaIcon name={ARROW_RIGHT_ICON} color={colors.gray3} />,
+        onPress: this.openSendErrorLogs,
+      },
+      [DESIGN_STYLE_GUIDE]: {
         title: 'Design styleguide',
         subtitle: 'Development only',
         avatar: (<EvaIcon name={INFO_ICON} />),
         rightIcon: <EvaIcon name={ARROW_RIGHT_ICON} color={colors.gray3} />,
         onPress: this.openStyleGuide,
-      })
+      },
     }
+
+    const options = settingsOptions.map((option) => {
+      const defaultOptionData = defaultSettingsItemList[option.name] || {}
+
+      if (option.name === CLOUD_BACKUP) {
+        if (!this.props.isCloudBackupEnabled || !hasVerifiedRecoveryPhrase) {
+          return null
+        }
+      }
+      if (option.name === BACKUP_RECOVERY) {
+        if (!hasVerifiedRecoveryPhrase) {
+          return null
+        }
+      }
+      if (option.name === FEEDBACK) {
+        if (!APPTENTIVE_CREDENTIALS) {
+          return null
+        }
+      }
+      if (option.name === DESIGN_STYLE_GUIDE) {
+        // for dev builds only
+        if (__DEV__ === false) {
+          return null
+        }
+      }
+
+      return {
+        name: option.name,
+        title: option.title || defaultOptionData.title,
+        subtitle: option.subtitle || defaultOptionData.subtitle,
+        avatar: option.avatar || defaultOptionData.avatar,
+        rightIcon: option.rightIcon || defaultOptionData.rightIcon,
+        onPress: option.onPress || defaultOptionData.onPress,
+      }
+    })
+      .filter(option => option)
 
     return (
       <Container>
@@ -783,21 +590,19 @@ export class Settings extends Component<SettingsProps, SettingsState> {
           />
           <ScrollView>
             <CustomView style={[style.secondaryContainer, style.listContainer]}>
-              {settingsItemList.map((item, index) => {
+              {options.map((item) => {
                 return (
-                  <TouchableOpacity onPress={item.onPress}  key={index}>
+                  <TouchableOpacity onPress={item.onPress} key={item.name}>
                     <ListItem.Content style={style.listItemContainer}>
-                      {item && item.avatar &&
-                      <View style={styles.avatarView}>
-                        {item.avatar}
+                      <View style={style.avatarView}>
+                        {item && item.avatar}
                       </View>
-                      }
                       <ListItem.Content style={style.listItemText}>
                         <ListItem.Title style={[
                           (this.props.connectionsUpdated &&
-                            item.id === 1 &&
+                            item.name === MANUAL_BACKUP &&
                             !this.props.isAutoBackupEnabled) ||
-                          (item.id === 2 && hasCloudBackupFailed)
+                          (item.name === CLOUD_BACKUP && hasCloudBackupFailed)
                             ? style.walletNotBackedUpTitleStyle
                             : style.titleStyle,
                         ]}>
@@ -805,9 +610,9 @@ export class Settings extends Component<SettingsProps, SettingsState> {
                         </ListItem.Title>
                         <ListItem.Subtitle style={[
                           (this.props.connectionsUpdated &&
-                            item.id === 1 &&
+                            item.name === MANUAL_BACKUP &&
                             !this.props.isAutoBackupEnabled) ||
-                          (item.id === 2 && hasBackupError)
+                          (item.name === CLOUD_BACKUP && hasBackupError)
                             ? // && this.props.lastSuccessfulCloudBackup === 'error'
                             style.walletNotBackedUpSubtitleStyle
                             : style.subtitleStyle,
@@ -878,41 +683,3 @@ const screen = CustomSettingsScreen || Settings
 export const SettingsScreen = withStatusBar()(
   connect(mapStateToProps, mapDispatchToProps)(screen)
 )
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'stretch',
-    justifyContent: 'flex-start',
-    backgroundColor: colors.white,
-  },
-  subtitleColor: {
-    color: colors.gray2,
-    fontFamily: fontFamily,
-  },
-  backupTimeSubtitleStyle: {
-    marginLeft: moderateScale(10),
-    color: colors.gray2,
-    fontFamily: fontFamily,
-  },
-  // onfidoIcon: {
-  //   width: verticalScale(22),
-  //   height: verticalScale(22),
-  // },
-  avatarView: {
-    width: moderateScale(40),
-    alignItems: 'center',
-  },
-})
-
-export const tokenAmountSize = (tokenAmountLength: number): number => {
-  // this resizing logic is different than wallet tabs header
-  switch (true) {
-    case tokenAmountLength < 16:
-      return verticalScale(26)
-    case tokenAmountLength < 20:
-      return verticalScale(20)
-    default:
-      return verticalScale(19)
-  }
-}

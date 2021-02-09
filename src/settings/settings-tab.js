@@ -6,8 +6,8 @@ import SvgCustomIcon from '../components/svg-custom-icon'
 import { color } from '../common/styles'
 
 import type { Store } from '../store/type-store'
-import { styles } from '../navigation/navigator'
 import { colors } from '../common/styles/constant'
+import { styles } from '../navigation/navigator-styles'
 
 class SettingsTab extends Component<any> {
   render() {

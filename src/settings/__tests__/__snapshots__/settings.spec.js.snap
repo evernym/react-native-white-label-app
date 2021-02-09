@@ -1426,7 +1426,7 @@ exports[`user settings screen should render properly and snapshot should match i
                                         }
                                         testID="listItemTitle"
                                       >
-                                        About
+                                        Send Logs
                                       </Text>
                                       <Text
                                         style={
@@ -1439,7 +1439,7 @@ exports[`user settings screen should render properly and snapshot should match i
                                         }
                                         testID="listItemTitle"
                                       >
-                                        Legal, Version, and Network Information
+                                        Help us improve our app by sending your errors
                                       </Text>
                                     </View>
                                     <View
@@ -1749,7 +1749,7 @@ exports[`user settings screen should render properly and snapshot should match i
                                         }
                                         testID="listItemTitle"
                                       >
-                                        Send Logs
+                                        About
                                       </Text>
                                       <Text
                                         style={
@@ -1762,7 +1762,7 @@ exports[`user settings screen should render properly and snapshot should match i
                                         }
                                         testID="listItemTitle"
                                       >
-                                        Help us improve our app by sending your errors
+                                        Legal, Version, and Network Information
                                       </Text>
                                     </View>
                                     <View
