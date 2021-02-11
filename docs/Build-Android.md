@@ -1,15 +1,15 @@
-#### Build Android
+# Android installation steps
 
 **Note**: At this point, you should already have completed [Base app configuration](../README.md#base-app-configuration) section.
 
 In order to configure the building of your application for an Android platform, you can either rely on [automatic](#automatic) command which will everything for you, or follow to [manual](#manual) steps.
 
-* [Automatic](#automatic)
-* [Manual](#manual)
-* [Optional Dependencies](#optional-dependencies)
-* [Issues](#issues)
+  * [Automatic](#automatic)
+  * [Manual](#manual)
+  * [Optional](#optional-dependencies)
+  * [Issues](#issues)
 
-##### Automatic
+## Automatic
 
 **Note**: Automatic configuration works only for Unix like OS.
 
@@ -27,7 +27,7 @@ In order to configure the building of your application for an Android platform, 
     yarn evernym-sdk:configure-android
     ```
 
-##### Manual
+## Manual
 
 1. To build app with SDK, you need to increase the available jvm memory in `android/gradle.properties`
 
@@ -108,10 +108,10 @@ In order to configure the building of your application for an Android platform, 
         }
     }
    ```
-       
-#### Optional dependencies
 
-##### Push Notifications configuration
+## Optional dependencies
+
+### Push Notifications configuration
 
 There are two strategies regarding receiving messages by an application which described [here](./Customization.md#receiving-message):
 
@@ -136,7 +136,8 @@ Note that push notifications will not work if you use this file, to get working 
     ```
 1. Uncomment the text located under `Firebase configuration` in `AndroidManifest.xml`:
 
-##### Deep linking configuration  
+### Deep linking configuration
+
 * Uncomment the text located under `Deep Linking configuration` in `AndroidManifest.xml`:
 
 * Set Branch keys in your `android/app/build.gradle` file:
@@ -153,6 +154,4 @@ Note that push notifications will not work if you use this file, to get working 
    import io.branch.referral.Branch;
    ```
   
-### Issues
-    
-- TODO
+## Issues
