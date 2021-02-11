@@ -5,9 +5,6 @@ import { Image, StyleSheet } from 'react-native'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-// $FlowExpectedError[cannot-resolve-module] external file
-import { APP_NAME, APP_LOGO } from '../../../../../app/evernym-sdk/app'
-
 import { Container, CustomView, CustomText, CustomButton } from '../components'
 import {
   isBiggerThanShortDevice,
@@ -27,8 +24,7 @@ import type { RestoreProps } from './type-restore'
 import { saveFileToAppDirectory } from './restore-store'
 import type { Store } from '../store/type-store'
 import { RestoreStatus } from './type-restore'
-
-const appImage = APP_LOGO || require('../images/logo_evernym.png')
+import { appLogo, appName } from '../external-exports'
 
 export class RestoreStartScreen extends Component<RestoreProps, void> {
   restoreBackup = () => {
@@ -68,7 +64,7 @@ export class RestoreStartScreen extends Component<RestoreProps, void> {
       this.props.restore.status === RestoreStatus.RESTORE_FAILED ||
       (this.props.restore.status === RestoreStatus.FILE_SAVE_ERROR &&
         this.props.restore.error)
-    let restoreIcon = appImage
+    let restoreIcon = appLogo || require('../images/logo_evernym.png')
     let restoreBackground = require('../images/wave2.png')
     let restoreButtonTitle = 'Restore From A Backup'
     let restoreButtonColor = cornFlowerBlue
@@ -112,7 +108,7 @@ export class RestoreStartScreen extends Component<RestoreProps, void> {
                 center
               >
                 Either your passphrase was incorrect or the backup file you
-                chose is corrupt or not a {APP_NAME} backup file. Please try
+                chose is corrupt or not a {appName} backup file. Please try
                 again or start fresh.
               </CustomText>
             </CustomView>
@@ -132,7 +128,7 @@ export class RestoreStartScreen extends Component<RestoreProps, void> {
                 center
                 h4a
               >
-                Thanks for installing {APP_NAME}.
+                Thanks for installing {appName}.
               </CustomText>
               <CustomText
                 center

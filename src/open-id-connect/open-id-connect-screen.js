@@ -7,9 +7,6 @@ import urlParse from 'url-parse'
 
 import { useNavigation } from '@react-navigation/native'
 
-// $FlowExpectedError[cannot-resolve-module] external file
-import { APP_NAME } from '../../../../../app/evernym-sdk/app'
-
 import type { OIDCAuthenticationRequest } from '../components/qr-scanner/type-qr-scanner'
 import type { ReduxConnect } from '../common/type-common'
 import type { Store } from '../store/type-store'
@@ -33,9 +30,9 @@ import {
 import { BottomUpSliderSuccess } from '../components/bottom-up-slider-screen/components/bottom-up-slider-success'
 import { BottomUpSliderError } from '../components/bottom-up-slider-screen/components/bottom-up-slider-error'
 import { GENERIC_ERROR_MESSAGE } from '../common/type-common'
-import { defaultUserAvatar } from '../components/user-avatar/user-avatar'
 import { getDIDFromFullyQualifiedDID } from '../store/store-utils'
 import { getConnectionByProp } from '../store/store-selector'
+import { appName, defaultUserAvatar } from '../external-exports'
 
 export const OpenIdConnectScreen = ({
   request,
@@ -181,7 +178,7 @@ export const OpenIdConnectScreen = ({
             bold={false}
             style={[openIdStyles.verificationFailedText]}
           >
-            {`${APP_NAME} is unable to verify that this request really comes from ${senderName}`}
+            {`${appName} is unable to verify that this request really comes from ${senderName}`}
           </BottomUpSliderText>
         )}
         <BottomUpSliderText bold={false} size="h5">

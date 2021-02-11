@@ -88,24 +88,4 @@ method='\
     '
 sed -i "/.*MainActivity.*/a ${method}" ${filepath}
 
-echo "8. Configuring Google Firebase"
-cp ${templatesPath}/android/google-services.json android/app
-sed -i "s/${placeholderName}/${packageName}/g" android/app/google-services.json
-
-googleDependency="
-buildscript {
-    dependencies {
-        classpath 'com.google.gms:google-services:4.2.0'
-    }
-}
-"
-cat <<EOT >> android/build.gradle
-$googleDependency
-EOT
-
-googlePlugin="apply plugin: 'com.google.gms.google-services'"
-echo ${googlePlugin} >> android/app/build.gradle
-
-echo "8.1 !!!CHANGE android/appgoogle-services.json with your information"
-
 echo "Completed!"

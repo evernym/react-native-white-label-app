@@ -49,6 +49,7 @@ import {
 } from '../invitation/invitation'
 import { CONNECTION_INVITE_TYPES } from '../invitation/type-invitation'
 import { getPushNotificationAuthorizationStatus } from '../push-notification/components/push-notification-permission-screen'
+import { usePushNotifications } from '../external-exports'
 
 const isReceived = ({ payload, status }) => {
   return (
@@ -217,7 +218,11 @@ export class SplashScreenView extends PureComponent<
             const navigationFn =
               this.props.navigation.push || this.props.navigation.navigate
             let routeName = invitationRoute
-            let params = { senderDID, token: invitationToken }
+            let params = {
+              senderDID,
+              token: invitationToken,
+              notificationOpenOptions: null,
+            }
             if (existingConnection && publicDID) {
               routeName = homeRoute // --> This needs to be homeRoute, because that is the name of the DrawerNavigator
               // for Out-of-Band invitation we should send reuse message even if we scanned the same invitation
@@ -254,6 +259,7 @@ export class SplashScreenView extends PureComponent<
                 qrCodeInvitationPayload,
                 // do not send redirect message if we scanned the same invitation twice
                 sendRedirectMessage: sendRedirectMessage,
+                notificationOpenOptions: null,
               }
             }
 
@@ -264,7 +270,7 @@ export class SplashScreenView extends PureComponent<
                   params: params,
                 })
               } else if (Platform.OS === 'ios') {
-                if (this.getAuthorizationStatus() && this.props.historyData) {
+                if ((this.getAuthorizationStatus() && this.props.historyData) || !usePushNotifications) {
                   this.props.navigation.push &&
                     this.props.navigation.push(routeName, params)
                 } else {
@@ -286,7 +292,7 @@ export class SplashScreenView extends PureComponent<
                   params: params,
                 },
               }
-            } else if (Platform.OS === 'ios' && !this.state.isAuthorized) {
+            } else if ((Platform.OS === 'ios' && !this.state.isAuthorized) || !usePushNotifications) {
               return {
                 routeName: pushNotificationPermissionRoute,
                 params,

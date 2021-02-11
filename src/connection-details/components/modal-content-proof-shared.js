@@ -12,9 +12,7 @@ import { moderateScale } from 'react-native-size-matters'
 import { colors } from '../../common/styles/constant'
 import type { ReactNavigation } from '../../common/type-common'
 import { modalOptions } from '../utils/modalOptions'
-
-// $FlowExpectedError[cannot-resolve-module] external file
-import { HEADLINE, CustomSharedProofModal } from '../../../../../../app/evernym-sdk/proof-request'
+import { CustomSharedProofModal, proofRequestHeadline } from '../../external-exports'
 
 type ProofRequestModalProps = {} & ReactNavigation
 
@@ -55,12 +53,11 @@ const ProofRequestModal = ({
   )
 }
 
-const headline = HEADLINE || 'Proof Request'
 const screen = CustomSharedProofModal || ProofRequestModal
 const navigationOptions =
   CustomSharedProofModal ?
     null :
-    modalOptions(headline, 'Arrow')
+    modalOptions(proofRequestHeadline, 'Arrow')
 
 export const proofScreen = {
   routeName: modalContentProofShared,

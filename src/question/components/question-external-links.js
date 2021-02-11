@@ -3,9 +3,6 @@ import React, { PureComponent } from 'react'
 import { StyleSheet, TouchableOpacity, Alert, Linking } from 'react-native'
 import Snackbar from 'react-native-snackbar'
 
-// $FlowExpectedError[cannot-resolve-module] external file
-import { APP_NAME } from '../../../../../../app/evernym-sdk/app'
-
 import { PrivacyPolicyTitle } from '../../common/privacyTNC-constants'
 import type { ExternalLink } from '../type-question'
 import type { CustomError } from '../../common/type-common'
@@ -22,6 +19,7 @@ import {
   venetianRed,
   color, colors,
 } from '../../common/styles'
+import { appName } from '../../external-exports'
 
 export class QuestionExternalLinks extends PureComponent<QuestionExternalLinksProps> {
   render() {
@@ -76,8 +74,8 @@ export class QuestionExternalLink extends PureComponent<QuestionExternalLinkProp
 
   onLinkClick = () => {
     Alert.alert(
-      `You are about to leave ${APP_NAME}`,
-      `The contents of this link are not controlled by ${APP_NAME} and are not covered by its ${PrivacyPolicyTitle} and End User License Agreement. Proceed?`,
+      `You are about to leave ${appName}`,
+      `The contents of this link are not controlled by ${appName} and are not covered by its ${PrivacyPolicyTitle} and End User License Agreement. Proceed?`,
       [alertCancel, { text: 'OK', onPress: this.openLink }]
     )
   }

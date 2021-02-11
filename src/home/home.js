@@ -7,14 +7,6 @@ import { moderateScale } from 'react-native-size-matters'
 import { connect } from 'react-redux'
 import Snackbar from 'react-native-snackbar'
 
-import {
-  HEADLINE,
-  SHOW_EVENTS_HISTORY,
-  SHOW_CAMERA_BUTTON,
-  HomeViewEmptyState
-  // $FlowExpectedError[cannot-resolve-module] external file
-} from '../../../../../app/evernym-sdk/home'
-
 import type { Store } from '../store/type-store'
 import type { HomeProps } from './type-home'
 
@@ -50,10 +42,11 @@ import type { AriesOutOfBandInvite } from '../invitation/type-invitation'
 import { UPDATE_ATTRIBUTE_CLAIM, ERROR_SEND_PROOF } from '../proof/type-proof'
 import { MESSAGE_TYPE } from '../api/api-constants'
 import { EmptyState } from './empty-state'
+import { homeHeadline, homeShowCameraButton, homeShowHistoryEvents, HomeViewEmptyState } from '../external-exports'
 
-const headline = HEADLINE || 'Home'
-const showHistoryEvents = typeof SHOW_EVENTS_HISTORY === 'boolean' ? SHOW_EVENTS_HISTORY : true
-const showCameraButton = typeof SHOW_CAMERA_BUTTON === 'boolean' ? SHOW_CAMERA_BUTTON : true
+const headline = homeHeadline || 'Home'
+const showHistoryEvents = typeof homeShowHistoryEvents === 'boolean' ? homeShowHistoryEvents : true
+const showCameraButton = typeof homeShowCameraButton === 'boolean' ? homeShowCameraButton : true
 
 export class HomeScreen extends Component<HomeProps, void> {
   unsubscribe = null

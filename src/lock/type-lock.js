@@ -5,10 +5,8 @@ import type {
   NavigationLeafRoute,
 } from '@react-navigation/native'
 
-// $FlowExpectedError[cannot-resolve-module] external file
-import { APP_NAME } from '../../../../../app/evernym-sdk/app'
-
 import { SWITCH_ERROR_ALERTS } from '../store/type-config-store'
+import { appName } from '../external-exports'
 
 export const LOCK_TYPE = {
   FINGERPRINT: 'FINGERPRINT',
@@ -329,8 +327,8 @@ export const AllowedFallbackToucheIDErrors = [
 
 export const touchIDAlerts = {
   notSupportedBiometrics: `Your phone doesn’t support biometrics.`,
-  enableBiometrics: `You need to enable biometrics for ${APP_NAME} in your device settings.`,
-  iOSBiometricsAlert: `You need to enable biometrics for ${APP_NAME} or you have exceeded attempts for authentication`,
+  enableBiometrics: `You need to enable biometrics for ${appName} in your device settings.`,
+  iOSBiometricsAlert: `You need to enable biometrics for ${appName} or you have exceeded attempts for authentication`,
   biometricsExceedAlert:
     'You have exceeded the maximum biometric attempts allowed by your phone. Try again later.',
   usePasscodeAlert: `You'll need to use your passcode to unlock this app from now on`,

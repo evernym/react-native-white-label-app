@@ -3,7 +3,7 @@ import 'react-native'
 import React from 'react'
 import renderer from 'react-test-renderer'
 import { Provider } from 'react-redux'
-import { PushNotificationNavigator } from '../push-notification-navigator'
+import { ScreenNavigator } from '../screen-navigator'
 import {
   convertClaimOfferPushPayloadToAppClaimOffer,
   convertClaimPushPayloadToAppClaim,
@@ -15,7 +15,7 @@ import {
   getStore,
 } from '../../../__mocks__/static-data'
 
-describe('<PushNotificationNavigator />', () => {
+describe('<ScreenNavigator />', () => {
   let store = {}
 
   const storeToProps = {
@@ -42,7 +42,7 @@ describe('<PushNotificationNavigator />', () => {
     const wrapper = renderer
       .create(
         <Provider store={store}>
-          <PushNotificationNavigator {...props()} />
+          <ScreenNavigator {...props()} />
         </Provider>
       )
       .toJSON()

@@ -108,34 +108,41 @@ In order to configure the building of your application for an Android platform, 
         }
     }
    ```
-   
-1. Added Google Firebase configuration:
-    * Put `google-services.json` file into your `android/app` folder. 
-    As example, you can take [this](files/android/google-services.json) and replace placeholder `react-native-evernym-sdk-placeholder` on your app name. 
-    Note that push notifications will not work if you use this file, to get working notifications you need to provide your own account information.
-    
-    * Add `google-services` dependencies into your `android/build.gradle` file.
-        ```
-        dependencies {
-            ...
-            classpath 'com.google.gms:google-services:4.2.0'
-        }
-        ```
-    * Add `google-services` plugin into your `android/app/build.gradle` file.
-        ```
-         apply plugin: 'com.google.gms.google-services'
-        ```
-    * Uncomment the text located under `Firebase configuration` in `AndroidManifest.xml`:
-    
+       
 #### Optional dependencies
+
+##### Push Notifications configuration
+
+There are two strategies regarding receiving messages by an application which described [here](./Customization.md#receiving-message):
+
+If you wish to use **Push Notifications** strategy you need to set variable `USE_PUSH_NOTIFICATION=true` and follow steps bellow to configure Google Firebase for Android:
+
+**Official documentation:** https://developer.android.com/guide/topics/ui/notifiers/notifications
+
+1. Put `google-services.json` file into your `android/app` folder. 
+Example file can be found (showing structure) [here](files/android/google-services.json). 
+Note that push notifications will not work if you use this file, to get working notifications you need to provide your own account information.
+
+1. Add `google-services` dependencies into your `android/build.gradle` file.
+    ```
+    dependencies {
+        ...
+        classpath 'com.google.gms:google-services:4.2.0'
+    }
+    ```
+1. Add `google-services` plugin into your `android/app/build.gradle` file.
+    ```
+     apply plugin: 'com.google.gms.google-services'
+    ```
+1. Uncomment the text located under `Firebase configuration` in `AndroidManifest.xml`:
 
 ##### Deep linking configuration  
 * Uncomment the text located under `Deep Linking configuration` in `AndroidManifest.xml`:
 
 * Set Branch keys in your `android/app/build.gradle` file:
     ```
-   manifestPlaceholders = [BRANCH_LIVE_KEY: "key_live_gcrCKTHBKlx7N31qxgq33bpmzupAwr1q",
-                           BRANCH_TEST_KEY:"key_test_fnzEMTMuTnr6HZWEBbJVOmfhsymtrs8S"]
+   manifestPlaceholders = [BRANCH_LIVE_KEY: "key_live_....",
+                           BRANCH_TEST_KEY:"key_test_..."]
    ```
 
 * Change placeholders (`react-native-evernym-sdk-placeholder`) for `Branch URI Scheme` and `Branch App Links` in `AndroidManifest.xml`:

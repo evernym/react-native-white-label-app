@@ -24,10 +24,8 @@ import ModalContentProof from './modal-content-proof'
 import { colors } from '../../common/styles/constant'
 
 // $FlowExpectedError[cannot-resolve-module] external file
-import { HEADLINE, CustomProofRequestModal } from '../../../../../../app/evernym-sdk/proof-request'
 import { modalOptions } from '../utils/modalOptions'
-
-const headline = HEADLINE || 'Proof Request'
+import { CustomProofRequestModal, proofRequestHeadline } from '../../external-exports'
 
 // TODO: Fix any type
 const ProofRequestModal = (props: any) => {
@@ -101,7 +99,7 @@ const screen = CustomProofRequestModal || ProofRequestModal
 const navigationOptions =
   CustomProofRequestModal ?
     null :
-    modalOptions(headline, 'CloseIcon')
+    modalOptions(proofRequestHeadline, 'CloseIcon')
 
 export const proofRequestScreen = {
   routeName: proofRequestRoute,

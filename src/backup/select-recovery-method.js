@@ -4,9 +4,6 @@ import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-// $FlowExpectedError[cannot-resolve-module] external file
-import { APP_NAME } from '../../../../../app/evernym-sdk/app'
-
 import type {
   ReactNavigationBackup,
   SelectRecoveryMethodProps,
@@ -34,6 +31,7 @@ import {
 } from '../backup/backup-store'
 import { safeSet, walletSet } from '../services/storage'
 import { HAS_VERIFIED_RECOVERY_PHRASE } from './type-backup'
+import { appName } from '../external-exports'
 
 const closeImage = require('../images/icon-Close.png')
 const backup = require('../images/upload13x.png')
@@ -110,8 +108,8 @@ export class SelectRecoveryMethod extends Component<
               transparentBg
               style={{ color: colors.white }}
             >
-              Store an encrypted, anonymous backup of {APP_NAME} in the Evernym
-              Cloud. You will need your Recovery Phrase and a fresh {APP_NAME}
+              Store an encrypted, anonymous backup of {appName} in the Evernym
+              Cloud. You will need your Recovery Phrase and a fresh {appName}
               installation to restore.
             </CustomText>
           </CustomView>
@@ -142,7 +140,7 @@ export class SelectRecoveryMethod extends Component<
               style={[{ color: colors.white }]}
             >
               Manually choose where to store your backup file. You will need
-              your Recovery Phrase, a fresh install of {APP_NAME} and your
+              your Recovery Phrase, a fresh install of {appName} and your
               backup .zip file on the device you wish to restore to.
             </CustomText>
           </CustomView>

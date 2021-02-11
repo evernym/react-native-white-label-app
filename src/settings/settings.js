@@ -63,21 +63,18 @@ import {
   PASSCODE,
 } from './settings-constants'
 
-// $FlowExpectedError[cannot-resolve-module] external file
-import { APP_NAME } from '../../../../../app/evernym-sdk/app'
 import {
+  appName,
+  apptentiveCredentials,
+  customSettingsOptions,
   CustomSettingsScreen,
-  HEADLINE,
-  SETTINGS_OPTIONS,
-  SHOW_CAMERA_BUTTON,
-// $FlowExpectedError[cannot-resolve-module] external file
-} from '../../../../../app/evernym-sdk/settings'
-// $FlowExpectedError[cannot-resolve-module] external file
-import { APPTENTIVE_CREDENTIALS } from '../../../../../app/evernym-sdk/feedback'
+  settingsShowCameraButton,
+  settingsHeadline,
+} from '../external-exports'
 
-const headline = HEADLINE || 'Settings'
-const showCameraButton = typeof SHOW_CAMERA_BUTTON === 'boolean' ? SHOW_CAMERA_BUTTON : true
-const settingsOptions = SETTINGS_OPTIONS || DEFAULT_OPTIONS
+const headline = settingsHeadline || 'Settings'
+const showCameraButton = typeof settingsShowCameraButton === 'boolean' ? settingsShowCameraButton : true
+const settingsOptions = customSettingsOptions || DEFAULT_OPTIONS
 
 export class Settings extends Component<SettingsProps, SettingsState> {
   state = {
@@ -244,7 +241,7 @@ export class Settings extends Component<SettingsProps, SettingsState> {
 
   componentDidMount() {
     const feedback = settingsOptions.find(setting => setting.name === FEEDBACK)
-    if (feedback && APPTENTIVE_CREDENTIALS) {
+    if (feedback && apptentiveCredentials) {
       setupApptentive().catch((e) => {
         customLogger.log(e)
       })
@@ -267,7 +264,7 @@ export class Settings extends Component<SettingsProps, SettingsState> {
         Choose where to save a .zip backup file
       </CustomText>
     ) : (
-      `You have unsaved ${APP_NAME} information`
+      `You have unsaved ${appName} information`
     )
   }
 
@@ -491,7 +488,7 @@ export class Settings extends Component<SettingsProps, SettingsState> {
       },
       [PASSCODE]: {
         title: 'Passcode',
-        subtitle: `View/Change your ${APP_NAME} passcode`,
+        subtitle: `View/Change your ${appName} passcode`,
         avatar: <SvgCustomIcon
           name="Passcode"
           fill={colors.gray2}
@@ -510,7 +507,7 @@ export class Settings extends Component<SettingsProps, SettingsState> {
       },
       [FEEDBACK]: {
         title: 'Give app feedback',
-        subtitle: `Tell us what you think of ${APP_NAME}`,
+        subtitle: `Tell us what you think of ${appName}`,
         avatar: <EvaIcon name={CHAT_ICON} />,
         rightIcon: <EvaIcon name={ARROW_RIGHT_ICON} color={colors.gray3} />,
         onPress: this.openFeedback,
@@ -552,7 +549,7 @@ export class Settings extends Component<SettingsProps, SettingsState> {
         }
       }
       if (option.name === FEEDBACK) {
-        if (!APPTENTIVE_CREDENTIALS) {
+        if (!apptentiveCredentials) {
           return null
         }
       }

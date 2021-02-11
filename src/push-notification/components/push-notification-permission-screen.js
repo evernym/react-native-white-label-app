@@ -11,9 +11,6 @@ import {
   AppState,
 } from 'react-native'
 
-// $FlowExpectedError[cannot-resolve-module] external file
-import { APP_NAME } from '../../../../../../app/evernym-sdk/app'
-
 import {
   pushNotificationPermissionRoute,
   invitationRoute,
@@ -33,9 +30,13 @@ import type {
   PushNotificationPermissionProps,
   PushNotificationPermissionState,
 } from './type-push-notification-permission'
+import { appName, usePushNotifications } from '../../external-exports'
+
+const pushNotificationsAuthorizationStatus = async () =>
+  usePushNotifications ? await messaging().hasPermission() : 0
 
 export const getPushNotificationAuthorizationStatus = async () => {
-  const authorizationStatus: number = await messaging().hasPermission()
+  const authorizationStatus: number = await pushNotificationsAuthorizationStatus()
   // -1 = user has yet to be asked for permission
   // 0 = when the user denies permission
   // the default clause here handles the 1 and 2 scenarios which is
@@ -61,7 +62,7 @@ class PushNotificationPermission extends Component<
   }
 
   async componentDidMount() {
-    const isPushNotificationsAuthorized: number = await messaging().hasPermission()
+    const isPushNotificationsAuthorized: number = await pushNotificationsAuthorizationStatus()
 
     this.setState({ isPushNotificationsAuthorized })
 
@@ -97,7 +98,7 @@ class PushNotificationPermission extends Component<
       this.state.appState.match(/inactive|background/) &&
       nextAppState === 'active'
     ) {
-      const authorizationStatus = await messaging().hasPermission()
+      const authorizationStatus = await pushNotificationsAuthorizationStatus()
 
       if (authorizationStatus === messaging.AuthorizationStatus.AUTHORIZED) {
         this.props.navigation.navigate(
@@ -147,7 +148,7 @@ class PushNotificationPermission extends Component<
         <Text style={styles.informationText}>
           Enable push notifications so you don’t miss an important message.
           Please go to your device settings and enable push notifications for
-          {APP_NAME}.
+          {appName}.
         </Text>
       )
     }
@@ -393,8 +394,8 @@ export const pushNotificationPermissionScreen = {
 }
 
 pushNotificationPermissionScreen.screen.navigationOptions = ({
-  navigation: { goBack, isFocused },
-}) => ({
+                                                               navigation: { goBack, isFocused },
+                                                             }) => ({
   safeAreaInsets: { top: isFocused() ? verticalScale(85) : verticalScale(100) },
   cardStyle: {
     marginLeft: '2.5%',

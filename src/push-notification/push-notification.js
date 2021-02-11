@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react'
+import { Component } from 'react'
 import { Platform } from 'react-native'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
@@ -22,7 +22,6 @@ import {
   updatePushToken,
   fetchAdditionalData,
 } from './push-notification-store'
-import PushNotificationNavigator from './push-notification-navigator'
 import { customLogger } from '../store/custom-logger'
 import { getUnacknowledgedMessages } from '../store/config-store'
 import { getNewMessagesCount } from '../store/store-selector'
@@ -188,9 +187,7 @@ export class PushNotification extends Component<PushNotificationProps, void> {
   }
 
   render() {
-    return (
-      <PushNotificationNavigator navigateToRoute={this.props.navigateToRoute} />
-    )
+    return null
   }
 }
 

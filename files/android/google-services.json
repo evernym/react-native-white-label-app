@@ -1,23 +1,23 @@
 {
   "project_info": {
-    "project_number": "587891114080",
+    "project_number": "11",
     "firebase_url": "https://connectmecloudmsgservice.firebaseio.com",
-    "project_id": "connectmecloudmsgservice",
-    "storage_bucket": "connectmecloudmsgservice.appspot.com"
+    "project_id": "projectid",
+    "storage_bucket": "projectcloudmsgservice.appspot.com"
   },
   "client": [{
     "client_info": {
-      "mobilesdk_app_id": "1:587891114080:android:be30b7f3a5945b65",
+      "mobilesdk_app_id": "1:1:android:1",
       "android_client_info": {
-        "package_name": "react-native-evernym-sdk-placeholder"
+        "package_name": "package-name"
       }
     },
     "oauth_client": [{
-      "client_id": "587891114080-nmqr9o4epga5c98dj4ae7l41h745tnkb.apps.googleusercontent.com",
+      "client_id": "id.apps.googleusercontent.com",
       "client_type": 3
     }],
     "api_key": [{
-      "current_key": "AIzaSyBAHeSoFamwu3XhQ13snjZYJ08vclnj-Cs"
+      "current_key": "key"
     }],
     "services": {}
   }],

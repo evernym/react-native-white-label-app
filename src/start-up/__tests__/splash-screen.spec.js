@@ -193,6 +193,7 @@ describe('<SplashScreen />', () => {
     )
     expect(deepLinkProcessed).toHaveBeenCalledWith('3651947c')
     expect(navigation.push).toHaveBeenCalledWith(invitationRoute, {
+      notificationOpenOptions: null,
       senderDID: senderDid1,
       token: '3651947c',
     })

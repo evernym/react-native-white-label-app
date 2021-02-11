@@ -5,16 +5,6 @@ import _flatten from 'lodash.flatten'
 import _merge from 'lodash.merge'
 import { NativeModules } from 'react-native'
 
-// $FlowExpectedError[cannot-resolve-module] external file
-import { APP_NAME } from '../../../../../app/evernym-sdk/app'
-
-// $FlowExpectedError[cannot-resolve-module] external file
-import { CUSTOM_LOG_UTILS } from '../../../../../app/evernym-sdk/logs'
-;(CUSTOM_LOG_UTILS: {
-  encryptionKey: string,
-  publicKeyUrl: string,
-})
-
 import type { Store } from '../store/type-store'
 import {
   CLAIM_RECEIVED,
@@ -145,6 +135,7 @@ import {
   SERVER_ENVIRONMENT_CHANGED,
   SWITCH_ENVIRONMENT,
 } from './type-config-store'
+import { appName, CustomLogUtils } from '../external-exports'
 
 const { RNIndy } = NativeModules
 
@@ -298,8 +289,8 @@ export const customLogger = {
       this.initOnlyOnce = true
       this.logLevel = levelName
 
-      if (CUSTOM_LOG_UTILS.publicKeyUrl) {
-        const fetchPromise = fetch(CUSTOM_LOG_UTILS.publicKeyUrl)
+      if (CustomLogUtils.publicKeyUrl) {
+        const fetchPromise = fetch(CustomLogUtils.publicKeyUrl)
         if (fetchPromise) {
           fetchPromise
             .then(function (response) {
@@ -307,7 +298,7 @@ export const customLogger = {
             })
             .then(function (verKey) {
               //console.log('The encryption key is: ', verKey)
-              CUSTOM_LOG_UTILS.encryptionKey = verKey
+              CustomLogUtils.encryptionKey = verKey
             })
         }
       }
@@ -371,7 +362,7 @@ export const customLogger = {
 
     if (recordAsString.indexOf('%c prev state') === -1) {
       writeToVcxLog(
-        `${APP_NAME}.ReactNative`,
+        `${appName}.ReactNative`,
         record.levelName,
         recordAsString,
         rotatingLog
@@ -392,7 +383,7 @@ export const customLogger = {
     const rotatingLog = this.getVcxLogFile()
     this.encryptedLogFile = await encryptVcxLog(
       rotatingLog,
-      CUSTOM_LOG_UTILS.encryptionKey ?? ''
+      CustomLogUtils.encryptionKey ?? ''
     )
     //console.log('Setting encrypted vcx log file to: ', this.encryptedLogFile)
     return this.encryptedLogFile

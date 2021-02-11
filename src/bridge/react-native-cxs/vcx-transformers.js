@@ -1,8 +1,5 @@
 // @flow
 
-// $FlowExpectedError[cannot-resolve-module] external file
-import { VCX_PUSH_TYPE } from '../../../../../../app/evernym-sdk/provision'
-
 import type { GenericObject } from '../../common/type-common'
 import type { AgencyPoolConfig } from '../../store/type-config-store'
 import type {
@@ -25,6 +22,7 @@ import type { CredentialOffer } from '../../claim-offer/type-claim-offer'
 import type { MyPairwiseInfo } from '../../store/type-connection-store'
 import type { ClaimOfferPushPayload } from '../../push-notification/type-push-notification'
 import { getWalletKey } from '../../services/storage'
+import { vcxPushType } from '../../external-exports'
 
 export const paymentHandle = 0
 const commonConfigParams = {
@@ -102,7 +100,7 @@ export function convertCxsPushConfigToVcxPushTokenConfig(
   pushConfig: CxsPushTokenConfig
 ): VcxPushTokenConfig {
   return {
-    type: VCX_PUSH_TYPE,
+    type: vcxPushType,
     id: pushConfig.uniqueId,
     value: pushConfig.pushToken,
   }

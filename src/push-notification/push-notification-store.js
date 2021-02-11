@@ -116,6 +116,7 @@ import { showInAppNotification } from '../in-app-notification/in-app-notificatio
 import { ATTRIBUTE_TYPE } from '../proof-request/type-proof-request'
 import { flattenAsync } from '../common/flatten-async'
 import { Platform } from 'react-native'
+import { usePushNotifications } from '../external-exports'
 
 const blackListedRoute = {
   [proofRequestRoute]: proofRequestRoute,
@@ -311,7 +312,22 @@ export const allowPushNotifications = () => ({
   type: ALLOW_PUSH_NOTIFICATIONS,
 })
 
+export function* enablePushNotificationsSaga(force?: boolean): Generator<*, *, *> {
+  // NOTE: Enable push notification
+  if (usePushNotifications){
+    const pushToken = yield call(safeGet, PUSH_COM_METHOD)
+    if (!pushToken || force) {
+      yield call(() => messaging().requestPermission())
+      yield put(pushNotificationPermissionAction(true))
+    }
+  }
+}
+
 function* allowPushNotificationsSaga(): Generator<*, *, *> {
+  if (!usePushNotifications){
+    return
+  }
+
   const pushToken = yield call(safeGet, PUSH_COM_METHOD)
   if (!pushToken) {
     const authorizationStatus: FirebaseMessagingTypes.AuthorizationStatus = yield call(

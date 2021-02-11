@@ -88,6 +88,7 @@ import { CONNECTION_INVITE_TYPES } from '../invitation/type-invitation'
 import { getPushNotificationAuthorizationStatus } from '../push-notification/components/push-notification-permission-screen'
 import Snackbar from 'react-native-snackbar'
 import { PROOF_REQUEST_STATUS } from '../proof-request/type-proof-request'
+import { usePushNotifications } from '../external-exports'
 
 export function convertQrCodeToInvitation(qrCode: QrCodeShortInvite) {
   const qrSenderDetail = qrCode[QR_CODE_SENDER_DETAIL]
@@ -228,6 +229,7 @@ export class QRCodeScannerScreen extends Component<
         qrCodeInvitationPayload: invitation.payload,
         // do not send redirect message if we scanned the same invitation twice
         sendRedirectMessage: sendRedirectMessage,
+        notificationOpenOptions: null,
       }
       navigation.navigate(homeRoute, {
         screen: homeDrawerRoute,
@@ -245,7 +247,7 @@ export class QRCodeScannerScreen extends Component<
     if (Platform.OS === 'ios') {
       const isAuthorized = await getPushNotificationAuthorizationStatus()
 
-      if (isAuthorized) {
+      if (isAuthorized || !usePushNotifications) {
         navigationFn(invitationRoute, {
           senderDID: invitation.payload.senderDID,
         })
@@ -382,7 +384,7 @@ export class QRCodeScannerScreen extends Component<
     const navigationFn = navigation.push || navigation.navigate
 
     if (Platform.OS === 'ios') {
-      if (isAuthorized) {
+      if (isAuthorized || !usePushNotifications) {
         navigationFn(mainRoute, {
           backRedirectRoute,
           uid,
@@ -490,6 +492,7 @@ export class QRCodeScannerScreen extends Component<
 
           this.props.navigation.navigate(homeRoute, {
             screen: homeDrawerRoute,
+            params: undefined,
           })
           return
         }
@@ -543,6 +546,7 @@ export class QRCodeScannerScreen extends Component<
 
           this.props.navigation.navigate(homeRoute, {
             screen: homeDrawerRoute,
+            params: undefined,
           })
           return
         }

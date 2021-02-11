@@ -292,6 +292,9 @@ export const getPushNotification = (state: Store) =>
 export const getPushNotificationError = (state: Store) =>
   state.pushNotification.error
 
+export const getNavigateToRoute = (state: Store) =>
+  state.pushNotification.navigateRoute
+
 /*
 * Selectors related to Route Store
 * */

@@ -1,8 +1,5 @@
 // @flow
 
-// $FlowExpectedError[cannot-resolve-module] external file
-import { APP_NAME } from '../../../../../app/evernym-sdk/app'
-
 import type {
   InvitationReceivedActionData,
   InvitationReceivedAction,
@@ -16,6 +13,7 @@ import { proofRequestReceived } from '../proof-request/proof-request-store'
 import type { ClaimOfferPayload } from '../claim-offer/type-claim-offer'
 import type { InvitationPayload } from '../invitation/type-invitation'
 import type { ProofRequestPayload } from '../proof-request/type-proof-request'
+import { appName } from '../external-exports'
 
 export type QRCodeScannerScreenState = {
   isCameraEnabled: boolean,
@@ -52,4 +50,4 @@ export type OutOfBandNavigation = {
 
 export const MESSAGE_NO_CAMERA_PERMISSION = 'No Camera permission'
 
-export const MESSAGE_ALLOW_CAMERA_PERMISSION = `Please allow ${APP_NAME} to access camera from camera settings`
+export const MESSAGE_ALLOW_CAMERA_PERMISSION = `Please allow ${appName} to access camera from camera settings`

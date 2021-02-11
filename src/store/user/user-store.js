@@ -4,9 +4,6 @@ import type { Saga } from 'redux-saga'
 import RNFetchBlob from 'rn-fetch-blob'
 import ImagePicker from 'react-native-image-crop-picker'
 
-// $FlowExpectedError[cannot-resolve-module] external file
-import { APP_NAME } from '../../../../../../app/evernym-sdk/app'
-
 import {
   secureSet,
   safeSet,
@@ -47,6 +44,7 @@ import { getUserAvatarName } from '../../store/store-selector'
 import { VCX_INIT_SUCCESS } from '../type-config-store'
 import { captureError } from '../../services/error/error-handler'
 import AlertAsync from 'react-native-alert-async'
+import { appName } from '../../external-exports'
 
 const initialState = {
   isFetching: false,
@@ -239,7 +237,7 @@ export function* selectUserAvatarSaga(): Generator<*, *, *> {
       yield call(
         AlertAsync,
         'Add Avatar',
-        `${APP_NAME} will ask for access to your photo library in order to set your avatar.`,
+        `${appName} will ask for access to your photo library in order to set your avatar.`,
         [{ text: 'OK' }],
         { cancelable: true }
       )

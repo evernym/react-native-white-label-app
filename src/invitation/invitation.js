@@ -71,6 +71,7 @@ export class Invitation extends Component<InvitationProps, void> {
     } else {
       this.props.navigation.navigate(homeRoute, {
         screen: homeDrawerRoute,
+        params: undefined,
       })
     }
   }
@@ -95,6 +96,7 @@ export class Invitation extends Component<InvitationProps, void> {
           })
           this.props.navigation.navigate(homeRoute, {
             screen: homeDrawerRoute,
+            params: undefined,
           })
         } else if (response === ResponseType.rejected) {
           this.props.invitationRejected(payload.senderDID)

@@ -4,9 +4,6 @@ import { StyleSheet, View } from 'react-native'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-// $FlowExpectedError[cannot-resolve-module] external file
-import { APP_NAME } from '../../../../../app/evernym-sdk/app'
-
 import type { Store } from '../store/type-store'
 import type { LockSetupSuccessProps, LockSetupSuccessState } from './type-lock'
 
@@ -22,6 +19,7 @@ import { UNLOCKING_APP_WAIT_MESSAGE } from '../common/message-constants'
 
 import { EvaIcon, LOCK_ICON } from '../common/icons'
 import { moderateScale } from 'react-native-size-matters'
+import { appName } from '../external-exports'
 
 export class LockSetupSuccess extends Component<
   LockSetupSuccessProps,
@@ -55,8 +53,8 @@ export class LockSetupSuccess extends Component<
       this.props.route &&
       this.props.route.params &&
       this.props.route.params.changePin === true
-        ? `Your ${APP_NAME} app is secured.`
-        : `Your ${APP_NAME} app is now secured`
+        ? `Your ${appName} app is secured.`
+        : `Your ${appName} app is now secured`
 
     if (isFetchingInvitation === true) {
       message = UNLOCKING_APP_WAIT_MESSAGE

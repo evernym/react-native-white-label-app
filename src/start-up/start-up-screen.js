@@ -15,11 +15,7 @@ import {startUpRoute, lockPinSetupRoute} from '../common';
 import {OFFSET_2X, colors, fontFamily, fontSizes} from '../common/styles';
 import {verticalScale, moderateScale} from 'react-native-size-matters';
 
-import {
-  BACKGROUND_IMAGE,
-  CustomStartUpScreen,
-  // $FlowExpectedError[cannot-resolve-module] external file
-} from '../../../../../app/evernym-sdk/startup';
+import { startupBackgroundImage, CustomStartUpScreen } from '../external-exports'
 
 const {width} = Dimensions.get('screen');
 
@@ -52,7 +48,7 @@ function StartUpScreen(props: { navigation: Function }) {
   const renderCustomStartUpScreen = useCallback(() => (
     <View style={style.container}>
       <ImageBackground
-        source={BACKGROUND_IMAGE}
+        source={startupBackgroundImage}
         style={style.background}
         resizeMode="cover">
         <Animated.View
@@ -65,7 +61,7 @@ function StartUpScreen(props: { navigation: Function }) {
         </Animated.View>
       </ImageBackground>
     </View>
-  ), [BACKGROUND_IMAGE]);
+  ), [startupBackgroundImage]);
 
   const renderDefaultStartUpScreen = useCallback(() => (
     <View style={style.container}>
@@ -91,9 +87,9 @@ function StartUpScreen(props: { navigation: Function }) {
         </Animated.View>
       </ImageBackground>
     </View>
-  ), [BACKGROUND_IMAGE]);
+  ), [startupBackgroundImage]);
 
-  return BACKGROUND_IMAGE ?
+  return startupBackgroundImage ?
     renderCustomStartUpScreen() :
     renderDefaultStartUpScreen();
 }

@@ -17,13 +17,14 @@ import type {
 import store from './store'
 import { ROUTE_UPDATE } from './store/route-store'
 import { Container } from './components'
-import { PushNotification } from './push-notification'
+import { PushNotification, ScreenNavigator } from './push-notification'
 import DeepLink from './deep-link'
 import { colors } from './common/styles/constant'
 import { MSDKAppNavigator } from './navigation/navigator'
 import { sendLogsRoute } from './common'
 import AppStatus from './app-status/app-status'
 import Offline from './offline/offline'
+import { usePushNotifications } from './external-exports'
 
 if (Platform.Version < 29) {
   // enable react-native-screens
@@ -51,10 +52,10 @@ export class MSDKMeApp extends Component<AppProps, void> {
   navigatorRef = React.createRef<NavigationContainer>()
   currentRouteParams:
     | {
-        onAvoid?: () => void,
-        existingPin?: boolean,
-        [key: string]: mixed,
-      }
+    onAvoid?: () => void,
+    existingPin?: boolean,
+    [key: string]: mixed,
+  }
     | null
     | typeof undefined = null
   exitTimeout: number = 0
@@ -105,7 +106,7 @@ export class MSDKMeApp extends Component<AppProps, void> {
       params,
     })
     this.navigatorRef.current &&
-      this.navigatorRef.current.dispatch(navigateAction)
+    this.navigatorRef.current.dispatch(navigateAction)
   }
 
   render() {
@@ -117,7 +118,11 @@ export class MSDKMeApp extends Component<AppProps, void> {
               backgroundColor={colors.white}
               barStyle="dark-content"
             />
-            <PushNotification navigateToRoute={this.navigateToRoute} />
+            {
+              usePushNotifications &&
+              <PushNotification navigateToRoute={this.navigateToRoute} />
+            }
+            <ScreenNavigator navigateToRoute={this.navigateToRoute} />
             <DeepLink />
             <AppStatus />
             <NavigationContainer

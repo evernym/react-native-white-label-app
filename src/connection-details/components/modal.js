@@ -11,9 +11,7 @@ import { ModalContent } from './modal-content'
 import { ModalButton } from '../../components/connection-details/modal-button'
 import { modalScreenRoute } from '../../common/route-constants'
 import { modalOptions } from '../utils/modalOptions'
-
-// $FlowExpectedError[cannot-resolve-module] external file
-import { HEADLINE, CustomCredentialModal } from '../../../../../../app/evernym-sdk/credential-offer'
+import { CustomCredentialModal } from '../../external-exports'
 
 type CredentialReceivedProps = {
   route: {
@@ -55,7 +53,7 @@ const CredentialModal = (props: CredentialReceivedProps) => {
   )
 }
 
-const headline = HEADLINE || 'My Credential'
+const headline = 'My Credential'
 const screen = CustomCredentialModal || CredentialModal
 const navigationOptions =
   CustomCredentialModal ?

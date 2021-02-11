@@ -13,18 +13,16 @@ import { colors } from '../common/styles/constant'
 import { CLAIM_REQUEST_STATUS } from '../claim-offer/type-claim-offer'
 import { deleteClaim } from '../claim/claim-store'
 import { getClaimOffers } from '../store/store-selector'
-
-import {
-  HEADLINE,
-  SHOW_CAMERA_BUTTON,
-  MyCredentialsViewEmptyState,
-  CustomMyCredentialsScreen,
-  // $FlowExpectedError[cannot-resolve-module] external file
-} from '../../../../../app/evernym-sdk/credentials'
 import { EmptyState } from '../home/empty-state'
+import {
+  credentialsHeadline,
+  credentialsShowCameraButton,
+  CustomMyCredentialsScreen,
+  MyCredentialsViewEmptyState,
+} from '../external-exports'
 
-const headline = HEADLINE || 'MY Credentials'
-const showCameraButton = typeof SHOW_CAMERA_BUTTON === 'boolean' ? SHOW_CAMERA_BUTTON : true
+const headline = credentialsHeadline || 'MY Credentials'
+const showCameraButton = typeof credentialsShowCameraButton === 'boolean' ? credentialsShowCameraButton : true
 
 const MyCredentialsScreen = ({
                                   route,

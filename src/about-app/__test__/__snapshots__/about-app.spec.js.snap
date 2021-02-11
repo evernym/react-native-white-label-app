@@ -657,7 +657,9 @@ exports[`user about app screen should render properly and snapshot should match 
                                   "marginTop": -12,
                                 }
                               }
-                            />
+                            >
+                              Your Company
+                            </Text>
                           </View>
                           <View
                             style={

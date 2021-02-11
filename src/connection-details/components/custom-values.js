@@ -16,9 +16,7 @@ import { colors, fontFamily, fontSizes } from '../../common/styles/constant'
 import { ModalPushLeft } from '../utils/modal-animation'
 import { ExpandableText } from '../../components/expandable-text/expandable-text'
 import { modalOptions } from '../utils/modalOptions'
-
-// $FlowExpectedError[cannot-resolve-module] external file
-import { CustomEnterAttributeValueModal } from '../../../../../../app/evernym-sdk/proof-request'
+import { CustomEnterAttributeValueModal } from '../../external-exports'
 
 const CustomValues = ({
                         navigation: { goBack },
