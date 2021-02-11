@@ -26,7 +26,7 @@ export const colors = customColors || {
 }
 
 // Fonts
-export const fontFamily = customFontFamily || 'Lato'
+export const fontFamily = customFontFamily || 'System'
 export const fontSizes = customFontSizes || {
   size0: 42,
   size1: 26,
