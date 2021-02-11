@@ -28,17 +28,16 @@ import { NotificationCard } from '../in-app-notification/in-app-notification-car
 import { colors } from '../common/styles'
 import type { MyConnectionsProps } from './type-my-connections'
 
-import {
-  HEADLINE,
-  SHOW_CAMERA_BUTTON,
-  MyConnectionsViewEmptyState,
-  CustomMyConnectionsScreen,
-// $FlowExpectedError[cannot-resolve-module] external file
-} from '../../../../../app/evernym-sdk/connections'
 import { EmptyState } from '../home/empty-state'
+import {
+  CustomConnectionEmptyState,
+  connectionsHeadline,
+  connectionsShowCameraButton,
+  CustomMyConnectionsScreen,
+} from '../external-exports'
 
-const headline = HEADLINE || 'My Connections'
-const showCameraButton = typeof SHOW_CAMERA_BUTTON === 'boolean' ? SHOW_CAMERA_BUTTON : true
+const headline = connectionsHeadline || 'My Connections'
+const showCameraButton = typeof connectionsShowCameraButton === 'boolean' ? connectionsShowCameraButton : true
 
 const {
   container,
@@ -209,7 +208,7 @@ const MyConnections = ({
       <NotificationCard/>
       <View style={container}>
         {hasNoConnection && (
-          MyConnectionsViewEmptyState ? <MyConnectionsViewEmptyState /> : <EmptyState />
+          CustomConnectionEmptyState ? <CustomConnectionEmptyState /> : <EmptyState />
         )}
         <FlatList
           keyExtractor={keyExtractor}

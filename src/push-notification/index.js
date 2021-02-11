@@ -4,5 +4,5 @@ export {
   remoteMessageParser,
 } from './push-notification'
 export {
-  default as PushNotificationNavigator,
-} from './push-notification-navigator'
+  default as ScreenNavigator,
+} from './screen-navigator'

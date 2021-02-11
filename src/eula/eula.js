@@ -26,11 +26,8 @@ import { vcxInitStart } from '../store/route-store'
 import { moderateScale, verticalScale } from 'react-native-size-matters'
 import { EvaIcon, SHARE_ICON } from '../common/icons'
 
-import {
-  CustomEulaScreen,
-  // $FlowExpectedError[cannot-resolve-module] external file
-} from '../../../../../app/evernym-sdk/eula';
 import { getPendingRedirection } from '../store/store-selector'
+import { CustomEulaScreen } from '../external-exports'
 
 export const EulaScreen = ({
   dispatch,

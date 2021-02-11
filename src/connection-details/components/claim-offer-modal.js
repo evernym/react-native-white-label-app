@@ -44,16 +44,13 @@ import { colors } from '../../common/styles/constant'
 import { acceptOutOfBandInvitation } from '../../invitation/invitation-store'
 import { authForAction } from '../../lock/lock-auth-for-action'
 
-import {
-  HEADLINE,
-  ACCEPT_BUTTON_TEXT,
-  DENY_BUTTON_TEXT,
-  CustomCredentialOfferModal,
-  // $FlowExpectedError[cannot-resolve-module] external file
-} from '../../../../../../app/evernym-sdk/credential-offer'
 import { modalOptions } from '../utils/modalOptions'
-
-const headline = HEADLINE || 'Credential Offer'
+import {
+  credentialOfferAcceptButtonText,
+  credentialOfferDenyButtonText,
+  credentialOfferHeadline,
+  CustomCredentialOfferModal,
+} from '../../external-exports'
 
 export class ClaimOfferModal extends Component<any, *> {
   constructor(props: any) {
@@ -91,10 +88,10 @@ export class ClaimOfferModal extends Component<any, *> {
     const isClaimOfferAccepted = status === CLAIM_OFFER_STATUS.ACCEPTED
 
     let acceptButtonText =
-      ACCEPT_BUTTON_TEXT ||
+      credentialOfferAcceptButtonText ||
       (payTokenValue ? 'Accept & Pay' : 'Accept Credential')
     let denyButtonText =
-      DENY_BUTTON_TEXT || (this.props.isOOBInvitation ? 'Cancel' : 'Reject')
+      credentialOfferDenyButtonText || (this.props.isOOBInvitation ? 'Cancel' : 'Reject')
 
     // NOTE: Just to be safe, we changed the hasNotAcceptedTAA to hardcoded false, so we can be sure 0 tokens doesn't affect the flow.
     const hasNotAcceptedTAA = false
@@ -341,6 +338,7 @@ export class ClaimOfferModal extends Component<any, *> {
     } else {
       this.props.navigation.navigate(homeRoute, {
         screen: homeDrawerRoute,
+        params: undefined,
       })
     }
   }
@@ -444,7 +442,7 @@ const screen = CustomCredentialOfferModal || ClaimOfferModal
 const navigationOptions =
   CustomCredentialOfferModal ?
     null :
-    modalOptions(headline, 'CloseIcon')
+    modalOptions(credentialOfferHeadline, 'CloseIcon')
 
 export const claimOfferScreen = {
   routeName: claimOfferRoute,

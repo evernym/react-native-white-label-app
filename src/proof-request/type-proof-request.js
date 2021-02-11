@@ -1,8 +1,5 @@
 // @flow
 
-// $FlowExpectedError[cannot-resolve-module] external file
-import { APP_NAME } from '../../../../../app/evernym-sdk/app'
-
 import { INITIAL_TEST_ACTION } from '../common/type-common'
 import type {
   CustomError,
@@ -24,6 +21,7 @@ import { updateAttributeClaim } from '../proof/proof-store'
 import type { LockStore } from '../lock/type-lock'
 import { applyAttributesForPresentationRequest } from './proof-request-store'
 import { getPredicateTitle } from '../connection-details/utils/getPredicateTitle'
+import { appName } from '../external-exports'
 
 export type RequestedAttribute = {|
   name?: string,
@@ -473,7 +471,7 @@ export const MESSAGE_ERROR_DISSATISFIED_ATTRIBUTES_DESCRIPTION = (
   connectionName: string
 ) => `You are unable to fulfill this request from ${connectionName}. This could be because
 
-- You don’t have the required credentials in your ${APP_NAME} wallet
+- You don’t have the required credentials in your ${appName} wallet
 - ${connectionName} has indicated you may not type your own answers to certain fields in this request
 - Some of the attributes ${connectionName} is requesting come from credentials you own that have been revoked or expired
 

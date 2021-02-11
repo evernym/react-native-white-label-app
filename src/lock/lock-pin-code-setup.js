@@ -2,9 +2,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { useDispatch } from 'react-redux'
 
-// $FlowExpectedError[cannot-resolve-module] external file
-import { LockHeader } from '../../../../../app/evernym-sdk/lock'
-
 import {
   lockPinSetupRoute,
   lockSelectionRoute,
@@ -20,6 +17,7 @@ import { moderateScale, scale, verticalScale } from 'react-native-size-matters'
 import { Header } from '../components'
 import { useFocusEffect } from '@react-navigation/native'
 import { headerNavigationOptions } from '../navigation/navigation-header-config'
+import { LockHeader } from '../external-exports'
 
 let keyboardDidHideListener
 let keyboardDidShowListener

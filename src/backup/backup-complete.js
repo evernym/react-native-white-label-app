@@ -3,9 +3,6 @@
 import React, { PureComponent } from 'react'
 import { Image } from 'react-native'
 
-// $FlowExpectedError[cannot-resolve-module] external file
-import { APP_NAME } from '../../../../../app/evernym-sdk/app'
-
 import type { BackupCompleteProps, ReactNavigationBackup } from './type-backup'
 
 import {
@@ -29,6 +26,7 @@ import {
 } from './backup-constants'
 import styles from './styles'
 import { withStatusBar } from '../components/status-bar/status-bar'
+import { appName } from '../external-exports'
 
 const transparentBands = require('../images/transparentBands.png')
 const closeImage = require('../images/iconClose.png')
@@ -95,7 +93,7 @@ export class BackupComplete extends PureComponent<BackupCompleteProps, void> {
                   style={styles.backupCompleteText}
                 >
                   If you ever have to start with a new installation of
-                  {APP_NAME} you will need to recover from this saved backup
+                  {appName} you will need to recover from this saved backup
                   file.
                 </CustomText>
               </CustomView>
@@ -108,7 +106,7 @@ export class BackupComplete extends PureComponent<BackupCompleteProps, void> {
                   style={styles.backupCompleteText}
                 >
                   You will be asked to enter your Recovery Phrase during setup
-                  of your new {APP_NAME} application.
+                  of your new {appName} application.
                 </CustomText>
               </CustomView>
             </CustomView>

@@ -12,9 +12,6 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { PanGestureHandler, State } from 'react-native-gesture-handler'
 
-// $FlowExpectedError[cannot-resolve-module] external file
-import { APP_NAME } from '../../../../../app/evernym-sdk/app'
-
 import type { Store } from '../store/type-store'
 
 import { cloudBackupRoute, settingsRoute } from '../common'
@@ -52,6 +49,7 @@ import {
   WALLET_BACKUP_FAILURE,
 } from './type-backup'
 import { safeSet, walletSet } from '../services/storage'
+import { appName } from '../external-exports'
 
 const { height } = Dimensions.get('window')
 
@@ -191,7 +189,7 @@ export class CloudBackup extends Component<CloudBackupScreenProps, void> {
           bg={false}
           style={[{ color: color.bg.tertiary.font.seventh }]}
         >
-          When enabled, any changes to your {APP_NAME} app are automatically
+          When enabled, any changes to your {appName} app are automatically
           backed up to the Evernym Cloud. This makes recovery easier should you
           lose your phone.
         </CustomText>
@@ -201,9 +199,9 @@ export class CloudBackup extends Component<CloudBackupScreenProps, void> {
             bg={false}
             style={[{ color: color.bg.tertiary.font.seventh }]}
           >
-            All {APP_NAME} backups are encrypted and anonymized before leaving
+            All {appName} backups are encrypted and anonymized before leaving
             your phone. You will still need your Recovery Phrase and a fresh
-            install of {APP_NAME} to recover.
+            install of {appName} to recover.
           </CustomText>
         </CustomView>
 

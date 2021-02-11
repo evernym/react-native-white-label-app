@@ -6,18 +6,6 @@ import { createDrawerNavigator, DrawerItemList } from '@react-navigation/drawer'
 import { enableScreens } from 'react-native-screens'
 import VersionNumber from 'react-native-version-number'
 
-// $FlowExpectedError[cannot-resolve-module] external file
-import { APP_ICON, COMPANY_NAME } from '../../../../../app/evernym-sdk/app'
-
-import {
-  DrawerFooterContent,
-  DrawerHeaderContent,
-  EXTRA_MODALS,
-  EXTRA_SCREENS,
-  MENU_NAVIGATION_OPTIONS,
-// $FlowExpectedError[cannot-resolve-module] external file
-} from '../../../../../app/evernym-sdk/navigator'
-
 import { aboutAppScreen } from '../about-app/about-app'
 import { homeScreen } from '../home/home'
 import { myCredentialsScreen } from '../my-credentials/my-credentials'
@@ -98,13 +86,20 @@ import {
   SETTINGS_LABEL,
 } from './navigator-constants'
 import { styles } from './navigator-styles'
+import {
+  appIcon,
+  companyName,
+  CustomDrawerFooterContent,
+  CustomDrawerHeaderContent, customMenuNavigationOptions, customExtraModals, customExtraScreens,
+  usePushNotifications,
+} from '../external-exports'
 
 enableScreens()
 
 const { width } = Dimensions.get('screen')
 
-const footerIcon = APP_ICON || require('../images/app_icon.png')
-const builtBy = COMPANY_NAME || 'Your Company'
+const footerIcon = appIcon
+const builtBy = companyName
 
 const drawerComponent = (props: Object) => (
   <SafeAreaView
@@ -115,8 +110,8 @@ const drawerComponent = (props: Object) => (
   >
     <View style={styles.drawerHeader}>
       {
-        DrawerHeaderContent ?
-          <DrawerHeaderContent
+        CustomDrawerHeaderContent ?
+          <CustomDrawerHeaderContent
             width={verticalScale(136)}
             height={verticalScale(18)}
             fill={colors.gray3}
@@ -131,8 +126,8 @@ const drawerComponent = (props: Object) => (
     <DrawerItemList {...props} />
     <View style={styles.drawerFooterContainer}>
       <View style={styles.drawerFooter}>
-        {DrawerFooterContent ?
-          <DrawerFooterContent/> :
+        {CustomDrawerFooterContent ?
+          <CustomDrawerFooterContent/> :
           <>
             <Image
               source={footerIcon}
@@ -232,13 +227,13 @@ const defaultDrawerItemOptions = {
   },
 }
 
-const menuNavigationOptions = MENU_NAVIGATION_OPTIONS || [
+const menuNavigationOptions = customMenuNavigationOptions || [
   { name: CONNECTIONS },
   { name: CREDENTIALS },
   { name: SETTINGS },
 ]
-const extraScreens = EXTRA_SCREENS || []
-const extraModals = EXTRA_MODALS || []
+const extraScreens = customExtraScreens || []
+const extraModals = customExtraModals || []
 
 function AppDrawer() {
   const tabs = menuNavigationOptions.map((option) => {
@@ -537,11 +532,14 @@ export function MSDKAppNavigator() {
         component={AttributesValuesScreen.screen}
         options={AttributesValuesScreen.screen.navigationOptions}
       />
-      <ModalStack.Screen
-        name={pushNotificationPermissionScreen.routeName}
-        component={pushNotificationPermissionScreen.screen}
-        options={pushNotificationPermissionScreen.screen.navigationOptions}
-      />
+      {
+        usePushNotifications &&
+        <ModalStack.Screen
+          name={pushNotificationPermissionScreen.routeName}
+          component={pushNotificationPermissionScreen.screen}
+          options={pushNotificationPermissionScreen.screen.navigationOptions}
+        />
+      }
       {
         extraModals.map((screen) => (
           <CardStack.Screen

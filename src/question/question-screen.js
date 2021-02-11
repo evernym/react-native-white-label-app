@@ -38,14 +38,10 @@ import { QuestionActions } from './components/question-screen-actions'
 import { checkIfAnimationToUse } from '../bridge/react-native-cxs/RNCxs'
 import { customLogger } from '../store/custom-logger'
 
-import {
-  HEADLINE,
-  CustomQuestionModal,
-// $FlowExpectedError[cannot-resolve-module] external file
-} from '../../../../../app/evernym-sdk/question-dialog'
 import { modalOptions } from '../connection-details/utils/modalOptions'
+import { CustomQuestionModal, questionHeadline } from '../external-exports'
 
-const headline = HEADLINE || 'Question'
+const headline = questionHeadline || 'Question'
 
 export class Question extends Component<
   QuestionScreenProps,
@@ -208,6 +204,7 @@ export class Question extends Component<
     } else {
       this.props.navigation.navigate(homeRoute, {
         screen: homeDrawerRoute,
+        params: undefined,
       })
     }
   }

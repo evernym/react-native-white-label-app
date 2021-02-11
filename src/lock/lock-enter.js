@@ -4,11 +4,6 @@ import { StyleSheet, Platform, Image, Text, View } from 'react-native'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-// $FlowExpectedError[cannot-resolve-module] external file
-import { APP_NAME } from '../../../../../app/evernym-sdk/app'
-// $FlowExpectedError[cannot-resolve-module] external file
-import { LockHeader } from '../../../../../app/evernym-sdk/lock'
-
 import {
   Container,
   CustomText,
@@ -35,6 +30,7 @@ import type { Store } from '../store/type-store'
 import { ENTER_YOUR_PASS_CODE_MESSAGE } from '../common/message-constants'
 import { isBiggerThanShortDevice, } from '../common/styles/constant'
 import { verticalScale } from 'react-native-size-matters'
+import { appName, LockHeader } from '../external-exports'
 
 const lockImage = require('../images/lockCombo.png')
 const backgroundImg = require('../images/wave1.png')
@@ -180,7 +176,7 @@ export class LockEnter extends Component<LockEnterProps, LockEnterState> {
                 heavy
                 charcoal
               >
-                Please enter your current {APP_NAME} passcode!
+                Please enter your current {appName} passcode!
               </CustomText>
             </CustomView>
             <CustomView center>

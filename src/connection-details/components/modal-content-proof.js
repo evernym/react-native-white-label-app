@@ -54,9 +54,7 @@ import { colors } from '../../common/styles/constant'
 import { hasMissingAttributes } from '../utils'
 import { authForAction } from '../../lock/lock-auth-for-action.js'
 import { homeDrawerRoute, homeRoute } from '../../common'
-
-// $FlowExpectedError[cannot-resolve-module] external file
-import { ACCEPT_BUTTON_TEXT, DENY_BUTTON_TEXT, } from '../../../../../../app/evernym-sdk/proof-request'
+import { proofRequestAcceptButtonText, proofRequestDenyButtonText } from '../../external-exports'
 
 class ModalContentProof extends Component<
   ProofRequestAndHeaderProps,
@@ -217,6 +215,7 @@ class ModalContentProof extends Component<
     } else {
       this.props.navigation.navigate(homeRoute, {
         screen: homeDrawerRoute,
+        params: undefined,
       })
     }
   }
@@ -317,9 +316,8 @@ class ModalContentProof extends Component<
       (this.props.dissatisfiedAttributes &&
         this.props.dissatisfiedAttributes.length > 0)
 
-    let acceptButtonText = ACCEPT_BUTTON_TEXT || PRIMARY_ACTION_SEND
-    let denyButtonText =
-      DENY_BUTTON_TEXT || (this.props.isOOBInvitation ? 'Cancel' : 'Reject')
+    let acceptButtonText = proofRequestAcceptButtonText || PRIMARY_ACTION_SEND
+    let denyButtonText = proofRequestDenyButtonText || (this.props.isOOBInvitation ? 'Cancel' : 'Reject')
 
     const {
       canEnablePrimaryAction,

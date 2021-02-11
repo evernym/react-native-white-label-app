@@ -12,11 +12,7 @@ import { schemaValidator } from '../../../services/schema-validator'
 import { toUtf8FromBase64 } from '../../../bridge/react-native-cxs/RNCxs'
 import { addBase64Padding } from '../../../common/base64-padding'
 import { flatTryCatch } from '../../../common/flat-try-catch'
-
-// $FlowExpectedError[cannot-resolve-module] external file
-import { OIDC_TRUSTED_DOMAINS } from '../../../../../../../app/evernym-sdk/app'
-
-const trustedDomains = OIDC_TRUSTED_DOMAINS || []
+import { trustedDomains } from '../../../external-exports'
 
 export function isValidOIDCQrCode(parsedUrl: Url): QrCodeOIDC | false {
   const { protocol, query, hostname } = parsedUrl

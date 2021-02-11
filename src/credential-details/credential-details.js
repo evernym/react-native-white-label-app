@@ -14,11 +14,8 @@ import { ExpandableText } from '../components/expandable-text/expandable-text'
 import { bindActionCreators } from "redux"
 import { deleteClaim } from '../claim/claim-store'
 import { ViewPushLeft } from '../connection-details/utils/modal-animation'
+import { CustomCredentialDetailsScreen } from '../external-exports'
 
-import {
-  CustomCredentialDetailsScreen,
-// $FlowExpectedError[cannot-resolve-module] external file
-} from '../../../../../app/evernym-sdk/credentials'
 
 const CredentialDetails = (props: CredentialDetailsProps) => {
   const {

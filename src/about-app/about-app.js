@@ -6,21 +6,6 @@ import VersionNumber from 'react-native-version-number'
 import { ListItem } from 'react-native-elements'
 
 import {
-  INFO,
-  AdditionalInfo,
-  CustomAboutAppScreen,
-  // $FlowExpectedError[cannot-resolve-module] external file
-} from '../../../../../app/evernym-sdk/about'
-
-import {
-  APP_LOGO,
-  APP_NAME,
-  COMPANY_LOGO,
-  COMPANY_NAME,
-  // $FlowExpectedError[cannot-resolve-module] external file
-} from '../../../../../app/evernym-sdk/app'
-
-import {
   TermsAndConditionsTitle,
   PrivacyPolicyTitle,
 } from '../common/privacyTNC-constants'
@@ -35,8 +20,17 @@ import { PrivacyTNC } from '../privacy-tnc/privacy-tnc-screen'
 import { Header } from '../components'
 import { color, colors } from '../common/styles'
 import { getEnvironmentName } from '../store/store-selector'
+import {
+  aboutAppInfo,
+  AdditionalInfo,
+  appLogo,
+  appName,
+  companyLogo,
+  companyName,
+  CustomAboutAppScreen,
+} from '../external-exports'
 
-const info = INFO || {
+const info = aboutAppInfo || {
   appLogo: true,
   appName: true,
   appVersion: true,
@@ -93,13 +87,13 @@ export const AboutApp = ({
       <CustomView center doubleVerticalSpace>
         {
           info.appLogo &&
-          <Image source={APP_LOGO}/>
+          <Image source={appLogo}/>
         }
         {
           info.appName &&
           <CustomView center doubleVerticalSpace>
             <CustomText bg="tertiary" tertiary bold>
-              {APP_NAME}
+              {appName}
             </CustomText>
           </CustomView>
         }
@@ -134,9 +128,9 @@ export const AboutApp = ({
                 built by
               </CustomText>
               {
-                COMPANY_LOGO ?
-                  <Image source={COMPANY_LOGO}/> :
-                  <Text style={styles.text}>{COMPANY_NAME}</Text>
+                companyLogo ?
+                  <Image source={companyLogo}/> :
+                  <Text style={styles.text}>{companyName}</Text>
               }
             </CustomView>
           )}

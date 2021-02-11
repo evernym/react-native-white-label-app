@@ -4,11 +4,6 @@ import React, { Component } from 'react'
 import { StyleSheet, Platform, Alert, PermissionsAndroid } from 'react-native'
 import { connect } from 'react-redux'
 
-// $FlowExpectedError[cannot-resolve-module] external file
-import { APP_NAME } from '../../../../../app/evernym-sdk/app'
-// $FlowExpectedError[cannot-resolve-module] external file
-import { SEND_LOGS_EMAIL } from '../../../../../app/evernym-sdk/logs'
-
 import type { SendLogsProps } from './type-send-logs'
 import type { Store } from '../store/type-store'
 import type { ReactNavigation } from '../common/type-common'
@@ -27,6 +22,7 @@ import store from '../store'
 import { BackButton } from '../components/back-button/back-button'
 import { headerNavigationOptions } from '../navigation/navigation-header-config'
 import { colors } from '../common/styles/constant'
+import { appName, sendLogsEmail } from '../external-exports'
 
 export class SendLogs extends Component<SendLogsProps, any> {
   constructor(props: SendLogsProps) {
@@ -89,8 +85,8 @@ export class SendLogs extends Component<SendLogsProps, any> {
     const logFile = customLogger.getEncryptedVcxLogFile()
     Mailer.mail(
       {
-        subject: `${APP_NAME} Application Log: ${logFile}`,
-        recipients: [SEND_LOGS_EMAIL || 'cmsupport@evernym.com'],
+        subject: `${appName} Application Log: ${logFile}`,
+        recipients: [sendLogsEmail || 'cmsupport@evernym.com'],
         body: '',
         isHTML: false,
         attachment: {
@@ -153,7 +149,7 @@ export class SendLogs extends Component<SendLogsProps, any> {
       <Container tertiary center>
         <CustomView pad center>
           <CustomText bg="secondary" secondary transparentBg semiBold>
-            Send error logs to {SEND_LOGS_EMAIL}?
+            Send error logs to {sendLogsEmail}?
           </CustomText>
         </CustomView>
         <CustomView center style={[styles.buttonContainer]}>
@@ -169,7 +165,7 @@ export class SendLogs extends Component<SendLogsProps, any> {
       <Container tertiary>
         <CustomView pad center>
           <CustomText bg="secondary" secondary transparentBg semiBold>
-            {APP_NAME} needs permission to write to the file system in order to
+            {appName} needs permission to write to the file system in order to
             send logs.
           </CustomText>
         </CustomView>

@@ -13,10 +13,7 @@ import {
   vcxShutdown,
 } from '../../bridge/react-native-cxs/RNCxs'
 
-// $FlowExpectedError[cannot-resolve-module] external file
-import { VCX_PUSH_TYPE } from '../../../../../../app/evernym-sdk/provision'
-// $FlowExpectedError[cannot-resolve-module] external file
-import { SPONSOR_ID } from '../../../../../../app/evernym-sdk/provision'
+import { sponsorId, vcxPushType } from '../../external-exports'
 
 export function* registerCloudAgentWithToken(
   agencyConfig: *
@@ -38,11 +35,11 @@ export function* registerCloudAgentWithToken(
     getProvisionToken,
     agencyConfig,
     {
-      type: VCX_PUSH_TYPE, // 1 means push notification, its the only one registered
+      type: vcxPushType, // 1 means push notification, its the only one registered
       id,
       value: `FCM:mock_value_just_to_register`,
     },
-    SPONSOR_ID
+    sponsorId
   )
   // Since in previous vcx API call, we used wallet
   // we need to close wallet and other open handles

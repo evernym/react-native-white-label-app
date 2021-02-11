@@ -12,7 +12,6 @@ import {
 } from 'redux-saga/effects'
 import delay from '@redux-saga/delay-p'
 import { zip } from 'react-native-zip-archive'
-import messaging from '@react-native-firebase/messaging'
 import {
   GENERATE_RECOVERY_PHRASE_SUCCESS,
   GENERATE_BACKUP_FILE_SUCCESS,
@@ -85,7 +84,6 @@ import {
   getHydrationSafeItem,
 } from '../services/storage'
 import type { CustomError } from '../common/type-common'
-import { PUSH_COM_METHOD } from '../common'
 import {
   LAST_SUCCESSFUL_BACKUP,
   LAST_SUCCESSFUL_CLOUD_BACKUP,
@@ -111,7 +109,7 @@ import { VCX_INIT_SUCCESS, __uniqueId } from '../store/type-config-store'
 import { pinHash as generateKey, generateSalt } from '../lock/pin-hash'
 import moment from 'moment'
 import { captureError } from '../services/error/error-handler'
-import { pushNotificationPermissionAction } from '../push-notification/push-notification-store'
+import { enablePushNotificationsSaga, } from '../push-notification/push-notification-store'
 import { connectionHistoryBackedUp } from '../connection-history/connection-history-store'
 import { cloudBackupFailure } from './backup-actions'
 
@@ -140,13 +138,7 @@ export function* cloudBackupSaga(
   try {
     yield put(cloudBackupLoading())
 
-    // NOTE: Enable push notification
-    // NOTE: Only do these two lines if we do not already have a push token
-    const pushToken = yield call(safeGet, PUSH_COM_METHOD)
-    if (!pushToken) {
-      yield call(() => messaging().requestPermission())
-      yield put(pushNotificationPermissionAction(true))
-    }
+    yield call(enablePushNotificationsSaga)
 
     let passphrase = yield call(secureGet, PASSPHRASE_STORAGE_KEY)
     let passphraseSalt = yield call(generateSalt, false)

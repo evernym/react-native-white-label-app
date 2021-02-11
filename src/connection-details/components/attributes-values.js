@@ -33,9 +33,7 @@ import { renderAttachmentIcon } from './modal-content'
 import { ModalPushLeft } from '../utils/modal-animation'
 import { ExpandableText } from '../../components/expandable-text/expandable-text'
 import { modalOptions } from '../utils/modalOptions'
-
-// $FlowExpectedError[cannot-resolve-module] external file
-import { CustomSelectAttributesValuesModal } from '../../../../../../app/evernym-sdk/proof-request'
+import { CustomSelectAttributesValuesModal } from '../../external-exports'
 
 export const keyExtractor = (item: Object) => item.claimUuid.toString()
 

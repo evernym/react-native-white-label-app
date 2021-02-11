@@ -5,9 +5,6 @@ import { Image } from 'react-native'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-// $FlowExpectedError[cannot-resolve-module] external file
-import { APP_NAME } from '../../../../../app/evernym-sdk/app'
-
 import {
   Container,
   CustomView,
@@ -44,6 +41,7 @@ import {
 import { BACKUP_STORE_STATUS } from './type-backup'
 import { getBackupStatus, getBackupWalletPath } from '../store/store-selector'
 import { withStatusBar } from '../components/status-bar/status-bar'
+import { appName } from '../external-exports'
 
 const transparentBands = require('../images/transparentBands.png')
 const backImage = require('../images/icon_backArrow_white.png')
@@ -207,7 +205,7 @@ export class ExportBackupFile extends Component<ExportBackupFileProps, void> {
               bold
               style={[styles.exportBackupSmallMessage]}
             >
-              This backup contains all your data in {APP_NAME}. Store it
+              This backup contains all your data in {appName}. Store it
               somewhere safe.
             </CustomText>
           </CustomView>

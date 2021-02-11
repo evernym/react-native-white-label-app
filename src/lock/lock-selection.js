@@ -15,9 +15,6 @@ import { bindActionCreators } from 'redux'
 import ToggleSwitch from 'react-native-flip-toggle-button'
 import { verticalScale, moderateScale } from 'react-native-size-matters'
 
-// $FlowExpectedError[cannot-resolve-module] external file
-import { LockHeader } from '../../../../../app/evernym-sdk/lock'
-
 import type { Store } from '../store/type-store'
 import { Container, CustomText, CustomView } from '../components'
 import {
@@ -51,6 +48,7 @@ import {
 import { safeToDownloadSmsInvitation } from '../sms-pending-invitation/sms-pending-invitation-store'
 import { SERVER_ENVIRONMENT } from '../store/type-config-store'
 import { Header } from '../components'
+import { LockHeader } from '../external-exports'
 
 const { width, height } = Dimensions.get('screen')
 

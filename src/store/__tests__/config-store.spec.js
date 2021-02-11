@@ -406,7 +406,7 @@ describe('server environment should change', () => {
           environmentDetails.paymentMethod
         )
       )
-      .put(updatePushToken(pushToken))
+      // .put(updatePushToken(pushToken))
       .put(vcxInitReset())
       .run()
   })

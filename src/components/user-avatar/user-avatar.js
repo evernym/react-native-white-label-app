@@ -9,15 +9,10 @@ import type { Store } from '../../store/type-store'
 
 import Icon from '../icon'
 import { selectUserAvatar } from '../../store/user/user-store'
-
-// $FlowExpectedError[cannot-resolve-module] external file
-import { DEFAULT_USER_AVATAR } from '../../../../../../app/evernym-sdk/app'
 import type { ImageSource } from '../../common/type-common'
 import { Avatar } from '..'
 import { getUserAvatarSource } from '../../store/store-utils'
-
-export const defaultUserAvatar =
-  DEFAULT_USER_AVATAR || require('../../images/noImage.png')
+import { defaultUserAvatar } from '../../external-exports'
 
 export class UserAvatarComponent extends Component<UserAvatarProps, void> {
   changeAvatar = () => {

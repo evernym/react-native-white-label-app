@@ -1,7 +1,6 @@
 // @flow
 
 import { unzip } from 'react-native-zip-archive'
-import messaging from '@react-native-firebase/messaging'
 import {
   takeLatest,
   all,
@@ -41,7 +40,7 @@ import { getRestoreStatus, getRestoreFileName } from '../store/store-selector'
 import { pinHash as generateKey, generateSalt } from '../lock/pin-hash'
 import { Platform } from 'react-native'
 import { hydrate, hydrateNonReduxData } from '../store/hydration-store'
-import { pushNotificationPermissionAction } from '../push-notification/push-notification-store'
+import { enablePushNotificationsSaga, } from '../push-notification/push-notification-store'
 import { safeSet, walletSet } from '../services/storage'
 import { PIN_ENABLED_KEY, IN_RECOVERY } from '../lock/type-lock'
 import { captureError } from '../services/error/error-handler'
@@ -145,11 +144,7 @@ export function* restoreFileDecrypt(
       //since connection is already there
       // so after push token update
       // we need to do requestPermission or else push notifications won't come
-      const requestPushNotificationPermission = () => {
-        messaging().requestPermission()
-      }
-      yield call(requestPushNotificationPermission)
-      yield put(pushNotificationPermissionAction(true))
+      yield call(enablePushNotificationsSaga, true)
     } catch (e) {
       // even if we user does not give permission for push notification
       // we should not be stopping from restore success event

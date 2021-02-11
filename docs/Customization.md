@@ -70,7 +70,6 @@ The base application settings should be specified in `app.js` file.
         export const COMPANY_NAME = 'Company'
         ```
 
-
 * `COMPANY_LOGO` - (image source, Optional) logo of a company built application. 
     * to omit 
          ```javascript
@@ -91,6 +90,36 @@ The base application settings should be specified in `app.js` file.
         export const DEFAULT_USER_AVATAR = require('user_avatar.png')
         ```
 
+#### Receiving Message
+
+There are two strategies regarding receiving messages by an application:
+
+1. **Polling** - app once in a while calls Cloud Agent to get all new messages for all existing connections.
+
+2. **Push Notifications** - There is configured Push Notification service which notifies the application about new messages.
+
+By default, app uses **Polling** strategy which follows rules:
+
+* Download messages by manual pulling screen down
+* Download messages when a user navigates to `Home` screen.
+* Download messages every 15 seconds when a user holds on `Home` screen. 
+* Download messages in 30 second after taking some action (accepting Connection Invitation / Credential Offer / Proof Request)
+
+If you wish to use **Push Notifications** strategy you need to set variable `USE_PUSH_NOTIFICATION` in the `app.js` module:
+* `USE_PUSH_NOTIFICATION` - (boolean, Optional) whether you want to enable push notifications logic.
+    * to use default - **false**
+        ```javascript
+        export const USE_PUSH_NOTIFICATION = null
+        ```
+    * to enable
+        ```javascript
+        export const USE_PUSH_NOTIFICATION = true
+        ```
+      
+**NOTE** that if you decided to enable Push Notifications you **MUST** configure Firebase for target build platforms!
+* [Android](./Build-Android.md#push-notifications-configuration)  
+* [iOS](./Build-iOS.md#push-notifications-configuration)  
+      
 #### Color theme
 
 Application color theme is set by a group of constants provided in `colors.js` configuration module. 

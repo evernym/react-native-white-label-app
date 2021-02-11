@@ -3,9 +3,6 @@
 import React, { Component } from 'react'
 import { Platform } from 'react-native'
 
-// $FlowExpectedError[cannot-resolve-module] external file
-import { APP_NAME } from '../../../../../app/evernym-sdk/app'
-
 import {
   selectRestoreMethodRoute,
   // selectRestoreMethod, not exported
@@ -35,6 +32,7 @@ import styles from '../backup/styles'
 import { customLogger } from '../store/custom-logger'
 import { RestoreStatus } from './type-restore'
 import type { RestoreProps } from './type-restore'
+import { appName } from '../external-exports'
 const closeImage = require('../images/icon-Close.png')
 const backup = require('../images/upload13x.png')
 const download = require('../images/download3x.png')
@@ -169,7 +167,7 @@ export class SelectRestoreMethod extends Component<RestoreProps, void> {
               center
               style={[{ color: colors.white }]}
             >
-              You have a {APP_NAME} backup .zip file on this device and your
+              You have a {appName} backup .zip file on this device and your
               Recovery Phrase ready.
             </CustomText>
           </CustomView>

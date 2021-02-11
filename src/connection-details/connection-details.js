@@ -41,11 +41,7 @@ import { INVITATION_ACCEPTED } from '../invitation/type-invitation'
 import { CONNECTION_FAIL } from '../store/type-connection-store'
 import { deleteConnectionAction, getConnections } from '../store/connections-store'
 import type { ConnectionHistoryEvent } from '../connection-history/type-connection-history'
-
-import {
-  CustomConnectionDetailsScreen,
-// $FlowExpectedError[cannot-resolve-module] external file
-} from '../../../../../app/evernym-sdk/connections'
+import { CustomConnectionDetailsScreen } from '../external-exports'
 
 const keyExtractor = (item: Object) => item.timestamp
 

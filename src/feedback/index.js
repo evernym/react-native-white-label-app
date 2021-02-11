@@ -1,9 +1,11 @@
 // @flow
 
-import { Apptentive, ApptentiveConfiguration } from 'apptentive-react-native'
+import {
+  Apptentive,
+  ApptentiveConfiguration as apptentiveCredentials,
+  ApptentiveConfiguration,
+} from 'apptentive-react-native'
 import { customLogger } from '../store/custom-logger'
-// $FlowExpectedError[cannot-resolve-module] external file
-import { APPTENTIVE_CREDENTIALS } from '../../../../../app/evernym-sdk/feedback'
 
 let apptentivePromise = null
 
@@ -13,8 +15,8 @@ export function setupApptentive() {
   }
 
   const configuration = new ApptentiveConfiguration(
-    APPTENTIVE_CREDENTIALS.apptentiveKey,
-    APPTENTIVE_CREDENTIALS.apptentiveSignature
+    apptentiveCredentials.apptentiveKey,
+    apptentiveCredentials.apptentiveSignature
   )
   if (__DEV__) configuration.logLevel = 'verbose'
 

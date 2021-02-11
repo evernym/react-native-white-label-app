@@ -41,9 +41,7 @@ import { ModalPushLeft } from '../utils/modal-animation'
 import { ExpandableText } from '../../components/expandable-text/expandable-text'
 import { BLANK_ATTRIBUTE_DATA_TEXT } from '../type-connection-details'
 import { modalOptions } from '../utils/modalOptions'
-
-// $FlowExpectedError[cannot-resolve-module] external file
-import { CustomSelectAttributeValueModal } from '../../../../../../app/evernym-sdk/proof-request'
+import { CustomSelectAttributeValueModal } from '../../external-exports'
 
 export const renderAvatarWithSource = (avatarSource: number | ImageSource) => {
   return <Avatar radius={18} src={avatarSource} />

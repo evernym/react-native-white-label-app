@@ -3,14 +3,10 @@ import DeviceInfo from 'react-native-device-info'
 import { StyleSheet } from 'react-native'
 import { Dimensions, Platform } from 'react-native'
 
-// $FlowExpectedError[cannot-resolve-module] external file
-import { COLORS } from '../../../../../../app/evernym-sdk/colors'
-
-// $FlowExpectedError[cannot-resolve-module] external file
-import { FONT_FAMILY, FONT_SIZES } from '../../../../../../app/evernym-sdk/font'
+import { customColors, customFontFamily, customFontSizes } from '../../external-exports'
 
 // Colors
-export const colors = COLORS || {
+export const colors = customColors || {
   main: '#86B93B',
   secondary: 'rgba(134, 185, 59, 0.15)',
   green1: '#86B93B',
@@ -30,8 +26,8 @@ export const colors = COLORS || {
 }
 
 // Fonts
-export const fontFamily = FONT_FAMILY || 'Lato'
-export const fontSizes = FONT_SIZES || {
+export const fontFamily = customFontFamily || 'Lato'
+export const fontSizes = customFontSizes || {
   size0: 42,
   size1: 26,
   size2: 23,
