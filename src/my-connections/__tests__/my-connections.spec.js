@@ -12,6 +12,7 @@ import {
 
 import { getNavigation, getStore } from '../../../__mocks__/static-data'
 import { MockedNavigator } from '../../../__mocks__/mock-navigator'
+import { SHOW_UNREAD_MESSAGES_BADGE_NEAR_WITH_MENU } from '../../components/header/type-header'
 
 describe('<MyConnectionsScreen />', () => {
   const store = getStore()
@@ -73,6 +74,7 @@ describe('<MyConnectionsScreen />', () => {
         },
       ],
       hasNoConnection: false,
+      showUnreadMessagesBadge: {SHOW_UNREAD_MESSAGES_BADGE_NEAR_WITH_MENU}
     }
   }
 })

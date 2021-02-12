@@ -6,7 +6,7 @@ import { connect, useSelector } from 'react-redux'
 import type { MyCredentialsProps, CredentialItem } from './type-my-credentials'
 import type { ClaimOfferPayload } from '../claim-offer/type-claim-offer'
 
-import { HomeHeader, CameraButton } from '../components'
+import { HeaderWithMenu, CameraButton } from '../components'
 import { CredentialsCards } from './cards/credentials-cards'
 import { myCredentialsRoute, qrCodeScannerTabRoute } from '../common'
 import { colors } from '../common/styles/constant'
@@ -20,6 +20,7 @@ import {
   CustomMyCredentialsScreen,
   MyCredentialsViewEmptyState,
 } from '../external-exports'
+import { SHOW_UNREAD_MESSAGES_BADGE_NEAR_WITH_MENU } from '../components/header/type-header'
 
 const headline = credentialsHeadline || 'MY Credentials'
 const showCameraButton = typeof credentialsShowCameraButton === 'boolean' ? credentialsShowCameraButton : true
@@ -65,10 +66,11 @@ const MyCredentialsScreen = ({
 
   return (
     <View style={styles.outerContainer}>
-      <HomeHeader
+      <HeaderWithMenu
         headline={headline}
         navigation={navigation}
         route={route}
+        showUnreadMessagesBadge={SHOW_UNREAD_MESSAGES_BADGE_NEAR_WITH_MENU}
       />
       <View
         style={styles.container}

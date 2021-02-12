@@ -9,6 +9,7 @@ import { MyCredentials } from '../my-credentials'
 import { Provider } from 'react-redux'
 import { MockedNavigator } from '../../../__mocks__/mock-navigator'
 import { defaultEnvironment } from '../../store/config-store'
+import { SHOW_UNREAD_MESSAGES_BADGE_NEAR_WITH_MENU } from '../../components/header/type-header'
 
 describe('my credentials screen', () => {
   jest.useFakeTimers()
@@ -57,6 +58,7 @@ describe('my credentials screen', () => {
       },
       environmentName: defaultEnvironment,
       route: {},
+      showUnreadMessagesBadge: {SHOW_UNREAD_MESSAGES_BADGE_NEAR_WITH_MENU}
     }
   }
 

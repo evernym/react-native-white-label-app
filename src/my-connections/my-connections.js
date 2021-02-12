@@ -7,7 +7,7 @@ import Snackbar from 'react-native-snackbar'
 import PushNotificationIOS from '@react-native-community/push-notification-ios'
 
 import { newConnectionSeen } from '../connection-history/connection-history-store'
-import { HomeHeader, CameraButton } from '../components'
+import { HeaderWithMenu, CameraButton } from '../components'
 import { ConnectionCard } from './connection-card/connection-card'
 import { qrCodeScannerTabRoute } from '../common'
 import { getConnections } from '../store/connections-store'
@@ -24,7 +24,6 @@ import { externalStyles } from './styles'
 import { getUnacknowledgedMessages } from '../store/config-store'
 import { GET_MESSAGES_LOADING } from '../store/type-config-store'
 import { withStatusBar } from '../components/status-bar/status-bar'
-import { NotificationCard } from '../in-app-notification/in-app-notification-card'
 import { colors } from '../common/styles'
 import type { MyConnectionsProps } from './type-my-connections'
 
@@ -35,6 +34,7 @@ import {
   connectionsShowCameraButton,
   CustomMyConnectionsScreen,
 } from '../external-exports'
+import { SHOW_UNREAD_MESSAGES_BADGE_NEAR_WITH_MENU } from '../components/header/type-header'
 
 const headline = connectionsHeadline || 'My Connections'
 const showCameraButton = typeof connectionsShowCameraButton === 'boolean' ? connectionsShowCameraButton : true
@@ -200,12 +200,13 @@ const MyConnections = ({
 
   return (
     <View style={outerContainer}>
-      <HomeHeader
+      <HeaderWithMenu
         headline={headline}
         navigation={navigation}
         route={route}
+        showUnreadMessagesBadge={SHOW_UNREAD_MESSAGES_BADGE_NEAR_WITH_MENU}
       />
-      <NotificationCard/>
+      {/*<NotificationCard/>*/}
       <View style={container}>
         {hasNoConnection && (
           CustomConnectionEmptyState ? <CustomConnectionEmptyState /> : <EmptyState />

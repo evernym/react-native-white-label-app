@@ -11,7 +11,7 @@ import type { Store } from '../store/type-store'
 import type { HomeProps } from './type-home'
 
 import { CONNECTION_ALREADY_EXIST, HISTORY_EVENT_STATUS } from '../connection-history/type-connection-history'
-import { HomeHeader, CameraButton } from '../components'
+import { HeaderWithMenu, CameraButton } from '../components'
 import {
   homeDrawerRoute,
   qrCodeScannerTabRoute,
@@ -43,6 +43,7 @@ import { UPDATE_ATTRIBUTE_CLAIM, ERROR_SEND_PROOF } from '../proof/type-proof'
 import { MESSAGE_TYPE } from '../api/api-constants'
 import { EmptyState } from './empty-state'
 import { homeHeadline, homeShowCameraButton, homeShowHistoryEvents, HomeViewEmptyState } from '../external-exports'
+import { SHOW_UNREAD_MESSAGES_BADGE_NEAR_WITH_TITLE } from '../components/header/type-header'
 
 const headline = homeHeadline || 'Home'
 const showHistoryEvents = typeof homeShowHistoryEvents === 'boolean' ? homeShowHistoryEvents : true
@@ -281,10 +282,11 @@ export class HomeScreen extends Component<HomeProps, void> {
   render() {
     return (
       <View style={styles.outerContainer}>
-        <HomeHeader
+        <HeaderWithMenu
           headline={headline}
           navigation={this.props.navigation}
           route={this.props.route}
+          showUnreadMessagesBadge={SHOW_UNREAD_MESSAGES_BADGE_NEAR_WITH_TITLE}
         />
         <View
           style={styles.container}

@@ -19,3 +19,6 @@ export const COMPANY_LOGO = null
 export const DEFAULT_USER_AVATAR = null
 
 export const STORAGE_KEY = null
+
+// whether you want to use Firebase Push Notifications
+export const USE_PUSH_NOTIFICATION = null

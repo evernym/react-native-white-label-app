@@ -8,7 +8,11 @@ export type HeaderProps = {
   headline?: string,
   hideBackButton?: boolean,
   transparent?: boolean,
+  showUnreadMessagesBadge?: string,
 }
+
+export const SHOW_UNREAD_MESSAGES_BADGE_NEAR_WITH_MENU = "menu"
+export const SHOW_UNREAD_MESSAGES_BADGE_NEAR_WITH_TITLE= "title"
 
 export const styles = StyleSheet.create({
   container: {
