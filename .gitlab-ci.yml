@@ -2,6 +2,7 @@
 stages:
   - prebuild
   - check
+  - test
 
 ### - Pre-build - ###
 # Helpers / Anchors
@@ -61,7 +62,9 @@ ubuntu-build:
   variables:
     DOCKERFILE_PATH: devops/images/ubuntu18.dockerfile
     DOCKER_IMAGE_NAME: ubuntu18
-
+  only:
+    changes:
+      - devops/images/ubuntu18.dockerfile
 
 # Jobs
 ## - Check license file - ##
@@ -73,6 +76,21 @@ license-data-check:
     refs:
       - branches
       - tags
-      - merge_requests
+  tags:
+    - docker-machine
+
+yarn-test:
+  stage: test
+  image: ${CI_REGISTRY_IMAGE}/ubuntu18:${CI_COMMIT_REF_SLUG}
+  script:
+    - sed -i 's/peerDependencies/dependencies/g' package.json
+    - yarn config set ignore-engines true
+    - yarn install
+    - yarn lint
+    - yarn test
+  only:
+    refs:
+      - branches
+      - tags
   tags:
     - docker-machine
