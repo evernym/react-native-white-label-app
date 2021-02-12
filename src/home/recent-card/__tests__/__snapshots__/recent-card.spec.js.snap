@@ -58,7 +58,7 @@ exports[`<RecentCard /> should render RecentCard component and match snapshot 1`
         style={
           Object {
             "color": "#A5A5A5",
-            "fontFamily": "Lato",
+            "fontFamily": "System",
             "fontSize": 8.735294117647058,
             "fontWeight": "normal",
           }
@@ -81,7 +81,7 @@ exports[`<RecentCard /> should render RecentCard component and match snapshot 1`
         style={
           Object {
             "color": "#A5A5A5",
-            "fontFamily": "Lato",
+            "fontFamily": "System",
             "fontSize": 7.147058823529411,
             "fontWeight": "normal",
           }
@@ -105,7 +105,7 @@ exports[`<RecentCard /> should render RecentCard component and match snapshot 1`
       style={
         Object {
           "color": "#A5A5A5",
-          "fontFamily": "Lato",
+          "fontFamily": "System",
           "fontSize": 6.352941176470588,
           "fontStyle": "italic",
           "fontWeight": "normal",

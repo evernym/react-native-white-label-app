@@ -208,7 +208,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render CLAIM OFFER RECEI
             Array [
               Object {
                 "color": "#777777",
-                "fontFamily": "Lato",
+                "fontFamily": "System",
                 "fontSize": 21.057142857142857,
                 "marginLeft": -47.85714285714286,
               },
@@ -426,7 +426,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render CLAIM OFFER RECEI
             style={
               Object {
                 "color": "#777777",
-                "fontFamily": "Lato",
+                "fontFamily": "System",
                 "fontSize": 9.571428571428571,
                 "textAlign": "left",
               }
@@ -441,7 +441,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render CLAIM OFFER RECEI
             style={
               Object {
                 "color": "#505050",
-                "fontFamily": "Lato",
+                "fontFamily": "System",
                 "fontSize": 14.357142857142858,
                 "fontWeight": "500",
                 "marginBottom": 1.9142857142857141,
@@ -459,7 +459,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render CLAIM OFFER RECEI
             style={
               Object {
                 "color": "#505050",
-                "fontFamily": "Lato",
+                "fontFamily": "System",
                 "fontSize": 12.442857142857143,
                 "textAlign": "left",
               }
@@ -507,7 +507,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render CLAIM OFFER RECEI
                 style={
                   Object {
                     "color": "#FFFFFF",
-                    "fontFamily": "Lato",
+                    "fontFamily": "System",
                     "fontSize": 12.442857142857143,
                     "fontWeight": "700",
                   }
@@ -742,7 +742,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render CONNECTED properl
             Array [
               Object {
                 "color": "#777777",
-                "fontFamily": "Lato",
+                "fontFamily": "System",
                 "fontSize": 21.057142857142857,
                 "marginLeft": -47.85714285714286,
               },
@@ -951,7 +951,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render CONNECTED properl
             style={
               Object {
                 "color": "#777777",
-                "fontFamily": "Lato",
+                "fontFamily": "System",
                 "fontSize": 9.571428571428571,
                 "textAlign": "left",
               }
@@ -966,7 +966,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render CONNECTED properl
             style={
               Object {
                 "color": "#505050",
-                "fontFamily": "Lato",
+                "fontFamily": "System",
                 "fontSize": 14.357142857142858,
                 "fontWeight": "500",
                 "marginBottom": 1.9142857142857141,
@@ -984,7 +984,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render CONNECTED properl
             style={
               Object {
                 "color": "#505050",
-                "fontFamily": "Lato",
+                "fontFamily": "System",
                 "fontSize": 12.442857142857143,
                 "textAlign": "left",
               }
@@ -1032,7 +1032,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render CONNECTED properl
                 style={
                   Object {
                     "color": "#FFFFFF",
-                    "fontFamily": "Lato",
+                    "fontFamily": "System",
                     "fontSize": 12.442857142857143,
                     "fontWeight": "700",
                   }
@@ -1267,7 +1267,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render PENDING properly 
             Array [
               Object {
                 "color": "#777777",
-                "fontFamily": "Lato",
+                "fontFamily": "System",
                 "fontSize": 21.057142857142857,
                 "marginLeft": -47.85714285714286,
               },
@@ -1475,7 +1475,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render PENDING properly 
             style={
               Object {
                 "color": "#777777",
-                "fontFamily": "Lato",
+                "fontFamily": "System",
                 "fontSize": 8.614285714285714,
                 "paddingBottom": 7.657142857142857,
                 "textAlign": "left",
@@ -1545,7 +1545,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render PENDING properly 
                 style={
                   Object {
                     "color": "#505050",
-                    "fontFamily": "Lato",
+                    "fontFamily": "System",
                     "fontSize": 12.442857142857143,
                     "fontWeight": "700",
                     "marginBottom": 3.8285714285714283,
@@ -1559,7 +1559,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render PENDING properly 
                 style={
                   Object {
                     "color": "#777777",
-                    "fontFamily": "Lato",
+                    "fontFamily": "System",
                     "fontSize": 9.571428571428571,
                     "fontWeight": "400",
                     "textAlign": "left",
@@ -1785,7 +1785,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render PROOF RECEIVED pr
             Array [
               Object {
                 "color": "#777777",
-                "fontFamily": "Lato",
+                "fontFamily": "System",
                 "fontSize": 21.057142857142857,
                 "marginLeft": -47.85714285714286,
               },
@@ -2003,7 +2003,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render PROOF RECEIVED pr
             style={
               Object {
                 "color": "#777777",
-                "fontFamily": "Lato",
+                "fontFamily": "System",
                 "fontSize": 9.571428571428571,
                 "textAlign": "left",
               }
@@ -2018,7 +2018,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render PROOF RECEIVED pr
             style={
               Object {
                 "color": "#505050",
-                "fontFamily": "Lato",
+                "fontFamily": "System",
                 "fontSize": 14.357142857142858,
                 "fontWeight": "500",
                 "marginBottom": 1.9142857142857141,
@@ -2036,7 +2036,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render PROOF RECEIVED pr
             style={
               Object {
                 "color": "#505050",
-                "fontFamily": "Lato",
+                "fontFamily": "System",
                 "fontSize": 12.442857142857143,
                 "textAlign": "left",
               }
@@ -2084,7 +2084,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render PROOF RECEIVED pr
                 style={
                   Object {
                     "color": "#FFFFFF",
-                    "fontFamily": "Lato",
+                    "fontFamily": "System",
                     "fontSize": 12.442857142857143,
                     "fontWeight": "700",
                   }
@@ -2319,7 +2319,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render RECEIVED properly
             Array [
               Object {
                 "color": "#777777",
-                "fontFamily": "Lato",
+                "fontFamily": "System",
                 "fontSize": 21.057142857142857,
                 "marginLeft": -47.85714285714286,
               },
@@ -2537,7 +2537,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render RECEIVED properly
             style={
               Object {
                 "color": "#777777",
-                "fontFamily": "Lato",
+                "fontFamily": "System",
                 "fontSize": 9.571428571428571,
                 "textAlign": "left",
               }
@@ -2668,7 +2668,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render RECEIVED properly
                       style={
                         Object {
                           "color": "#505050",
-                          "fontFamily": "Lato",
+                          "fontFamily": "System",
                           "fontSize": 12.442857142857143,
                           "fontWeight": "700",
                           "textAlign": "left",
@@ -2693,7 +2693,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render RECEIVED properly
                         Object {
                           "color": "#777777",
                           "flex": 1,
-                          "fontFamily": "Lato",
+                          "fontFamily": "System",
                           "fontSize": 9.571428571428571,
                           "fontWeight": "500",
                           "textAlign": "left",
@@ -2706,7 +2706,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render RECEIVED properly
                       style={
                         Object {
                           "color": "#505050",
-                          "fontFamily": "Lato",
+                          "fontFamily": "System",
                           "fontSize": 9.571428571428571,
                           "fontWeight": "500",
                           "textAlign": "right",
@@ -2739,7 +2739,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render RECEIVED properly
                     style={
                       Object {
                         "color": "#505050",
-                        "fontFamily": "Lato",
+                        "fontFamily": "System",
                         "fontSize": 12.442857142857143,
                         "fontWeight": "400",
                         "textAlign": "left",
@@ -2752,7 +2752,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render RECEIVED properly
                     style={
                       Object {
                         "color": "#505050",
-                        "fontFamily": "Lato",
+                        "fontFamily": "System",
                         "fontSize": 12.442857142857143,
                         "fontWeight": "400",
                         "textAlign": "left",
@@ -2790,7 +2790,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render RECEIVED properly
                       style={
                         Array [
                           Object {
-                            "fontFamily": "Lato",
+                            "fontFamily": "System",
                             "fontSize": 12.442857142857143,
                             "fontWeight": "700",
                           },
@@ -3032,7 +3032,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render SHARED properly 1
             Array [
               Object {
                 "color": "#777777",
-                "fontFamily": "Lato",
+                "fontFamily": "System",
                 "fontSize": 21.057142857142857,
                 "marginLeft": -47.85714285714286,
               },
@@ -3241,7 +3241,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render SHARED properly 1
             style={
               Object {
                 "color": "#777777",
-                "fontFamily": "Lato",
+                "fontFamily": "System",
                 "fontSize": 9.571428571428571,
                 "textAlign": "left",
               }
@@ -3372,7 +3372,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render SHARED properly 1
                       style={
                         Object {
                           "color": "#505050",
-                          "fontFamily": "Lato",
+                          "fontFamily": "System",
                           "fontSize": 12.442857142857143,
                           "fontWeight": "700",
                           "textAlign": "left",
@@ -3397,7 +3397,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render SHARED properly 1
                         Object {
                           "color": "#777777",
                           "flex": 1,
-                          "fontFamily": "Lato",
+                          "fontFamily": "System",
                           "fontSize": 9.571428571428571,
                           "fontWeight": "500",
                           "textAlign": "left",
@@ -3410,7 +3410,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render SHARED properly 1
                       style={
                         Object {
                           "color": "#505050",
-                          "fontFamily": "Lato",
+                          "fontFamily": "System",
                           "fontSize": 9.571428571428571,
                           "fontWeight": "500",
                           "textAlign": "right",
@@ -3443,7 +3443,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render SHARED properly 1
                     style={
                       Object {
                         "color": "#505050",
-                        "fontFamily": "Lato",
+                        "fontFamily": "System",
                         "fontSize": 12.442857142857143,
                         "fontWeight": "400",
                         "textAlign": "left",
@@ -3456,7 +3456,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render SHARED properly 1
                     style={
                       Object {
                         "color": "#505050",
-                        "fontFamily": "Lato",
+                        "fontFamily": "System",
                         "fontSize": 12.442857142857143,
                         "fontWeight": "400",
                         "textAlign": "left",
@@ -3494,7 +3494,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render SHARED properly 1
                       style={
                         Array [
                           Object {
-                            "fontFamily": "Lato",
+                            "fontFamily": "System",
                             "fontSize": 12.442857142857143,
                             "fontWeight": "700",
                           },

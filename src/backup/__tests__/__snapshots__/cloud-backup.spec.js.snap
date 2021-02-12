@@ -185,7 +185,7 @@ exports[`<CloudBackup /> should match snapshot 1`] = `
                     "fontSize": 17,
                   },
                   Object {
-                    "fontFamily": "Lato",
+                    "fontFamily": "System",
                   },
                   Object {},
                   Object {
@@ -258,7 +258,7 @@ exports[`<CloudBackup /> should match snapshot 1`] = `
               Array [
                 undefined,
                 Object {
-                  "fontFamily": "Lato",
+                  "fontFamily": "System",
                 },
                 Object {},
                 Object {
@@ -292,7 +292,7 @@ exports[`<CloudBackup /> should match snapshot 1`] = `
               Array [
                 undefined,
                 Object {
-                  "fontFamily": "Lato",
+                  "fontFamily": "System",
                 },
                 Object {},
                 null,
@@ -329,7 +329,7 @@ exports[`<CloudBackup /> should match snapshot 1`] = `
                 Array [
                   undefined,
                   Object {
-                    "fontFamily": "Lato",
+                    "fontFamily": "System",
                   },
                   Object {},
                   null,

@@ -46,7 +46,7 @@ exports[`<GenerateRecoveryPhrase /> should match snapshot 1`] = `
               "fontSize": 17,
             },
             Object {
-              "fontFamily": "Lato",
+              "fontFamily": "System",
             },
             Object {
               "backgroundColor": "#333333",
@@ -94,7 +94,7 @@ exports[`<GenerateRecoveryPhrase /> should match snapshot 1`] = `
               "fontSize": 17,
             },
             Object {
-              "fontFamily": "Lato",
+              "fontFamily": "System",
             },
             Object {
               "backgroundColor": "#333333",
@@ -176,7 +176,7 @@ exports[`<GenerateRecoveryPhrase /> should match snapshot 1`] = `
                 "fontSize": 17,
               },
               Object {
-                "fontFamily": "Lato",
+                "fontFamily": "System",
               },
               Object {
                 "backgroundColor": "#333333",
@@ -228,7 +228,7 @@ exports[`<GenerateRecoveryPhrase /> should match snapshot 1`] = `
               "fontSize": 17,
             },
             Object {
-              "fontFamily": "Lato",
+              "fontFamily": "System",
             },
             Object {
               "backgroundColor": "#333333",
@@ -283,7 +283,7 @@ exports[`<GenerateRecoveryPhrase /> should match snapshot 1`] = `
               "fontSize": 17,
             },
             Object {
-              "fontFamily": "Lato",
+              "fontFamily": "System",
             },
             Object {
               "backgroundColor": "#333333",
@@ -461,7 +461,7 @@ exports[`<GenerateRecoveryPhrase /> should match snapshot for error state 1`] = 
               "fontSize": 17,
             },
             Object {
-              "fontFamily": "Lato",
+              "fontFamily": "System",
             },
             Object {
               "backgroundColor": "#333333",
@@ -509,7 +509,7 @@ exports[`<GenerateRecoveryPhrase /> should match snapshot for error state 1`] = 
               "fontSize": 17,
             },
             Object {
-              "fontFamily": "Lato",
+              "fontFamily": "System",
             },
             Object {
               "backgroundColor": "#333333",
@@ -589,7 +589,7 @@ exports[`<GenerateRecoveryPhrase /> should match snapshot for error state 1`] = 
                 "fontSize": 17,
               },
               Object {
-                "fontFamily": "Lato",
+                "fontFamily": "System",
               },
               Object {
                 "backgroundColor": "#333333",
@@ -636,7 +636,7 @@ exports[`<GenerateRecoveryPhrase /> should match snapshot for error state 1`] = 
               "fontSize": 17,
             },
             Object {
-              "fontFamily": "Lato",
+              "fontFamily": "System",
             },
             Object {
               "backgroundColor": "#333333",
@@ -691,7 +691,7 @@ exports[`<GenerateRecoveryPhrase /> should match snapshot for error state 1`] = 
               "fontSize": 17,
             },
             Object {
-              "fontFamily": "Lato",
+              "fontFamily": "System",
             },
             Object {
               "backgroundColor": "#333333",
@@ -870,7 +870,7 @@ exports[`<GenerateRecoveryPhrase /> should match snapshot for loading state 1`] 
               "fontSize": 17,
             },
             Object {
-              "fontFamily": "Lato",
+              "fontFamily": "System",
             },
             Object {
               "backgroundColor": "#333333",
@@ -918,7 +918,7 @@ exports[`<GenerateRecoveryPhrase /> should match snapshot for loading state 1`] 
               "fontSize": 17,
             },
             Object {
-              "fontFamily": "Lato",
+              "fontFamily": "System",
             },
             Object {
               "backgroundColor": "#333333",
@@ -1006,7 +1006,7 @@ exports[`<GenerateRecoveryPhrase /> should match snapshot for loading state 1`] 
               "fontSize": 17,
             },
             Object {
-              "fontFamily": "Lato",
+              "fontFamily": "System",
             },
             Object {
               "backgroundColor": "#333333",
@@ -1061,7 +1061,7 @@ exports[`<GenerateRecoveryPhrase /> should match snapshot for loading state 1`] 
               "fontSize": 17,
             },
             Object {
-              "fontFamily": "Lato",
+              "fontFamily": "System",
             },
             Object {
               "backgroundColor": "#333333",

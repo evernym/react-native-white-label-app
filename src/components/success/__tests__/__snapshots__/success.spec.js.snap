@@ -59,7 +59,7 @@ exports[`<Success /> should render successText 1`] = `
           "fontSize": 19,
         },
         Object {
-          "fontFamily": "Lato",
+          "fontFamily": "System",
         },
         Object {},
         null,

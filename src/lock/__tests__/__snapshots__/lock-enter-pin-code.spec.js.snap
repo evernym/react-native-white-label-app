@@ -45,7 +45,7 @@ exports[`<LockPinCodeEnter /> redirect to home screen is app is locked and there
         style={
           Object {
             "color": "#777777",
-            "fontFamily": "Lato",
+            "fontFamily": "System",
             "fontSize": 21.057142857142857,
             "marginLeft": -47.85714285714286,
           }
@@ -119,7 +119,7 @@ exports[`<LockPinCodeEnter /> redirect to home screen is app is locked and there
                 "fontSize": 19,
               },
               Object {
-                "fontFamily": "Lato",
+                "fontFamily": "System",
               },
               Object {
                 "backgroundColor": "#ffffff",
@@ -141,7 +141,7 @@ exports[`<LockPinCodeEnter /> redirect to home screen is app is locked and there
               null,
               null,
               Object {
-                "fontFamily": "Lato",
+                "fontFamily": "System",
                 "fontSize": 26,
                 "fontStyle": "normal",
                 "fontWeight": "700",
@@ -523,7 +523,7 @@ exports[`<LockPinCodeEnter /> should render pin code box 1`] = `
         style={
           Object {
             "color": "#777777",
-            "fontFamily": "Lato",
+            "fontFamily": "System",
             "fontSize": 21.057142857142857,
             "marginLeft": -47.85714285714286,
           }
@@ -597,7 +597,7 @@ exports[`<LockPinCodeEnter /> should render pin code box 1`] = `
                 "fontSize": 19,
               },
               Object {
-                "fontFamily": "Lato",
+                "fontFamily": "System",
               },
               Object {
                 "backgroundColor": "#ffffff",
@@ -619,7 +619,7 @@ exports[`<LockPinCodeEnter /> should render pin code box 1`] = `
               null,
               null,
               Object {
-                "fontFamily": "Lato",
+                "fontFamily": "System",
                 "fontSize": 26,
                 "fontStyle": "normal",
                 "fontWeight": "700",
@@ -1001,7 +1001,7 @@ exports[`<LockPinCodeEnter /> should show 'Enter passcode' message if there is n
         style={
           Object {
             "color": "#777777",
-            "fontFamily": "Lato",
+            "fontFamily": "System",
             "fontSize": 21.057142857142857,
             "marginLeft": -47.85714285714286,
           }
@@ -1075,7 +1075,7 @@ exports[`<LockPinCodeEnter /> should show 'Enter passcode' message if there is n
                 "fontSize": 19,
               },
               Object {
-                "fontFamily": "Lato",
+                "fontFamily": "System",
               },
               Object {
                 "backgroundColor": "#ffffff",
@@ -1097,7 +1097,7 @@ exports[`<LockPinCodeEnter /> should show 'Enter passcode' message if there is n
               null,
               null,
               Object {
-                "fontFamily": "Lato",
+                "fontFamily": "System",
                 "fontSize": 26,
                 "fontStyle": "normal",
                 "fontWeight": "700",
@@ -1479,7 +1479,7 @@ exports[`<LockPinCodeEnter /> should show UNLOCKING_APP_WAIT_MESSAGE  1`] = `
         style={
           Object {
             "color": "#777777",
-            "fontFamily": "Lato",
+            "fontFamily": "System",
             "fontSize": 21.057142857142857,
             "marginLeft": -47.85714285714286,
           }
@@ -1553,7 +1553,7 @@ exports[`<LockPinCodeEnter /> should show UNLOCKING_APP_WAIT_MESSAGE  1`] = `
                 "fontSize": 19,
               },
               Object {
-                "fontFamily": "Lato",
+                "fontFamily": "System",
               },
               Object {
                 "backgroundColor": "#ffffff",
@@ -1575,7 +1575,7 @@ exports[`<LockPinCodeEnter /> should show UNLOCKING_APP_WAIT_MESSAGE  1`] = `
               null,
               null,
               Object {
-                "fontFamily": "Lato",
+                "fontFamily": "System",
                 "fontSize": 26,
                 "fontStyle": "normal",
                 "fontWeight": "700",

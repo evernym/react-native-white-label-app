@@ -67,7 +67,7 @@ exports[`<LockEnter /> should match snapshot 1`] = `
               "fontSize": 19,
             },
             Object {
-              "fontFamily": "Lato",
+              "fontFamily": "System",
             },
             Object {
               "backgroundColor": "#ffffff",
@@ -89,7 +89,7 @@ exports[`<LockEnter /> should match snapshot 1`] = `
             null,
             null,
             Object {
-              "fontFamily": "Lato",
+              "fontFamily": "System",
               "fontSize": 26,
               "fontStyle": "normal",
               "fontWeight": "700",
@@ -126,7 +126,7 @@ exports[`<LockEnter /> should match snapshot 1`] = `
           style={
             Object {
               "color": "#CE0B24",
-              "fontFamily": "Lato",
+              "fontFamily": "System",
               "fontSize": 17,
               "fontWeight": "500",
             }
@@ -599,7 +599,7 @@ exports[`<LockEnter /> should match snapshot for recovery flow 1`] = `
               "fontSize": 17,
             },
             Object {
-              "fontFamily": "Lato",
+              "fontFamily": "System",
             },
             Object {
               "backgroundColor": "#333333",
@@ -976,7 +976,7 @@ exports[`<LockEnter /> should match snapshot for recovery flow 1`] = `
               "fontSize": 15,
             },
             Object {
-              "fontFamily": "Lato",
+              "fontFamily": "System",
             },
             Object {
               "backgroundColor": "#333333",

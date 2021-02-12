@@ -421,7 +421,7 @@ exports[`<LockPinCodeSetup /> should render pin code box 1`] = `
                               style={
                                 Object {
                                   "color": "#777777",
-                                  "fontFamily": "Lato",
+                                  "fontFamily": "System",
                                   "fontSize": 21.057142857142857,
                                   "marginLeft": -47.85714285714286,
                                 }
@@ -446,7 +446,7 @@ exports[`<LockPinCodeSetup /> should render pin code box 1`] = `
                                 "fontSize": 19,
                               },
                               Object {
-                                "fontFamily": "Lato",
+                                "fontFamily": "System",
                               },
                               Object {
                                 "backgroundColor": "#ffffff",
@@ -468,7 +468,7 @@ exports[`<LockPinCodeSetup /> should render pin code box 1`] = `
                               null,
                               null,
                               Object {
-                                "fontFamily": "Lato",
+                                "fontFamily": "System",
                                 "fontSize": 25.777142857142856,
                                 "fontStyle": "normal",
                                 "fontWeight": "700",
@@ -492,7 +492,7 @@ exports[`<LockPinCodeSetup /> should render pin code box 1`] = `
                                 "fontSize": 17,
                               },
                               Object {
-                                "fontFamily": "Lato",
+                                "fontFamily": "System",
                               },
                               Object {
                                 "backgroundColor": "#ffffff",
@@ -513,7 +513,7 @@ exports[`<LockPinCodeSetup /> should render pin code box 1`] = `
                               null,
                               Object {
                                 "color": "#CE0B24",
-                                "fontFamily": "Lato",
+                                "fontFamily": "System",
                                 "fontSize": 16.854285714285716,
                                 "fontStyle": "normal",
                                 "fontWeight": "500",
@@ -1277,7 +1277,7 @@ exports[`<LockPinCodeSetup /> should set pinSetupState and pinReEnterSuccessPin 
                               style={
                                 Object {
                                   "color": "#777777",
-                                  "fontFamily": "Lato",
+                                  "fontFamily": "System",
                                   "fontSize": 21.057142857142857,
                                   "marginLeft": -47.85714285714286,
                                 }
@@ -1302,7 +1302,7 @@ exports[`<LockPinCodeSetup /> should set pinSetupState and pinReEnterSuccessPin 
                                 "fontSize": 19,
                               },
                               Object {
-                                "fontFamily": "Lato",
+                                "fontFamily": "System",
                               },
                               Object {
                                 "backgroundColor": "#ffffff",
@@ -1324,7 +1324,7 @@ exports[`<LockPinCodeSetup /> should set pinSetupState and pinReEnterSuccessPin 
                               null,
                               null,
                               Object {
-                                "fontFamily": "Lato",
+                                "fontFamily": "System",
                                 "fontSize": 25.777142857142856,
                                 "fontStyle": "normal",
                                 "fontWeight": "700",
@@ -1348,7 +1348,7 @@ exports[`<LockPinCodeSetup /> should set pinSetupState and pinReEnterSuccessPin 
                                 "fontSize": 17,
                               },
                               Object {
-                                "fontFamily": "Lato",
+                                "fontFamily": "System",
                               },
                               Object {
                                 "backgroundColor": "#ffffff",
@@ -1369,7 +1369,7 @@ exports[`<LockPinCodeSetup /> should set pinSetupState and pinReEnterSuccessPin 
                               null,
                               Object {
                                 "color": "#CE0B24",
-                                "fontFamily": "Lato",
+                                "fontFamily": "System",
                                 "fontSize": 16.854285714285716,
                                 "fontStyle": "normal",
                                 "fontWeight": "500",
@@ -2133,7 +2133,7 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
                               style={
                                 Object {
                                   "color": "#777777",
-                                  "fontFamily": "Lato",
+                                  "fontFamily": "System",
                                   "fontSize": 21.057142857142857,
                                   "marginLeft": -47.85714285714286,
                                 }
@@ -2158,7 +2158,7 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
                                 "fontSize": 19,
                               },
                               Object {
-                                "fontFamily": "Lato",
+                                "fontFamily": "System",
                               },
                               Object {
                                 "backgroundColor": "#ffffff",
@@ -2180,7 +2180,7 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
                               null,
                               null,
                               Object {
-                                "fontFamily": "Lato",
+                                "fontFamily": "System",
                                 "fontSize": 25.777142857142856,
                                 "fontStyle": "normal",
                                 "fontWeight": "700",
@@ -2204,7 +2204,7 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
                                 "fontSize": 17,
                               },
                               Object {
-                                "fontFamily": "Lato",
+                                "fontFamily": "System",
                               },
                               Object {
                                 "backgroundColor": "#ffffff",
@@ -2225,7 +2225,7 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
                               null,
                               Object {
                                 "color": "#CE0B24",
-                                "fontFamily": "Lato",
+                                "fontFamily": "System",
                                 "fontSize": 16.854285714285716,
                                 "fontStyle": "normal",
                                 "fontWeight": "500",
@@ -2991,7 +2991,7 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
                               style={
                                 Object {
                                   "color": "#777777",
-                                  "fontFamily": "Lato",
+                                  "fontFamily": "System",
                                   "fontSize": 21.057142857142857,
                                   "marginLeft": -47.85714285714286,
                                 }
@@ -3016,7 +3016,7 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
                                 "fontSize": 19,
                               },
                               Object {
-                                "fontFamily": "Lato",
+                                "fontFamily": "System",
                               },
                               Object {
                                 "backgroundColor": "#ffffff",
@@ -3038,7 +3038,7 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
                               null,
                               null,
                               Object {
-                                "fontFamily": "Lato",
+                                "fontFamily": "System",
                                 "fontSize": 25.777142857142856,
                                 "fontStyle": "normal",
                                 "fontWeight": "700",
@@ -3062,7 +3062,7 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
                                 "fontSize": 17,
                               },
                               Object {
-                                "fontFamily": "Lato",
+                                "fontFamily": "System",
                               },
                               Object {
                                 "backgroundColor": "#ffffff",
@@ -3083,7 +3083,7 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
                               null,
                               Object {
                                 "color": "#CE0B24",
-                                "fontFamily": "Lato",
+                                "fontFamily": "System",
                                 "fontSize": 16.854285714285716,
                                 "fontStyle": "normal",
                                 "fontWeight": "500",
@@ -3847,7 +3847,7 @@ exports[`<LockPinCodeSetup /> should show re enter pass code after first entry 1
                               style={
                                 Object {
                                   "color": "#777777",
-                                  "fontFamily": "Lato",
+                                  "fontFamily": "System",
                                   "fontSize": 21.057142857142857,
                                   "marginLeft": -47.85714285714286,
                                 }
@@ -3872,7 +3872,7 @@ exports[`<LockPinCodeSetup /> should show re enter pass code after first entry 1
                                 "fontSize": 19,
                               },
                               Object {
-                                "fontFamily": "Lato",
+                                "fontFamily": "System",
                               },
                               Object {
                                 "backgroundColor": "#ffffff",
@@ -3894,7 +3894,7 @@ exports[`<LockPinCodeSetup /> should show re enter pass code after first entry 1
                               null,
                               null,
                               Object {
-                                "fontFamily": "Lato",
+                                "fontFamily": "System",
                                 "fontSize": 25.777142857142856,
                                 "fontStyle": "normal",
                                 "fontWeight": "700",
@@ -3918,7 +3918,7 @@ exports[`<LockPinCodeSetup /> should show re enter pass code after first entry 1
                                 "fontSize": 17,
                               },
                               Object {
-                                "fontFamily": "Lato",
+                                "fontFamily": "System",
                               },
                               Object {
                                 "backgroundColor": "#ffffff",
@@ -3939,7 +3939,7 @@ exports[`<LockPinCodeSetup /> should show re enter pass code after first entry 1
                               null,
                               Object {
                                 "color": "#CE0B24",
-                                "fontFamily": "Lato",
+                                "fontFamily": "System",
                                 "fontSize": 16.854285714285716,
                                 "fontStyle": "normal",
                                 "fontWeight": "500",

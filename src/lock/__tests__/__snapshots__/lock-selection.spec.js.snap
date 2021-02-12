@@ -144,7 +144,7 @@ exports[`app lock selection page should render properly 1`] = `
             style={
               Object {
                 "color": "#777777",
-                "fontFamily": "Lato",
+                "fontFamily": "System",
                 "fontSize": 21.057142857142857,
                 "marginLeft": -47.85714285714286,
               }
@@ -181,7 +181,7 @@ exports[`app lock selection page should render properly 1`] = `
                 "fontSize": 19,
               },
               Object {
-                "fontFamily": "Lato",
+                "fontFamily": "System",
               },
               Object {
                 "backgroundColor": "#ffffff",
@@ -203,7 +203,7 @@ exports[`app lock selection page should render properly 1`] = `
               null,
               null,
               Object {
-                "fontFamily": "Lato",
+                "fontFamily": "System",
                 "fontSize": 25.777142857142856,
                 "fontStyle": "normal",
                 "fontWeight": "700",
@@ -264,7 +264,7 @@ exports[`app lock selection page should render properly 1`] = `
                 "fontSize": 17,
               },
               Object {
-                "fontFamily": "Lato",
+                "fontFamily": "System",
               },
               Object {
                 "backgroundColor": "#ffffff",
@@ -333,7 +333,7 @@ exports[`app lock selection page should render properly 1`] = `
                   "fontSize": 19,
                 },
                 Object {
-                  "fontFamily": "Lato",
+                  "fontFamily": "System",
                 },
                 Object {
                   "backgroundColor": "#333333",
@@ -371,7 +371,7 @@ exports[`app lock selection page should render properly 1`] = `
                 "fontSize": 17,
               },
               Object {
-                "fontFamily": "Lato",
+                "fontFamily": "System",
               },
               Object {
                 "backgroundColor": "#ffffff",
@@ -440,7 +440,7 @@ exports[`app lock selection page should render properly 1`] = `
                       "fontSize": 17,
                     },
                     Object {
-                      "fontFamily": "Lato",
+                      "fontFamily": "System",
                     },
                     Object {
                       "backgroundColor": "#ffffff",
@@ -472,7 +472,7 @@ exports[`app lock selection page should render properly 1`] = `
                       "fontSize": 11,
                     },
                     Object {
-                      "fontFamily": "Lato",
+                      "fontFamily": "System",
                     },
                     Object {
                       "backgroundColor": "#ffffff",
