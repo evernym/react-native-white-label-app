@@ -18,9 +18,7 @@ type HeaderWithDeletionProps = {
   onDelete: any,
   onDeleteButtonTitle: string,
   showImage?: boolean,
-  newBadge?: boolean,
   image?: any,
-  onViewedAction?: any,
 }
 
 const iOS = Platform.OS === 'ios'
@@ -29,23 +27,18 @@ export const HeaderWithDeletion = ({
                                      headline,
                                      showImage,
                                      image,
-                                     newBadge,
                                      onDelete,
-                                     onViewedAction,
                                      navigation,
                                      onDeleteButtonTitle,
                                    }: HeaderWithDeletionProps) => {
   const goBack = () => {
-    if (newBadge && onViewedAction) {
-      onViewedAction()
-    }
     navigation.goBack(null)
   }
 
   const openDialog = useCallback(() => {
     ActionSheet.showActionSheetWithOptions({
         options: [
-          onDeleteButtonTitle,
+          onDeleteButtonTitle || 'Delete',
           'Cancel',
         ],
         destructiveButtonIndex: 0,

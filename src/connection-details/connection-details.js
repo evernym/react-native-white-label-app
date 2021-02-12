@@ -1,6 +1,6 @@
 // @flow
 import * as React from 'react'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import { View, FlatList, StyleSheet } from 'react-native'
 import { HeaderWithDeletion } from '../components'
 import { CredentialCard } from '../components/connection-details/credential-card'
@@ -86,6 +86,14 @@ const ConnectionDetails = ({
     history.connections[route.params.senderDID] &&
     history.connections[route.params.senderDID].newBadge
   }, [history])
+
+  const onViewedAction = useCallback(() => newConnectionSeen(route.params.senderDID), [route])
+
+  useEffect(() => {
+    if (newBadge) {
+      onViewedAction()
+    }
+  }, [newBadge])
 
   const onDelete = useCallback(() => {
     deleteConnectionAction(route.params.senderDID)
@@ -377,8 +385,6 @@ const ConnectionDetails = ({
     return null
   }
 
-  const onViewedAction = useCallback(() => newConnectionSeen(route.params.senderDID), [route])
-
   return (
     <View style={styles.container}>
       <HeaderWithDeletion
@@ -386,8 +392,6 @@ const ConnectionDetails = ({
         navigation={navigation}
         showImage={true}
         image={route.params.image}
-        newBadge={newBadge}
-        onViewedAction={onViewedAction}
         onDeleteButtonTitle={'Delete Connection'}
         onDelete={onDelete}
       />

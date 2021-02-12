@@ -7,11 +7,19 @@ import type { HeaderProps } from '../type-header'
 
 import { EvaIcon, HOME_MENU_ICON } from '../../../common/icons'
 import UnreadMessagesBadge from '../../unread-messages-badge/unread-messages-badge'
-import { styles } from '../type-header'
+import {
+  SHOW_UNREAD_MESSAGES_BADGE_NEAR_WITH_MENU,
+  SHOW_UNREAD_MESSAGES_BADGE_NEAR_WITH_TITLE,
+  styles,
+} from '../type-header'
 import { moderateScale } from 'react-native-size-matters'
 
-export const HomeHeader = ({ headline }: HeaderProps) => {
+export const HeaderWithMenu = ({
+                                 headline,
+                                 showUnreadMessagesBadge,
+                               }: HeaderProps) => {
   const navigation = useNavigation()
+
   const toggleDrawer = useCallback(() => {
     navigation.toggleDrawer()
   }, [])
@@ -32,11 +40,11 @@ export const HomeHeader = ({ headline }: HeaderProps) => {
             accessibilityLabel="burger-menu"
           />
         </TouchableOpacity>
-        {headline !== 'Home' && <UnreadMessagesBadge absolutePosition={true} />}
+        {showUnreadMessagesBadge === SHOW_UNREAD_MESSAGES_BADGE_NEAR_WITH_MENU && <UnreadMessagesBadge absolutePosition={true} />}
       </View>
       <View style={styles.labelSection}>
         <Text style={styles.label}>{headline}</Text>
-        {headline === 'Home' && <UnreadMessagesBadge />}
+        {showUnreadMessagesBadge === SHOW_UNREAD_MESSAGES_BADGE_NEAR_WITH_TITLE && <UnreadMessagesBadge />}
       </View>
     </View>
   )
