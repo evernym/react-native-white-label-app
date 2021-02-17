@@ -96,7 +96,7 @@ exports[`<LedgerFeesModalComponent /> show error if fetching fees failed, show r
             "fontSize": 17,
           },
           Object {
-            "fontFamily": "Lato",
+            "fontFamily": "System",
           },
           Object {
             "backgroundColor": "#ffffff",
@@ -360,7 +360,7 @@ exports[`<LedgerFeesModalComponent /> show loader, loading text, no buttons, if 
             "fontSize": 17,
           },
           Object {
-            "fontFamily": "Lato",
+            "fontFamily": "System",
           },
           Object {
             "backgroundColor": "#ffffff",
@@ -490,7 +490,7 @@ exports[`<LedgerFeesModalComponent /> show text passed by consumer of component,
             "fontSize": 42,
           },
           Object {
-            "fontFamily": "Lato",
+            "fontFamily": "System",
           },
           Object {
             "backgroundColor": "#ffffff",
@@ -532,7 +532,7 @@ exports[`<LedgerFeesModalComponent /> show text passed by consumer of component,
             "fontSize": 19,
           },
           Object {
-            "fontFamily": "Lato",
+            "fontFamily": "System",
           },
           Object {
             "backgroundColor": "#ffffff",
@@ -574,7 +574,7 @@ exports[`<LedgerFeesModalComponent /> show text passed by consumer of component,
             "fontSize": 17,
           },
           Object {
-            "fontFamily": "Lato",
+            "fontFamily": "System",
           },
           Object {
             "backgroundColor": "#ffffff",
@@ -866,7 +866,7 @@ exports[`<LedgerFeesModalComponent /> show transfer fees, Yes & No buttons, if f
             "fontSize": 42,
           },
           Object {
-            "fontFamily": "Lato",
+            "fontFamily": "System",
           },
           Object {
             "backgroundColor": "#ffffff",
@@ -908,7 +908,7 @@ exports[`<LedgerFeesModalComponent /> show transfer fees, Yes & No buttons, if f
             "fontSize": 19,
           },
           Object {
-            "fontFamily": "Lato",
+            "fontFamily": "System",
           },
           Object {
             "backgroundColor": "#ffffff",
@@ -950,7 +950,7 @@ exports[`<LedgerFeesModalComponent /> show transfer fees, Yes & No buttons, if f
             "fontSize": 17,
           },
           Object {
-            "fontFamily": "Lato",
+            "fontFamily": "System",
           },
           Object {
             "backgroundColor": "#ffffff",
@@ -990,7 +990,7 @@ exports[`<LedgerFeesModalComponent /> show transfer fees, Yes & No buttons, if f
               "fontSize": 17,
             },
             Object {
-              "fontFamily": "Lato",
+              "fontFamily": "System",
             },
             Object {
               "backgroundColor": "#ffffff",
@@ -1259,7 +1259,7 @@ exports[`<LedgerFeesModalComponent /> trigger getLedgerFees to start fetching le
             "fontSize": 17,
           },
           Object {
-            "fontFamily": "Lato",
+            "fontFamily": "System",
           },
           Object {
             "backgroundColor": "#ffffff",

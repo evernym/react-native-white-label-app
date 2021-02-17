@@ -422,7 +422,7 @@ exports[`user settings screen should render properly and snapshot should match i
                                         style={
                                           Object {
                                             "color": "#505050",
-                                            "fontFamily": "Lato",
+                                            "fontFamily": "System",
                                             "fontSize": 11.911764705882351,
                                             "fontWeight": "bold",
                                           }
@@ -445,7 +445,7 @@ exports[`user settings screen should render properly and snapshot should match i
                                         style={
                                           Object {
                                             "color": "#A5A5A5",
-                                            "fontFamily": "Lato",
+                                            "fontFamily": "System",
                                             "fontSize": 7.941176470588235,
                                             "marginBottom": 5,
                                           }
@@ -477,7 +477,7 @@ exports[`user settings screen should render properly and snapshot should match i
                                         style={
                                           Object {
                                             "color": "#777777",
-                                            "fontFamily": "Lato",
+                                            "fontFamily": "System",
                                             "fontSize": 8.735294117647058,
                                           }
                                         }
@@ -667,7 +667,7 @@ exports[`user settings screen should render properly and snapshot should match i
                                 style={
                                   Object {
                                     "color": "#777777",
-                                    "fontFamily": "Lato",
+                                    "fontFamily": "System",
                                     "fontSize": 21.057142857142857,
                                     "marginLeft": -47.85714285714286,
                                   }
@@ -873,7 +873,7 @@ exports[`user settings screen should render properly and snapshot should match i
                                           Object {
                                             "backgroundColor": "transparent",
                                             "color": "#777777",
-                                            "fontFamily": "Lato",
+                                            "fontFamily": "System",
                                             "fontSize": 11.911764705882351,
                                             "fontWeight": "bold",
                                           }
@@ -887,7 +887,7 @@ exports[`user settings screen should render properly and snapshot should match i
                                           Object {
                                             "backgroundColor": "transparent",
                                             "color": "#777777",
-                                            "fontFamily": "Lato",
+                                            "fontFamily": "System",
                                             "fontSize": 8.735294117647058,
                                           }
                                         }
@@ -1096,7 +1096,7 @@ exports[`user settings screen should render properly and snapshot should match i
                                           Object {
                                             "backgroundColor": "transparent",
                                             "color": "#777777",
-                                            "fontFamily": "Lato",
+                                            "fontFamily": "System",
                                             "fontSize": 11.911764705882351,
                                             "fontWeight": "bold",
                                           }
@@ -1110,7 +1110,7 @@ exports[`user settings screen should render properly and snapshot should match i
                                           Object {
                                             "backgroundColor": "transparent",
                                             "color": "#777777",
-                                            "fontFamily": "Lato",
+                                            "fontFamily": "System",
                                             "fontSize": 8.735294117647058,
                                           }
                                         }
@@ -1419,7 +1419,7 @@ exports[`user settings screen should render properly and snapshot should match i
                                           Object {
                                             "backgroundColor": "transparent",
                                             "color": "#777777",
-                                            "fontFamily": "Lato",
+                                            "fontFamily": "System",
                                             "fontSize": 11.911764705882351,
                                             "fontWeight": "bold",
                                           }
@@ -1433,7 +1433,7 @@ exports[`user settings screen should render properly and snapshot should match i
                                           Object {
                                             "backgroundColor": "transparent",
                                             "color": "#777777",
-                                            "fontFamily": "Lato",
+                                            "fontFamily": "System",
                                             "fontSize": 8.735294117647058,
                                           }
                                         }
@@ -1742,7 +1742,7 @@ exports[`user settings screen should render properly and snapshot should match i
                                           Object {
                                             "backgroundColor": "transparent",
                                             "color": "#777777",
-                                            "fontFamily": "Lato",
+                                            "fontFamily": "System",
                                             "fontSize": 11.911764705882351,
                                             "fontWeight": "bold",
                                           }
@@ -1756,7 +1756,7 @@ exports[`user settings screen should render properly and snapshot should match i
                                           Object {
                                             "backgroundColor": "transparent",
                                             "color": "#777777",
-                                            "fontFamily": "Lato",
+                                            "fontFamily": "System",
                                             "fontSize": 8.735294117647058,
                                           }
                                         }
@@ -2065,7 +2065,7 @@ exports[`user settings screen should render properly and snapshot should match i
                                           Object {
                                             "backgroundColor": "transparent",
                                             "color": "#777777",
-                                            "fontFamily": "Lato",
+                                            "fontFamily": "System",
                                             "fontSize": 11.911764705882351,
                                             "fontWeight": "bold",
                                           }
@@ -2079,7 +2079,7 @@ exports[`user settings screen should render properly and snapshot should match i
                                           Object {
                                             "backgroundColor": "transparent",
                                             "color": "#777777",
-                                            "fontFamily": "Lato",
+                                            "fontFamily": "System",
                                             "fontSize": 8.735294117647058,
                                           }
                                         }
@@ -2274,7 +2274,7 @@ exports[`user settings screen should render properly and snapshot should match i
                             style={
                               Object {
                                 "color": "#777777",
-                                "fontFamily": "Lato",
+                                "fontFamily": "System",
                                 "fontSize": 8.922857142857143,
                               }
                             }

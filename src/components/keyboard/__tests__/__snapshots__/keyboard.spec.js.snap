@@ -47,7 +47,7 @@ exports[`<Keyboard /> should render properly and match the snapshot 1`] = `
           Object {
             "backgroundColor": "transparent",
             "color": "#fff",
-            "fontFamily": "Lato",
+            "fontFamily": "System",
             "fontSize": 26,
             "fontWeight": "500",
             "textAlign": "center",
@@ -84,7 +84,7 @@ exports[`<Keyboard /> should render properly and match the snapshot 1`] = `
           Object {
             "backgroundColor": "transparent",
             "color": "#fff",
-            "fontFamily": "Lato",
+            "fontFamily": "System",
             "fontSize": 26,
             "fontWeight": "500",
             "textAlign": "center",
@@ -121,7 +121,7 @@ exports[`<Keyboard /> should render properly and match the snapshot 1`] = `
           Object {
             "backgroundColor": "transparent",
             "color": "#fff",
-            "fontFamily": "Lato",
+            "fontFamily": "System",
             "fontSize": 26,
             "fontWeight": "500",
             "textAlign": "center",
@@ -169,7 +169,7 @@ exports[`<Keyboard /> should render properly and match the snapshot 1`] = `
           Object {
             "backgroundColor": "transparent",
             "color": "#fff",
-            "fontFamily": "Lato",
+            "fontFamily": "System",
             "fontSize": 26,
             "fontWeight": "500",
             "textAlign": "center",
@@ -206,7 +206,7 @@ exports[`<Keyboard /> should render properly and match the snapshot 1`] = `
           Object {
             "backgroundColor": "transparent",
             "color": "#fff",
-            "fontFamily": "Lato",
+            "fontFamily": "System",
             "fontSize": 26,
             "fontWeight": "500",
             "textAlign": "center",
@@ -243,7 +243,7 @@ exports[`<Keyboard /> should render properly and match the snapshot 1`] = `
           Object {
             "backgroundColor": "transparent",
             "color": "#fff",
-            "fontFamily": "Lato",
+            "fontFamily": "System",
             "fontSize": 26,
             "fontWeight": "500",
             "textAlign": "center",
@@ -291,7 +291,7 @@ exports[`<Keyboard /> should render properly and match the snapshot 1`] = `
           Object {
             "backgroundColor": "transparent",
             "color": "#fff",
-            "fontFamily": "Lato",
+            "fontFamily": "System",
             "fontSize": 26,
             "fontWeight": "500",
             "textAlign": "center",
@@ -328,7 +328,7 @@ exports[`<Keyboard /> should render properly and match the snapshot 1`] = `
           Object {
             "backgroundColor": "transparent",
             "color": "#fff",
-            "fontFamily": "Lato",
+            "fontFamily": "System",
             "fontSize": 26,
             "fontWeight": "500",
             "textAlign": "center",
@@ -365,7 +365,7 @@ exports[`<Keyboard /> should render properly and match the snapshot 1`] = `
           Object {
             "backgroundColor": "transparent",
             "color": "#fff",
-            "fontFamily": "Lato",
+            "fontFamily": "System",
             "fontSize": 26,
             "fontWeight": "500",
             "textAlign": "center",
@@ -413,7 +413,7 @@ exports[`<Keyboard /> should render properly and match the snapshot 1`] = `
           Object {
             "backgroundColor": "transparent",
             "color": "#fff",
-            "fontFamily": "Lato",
+            "fontFamily": "System",
             "fontSize": 26,
             "fontWeight": "500",
             "textAlign": "center",
@@ -450,7 +450,7 @@ exports[`<Keyboard /> should render properly and match the snapshot 1`] = `
           Object {
             "backgroundColor": "transparent",
             "color": "#fff",
-            "fontFamily": "Lato",
+            "fontFamily": "System",
             "fontSize": 26,
             "fontWeight": "500",
             "textAlign": "center",
@@ -495,7 +495,7 @@ exports[`<Keyboard /> should render properly and match the snapshot 1`] = `
           Object {
             "backgroundColor": "transparent",
             "color": "#fff",
-            "fontFamily": "Lato",
+            "fontFamily": "System",
             "fontSize": 26,
             "fontWeight": "500",
             "textAlign": "center",

@@ -65,7 +65,7 @@ exports[`<Invitation /> should match snapshot 1`] = `
                       "fontSize": 19,
                     },
                     Object {
-                      "fontFamily": "Lato",
+                      "fontFamily": "System",
                     },
                     Object {
                       "backgroundColor": "#ffffff",
@@ -106,7 +106,7 @@ exports[`<Invitation /> should match snapshot 1`] = `
                 style={
                   Object {
                     "color": "#505050",
-                    "fontFamily": "Lato",
+                    "fontFamily": "System",
                     "fontSize": 13.399999999999999,
                     "fontWeight": "bold",
                     "margin": 10,
@@ -338,7 +338,7 @@ exports[`<Invitation /> should match snapshot 1`] = `
                 "fontSize": 19,
               },
               Object {
-                "fontFamily": "Lato",
+                "fontFamily": "System",
               },
               Object {
                 "backgroundColor": "#333333",
@@ -417,7 +417,7 @@ exports[`<Invitation /> should match snapshot 1`] = `
                   "fontSize": 19,
                 },
                 Object {
-                  "fontFamily": "Lato",
+                  "fontFamily": "System",
                 },
                 Object {
                   "backgroundColor": "#333333",

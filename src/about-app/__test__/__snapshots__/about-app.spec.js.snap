@@ -431,7 +431,7 @@ exports[`user about app screen should render properly and snapshot should match 
                               style={
                                 Object {
                                   "color": "#777777",
-                                  "fontFamily": "Lato",
+                                  "fontFamily": "System",
                                   "fontSize": 21.057142857142857,
                                   "marginLeft": -47.85714285714286,
                                 }
@@ -474,7 +474,7 @@ exports[`user about app screen should render properly and snapshot should match 
                                     "fontSize": 17,
                                   },
                                   Object {
-                                    "fontFamily": "Lato",
+                                    "fontFamily": "System",
                                   },
                                   Object {
                                     "backgroundColor": "#ffffff",
@@ -518,7 +518,7 @@ exports[`user about app screen should render properly and snapshot should match 
                                     "fontSize": 17,
                                   },
                                   Object {
-                                    "fontFamily": "Lato",
+                                    "fontFamily": "System",
                                   },
                                   Object {
                                     "backgroundColor": "#ffffff",
@@ -565,7 +565,7 @@ exports[`user about app screen should render properly and snapshot should match 
                                     "fontSize": 17,
                                   },
                                   Object {
-                                    "fontFamily": "Lato",
+                                    "fontFamily": "System",
                                   },
                                   Object {
                                     "backgroundColor": "#ffffff",
@@ -620,7 +620,7 @@ exports[`user about app screen should render properly and snapshot should match 
                                     "fontSize": 11,
                                   },
                                   Object {
-                                    "fontFamily": "Lato",
+                                    "fontFamily": "System",
                                   },
                                   Object {
                                     "backgroundColor": "#ffffff",
@@ -651,7 +651,7 @@ exports[`user about app screen should render properly and snapshot should match 
                               style={
                                 Object {
                                   "color": "#777777",
-                                  "fontFamily": "Lato",
+                                  "fontFamily": "System",
                                   "fontSize": 23,
                                   "fontWeight": "600",
                                   "marginTop": -12,
@@ -677,7 +677,7 @@ exports[`user about app screen should render properly and snapshot should match 
                                     "fontSize": 11,
                                   },
                                   Object {
-                                    "fontFamily": "Lato",
+                                    "fontFamily": "System",
                                   },
                                   Object {
                                     "backgroundColor": "#ffffff",
@@ -807,7 +807,7 @@ exports[`user about app screen should render properly and snapshot should match 
                                           "fontSize": 17,
                                         },
                                         Object {
-                                          "fontFamily": "Lato",
+                                          "fontFamily": "System",
                                         },
                                         Object {
                                           "backgroundColor": "#ffffff",
@@ -1004,7 +1004,7 @@ exports[`user about app screen should render properly and snapshot should match 
                                           "fontSize": 17,
                                         },
                                         Object {
-                                          "fontFamily": "Lato",
+                                          "fontFamily": "System",
                                         },
                                         Object {
                                           "backgroundColor": "#ffffff",

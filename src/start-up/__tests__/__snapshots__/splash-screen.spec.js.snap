@@ -36,7 +36,7 @@ exports[`<SplashScreen /> should match snapshot 1`] = `
             "fontSize": 17,
           },
           Object {
-            "fontFamily": "Lato",
+            "fontFamily": "System",
           },
           Object {
             "backgroundColor": "#333333",

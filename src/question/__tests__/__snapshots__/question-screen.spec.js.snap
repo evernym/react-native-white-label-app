@@ -97,7 +97,7 @@ exports[`<QuestionScreen /> should match error snapshot 1`] = `
                   "fontSize": 26,
                 },
                 Object {
-                  "fontFamily": "Lato",
+                  "fontFamily": "System",
                 },
                 Object {},
                 Object {
@@ -186,7 +186,7 @@ exports[`<QuestionScreen /> should match error snapshot 1`] = `
                   "fontSize": 19,
                 },
                 Object {
-                  "fontFamily": "Lato",
+                  "fontFamily": "System",
                 },
                 Object {},
                 null,
@@ -407,7 +407,7 @@ exports[`<QuestionScreen /> should match idle state snapshot 1`] = `
                   "fontSize": 26,
                 },
                 Object {
-                  "fontFamily": "Lato",
+                  "fontFamily": "System",
                 },
                 Object {},
                 Object {
@@ -467,7 +467,7 @@ exports[`<QuestionScreen /> should match idle state snapshot 1`] = `
                     "fontSize": 23,
                   },
                   Object {
-                    "fontFamily": "Lato",
+                    "fontFamily": "System",
                   },
                   Object {},
                   Object {
@@ -502,7 +502,7 @@ exports[`<QuestionScreen /> should match idle state snapshot 1`] = `
                   "fontSize": 17,
                 },
                 Object {
-                  "fontFamily": "Lato",
+                  "fontFamily": "System",
                 },
                 Object {},
                 null,
@@ -635,7 +635,7 @@ exports[`<QuestionScreen /> should match idle state snapshot 1`] = `
                         },
                         Object {
                           "color": "#505050",
-                          "fontFamily": "Lato",
+                          "fontFamily": "System",
                           "fontSize": 17,
                           "fontWeight": "normal",
                         },
@@ -745,7 +745,7 @@ exports[`<QuestionScreen /> should match idle state snapshot 1`] = `
                         },
                         Object {
                           "color": "#505050",
-                          "fontFamily": "Lato",
+                          "fontFamily": "System",
                           "fontSize": 17,
                           "fontWeight": "normal",
                         },
@@ -855,7 +855,7 @@ exports[`<QuestionScreen /> should match idle state snapshot 1`] = `
                         },
                         Object {
                           "color": "#505050",
-                          "fontFamily": "Lato",
+                          "fontFamily": "System",
                           "fontSize": 17,
                           "fontWeight": "normal",
                         },
@@ -904,7 +904,7 @@ exports[`<QuestionScreen /> should match idle state snapshot 1`] = `
                         "fontSize": 15,
                       },
                       Object {
-                        "fontFamily": "Lato",
+                        "fontFamily": "System",
                       },
                       Object {},
                       null,
@@ -961,7 +961,7 @@ exports[`<QuestionScreen /> should match idle state snapshot 1`] = `
                         "fontSize": 15,
                       },
                       Object {
-                        "fontFamily": "Lato",
+                        "fontFamily": "System",
                       },
                       Object {},
                       null,
@@ -1187,7 +1187,7 @@ exports[`<QuestionScreen /> should match invalid data 1`] = `
                   "fontSize": 26,
                 },
                 Object {
-                  "fontFamily": "Lato",
+                  "fontFamily": "System",
                 },
                 Object {},
                 Object {
@@ -1247,7 +1247,7 @@ exports[`<QuestionScreen /> should match invalid data 1`] = `
                     "fontSize": 23,
                   },
                   Object {
-                    "fontFamily": "Lato",
+                    "fontFamily": "System",
                   },
                   Object {},
                   Object {
@@ -1282,7 +1282,7 @@ exports[`<QuestionScreen /> should match invalid data 1`] = `
                   "fontSize": 17,
                 },
                 Object {
-                  "fontFamily": "Lato",
+                  "fontFamily": "System",
                 },
                 Object {},
                 null,
@@ -1344,7 +1344,7 @@ exports[`<QuestionScreen /> should match invalid data 1`] = `
                         "fontSize": 15,
                       },
                       Object {
-                        "fontFamily": "Lato",
+                        "fontFamily": "System",
                       },
                       Object {},
                       null,
@@ -1401,7 +1401,7 @@ exports[`<QuestionScreen /> should match invalid data 1`] = `
                         "fontSize": 15,
                       },
                       Object {
-                        "fontFamily": "Lato",
+                        "fontFamily": "System",
                       },
                       Object {},
                       null,
@@ -1454,7 +1454,7 @@ exports[`<QuestionScreen /> should match invalid data 1`] = `
                   "fontSize": 17,
                 },
                 Object {
-                  "fontFamily": "Lato",
+                  "fontFamily": "System",
                 },
                 Object {},
                 Object {
@@ -1582,7 +1582,7 @@ exports[`<QuestionScreen /> should match loading snapshot 1`] = `
                   "fontSize": 26,
                 },
                 Object {
-                  "fontFamily": "Lato",
+                  "fontFamily": "System",
                 },
                 Object {},
                 Object {
@@ -1648,7 +1648,7 @@ exports[`<QuestionScreen /> should match loading snapshot 1`] = `
                     "fontSize": 17,
                   },
                   Object {
-                    "fontFamily": "Lato",
+                    "fontFamily": "System",
                   },
                   Object {
                     "backgroundColor": "#333333",
@@ -1789,7 +1789,7 @@ exports[`<QuestionScreen /> should match success snapshot 1`] = `
                   "fontSize": 26,
                 },
                 Object {
-                  "fontFamily": "Lato",
+                  "fontFamily": "System",
                 },
                 Object {},
                 Object {
@@ -1878,7 +1878,7 @@ exports[`<QuestionScreen /> should match success snapshot 1`] = `
                   "fontSize": 19,
                 },
                 Object {
-                  "fontFamily": "Lato",
+                  "fontFamily": "System",
                 },
                 Object {},
                 null,

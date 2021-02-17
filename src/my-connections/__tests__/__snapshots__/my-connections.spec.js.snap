@@ -450,7 +450,7 @@ exports[`<MyConnectionsScreen /> should render MyConnections and redirect user t
                               style={
                                 Object {
                                   "color": "#777777",
-                                  "fontFamily": "Lato",
+                                  "fontFamily": "System",
                                   "fontSize": 21.057142857142857,
                                   "marginLeft": -47.85714285714286,
                                 }
@@ -627,7 +627,7 @@ exports[`<MyConnectionsScreen /> should render MyConnections and redirect user t
                             style={
                               Object {
                                 "color": "#777777",
-                                "fontFamily": "Lato",
+                                "fontFamily": "System",
                                 "fontSize": 8.922857142857143,
                               }
                             }
@@ -1099,7 +1099,7 @@ exports[`<MyConnectionsScreen /> should render MyConnections and show introducto
                               style={
                                 Object {
                                   "color": "#777777",
-                                  "fontFamily": "Lato",
+                                  "fontFamily": "System",
                                   "fontSize": 21.057142857142857,
                                   "marginLeft": -47.85714285714286,
                                 }
@@ -1276,7 +1276,7 @@ exports[`<MyConnectionsScreen /> should render MyConnections and show introducto
                             style={
                               Object {
                                 "color": "#777777",
-                                "fontFamily": "Lato",
+                                "fontFamily": "System",
                                 "fontSize": 8.922857142857143,
                               }
                             }

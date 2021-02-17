@@ -59,7 +59,7 @@ exports[`<Error /> should render errorText 1`] = `
           "fontSize": 19,
         },
         Object {
-          "fontFamily": "Lato",
+          "fontFamily": "System",
         },
         Object {},
         null,

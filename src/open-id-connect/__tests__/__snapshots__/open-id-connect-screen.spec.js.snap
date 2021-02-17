@@ -348,7 +348,7 @@ exports[`<OpenIdConnectScreen /> should match in fail state 1`] = `
                                   "fontSize": 19,
                                 },
                                 Object {
-                                  "fontFamily": "Lato",
+                                  "fontFamily": "System",
                                 },
                                 Object {},
                                 null,
@@ -883,7 +883,7 @@ exports[`<OpenIdConnectScreen /> should match in progress state 1`] = `
                                   "fontSize": 17,
                                 },
                                 Object {
-                                  "fontFamily": "Lato",
+                                  "fontFamily": "System",
                                 },
                                 Object {
                                   "backgroundColor": "#333333",
@@ -1275,7 +1275,7 @@ exports[`<OpenIdConnectScreen /> should match in received state 1`] = `
                                     "fontSize": 17,
                                   },
                                   Object {
-                                    "fontFamily": "Lato",
+                                    "fontFamily": "System",
                                   },
                                   Object {},
                                   Object {
@@ -1321,7 +1321,7 @@ exports[`<OpenIdConnectScreen /> should match in received state 1`] = `
                                   "fontSize": 17,
                                 },
                                 Object {
-                                  "fontFamily": "Lato",
+                                  "fontFamily": "System",
                                 },
                                 Object {},
                                 null,
@@ -1875,7 +1875,7 @@ exports[`<OpenIdConnectScreen /> should match in signature verification failed 1
                                     "fontSize": 17,
                                   },
                                   Object {
-                                    "fontFamily": "Lato",
+                                    "fontFamily": "System",
                                   },
                                   Object {},
                                   Object {
@@ -1921,7 +1921,7 @@ exports[`<OpenIdConnectScreen /> should match in signature verification failed 1
                                   "fontSize": 19,
                                 },
                                 Object {
-                                  "fontFamily": "Lato",
+                                  "fontFamily": "System",
                                 },
                                 Object {},
                                 null,
@@ -1957,7 +1957,7 @@ exports[`<OpenIdConnectScreen /> should match in signature verification failed 1
                                   "fontSize": 17,
                                 },
                                 Object {
-                                  "fontFamily": "Lato",
+                                  "fontFamily": "System",
                                 },
                                 Object {},
                                 null,
@@ -2509,7 +2509,7 @@ exports[`<OpenIdConnectScreen /> should match in success state 1`] = `
                                 "fontSize": 19,
                               },
                               Object {
-                                "fontFamily": "Lato",
+                                "fontFamily": "System",
                               },
                               Object {},
                               null,

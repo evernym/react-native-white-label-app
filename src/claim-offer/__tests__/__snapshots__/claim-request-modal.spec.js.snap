@@ -55,7 +55,7 @@ exports[`<ClaimRequestStatusModal /> should hideModal if continue is clicked 1`]
               "fontSize": 17,
             },
             Object {
-              "fontFamily": "Lato",
+              "fontFamily": "System",
             },
             Object {
               "backgroundColor": "#ffffff",
@@ -213,7 +213,7 @@ exports[`<ClaimRequestStatusModal /> should match paid credential success, if se
               "fontSize": 17,
             },
             Object {
-              "fontFamily": "Lato",
+              "fontFamily": "System",
             },
             Object {
               "backgroundColor": "#ffffff",
@@ -355,7 +355,7 @@ exports[`<ClaimRequestStatusModal /> should match snapshot when pending popOver 
               "fontSize": 17,
             },
             Object {
-              "fontFamily": "Lato",
+              "fontFamily": "System",
             },
             Object {
               "backgroundColor": "#ffffff",
@@ -411,7 +411,7 @@ exports[`<ClaimRequestStatusModal /> should match snapshot when pending popOver 
                 "fontSize": 17,
               },
               Object {
-                "fontFamily": "Lato",
+                "fontFamily": "System",
               },
               Object {
                 "backgroundColor": "#333333",
@@ -508,7 +508,7 @@ exports[`<ClaimRequestStatusModal /> should show arrow right and accepting text,
               "fontSize": 17,
             },
             Object {
-              "fontFamily": "Lato",
+              "fontFamily": "System",
             },
             Object {
               "backgroundColor": "#ffffff",
@@ -650,7 +650,7 @@ exports[`<ClaimRequestStatusModal /> should show arrow right and only Paying tex
               "fontSize": 17,
             },
             Object {
-              "fontFamily": "Lato",
+              "fontFamily": "System",
             },
             Object {
               "backgroundColor": "#ffffff",
@@ -706,7 +706,7 @@ exports[`<ClaimRequestStatusModal /> should show arrow right and only Paying tex
                 "fontSize": 17,
               },
               Object {
-                "fontFamily": "Lato",
+                "fontFamily": "System",
               },
               Object {
                 "backgroundColor": "#333333",
@@ -803,7 +803,7 @@ exports[`<ClaimRequestStatusModal /> should show check mark, token amount, if pa
               "fontSize": 17,
             },
             Object {
-              "fontFamily": "Lato",
+              "fontFamily": "System",
             },
             Object {
               "backgroundColor": "#ffffff",
@@ -961,7 +961,7 @@ exports[`<ClaimRequestStatusModal /> should show check mark, you accepted text, 
               "fontSize": 17,
             },
             Object {
-              "fontFamily": "Lato",
+              "fontFamily": "System",
             },
             Object {
               "backgroundColor": "#ffffff",

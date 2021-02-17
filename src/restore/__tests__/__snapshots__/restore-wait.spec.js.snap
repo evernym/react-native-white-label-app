@@ -114,7 +114,7 @@ exports[`RestoreWait screen should render properly and match the snapshot 1`] = 
               "fontSize": 17,
             },
             Object {
-              "fontFamily": "Lato",
+              "fontFamily": "System",
             },
             Object {
               "backgroundColor": "#333333",

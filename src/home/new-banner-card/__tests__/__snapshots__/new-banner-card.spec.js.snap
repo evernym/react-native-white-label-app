@@ -74,7 +74,7 @@ exports[`<NewBannerCard /> should render NewBannerCard component and match snaps
             Object {
               "alignItems": "center",
               "color": "#FFFFFF",
-              "fontFamily": "Lato",
+              "fontFamily": "System",
               "fontSize": 12.799999999999999,
             }
           }
@@ -221,7 +221,7 @@ exports[`<NewBannerCard /> should render NewBannerCard component and match snaps
                 style={
                   Object {
                     "color": "#505050",
-                    "fontFamily": "Lato",
+                    "fontFamily": "System",
                     "fontSize": 14.871428571428572,
                     "fontWeight": "bold",
                     "marginBottom": 2.974285714285714,
@@ -243,7 +243,7 @@ exports[`<NewBannerCard /> should render NewBannerCard component and match snaps
                 style={
                   Object {
                     "color": "#505050",
-                    "fontFamily": "Lato",
+                    "fontFamily": "System",
                     "fontSize": 10.905714285714286,
                     "fontWeight": "bold",
                     "marginTop": 2.974285714285714,
@@ -268,7 +268,7 @@ exports[`<NewBannerCard /> should render NewBannerCard component and match snaps
               style={
                 Object {
                   "color": "#505050",
-                  "fontFamily": "Lato",
+                  "fontFamily": "System",
                   "fontSize": 9.914285714285715,
                   "fontStyle": "italic",
                   "fontWeight": "500",
