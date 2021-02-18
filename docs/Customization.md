@@ -31,7 +31,7 @@ For example `home.js` contains options for `Home` screen.
 * [Splash screen and app icon](#splash-screen-and-app-icon)
 * [Advanced](#advanced)
 
-#### Application
+### Application
 
 The base application settings should be specified in `app.js` file.
 
