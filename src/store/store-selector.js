@@ -5,7 +5,6 @@ import { CLAIM_OFFER_STATUS } from '../claim-offer/type-claim-offer'
 import type { Connection, ConnectionStore } from './type-connection-store'
 import type { ConnectionHistoryEvent } from '../connection-history/type-connection-history'
 import { HISTORY_EVENT_TYPE } from '../connection-history/type-connection-history'
-import { colors } from '../common/styles/constant'
 import { getConnections } from './connections-store'
 import { baseUrls } from './config-store'
 import findKey from 'lodash.findkey'
@@ -206,10 +205,6 @@ export const getConnection = (
   }
 
   return []
-}
-export const getConnectionColorTheme = (state: Store, remoteDid: string) => {
-  const [connection] = getConnection(state, remoteDid)
-  return connection ? connection.colorTheme : colors.main
 }
 
 export const getConnectionLogoUrl = (

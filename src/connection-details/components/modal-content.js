@@ -23,6 +23,8 @@ import { colors, fontSizes, fontFamily } from '../../common/styles/constant'
 import SvgCustomIcon from '../../components/svg-custom-icon'
 import { ModalHeader } from './modal-header'
 import { ExpandableText } from '../../components/expandable-text/expandable-text'
+import { checkCredentialForEmptyFields, showMissingField, showToggleMenu } from '../utils/checkForEmptyAttributes'
+import { uuid } from '../../services/uuid'
 
 type ModalContentProps = {
   uid: string,
@@ -144,7 +146,10 @@ export const ModalContent = ({
     }),
     [imageUrl]
   )
+  const { hasEmpty, allEmpty } = useMemo(() => checkCredentialForEmptyFields(content), [content])
   const [interactionDone, setInteractionDone] = useState(false)
+  const [isMissingFieldsShowing, toggleMissingFields] = useState(showMissingField(hasEmpty, allEmpty))
+  const isToggleMenuShowing = showToggleMenu(hasEmpty, allEmpty)
 
   useEffect(() => {
     InteractionManager.runAfterInteractions(() => setInteractionDone(true))
@@ -166,20 +171,29 @@ export const ModalContent = ({
             credentialName,
             credentialText,
             imageUrl,
+            isMissingFieldsShowing,
+            toggleMissingFields,
+            showToggleMenu: isToggleMenuShowing,
+
           }}
         />
-        {content.map(({ label, data }, index) => (
-          <View key={index} style={styles.wrapper}>
-            <View style={styles.textAvatarWrapper}>
-              {renderAttachmentIcon(label, data, remotePairwiseDID, uid)}
-              {showSidePicture && (
-                <View style={styles.avatarWrapper}>
-                  <Avatar radius={16} src={source} />
-                </View>
-              )}
-            </View>
-          </View>
-        ))}
+        {content.map(({ label, data }) => {
+          if ((data === '' || !data) && !isMissingFieldsShowing) {
+            return <View />
+          }
+          return (
+            <>
+              <View key={uuid()} style={styles.textAvatarWrapper}>
+                {renderAttachmentIcon(label, data, remotePairwiseDID, uid)}
+                {showSidePicture && (
+                  <View style={styles.avatarWrapper}>
+                    <Avatar radius={16} src={source} />
+                  </View>
+                )}
+              </View>
+            </>
+          )
+        })}
       </ScrollView>
     </View>
   )

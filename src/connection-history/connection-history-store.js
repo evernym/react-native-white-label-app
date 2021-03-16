@@ -207,9 +207,9 @@ export function* loadHistorySaga(): Generator<*, *, *> {
         connectionsUpdated: false,
       }
 
-      let history
+      let history: any
 
-      if ('connectionsUpdated' in oldHistory) {
+      if ('connectionsUpdated' in oldHistory && 'connections' in oldHistory) {
         history = oldHistory
       } else if ('newBadge' in oldHistory[oldHistoryKeys[0]]) {
         newHistory = {
@@ -225,6 +225,7 @@ export function* loadHistorySaga(): Generator<*, *, *> {
             newBadge: false,
           }
         }
+
         newHistory = {
           ...newHistory,
           connections: modifiedData,
@@ -239,15 +240,27 @@ export function* loadHistorySaga(): Generator<*, *, *> {
       // for CMe > 1.4.0 Home -> Recent event section shows all events (even for deleted connections)
       //            The approach used for CMe <=1.4.0 doesn't work when we want to show history for deleted connections as well.
       //            So we need populate history with missing data - add `senderLogoUrl` and `senderName` from last connection related event.
-      Object.keys(oldHistory.connections)
+      Object.keys(history.connections)
         .forEach((connectionKey) => {
-          const connectionHistory = oldHistory.connections[connectionKey].data
+          const connectionHistory = history.connections[connectionKey].data || []
+
           for (let i = 0; i < connectionHistory.length; i++) {
             if (!connectionHistory[i].senderName || !connectionHistory[i].senderLogoUrl) {
+              customLogger.log('loadHistorySaga --> set missing history event data')
+
               const connectionAddedEvent = getLastConnectionEvent(connectionHistory.slice(0, i + 1))
-              if (connectionAddedEvent) {
-                oldHistory.connections[connectionKey].data[i].senderName = connectionAddedEvent.originalPayload.payload.senderName
-                oldHistory.connections[connectionKey].data[i].senderLogoUrl = connectionAddedEvent.originalPayload.payload.senderLogoUrl
+              if (connectionAddedEvent && connectionAddedEvent.originalPayload) {
+                // ConnectMe <= 1.3 - Connection completed event
+                if (connectionAddedEvent.originalPayload.type === NEW_CONNECTION_SUCCESS && connectionAddedEvent.originalPayload.connection) {
+                  history.connections[connectionKey].data[i].senderName = connectionAddedEvent.originalPayload.connection.senderName
+                  history.connections[connectionKey].data[i].senderLogoUrl = connectionAddedEvent.originalPayload.connection.logoUrl
+                }
+
+                // ConnectMe 1.4 - Connection completed event
+                if (connectionAddedEvent.originalPayload.type === INVITATION_ACCEPTED && connectionAddedEvent.originalPayload.payload) {
+                  history.connections[connectionKey].data[i].senderName = connectionAddedEvent.originalPayload.payload.senderName
+                  history.connections[connectionKey].data[i].senderLogoUrl = connectionAddedEvent.originalPayload.payload.senderLogoUrl
+                }
               }
             }
           }
@@ -257,6 +270,7 @@ export function* loadHistorySaga(): Generator<*, *, *> {
     }
   } catch (e) {
     captureError(e)
+    customLogger.error(`loadHistorySaga: ${e}`)
     yield put(
       loadHistoryFail({
         ...ERROR_LOADING_HISTORY,

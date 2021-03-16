@@ -33,7 +33,6 @@ export type Connection = {
   attachedRequest?: AriesAttachedRequest,
   isFetching?: boolean,
   isCompleted?: boolean,
-  colorTheme?: string,
 } & MyPairwiseInfo
 
 export const DELETE_PENDING_CONNECTION = 'DELETE_PENDING_CONNECTION'

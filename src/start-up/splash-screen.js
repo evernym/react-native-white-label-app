@@ -49,7 +49,8 @@ import {
 } from '../invitation/invitation'
 import { CONNECTION_INVITE_TYPES } from '../invitation/type-invitation'
 import { getPushNotificationAuthorizationStatus } from '../push-notification/components/push-notification-permission-screen'
-import { usePushNotifications } from '../external-exports'
+import { TOKEN_EXPIRED, TOKEN_UNRESOLVED } from '../expired-token/type-expired-token'
+
 
 const isReceived = ({ payload, status }) => {
   return (
@@ -94,11 +95,11 @@ export class SplashScreenView extends PureComponent<
     }
   }
 
-  redirect = (props: SplashScreenProps, route: string) => {
+  redirect = (props: SplashScreenProps, route: string, params?: any) => {
     if (props.lock.isAppLocked === false) {
-      props.navigation.navigate(route)
+      props.navigation.navigate(route, params)
     } else {
-      props.addPendingRedirection([{ routeName: route }])
+      props.addPendingRedirection([{ routeName: route, params  }])
     }
   }
 
@@ -115,7 +116,7 @@ export class SplashScreenView extends PureComponent<
       ({ invitationToken }) =>
         invitationToken &&
         this.props.deepLink.tokens[invitationToken].status !==
-          DEEP_LINK_STATUS.PROCESSED
+        DEEP_LINK_STATUS.PROCESSED
     )
     return unHandledSmsPendingInvitations
   }
@@ -130,11 +131,11 @@ export class SplashScreenView extends PureComponent<
       ({ error }) => error && error.code && error.code === TOKEN_EXPIRED_CODE
     )
     if (isAnyOneOfSmsPendingInvitationWasExpired) {
-      this.redirect(this.props, expiredTokenRoute)
+      this.redirect(this.props, expiredTokenRoute, {reason: TOKEN_EXPIRED})
     } else if (isAnyOneOfSmsPendingInvitationHasError) {
       // * This condition is needed to avoid un wanted redirection to home screen if unHandledSmsPendingInvitations are empty
       // * or if we are in middle of other invitation fetching process
-      this.redirect(this.props, homeRoute)
+      this.redirect(this.props, expiredTokenRoute, {reason: TOKEN_UNRESOLVED})
     }
     unHandledSmsPendingInvitations.map(({ error, invitationToken }) => {
       error ? this.props.deepLinkProcessed(invitationToken) : null
@@ -145,7 +146,7 @@ export class SplashScreenView extends PureComponent<
     // Check if the pending sms invitations have changed, or if there is unhandled sms invitations to proceed
     if (
       JSON.stringify(prevProps.smsPendingInvitation) !==
-        JSON.stringify(this.props.smsPendingInvitation) ||
+      JSON.stringify(this.props.smsPendingInvitation) ||
       typeof this.getUnHandledSmsPendingInvitations() !== 'undefined'
     ) {
       const unHandledSmsPendingInvitations = this.getUnHandledSmsPendingInvitations()
@@ -156,14 +157,14 @@ export class SplashScreenView extends PureComponent<
 
       const pendingRedirectionList = unseenSmsPendingInvitations.map(
         ({
-          payload,
-          invitationToken,
-        }: {
+           payload,
+           invitationToken,
+         }: {
           +payload: ?(
             | SMSPendingInvitationPayload
             | AriesConnectionInvitePayload
             | AriesOutOfBandInvite
-          ),
+            ),
           invitationToken: string,
         }) => {
           if (payload) {
@@ -230,11 +231,11 @@ export class SplashScreenView extends PureComponent<
               const sendRedirectMessage =
                 existingConnection.isCompleted &&
                 qrCodeInvitationPayload.type ===
-                  CONNECTION_INVITE_TYPES.ARIES_OUT_OF_BAND
+                CONNECTION_INVITE_TYPES.ARIES_OUT_OF_BAND
                   ? true
                   : publicDID
                   ? existingConnection.publicDID === publicDID &&
-                    existingConnection.senderDID !== senderDID
+                  existingConnection.senderDID !== senderDID
                   : false
 
               const {
@@ -270,9 +271,9 @@ export class SplashScreenView extends PureComponent<
                   params: params,
                 })
               } else if (Platform.OS === 'ios') {
-                if ((this.getAuthorizationStatus() && this.props.historyData) || !usePushNotifications) {
+                if (this.state.isAuthorized) {
                   this.props.navigation.push &&
-                    this.props.navigation.push(routeName, params)
+                  this.props.navigation.push(routeName, params)
                 } else {
                   navigationFn(pushNotificationPermissionRoute, {
                     senderDID,
@@ -280,7 +281,7 @@ export class SplashScreenView extends PureComponent<
                 }
               } else {
                 this.props.navigation.push &&
-                  this.props.navigation.push(routeName, params)
+                this.props.navigation.push(routeName, params)
               }
             }
 
@@ -292,7 +293,7 @@ export class SplashScreenView extends PureComponent<
                   params: params,
                 },
               }
-            } else if ((Platform.OS === 'ios' && !this.state.isAuthorized) || !usePushNotifications) {
+            } else if (Platform.OS === 'ios' && !this.state.isAuthorized) {
               return {
                 routeName: pushNotificationPermissionRoute,
                 params,
@@ -308,8 +309,8 @@ export class SplashScreenView extends PureComponent<
       )
 
       pendingRedirectionList.length !== 0 &&
-        this.props.lock.isAppLocked === true &&
-        this.props.addPendingRedirection(pendingRedirectionList)
+      this.props.lock.isAppLocked === true &&
+      this.props.addPendingRedirection(pendingRedirectionList)
 
       // * all error token links should be processed
     }
@@ -396,14 +397,13 @@ export class SplashScreenView extends PureComponent<
 }
 
 const mapStateToProps = ({
-  config,
-  deepLink,
-  lock,
-  smsPendingInvitation,
-  eula,
-  connections,
-  history,
-}: Store) => ({
+                           config,
+                           deepLink,
+                           lock,
+                           smsPendingInvitation,
+                           eula,
+                           connections,
+                         }: Store) => ({
   isInitialized: config.isInitialized,
   // DeepLink should be it's own component that will handle only deep link logic
   // in that way, we will be able to restrict re-render and re-run of code
@@ -415,7 +415,6 @@ const mapStateToProps = ({
   eula,
   getAllDid: getAllDid(connections),
   getAllPublicDid: getAllPublicDid(connections),
-  historyData: history && history.data,
 })
 
 const mapDispatchToProps = (dispatch) =>

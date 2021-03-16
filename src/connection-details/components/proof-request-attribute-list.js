@@ -46,11 +46,21 @@ import { DefaultLogo } from '../../components/default-logo/default-logo'
 import { getPredicateTitle } from '../utils/getPredicateTitle'
 import { ExpandableText } from '../../components/expandable-text/expandable-text'
 import { renderUserAvatar } from '../../components/user-avatar/user-avatar'
+import {
+  checkProofForEmptyFields,
+  showMissingField,
+  showToggleMenu,
+} from '../utils/checkForEmptyAttributes'
 
 class ProofRequestAttributeList extends Component<
   ProofRequestAttributeListAndHeaderProps & ReactNavigation,
   ProofRequestAttributeListState
   > {
+  state = {
+    isMissingFieldsShowing: false,
+    showToggleMenu: false,
+  }
+
   UNSAFE_componentWillReceiveProps(
     nextProps: ProofRequestAttributeListAndHeaderProps
   ) {
@@ -65,6 +75,23 @@ class ProofRequestAttributeList extends Component<
       )
     }
   }
+
+  componentDidMount() {
+    const attributes: Array<Attribute> = this.props.list
+    this.checkForEmptyValues(attributes)
+  }
+
+  checkForEmptyValues = (attributes: Array<Attribute>) => {
+    const data = Array.prototype.concat.apply([], attributes)
+    const { hasEmpty, allEmpty } = checkProofForEmptyFields(data)
+    this.setState({
+      showToggleMenu: showToggleMenu(hasEmpty, allEmpty),
+      isMissingFieldsShowing: showMissingField(hasEmpty, allEmpty)
+    })
+  }
+
+  toggleMissingFields = (arg: boolean) =>
+    this.setState({ isMissingFieldsShowing: arg })
 
   // this form is needed to fix flow error
   // because methods of a class are by default covariant
@@ -196,6 +223,10 @@ class ProofRequestAttributeList extends Component<
 
       views = Object.keys(selectedItem.values).map((label, keyIndex) => {
         const value = selectedItem.values[label]
+
+        if ((value === '' || !value) && !this.state.isMissingFieldsShowing) {
+          return <View />
+        }
 
         let claim =
           (selectedItem.claimUuid &&
@@ -338,50 +369,87 @@ class ProofRequestAttributeList extends Component<
           ? this.state?.[adjustedLabel]
           : undefined
 
-      return (
-        <TouchableOpacity
-          key={`${index}_${keyIndex}`}
-          testID={value}
-          accessible={false}
-          onPress={() =>
-            handleCustomValuesNavigation(label, adjustedLabel, attribute.key)
-          }
-        >
-          <View style={styles.textAvatarWrapper}>
-            <View style={styles.textWrapper}>
-              <ExpandableText style={styles.title} text={label} />
-              {value ? (
-                <ExpandableText style={styles.contentInput} text={value} />
-              ) : (
-                <Text style={styles.dissatisfiedAttribute}>
-                  {MISSING_ATTRIBUTE_DATA_TEXT}
-                </Text>
-              )}
-            </View>
-            {value && (
-              <View style={[styles.avatarWrapper, { paddingLeft: 4 }]}>
-                {renderUserAvatar({ size: 'superSmall'})}
+      if (value) {
+        return (
+          <View key={index} style={styles.wrapper}>
+            <TouchableOpacity
+              key={`${index}_${keyIndex}`}
+              testID={value}
+              accessible={false}
+              onPress={() =>
+                handleCustomValuesNavigation(
+                  label,
+                  adjustedLabel,
+                  attribute.key
+                )
+              }
+            >
+              <View style={styles.textAvatarWrapper}>
+                <View style={styles.textWrapper}>
+                  <ExpandableText style={styles.title} text={label} />
+                  <ExpandableText style={styles.contentInput} text={value} />
+                </View>
+                <View style={styles.iconWrapper}>
+                  <EvaIcon
+                    name={ARROW_FORWARD_ICON}
+                    fill={colors.black}
+                    testID="arrow-forward-icon"
+                    accessible={true}
+                    accessibilityLabel="arrow-forward-icon"
+                  />
+                </View>
+              </View>
+            </TouchableOpacity>
+          </View>
+        )
+      }
+
+      if (!value) {
+        return (
+          <>
+            {this.state.isMissingFieldsShowing && (
+              <View key={index} style={styles.wrapper}>
+                <TouchableOpacity
+                  key={`${index}_${keyIndex}`}
+                  testID={value}
+                  accessible={false}
+                  onPress={() =>
+                    handleCustomValuesNavigation(
+                      label,
+                      adjustedLabel,
+                      attribute.key
+                    )
+                  }
+                >
+                  <View style={styles.textAvatarWrapper}>
+                    <View style={styles.textWrapper}>
+                      <ExpandableText style={styles.title} text={label} />
+                      <Text style={styles.dissatisfiedAttribute}>
+                        {MISSING_ATTRIBUTE_DATA_TEXT}
+                      </Text>
+                    </View>
+                    <View style={[styles.avatarWrapper, { paddingLeft: 4 }]}>
+                      {renderUserAvatar({ size: 'superSmall'})}
+                    </View>
+                    <View style={styles.iconWrapper}>
+                      <EvaIcon
+                        name={ARROW_FORWARD_ICON}
+                        fill={colors.black}
+                        testID="arrow-forward-icon"
+                        accessible={true}
+                        accessibilityLabel="arrow-forward-icon"
+                      />
+                    </View>
+                  </View>
+                </TouchableOpacity>
               </View>
             )}
-            <View style={styles.iconWrapper}>
-              <EvaIcon
-                name={ARROW_FORWARD_ICON}
-                fill={colors.black}
-                testID="arrow-forward-icon"
-                accessible={true}
-                accessibilityLabel="arrow-forward-icon"
-              />
-            </View>
-          </View>
-        </TouchableOpacity>
-      )
+          </>
+        )
+      }
     })
 
-    return (
-      <View key={index} style={styles.wrapper}>
-        <View>{views}</View>
-      </View>
-    )
+    return <View>{views}</View>
   }
 
   renderDissatisfiedAttribute = ({ attribute, index }: any) => {
@@ -577,6 +645,8 @@ class ProofRequestAttributeList extends Component<
 
   render() {
     const attributes: Array<Attribute> = this.props.list
+    const { isMissingFieldsShowing, showToggleMenu } = this.state
+    const { toggleMissingFields } = this
 
     const {
       institutionalName,
@@ -613,6 +683,9 @@ class ProofRequestAttributeList extends Component<
               credentialText,
               imageUrl,
               colorBackground,
+              isMissingFieldsShowing,
+              toggleMissingFields,
+              showToggleMenu,
             }}
           />
         )}

@@ -7,6 +7,7 @@ import {
   homeRoute,
   waitForInvitationRoute,
   invitationRoute,
+  pushNotificationPermissionRoute,
 } from '../../common/'
 import { SplashScreenView } from '../splash-screen'
 import {
@@ -16,6 +17,7 @@ import {
   senderDid1,
 } from '../../../__mocks__/static-data'
 import { DEEP_LINK_STATUS } from '../../deep-link/type-deep-link'
+import { Platform } from 'react-native'
 
 describe('<SplashScreen />', () => {
   function getProps(overrideProps = {}) {
@@ -98,7 +100,7 @@ describe('<SplashScreen />', () => {
         deepLink={{ ...deepLink, isLoading: false }}
       />
     )
-    expect(navigation.navigate).toHaveBeenCalledWith(homeRoute)
+    expect(navigation.navigate).toHaveBeenCalledWith(homeRoute, undefined)
   })
 
   it(`should goto 'waitForInvitation' screen and fetch invitation if a deepLink was found and app was unlocked`, () => {
@@ -123,7 +125,7 @@ describe('<SplashScreen />', () => {
       />
     )
     expect(getSmsPendingInvitation).toHaveBeenCalledWith('token1')
-    expect(navigation.navigate).toHaveBeenCalledWith(waitForInvitationRoute)
+    expect(navigation.navigate).toHaveBeenCalledWith(waitForInvitationRoute, undefined)
   })
 
   it(`should go to 'waitForInvitation' screen and fetch invitation if the same deepLink was used twice`, () => {
@@ -165,10 +167,11 @@ describe('<SplashScreen />', () => {
     )
 
     expect(getSmsPendingInvitation).toHaveBeenCalledWith('token1')
-    expect(navigation.navigate).toHaveBeenCalledWith(waitForInvitationRoute)
+    expect(navigation.navigate).toHaveBeenCalledWith(waitForInvitationRoute, undefined)
   })
 
   it(`should show invitation if invitation is fetched and app is unlocked`, () => {
+
     const { component, props } = setup()
     const { deepLink, deepLinkProcessed, lock, navigation } = props
     const updatedDeepLink = {
@@ -192,11 +195,17 @@ describe('<SplashScreen />', () => {
       />
     )
     expect(deepLinkProcessed).toHaveBeenCalledWith('3651947c')
-    expect(navigation.push).toHaveBeenCalledWith(invitationRoute, {
-      notificationOpenOptions: null,
-      senderDID: senderDid1,
-      token: '3651947c',
-    })
+
+    if (Platform.OS === 'ios') {
+      expect(navigation.push).toHaveBeenCalledWith(pushNotificationPermissionRoute, {
+        senderDID: senderDid1,
+      })
+    } else {
+      expect(navigation.push).toHaveBeenCalledWith(invitationRoute, {
+        senderDID: senderDid1,
+        token: '3651947c',
+      })
+    }
   })
 
   it(`should add invitation route to pending redirection if invitation is fetched and app is locked`, () => {

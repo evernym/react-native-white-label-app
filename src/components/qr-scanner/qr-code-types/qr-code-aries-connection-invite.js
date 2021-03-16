@@ -21,12 +21,12 @@ export async function isAriesConnectionInviteQrCode(
 ): Promise<AriesConnectionInvite | false> {
   const { query } = parsedUrl
 
-  if (!query.c_i) {
+  if (!query.c_i && !query.d_m) {
     // if url does not have a query param named c_i, then return false
     return false
   }
 
-  const body = query.c_i
+  const body = query.c_i || query.d_m
 
   let qrData: null | AriesConnectionInvitePayload = null
   const parsedInviteUrlSafe = await getDecodedQrData(body, 'NO_WRAP')
@@ -75,13 +75,13 @@ export async function isAriesOutOfBandInviteQrCode(
 ): Promise<AriesOutOfBandInvite | false> {
   const { query } = parsedUrl
 
-  if (!query.oob && !query.c_i) {
+  if (!query.oob && !query.c_i && !query.d_m) {
     // TODO: remove c_i case once Verity fix it.
     return false
   }
 
   const [decodeError, decodedInvite] = await flattenAsync(toUtf8FromBase64)(
-    query.oob || query.c_i,
+    query.oob || query.c_i || query.d_m,
     'URL_SAFE'
   )
   if (decodeError || decodedInvite === null) {

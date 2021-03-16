@@ -42,7 +42,7 @@ import {
   useValue,
 } from 'react-native-redash/lib/module/v1'
 import { DELETE_ICON, EvaIcon } from '../../../common/icons'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { deleteClaim } from '../../../claim/claim-store'
 import {
   CARD_HEIGHT,
@@ -53,7 +53,6 @@ import {
   WHITE_TEXT_BRIGHTNESS_LIMIT,
 } from '../credentials-constants'
 import { brightnessByColor } from '../utils'
-import { getConnectionColorTheme } from '../../../store/store-selector'
 
 const textColor = colors.white
 
@@ -70,8 +69,8 @@ const CredentialCard = ({
     credentialName,
     issuerName,
     attributes,
-    remoteDid,
     claimOfferUuid,
+    colorTheme,
   } = item
   const [isOpen, setIsOpen] = useState(false)
   const [shouldRemove, setShouldRemove] = useState(false)
@@ -79,9 +78,6 @@ const CredentialCard = ({
   const dispatch = useDispatch()
   const offsetX = useValue(0)
   const translateX = useValue(0)
-  const cardColor = useSelector((state) =>
-    getConnectionColorTheme(state, remoteDid)
-  )
 
   const collapseTransition = useTransition(isHidden || shouldRemove, {
     duration: TRANSITION_DURATION,
@@ -127,11 +123,11 @@ const CredentialCard = ({
   )
 
   const getTextColor = useCallback(() => {
-    const brightness = brightnessByColor(cardColor)
+    const brightness = brightnessByColor(colorTheme)
     return brightness > WHITE_TEXT_BRIGHTNESS_LIMIT
       ? colors.gray0
       : colors.white
-  }, [cardColor])
+  }, [colorTheme])
 
   const onPress = () => {
     if (isExpanded) {
@@ -210,14 +206,14 @@ const CredentialCard = ({
             style={[styles.container, { elevation: elevation }]}
             onPress={onPress}
             activeOpacity={0.9}
-            underlayColor={cardColor}
+            underlayColor={colorTheme}
             accessible={false}
           >
             <View
               style={[
                 styles.card,
                 {
-                  backgroundColor: cardColor,
+                  backgroundColor: colorTheme,
                 },
               ]}
             >

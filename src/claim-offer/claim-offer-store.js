@@ -106,6 +106,10 @@ import Snackbar from 'react-native-snackbar'
 import { colors, venetianRed } from '../common/styles/constant'
 import { checkProtocolStatus } from '../store/protocol-status'
 import { isIssuanceCompleted } from '../store/store-utils'
+import { customLogger } from '../store/custom-logger'
+import { Platform } from 'react-native'
+import ImageColors from 'react-native-image-colors'
+import { pickAndroidColor, pickIosColor } from '../my-credentials/cards/utils'
 
 const claimOfferInitialState = {
   vcxSerializedClaimOffers: {},
@@ -233,6 +237,25 @@ export const deleteOutOfBandClaimOffer = (uid: string) => ({
   type: DELETE_OUTOFBAND_CLAIM_OFFER,
   uid,
 })
+
+export function* getColorTheme(
+  senderLogoUrl: any
+): Generator<*, *, *> {
+  if (!senderLogoUrl) {
+    return colors.main
+  }
+
+  try {
+    const foundColors = yield call(ImageColors.getColors, senderLogoUrl, {
+      fallback: colors.main,
+    })
+    return Platform.OS === 'android'
+      ? pickAndroidColor(foundColors)
+      : pickIosColor(foundColors)
+  } catch (e) {
+    return colors.main
+  }
+}
 
 export function* denyClaimOfferSaga(
   action: ClaimOfferDenyAction
@@ -430,7 +453,16 @@ export function* claimOfferAccepted(
       messageId
     )
 
-    yield put(sendClaimRequestSuccess(messageId, claimOfferPayload))
+    const colorTheme = yield call(
+      getColorTheme,
+      claimOfferPayload.senderLogoUrl
+    )
+    const claimOfferPayloadWithFilledColor = {
+      ...claimOfferPayload,
+      colorTheme,
+    }
+
+    yield put(sendClaimRequestSuccess(messageId, claimOfferPayloadWithFilledColor))
     // if we are able to send claim request successfully,
     // then we can raise an action to show that we have sent claim request
     // so that our history middleware can record this event
@@ -618,9 +650,13 @@ export function* hydrateClaimOffersSaga(): Generator<*, *, *> {
       Object.keys(connectionHistory.data.connections)
         .map((uid) => connectionHistory.data.connections[uid])
         .forEach((connection) => {
+          const connectionHistory = connection.data || []
           storageSuccessHistory.push(
-            ...connection.data.filter(
-              (event) => event.originalPayload.type === CLAIM_STORAGE_SUCCESS
+            ...connectionHistory.filter(
+              (event) =>
+                event &&
+                event.originalPayload &&
+                event.originalPayload.type === CLAIM_STORAGE_SUCCESS
             )
           )
         })
@@ -631,12 +667,17 @@ export function* hydrateClaimOffersSaga(): Generator<*, *, *> {
         // 2. set missing data
         if (!offer.issueDate) {
           const historyEvent = storageSuccessHistory.find(
-            (event) => event.originalPayload.messageId === uid
+            (event) => event.originalPayload && event.originalPayload.messageId === uid
           )
           if (historyEvent) {
             offer.issueDate = historyEvent.originalPayload.issueDate
           }
           serializedClaimOffers[uid] = offer
+        }
+
+        if (!offer.colorTheme) {
+          // set color theme if it's missing
+          offer.colorTheme = yield call(getColorTheme, offer.senderLogoUrl)
         }
       }
 
@@ -644,6 +685,7 @@ export function* hydrateClaimOffersSaga(): Generator<*, *, *> {
     }
   } catch (e) {
     captureError(e)
+    customLogger.error(`hydrateClaimOffersSaga: ${e}`)
     yield put({
       type: HYDRATE_CLAIM_OFFERS_FAIL,
       error: ERROR_HYDRATE_CLAIM_OFFERS(e.message),
@@ -891,7 +933,7 @@ export default function claimOfferReducer(
       return {
         ...state,
         [action.uid]: {
-          ...state[action.uid],
+          ...action.payload,
           claimRequestStatus: CLAIM_REQUEST_STATUS.SEND_CLAIM_REQUEST_SUCCESS,
         },
       }

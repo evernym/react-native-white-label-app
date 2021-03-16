@@ -72,7 +72,7 @@ import type {
 } from '../proof-request/type-proof-request'
 import type { Claim } from '../claim/type-claim'
 import { safeGet, safeSet, walletSet } from '../services/storage'
-import { PUSH_COM_METHOD, LAST_SUCCESSFUL_CLOUD_BACKUP } from '../common'
+import { PUSH_COM_METHOD, LAST_SUCCESSFUL_CLOUD_BACKUP, homeRoute } from '../common'
 import type { NavigationParams, GenericObject } from '../common/type-common'
 
 import { addPendingRedirection } from '../lock/lock-store'
@@ -324,10 +324,6 @@ export function* enablePushNotificationsSaga(force?: boolean): Generator<*, *, *
 }
 
 function* allowPushNotificationsSaga(): Generator<*, *, *> {
-  if (!usePushNotifications){
-    return
-  }
-
   const pushToken = yield call(safeGet, PUSH_COM_METHOD)
   if (!pushToken) {
     const authorizationStatus: FirebaseMessagingTypes.AuthorizationStatus = yield call(
@@ -664,48 +660,44 @@ function* redirectToRelevantScreen(notification: RedirectToRelevantScreen) {
     remotePairwiseDID,
     forDID,
   } = notification
-  const currentScreen: string = yield select(getCurrentScreen)
-
   if (uiType || type) {
-    if (!blackListedRoute[currentScreen]) {
-      let routeToDirect = null
-      let notificationText = ''
-      switch (uiType || type) {
-        case 'CLAIM_OFFER_RECEIVED':
-        case MESSAGE_TYPE.CLAIM_OFFER:
-          routeToDirect = claimOfferRoute
-          notificationText = `Offering ${additionalData.claim_name}`
-          break
+    let routeToDirect = null
+    let notificationText = ''
+    switch (uiType || type) {
+      case 'CLAIM_OFFER_RECEIVED':
+      case MESSAGE_TYPE.CLAIM_OFFER:
+        routeToDirect = claimOfferRoute
+        notificationText = `Offering ${additionalData.claim_name}`
+        break
 
-        case MESSAGE_TYPE.PROOF_REQUEST:
-        case 'PROOF_REQUEST_RECEIVED':
-          routeToDirect = proofRequestRoute
-          notificationText = `${additionalData.remoteName} wants you to share information`
-          break
+      case MESSAGE_TYPE.PROOF_REQUEST:
+      case 'PROOF_REQUEST_RECEIVED':
+        routeToDirect = proofRequestRoute
+        notificationText = `${additionalData.remoteName} wants you to share information`
+        break
 
-        case MESSAGE_TYPE.QUESTION:
-        case MESSAGE_TYPE.QUESTION.toLowerCase():
-          routeToDirect = questionRoute
-          notificationText = `${additionalData.messageTitle}`
-          break
-      }
+      case MESSAGE_TYPE.QUESTION:
+      case MESSAGE_TYPE.QUESTION.toLowerCase():
+        routeToDirect = questionRoute
+        notificationText = `${additionalData.messageTitle}`
+        break
+    }
 
-      if (routeToDirect) {
-        yield handleRedirection(
-          routeToDirect,
-          {
-            uid,
-            notificationOpenOptions,
-            senderDID: remotePairwiseDID,
-            image: additionalData.senderLogoUrl,
-            senderName: additionalData.remoteName,
-            messageType: type,
-            identifier: forDID,
-          },
-          notification,
-          notificationText
-        )
-      }
+    if (routeToDirect) {
+      yield handleRedirection(
+        routeToDirect,
+        {
+          uid,
+          notificationOpenOptions,
+          senderDID: remotePairwiseDID,
+          image: additionalData.senderLogoUrl,
+          senderName: additionalData.remoteName,
+          messageType: type,
+          identifier: forDID,
+        },
+        notification,
+        notificationText,
+      )
     }
   }
 }
@@ -714,41 +706,47 @@ function* handleRedirection(
   routeName: string,
   params: NavigationParams,
   notification: RedirectToRelevantScreen,
-  notificationText: string
+  notificationText: string,
 ): any {
   const isAppLocked: boolean = yield select(getIsAppLocked)
   if (isAppLocked) {
     yield put(
       addPendingRedirection([
-        { routeName: homeDrawerRoute },
-        { routeName, params },
-      ])
+        { routeName: homeRoute, params: { screen: homeDrawerRoute } },
+        { routeName, params},
+      ]),
     )
-  } else if (
-    params.notificationOpenOptions &&
-    params.notificationOpenOptions.openMessageDirectly
-  ) {
-    // if we find that we can open notification directly
-    // i.e. we received this notification from user tapping on notification
-    // from notification center outside of the app
-    // then we want user to go home screnn of particular notification
-    // and then inside home screen, we want to show message
-    // that belongs to this notification
-    yield put(navigateToRoutePN(homeDrawerRoute, params))
-  } else {
-    // if we find that we did not have indication to open notification directly
-    // that means we need to show in-app notification that we have received a message
-    yield put(
-      showInAppNotification({
-        senderName: params.senderName,
-        senderImage: params.image,
-        senderDID: params.senderDID,
-        text: notificationText,
-        messageType: notification.type,
-        messageId: params.uid,
-        identifier: notification.forDID,
-      })
-    )
+    return
+  }
+
+  const currentScreen: string = yield select(getCurrentScreen)
+  if (!blackListedRoute[currentScreen]) {
+    if (
+      params.notificationOpenOptions &&
+      params.notificationOpenOptions.openMessageDirectly
+    ) {
+      // if we find that we can open notification directly
+      // i.e. we received this notification from user tapping on notification
+      // from notification center outside of the app
+      // then we want user to go home screnn of particular notification
+      // and then inside home screen, we want to show message
+      // that belongs to this notification
+      yield put(navigateToRoutePN(homeDrawerRoute, params))
+    } else {
+      // if we find that we did not have indication to open notification directly
+      // that means we need to show in-app notification that we have received a message
+      yield put(
+        showInAppNotification({
+          senderName: params.senderName,
+          senderImage: params.image,
+          senderDID: params.senderDID,
+          text: notificationText,
+          messageType: notification.type,
+          messageId: params.uid,
+          identifier: notification.forDID,
+        }),
+      )
+    }
   }
 }
 

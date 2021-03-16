@@ -1,6 +1,6 @@
 // @flow
 import * as React from 'react'
-import { Dimensions, Image, Text, View } from 'react-native'
+import { Dimensions, Image, Text, View, Platform } from 'react-native'
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack'
 import { createDrawerNavigator, DrawerItemList } from '@react-navigation/drawer'
 import { enableScreens } from 'react-native-screens'
@@ -94,7 +94,9 @@ import {
   usePushNotifications,
 } from '../external-exports'
 
-enableScreens()
+if (Platform.OS !== 'android') {
+  enableScreens()
+}
 
 const { width } = Dimensions.get('screen')
 

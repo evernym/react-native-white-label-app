@@ -498,6 +498,7 @@ export function* hydrateSwitchedEnvironmentDetails(): any {
     }
   } catch (e) {
     captureError(e)
+    customLogger.log(`hydrateSwitchedEnvironmentDetails: ${e}`)
     yield put(
       hydrateSwitchedEnvironmentDetailFail({
         code: ERROR_HYDRATE_SWITCH_ENVIRONMENT.code,

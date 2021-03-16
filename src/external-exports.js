@@ -14,6 +14,7 @@ import {
 import {
   SPONSOR_ID,
   VCX_PUSH_TYPE,
+  GET_PROVISION_TOKEN_FUNC,
   SERVER_ENVIRONMENTS,
   DEFAULT_SERVER_ENVIRONMENT,
   // $FlowExpectedError[cannot-resolve-module] external file
@@ -154,6 +155,7 @@ export const trustedDomains = OIDC_TRUSTED_DOMAINS || []
 
 export const sponsorId = SPONSOR_ID
 export const vcxPushType = VCX_PUSH_TYPE
+export const getProvisionTokenFunc = GET_PROVISION_TOKEN_FUNC
 export const serverEnvironments = SERVER_ENVIRONMENTS || {}
 export const defaultServerEnvironment = DEFAULT_SERVER_ENVIRONMENT
 

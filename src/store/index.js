@@ -8,7 +8,6 @@ import type { Store } from './type-store'
 
 import {
   customLogger,
-  PiiHiddenTransformer,
   PiiHiddenActionTransformer,
 } from './custom-logger'
 import user, { watchUserStore } from './user/user-store'
@@ -112,14 +111,20 @@ const appReducer = combineReducers({
 let middlewares = [historyRecorder, automaticCloudBackup]
 
 // "Error", "Warning", "Info", "Debug", "Trace"
-customLogger.init('debug')
+const logLevel = 'debug'
+customLogger.init(logLevel)
 // eslint-disable-next-line no-unused-vars
 let reduxLogger = createLogger({
   logger: customLogger,
-  stateTransformer: PiiHiddenTransformer,
   actionTransformer: PiiHiddenActionTransformer,
+  level: {
+    prevState: false,
+    action: logLevel,
+    nextState: false,
+    error: logLevel,
+  }
 })
-// middlewares.push(reduxLogger)
+middlewares.push(reduxLogger)
 
 middlewares.push(sagaMiddleware)
 

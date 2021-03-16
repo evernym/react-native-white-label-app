@@ -121,6 +121,8 @@ export type ProofRequestAndHeaderProps = ProofRequestProps & HeaderProofData
 
 export type ProofRequestAttributeListState = {
   [string]: string,
+  isMissingFieldsShowing: boolean,
+  showToggleMenu: boolean,
 }
 
 export const NO_SELF_ATTEST: 'NO_SELF_ATTEST' = 'NO_SELF_ATTEST'

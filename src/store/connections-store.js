@@ -75,7 +75,6 @@ import { captureError } from '../services/error/error-handler'
 import { customLogger } from '../store/custom-logger'
 import { ensureVcxInitSuccess } from './route-store'
 import moment from 'moment'
-import { getConnectionColorTheme } from '../invitation/invitation-store'
 
 const initialState: ConnectionStore = {
   data: {},
@@ -249,7 +248,7 @@ export function* persistConnections(): Generator<*, *, *> {
     yield call(secureSet, CONNECTIONS, JSON.stringify(connections))
   } catch (e) {
     captureError(e)
-    customLogger.log(`hydrateConnectionSaga: ${e}`)
+    customLogger.log(`persistConnections: ${e}`)
   }
 }
 
@@ -260,25 +259,9 @@ export const hydrateConnections = (connections: Connections) => ({
 
 export function* hydrateConnectionSaga(): Generator<*, *, *> {
   try {
-    const connectionsJSON = yield call(getHydrationItem, CONNECTIONS)
-    if (connectionsJSON) {
-      const connections = JSON.parse(connectionsJSON)
-
-      // iterate over connections and check whether the in progress
-      for (let identifier of Object.keys(connections)) {
-        const connection = connections[identifier]
-
-        // set connection theme color if missing
-        if (!connection.colorTheme) {
-          connection.colorTheme = yield call(
-            getConnectionColorTheme,
-            connection.logoUrl
-          )
-        }
-      }
-
-      // hydrate connections
-      yield put(hydrateConnections(connections))
+    const connections = yield call(getHydrationItem, CONNECTIONS)
+    if (connections) {
+      yield put(hydrateConnections(JSON.parse(connections)))
     }
   } catch (e) {
     // to capture secure get
@@ -400,6 +383,11 @@ function* sendConnectionRedirectSaga(
         getConnectionBySenderDid,
         action.existingConnectionDetails.senderDID
       )
+
+      if (!connection || !connection.vcxSerializedConnection) {
+        return
+      }
+
       const redirectConnectionHandle = yield call(
         getHandleBySerializedConnection,
         connection.vcxSerializedConnection
@@ -463,6 +451,11 @@ function* sendConnectionReuseSaga(
         getConnectionBySenderDid,
         action.existingConnectionDetails.senderDID
       )
+
+      if (!connection || !connection.vcxSerializedConnection) {
+        return
+      }
+
       const connectionHandle = yield call(
         getHandleBySerializedConnection,
         connection.vcxSerializedConnection

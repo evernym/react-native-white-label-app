@@ -18,7 +18,7 @@ export async function flatFetch(
   url: string,
   body?: string,
   headers?: { [string]: any }
-): Promise<[null | typeof Error, null | string]> {
+): Promise<[null | typeof Error, null | string, null | Response]> {
   const options = {
     mode: 'cors',
     ...(body ? { method: 'POST', body } : {}),
@@ -27,11 +27,15 @@ export async function flatFetch(
   try {
     const response = await fetch(url, options)
     const responseText = await response.text()
+    // request redirected
+    if (response && response.status === 302) {
+      return [null, null, response]
+    }
     if (!response.ok) {
       throw new Error(responseText)
     }
-    return [null, responseText]
+    return [null, responseText, response]
   } catch (e) {
-    return [e, null]
+    return [e, null, null]
   }
 }

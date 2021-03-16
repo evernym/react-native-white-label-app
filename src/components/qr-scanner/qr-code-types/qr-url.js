@@ -81,7 +81,7 @@ export async function getUrlQrCodeData(
   // from the passed url and check if we get data from url
 
   // 4. download data and get a valid json object
-  const [, downloadedData] = await flatFetch(url)
+  const [downloadErr, downloadedData, response] = await flatFetch(url)
   if (downloadedData) {
     // we are able to get data from url
 
@@ -108,6 +108,21 @@ export async function getUrlQrCodeData(
       { type: QR_CODE_TYPES.URL_NON_JSON_RESPONSE, data: downloadedData },
     ]
   }
+  if (downloadErr) {
+    // $FlowFixMe
+    return [downloadErr.message, null]
+  }
+
+  // 5. TrinsicWallet approach for url shorten
+  const header = 'location'
+  if (response && response.status === 302 && response.headers && response.headers.get(header)) {
+    const location = response.headers.get(header)
+    const urlInvitationData = isValidUrlQrCode(location)
+    if (urlInvitationData) {
+      // downloaded data contains url - get its data
+      return await getUrlQrCodeData(urlInvitationData, location)
+    }
+  }
 
   // if we reach to this point, that means that we could not get data from url
   // either by downloading data behind url, or by extracting data from url itself
@@ -115,4 +130,4 @@ export async function getUrlQrCodeData(
   return [SCAN_STATUS.INVALID_URL_QR_CODE, null]
 }
 
-export const validUrlQrCodeScheme = ['https:', 'http:']
+export const validUrlQrCodeScheme = ['https:', 'http:', 'id.streetcred:']

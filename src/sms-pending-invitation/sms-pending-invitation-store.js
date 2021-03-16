@@ -121,6 +121,12 @@ export function convertAriesPayloadToInvitation(
     signature: '<no-signature-supplied>',
   }
 
+  const senderLogoUrl = payload.profileUrl && isUrl(payload.profileUrl)
+    ? payload.profileUrl
+    : payload.imageUrl && isUrl(payload.imageUrl) ?
+      payload.imageUrl :
+      null
+
   const invitation = {
     senderEndpoint: payload.serviceEndpoint,
     requestId: payload[ID],
@@ -128,20 +134,14 @@ export function convertAriesPayloadToInvitation(
     senderName: payload.label || 'Unknown',
     senderDID: payload.recipientKeys[0],
     // TODO:KS Need to discuss with architects to know how to fulfill this requirement
-    senderLogoUrl:
-      payload.profileUrl && isUrl(payload.profileUrl)
-        ? payload.profileUrl
-        : null,
+    senderLogoUrl: senderLogoUrl,
     senderVerificationKey: payload.recipientKeys[0],
     targetName: payload.label || 'Unknown',
     senderDetail: {
       name: payload.label || 'Unknown',
       agentKeyDlgProof: senderAgentKeyDelegationProof,
       DID: payload.recipientKeys[0],
-      logoUrl:
-        payload.profileUrl && isUrl(payload.profileUrl)
-          ? payload.profileUrl
-          : null,
+      logoUrl: senderLogoUrl,
       verKey: payload.recipientKeys[0],
       publicDID: payload.recipientKeys[0],
     },
@@ -181,26 +181,26 @@ export function convertAriesOutOfBandPayloadToInvitation(
     signature: '<no-signature-supplied>',
   }
 
+  const senderLogoUrl = payload.profileUrl && isUrl(payload.profileUrl)
+    ? payload.profileUrl
+    : payload.imageUrl && isUrl(payload.imageUrl) ?
+      payload.imageUrl :
+      null
+
   const invitation = {
     senderEndpoint: serviceEntry.serviceEndpoint,
     requestId: payload[ID],
     senderAgentKeyDelegationProof,
     senderName: payload.label || 'Unknown',
     senderDID: publicDID,
-    senderLogoUrl:
-      payload.profileUrl && isUrl(payload.profileUrl)
-        ? payload.profileUrl
-        : null,
+    senderLogoUrl: senderLogoUrl,
     senderVerificationKey: serviceEntry.recipientKeys[0],
     targetName: payload.label || 'Unknown',
     senderDetail: {
       name: payload.label || 'Unknown',
       agentKeyDlgProof: senderAgentKeyDelegationProof,
       DID: publicDID,
-      logoUrl:
-        payload.profileUrl && isUrl(payload.profileUrl)
-          ? payload.profileUrl
-          : null,
+      logoUrl: senderLogoUrl,
       verKey: serviceEntry.recipientKeys[0],
       publicDID: publicDID,
     },
@@ -300,7 +300,7 @@ export function* callSmsPendingInvitationRequest(
       invitationLink.url
     )
     if (urlError) {
-      throw new Error('Invitation payload object format is not as expected')
+      throw new Error(urlError)
     }
 
     if (
@@ -369,7 +369,11 @@ export function* callSmsPendingInvitationRequest(
     }
 
     try {
-      error = JSON.parse(e.message)
+      const parsedError = JSON.parse(e.message)
+      error = {
+        code: parsedError.code || parsedError.statusCode || error.code,
+        message: parsedError.message || parsedError.statusMsg || error.message,
+      }
     } catch (e) {}
     captureError(e)
     yield put(smsPendingInvitationFail(smsToken, error))

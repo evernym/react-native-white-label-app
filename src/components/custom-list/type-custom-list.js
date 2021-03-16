@@ -20,4 +20,5 @@ export type CustomListProps = {
   type?: string,
   claimMap?: ?ClaimMap,
   avatarSource?: ?ImageSource,
+  isMissingFieldsShowing?: boolean,
 }

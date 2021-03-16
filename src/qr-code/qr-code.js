@@ -335,26 +335,26 @@ export class QRCodeScannerScreen extends Component<
       signature: '<no-signature-supplied>',
     }
 
+    const senderLogoUrl = payload.profileUrl && isUrl(payload.profileUrl)
+      ? payload.profileUrl
+      : payload.imageUrl && isUrl(payload.imageUrl) ?
+        payload.imageUrl :
+        null
+
     const invitation = {
       senderEndpoint: payload.serviceEndpoint,
       requestId: payload[ID],
       senderAgentKeyDelegationProof,
       senderName: payload.label || 'Unknown',
       senderDID: payload.recipientKeys[0],
-      senderLogoUrl:
-        payload.profileUrl && isUrl(payload.profileUrl)
-          ? payload.profileUrl
-          : null,
+      senderLogoUrl: senderLogoUrl,
       senderVerificationKey: payload.recipientKeys[0],
       targetName: payload.label || 'Unknown',
       senderDetail: {
         name: payload.label || 'Unknown',
         agentKeyDlgProof: senderAgentKeyDelegationProof,
         DID: payload.recipientKeys[0],
-        logoUrl:
-          payload.profileUrl && isUrl(payload.profileUrl)
-            ? payload.profileUrl
-            : null,
+        logoUrl: senderLogoUrl,
         verKey: payload.recipientKeys[0],
         publicDID: payload.recipientKeys[0],
       },

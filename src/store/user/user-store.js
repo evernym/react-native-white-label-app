@@ -45,6 +45,7 @@ import { VCX_INIT_SUCCESS } from '../type-config-store'
 import { captureError } from '../../services/error/error-handler'
 import AlertAsync from 'react-native-alert-async'
 import { appName } from '../../external-exports'
+import { customLogger } from '../custom-logger'
 
 const initialState = {
   isFetching: false,
@@ -122,6 +123,7 @@ export function* hydrateUserStoreSaga(): Generator<*, *, *> {
       yield put(hydrateUserStore({ userOneTimeInfo }))
     }
   } catch (e) {
+    customLogger.log(`hydrateUserStoreSaga: ${e}`)
     yield put(
       hydrateUserStoreFail({
         code: ERROR_PARSE_USER_INFO_FAIL.code,

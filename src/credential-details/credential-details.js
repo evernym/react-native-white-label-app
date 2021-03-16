@@ -1,5 +1,5 @@
 //@flow
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { Text, View, ScrollView, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import { verticalScale, moderateScale } from 'react-native-size-matters'
@@ -15,7 +15,12 @@ import { bindActionCreators } from "redux"
 import { deleteClaim } from '../claim/claim-store'
 import { ViewPushLeft } from '../connection-details/utils/modal-animation'
 import { CustomCredentialDetailsScreen } from '../external-exports'
-
+import ToggleFields from '../components/toggle-fields/toggle-fields'
+import {
+  checkCredentialForEmptyFields,
+  showMissingField,
+  showToggleMenu,
+} from '../connection-details/utils/checkForEmptyAttributes'
 
 const CredentialDetails = (props: CredentialDetailsProps) => {
   const {
@@ -29,12 +34,23 @@ const CredentialDetails = (props: CredentialDetailsProps) => {
     claimOfferUuid,
   } = props.route.params
 
-  const data = useMemo(() => (
-    attributes.map((attribute) => ({
+  const { data, hasEmpty, allEmpty } = useMemo(() => {
+    const data = attributes.map((attribute) => ({
       label: attribute.label,
       data: attribute.data,
     }))
-  ), [attributes])
+
+    const { hasEmpty, allEmpty } = checkCredentialForEmptyFields(data)
+
+    return {
+      data,
+      hasEmpty,
+      allEmpty
+    }
+  }, [attributes])
+
+  const [isMissingFieldsShowing, toggleMissingFields] = useState(showMissingField(hasEmpty, allEmpty))
+  const isToggleMenuShowing = showToggleMenu(hasEmpty, allEmpty)
 
   const onDelete = useCallback(() => {
     props.deleteClaim(claimOfferUuid)
@@ -76,11 +92,23 @@ const CredentialDetails = (props: CredentialDetailsProps) => {
             />
           </View>
         </View>
+        {toggleMissingFields && showToggleMenu && (
+          <ToggleFields
+            actionInfoText={[
+              'Empty fields are hidden by default.',
+              'Empty fields are being displayed.',
+            ]}
+            actionText={['Show', 'Hide']}
+            useToggle={[isMissingFieldsShowing, toggleMissingFields]}
+            showToggleMenu={isToggleMenuShowing}
+          />
+        )}
         <View style={styles.listContainer}>
           <CredentialList
             content={data}
             uid={uid}
             remotePairwiseDID={remoteDid}
+            isMissingFieldsShowing={isMissingFieldsShowing}
           />
         </View>
       </ScrollView>

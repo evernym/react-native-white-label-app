@@ -14,12 +14,12 @@ export async function isAriesOutOfBandInviteQrCode(
 ): Promise<AriesOutOfBandInvite | false> {
   const { query } = parsedUrl
 
-  if (!query.c_i && !query.oob) {
+  if (!query.c_i && !query.oob && !query.d_m) {
     // if url does not have a query param named c_i, then return false
     return false
   }
 
-  const body = query.c_i || query.oob
+  const body = query.c_i || query.oob || query.d_m
 
   let qrData: AriesOutOfBandInvite | null = null
 

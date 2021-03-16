@@ -2,6 +2,8 @@
 
 import { all, put, race, select, take, call } from 'redux-saga/effects'
 import delay from '@redux-saga/delay-p'
+import { AppState } from 'react-native'
+import { eventChannel } from 'redux-saga'
 import { homeDrawerRoute, homeRoute } from '../common'
 import { getUnacknowledgedMessages } from '../store/config-store'
 import { ROUTE_UPDATE } from '../store/route-store'
@@ -14,6 +16,22 @@ import {
 
 function* longPollHome(): any {
   while (true) {
+    if (AppState.currentState !== 'active') {
+      // if app is not in foreground
+      // then wait for app to come to foreground
+      // we don't want to keep polling even if app is in background
+      const appStateChannel = yield call(appStateSource)
+      while (true) {
+        const state: string = yield take(appStateChannel)
+        if (state === 'active') {
+          // close channel, as we are not interested anymore to listen
+          // for state changes, since state has become 'active'
+          appStateChannel.close()
+          break
+        }
+      }
+    }
+
     const currentRoute: string = yield select(getCurrentScreen)
     if (!homeRoutes.includes(currentRoute)) {
       // if we are not on home route, then wait for user to go to home route
@@ -59,6 +77,29 @@ function isNotHomeRoute(action: *) {
   return (
     action.type === ROUTE_UPDATE && !homeRoutes.includes(action.currentScreen)
   )
+}
+
+function appStateSource() {
+  let currentState = AppState.currentState || 'background'
+
+  return eventChannel((emitter) => {
+    const _stateChangeListener = (nextAppState) => {
+      if (
+        currentState.match(/inactive|background/) &&
+        nextAppState === 'active'
+      ) {
+        emitter(nextAppState)
+      }
+      currentState = nextAppState
+    }
+    AppState.addEventListener('change', _stateChangeListener)
+
+    // return an unsubscribe function
+    return () => {
+      // remove listeners
+      AppState.removeEventListener('change', _stateChangeListener)
+    }
+  })
 }
 
 const homeRoutes = [homeRoute, homeDrawerRoute]

@@ -34,21 +34,29 @@ export const CredentialList = ({
   uid,
   remotePairwiseDID,
   content,
+  isMissingFieldsShowing,
 }: CredentialListProps) => {
   return (
     <View style={styles.container}>
-      {content.map((userData, index) => (
-        <View key={index} style={styles.wrapper}>
-          <View style={styles.textWrapper}>
-            <DataRenderer
-              label={userData.label}
-              data={userData.data}
-              uid={uid}
-              remotePairwiseDID={remotePairwiseDID}
-            />
+      {content.map((userData, index) => {
+        if ((userData.data === '' || !userData.data) && !isMissingFieldsShowing) {
+          return <View />
+        }
+
+        return (
+          <View key={index} style={styles.wrapper}>
+            <View style={styles.textWrapper}>
+              <DataRenderer
+                label={userData.label}
+                data={userData.data}
+                uid={uid}
+                remotePairwiseDID={remotePairwiseDID}
+              />
+            </View>
           </View>
-        </View>
-      ))}
+        )
+      })}
+
     </View>
   )
 }
@@ -68,7 +76,7 @@ function DataRenderer(props: {
   )
 
   if (!data) {
-    // Replace empty data string with (none) in lighter gray
+    // Replace empty data string with n/a in lighter gray
     return (
       <View>
         {labelComponent}

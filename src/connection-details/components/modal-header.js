@@ -1,61 +1,87 @@
 // @flow
+
+// packages
 import React, { useMemo } from 'react'
 import { Text, View, StyleSheet } from 'react-native'
 import { verticalScale, moderateScale } from 'react-native-size-matters'
+
+// styles
 import { colors, fontSizes, fontFamily } from '../../common/styles/constant'
+
+// components
 import { DefaultLogo } from '../../components/default-logo/default-logo'
 import { Avatar } from '../../components/avatar/avatar'
 import { ExpandableText } from '../../components/expandable-text/expandable-text'
+import ToggleFields from '../../components/toggle-fields/toggle-fields'
 
 type ModalHeaderProps = {
   institutionalName: string,
   credentialName: string,
   credentialText: string,
   imageUrl: string,
+  isMissingFieldsShowing?: boolean,
+  toggleMissingFields?: (boolean) => void,
+  showToggleMenu?: boolean,
 }
 
 export const ModalHeader = ({
-  institutionalName,
-  credentialName,
-  credentialText,
-  imageUrl,
-}: ModalHeaderProps) => {
+                              institutionalName,
+                              credentialName,
+                              credentialText,
+                              imageUrl,
+                              isMissingFieldsShowing,
+                              toggleMissingFields,
+                              showToggleMenu,
+                            }: ModalHeaderProps) => {
   const source = useMemo(() => ({ uri: imageUrl }), [imageUrl])
 
   return (
-    <View style={styles.container}>
-      <View style={styles.topSection}>
-        <View style={styles.issuerAndInfoSection}>
-          <Text style={styles.infoText}>{credentialText}</Text>
+    <>
+      <View style={styles.container}>
+        <View style={styles.topSection}>
+          <View style={styles.issuerAndInfoSection}>
+            <Text style={styles.infoText}>{credentialText}</Text>
+            <ExpandableText
+              text={institutionalName}
+              style={styles.issuerNameText}
+            />
+          </View>
+        </View>
+        <View style={styles.imageContainer}>
+          {source && source.uri ? (
+            <Avatar
+              radius={48}
+              src={source}
+              testID={`sender-avatar`}
+            />
+          ) : (
+            <DefaultLogo
+              text={institutionalName[0]}
+              size={moderateScale(80)}
+              fontSize={48}
+            />
+          )}
+        </View>
+
+        <View style={styles.bottomSection}>
           <ExpandableText
-            text={institutionalName}
-            style={styles.issuerNameText}
+            text={credentialName}
+            style={styles.credentialProofQuestionText}
           />
         </View>
       </View>
-      <View style={styles.imageContainer}>
-        {source && source.uri ? (
-          <Avatar
-            radius={48}
-            src={source}
-            testID={`sender-avatar`}
-          />
-        ) : (
-          <DefaultLogo
-            text={institutionalName[0]}
-            size={moderateScale(80)}
-            fontSize={48}
-          />
-        )}
-      </View>
-
-      <View style={styles.bottomSection}>
-        <ExpandableText
-          text={credentialName}
-          style={styles.credentialProofQuestionText}
+      {toggleMissingFields && showToggleMenu && isMissingFieldsShowing !== undefined && (
+        <ToggleFields
+          actionInfoText={[
+            'Empty fields are hidden by default.',
+            'Empty fields are being displayed.',
+          ]}
+          actionText={['Show', 'Hide']}
+          useToggle={[isMissingFieldsShowing, toggleMissingFields]}
+          showToggleMenu={showToggleMenu}
         />
-      </View>
-    </View>
+      )}
+    </>
   )
 }
 

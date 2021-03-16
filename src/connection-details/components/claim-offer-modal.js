@@ -62,7 +62,7 @@ export class ClaimOfferModal extends Component<any, *> {
 
   state = {
     shouldShowTransactionInfo: false,
-    scheduledDeleteion: false,
+    scheduledDeletion: false,
   }
 
   render() {
@@ -234,7 +234,7 @@ export class ClaimOfferModal extends Component<any, *> {
   }
 
   componentWillUnmount() {
-    if (this.state.scheduledDeleteion) {
+    if (this.state.scheduledDeletion) {
       this.props.deleteOutOfBandClaimOffer(this.props.uid)
       return
     }
@@ -262,7 +262,7 @@ export class ClaimOfferModal extends Component<any, *> {
     if (!invitationPayload) {
       this.props.claimOfferIgnored(this.props.uid)
     } else {
-      this.setState({ ...this.state, scheduledDeleteion: true })
+      this.setState({ ...this.state, scheduledDeletion: true })
     }
 
     this.hideModal()
@@ -271,7 +271,7 @@ export class ClaimOfferModal extends Component<any, *> {
   onDeny = () => {
     if (this.props.isOOBInvitation) {
       // on cancel
-      this.setState({ ...this.state, scheduledDeleteion: true })
+      this.setState({ ...this.state, scheduledDeletion: true })
       this.hideModal()
     } else {
       // on reject
@@ -292,7 +292,7 @@ export class ClaimOfferModal extends Component<any, *> {
     const { invitationPayload } = this.props.route.params
 
     if (invitationPayload) {
-      this.setState({ ...this.state, scheduledDeleteion: true })
+      this.setState({ ...this.state, scheduledDeletion: true })
     }
 
     this.hideModal()

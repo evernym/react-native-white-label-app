@@ -1,5 +1,4 @@
 // @flow
-import { Platform } from 'react-native'
 import {
   put,
   takeEvery,
@@ -104,8 +103,6 @@ import { INVITATIONS } from '../common'
 import { customLogger } from '../store/custom-logger'
 import { retrySaga } from '../api/api-utils'
 import { checkProtocolStatus } from '../store/protocol-status'
-import ImageColors from 'react-native-image-colors'
-import { pickAndroidColor, pickIosColor } from '../my-credentials/cards/utils'
 import { isConnectionCompleted } from '../store/store-utils'
 
 export const invitationInitialState = {}
@@ -190,8 +187,6 @@ export function* sendResponse(
       yield call(sendResponseOnProprietaryConnectionInvitation, payload)
     }
   } catch (e) {
-    console.log('e')
-    console.log(e)
     yield call(handleConnectionError, e, payload.senderDID)
   }
 }
@@ -253,11 +248,6 @@ export function* sendResponseOnProprietaryConnectionInvitation(
       connectionHandle
     )
 
-    const colorTheme = yield call(
-      getConnectionColorTheme,
-      payload.senderLogoUrl
-    )
-
     const connection = {
       identifier: pairwiseInfo.myPairwiseDid,
       logoUrl: payload.senderLogoUrl,
@@ -272,7 +262,6 @@ export function* sendResponseOnProprietaryConnectionInvitation(
       vcxSerializedConnection,
       publicDID: payload.senderDetail.publicDID,
       isCompleted: false,
-      colorTheme,
       ...payload,
     }
 
@@ -314,11 +303,6 @@ export function* sendResponseOnAriesConnectionInvitation(
       connectionHandle
     )
 
-    const colorTheme = yield call(
-      getConnectionColorTheme,
-      payload.senderLogoUrl
-    )
-
     const connection = {
       identifier: pairwiseInfo.myPairwiseDid,
       logoUrl: payload.senderLogoUrl,
@@ -330,7 +314,6 @@ export function* sendResponseOnAriesConnectionInvitation(
       vcxSerializedConnection,
       publicDID: payload.senderDetail.publicDID,
       isCompleted: false,
-      colorTheme,
       ...payload,
     }
     yield put(updateConnection(connection))
@@ -345,25 +328,6 @@ export function* sendResponseOnAriesConnectionInvitation(
     )
   } catch (e) {
     yield call(handleConnectionError, e, payload.senderDID)
-  }
-}
-
-export function* getConnectionColorTheme(
-  senderLogoUrl: any
-): Generator<*, *, *> {
-  if (!senderLogoUrl) {
-    return colors.main
-  }
-
-  try {
-    const foundColors = yield call(ImageColors.getColors, senderLogoUrl, {
-      fallback: colors.main,
-    })
-    return Platform.OS === 'android'
-      ? pickAndroidColor(foundColors)
-      : pickIosColor(foundColors)
-  } catch (e) {
-    return colors.main
   }
 }
 
@@ -437,8 +401,6 @@ export function* sendResponseOnAriesOutOfBandInvitationWithHandshake(
       connectionHandle
     )
 
-    const colorTheme = yield call(getConnectionColorTheme)
-
     const connection = {
       identifier: pairwiseInfo.myPairwiseDid,
       logoUrl: payload.senderLogoUrl,
@@ -451,7 +413,6 @@ export function* sendResponseOnAriesOutOfBandInvitationWithHandshake(
       publicDID: payload.senderDetail.publicDID,
       attachedRequest,
       isCompleted: false,
-      colorTheme,
       ...payload,
     }
     yield put(updateConnection(connection))
@@ -489,11 +450,6 @@ export function* sendResponseOnAriesOutOfBandInvitationWithoutHandshake(
       connectionHandle
     )
 
-    const colorTheme = yield call(
-      getConnectionColorTheme,
-      payload.senderLogoUrl
-    )
-
     const connection = {
       identifier: payload.senderDID,
       logoUrl: payload.senderLogoUrl,
@@ -502,7 +458,6 @@ export function* sendResponseOnAriesOutOfBandInvitationWithoutHandshake(
       senderName: payload.senderName,
       publicDID: payload.senderDetail.publicDID,
       vcxSerializedConnection,
-      colorTheme,
       attachedRequest,
       myPairwiseDid: '',
       myPairwiseVerKey: '',
@@ -548,7 +503,7 @@ export function* updateAriesConnectionState(
       connectionHandle
     )
 
-    if (connectionState === 1) {
+    if (connectionState === 0) {
       // if connection object moved into state = 1 it means connection failed
       // TODO: update VCX Null state to contain details about connection failure reason
       yield call(
@@ -583,6 +538,7 @@ export function* handleConnectionError(
   senderDID: string
 ): Generator<*, *, *> {
   captureError(new Error(e.message))
+  customLogger.error(`hydrateClaimMapSaga: ${e.message}`)
   let message
   if (e.code === CONNECTION_ALREADY_EXISTS) {
     yield put(

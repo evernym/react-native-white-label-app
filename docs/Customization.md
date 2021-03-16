@@ -263,6 +263,11 @@ You can configure a server environment used for agent provisioning inside the `p
         ```
 
 * Information used for application provisioning
+    * `GET_PROVISION_TOKEN_FUNC` - function to call in order to get provisioning token.
+       ```
+        GET_PROVISION_TOKEN_FUNC = async () -> [error: string | null, token: string | null] 
+      ```
+       
     * `VCX_PUSH_TYPE` -  type of push notifications
         * 1 - push notification to default app
         * 3 - forwarding

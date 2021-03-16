@@ -52,6 +52,7 @@ const MyCredentialsScreen = ({
           attributes: offer.data.revealedAttributes,
           logoUrl: offer.senderLogoUrl,
           remoteDid: offer.remotePairwiseDID,
+          colorTheme: offer.colorTheme,
           uid: uid,
         })
       }
