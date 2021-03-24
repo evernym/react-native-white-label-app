@@ -188,7 +188,7 @@ export class SplashScreenView extends PureComponent<
           let invitation: InvitationPayload | null = null
           let redirectData: RedirectionData | null = null
 
-          const ariesV1Invite = isAriesInvitation(payload, '')
+          const ariesV1Invite = isAriesInvitation(payload, JSON.stringify(payload))
           if (ariesV1Invite) {
             invitation = convertAriesInvitationToAppInvitation(ariesV1Invite)
             redirectData = this.checkExistingConnectionAndPrepareRedirectData(
