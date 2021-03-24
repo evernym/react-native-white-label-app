@@ -28,6 +28,11 @@ import {
   QUESTION_RECEIVED,
   UPDATE_QUESTION_ANSWER,
 } from '../question/type-question'
+import {
+  INVITE_ACTION_RECEIVED,
+  INVITE_ACTION_REJECTED,
+  INVITE_ACTION_ACCEPTED,
+} from '../invite-action/type-invite-action.js'
 import { UPDATE_ATTRIBUTE_CLAIM, ERROR_SEND_PROOF } from '../proof/type-proof'
 import { INVITATION_ACCEPTED } from '../invitation/type-invitation'
 import {
@@ -71,6 +76,9 @@ const actionToRecord = [
   CONNECTION_FAIL,
   ACCEPT_OUTOFBAND_PRESENTATION_REQUEST,
   DELETE_CONNECTION_SUCCESS,
+  INVITE_ACTION_RECEIVED,
+  INVITE_ACTION_REJECTED,
+  INVITE_ACTION_ACCEPTED,
 ]
 
 // TODO:KS Fix any type using `redux` provided Generic Types

@@ -6,10 +6,7 @@ import { createLogger } from 'redux-logger'
 
 import type { Store } from './type-store'
 
-import {
-  customLogger,
-  PiiHiddenActionTransformer,
-} from './custom-logger'
+import { customLogger, PiiHiddenActionTransformer } from './custom-logger'
 import user, { watchUserStore } from './user/user-store'
 import pushNotification, {
   watchPushNotification,
@@ -75,6 +72,9 @@ import {
 } from '../in-app-notification/in-app-notification-store'
 import { watchMessageDownload } from '../message-download/message-download'
 import { watchLongPollingHome } from '../home/long-polling-home'
+import inviteAction, {
+  watchInviteAction,
+} from '../invite-action/invite-action-store'
 
 const sagaMiddleware = createSagaMiddleware()
 
@@ -106,6 +106,7 @@ const appReducer = combineReducers({
   txnAuthorAgreement,
   openIdConnect: openIdConnectReducer,
   inAppNotification: inAppNotificationReducer,
+  inviteAction,
 })
 
 let middlewares = [historyRecorder, automaticCloudBackup]
@@ -122,7 +123,7 @@ let reduxLogger = createLogger({
     action: logLevel,
     nextState: false,
     error: logLevel,
-  }
+  },
 })
 middlewares.push(reduxLogger)
 
@@ -178,6 +179,7 @@ sagaMiddleware.run(function* (): Generator<*, *, *> {
     watchMessageDownload(),
     watchOutOfBandConnectionForPresentationEstablished(),
     watchLongPollingHome(),
+    watchInviteAction(),
   ])
 })
 

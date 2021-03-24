@@ -10,7 +10,10 @@ import Snackbar from 'react-native-snackbar'
 import type { Store } from '../store/type-store'
 import type { HomeProps } from './type-home'
 
-import { CONNECTION_ALREADY_EXIST, HISTORY_EVENT_STATUS } from '../connection-history/type-connection-history'
+import {
+  CONNECTION_ALREADY_EXIST,
+  HISTORY_EVENT_STATUS,
+} from '../connection-history/type-connection-history'
 import { HeaderWithMenu, CameraButton } from '../components'
 import {
   homeDrawerRoute,
@@ -18,6 +21,7 @@ import {
   proofRequestRoute,
   claimOfferRoute,
   questionRoute,
+  inviteActionRoute,
 } from '../common'
 import {
   sendConnectionRedirect,
@@ -42,13 +46,20 @@ import type { AriesOutOfBandInvite } from '../invitation/type-invitation'
 import { UPDATE_ATTRIBUTE_CLAIM, ERROR_SEND_PROOF } from '../proof/type-proof'
 import { MESSAGE_TYPE } from '../api/api-constants'
 import { EmptyState } from './empty-state'
-import { homeHeadline, homeShowCameraButton, homeShowHistoryEvents, HomeViewEmptyState } from '../external-exports'
+import {
+  homeHeadline,
+  homeShowCameraButton,
+  homeShowHistoryEvents,
+  HomeViewEmptyState,
+} from '../external-exports'
 import { SHOW_UNREAD_MESSAGES_BADGE_NEAR_WITH_TITLE } from '../components/header/type-header'
-import {recentEventToShow} from "./type-home";
+import { recentEventToShow } from './type-home'
 
 const headline = homeHeadline || 'Home'
-const showHistoryEvents = typeof homeShowHistoryEvents === 'boolean' ? homeShowHistoryEvents : true
-const showCameraButton = typeof homeShowCameraButton === 'boolean' ? homeShowCameraButton : true
+const showHistoryEvents =
+  typeof homeShowHistoryEvents === 'boolean' ? homeShowHistoryEvents : true
+const showCameraButton =
+  typeof homeShowCameraButton === 'boolean' ? homeShowCameraButton : true
 
 export class HomeScreen extends Component<HomeProps, void> {
   unsubscribe = null
@@ -195,6 +206,8 @@ export class HomeScreen extends Component<HomeProps, void> {
       navigationRoute = proofRequestRoute
     else if (item.status === HISTORY_EVENT_STATUS.QUESTION_RECEIVED)
       navigationRoute = questionRoute
+    else if (item.status === HISTORY_EVENT_STATUS.INVITE_ACTION_RECEIVED)
+      navigationRoute = inviteActionRoute
 
     return (
       <NewBannerCard
@@ -262,6 +275,10 @@ export class HomeScreen extends Component<HomeProps, void> {
       statusMessage = `Failed to send "${action}"`
     else if (status === HISTORY_EVENT_STATUS.DELETE_CLAIM_SUCCESS)
       statusMessage = `You deleted the credential "${action}"`
+    else if (status === HISTORY_EVENT_STATUS.INVITE_ACTION_REJECTED)
+      statusMessage = 'You rejected action'
+    else if (status === HISTORY_EVENT_STATUS.INVITE_ACTION_ACCEPTED)
+      statusMessage = 'You accepted action'
     else {
       return <View />
     }
@@ -295,11 +312,8 @@ export class HomeScreen extends Component<HomeProps, void> {
           accessible={false}
           accessibilityLabel="home-container"
         >
-          {this.props.hasNoConnection && (
-            HomeViewEmptyState ?
-              <HomeViewEmptyState /> :
-              <EmptyState />
-          )}
+          {this.props.hasNoConnection &&
+            (HomeViewEmptyState ? <HomeViewEmptyState /> : <EmptyState />)}
           <View style={styles.checkmarkContainer}>
             <FlatList
               keyExtractor={this.keyExtractor}
@@ -319,24 +333,25 @@ export class HomeScreen extends Component<HomeProps, void> {
               <RecentCardSeparator />
 
               <View style={styles.recentFlatListContainer}>
-            <FlatList
-              keyExtractor={this.keyExtractor}
-              contentContainerStyle={styles.recentFlatListInnerContainer}
-              data={this.props.recentConnections}
+                <FlatList
+                  keyExtractor={this.keyExtractor}
+                  contentContainerStyle={styles.recentFlatListInnerContainer}
+                  data={this.props.recentConnections}
                   renderItem={({ item }) => this.renderRecentCard(item)}
                 />
               </View>
             </>
           )}
         </View>
-        {
-          showCameraButton &&
+        {showCameraButton && (
           <CameraButton
-            onPress={() => this.props.navigation.navigate(qrCodeScannerTabRoute, {
-              backRedirectRoute: homeDrawerRoute
-            })}
+            onPress={() =>
+              this.props.navigation.navigate(qrCodeScannerTabRoute, {
+                backRedirectRoute: homeDrawerRoute,
+              })
+            }
           />
-        }
+        )}
       </View>
     )
   }
@@ -382,15 +397,21 @@ const mapStateToProps = (state: Store) => {
   const placeholderArray = []
 
   if (state.history && state.history.data && state.history.data.connections) {
-    Object.values(state.history.data.connections)
-      .forEach((connectionHistory: any) => {
-        if (connectionHistory && connectionHistory.data && connectionHistory.data.length){
+    Object.values(state.history.data.connections).forEach(
+      (connectionHistory: any) => {
+        if (
+          connectionHistory &&
+          connectionHistory.data &&
+          connectionHistory.data.length
+        ) {
           placeholderArray.push(
-            ...connectionHistory.data.filter(event => recentEventToShow[event.status])
+            ...connectionHistory.data.filter(
+              (event) => recentEventToShow[event.status]
+            )
           )
-
         }
-      })
+      }
+    )
   }
 
   const flattenPlaceholderArray = placeholderArray.sort((a, b) => {

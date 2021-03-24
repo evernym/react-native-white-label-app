@@ -19,6 +19,7 @@ export type MyPairwiseInfo = {
   myPairwiseAgentVerKey: string,
   myPairwisePeerVerKey: string,
   senderDID: string,
+  senderName?: string,
 }
 
 export type Connection = {

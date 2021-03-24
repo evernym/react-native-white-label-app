@@ -2,7 +2,12 @@
 
 import { all, takeEvery, put, call, select } from 'redux-saga/effects'
 import merge from 'lodash.merge'
-import { claimOfferRoute, proofRequestRoute, questionRoute } from '../common'
+import {
+  claimOfferRoute,
+  inviteActionRoute,
+  proofRequestRoute,
+  questionRoute,
+} from '../common'
 import {
   LOAD_HISTORY,
   LOAD_HISTORY_SUCCESS,
@@ -85,7 +90,8 @@ import type {
   DenyProofRequestSuccessAction,
   SelfAttestedAttributes,
   DenyProofRequestAction,
-  DenyProofRequestFailAction, AcceptOutofbandPresentationRequestAction,
+  DenyProofRequestFailAction,
+  AcceptOutofbandPresentationRequestAction,
 } from '../proof-request/type-proof-request'
 import type {
   QuestionReceivedAction,
@@ -146,11 +152,29 @@ import type {
   ConnectionFailAction,
   DeleteConnectionSuccessEventAction,
 } from '../store/type-connection-store'
-import { acceptClaimOffer, checkCredentialStatus, denyClaimOffer } from '../claim-offer/claim-offer-store'
+import {
+  acceptClaimOffer,
+  checkCredentialStatus,
+  denyClaimOffer,
+} from '../claim-offer/claim-offer-store'
 import { updateAttributeClaim } from '../proof/proof-store'
-import { checkConnectionStatus, sendInvitationResponse } from '../invitation/invitation-store'
+import {
+  checkConnectionStatus,
+  sendInvitationResponse,
+} from '../invitation/invitation-store'
 import { ResponseType } from '../components/request/type-request'
 import { denyProofRequest } from '../proof-request/proof-request-store'
+import type {
+  InviteActionReceivedAction,
+  InviteActionPayload,
+} from '../invite-action/type-invite-action.js'
+import {
+  INVITE_ACTION_RECEIVED,
+  INVITE_ACTION_REJECTED,
+  INVITE_ACTION_ACCEPTED,
+  INVITE_ACTION_RESPONSES,
+} from '../invite-action/type-invite-action.js'
+import { selectInviteAction } from '../invite-action/invite-action-store'
 
 const initialState = {
   error: null,
@@ -240,31 +264,49 @@ export function* loadHistorySaga(): Generator<*, *, *> {
       // for CMe > 1.4.0 Home -> Recent event section shows all events (even for deleted connections)
       //            The approach used for CMe <=1.4.0 doesn't work when we want to show history for deleted connections as well.
       //            So we need populate history with missing data - add `senderLogoUrl` and `senderName` from last connection related event.
-      Object.keys(history.connections)
-        .forEach((connectionKey) => {
-          const connectionHistory = history.connections[connectionKey].data || []
+      Object.keys(history.connections).forEach((connectionKey) => {
+        const connectionHistory = history.connections[connectionKey].data || []
 
-          for (let i = 0; i < connectionHistory.length; i++) {
-            if (!connectionHistory[i].senderName || !connectionHistory[i].senderLogoUrl) {
-              customLogger.log('loadHistorySaga --> set missing history event data')
+        for (let i = 0; i < connectionHistory.length; i++) {
+          if (
+            !connectionHistory[i].senderName ||
+            !connectionHistory[i].senderLogoUrl
+          ) {
+            customLogger.log(
+              'loadHistorySaga --> set missing history event data'
+            )
 
-              const connectionAddedEvent = getLastConnectionEvent(connectionHistory.slice(0, i + 1))
-              if (connectionAddedEvent && connectionAddedEvent.originalPayload) {
-                // ConnectMe <= 1.3 - Connection completed event
-                if (connectionAddedEvent.originalPayload.type === NEW_CONNECTION_SUCCESS && connectionAddedEvent.originalPayload.connection) {
-                  history.connections[connectionKey].data[i].senderName = connectionAddedEvent.originalPayload.connection.senderName
-                  history.connections[connectionKey].data[i].senderLogoUrl = connectionAddedEvent.originalPayload.connection.logoUrl
-                }
+            const connectionAddedEvent = getLastConnectionEvent(
+              connectionHistory.slice(0, i + 1)
+            )
+            if (connectionAddedEvent && connectionAddedEvent.originalPayload) {
+              // ConnectMe <= 1.3 - Connection completed event
+              if (
+                connectionAddedEvent.originalPayload.type ===
+                  NEW_CONNECTION_SUCCESS &&
+                connectionAddedEvent.originalPayload.connection
+              ) {
+                history.connections[connectionKey].data[i].senderName =
+                  connectionAddedEvent.originalPayload.connection.senderName
+                history.connections[connectionKey].data[i].senderLogoUrl =
+                  connectionAddedEvent.originalPayload.connection.logoUrl
+              }
 
-                // ConnectMe 1.4 - Connection completed event
-                if (connectionAddedEvent.originalPayload.type === INVITATION_ACCEPTED && connectionAddedEvent.originalPayload.payload) {
-                  history.connections[connectionKey].data[i].senderName = connectionAddedEvent.originalPayload.payload.senderName
-                  history.connections[connectionKey].data[i].senderLogoUrl = connectionAddedEvent.originalPayload.payload.senderLogoUrl
-                }
+              // ConnectMe 1.4 - Connection completed event
+              if (
+                connectionAddedEvent.originalPayload.type ===
+                  INVITATION_ACCEPTED &&
+                connectionAddedEvent.originalPayload.payload
+              ) {
+                history.connections[connectionKey].data[i].senderName =
+                  connectionAddedEvent.originalPayload.payload.senderName
+                history.connections[connectionKey].data[i].senderLogoUrl =
+                  connectionAddedEvent.originalPayload.payload.senderLogoUrl
               }
             }
           }
-        })
+        }
+      })
 
       yield put(loadHistorySuccess(history))
     }
@@ -283,7 +325,7 @@ export function* loadHistorySaga(): Generator<*, *, *> {
 export function* retryInterruptedActionsSaga(): Generator<*, *, *> {
   const history = yield select(getHistory)
 
-  if (!history){
+  if (!history) {
     return
   }
 
@@ -300,18 +342,21 @@ export function* retryInterruptedActionsSaga(): Generator<*, *, *> {
             sendInvitationResponse({
               response: ResponseType.accepted,
               senderDID: event.remoteDid,
-            }),
+            })
           )
         }
         if (event.status === CONNECTION_REQUEST_SENT) {
           // Invitation was accepted and ConnectionRequest was send - check for completion
-          const [connection]: Connection[] = yield select(getConnection, event.remoteDid)
+          const [connection]: Connection[] = yield select(
+            getConnection,
+            event.remoteDid
+          )
           if (connection && connection.senderName) {
             yield call(
               checkConnectionStatus,
               connection.identifier,
               connection.senderName,
-              connection.senderDID,
+              connection.senderDID
             )
           }
         }
@@ -320,29 +365,28 @@ export function* retryInterruptedActionsSaga(): Generator<*, *, *> {
           yield put(
             acceptClaimOffer(
               event.originalPayload.uid,
-              event.originalPayload.remoteDid,
-            ),
+              event.originalPayload.remoteDid
+            )
           )
         }
         if (event.status === HISTORY_EVENT_STATUS[SEND_CLAIM_REQUEST_SUCCESS]) {
           // CredentialOffer was accepted and CredentialRequest was send - check for completion
-          const claimOffer = yield select(getClaimOffer, event.originalPayload.uid)
+          const claimOffer = yield select(
+            getClaimOffer,
+            event.originalPayload.uid
+          )
           if (claimOffer) {
             yield call(
               checkCredentialStatus,
               claimOffer.uid,
               claimOffer.issuer.name,
-              claimOffer.remotePairwiseDID,
+              claimOffer.remotePairwiseDID
             )
           }
         }
         if (event.status === HISTORY_EVENT_STATUS[DENY_CLAIM_OFFER]) {
           // CredentialOffer was denied but not sent - retry
-          yield put(
-            denyClaimOffer(
-              event.originalPayload.uid,
-            ),
-          )
+          yield put(denyClaimOffer(event.originalPayload.uid))
         }
         if (event.status === UPDATE_ATTRIBUTE_CLAIM) {
           // ProofRequest was accepted but not sent - retry
@@ -351,17 +395,13 @@ export function* retryInterruptedActionsSaga(): Generator<*, *, *> {
               event.originalPayload.uid,
               event.originalPayload.remoteDid,
               event.originalPayload.requestedAttrsJson,
-              event.originalPayload.selfAttestedAttrs,
-            ),
+              event.originalPayload.selfAttestedAttrs
+            )
           )
         }
         if (event.status === DENY_PROOF_REQUEST) {
           // ProofRequest was denied but not sent - retry
-          yield put(
-            denyProofRequest(
-              event.originalPayload.uid,
-            )
-          )
+          yield put(denyProofRequest(event.originalPayload.uid))
         }
       }
     }
@@ -415,7 +455,7 @@ export function convertInvitationAcceptedToHistoryEvent(
 
 // invitation accepted and connection request sent
 export function convertConnectionRequestSentToHistoryEvent(
-  event: ConnectionHistoryEvent,
+  event: ConnectionHistoryEvent
 ): ConnectionHistoryEvent {
   return {
     action: HISTORY_EVENT_STATUS[INVITATION_ACCEPTED],
@@ -737,7 +777,7 @@ function convertDeleteClaimSuccessToHistoryEvent(
       remotePairwiseDID: claim.remotePairwiseDID,
     },
     senderName: event.senderName,
-    senderLogoUrl: event.senderLogoUrl
+    senderLogoUrl: event.senderLogoUrl,
   }
 }
 
@@ -747,7 +787,7 @@ function mapSentAttributes(
   selfAttestedAttributes: *,
   requestedAttributes: *,
   requestedPredicates: *,
-  predicates: *,
+  predicates: *
 ): Array<Item> {
   let sentAttributes = []
   if (revealedAttributes) {
@@ -762,7 +802,7 @@ function mapSentAttributes(
           key: revealedAttributeKeys[index],
           data: revealedAttribute[1],
           claimUuid: revealedAttribute[0],
-          type: ATTRIBUTE_TYPE.FILLED_ATTRIBUTE
+          type: ATTRIBUTE_TYPE.FILLED_ATTRIBUTE,
         })
       }
     )
@@ -776,7 +816,7 @@ function mapSentAttributes(
         key: attributeKey,
         values: revealedAttribute.values,
         claimUuid: revealedAttribute.claimUuid,
-        type: ATTRIBUTE_TYPE.FILLED_ATTRIBUTE
+        type: ATTRIBUTE_TYPE.FILLED_ATTRIBUTE,
       })
     })
   }
@@ -792,26 +832,25 @@ function mapSentAttributes(
           label: requestedAttributes[selfAttestedAttributesKeys[index]].name,
           key: selfAttestedAttributesKeys[index],
           data: selfAttestedAttribute,
-          type: ATTRIBUTE_TYPE.SELF_ATTESTED_ATTRIBUTE
+          type: ATTRIBUTE_TYPE.SELF_ATTESTED_ATTRIBUTE,
         })
       }
     )
   }
 
   if (requestedPredicates) {
-    Object.keys(requestedPredicates)
-      .forEach((requestedPredicateKey) => {
-        const predicate = predicates[requestedPredicateKey]
-        const requestedPredicate = requestedPredicates[requestedPredicateKey]
-        sentAttributes.push({
-          label: requestedPredicate.name,
-          p_type: requestedPredicate.p_type,
-          p_value: requestedPredicate.p_value,
-          key: requestedPredicateKey,
-          claimUuid: predicate[0],
-          type: ATTRIBUTE_TYPE.FILLED_PREDICATE
-        })
+    Object.keys(requestedPredicates).forEach((requestedPredicateKey) => {
+      const predicate = predicates[requestedPredicateKey]
+      const requestedPredicate = requestedPredicates[requestedPredicateKey]
+      sentAttributes.push({
+        label: requestedPredicate.name,
+        p_type: requestedPredicate.p_type,
+        p_value: requestedPredicate.p_value,
+        key: requestedPredicateKey,
+        claimUuid: predicate[0],
+        type: ATTRIBUTE_TYPE.FILLED_PREDICATE,
       })
+    })
   }
   return sentAttributes
 }
@@ -831,7 +870,7 @@ export function convertProofSendToHistoryEvent(
       predicates,
     },
   }: Proof,
-  event?: ConnectionHistoryEvent,
+  event?: ConnectionHistoryEvent
 ): ConnectionHistoryEvent {
   return {
     action: HISTORY_EVENT_STATUS[SEND_PROOF_SUCCESS],
@@ -841,7 +880,7 @@ export function convertProofSendToHistoryEvent(
       self_attested_attrs,
       requested_attributes,
       requested_predicates,
-      predicates,
+      predicates
     ),
     id: uuid(),
     name,
@@ -851,7 +890,7 @@ export function convertProofSendToHistoryEvent(
     remoteDid,
     originalPayload: action,
     senderName: event?.senderName,
-    senderLogoUrl: event?.senderLogoUrl
+    senderLogoUrl: event?.senderLogoUrl,
   }
 }
 
@@ -861,7 +900,7 @@ export function convertProofDenyToHistoryEvent(
     | DenyProofRequestAction
     | DenyProofRequestFailAction,
   proofRequest: ProofRequestPayload,
-  event: ConnectionHistoryEvent,
+  event: ConnectionHistoryEvent
 ): ConnectionHistoryEvent {
   return {
     action: HISTORY_EVENT_STATUS[action.type],
@@ -874,13 +913,13 @@ export function convertProofDenyToHistoryEvent(
     remoteDid: proofRequest.remotePairwiseDID,
     originalPayload: { ...action, proofRequest },
     senderName: event.senderName,
-    senderLogoUrl: event.senderLogoUrl
+    senderLogoUrl: event.senderLogoUrl,
   }
 }
 
 export function convertQuestionReceivedToHistoryEvent(
   action: QuestionReceivedAction,
-  connection: Connection,
+  connection: Connection
 ): ConnectionHistoryEvent {
   return {
     action: HISTORY_EVENT_STATUS[QUESTION_RECEIVED],
@@ -897,14 +936,14 @@ export function convertQuestionReceivedToHistoryEvent(
     },
     showBadge: true,
     senderName: connection.senderName,
-    senderLogoUrl: connection.logoUrl
+    senderLogoUrl: connection.logoUrl,
   }
 }
 
 export function convertQuestionAnswerToHistoryEvent(
   action: UpdateQuestionAnswerAction,
   question: QuestionPayload,
-  event: ConnectionHistoryEvent,
+  event: ConnectionHistoryEvent
 ): ConnectionHistoryEvent {
   return {
     action: HISTORY_EVENT_STATUS[UPDATE_QUESTION_ANSWER],
@@ -920,7 +959,52 @@ export function convertQuestionAnswerToHistoryEvent(
       type: MESSAGE_TYPE.QUESTION,
     },
     senderName: event.senderName,
-    senderLogoUrl: event.senderLogoUrl
+    senderLogoUrl: event.senderLogoUrl,
+  }
+}
+
+export function convertInviteActionReceivedToHistoryEvent(
+  action: InviteActionReceivedAction
+): ConnectionHistoryEvent {
+  return {
+    action: HISTORY_EVENT_STATUS[INVITE_ACTION_RECEIVED],
+    data: action.inviteAction,
+    id: uuid(),
+    name: action.inviteAction.inviteActionTitle,
+    status: HISTORY_EVENT_STATUS[INVITE_ACTION_RECEIVED],
+    timestamp: moment().format(),
+    type: HISTORY_EVENT_TYPE.INVITE_ACTION,
+    remoteDid: action.inviteAction.from_did,
+    originalPayload: {
+      payloadInfo: action.inviteAction,
+      type: MESSAGE_TYPE.INVITE_ACTION,
+    },
+  }
+}
+
+export function convertInviteActionToHistoryEvent(
+  action: InviteActionReceivedAction,
+  inviteActionPayload: InviteActionPayload,
+  actionResponse: string
+): ConnectionHistoryEvent {
+  return {
+    action: HISTORY_EVENT_STATUS[INVITE_ACTION_REJECTED],
+    data: { payload: inviteActionPayload, ...action },
+    id: uuid(),
+    name: `You resolved action`,
+    status:
+      HISTORY_EVENT_STATUS[
+        actionResponse === INVITE_ACTION_RESPONSES.REJECTED
+          ? INVITE_ACTION_REJECTED
+          : INVITE_ACTION_ACCEPTED
+      ],
+    timestamp: moment().format(),
+    type: HISTORY_EVENT_TYPE.INVITE_ACTION,
+    remoteDid: inviteActionPayload.from_did,
+    originalPayload: {
+      payloadInfo: inviteActionPayload,
+      type: MESSAGE_TYPE.INVITE_ACTION,
+    },
   }
 }
 
@@ -978,14 +1062,15 @@ export function* historyEventOccurredSaga(
       const existingConnectionFailEvent: ConnectionHistoryEvent = yield select(
         getUniqueHistoryItem,
         event.senderDID,
-        CONNECTION_FAIL,
+        CONNECTION_FAIL
       )
       const existingInvitationAcceptedEvent = yield select(
         getUniqueHistoryItem,
         event.senderDID,
-        INVITATION_ACCEPTED,
+        INVITATION_ACCEPTED
       )
-      const existingEvent = existingConnectionFailEvent || existingInvitationAcceptedEvent
+      const existingEvent =
+        existingConnectionFailEvent || existingInvitationAcceptedEvent
       if (existingEvent) {
         yield put(deleteHistoryEvent(existingEvent))
       }
@@ -995,12 +1080,12 @@ export function* historyEventOccurredSaga(
       const invitationAcceptedEvent = yield select(
         getUniqueHistoryItem,
         event.senderDID,
-        INVITATION_ACCEPTED,
+        INVITATION_ACCEPTED
       )
 
       // convert invitation accepted into connection success event
       historyEvent = convertConnectionRequestSentToHistoryEvent(
-        invitationAcceptedEvent,
+        invitationAcceptedEvent
       )
       if (invitationAcceptedEvent) {
         yield put(deleteHistoryEvent(invitationAcceptedEvent))
@@ -1053,7 +1138,7 @@ export function* historyEventOccurredSaga(
       const connectionSuccessEvent = yield select(
         getUniqueHistoryItem,
         event.senderDID,
-        HISTORY_EVENT_STATUS.NEW_CONNECTION_SUCCESS,
+        HISTORY_EVENT_STATUS.NEW_CONNECTION_SUCCESS
       )
 
       const existingEvent =
@@ -1063,14 +1148,14 @@ export function* historyEventOccurredSaga(
 
       const connectionDeletedEvent = convertConnectionDeletedToHistoryEvent(
         event,
-        existingEvent,
+        existingEvent
       )
 
       // we can delete all active actions because deleting of the connection
       // means that these actions never complete
       yield put(deletePendingHistoryEvents(event.senderDID))
 
-      if (connectionSuccessEvent){
+      if (connectionSuccessEvent) {
         historyEvent = connectionDeletedEvent
       }
     }
@@ -1094,7 +1179,11 @@ export function* historyEventOccurredSaga(
         claimOffer.remotePairwiseDID,
         CLAIM_OFFER_RECEIVED
       )
-      historyEvent = convertClaimOfferDenyToHistoryEvent(event, claimOffer, claimOfferReceivedEvent)
+      historyEvent = convertClaimOfferDenyToHistoryEvent(
+        event,
+        claimOffer,
+        claimOfferReceivedEvent
+      )
       yield put(deleteHistoryEvent(claimOfferReceivedEvent))
     }
 
@@ -1115,14 +1204,18 @@ export function* historyEventOccurredSaga(
       const oldHistoryEvent =
         claimOfferReceivedEvent || claimOfferDenyFailedEvent
 
-      historyEvent = convertClaimOfferDenyToHistoryEvent(event, claimOffer, oldHistoryEvent)
+      historyEvent = convertClaimOfferDenyToHistoryEvent(
+        event,
+        claimOffer,
+        oldHistoryEvent
+      )
       if (oldHistoryEvent) yield put(deleteHistoryEvent(oldHistoryEvent))
 
       const denyClaimOfferEvent = yield select(
         getPendingHistory,
         event.uid,
         historyEvent.remoteDid,
-        DENY_CLAIM_OFFER,
+        DENY_CLAIM_OFFER
       )
       if (denyClaimOfferEvent) {
         historyEvent = undefined
@@ -1137,7 +1230,11 @@ export function* historyEventOccurredSaga(
         claimOffer.remotePairwiseDID,
         DENY_CLAIM_OFFER
       )
-      historyEvent = convertClaimOfferDenyToHistoryEvent(event, claimOffer, oldHistoryEvent)
+      historyEvent = convertClaimOfferDenyToHistoryEvent(
+        event,
+        claimOffer,
+        oldHistoryEvent
+      )
       if (oldHistoryEvent) yield put(deleteHistoryEvent(oldHistoryEvent))
     }
 
@@ -1149,7 +1246,11 @@ export function* historyEventOccurredSaga(
         claimOffer.remotePairwiseDID,
         DENY_CLAIM_OFFER
       )
-      historyEvent = convertClaimOfferDenyToHistoryEvent(event, claimOffer, oldHistoryEvent)
+      historyEvent = convertClaimOfferDenyToHistoryEvent(
+        event,
+        claimOffer,
+        oldHistoryEvent
+      )
       if (oldHistoryEvent) yield put(deleteHistoryEvent(oldHistoryEvent))
     }
 
@@ -1221,7 +1322,7 @@ export function* historyEventOccurredSaga(
         getPendingHistory,
         event.uid,
         event.remoteDid,
-        CLAIM_OFFER_ACCEPTED,
+        CLAIM_OFFER_ACCEPTED
       )
       if (existingCredentialOfferAcceptedEvent) {
         historyEvent = undefined
@@ -1244,7 +1345,8 @@ export function* historyEventOccurredSaga(
         event.remoteDid,
         SEND_CLAIM_REQUEST_SUCCESS
       )
-      const existingEvent = existingCredentialOfferAcceptedEvent ||
+      const existingEvent =
+        existingCredentialOfferAcceptedEvent ||
         existingSendClaimRequestSuccessEvent
       const credentialRequestFailEvent = convertCredentialRequestFailToHistoryEvent(
         event,
@@ -1263,7 +1365,10 @@ export function* historyEventOccurredSaga(
         event.payload.remotePairwiseDID,
         CLAIM_OFFER_ACCEPTED
       )
-      historyEvent = convertSendClaimRequestSuccessToHistoryEvent(event, claimOfferAcceptedEvent)
+      historyEvent = convertSendClaimRequestSuccessToHistoryEvent(
+        event,
+        claimOfferAcceptedEvent
+      )
 
       const existingEvent = yield select(
         getPendingHistory,
@@ -1292,7 +1397,11 @@ export function* historyEventOccurredSaga(
       if (existingEvent) historyEvent = null
       const pendingHistory = yield select(getPendingHistoryEvent, claim)
 
-      historyEvent = convertClaimStorageSuccessToHistoryEvent(event, claim, pendingHistory)
+      historyEvent = convertClaimStorageSuccessToHistoryEvent(
+        event,
+        claim,
+        pendingHistory
+      )
 
       if (pendingHistory) {
         yield put(deleteHistoryEvent(pendingHistory))
@@ -1310,7 +1419,11 @@ export function* historyEventOccurredSaga(
         claim.remotePairwiseDID,
         CLAIM_STORAGE_SUCCESS
       )
-      historyEvent = convertDeleteClaimSuccessToHistoryEvent(event, claim, claimReceivedEvent)
+      historyEvent = convertDeleteClaimSuccessToHistoryEvent(
+        event,
+        claim,
+        claimReceivedEvent
+      )
       if (claimReceivedEvent) {
         // Delete attributes from received credential history item
         const event = {
@@ -1400,7 +1513,7 @@ export function* historyEventOccurredSaga(
         getPendingHistory,
         event.uid,
         event.remoteDid,
-        UPDATE_ATTRIBUTE_CLAIM,
+        UPDATE_ATTRIBUTE_CLAIM
       )
       if (existingUpdateAttributeEvent) {
         historyEvent = undefined
@@ -1436,7 +1549,12 @@ export function* historyEventOccurredSaga(
         proofRequest.remotePairwiseDID,
         UPDATE_ATTRIBUTE_CLAIM
       )
-      historyEvent = convertProofSendToHistoryEvent(event, proofRequest, proof, oldHistoryEvent)
+      historyEvent = convertProofSendToHistoryEvent(
+        event,
+        proofRequest,
+        proof,
+        oldHistoryEvent
+      )
       if (oldHistoryEvent) yield put(deleteHistoryEvent(oldHistoryEvent))
     }
 
@@ -1458,13 +1576,17 @@ export function* historyEventOccurredSaga(
         DENY_PROOF_REQUEST_FAIL
       )
       const oldHistoryEvent = proofRequestReceivedEvent || proofDenyFailedEvent
-      historyEvent = convertProofDenyToHistoryEvent(event, proofRequest, oldHistoryEvent)
+      historyEvent = convertProofDenyToHistoryEvent(
+        event,
+        proofRequest,
+        oldHistoryEvent
+      )
       if (oldHistoryEvent) yield put(deleteHistoryEvent(oldHistoryEvent))
       const existingDenyProofRequestEvent = yield select(
         getPendingHistory,
         event.uid,
         historyEvent.remoteDid,
-        DENY_PROOF_REQUEST,
+        DENY_PROOF_REQUEST
       )
       if (existingDenyProofRequestEvent) {
         historyEvent = undefined
@@ -1482,7 +1604,11 @@ export function* historyEventOccurredSaga(
         proofRequest.remotePairwiseDID,
         DENY_PROOF_REQUEST
       )
-      historyEvent = convertProofDenyToHistoryEvent(event, proofRequest, oldHistoryEvent)
+      historyEvent = convertProofDenyToHistoryEvent(
+        event,
+        proofRequest,
+        oldHistoryEvent
+      )
       if (oldHistoryEvent) yield put(deleteHistoryEvent(oldHistoryEvent))
     }
 
@@ -1497,7 +1623,11 @@ export function* historyEventOccurredSaga(
         proofRequest.remotePairwiseDID,
         DENY_PROOF_REQUEST
       )
-      historyEvent = convertProofDenyToHistoryEvent(event, proofRequest, oldHistoryEvent)
+      historyEvent = convertProofDenyToHistoryEvent(
+        event,
+        proofRequest,
+        oldHistoryEvent
+      )
       if (oldHistoryEvent) yield put(deleteHistoryEvent(oldHistoryEvent))
     }
 
@@ -1520,7 +1650,59 @@ export function* historyEventOccurredSaga(
         questionPayload.remotePairwiseDID,
         MESSAGE_TYPE.QUESTION
       )
-      historyEvent = convertQuestionAnswerToHistoryEvent(event, questionPayload, oldHistoryEvent)
+      historyEvent = convertQuestionAnswerToHistoryEvent(
+        event,
+        questionPayload,
+        oldHistoryEvent
+      )
+      if (oldHistoryEvent) yield put(deleteHistoryEvent(oldHistoryEvent))
+    }
+
+    if (event.type === INVITE_ACTION_RECEIVED) {
+      historyEvent = convertInviteActionReceivedToHistoryEvent(event)
+    }
+
+    if (event.type === INVITE_ACTION_REJECTED) {
+      const inviteActionPayload: InviteActionPayload = yield select(
+        selectInviteAction,
+        event.uid
+      )
+
+      historyEvent = convertInviteActionToHistoryEvent(
+        event,
+        inviteActionPayload,
+        INVITE_ACTION_RESPONSES.REJECTED
+      )
+
+      const oldHistoryEvent = yield select(
+        getHistoryEvent,
+        event.uid,
+        historyEvent.remoteDid,
+        MESSAGE_TYPE.INVITE_ACTION
+      )
+
+      if (oldHistoryEvent) yield put(deleteHistoryEvent(oldHistoryEvent))
+    }
+
+    if (event.type === INVITE_ACTION_ACCEPTED) {
+      const inviteActionPayload: InviteActionPayload = yield select(
+        selectInviteAction,
+        event.uid
+      )
+
+      historyEvent = convertInviteActionToHistoryEvent(
+        event,
+        inviteActionPayload,
+        INVITE_ACTION_RESPONSES.ACCEPTED
+      )
+
+      const oldHistoryEvent = yield select(
+        getHistoryEvent,
+        event.uid,
+        historyEvent.remoteDid,
+        MESSAGE_TYPE.INVITE_ACTION
+      )
+
       if (oldHistoryEvent) yield put(deleteHistoryEvent(oldHistoryEvent))
     }
 
@@ -1562,6 +1744,13 @@ export function* removeEventSaga(
     )
     eventType = MESSAGE_TYPE.QUESTION
     remotePairwiseDID = questionPayload.remotePairwiseDID
+  } else if (action.navigationRoute === inviteActionRoute) {
+    const inviteActionPayload: InviteActionPayload = yield select(
+      selectInviteAction,
+      action.uid
+    )
+    eventType = MESSAGE_TYPE.INVITE_ACTION
+    remotePairwiseDID = inviteActionPayload.remotePairwiseDID
   }
 
   if (eventType && remotePairwiseDID) {
@@ -1689,9 +1878,9 @@ export default function connectionHistoryReducer(
         state.data.connections[remoteDid] &&
         state.data.connections[remoteDid].data
           ? state.data.connections[remoteDid].data.filter((item) => {
-            // $FlowFixMe
-            return item !== action.historyEvent
-          })
+              // $FlowFixMe
+              return item !== action.historyEvent
+            })
           : []
       return {
         ...state,
@@ -1719,11 +1908,11 @@ export default function connectionHistoryReducer(
         state.data.connections[remoteDid] &&
         state.data.connections[remoteDid].data
           ? state.data.connections[remoteDid].data.map((item) => {
-            // $FlowFixMe
-            return item.id === action.historyEvent.id
-              ? action.historyEvent
-              : item
-          })
+              // $FlowFixMe
+              return item.id === action.historyEvent.id
+                ? action.historyEvent
+                : item
+            })
           : []
       return {
         ...state,
@@ -1750,8 +1939,9 @@ export default function connectionHistoryReducer(
         state.data.connections &&
         state.data.connections[senderDID] &&
         state.data.connections[senderDID].data
-          ? state.data.connections[senderDID].data.filter((item) =>
-            !PENDING_ACTIONS.includes(item.action))
+          ? state.data.connections[senderDID].data.filter(
+              (item) => !PENDING_ACTIONS.includes(item.action)
+            )
           : []
       return {
         ...state,

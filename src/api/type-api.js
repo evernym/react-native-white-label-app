@@ -4,6 +4,7 @@ export type ApiData = {
   mode: string,
   headers: { [string]: string },
   body?: string,
+  keepalive?: string,
 }
 
 export type BackendError = {

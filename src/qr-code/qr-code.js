@@ -1,15 +1,18 @@
 // @flow
-import React, {Component} from 'react'
-import {Alert, AppState, Platform} from 'react-native'
-import {bindActionCreators} from 'redux'
-import {connect} from 'react-redux'
+import React, { Component } from 'react'
+import { Alert, AppState, Platform } from 'react-native'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 
-import {convertAriesCredentialOfferToCxsClaimOffer} from '../bridge/react-native-cxs/vcx-transformers'
-import {convertClaimOfferPushPayloadToAppClaimOffer} from '../push-notification/push-notification-store'
+import { convertAriesCredentialOfferToCxsClaimOffer } from '../bridge/react-native-cxs/vcx-transformers'
+import { convertClaimOfferPushPayloadToAppClaimOffer } from '../push-notification/push-notification-store'
 
-import {Container, QRScanner} from '../components'
-import {color, colors} from '../common/styles/constant'
-import {getAttachedRequest, invitationReceived} from '../invitation/invitation-store'
+import { Container, QRScanner } from '../components'
+import { color, colors } from '../common/styles/constant'
+import {
+  getAttachedRequest,
+  invitationReceived,
+} from '../invitation/invitation-store'
 import {
   claimOfferRoute,
   homeDrawerRoute,
@@ -21,37 +24,55 @@ import {
   qrCodeScannerTabRoute,
 } from '../common/'
 
-import type {OIDCAuthenticationRequest, } from '../components/qr-scanner/type-qr-scanner'
-import type {Store} from '../store/type-store'
+import type { OIDCAuthenticationRequest } from '../components/qr-scanner/type-qr-scanner'
+import type { Store } from '../store/type-store'
 import type {
   AriesConnectionInvite,
   AriesOutOfBandInvite,
   InvitationPayload,
   ShortProprietaryConnectionInvitation,
 } from '../invitation/type-invitation'
-import type {OutOfBandNavigation, QRCodeScannerScreenProps, QRCodeScannerScreenState,} from './type-qr-code'
+import type {
+  OutOfBandNavigation,
+  QRCodeScannerScreenProps,
+  QRCodeScannerScreenState,
+} from './type-qr-code'
 import type {
   AriesPresentationRequest,
   ProofRequestPayload,
   QrCodeEphemeralProofRequest,
 } from '../proof-request/type-proof-request'
-import {PROOF_REQUEST_STATUS} from '../proof-request/type-proof-request'
-import type {ClaimOfferPayload, CredentialOffer,} from '../claim-offer/type-claim-offer'
-import {CLAIM_OFFER_STATUS} from '../claim-offer/type-claim-offer'
-import {changeEnvironmentUrl} from '../store/config-store'
-import {getAllDid, getAllPublicDid, getClaimOffers, getProofRequests,} from '../store/store-selector'
-import {withStatusBar} from '../components/status-bar/status-bar'
-import {OPEN_ID_CONNECT_STATE, openIdConnectUpdateStatus,} from '../open-id-connect/open-id-connect-actions'
-import {ID, TYPE} from '../common/type-common'
-import {proofRequestReceived} from '../proof-request/proof-request-store'
-import {claimOfferReceived} from '../claim-offer/claim-offer-store'
-import {validateOutofbandProofRequestQrCode} from '../proof-request/proof-request-qr-code-reader'
-import {getPushNotificationAuthorizationStatus} from '../push-notification/components/push-notification-permission-screen'
+import { PROOF_REQUEST_STATUS } from '../proof-request/type-proof-request'
+import type {
+  ClaimOfferPayload,
+  CredentialOffer,
+} from '../claim-offer/type-claim-offer'
+import { CLAIM_OFFER_STATUS } from '../claim-offer/type-claim-offer'
+import { changeEnvironmentUrl } from '../store/config-store'
+import {
+  getAllDid,
+  getAllPublicDid,
+  getClaimOffers,
+  getProofRequests,
+} from '../store/store-selector'
+import { withStatusBar } from '../components/status-bar/status-bar'
+import {
+  OPEN_ID_CONNECT_STATE,
+  openIdConnectUpdateStatus,
+} from '../open-id-connect/open-id-connect-actions'
+import { ID, TYPE } from '../common/type-common'
+import { proofRequestReceived } from '../proof-request/proof-request-store'
+import { claimOfferReceived } from '../claim-offer/claim-offer-store'
+import { validateOutofbandProofRequestQrCode } from '../proof-request/proof-request-qr-code-reader'
+import { getPushNotificationAuthorizationStatus } from '../push-notification/components/push-notification-permission-screen'
 import Snackbar from 'react-native-snackbar'
-import {convertShortProprietaryInvitationToAppInvitation} from "../invitation/kinds/proprietary-connection-invitation";
-import {convertAriesOutOfBandInvitationToAppInvitation} from "../invitation/kinds/aries-out-of-band-invitation";
-import {convertAriesInvitationToAppInvitation} from "../invitation/kinds/aries-connection-invitation";
-import {getExistingConnection, prepareParamsForExistingConnectionRedirect} from "../invitation/invitation-helpers";
+import { convertShortProprietaryInvitationToAppInvitation } from '../invitation/kinds/proprietary-connection-invitation'
+import { convertAriesOutOfBandInvitationToAppInvitation } from '../invitation/kinds/aries-out-of-band-invitation'
+import { convertAriesInvitationToAppInvitation } from '../invitation/kinds/aries-connection-invitation'
+import {
+  getExistingConnection,
+  prepareParamsForExistingConnectionRedirect,
+} from '../invitation/invitation-helpers'
 
 export class QRCodeScannerScreen extends Component<
   QRCodeScannerScreenProps,
@@ -64,7 +85,9 @@ export class QRCodeScannerScreen extends Component<
 
   permissionCheckIntervalId: ?IntervalID = undefined
 
-  onShortProprietaryInvitationRead = async (qrCode: ShortProprietaryConnectionInvitation) => {
+  onShortProprietaryInvitationRead = async (
+    qrCode: ShortProprietaryConnectionInvitation
+  ) => {
     if (this.props.currentScreen === qrCodeScannerTabRoute) {
       const invitation = {
         payload: convertShortProprietaryInvitationToAppInvitation(qrCode),
@@ -106,7 +129,8 @@ export class QRCodeScannerScreen extends Component<
     // Apparently navigation.push can be null, and hence we are protecting
     // against null fn call, so if push is not available, navigate is
     // guaranteed to be available
-    const navigationFn = this.props.navigation.push || this.props.navigation.navigate
+    const navigationFn =
+      this.props.navigation.push || this.props.navigation.navigate
 
     // check if connection already exists
     // if connection exist, then redirect to the home view
@@ -124,7 +148,10 @@ export class QRCodeScannerScreen extends Component<
     if (existingConnection) {
       navigationFn(homeRoute, {
         screen: homeDrawerRoute,
-        params: prepareParamsForExistingConnectionRedirect(existingConnection, invitation.payload),
+        params: prepareParamsForExistingConnectionRedirect(
+          existingConnection,
+          invitation.payload
+        ),
       })
       return
     }
@@ -196,7 +223,9 @@ export class QRCodeScannerScreen extends Component<
       <Container dark collapsable={true}>
         {this.state.isCameraEnabled && this.props.navigation.isFocused() ? (
           <QRScanner
-            onShortProprietaryInvitationRead={this.onShortProprietaryInvitationRead}
+            onShortProprietaryInvitationRead={
+              this.onShortProprietaryInvitationRead
+            }
             onProprietaryInvitationRead={this.onProprietaryInvitationRead}
             onOIDCAuthenticationRequest={this.onOIDCAuthenticationRequest}
             onAriesConnectionInviteRead={this.onAriesConnectionInviteRead}
@@ -224,7 +253,9 @@ export class QRCodeScannerScreen extends Component<
   onAriesConnectionInviteRead = async (
     ariesConnectionInvite: AriesConnectionInvite
   ) => {
-    const invitation = convertAriesInvitationToAppInvitation(ariesConnectionInvite)
+    const invitation = convertAriesInvitationToAppInvitation(
+      ariesConnectionInvite
+    )
     await this.checkExistingConnectionAndRedirect({ payload: invitation })
   }
 
@@ -295,9 +326,7 @@ export class QRCodeScannerScreen extends Component<
       // Action: Create a new connection or reuse existing.
       // UI: Show Connection invite
       await this.checkExistingConnectionAndRedirect({ payload: invitation })
-    } else if (
-      invite['request~attach']?.length
-    ) {
+    } else if (invite['request~attach']?.length) {
       // Invite: Has `handshake_protocols` and has `request~attach`
       // Action:
       //  1. Create a new connection or reuse existing
@@ -316,10 +345,14 @@ export class QRCodeScannerScreen extends Component<
 
       if (req[TYPE].endsWith('offer-credential')) {
         const credentialOffer = (req: CredentialOffer)
-        const claimOffer = convertAriesCredentialOfferToCxsClaimOffer(credentialOffer)
+        const claimOffer = convertAriesCredentialOfferToCxsClaimOffer(
+          credentialOffer
+        )
         const uid = credentialOffer[ID]
 
-        const existingCredential: ClaimOfferPayload = this.props.claimOffers[uid]
+        const existingCredential: ClaimOfferPayload = this.props.claimOffers[
+          uid
+        ]
 
         if (
           existingCredential &&
@@ -332,7 +365,7 @@ export class QRCodeScannerScreen extends Component<
           // we already have accepted that offer
           Snackbar.show({
             text: 'The credential offer has already been accepted.',
-            backgroundColor: colors.cmRed,
+            backgroundColor: colors.red,
             duration: Snackbar.LENGTH_LONG,
           })
           return
@@ -370,7 +403,8 @@ export class QRCodeScannerScreen extends Component<
         const presentationRequest = (req: AriesPresentationRequest)
         const uid = presentationRequest[ID]
 
-        const existingProofRequest: ProofRequestPayload = this.props.proofRequests[uid]
+        const existingProofRequest: ProofRequestPayload = this.props
+          .proofRequests[uid]
 
         if (
           existingProofRequest &&
@@ -383,7 +417,7 @@ export class QRCodeScannerScreen extends Component<
           // we already have accepted that proof request
           Snackbar.show({
             text: 'The proof request has already been accepted.',
-            backgroundColor: colors.cmRed,
+            backgroundColor: colors.red,
             duration: Snackbar.LENGTH_LONG,
           })
           return

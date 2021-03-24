@@ -1,7 +1,10 @@
 // @flow
 import * as React from 'react'
 import { Dimensions, Image, Text, View, Platform } from 'react-native'
-import { createStackNavigator, TransitionPresets } from '@react-navigation/stack'
+import {
+  createStackNavigator,
+  TransitionPresets,
+} from '@react-navigation/stack'
 import { createDrawerNavigator, DrawerItemList } from '@react-navigation/drawer'
 import { enableScreens } from 'react-native-screens'
 import VersionNumber from 'react-native-version-number'
@@ -64,7 +67,12 @@ import {
 import { walletTabsScreen } from '../wallet/wallet-tab-send-details'
 import { checkIfAnimationToUse } from '../bridge/react-native-cxs/RNCxs'
 import SvgCustomIcon from '../components/svg-custom-icon'
-import { CONNECTIONS_ICON, EvaIcon, HOME_ICON, SETTINGS_ICON } from '../common/icons'
+import {
+  CONNECTIONS_ICON,
+  EvaIcon,
+  HOME_ICON,
+  SETTINGS_ICON,
+} from '../common/icons'
 import { colors } from '../common/styles/constant'
 import { UnreadMessagesBadge } from '../components'
 import { moderateScale, verticalScale } from 'react-native-size-matters'
@@ -90,9 +98,13 @@ import {
   appIcon,
   companyName,
   CustomDrawerFooterContent,
-  CustomDrawerHeaderContent, customMenuNavigationOptions, customExtraModals, customExtraScreens,
+  CustomDrawerHeaderContent,
+  customMenuNavigationOptions,
+  customExtraModals,
+  customExtraScreens,
   usePushNotifications,
 } from '../external-exports'
+import { inviteActionScreen } from '../invite-action/invite-action-screen'
 
 if (Platform.OS !== 'android') {
   enableScreens()
@@ -111,42 +123,45 @@ const drawerComponent = (props: Object) => (
     accessibilityLabel="menu-container"
   >
     <View style={styles.drawerHeader}>
-      {
-        CustomDrawerHeaderContent ?
-          <CustomDrawerHeaderContent
-            width={verticalScale(136)}
-            height={verticalScale(18)}
-            fill={colors.gray3}
-          /> :
-          <Image
-            source={require('../images/powered_by_logo.png')}
-            resizeMode="contain"
-          />
-      }
-      {renderUserAvatar({ size: 'medium', userCanChange: true, testID: 'user-avatar' })}
+      {CustomDrawerHeaderContent ? (
+        <CustomDrawerHeaderContent
+          width={verticalScale(136)}
+          height={verticalScale(18)}
+          fill={colors.gray3}
+        />
+      ) : (
+        <Image
+          source={require('../images/powered_by_logo.png')}
+          resizeMode="contain"
+        />
+      )}
+      {renderUserAvatar({
+        size: 'medium',
+        userCanChange: true,
+        testID: 'user-avatar',
+      })}
     </View>
     <DrawerItemList {...props} />
     <View style={styles.drawerFooterContainer}>
       <View style={styles.drawerFooter}>
-        {CustomDrawerFooterContent ?
-          <CustomDrawerFooterContent/> :
+        {CustomDrawerFooterContent ? (
+          <CustomDrawerFooterContent />
+        ) : (
           <>
-            <Image
-              source={footerIcon}
-              style={styles.companyIconImage}
-            />
+            <Image source={footerIcon} style={styles.companyIconImage} />
             <View style={styles.companyIconTextContainer}>
               <View style={styles.companyIconLogoText}>
                 <Text style={styles.text}>built by {builtBy}</Text>
               </View>
               <View style={styles.companyIconBuildText}>
                 <Text style={styles.text}>
-                  Version {VersionNumber.appVersion}.{VersionNumber.buildVersion}
+                  Version {VersionNumber.appVersion}.
+                  {VersionNumber.buildVersion}
                 </Text>
               </View>
             </View>
           </>
-        }
+        )}
       </View>
     </View>
   </SafeAreaView>
@@ -163,9 +178,7 @@ const drawerStyle = {
 }
 
 const drawerIcon = (icon: any) => ({ color }) => (
-  <View style={styles.drawerIconWrapper}>
-    {icon ? icon(color): null}
-  </View>
+  <View style={styles.drawerIconWrapper}>{icon ? icon(color) : null}</View>
 )
 
 const drawerEvaIcon = (title: string) => ({ color }) => (
@@ -188,7 +201,7 @@ const drawerSvgIcon = (title: string) => ({ color }) => (
 
 const drawerItemLabel = (
   title: string,
-  extraComponent?: React.Node = null,
+  extraComponent?: React.Node = null
 ) => ({ focused }) => (
   <View style={styles.labelContainer}>
     <Text style={[styles.labelText, focused && styles.labelTextFocusedColor]}>
@@ -204,7 +217,7 @@ const homeDrawerItemOptions = {
     'Home',
     <UnreadMessagesBadge
       customContainerStyle={styles.customGreenBadgeContainer}
-    />,
+    />
   ),
 }
 
@@ -241,15 +254,17 @@ function AppDrawer() {
   const tabs = menuNavigationOptions.map((option) => {
     const defaultOption = defaultDrawerItemOptions[option.name] || {}
 
-    return <Drawer.Screen
-      key={option.route || defaultOption.route}
-      name={option.route || defaultOption.route}
-      component={option.component || defaultOption.component}
-      options={{
-        drawerIcon: drawerIcon(option.icon || defaultOption.icon),
-        drawerLabel: drawerItemLabel(option.label || defaultOption.label),
-      }}
-    />
+    return (
+      <Drawer.Screen
+        key={option.route || defaultOption.route}
+        name={option.route || defaultOption.route}
+        component={option.component || defaultOption.component}
+        options={{
+          drawerIcon: drawerIcon(option.icon || defaultOption.icon),
+          drawerLabel: drawerItemLabel(option.label || defaultOption.label),
+        }}
+      />
+    )
   })
 
   return (
@@ -436,16 +451,14 @@ function CardStackScreen() {
         component={credentialDetailsScreen.screen}
         options={credentialDetailsScreen.screen.navigationOptions}
       />
-      {
-        extraScreens.map((screen) => (
-          <CardStack.Screen
-            key={screen.route}
-            name={screen.route}
-            component={screen.component}
-            options={screen.navigationOptions}
-          />
-        ))
-      }
+      {extraScreens.map((screen) => (
+        <CardStack.Screen
+          key={screen.route}
+          name={screen.route}
+          component={screen.component}
+          options={screen.navigationOptions}
+        />
+      ))}
     </CardStack.Navigator>
   )
 }
@@ -463,7 +476,7 @@ const modalStackOptions = {
 export function MSDKAppNavigator() {
   return (
     <ModalStack.Navigator mode="modal" screenOptions={modalStackOptions}>
-      <ModalStack.Screen name="CardStack" component={CardStackScreen}/>
+      <ModalStack.Screen name="CardStack" component={CardStackScreen} />
       <ModalStack.Screen
         name={claimOfferScreen.routeName}
         component={claimOfferScreen.screen}
@@ -534,24 +547,26 @@ export function MSDKAppNavigator() {
         component={AttributesValuesScreen.screen}
         options={AttributesValuesScreen.screen.navigationOptions}
       />
-      {
-        usePushNotifications &&
+      <ModalStack.Screen
+        name={inviteActionScreen.routeName}
+        component={inviteActionScreen.screen}
+        options={inviteActionScreen.screen.navigationOptions}
+      />
+      {usePushNotifications && (
         <ModalStack.Screen
           name={pushNotificationPermissionScreen.routeName}
           component={pushNotificationPermissionScreen.screen}
           options={pushNotificationPermissionScreen.screen.navigationOptions}
         />
-      }
-      {
-        extraModals.map((screen) => (
-          <CardStack.Screen
-            key={screen.route}
-            name={screen.route}
-            component={screen.component}
-            options={screen.navigationOptions}
-          />
-        ))
-      }
+      )}
+      {extraModals.map((screen) => (
+        <CardStack.Screen
+          key={screen.route}
+          name={screen.route}
+          component={screen.component}
+          options={screen.navigationOptions}
+        />
+      ))}
     </ModalStack.Navigator>
   )
 }

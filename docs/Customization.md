@@ -893,7 +893,7 @@ You can customize `Proof Request` dialog in the `proof-request.js` module.
         export const CustomEnterAttributeValueModal = () => <Text>Custom Dialog</Text>
         ``` 
 
-#### Question dialog 
+#### Question 
 
 You can customize `Question` dialog in the `question-dialog.js` module.
 
@@ -916,7 +916,50 @@ You can customize `Question` dialog in the `question-dialog.js` module.
         ```javascript
         export const CustomQuestionModal = () => <Text>Custom Question Dialog</Text>
         ``` 
+#### Invite Action
 
+You can customize `Invite Action` dialog in the `invite-action.js` module.
+
+* `HEADLINE` - (string) the text which will be used for the header.
+    * to use default - `New Message`
+        ```javascript
+        export const HEADLINE = null
+        ```
+    * to use custom 
+        ```javascript
+        export const HEADLINE = 'Custom Headline'
+        ```
+
+* `ACCEPT_BUTTON_TEXT` - (string) the text which will be used for top (accept) button.
+    * to use default - `Accept`
+        ```javascript
+        export const ACCEPT_BUTTON_TEXT = null
+        ```
+    * to use custom 
+        ```javascript
+        export const ACCEPT_BUTTON_TEXT = 'Ok'
+        ```
+
+* `DENY_BUTTON_TEXT` - (string) the text which will be used for bottom (deny) button.
+    * to use default - `Reject`
+        ```javascript
+        export const DENY_BUTTON_TEXT = null
+        ```
+    * to use custom 
+        ```javascript
+        export const DENY_BUTTON_TEXT = 'Deny'
+        ```
+
+* `CustomInviteActionModal` - (React Component) custom component for Invite Action dialog rendering (instead of predefined one).
+    * to use default
+        ```javascript
+        export const CustomInviteActionModal = null
+        ```    
+    * to use custom 
+        ```javascript
+        export const CustomInviteActionModal = () => <Text>Custom Invite Action Dialog</Text>
+        ``` 
+      
 #### Settings
 
 You can customize `Settings` view in the `settings.js` module.

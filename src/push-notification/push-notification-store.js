@@ -72,7 +72,11 @@ import type {
 } from '../proof-request/type-proof-request'
 import type { Claim } from '../claim/type-claim'
 import { safeGet, safeSet, walletSet } from '../services/storage'
-import { PUSH_COM_METHOD, LAST_SUCCESSFUL_CLOUD_BACKUP, homeRoute } from '../common'
+import {
+  PUSH_COM_METHOD,
+  LAST_SUCCESSFUL_CLOUD_BACKUP,
+  homeRoute,
+} from '../common'
 import type { NavigationParams, GenericObject } from '../common/type-common'
 
 import { addPendingRedirection } from '../lock/lock-store'
@@ -117,6 +121,7 @@ import { ATTRIBUTE_TYPE } from '../proof-request/type-proof-request'
 import { flattenAsync } from '../common/flatten-async'
 import { Platform } from 'react-native'
 import { usePushNotifications } from '../external-exports'
+import { inviteActionReceived } from '../invite-action/invite-action-store'
 
 const blackListedRoute = {
   [proofRequestRoute]: proofRequestRoute,
@@ -312,9 +317,11 @@ export const allowPushNotifications = () => ({
   type: ALLOW_PUSH_NOTIFICATIONS,
 })
 
-export function* enablePushNotificationsSaga(force?: boolean): Generator<*, *, *> {
+export function* enablePushNotificationsSaga(
+  force?: boolean
+): Generator<*, *, *> {
   // NOTE: Enable push notification
-  if (usePushNotifications){
+  if (usePushNotifications) {
     const pushToken = yield call(safeGet, PUSH_COM_METHOD)
     if (!pushToken || force) {
       yield call(() => messaging().requestPermission())
@@ -571,8 +578,8 @@ export const goToUIScreen = (
 
 function* watchUpdateRelevantPushPayloadStoreAndRedirect(): any {
   yield takeEvery(UPDATE_RELEVANT_PUSH_PAYLOAD_STORE_AND_REDIRECT, function* ({
-                                                                                notification,
-                                                                              }: updatePayloadToRelevantStoreAndRedirectAction) {
+    notification,
+  }: updatePayloadToRelevantStoreAndRedirectAction) {
     yield* updatePayloadToRelevantStoreSaga(notification)
     yield* redirectToRelevantScreen({ ...notification, uiType: null })
     const { forDID: pairwiseDID, uid } = notification
@@ -646,6 +653,9 @@ export function* updatePayloadToRelevantStoreSaga(
       case MESSAGE_TYPE.QUESTION.toLowerCase():
         yield put(questionReceived(additionalData))
         break
+      case MESSAGE_TYPE.INVITE_ACTION:
+        yield put(inviteActionReceived(additionalData))
+        break
     }
   }
 }
@@ -696,7 +706,7 @@ function* redirectToRelevantScreen(notification: RedirectToRelevantScreen) {
           identifier: forDID,
         },
         notification,
-        notificationText,
+        notificationText
       )
     }
   }
@@ -706,15 +716,15 @@ function* handleRedirection(
   routeName: string,
   params: NavigationParams,
   notification: RedirectToRelevantScreen,
-  notificationText: string,
+  notificationText: string
 ): any {
   const isAppLocked: boolean = yield select(getIsAppLocked)
   if (isAppLocked) {
     yield put(
       addPendingRedirection([
         { routeName: homeRoute, params: { screen: homeDrawerRoute } },
-        { routeName, params},
-      ]),
+        { routeName, params },
+      ])
     )
     return
   }
@@ -744,7 +754,7 @@ function* handleRedirection(
           messageType: notification.type,
           messageId: params.uid,
           identifier: notification.forDID,
-        }),
+        })
       )
     }
   }

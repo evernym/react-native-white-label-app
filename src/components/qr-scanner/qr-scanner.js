@@ -47,10 +47,10 @@ import { moderateScale } from 'react-native-size-matters'
 import {
   convertProprietaryInvitationToAppInvitation,
   isProprietaryInvitation,
-  isShortProprietaryInvitation
-} from "../../invitation/kinds/proprietary-connection-invitation";
-import {isAriesInvitation} from "../../invitation/kinds/aries-connection-invitation";
-import {isAriesOutOfBandInvitation} from "../../invitation/kinds/aries-out-of-band-invitation";
+  isShortProprietaryInvitation,
+} from '../../invitation/kinds/proprietary-connection-invitation'
+import { isAriesInvitation } from '../../invitation/kinds/aries-connection-invitation'
+import { isAriesOutOfBandInvitation } from '../../invitation/kinds/aries-out-of-band-invitation'
 
 export default class QRScanner extends PureComponent<
   QrScannerProps,
@@ -178,10 +178,7 @@ export default class QRScanner extends PureComponent<
 
     // aries invitation can be directly copied as json string as well
     // above case handles when aries invite comes from url encoded
-    const ariesV1Invite = isAriesInvitation(
-      qrData,
-      JSON.stringify(qrData)
-    )
+    const ariesV1Invite = isAriesInvitation(qrData, JSON.stringify(qrData))
     if (ariesV1Invite) {
       this.setState({ scanStatus: SCAN_STATUS.SCANNING })
       return this.props.onAriesConnectionInviteRead(ariesV1Invite)
@@ -217,7 +214,7 @@ export default class QRScanner extends PureComponent<
     // check if ephemeral proof request
     const [, ephemeralProofRequest] = await validateEphemeralProofQrCode(
       qrData.type === QR_CODE_TYPES.URL_NON_JSON_RESPONSE ||
-              qrData.type === QR_CODE_TYPES.EPHEMERAL_PROOF_REQUEST_V1
+        qrData.type === QR_CODE_TYPES.EPHEMERAL_PROOF_REQUEST_V1
         ? (qrData: GenericObject).data
         : JSON.stringify(qrData)
     )
@@ -325,11 +322,7 @@ export class CameraMarker extends PureComponent<CameraMarkerProps, void> {
         >
           {status}
         </CustomText>
-        <CustomView
-          row
-          center
-          style={[closeIconStyle.closeIcon]}
-        >
+        <CustomView row center style={[closeIconStyle.closeIcon]}>
           <EvaIcon
             name={CLOSE_ICON}
             width={moderateScale(36)}
@@ -338,7 +331,7 @@ export class CameraMarker extends PureComponent<CameraMarkerProps, void> {
             accessible={true}
             accessibilityLabel="close-qr-scanner-icon"
             onPress={onClose}
-            color={colors.cmWhite}
+            color={colors.white}
           />
         </CustomView>
       </CustomView>
