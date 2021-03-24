@@ -1,21 +1,8 @@
 // @flow
-import type { ResponseTypes } from '../components/request/type-request'
-import type {
-  CustomError,
-  GenericObject,
-  InitialTestAction,
-  ResetAction,
-} from '../common/type-common'
-import type {
-  InvitationSenderAgencyDetail,
-  AgentKeyDelegationProof,
-  InvitationSenderDetail,
-} from '../sms-pending-invitation/type-sms-pending-invitation'
-import type {
-  NavigationScreenProp,
-  NavigationLeafRoute,
-} from '@react-navigation/native'
-import { allowPushNotifications } from '../push-notification/push-notification-store'
+import type {ResponseTypes} from '../components/request/type-request'
+import type {CustomError, GenericObject, InitialTestAction, ResetAction,} from '../common/type-common'
+import type {NavigationLeafRoute, NavigationScreenProp,} from '@react-navigation/native'
+import {allowPushNotifications} from '../push-notification/push-notification-store'
 
 export const CONNECTION_INVITE_TYPES = {
   ARIES_V1_QR: 'ARIES_V1_QR',
@@ -79,6 +66,32 @@ export type AriesConnectionInvite = {|
   original: string,
 |}
 
+export type AgentKeyDelegationProof = {
+  agentDID: string,
+  agentDelegatedKey: string,
+  signature: string,
+}
+export type InvitationSenderDetail = {
+  name: string,
+  agentKeyDlgProof: AgentKeyDelegationProof,
+  DID: string,
+  logoUrl?: ?string,
+  verKey: string,
+  publicDID?: string,
+}
+export type InvitationSenderAgencyDetail = {
+  DID: string,
+  verKey: string,
+  endpoint: string,
+}
+export type ProprietaryConnectionInvitation = {
+  connReqId: string,
+  statusCode: string,
+  senderDetail: InvitationSenderDetail,
+  senderAgencyDetail: InvitationSenderAgencyDetail,
+  targetName: string,
+  version?: string,
+}
 export type InvitationPayload = {
   senderEndpoint: string,
   requestId: string,
@@ -223,3 +236,26 @@ export const ERROR_INVITATION_ALREADY_ACCEPTED = (message: string) => ({
   code: ERROR_INVITATION_ALREADY_ACCEPTED_CODE,
   message: `Error while establishing a connection ${message}`,
 })
+
+export type ShortProprietaryConnectionInvitation = {
+  id: string,
+  s: {
+    n: string,
+    dp: {
+      d: string,
+      k: string,
+      s: string,
+    },
+    d: string,
+    l: string,
+    v: string,
+    publicDID?: string,
+  },
+  sa: {
+    d: string,
+    v: string,
+    e: string,
+  },
+  t: string,
+  version?: string,
+}

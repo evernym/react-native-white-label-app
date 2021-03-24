@@ -1,57 +1,44 @@
 // @flow
-import { put, takeEvery, call, take, all, select } from 'redux-saga/effects'
-import type { CustomError } from '../common/type-common'
+import {all, call, put, select, take, takeEvery} from 'redux-saga/effects'
+import type {CustomError} from '../common/type-common'
+import {RESET} from '../common/type-common'
 import type {
-  SMSPendingInvitationStore,
   SMSPendingInvitationAction,
-  SMSPendingInvitationPayload,
   SMSPendingInvitationRequestAction,
+  SMSPendingInvitationStore,
 } from './type-sms-pending-invitation'
-import type {
-  InvitationPayload,
-  AriesConnectionInvite,
-  AriesConnectionInvitePayload,
-  AriesOutOfBandInvite,
-  AriesServiceEntry,
-} from '../invitation/type-invitation'
 import {
-  SMS_PENDING_INVITATION_REQUEST,
-  SMS_PENDING_INVITATION_RECEIVED,
+  SAFE_TO_DOWNLOAD_SMS_INVITATION,
   SMS_PENDING_INVITATION_FAIL,
+  SMS_PENDING_INVITATION_RECEIVED,
+  SMS_PENDING_INVITATION_REQUEST,
   SMS_PENDING_INVITATION_SEEN,
   SMSPendingInvitationStatus,
-  SAFE_TO_DOWNLOAD_SMS_INVITATION,
 } from './type-sms-pending-invitation'
-import { getInvitationLink } from '../api/api'
+import type {
+  AriesConnectionInvitePayload,
+  AriesOutOfBandInvite,
+  ProprietaryConnectionInvitation,
+} from '../invitation/type-invitation'
+import {getInvitationLink} from '../api/api'
 import {
   ERROR_PENDING_INVITATION_RESPONSE_PARSE,
   ERROR_PENDING_INVITATION_RESPONSE_PARSE_CODE,
 } from '../api/api-constants'
+import {getAgencyUrl, getCurrentScreen, getHydrationState,} from '../store/store-selector'
+import {HYDRATED, UNSAFE_SCREENS_TO_DOWNLOAD_SMS,} from '../store/type-config-store'
+import {captureError} from '../services/error/error-handler'
+import {isValidInvitationUrl} from './sms-invitation-validator'
+import {getUrlData, isValidUrl,} from '../components/qr-scanner/qr-code-types/qr-url'
 import {
-  getAgencyUrl,
-  getCurrentScreen,
-  getHydrationState,
-} from '../store/store-selector'
-import { invitationReceived } from '../invitation/invitation-store'
+  isProprietaryInvitation, isShortProprietaryInvitation,
+} from "../invitation/kinds/proprietary-connection-invitation";
 import {
-  HYDRATED,
-  UNSAFE_SCREENS_TO_DOWNLOAD_SMS,
-} from '../store/type-config-store'
-import { RESET } from '../common/type-common'
-import { captureError } from '../services/error/error-handler'
-import { isValidInvitationUrl } from './sms-invitation-validator'
-import { schemaValidator } from '../services/schema-validator'
-import { ID } from '../common/type-common'
+  isAriesInvitation
+} from "../invitation/kinds/aries-connection-invitation";
 import {
-  isValidAriesOutOfBandInviteData,
-  isValidAriesV1InviteData,
-} from '../invitation/invitation'
-import isUrl from 'validator/lib/isURL'
-import { CONNECTION_INVITE_TYPES } from '../invitation/type-invitation'
-import {
-  getUrlQrCodeData,
-  isValidUrlQrCode,
-} from '../components/qr-scanner/qr-code-types/qr-url'
+  isAriesOutOfBandInvitation
+} from "../invitation/kinds/aries-out-of-band-invitation";
 
 const initialState = {}
 
@@ -63,7 +50,7 @@ export const getSmsPendingInvitation = (smsToken: string) => ({
 export const smsPendingInvitationReceived = (
   smsToken: string,
   data:
-    | SMSPendingInvitationPayload
+    | ProprietaryConnectionInvitation
     | AriesConnectionInvitePayload
     | AriesOutOfBandInvite
 ) => ({
@@ -92,130 +79,6 @@ export const smsPendingInvitationSeen = (smsToken: string) => ({
 export const safeToDownloadSmsInvitation = () => ({
   type: SAFE_TO_DOWNLOAD_SMS_INVITATION,
 })
-
-export const convertSmsPayloadToInvitation = (
-  pendingInvitation: SMSPendingInvitationPayload
-): InvitationPayload => ({
-  senderEndpoint: pendingInvitation.senderAgencyDetail.endpoint,
-  requestId: pendingInvitation.connReqId,
-  senderAgentKeyDelegationProof:
-    pendingInvitation.senderDetail.agentKeyDlgProof,
-  senderName: pendingInvitation.senderDetail.name,
-  senderDID: pendingInvitation.senderDetail.DID,
-  senderLogoUrl: pendingInvitation.senderDetail.logoUrl,
-  senderVerificationKey: pendingInvitation.senderDetail.verKey,
-  targetName: pendingInvitation.targetName,
-  senderAgencyDetail: pendingInvitation.senderAgencyDetail,
-  senderDetail: pendingInvitation.senderDetail,
-  version: pendingInvitation.version,
-})
-
-export function convertAriesPayloadToInvitation(
-  ariesConnectionInvite: AriesConnectionInvite
-): InvitationPayload {
-  const { payload, original } = ariesConnectionInvite
-
-  const senderAgentKeyDelegationProof = {
-    agentDID: payload.recipientKeys[0],
-    agentDelegatedKey: payload.recipientKeys[0],
-    signature: '<no-signature-supplied>',
-  }
-
-  const senderLogoUrl = payload.profileUrl && isUrl(payload.profileUrl)
-    ? payload.profileUrl
-    : payload.imageUrl && isUrl(payload.imageUrl) ?
-      payload.imageUrl :
-      null
-
-  const invitation = {
-    senderEndpoint: payload.serviceEndpoint,
-    requestId: payload[ID],
-    senderAgentKeyDelegationProof,
-    senderName: payload.label || 'Unknown',
-    senderDID: payload.recipientKeys[0],
-    // TODO:KS Need to discuss with architects to know how to fulfill this requirement
-    senderLogoUrl: senderLogoUrl,
-    senderVerificationKey: payload.recipientKeys[0],
-    targetName: payload.label || 'Unknown',
-    senderDetail: {
-      name: payload.label || 'Unknown',
-      agentKeyDlgProof: senderAgentKeyDelegationProof,
-      DID: payload.recipientKeys[0],
-      logoUrl: senderLogoUrl,
-      verKey: payload.recipientKeys[0],
-      publicDID: payload.recipientKeys[0],
-    },
-    senderAgencyDetail: {
-      DID: payload.recipientKeys[0],
-      verKey: payload.recipientKeys[1],
-      endpoint: payload.serviceEndpoint,
-    },
-    version: '1.0',
-    original,
-    type: CONNECTION_INVITE_TYPES.ARIES_V1_QR,
-  }
-
-  return invitation
-}
-
-export function convertAriesOutOfBandPayloadToInvitation(
-  invite: AriesOutOfBandInvite
-): InvitationPayload | null {
-  const payload = invite
-
-  const serviceEntry = payload.service
-    ? ((payload.service.find(
-        (serviceEntry) => typeof serviceEntry === 'object'
-      ): any): AriesServiceEntry)
-    : null
-
-  if (!serviceEntry) {
-    return null
-  }
-
-  const publicDID = invite.public_did || serviceEntry.recipientKeys[0]
-
-  const senderAgentKeyDelegationProof = {
-    agentDID: serviceEntry.recipientKeys[0],
-    agentDelegatedKey: serviceEntry.recipientKeys[0],
-    signature: '<no-signature-supplied>',
-  }
-
-  const senderLogoUrl = payload.profileUrl && isUrl(payload.profileUrl)
-    ? payload.profileUrl
-    : payload.imageUrl && isUrl(payload.imageUrl) ?
-      payload.imageUrl :
-      null
-
-  const invitation = {
-    senderEndpoint: serviceEntry.serviceEndpoint,
-    requestId: payload[ID],
-    senderAgentKeyDelegationProof,
-    senderName: payload.label || 'Unknown',
-    senderDID: publicDID,
-    senderLogoUrl: senderLogoUrl,
-    senderVerificationKey: serviceEntry.recipientKeys[0],
-    targetName: payload.label || 'Unknown',
-    senderDetail: {
-      name: payload.label || 'Unknown',
-      agentKeyDlgProof: senderAgentKeyDelegationProof,
-      DID: publicDID,
-      logoUrl: senderLogoUrl,
-      verKey: serviceEntry.recipientKeys[0],
-      publicDID: publicDID,
-    },
-    senderAgencyDetail: {
-      DID: '',
-      verKey: '',
-      endpoint: serviceEntry.serviceEndpoint,
-    },
-    type: CONNECTION_INVITE_TYPES.ARIES_OUT_OF_BAND,
-    version: '1.0',
-    original: JSON.stringify(invite),
-    originalObject: invite,
-  }
-  return invitation
-}
 
 export function* callSmsPendingInvitationRequest(
   action: SMSPendingInvitationRequestAction
@@ -289,13 +152,13 @@ export function* callSmsPendingInvitationRequest(
       throw new Error('Not recognized for any type of token that we know')
     }
 
-    const urlInvitationData = isValidUrlQrCode(invitationLink.url)
+    const urlInvitationData = isValidUrl(invitationLink.url)
     if (!urlInvitationData) {
       return
     }
 
     const [urlError, pendingInvitationPayload] = yield call(
-      getUrlQrCodeData,
+      getUrlData,
       urlInvitationData,
       invitationLink.url
     )
@@ -303,63 +166,33 @@ export function* callSmsPendingInvitationRequest(
       throw new Error(urlError)
     }
 
-    if (
-      schemaValidator.validate(
-        smsInvitationExpectedSchema,
-        pendingInvitationPayload
-      )
-    ) {
-      yield put(
-        invitationReceived({
-          payload: convertSmsPayloadToInvitation(
-            ((pendingInvitationPayload: Object): SMSPendingInvitationPayload)
-          ),
-        })
-      )
-      yield put(
-        smsPendingInvitationReceived(smsToken, pendingInvitationPayload)
-      )
+    const proprietaryInvitation = isProprietaryInvitation(pendingInvitationPayload)
+    if (proprietaryInvitation) {
+      yield put(smsPendingInvitationReceived(smsToken, pendingInvitationPayload))
       return
     }
 
-    const ariesInvitationData =
-      pendingInvitationPayload.payload || pendingInvitationPayload
-    const original = JSON.stringify(ariesInvitationData)
-    const ariesV1Invite = isValidAriesV1InviteData(
-      ariesInvitationData,
-      original
-    )
+    const proprietaryShortInvitation = isShortProprietaryInvitation(pendingInvitationPayload)
+    if (proprietaryShortInvitation) {
+      yield put(smsPendingInvitationReceived(smsToken, pendingInvitationPayload))
+      return
+    }
+
+    const ariesInvitationData = pendingInvitationPayload.payload || pendingInvitationPayload
+    const ariesV1Invite = isAriesInvitation(ariesInvitationData, JSON.stringify(ariesInvitationData))
     if (ariesV1Invite) {
-      yield put(
-        invitationReceived({
-          payload: convertAriesPayloadToInvitation(ariesV1Invite),
-        })
-      )
       yield put(smsPendingInvitationReceived(smsToken, ariesInvitationData))
       return
     }
 
-    const ariesV1OutOfBandInvite = isValidAriesOutOfBandInviteData(
-      pendingInvitationPayload
-    )
+    const ariesV1OutOfBandInvite = isAriesOutOfBandInvitation(pendingInvitationPayload)
     if (ariesV1OutOfBandInvite) {
-      const payload = convertAriesOutOfBandPayloadToInvitation(
-        ariesV1OutOfBandInvite
-      )
-      if (!payload) {
-        throw new Error('Invitation payload object format is not as expected')
-      }
-
-      yield put(
-        invitationReceived({
-          payload: payload,
-        })
-      )
       yield put(
         smsPendingInvitationReceived(smsToken, pendingInvitationPayload)
       )
       return
     }
+
 
     throw new Error('Invitation payload object format is not as expected')
   } catch (e) {
@@ -374,39 +207,11 @@ export function* callSmsPendingInvitationRequest(
         code: parsedError.code || parsedError.statusCode || error.code,
         message: parsedError.message || parsedError.statusMsg || error.message,
       }
+
     } catch (e) {}
     captureError(e)
     yield put(smsPendingInvitationFail(smsToken, error))
   }
-}
-
-export const smsInvitationExpectedSchema = {
-  type: 'object',
-  properties: {
-    senderDetail: {
-      type: 'object',
-      properties: {
-        name: { type: 'string' },
-        agentKeyDlgProof: { type: 'object' },
-        DID: { type: 'string' },
-        logoUrl: { type: 'string' },
-        verKey: { type: 'string' },
-        publicDID: { type: 'string' },
-      },
-      required: ['DID', 'verKey', 'agentKeyDlgProof'],
-    },
-    senderAgencyDetail: {
-      type: 'object',
-      properties: {
-        DID: { type: 'string' },
-        verKey: { type: 'string' },
-        endpoint: { type: 'string' },
-      },
-      required: ['DID', 'verKey', 'endpoint'],
-    },
-    targetName: { type: 'string' },
-  },
-  required: ['senderDetail', 'senderAgencyDetail'],
 }
 
 function* watchSmsPendingInvitationRequest(): any {

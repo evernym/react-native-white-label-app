@@ -1,5 +1,5 @@
 // @flow
-import { isValidShortInviteQrCode } from '../qr-code-types/qr-code-short-invite'
+import {isShortProprietaryInvitation} from "../../../invitation/kinds/proprietary-connection-invitation";
 
 describe('QR Scanner validator', () => {
   it('should return false if schema is not valid at top level', () => {
@@ -38,7 +38,7 @@ describe('QR Scanner validator', () => {
     ]
 
     invalidQrSchemas.map(schema =>
-      expect(isValidShortInviteQrCode(schema)).toBe(false)
+      expect(isShortProprietaryInvitation(schema)).toBe(false)
     )
   })
 
@@ -65,6 +65,6 @@ describe('QR Scanner validator', () => {
       t: 'there',
     }
 
-    expect(isValidShortInviteQrCode(validSchema)).toMatchSnapshot()
+    expect(isShortProprietaryInvitation(validSchema)).toMatchSnapshot()
   })
 })

@@ -192,7 +192,7 @@ export type ProofRequestProps = {
   invitationPayload?: any,
   attachedRequest?: any,
   lock: LockStore,
-  isOOBInvitation?: boolean,
+  canBeIgnored?: boolean,
 } & ReactNavigation
 
 export type ProofRequestState = {

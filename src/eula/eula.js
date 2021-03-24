@@ -47,12 +47,7 @@ export const EulaScreen = ({
   const onAccept = useCallback(() => {
     dispatch(eulaAccept(true))
     dispatch(unlockApp())
-    if (Platform.OS === 'android') {
-      // Android bypasses request for push notification permissions.
-      // So we can run VCX provisioning/initialization immediately.
-      // For ios devices, it will be requested after accepting the very first connection
-      dispatch(vcxInitStart())
-    }
+    dispatch(vcxInitStart())
 
     if (pendingRedirection) {
       pendingRedirection.map((pendingRoute) => {

@@ -1,96 +1,78 @@
 // @flow
-import {
-  put,
-  takeEvery,
-  takeLatest,
-  call,
-  all,
-  select,
-  spawn,
-} from 'redux-saga/effects'
+import { all, call, put, select, spawn, takeEvery, takeLatest } from 'redux-saga/effects'
+import type {
+  AriesOutOfBandInvite,
+  Invitation,
+  InvitationAction,
+  InvitationPayload,
+  InvitationReceivedActionData,
+  InvitationResponseSendAction,
+  InvitationResponseSendData,
+  InvitationStore,
+  OutOfBandInvitationAcceptedAction,
+} from './type-invitation'
 import {
   CONNECTION_INVITE_TYPES,
+  ERROR_INVITATION_ALREADY_ACCEPTED,
+  ERROR_INVITATION_CONNECT,
+  HYDRATE_INVITATIONS,
+  INVITATION_ACCEPTED,
   INVITATION_RECEIVED,
+  INVITATION_REJECTED,
+  INVITATION_RESPONSE_FAIL,
   INVITATION_RESPONSE_SEND,
   INVITATION_RESPONSE_SUCCESS,
-  INVITATION_RESPONSE_FAIL,
-  INVITATION_REJECTED,
-  ERROR_INVITATION_CONNECT,
   OUT_OF_BAND_INVITATION_ACCEPTED,
-  ERROR_INVITATION_ALREADY_ACCEPTED,
-  INVITATION_ACCEPTED,
-  HYDRATE_INVITATIONS,
 } from './type-invitation'
 import { ResponseType } from '../components/request/type-request'
-import {
-  ERROR_INVITATION_RESPONSE_FAILED,
-} from '../api/api-constants'
+import { ERROR_INVITATION_RESPONSE_FAILED } from '../api/api-constants'
 import {
   getAllInvitations,
   getConnection,
   getConnectionByUserDid,
+  getConnectionExists,
   getInvitationPayload,
-
 } from '../store/store-selector'
 import {
+  connectionAttachRequest,
   connectionDeleteAttachedRequest,
-  updateConnectionSerializedState,
+  connectionRequestSent,
+  deletePendingConnection,
   saveNewOneTimeConnection,
   saveNewPendingConnection,
+  sendConnectionReuse,
   updateConnection,
-  deletePendingConnection,
-  connectionRequestSent,
+  updateConnectionSerializedState,
 } from '../store/connections-store'
 import {
-  createConnectionWithInvite,
   acceptInvitationVcx,
-  serializeConnection,
-  createConnectionWithAriesInvite,
-  createConnectionWithAriesOutOfBandInvite,
-  getHandleBySerializedConnection,
-  createCredentialWithAriesOfferObject,
   connectionGetState,
   connectionUpdateStateWithMessage,
+  createConnectionWithAriesInvite,
+  createConnectionWithAriesOutOfBandInvite,
+  createConnectionWithInvite,
+  createCredentialWithAriesOfferObject,
+  getHandleBySerializedConnection,
+  serializeConnection,
+  toUtf8FromBase64,
 } from '../bridge/react-native-cxs/RNCxs'
-import type {
-  AriesOutOfBandInvite,
-  InvitationResponseSendData,
-  InvitationResponseSendAction,
-  InvitationPayload,
-  InvitationStore,
-  InvitationAction,
-  InvitationReceivedActionData,
-  OutOfBandInvitationAcceptedAction,
-  Invitation,
-} from './type-invitation'
 import type { CustomError, GenericObject } from '../common/type-common'
+import { ID, RESET, TYPE } from '../common/type-common'
 import { captureError } from '../services/error/error-handler'
-import { RESET } from '../common/type-common'
 import { ensureVcxInitSuccess } from '../store/route-store'
-import type { MyPairwiseInfo } from '../store/type-connection-store'
+import type { Connection, MyPairwiseInfo } from '../store/type-connection-store'
+import { connectionFail, connectionSuccess, ERROR_CONNECTION } from '../store/type-connection-store'
 import { flattenAsync } from '../common/flatten-async'
-import {
-  connectionFail,
-  connectionSuccess,
-  ERROR_CONNECTION,
-} from '../store/type-connection-store'
 import { flatJsonParse } from '../common/flat-json-parse'
-import { toUtf8FromBase64 } from '../bridge/react-native-cxs/RNCxs'
-import type { Connection } from '../store/type-connection-store'
-import { ID, TYPE } from '../common/type-common'
-import {
-  sendConnectionReuse,
-  connectionAttachRequest,
-} from '../store/connections-store'
-import { getConnectionExists } from '../store/store-selector'
 import {
   acceptClaimOffer,
   acceptOutofbandClaimOffer,
   saveSerializedClaimOffer,
 } from '../claim-offer/claim-offer-store'
 import {
+  CLOUD_AGENT_UNAVAILABLE,
   CONNECTION_ALREADY_EXISTS,
-  CLOUD_AGENT_UNAVAILABLE, CONNECTION_ALREADY_EXISTS_MESSAGE,
+  CONNECTION_ALREADY_EXISTS_MESSAGE,
 } from '../bridge/react-native-cxs/error-cxs'
 import {
   acceptOutofbandPresentationRequest,
@@ -711,6 +693,7 @@ export function* hydrateInvitationsSaga(): Generator<*, *, *> {
     customLogger.log(`hydrateInvitationsSaga: ${e}`)
   }
 }
+
 
 function* watchInvitationReceived(): any {
   yield takeEvery(

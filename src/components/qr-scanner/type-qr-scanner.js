@@ -1,11 +1,12 @@
 // @flow
 
 import type {
-  InvitationPayload,
   AriesConnectionInvite,
   AriesOutOfBandInvite,
+  InvitationPayload,
+  ShortProprietaryConnectionInvitation,
 } from '../../invitation/type-invitation'
-import type { QrCodeEphemeralProofRequest } from '../../proof-request/type-proof-request'
+import type {QrCodeEphemeralProofRequest} from '../../proof-request/type-proof-request'
 
 export const SCAN_STATUS = {
   SCANNING: 'scanning...',
@@ -29,29 +30,6 @@ export const SCAN_STATUS = {
   DOWNLOADING: 'Downloading...',
   INVALID_DOWNLOADED_DATA: '007::Invalid data from QR Code.',
   INVALID_URL_QR_CODE: '008::Invalid QR code.',
-}
-
-export type QrCodeShortInvite = {
-  id: string,
-  s: {
-    n: string,
-    dp: {
-      d: string,
-      k: string,
-      s: string,
-    },
-    d: string,
-    l: string,
-    v: string,
-    publicDID?: string,
-  },
-  sa: {
-    d: string,
-    v: string,
-    e: string,
-  },
-  t: string,
-  version?: string,
 }
 
 export type QR_SCAN_STATUS =
@@ -78,11 +56,11 @@ export type QrScannerState = {
 }
 
 export type QrScannerProps = {
-  onRead: (QrCodeShortInvite) => void,
+  onShortProprietaryInvitationRead: (ShortProprietaryConnectionInvitation) => Promise<void>,
   onClose: () => void,
-  onInvitationUrl: (InvitationPayload) => void,
+  onProprietaryInvitationRead: (InvitationPayload) => Promise<void>,
   onOIDCAuthenticationRequest: (OIDCAuthenticationRequest) => void,
-  onAriesConnectionInviteRead: (AriesConnectionInvite) => void,
+  onAriesConnectionInviteRead: (AriesConnectionInvite) => Promise<void>,
   onAriesOutOfBandInviteRead: (AriesOutOfBandInvite) => Promise<void>,
   onEphemeralProofRequest: (QrCodeEphemeralProofRequest) => void,
 }

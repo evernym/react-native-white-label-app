@@ -26,6 +26,7 @@
 
 #import "vcx/vcx.h"
 #import <CommonCrypto/CommonHMAC.h>
+#import "URLSessionWithoutRedirection.h"
 
 @implementation RNIndy
 
@@ -1595,6 +1596,39 @@ RCT_EXPORT_METHOD(credentialReject:(NSInteger)credential_handle
        resolve(@{});
      }
    }];
+}
+
+RCT_EXPORT_METHOD(getRequestRedirectionUrl:(NSString *)url
+                  resolver: (RCTPromiseResolveBlock) resolve
+                  rejecter: (RCTPromiseRejectBlock) reject)
+{
+  NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]
+                                                        delegate:[URLSessionWithoutRedirection new]
+                                                   delegateQueue:[NSOperationQueue mainQueue]];
+
+  NSURL *urlObj = [NSURL URLWithString:url];
+  NSURLSessionDataTask *dataTask = [session dataTaskWithURL: urlObj
+                completionHandler:^(NSData *data, NSURLResponse *responseObj, NSError *error) {
+    if (error != nil) {
+      reject(@"Failed to fetch URL", @"Failed to fetch URL", error);
+      return;
+    }
+
+    NSHTTPURLResponse* response =(NSHTTPURLResponse*)responseObj;
+
+    long stuts = (long)[response statusCode];
+
+    if (stuts != 302) {
+      reject(@"Failed to fetch URL: unexpected response status", @"Failed to fetch URL: unexpected response status", error);
+      return;
+    }
+
+    NSDictionary* headers = [(NSHTTPURLResponse*)response allHeaderFields];
+    NSString* location = [headers objectForKey:@"location"];
+
+    resolve(location);
+  }];
+  [dataTask resume];
 }
 
 @end

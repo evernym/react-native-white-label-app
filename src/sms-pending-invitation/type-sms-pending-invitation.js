@@ -1,12 +1,9 @@
 // @flow
-import type {
-  CustomError,
-  InitialTestAction,
-  ResetAction,
-} from '../common/type-common'
+import type {CustomError, InitialTestAction, ResetAction,} from '../common/type-common'
 import type {
   AriesConnectionInvitePayload,
   AriesOutOfBandInvite,
+  ProprietaryConnectionInvitation,
 } from '../invitation/type-invitation'
 
 export const SMSPendingInvitationStatus = {
@@ -24,39 +21,9 @@ export type InvitationUrl = {
   url: string,
 }
 
-export type AgentKeyDelegationProof = {
-  agentDID: string,
-  agentDelegatedKey: string,
-  signature: string,
-}
-
-export type InvitationSenderDetail = {
-  name: string,
-  agentKeyDlgProof: AgentKeyDelegationProof,
-  DID: string,
-  logoUrl?: ?string,
-  verKey: string,
-  publicDID?: string,
-}
-
-export type InvitationSenderAgencyDetail = {
-  DID: string,
-  verKey: string,
-  endpoint: string,
-}
-
-export type SMSPendingInvitationPayload = {
-  connReqId: string,
-  statusCode: string,
-  senderDetail: InvitationSenderDetail,
-  senderAgencyDetail: InvitationSenderAgencyDetail,
-  targetName: string,
-  version?: string,
-}
-
 export type SMSPendingInvitation = {
   +payload: ?(
-    | SMSPendingInvitationPayload
+    | ProprietaryConnectionInvitation
     | AriesConnectionInvitePayload
     | AriesOutOfBandInvite
   ),
@@ -87,7 +54,7 @@ export const SMS_PENDING_INVITATION_RECEIVED: 'SMS_PENDING_INVITATION_RECEIVED' 
 export type SMSPendingInvitationReceivedAction = {
   type: typeof SMS_PENDING_INVITATION_RECEIVED,
   data:
-    | SMSPendingInvitationPayload
+    | ProprietaryConnectionInvitation
     | AriesConnectionInvitePayload
     | AriesOutOfBandInvite,
   smsToken: string,

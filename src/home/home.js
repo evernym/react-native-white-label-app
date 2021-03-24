@@ -44,6 +44,7 @@ import { MESSAGE_TYPE } from '../api/api-constants'
 import { EmptyState } from './empty-state'
 import { homeHeadline, homeShowCameraButton, homeShowHistoryEvents, HomeViewEmptyState } from '../external-exports'
 import { SHOW_UNREAD_MESSAGES_BADGE_NEAR_WITH_TITLE } from '../components/header/type-header'
+import {recentEventToShow} from "./type-home";
 
 const headline = homeHeadline || 'Home'
 const showHistoryEvents = typeof homeShowHistoryEvents === 'boolean' ? homeShowHistoryEvents : true
@@ -384,7 +385,10 @@ const mapStateToProps = (state: Store) => {
     Object.values(state.history.data.connections)
       .forEach((connectionHistory: any) => {
         if (connectionHistory && connectionHistory.data && connectionHistory.data.length){
-          placeholderArray.push(...connectionHistory.data)
+          placeholderArray.push(
+            ...connectionHistory.data.filter(event => recentEventToShow[event.status])
+          )
+
         }
       })
   }

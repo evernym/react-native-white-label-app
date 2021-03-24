@@ -263,7 +263,7 @@ You can configure a server environment used for agent provisioning inside the `p
         ```
 
 * Information used for application provisioning
-    * `GET_PROVISION_TOKEN_FUNC` - function to call in order to get provisioning token.
+    * `GET_PROVISION_TOKEN_FUNC` - function to be called to get provisioning token.
        ```
         GET_PROVISION_TOKEN_FUNC = async () -> [error: string | null, token: string | null] 
       ```
@@ -274,7 +274,7 @@ You can configure a server environment used for agent provisioning inside the `p
         * 4 - sponsor configured app
        
           ```javascript
-          export const VCX_PUSH_TYPE = 1
+          export const VCX_PUSH_TYPE = 4
           ```
         
     * `SPONSOR_ID` - An ID given to you from Evernym's Support Team after the Sponsor onboarding process is complete.

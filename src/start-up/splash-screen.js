@@ -17,6 +17,8 @@ import {
   homeDrawerRoute,
   startUpRoute,
   pushNotificationPermissionRoute,
+  claimOfferRoute,
+  proofRequestRoute,
 } from '../common/route-constants'
 import { Container, Loader } from '../components'
 import { TOKEN_EXPIRED_CODE } from '../api/api-constants'
@@ -24,54 +26,69 @@ import { addPendingRedirection } from '../lock/lock-store'
 import {
   getSmsPendingInvitation,
   safeToDownloadSmsInvitation,
-  convertSmsPayloadToInvitation,
-  convertAriesPayloadToInvitation,
-  convertAriesOutOfBandPayloadToInvitation,
 } from '../sms-pending-invitation/sms-pending-invitation-store'
-import type { SplashScreenProps } from './type-splash-screen'
+import type {RedirectionData, SplashScreenProps} from './type-splash-screen'
 import type { Store } from '../store/type-store'
 import { SMSPendingInvitationStatus } from '../sms-pending-invitation/type-sms-pending-invitation'
 import type {
-  AriesConnectionInvitePayload,
   AriesOutOfBandInvite,
   InvitationPayload,
 } from '../invitation/type-invitation'
 import type {
-  SMSPendingInvitationPayload,
   SMSPendingInvitations,
 } from '../sms-pending-invitation/type-sms-pending-invitation'
 import { deepLinkProcessed } from '../deep-link/deep-link-store'
 import { DEEP_LINK_STATUS } from '../deep-link/type-deep-link'
 import { getAllDid, getAllPublicDid } from '../store/store-selector'
-import {
-  isValidAriesOutOfBandInviteData,
-  isValidAriesV1InviteData,
-} from '../invitation/invitation'
-import { CONNECTION_INVITE_TYPES } from '../invitation/type-invitation'
 import { getPushNotificationAuthorizationStatus } from '../push-notification/components/push-notification-permission-screen'
 import { TOKEN_EXPIRED, TOKEN_UNRESOLVED } from '../expired-token/type-expired-token'
-
+import {
+  convertProprietaryInvitationToAppInvitation, convertShortProprietaryInvitationToAppInvitation,
+  isProprietaryInvitation, isShortProprietaryInvitation
+} from "../invitation/kinds/proprietary-connection-invitation";
+import {
+  convertAriesInvitationToAppInvitation,
+  isAriesInvitation
+} from "../invitation/kinds/aries-connection-invitation";
+import {
+  convertAriesOutOfBandInvitationToAppInvitation,
+  isAriesOutOfBandInvitation
+} from "../invitation/kinds/aries-out-of-band-invitation";
+import {getExistingConnection, prepareParamsForExistingConnectionRedirect} from "../invitation/invitation-helpers";
+import {getAttachedRequest, invitationReceived} from "../invitation/invitation-store";
+import {ID, TYPE} from "../common/type-common";
+import type {ClaimOfferPayload, CredentialOffer} from "../claim-offer/type-claim-offer";
+import {convertAriesCredentialOfferToCxsClaimOffer} from "../bridge/react-native-cxs/vcx-transformers";
+import {CLAIM_OFFER_STATUS} from "../claim-offer/type-claim-offer";
+import {convertClaimOfferPushPayloadToAppClaimOffer} from "../push-notification/push-notification-store";
+import type {AriesPresentationRequest, ProofRequestPayload} from "../proof-request/type-proof-request";
+import {PROOF_REQUEST_STATUS} from "../proof-request/type-proof-request";
+import {validateOutofbandProofRequestQrCode} from "../proof-request/proof-request-qr-code-reader";
+import {claimOfferReceived} from "../claim-offer/claim-offer-store";
+import {proofRequestReceived} from "../proof-request/proof-request-store";
 
 const isReceived = ({ payload, status }) => {
   return (
     status === SMSPendingInvitationStatus.RECEIVED &&
     payload &&
     ((payload.senderDetail && payload.senderDetail.DID) ||
-      isValidAriesV1InviteData(payload, JSON.stringify(payload)) ||
-      isValidAriesOutOfBandInviteData(payload))
+      isAriesInvitation(payload, JSON.stringify(payload)) ||
+      isAriesOutOfBandInvitation(payload))
   )
 }
 
 type SplashScreenState = {
   isAuthorized: boolean,
+  handledLinks: any,
 }
 
 export class SplashScreenView extends PureComponent<
   SplashScreenProps,
   SplashScreenState
-> {
+  > {
   state = {
     isAuthorized: false,
+    handledLinks: [],
   }
 
   ifDeepLinkFoundGoToWaitForInvitationScreenNFetchInvitation = (
@@ -81,7 +98,7 @@ export class SplashScreenView extends PureComponent<
     if (
       this.props.deepLink.isLoading === false &&
       JSON.stringify(nextDeepLinkTokens) !==
-        JSON.stringify(prevProps.deepLink.tokens)
+      JSON.stringify(prevProps.deepLink.tokens)
     ) {
       Object.keys(nextDeepLinkTokens).map((smsToken) => {
         if (
@@ -142,7 +159,7 @@ export class SplashScreenView extends PureComponent<
     })
   }
 
-  handleSmsPendingInvitations = (prevProps: SplashScreenProps) => {
+  handleSmsPendingInvitations = async (prevProps: SplashScreenProps) => {
     // Check if the pending sms invitations have changed, or if there is unhandled sms invitations to proceed
     if (
       JSON.stringify(prevProps.smsPendingInvitation) !==
@@ -155,158 +172,74 @@ export class SplashScreenView extends PureComponent<
         isReceived
       )
 
-      const pendingRedirectionList = unseenSmsPendingInvitations.map(
-        ({
-           payload,
-           invitationToken,
-         }: {
-          +payload: ?(
-            | SMSPendingInvitationPayload
-            | AriesConnectionInvitePayload
-            | AriesOutOfBandInvite
-            ),
-          invitationToken: string,
-        }) => {
-          if (payload) {
-            const ariesV1Invite = isValidAriesV1InviteData(payload, '')
-            const ariesV1OutOfBandInvite = isValidAriesOutOfBandInviteData(
-              payload
+      const navigationFn = this.props.navigation.push || this.props.navigation.navigate
+
+      const isAuthorized = await getPushNotificationAuthorizationStatus()
+      this.setState({ isAuthorized })
+      let pendingRedirectionList: any = []
+      for (let { payload, invitationToken } of unseenSmsPendingInvitations) {
+        const handledLinks = this.state && this.state.handledLinks ? this.state.handledLinks : []
+        if (handledLinks.includes(invitationToken)) {
+          continue
+        }
+        this.setState({ handledLinks: [...handledLinks, invitationToken] })
+
+        if (payload) {
+          let invitation: InvitationPayload | null = null
+          let redirectData: RedirectionData | null = null
+
+          const ariesV1Invite = isAriesInvitation(payload, '')
+          if (ariesV1Invite) {
+            invitation = convertAriesInvitationToAppInvitation(ariesV1Invite)
+            redirectData = this.checkExistingConnectionAndPrepareRedirectData(
+              invitation,
+              invitationToken
             )
+          }
 
-            let qrCodeInvitationPayload: InvitationPayload | null
+          const ariesV1OutOfBandInvite = isAriesOutOfBandInvitation(payload)
+          if (ariesV1OutOfBandInvite) {
+            invitation = convertAriesOutOfBandInvitationToAppInvitation(ariesV1OutOfBandInvite)
+            redirectData = await this.handleAriesOutOfBandInvitationAndPrepareRedirectData(
+              invitation,
+              invitationToken
+            )
+          }
 
-            if (ariesV1Invite) {
-              qrCodeInvitationPayload = convertAriesPayloadToInvitation(
-                ariesV1Invite
-              )
-            } else if (ariesV1OutOfBandInvite) {
-              qrCodeInvitationPayload = convertAriesOutOfBandPayloadToInvitation(
-                ariesV1OutOfBandInvite
-              )
-            } else {
-              qrCodeInvitationPayload = convertSmsPayloadToInvitation(
-                ((payload: any): SMSPendingInvitationPayload)
-              )
-            }
+          const proprietaryInvitation = isProprietaryInvitation(payload)
+          if (proprietaryInvitation) {
+            invitation = convertProprietaryInvitationToAppInvitation(proprietaryInvitation)
+            redirectData = this.checkExistingConnectionAndPrepareRedirectData(
+              invitation,
+              invitationToken
+            )
+          }
 
-            if (!qrCodeInvitationPayload) {
-              Alert.alert(
-                'Unsupported or invalid invitation format',
-                'Failed to establish connection.'
-              )
-              return
-            }
+          const shortProprietaryInvitation = isShortProprietaryInvitation(payload)
+          if (shortProprietaryInvitation) {
+            invitation = convertShortProprietaryInvitationToAppInvitation(shortProprietaryInvitation)
+            redirectData = this.checkExistingConnectionAndPrepareRedirectData(
+              invitation,
+              invitationToken
+            )
+          }
+          if (!invitation || !redirectData) {
+            Alert.alert(
+              'Unsupported or invalid invitation format',
+              'Cannot fetch invitation for the provided link.'
+            )
+            return
+          }
 
-            this.props.deepLinkProcessed(invitationToken)
+          this.props.deepLinkProcessed(invitationToken)
 
-            const publicDID = qrCodeInvitationPayload.senderDetail.publicDID
-            const senderDID = qrCodeInvitationPayload.senderDID
-
-            // check if connection already exists
-            // possible cases:
-            // 1. we scanned the same QR containing invitation without a public DID -
-            // check senderDID over all stored connections
-            // 2. we scanned a different QR containing invitation with public DID -
-            // check publicDID iver all stored connections with set publicDID
-            //
-            // if connection exist, then redirect to the home view
-            // and show Snack bar stating that connection already exist
-            // otherwise redirect to invitation screen
-            const existingConnection =
-              (publicDID ? this.props.getAllPublicDid[publicDID] : undefined) ||
-              this.props.getAllDid[senderDID]
-
-            const navigationFn =
-              this.props.navigation.push || this.props.navigation.navigate
-            let routeName = invitationRoute
-            let params = {
-              senderDID,
-              token: invitationToken,
-              notificationOpenOptions: null,
-            }
-            if (existingConnection && publicDID) {
-              routeName = homeRoute // --> This needs to be homeRoute, because that is the name of the DrawerNavigator
-              // for Out-of-Band invitation we should send reuse message even if we scanned the same invitation
-              // else send redirect only if we scanned invitation we same publicDID but different senderDID
-              const sendRedirectMessage =
-                existingConnection.isCompleted &&
-                qrCodeInvitationPayload.type ===
-                CONNECTION_INVITE_TYPES.ARIES_OUT_OF_BAND
-                  ? true
-                  : publicDID
-                  ? existingConnection.publicDID === publicDID &&
-                  existingConnection.senderDID !== senderDID
-                  : false
-
-              const {
-                senderName,
-                identifier,
-                logoUrl: image,
-                senderDID: existingConnectionSenderDID,
-              } = existingConnection
-              params = {
-                // if we already have a connection, then we need to use
-                // existing connection senderDID and not the senderDID
-                // that comes from payload, because only in new invitation
-                // only publicDID would be common, and senderDID could be different
-                // so if we take senderDID from new invitation, then we can't
-                // redirect user to connection history screen
-                senderDID: existingConnectionSenderDID,
-                senderName,
-                image,
-                identifier,
-                backRedirectRoute: homeRoute,
-                showExistingConnectionSnack: true,
-                qrCodeInvitationPayload,
-                // do not send redirect message if we scanned the same invitation twice
-                sendRedirectMessage: sendRedirectMessage,
-                notificationOpenOptions: null,
-              }
-            }
-
-            if (this.props.lock.isAppLocked === false) {
-              if (routeName === homeRoute) {
-                this.props.navigation.navigate(homeRoute, {
-                  screen: homeDrawerRoute,
-                  params: params,
-                })
-              } else if (Platform.OS === 'ios') {
-                if (this.state.isAuthorized) {
-                  this.props.navigation.push &&
-                  this.props.navigation.push(routeName, params)
-                } else {
-                  navigationFn(pushNotificationPermissionRoute, {
-                    senderDID,
-                  })
-                }
-              } else {
-                this.props.navigation.push &&
-                this.props.navigation.push(routeName, params)
-              }
-            }
-
-            if (routeName === homeRoute) {
-              return {
-                routeName,
-                params: {
-                  screen: homeDrawerRoute,
-                  params: params,
-                },
-              }
-            } else if (Platform.OS === 'ios' && !this.state.isAuthorized) {
-              return {
-                routeName: pushNotificationPermissionRoute,
-                params,
-              }
-            } else {
-              return {
-                routeName,
-                params,
-              }
-            }
+          if (this.props.lock.isAppLocked === false) {
+            return navigationFn(redirectData.routeName, redirectData.params)
+          } else {
+            pendingRedirectionList.push(redirectData)
           }
         }
-      )
+      }
 
       pendingRedirectionList.length !== 0 &&
       this.props.lock.isAppLocked === true &&
@@ -316,13 +249,247 @@ export class SplashScreenView extends PureComponent<
     }
   }
 
+  checkExistingConnectionAndPrepareRedirectData = (
+    invitation: InvitationPayload,
+    invitationToken: string
+  ) : RedirectionData => {
+    const publicDID = invitation.senderDetail.publicDID
+    const senderDID = invitation.senderDID
+
+    let routeName = invitationRoute
+    let params = { senderDID, token: invitationToken }
+
+    // check if connection already exists
+    // if connection exist, then redirect to the home view
+    // and show Snack bar stating that connection already exist
+    // otherwise redirect to invitation screen
+    const existingConnection = getExistingConnection(
+      this.props.allPublicDid,
+      this.props.allDid,
+      publicDID,
+      senderDID
+    )
+
+    if (existingConnection) {
+      routeName = homeRoute // --> This needs to be homeRoute, because that is the name of the DrawerNavigator
+      params = prepareParamsForExistingConnectionRedirect(existingConnection, invitation)
+    } else {
+      this.props.invitationReceived({payload: invitation})
+    }
+
+    return this.prepareRedirectionParams(routeName, params)
+  }
+
+  prepareRedirectionParams = (routeName: string, params: any) => {
+    let options = {
+      routeName,
+      params,
+    }
+    if (routeName === homeRoute) {
+      options = {
+        routeName : homeRoute,
+        params: {
+          screen: homeDrawerRoute,
+          params: params,
+        },
+      }
+    } else if (Platform.OS === 'ios' && !this.state.isAuthorized) {
+      options = {
+        routeName: pushNotificationPermissionRoute,
+        params,
+      }
+    }
+    return options
+  }
+
+  prepareOoBRedirectionParams = (routeName: string, params: any) => {
+    if (Platform.OS === 'ios' && !this.state.isAuthorized) {
+      return {
+        routeName: pushNotificationPermissionRoute,
+        params: {
+          senderDID: params.invitationPayload.senderDID,
+          navigatedFrom: homeRoute,
+          intendedRoute: routeName,
+          intendedPayload: params,
+        }
+      }
+    } else {
+      return {
+        routeName,
+        params,
+      }
+    }
+  }
+
+  handleAriesOutOfBandInvitationAndPrepareRedirectData = async (
+    invitation: InvitationPayload,
+    invitationToken: string
+  ) => {
+    const senderDID = invitation.senderDID
+    const invite: AriesOutOfBandInvite = ((invitation.originalObject: any): AriesOutOfBandInvite)
+
+    let options = {
+      routeName: homeRoute,
+      params: {
+        screen: homeDrawerRoute,
+        params: {
+          senderDID: senderDID
+        },
+      }
+    }
+
+    // TODO: think of refactoring and reusing qr-code here
+    if (
+      !invite.handshake_protocols?.length &&
+      !invite['request~attach']?.length
+    ) {
+      // Invite: No `handshake_protocols` and `request~attach`
+      // Action: show alert about invalid formatted invitation
+      Alert.alert(
+        'Invalid Out-of-Band Invitation',
+        'QR code contains invalid formatted Aries Out-of-Band invitation.'
+      )
+      return options
+    } else if (
+      invite.handshake_protocols?.length &&
+      !invite['request~attach']?.length
+    ) {
+      // Invite: Has `handshake_protocols` but no `request~attach`
+      // Action: Create a new connection or reuse existing.
+      // UI: Show Connection invite
+      return this.checkExistingConnectionAndPrepareRedirectData(
+        invitation,
+        invitationToken
+      )
+    } else if (
+      invite['request~attach']?.length
+    ) {
+      // Invite: Has `handshake_protocols` and has `request~attach`
+      // Action:
+      //  1. Create a new connection or reuse existing
+      //  2. Rut protocol connected to attached action
+      // UI: Show view related to attached action
+
+      const req = await getAttachedRequest(invite)
+      if (!req || !req[TYPE]) {
+        Alert.alert(
+          'Invalid Out-of-Band Invitation',
+          'QR code contains invalid formatted Aries Out-of-Band invitation.'
+        )
+        return options
+      }
+
+      if (req[TYPE].endsWith('offer-credential')) {
+        const credentialOffer = (req: CredentialOffer)
+        const claimOffer = convertAriesCredentialOfferToCxsClaimOffer(credentialOffer)
+        const uid = credentialOffer[ID]
+
+        const existingCredential: ClaimOfferPayload = this.props.claimOffers[uid]
+
+        if (
+          existingCredential &&
+          existingCredential.status === CLAIM_OFFER_STATUS.ACCEPTED
+        ) {
+          // we already have accepted that offer
+          Alert.alert(
+            'Out-of-Band Invitation processed',
+            'The credential offer has already been accepted.'
+          )
+          return options
+        }
+
+        this.props.claimOfferReceived(
+          convertClaimOfferPushPayloadToAppClaimOffer(
+            {
+              ...claimOffer,
+              remoteName: invitation.senderName,
+              issuer_did: invitation.senderDID,
+              from_did: invitation.senderDID,
+              to_did: '',
+            },
+            {
+              remotePairwiseDID: invitation.senderDID,
+            }
+          ),
+          {
+            uid,
+            senderLogoUrl: invitation.senderLogoUrl,
+            remotePairwiseDID: invitation.senderDID,
+            hidden: true,
+          }
+        )
+
+        return this.prepareOoBRedirectionParams(
+          claimOfferRoute,
+          {
+            uid: credentialOffer[ID],
+            invitationPayload: invitation,
+            attachedRequest: req,
+            senderName: invitation.senderName,
+            backRedirectRoute: homeRoute,
+          })
+      } else if (req[TYPE].endsWith('request-presentation')) {
+        const presentationRequest = (req: AriesPresentationRequest)
+        const uid = presentationRequest[ID]
+
+        const existingProofRequest: ProofRequestPayload = this.props.proofRequests[uid]
+
+        if (
+          existingProofRequest &&
+          existingProofRequest.status === PROOF_REQUEST_STATUS.ACCEPTED
+        ) {
+          Alert.alert(
+            'Out-of-Band Invitation processed',
+            'The proof request has already been accepted.'
+          )
+          return options
+        }
+
+        const [
+          outofbandProofError,
+          outofbandProofRequest,
+        ] = await validateOutofbandProofRequestQrCode(presentationRequest)
+
+        if (outofbandProofError || !outofbandProofRequest) {
+          Alert.alert('Invalid invitation', outofbandProofError)
+          return options
+        }
+
+        this.props.proofRequestReceived(outofbandProofRequest, {
+          uid,
+          senderLogoUrl: invitation.senderLogoUrl,
+          remotePairwiseDID: invitation.senderDID,
+          hidden: true,
+        })
+
+        return this.prepareOoBRedirectionParams(
+          proofRequestRoute,
+          {
+            uid,
+            invitationPayload: invitation,
+            attachedRequest: req,
+            senderName: invitation.senderName,
+            backRedirectRoute: homeRoute,
+          })
+      }
+    } else {
+      // Implement this case
+      Alert.alert(
+        'Invalid Out-of-Band Invitation',
+        'QR code contains invalid formatted Aries Out-of-Band invitation.'
+      )
+      return options
+    }
+    return null
+  }
+
   getAuthorizationStatus = async () => {
     const authorizationStatus = await messaging().hasPermission()
 
     return !!authorizationStatus
   }
 
-  componentDidUpdate(prevProps: SplashScreenProps) {
+  componentDidUpdate = async (prevProps: SplashScreenProps) => {
     if (this.props.isInitialized !== prevProps.isInitialized) {
       // hydrated is changed, and if it is changed to true,
       // that means this is the only time we would get inside this if condition
@@ -341,7 +508,7 @@ export class SplashScreenView extends PureComponent<
       this.redirect(this.props, homeRoute)
     }
     this.ifDeepLinkFoundGoToWaitForInvitationScreenNFetchInvitation(prevProps)
-    this.handleSmsPendingInvitations(prevProps)
+    await this.handleSmsPendingInvitations(prevProps)
   }
 
   async componentDidMount() {
@@ -403,6 +570,8 @@ const mapStateToProps = ({
                            smsPendingInvitation,
                            eula,
                            connections,
+                           claimOffer,
+                           proofRequest,
                          }: Store) => ({
   isInitialized: config.isInitialized,
   // DeepLink should be it's own component that will handle only deep link logic
@@ -413,8 +582,10 @@ const mapStateToProps = ({
   smsPendingInvitation,
   // only need isEulaAccept
   eula,
-  getAllDid: getAllDid(connections),
-  getAllPublicDid: getAllPublicDid(connections),
+  allDid: getAllDid(connections),
+  allPublicDid: getAllPublicDid(connections),
+  claimOffers: claimOffer,
+  proofRequests: proofRequest,
 })
 
 const mapDispatchToProps = (dispatch) =>
@@ -424,6 +595,9 @@ const mapDispatchToProps = (dispatch) =>
       addPendingRedirection,
       safeToDownloadSmsInvitation,
       deepLinkProcessed,
+      invitationReceived,
+      claimOfferReceived,
+      proofRequestReceived,
     },
     dispatch
   )

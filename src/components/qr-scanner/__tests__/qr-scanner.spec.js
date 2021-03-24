@@ -12,16 +12,17 @@ import {
 } from '../../../../__mocks__/static-data'
 import { mockAriesV1QrCode } from '../../../../__mocks__/data/mock-qr-data'
 import * as fetch from '../../../common/flat-fetch'
-import { convertSmsPayloadToInvitation } from '../../../sms-pending-invitation/sms-pending-invitation-store'
 import { CONNECTION_INVITE_TYPES } from '../../../invitation/type-invitation'
 import * as vcx from '../../../bridge/react-native-cxs/RNCxs'
+import {convertProprietaryInvitationToAppInvitation} from "../../../invitation/kinds/proprietary-connection-invitation";
 
 describe('<QRScanner />', () => {
   const getProps = () => ({
     onClose: jest.fn(),
     onRead: jest.fn(),
+    onShortProprietaryInvitationRead: jest.fn(),
     onEnvironmentSwitchUrl: jest.fn(),
-    onInvitationUrl: jest.fn(),
+    onProprietaryInvitationRead: jest.fn(),
     onOIDCAuthenticationRequest: jest.fn(),
     onAriesConnectionInviteRead: jest.fn(),
     onAriesOutOfBandInviteRead: jest.fn(),
@@ -46,14 +47,14 @@ describe('<QRScanner />', () => {
 
   it('should call onRead once QR code read is successful', async () => {
     jest.useFakeTimers()
-    const { onRead, instance } = setup()
+    const { onShortProprietaryInvitationRead, instance } = setup()
 
     const qrReadEvent = {
       data: JSON.stringify(qrData),
     }
 
     await instance.onRead(qrReadEvent)
-    expect(onRead).toHaveBeenCalledWith(expect.objectContaining(qrData))
+    expect(onShortProprietaryInvitationRead).toHaveBeenCalledWith(expect.objectContaining(qrData))
     expect(instance.state.scanStatus).toBe(SCAN_STATUS.SCANNING)
   })
 
@@ -91,7 +92,7 @@ describe('<QRScanner />', () => {
       Promise.resolve([null, JSON.stringify(smsDownloadedPayload)])
     )
 
-    const { onInvitationUrl, instance } = setup()
+    const { onProprietaryInvitationRead, instance } = setup()
 
     const pendingQrProcessing = instance.onRead({
       data: validInvitationUrlQrCode,
@@ -100,8 +101,8 @@ describe('<QRScanner />', () => {
     // process API call
     await pendingQrProcessing
 
-    expect(onInvitationUrl).toHaveBeenCalledWith(
-      convertSmsPayloadToInvitation(smsDownloadedPayload)
+    expect(onProprietaryInvitationRead).toHaveBeenCalledWith(
+      convertProprietaryInvitationToAppInvitation(smsDownloadedPayload)
     )
     expect(instance.state.scanStatus).toBe(SCAN_STATUS.SCANNING)
 

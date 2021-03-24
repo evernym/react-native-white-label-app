@@ -43,7 +43,7 @@ export function* registerCloudAgentWithToken(
       getProvisionToken,
       agencyConfig,
       {
-        type: vcxPushType, // 1 means push notification, its the only one registered
+        type: vcxPushType,
         id,
         value: `FCM:mock_value_just_to_register`,
       },

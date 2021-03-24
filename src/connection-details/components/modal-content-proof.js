@@ -239,7 +239,7 @@ class ModalContentProof extends Component<
   }
 
   onDeny = () => {
-    if (this.props.isOOBInvitation) {
+    if (this.props.canBeIgnored) {
       // on cancel
       this.setState({ scheduledDeletion: true })
       this.props.hideModal()
@@ -317,7 +317,7 @@ class ModalContentProof extends Component<
         this.props.dissatisfiedAttributes.length > 0)
 
     let acceptButtonText = proofRequestAcceptButtonText || PRIMARY_ACTION_SEND
-    let denyButtonText = proofRequestDenyButtonText || (this.props.isOOBInvitation ? 'Cancel' : 'Reject')
+    let denyButtonText = proofRequestDenyButtonText || (this.props.canBeIgnored ? 'Cancel' : 'Reject')
 
     const {
       canEnablePrimaryAction,
@@ -373,11 +373,12 @@ const mapStateToProps = (state: Store, mergeProps) => {
     remotePairwiseDID,
     missingAttributes = {},
     dissatisfiedAttributes = [],
+    ephemeralProofRequest,
   } = proofRequestData
   const { name } = requester
   const proofGenerationError = state.proof[uid] ? state.proof[uid].error : null
 
-  const isOOBInvitation = mergeProps.invitationPayload
+  const canBeIgnored = mergeProps.invitationPayload || ephemeralProofRequest
 
   return {
     data,
@@ -389,7 +390,7 @@ const mapStateToProps = (state: Store, mergeProps) => {
     remotePairwiseDID,
     dissatisfiedAttributes,
     lock,
-    isOOBInvitation,
+    canBeIgnored,
   }
 }
 

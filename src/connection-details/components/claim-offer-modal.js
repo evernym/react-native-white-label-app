@@ -91,7 +91,7 @@ export class ClaimOfferModal extends Component<any, *> {
       credentialOfferAcceptButtonText ||
       (payTokenValue ? 'Accept & Pay' : 'Accept Credential')
     let denyButtonText =
-      credentialOfferDenyButtonText || (this.props.isOOBInvitation ? 'Cancel' : 'Reject')
+      credentialOfferDenyButtonText || (this.props.canBeIgnored ? 'Cancel' : 'Reject')
 
     // NOTE: Just to be safe, we changed the hasNotAcceptedTAA to hardcoded false, so we can be sure 0 tokens doesn't affect the flow.
     const hasNotAcceptedTAA = false
@@ -269,7 +269,7 @@ export class ClaimOfferModal extends Component<any, *> {
   }
 
   onDeny = () => {
-    if (this.props.isOOBInvitation) {
+    if (this.props.canBeIgnored) {
       // on cancel
       this.setState({ ...this.state, scheduledDeletion: true })
       this.hideModal()
@@ -406,7 +406,7 @@ const mapStateToProps = (
       ? claimOfferData.payTokenValue
       : '0'
 
-  const isOOBInvitation = params.invitationPayload
+  const canBeIgnored = params.invitationPayload
 
   return {
     thereIsANewAgreement: getThereIsANewAgreement(state),
@@ -419,7 +419,7 @@ const mapStateToProps = (
     logoUrl: logo,
     claimPrice,
     lock,
-    isOOBInvitation,
+    canBeIgnored,
   }
 }
 
