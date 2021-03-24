@@ -15,7 +15,6 @@ import {
 } from './invite-action-store'
 
 // components
-import { InviteActionButtons } from './components/invite-action-buttons'
 import { InviteActionDetails } from './components/invite-action-details'
 
 // types
@@ -39,13 +38,14 @@ import {
   inviteActionHeadline,
 } from '../external-exports'
 import { modalOptions } from '../connection-details/utils/modalOptions'
+import {ModalButtons} from "../components/buttons/modal-buttons";
 
 export const InviteActionComponent = ({
-  inviteAction,
-  senderLogoUrl,
-  initiateFinalizedAction,
-  navigation,
-}: InviteActionScreenProps) => {
+                                        inviteAction,
+                                        senderLogoUrl,
+                                        initiateFinalizedAction,
+                                        navigation,
+                                      }: InviteActionScreenProps) => {
   const handleInviteAction = (args: string) => {
     initiateFinalizedAction(inviteAction.payload.uid, args)
     navigation.navigate(homeDrawerRoute)
@@ -85,11 +85,11 @@ export const InviteActionComponent = ({
           renderItem={renderInviteActionSection}
           {...{ keyExtractor }}
         />
-        <InviteActionButtons
+        <ModalButtons
           onPress={() => handleInviteAction(INVITE_ACTION_RESPONSES.ACCEPTED)}
           onIgnore={() => handleInviteAction(INVITE_ACTION_RESPONSES.REJECTED)}
-          bottomBtnText={buttonDenyText}
-          topBtnText={buttonAcceptText}
+          denyButtonText={buttonDenyText}
+          acceptBtnText={buttonAcceptText}
           colorBackground={colors.green1}
           secondColorBackground={colors.red}
         />

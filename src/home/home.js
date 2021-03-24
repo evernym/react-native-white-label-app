@@ -53,7 +53,6 @@ import {
   HomeViewEmptyState,
 } from '../external-exports'
 import { SHOW_UNREAD_MESSAGES_BADGE_NEAR_WITH_TITLE } from '../components/header/type-header'
-import { recentEventToShow } from './type-home'
 
 const headline = homeHeadline || 'Home'
 const showHistoryEvents =
@@ -113,6 +112,10 @@ export class HomeScreen extends Component<HomeProps, void> {
 
         case MESSAGE_TYPE.QUESTION:
           this.props.navigation.navigate(questionRoute, { uid })
+          break
+
+        case MESSAGE_TYPE.INVITE_ACTION:
+          this.props.navigation.navigate(inviteActionRoute, { uid })
           break
       }
     }
@@ -383,7 +386,8 @@ const mapStateToProps = (state: Store) => {
     if (
       ((status === HISTORY_EVENT_STATUS.CLAIM_OFFER_RECEIVED ||
         status === HISTORY_EVENT_STATUS.PROOF_REQUEST_RECEIVED ||
-        status === HISTORY_EVENT_STATUS.QUESTION_RECEIVED) &&
+        status === HISTORY_EVENT_STATUS.QUESTION_RECEIVED ||
+        status === HISTORY_EVENT_STATUS.INVITE_ACTION_RECEIVED) &&
         show === undefined) ||
       show
     ) {
@@ -404,11 +408,7 @@ const mapStateToProps = (state: Store) => {
           connectionHistory.data &&
           connectionHistory.data.length
         ) {
-          placeholderArray.push(
-            ...connectionHistory.data.filter(
-              (event) => recentEventToShow[event.status]
-            )
-          )
+          placeholderArray.push(...connectionHistory.data)
         }
       }
     )

@@ -964,7 +964,8 @@ export function convertQuestionAnswerToHistoryEvent(
 }
 
 export function convertInviteActionReceivedToHistoryEvent(
-  action: InviteActionReceivedAction
+  action: InviteActionReceivedAction,
+  connection: Connection,
 ): ConnectionHistoryEvent {
   return {
     action: HISTORY_EVENT_STATUS[INVITE_ACTION_RECEIVED],
@@ -979,16 +980,23 @@ export function convertInviteActionReceivedToHistoryEvent(
       payloadInfo: action.inviteAction,
       type: MESSAGE_TYPE.INVITE_ACTION,
     },
+    senderName: connection.senderName,
+    senderLogoUrl: connection.logoUrl,
   }
 }
 
 export function convertInviteActionToHistoryEvent(
   action: InviteActionReceivedAction,
   inviteActionPayload: InviteActionPayload,
-  actionResponse: string
+  event: ConnectionHistoryEvent,
+  actionResponse: string,
 ): ConnectionHistoryEvent {
   return {
-    action: HISTORY_EVENT_STATUS[INVITE_ACTION_REJECTED],
+    action: HISTORY_EVENT_STATUS[
+      actionResponse === INVITE_ACTION_RESPONSES.REJECTED
+        ? INVITE_ACTION_REJECTED
+        : INVITE_ACTION_ACCEPTED
+      ],
     data: { payload: inviteActionPayload, ...action },
     id: uuid(),
     name: `You resolved action`,
@@ -997,7 +1005,7 @@ export function convertInviteActionToHistoryEvent(
         actionResponse === INVITE_ACTION_RESPONSES.REJECTED
           ? INVITE_ACTION_REJECTED
           : INVITE_ACTION_ACCEPTED
-      ],
+        ],
     timestamp: moment().format(),
     type: HISTORY_EVENT_TYPE.INVITE_ACTION,
     remoteDid: inviteActionPayload.from_did,
@@ -1005,6 +1013,8 @@ export function convertInviteActionToHistoryEvent(
       payloadInfo: inviteActionPayload,
       type: MESSAGE_TYPE.INVITE_ACTION,
     },
+    senderName: event.senderName,
+    senderLogoUrl: event.senderLogoUrl,
   }
 }
 
@@ -1659,7 +1669,11 @@ export function* historyEventOccurredSaga(
     }
 
     if (event.type === INVITE_ACTION_RECEIVED) {
-      historyEvent = convertInviteActionReceivedToHistoryEvent(event)
+      const [connection]: Array<Connection> = yield select(
+        getConnection,
+        event.inviteAction.from_did
+      )
+      historyEvent = convertInviteActionReceivedToHistoryEvent(event, connection)
     }
 
     if (event.type === INVITE_ACTION_REJECTED) {
@@ -1668,17 +1682,18 @@ export function* historyEventOccurredSaga(
         event.uid
       )
 
-      historyEvent = convertInviteActionToHistoryEvent(
-        event,
-        inviteActionPayload,
-        INVITE_ACTION_RESPONSES.REJECTED
-      )
-
       const oldHistoryEvent = yield select(
         getHistoryEvent,
         event.uid,
-        historyEvent.remoteDid,
+        inviteActionPayload.from_did,
         MESSAGE_TYPE.INVITE_ACTION
+      )
+
+      historyEvent = convertInviteActionToHistoryEvent(
+        event,
+        inviteActionPayload,
+        oldHistoryEvent,
+        INVITE_ACTION_RESPONSES.REJECTED
       )
 
       if (oldHistoryEvent) yield put(deleteHistoryEvent(oldHistoryEvent))
@@ -1690,17 +1705,18 @@ export function* historyEventOccurredSaga(
         event.uid
       )
 
-      historyEvent = convertInviteActionToHistoryEvent(
-        event,
-        inviteActionPayload,
-        INVITE_ACTION_RESPONSES.ACCEPTED
-      )
-
       const oldHistoryEvent = yield select(
         getHistoryEvent,
         event.uid,
-        historyEvent.remoteDid,
+        inviteActionPayload.from_did,
         MESSAGE_TYPE.INVITE_ACTION
+      )
+
+      historyEvent = convertInviteActionToHistoryEvent(
+        event,
+        inviteActionPayload,
+        oldHistoryEvent,
+        INVITE_ACTION_RESPONSES.ACCEPTED
       )
 
       if (oldHistoryEvent) yield put(deleteHistoryEvent(oldHistoryEvent))

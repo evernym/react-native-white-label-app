@@ -76,6 +76,7 @@ import {
   PUSH_COM_METHOD,
   LAST_SUCCESSFUL_CLOUD_BACKUP,
   homeRoute,
+  inviteActionRoute,
 } from '../common'
 import type { NavigationParams, GenericObject } from '../common/type-common'
 
@@ -689,6 +690,12 @@ function* redirectToRelevantScreen(notification: RedirectToRelevantScreen) {
       case MESSAGE_TYPE.QUESTION:
       case MESSAGE_TYPE.QUESTION.toLowerCase():
         routeToDirect = questionRoute
+        notificationText = `${additionalData.messageTitle}`
+        break
+
+      case MESSAGE_TYPE.INVITE_ACTION:
+      case MESSAGE_TYPE.INVITE_ACTION.toLowerCase():
+        routeToDirect = inviteActionRoute
         notificationText = `${additionalData.messageTitle}`
         break
     }
