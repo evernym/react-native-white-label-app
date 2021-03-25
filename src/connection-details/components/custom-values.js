@@ -13,10 +13,10 @@ import type { ReactNavigation } from '../../common/type-common'
 
 // styles
 import { colors, fontFamily, fontSizes } from '../../common/styles/constant'
-import { ModalPushLeft } from '../utils/modal-animation'
 import { ExpandableText } from '../../components/expandable-text/expandable-text'
 import { modalOptions } from '../utils/modalOptions'
-import { CustomEnterAttributeValueModal } from '../../external-exports'
+import {CustomEnterAttributeValueModal} from '../../external-exports'
+import {ModalPushLeft} from "../utils/modal-animation";
 
 const CustomValues = ({
                         navigation: { goBack },
@@ -61,11 +61,13 @@ const CustomValues = ({
   )
 }
 
-const screen = CustomEnterAttributeValueModal || CustomValues
+const screen =
+  CustomEnterAttributeValueModal && CustomEnterAttributeValueModal.screen ||
+  CustomValues
+
 const navigationOptions =
-  CustomEnterAttributeValueModal ?
-    null :
-    modalOptions('Custom Values', 'Arrow', ModalPushLeft)
+  CustomEnterAttributeValueModal && CustomEnterAttributeValueModal.navigationOptions ||
+  modalOptions('Custom Values', 'CloseIcon', ModalPushLeft)
 
 export const CustomValuesScreen = {
   routeName: customValuesRoute,

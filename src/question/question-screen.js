@@ -312,11 +312,13 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   )
 
-const screen = CustomQuestionModal || Question
+const screen =
+  CustomQuestionModal && CustomQuestionModal.screen ||
+  Question
+
 const navigationOptions =
-  CustomQuestionModal ?
-    null :
-    modalOptions(headline, 'CloseIcon')
+  CustomQuestionModal && CustomQuestionModal.navigationOptions ||
+  modalOptions(headline, 'CloseIcon')
 
 export const questionScreen = {
   routeName: questionRoute,

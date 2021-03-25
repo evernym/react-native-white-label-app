@@ -169,11 +169,13 @@ const AttributesValues = ({
   )
 }
 
-const screen = CustomSelectAttributesValuesModal || AttributesValues
+const screen =
+  CustomSelectAttributesValuesModal && CustomSelectAttributesValuesModal.screen ||
+  AttributesValues
+
 const navigationOptions =
-  CustomSelectAttributesValuesModal ?
-    null :
-    modalOptions('Select Attributes Values', 'Arrow', ModalPushLeft)
+  CustomSelectAttributesValuesModal && CustomSelectAttributesValuesModal.navigationOptions ||
+  modalOptions('Select Attributes Values', 'Arrow', ModalPushLeft)
 
 export const AttributesValuesScreen = {
   routeName: attributesValueRoute,

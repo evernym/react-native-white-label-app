@@ -128,10 +128,13 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   )
 
-const screen = CustomInviteActionModal || InviteActionComponent
-const navigationOptions = CustomInviteActionModal
-  ? null
-  : modalOptions(inviteActionHeadline, 'CloseIcon')
+const screen =
+  CustomInviteActionModal && CustomInviteActionModal.screen ||
+  InviteActionComponent
+
+const navigationOptions =
+  CustomInviteActionModal && CustomInviteActionModal.navigationOptions ||
+  modalOptions(inviteActionHeadline, 'CloseIcon')
 
 export const inviteActionScreen = {
   routeName: inviteActionRoute,
