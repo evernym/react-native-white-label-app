@@ -7,12 +7,13 @@ import renderer from 'react-test-renderer'
 import {
   qrCodeScannerTabRoute,
 } from '../../common/'
-import { QRCodeScannerScreen, convertQrCodeToInvitation } from '../qr-code'
+import { QRCodeScannerScreen} from '../qr-code'
 import {
   getNavigation,
   qrData,
   validQrCodeEnvironmentSwitchUrl,
 } from '../../../__mocks__/static-data'
+import {convertShortProprietaryInvitationToAppInvitation} from "../../invitation/kinds/proprietary-connection-invitation";
 
 describe('<QRScannerScreen />', () => {
   function getProps() {
@@ -25,8 +26,8 @@ describe('<QRScannerScreen />', () => {
       changeEnvironmentUrl: jest.fn(),
       enableCamera: jest.fn(),
       isCameraEnabled: true,
-      getAllPublicDid: {},
-      getAllDid: {},
+      allPublicDid: {},
+      allDid: {},
       claimOffers: {},
       proofRequests: {},
       openIdConnectUpdateStatus: jest.fn(),
@@ -58,7 +59,7 @@ describe('<QRScannerScreen />', () => {
   })
 
   it('should convert qr code to invitation', () => {
-    expect(convertQrCodeToInvitation(qrData)).toMatchSnapshot()
+    expect(convertShortProprietaryInvitationToAppInvitation(qrData)).toMatchSnapshot()
   })
 
   it('should redirect user to invitation screen on success read', () => {
@@ -67,10 +68,10 @@ describe('<QRScannerScreen />', () => {
       props: { invitationReceived },
     } = setup()
 
-    instance.onRead(qrData)
+    instance.onShortProprietaryInvitationRead(qrData)
     expect(invitationReceived).toHaveBeenCalledWith(
       expect.objectContaining({
-        payload: convertQrCodeToInvitation(qrData),
+        payload: convertShortProprietaryInvitationToAppInvitation(qrData),
       })
     )
   })

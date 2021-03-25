@@ -925,3 +925,9 @@ export async function credentialReject(
 ): Promise<void> {
   return RNIndy.credentialReject(credentialHandle, connectionHandle, comment)
 }
+
+export async function getRequestRedirectionUrl(
+  url: string
+): Promise<string> {
+  return RNIndy.getRequestRedirectionUrl(url)
+}

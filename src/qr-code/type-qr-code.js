@@ -1,5 +1,4 @@
 // @flow
-
 import type {
   InvitationReceivedActionData,
   InvitationReceivedAction,
@@ -13,7 +12,6 @@ import { proofRequestReceived } from '../proof-request/proof-request-store'
 import type { ClaimOfferPayload } from '../claim-offer/type-claim-offer'
 import type { InvitationPayload } from '../invitation/type-invitation'
 import type { ProofRequestPayload } from '../proof-request/type-proof-request'
-import { appName } from '../external-exports'
 
 export type QRCodeScannerScreenState = {
   isCameraEnabled: boolean,
@@ -23,8 +21,8 @@ export type QRCodeScannerScreenState = {
 export type QRCodeScannerScreenProps = {
   historyData: Object,
   currentScreen: string,
-  getAllDid: { [publicDID: string]: Connection },
-  getAllPublicDid: { [publicDID: string]: Connection },
+  allDid: { [publicDID: string]: Connection },
+  allPublicDid: { [publicDID: string]: Connection },
   claimOffers: { [uid: string]: ClaimOfferPayload },
   proofRequests: { [uid: string]: ProofRequestPayload },
   invitationReceived: (
@@ -50,4 +48,5 @@ export type OutOfBandNavigation = {
 
 export const MESSAGE_NO_CAMERA_PERMISSION = 'No Camera permission'
 
-export const MESSAGE_ALLOW_CAMERA_PERMISSION = `Please allow ${appName} to access camera from camera settings`
+export const MESSAGE_ALLOW_CAMERA_PERMISSION =
+  'Please allow connect me to access camera from camera settings'

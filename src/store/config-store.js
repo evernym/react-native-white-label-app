@@ -148,7 +148,17 @@ import {
   COMMITEDANSWER_PROTOCOL,
   QUESTIONANSWER_PROTOCOL,
 } from '../question/type-question'
-import { defaultServerEnvironment, serverEnvironments, usePushNotifications } from '../external-exports'
+import {
+  defaultServerEnvironment,
+  serverEnvironments,
+  usePushNotifications,
+} from '../external-exports'
+import type {
+  InviteActionData,
+  InviteActionPayload,
+  InviteActionRequest,
+} from '../invite-action/type-invite-action'
+import { INVITE_ACTION_PROTOCOL } from '../invite-action/type-invite-action'
 
 /**
  * this file contains configuration which is changed only from user action
@@ -364,7 +374,7 @@ export function* onChangeEnvironmentUrl(
       )
     )
 
-    if (usePushNotifications){
+    if (usePushNotifications) {
       const pushToken: string = yield select(getPushToken)
       yield put(updatePushToken(pushToken))
     }
@@ -498,6 +508,7 @@ export function* hydrateSwitchedEnvironmentDetails(): any {
     }
   } catch (e) {
     captureError(e)
+    customLogger.log(`hydrateSwitchedEnvironmentDetails: ${e}`)
     yield put(
       hydrateSwitchedEnvironmentDetailFail({
         code: ERROR_HYDRATE_SWITCH_ENVIRONMENT.code,
@@ -875,6 +886,7 @@ export function* processMessages(
     MESSAGE_TYPE.QUESTION,
     MESSAGE_TYPE.QUESTION.toLowerCase(),
     MESSAGE_TYPE.ARIES,
+    MESSAGE_TYPE.INVITE_ACTION,
   ]
   // send each message in data to handleMessage
   // additional data will be fetched and passed to relevant( claim, claimOffer, proofRequest,etc )store.
@@ -908,7 +920,7 @@ export function* processMessages(
       }
 
       let { myPairwiseDid: pairwiseDID, senderDID } =
-      connection && connection[0]
+        connection && connection[0]
 
       if (
         !(
@@ -921,18 +933,12 @@ export function* processMessages(
           setFetchAdditionalDataPendingKeys(messages[i].uid, pairwiseDID)
         )
         if (isAries) {
-          yield fork(
-            handleAriesMessage,
-            {
-              ...messages[i],
-              senderDID,
-            },
-          )
+          yield fork(handleAriesMessage, {
+            ...messages[i],
+            senderDID,
+          })
         } else {
-          yield fork(
-            handleProprietaryMessage,
-            messages[i],
-          )
+          yield fork(handleProprietaryMessage, messages[i])
         }
       }
     } catch (e) {
@@ -1010,8 +1016,60 @@ export const convertDecryptedPayloadToAriesQuestion = (
   }
 }
 
+export const convertDecryptedPayloadToInviteAction = (
+  connectionHandle: number,
+  decryptedPayload: string,
+  uid: string,
+  forDID: string,
+  senderDID: string,
+  remoteName: string
+): InviteActionPayload => {
+  const parsedPayload = JSON.parse(decryptedPayload)
+  const parsedMsg: InviteActionRequest = JSON.parse(parsedPayload['@msg'])
+
+  let parsedGoalCode: InviteActionData = {
+    inviteActionTitle: parsedMsg.goal_code,
+  }
+
+  try {
+    parsedGoalCode = JSON.parse(parsedMsg.goal_code)
+    if (parsedGoalCode.hasOwnProperty('invite_action_meta_data')) {
+      parsedGoalCode = {
+        inviteActionTitle:
+          parsedGoalCode.invite_action_meta_data.invite_action_title,
+        inviteActionDetails:
+          parsedGoalCode.invite_action_meta_data.invite_action_detail,
+        acceptText: parsedGoalCode.invite_action_meta_data.accept_text,
+        denyText: parsedGoalCode.invite_action_meta_data.deny_text,
+        token: parsedGoalCode.invite_action_meta_data.id_pal_token,
+      }
+    }
+  } catch (e) {}
+
+  return {
+    '@type': parsedMsg['@type'],
+    protocol: INVITE_ACTION_PROTOCOL,
+    messageId: parsedMsg['@id'],
+    timing: parsedMsg['@timing'],
+    issuer_did: senderDID,
+    remoteDid: '',
+    uid,
+    from_did: senderDID,
+    forDID,
+    connectionHandle,
+    remotePairwiseDID: senderDID,
+    inviteActionTitle: parsedGoalCode.inviteActionTitle,
+    inviteActionDetails: parsedGoalCode.inviteActionDetails,
+    acceptText: parsedGoalCode.acceptText,
+    denyText: parsedGoalCode.denyText,
+    token: parsedGoalCode.token,
+    originalInviteAction: parsedPayload['@msg'],
+    remoteName,
+  }
+}
+
 function* handleProprietaryMessage(
-  downloadedMessage: DownloadedMessage,
+  downloadedMessage: DownloadedMessage
 ): Generator<*, *, *> {
   const { senderDID, uid, type, decryptedPayload } = downloadedMessage
   const remotePairwiseDID = senderDID
@@ -1107,6 +1165,19 @@ function* handleProprietaryMessage(
       yield fork(updateMessageStatus, [{ pairwiseDID: forDID, uids: [uid] }])
     }
 
+    if (type === MESSAGE_TYPE.INVITE_ACTION) {
+      if (!decryptedPayload) return
+      additionalData = convertDecryptedPayloadToInviteAction(
+        connectionHandle,
+        decryptedPayload,
+        uid,
+        forDID,
+        senderDID,
+        senderName
+      )
+      yield fork(updateMessageStatus, [{ pairwiseDID: forDID, uids: [uid] }])
+    }
+
     if (!additionalData) {
       // we did not get any data or either push notification type is not supported
       return
@@ -1140,9 +1211,7 @@ function* handleProprietaryMessage(
   }
 }
 
-function* handleAriesMessage(
-  message: DownloadedMessage,
-): Generator<*, *, *> {
+function* handleAriesMessage(message: DownloadedMessage): Generator<*, *, *> {
   let { senderDID, uid, type, decryptedPayload } = message
   const remotePairwiseDID = senderDID
   const connection: Connection[] = yield select(getConnection, senderDID)
@@ -1283,6 +1352,21 @@ function* handleAriesMessage(
       yield fork(updateMessageStatus, [{ pairwiseDID: forDID, uids: [uid] }])
     }
 
+    if (payloadType.name === 'invite-action') {
+      additionalData = convertDecryptedPayloadToInviteAction(
+        connectionHandle,
+        decryptedPayload,
+        uid,
+        forDID,
+        senderDID,
+        senderName
+      )
+
+      messageType = MESSAGE_TYPE.INVITE_ACTION
+
+      yield fork(updateMessageStatus, [{ pairwiseDID: forDID, uids: [uid] }])
+    }
+
     if (payloadType && payloadType.name === 'aries' && payload['@msg']) {
       const payloadMessageType = JSON.parse(payload['@msg'])['@type']
 
@@ -1369,7 +1453,7 @@ export function* acknowledgeServer(
             isAries = decryptedPayload['@type']['name'] === 'aries'
             isMsgTypeAriesQuestion = JSON.parse(decryptedPayload['@msg'])[
               '@type'
-              ].includes('question')
+            ].includes('question')
           }
 
           if (isAries) {

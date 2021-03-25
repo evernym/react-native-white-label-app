@@ -62,6 +62,7 @@ import {
 import { secureSet, getHydrationItem } from '../services/storage'
 import { retrySaga } from '../api/api-utils'
 import { uuid } from '../services/uuid'
+import { customLogger } from '../store/custom-logger'
 
 export function* watchQuestion(): any {
   yield all([
@@ -208,6 +209,7 @@ export function* hydrateQuestionSaga(): Generator<*, *, *> {
     }
     yield put(updateQuestionStorageStatus(STORAGE_STATUS.RESTORE_SUCCESS))
   } catch (e) {
+    customLogger.log(`hydrateQuestionSaga: ${e}`)
     yield put(updateQuestionStorageStatus(STORAGE_STATUS.RESTORE_FAIL))
   }
 }

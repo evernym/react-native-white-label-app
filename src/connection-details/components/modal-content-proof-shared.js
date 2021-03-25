@@ -1,5 +1,5 @@
 // @flow
-import React, { useCallback } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { View, StyleSheet, StatusBar, ScrollView } from 'react-native'
 import { useSelector } from 'react-redux'
 
@@ -13,6 +13,7 @@ import { colors } from '../../common/styles/constant'
 import type { ReactNavigation } from '../../common/type-common'
 import { modalOptions } from '../utils/modalOptions'
 import { CustomSharedProofModal, proofRequestHeadline } from '../../external-exports'
+import { checkProofForEmptyFields, showMissingField, showToggleMenu } from '../utils/checkForEmptyAttributes'
 
 type ProofRequestModalProps = {} & ReactNavigation
 
@@ -23,6 +24,9 @@ const ProofRequestModal = ({
   const { data, colorBackground } = route.params
 
   const claimMap = useSelector(getClaimMap)
+  const { hasEmpty, allEmpty } = useMemo(() => checkProofForEmptyFields(data), [data])
+  const [isMissingFieldsShowing, toggleMissingFields] = useState(showMissingField(hasEmpty, allEmpty))
+  const isToggleMenuShowing = showToggleMenu(hasEmpty, allEmpty)
 
   const hideModal = useCallback(() => {
     navigation.goBack(null)
@@ -38,10 +42,19 @@ const ProofRequestModal = ({
           credentialText={'You shared this information'}
           imageUrl={data.senderLogoUrl}
           colorBackground={colorBackground}
+          {...{
+            isMissingFieldsShowing,
+            toggleMissingFields,
+            showToggleMenu: isToggleMenuShowing,
+          }}
         />
         <View style={styles.outerModalWrapper}>
           <View style={styles.innerModalWrapper}>
-            <CustomListProofRequest items={data.data} claimMap={claimMap}/>
+            <CustomListProofRequest
+              items={data}
+              claimMap={claimMap} 
+              isMissingFieldsShowing={isMissingFieldsShowing}
+            />
           </View>
         </View>
       </ScrollView>

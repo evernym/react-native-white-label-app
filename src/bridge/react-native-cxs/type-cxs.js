@@ -1,9 +1,9 @@
 // @flow
 
-import type { SMSPendingInvitationPayload } from '../../sms-pending-invitation/type-sms-pending-invitation'
 import type { UserOneTimeInfo } from '../../store/user/type-user-store'
 import type { AgencyPoolConfig } from '../../store/type-config-store'
 import type { ClaimOfferPushPayload } from '../../push-notification/type-push-notification'
+import type {ProprietaryConnectionInvitation} from "../../invitation/type-invitation";
 
 export type AriesProtocolConfig = {
   protocol_type: string,
@@ -77,7 +77,7 @@ export type VcxPoolInitConfig = {
 
 export type VcxCreateConnection = {
   source_id: string,
-  invite_details: SMSPendingInvitationPayload,
+  invite_details: ProprietaryConnectionInvitation,
 }
 
 export type VcxConnectionConnectResult = {|

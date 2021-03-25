@@ -14,6 +14,7 @@ import {
 import {
   SPONSOR_ID,
   VCX_PUSH_TYPE,
+  GET_PROVISION_TOKEN_FUNC,
   SERVER_ENVIRONMENTS,
   DEFAULT_SERVER_ENVIRONMENT,
   // $FlowExpectedError[cannot-resolve-module] external file
@@ -62,7 +63,7 @@ import {
 
 import {
   SEND_LOGS_EMAIL,
-  CUSTOM_LOG_UTILS
+  CUSTOM_LOG_UTILS,
   // $FlowExpectedError[cannot-resolve-module] external file
 } from '../../../../app/evernym-sdk/logs'
 
@@ -70,14 +71,14 @@ import {
   BACKGROUND_IMAGE,
   CustomStartUpScreen as iCustomStartUpScreen,
   // $FlowExpectedError[cannot-resolve-module] external file
-} from '../../../../app/evernym-sdk/startup';
+} from '../../../../app/evernym-sdk/startup'
 
 import {
   CustomSettingsScreen as iCustomSettingsScreen,
   HEADLINE as SETTINGS_HEADLINE,
   SETTINGS_OPTIONS,
   SHOW_CAMERA_BUTTON as SETTINGS_SHOW_CAMERA_BUTTON,
-// $FlowExpectedError[cannot-resolve-module] external file
+  // $FlowExpectedError[cannot-resolve-module] external file
 } from '../../../../app/evernym-sdk/settings'
 
 import {
@@ -95,7 +96,7 @@ import {
   SHOW_CAMERA_BUTTON as CONNECTIONS_SHOW_CAMERA_BUTTON,
   MyConnectionsViewEmptyState as iMyConnectionsViewEmptyState,
   CustomMyConnectionsScreen as iCustomMyConnectionsScreen,
-// $FlowExpectedError[cannot-resolve-module] external file
+  // $FlowExpectedError[cannot-resolve-module] external file
 } from '../../../../app/evernym-sdk/connections'
 
 import {
@@ -104,12 +105,12 @@ import {
   EXTRA_MODALS,
   EXTRA_SCREENS,
   MENU_NAVIGATION_OPTIONS,
-// $FlowExpectedError[cannot-resolve-module] external file
+  // $FlowExpectedError[cannot-resolve-module] external file
 } from '../../../../app/evernym-sdk/navigator'
 
 import {
   CustomConnectionDetailsScreen as iCustomConnectionDetailsScreen,
-// $FlowExpectedError[cannot-resolve-module] external file
+  // $FlowExpectedError[cannot-resolve-module] external file
 } from '../../../../app/evernym-sdk/connections'
 
 // $FlowExpectedError[cannot-resolve-module] external file
@@ -119,7 +120,7 @@ import {
   HEADLINE as HOME_HEADLINE,
   SHOW_EVENTS_HISTORY,
   SHOW_CAMERA_BUTTON as HOME_SHOW_CAMERA_BUTTON,
-  HomeViewEmptyState as iHomeViewEmptyState
+  HomeViewEmptyState as iHomeViewEmptyState,
   // $FlowExpectedError[cannot-resolve-module] external file
 } from '../../../../app/evernym-sdk/home'
 
@@ -134,17 +135,26 @@ import {
 import {
   HEADLINE as QUESTION_HEADLINE,
   CustomQuestionModal as iCustomQuestionModal,
-// $FlowExpectedError[cannot-resolve-module] external file
+  // $FlowExpectedError[cannot-resolve-module] external file
 } from '../../../../app/evernym-sdk/question-dialog'
 
 import {
   CustomCredentialDetailsScreen as iCustomCredentialDetailsScreen,
-// $FlowExpectedError[cannot-resolve-module] external file
+  // $FlowExpectedError[cannot-resolve-module] external file
 } from '../../../../app/evernym-sdk/credentials'
+
+import {
+  HEADLINE as INVITE_ACTION_HEADLINE,
+  ACCEPT_BUTTON_TEXT as INVITE_ACTION_ACCEPT_BUTTON_TEXT,
+  DENY_BUTTON_TEXT as INVITE_ACTION_DENY_BUTTON_TEXT,
+  CustomInviteActionModal as iCustomInviteActionModal,
+  // $FlowExpectedError[cannot-resolve-module] external file
+} from '../../../../app/evernym-sdk/invite-action'
 
 export const appName = APP_NAME || 'appName'
 export const appLogo = APP_LOGO
-export const defaultUserAvatar = DEFAULT_USER_AVATAR || require('./images/noImage.png')
+export const defaultUserAvatar =
+  DEFAULT_USER_AVATAR || require('./images/noImage.png')
 export const appIcon = APP_ICON || require('./images/app_icon.png')
 export const companyName = COMPANY_NAME || 'Your Company'
 export const companyLogo = COMPANY_LOGO
@@ -154,10 +164,12 @@ export const trustedDomains = OIDC_TRUSTED_DOMAINS || []
 
 export const sponsorId = SPONSOR_ID
 export const vcxPushType = VCX_PUSH_TYPE
+export const getProvisionTokenFunc = GET_PROVISION_TOKEN_FUNC
 export const serverEnvironments = SERVER_ENVIRONMENTS || {}
 export const defaultServerEnvironment = DEFAULT_SERVER_ENVIRONMENT
 
-export const credentialOfferHeadline = CREDENTIAL_OFFER_HEADLINE || 'Credential Offer'
+export const credentialOfferHeadline =
+  CREDENTIAL_OFFER_HEADLINE || 'Credential Offer'
 export const credentialOfferAcceptButtonText = CREDENTIAL_OFFER_ACCEPT_BUTTON_TEXT
 export const credentialOfferDenyButtonText = CREDENTIAL_OFFER_DENY_BUTTON_TEXT
 export const CustomCredentialOfferModal = iCustomCredentialOfferModal
@@ -178,13 +190,16 @@ export const customFontFamily = FONT_FAMILY
 export const customFontSizes = FONT_SIZES
 
 export const androidEulaLocal = ANDROID_EULA_LOCAL
-export const androidEulaUrl = ANDROID_EULA_URL || 'https://www.connect.me/google.html'
+export const androidEulaUrl =
+  ANDROID_EULA_URL || 'https://www.connect.me/google.html'
 export const iosEulaLocal = IOS_EULA_LOCAL
 export const iosEulaUrl = IOS_EULA_URL || 'https://www.connect.me/ios_eula.html'
-export const privacyPolicyUrl = PRIVACY_POLICY_URL || 'https://www.connect.me/privacy.html'
+export const privacyPolicyUrl =
+  PRIVACY_POLICY_URL || 'https://www.connect.me/privacy.html'
 export const androidPrivacyPolicyLocal = ANDROID_PRIVACY_POLICY_LOCAL
 export const iosPrivacyPolicyLocal = IOS_PRIVACY_POLICY_LOCAL
-export const termsAndConditionsTitle = TERMS_AND_CONDITIONS_TITLE || 'Terms and Conditions'
+export const termsAndConditionsTitle =
+  TERMS_AND_CONDITIONS_TITLE || 'Terms and Conditions'
 export const privacyPolicyTitle = PRIVACY_POLICY_TITLE || 'Privacy Policy'
 export const CustomEulaScreen = iCustomEulaScreen
 
@@ -234,3 +249,8 @@ export const questionHeadline = QUESTION_HEADLINE
 export const CustomQuestionModal = iCustomQuestionModal
 
 export const CustomCredentialDetailsScreen = iCustomCredentialDetailsScreen
+
+export const inviteActionHeadline = INVITE_ACTION_HEADLINE || 'New Message'
+export const inviteActionAcceptButtonText = INVITE_ACTION_ACCEPT_BUTTON_TEXT
+export const inviteActionDenyButtonText = INVITE_ACTION_DENY_BUTTON_TEXT
+export const CustomInviteActionModal = iCustomInviteActionModal

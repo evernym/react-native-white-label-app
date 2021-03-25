@@ -60,6 +60,10 @@ export class CustomListProofRequest extends Component<CustomListProps, void> {
         ? `${getPredicateTitle(item.p_type || '')} ${item.p_value || ''}`
         : item.data) || ''
 
+    if ((data === '' || !data) && !this.props.isMissingFieldsShowing) {
+      return <View />
+    }
+
     return (
       <View key={index} style={styles.wrapper}>
         <View style={styles.textAvatarWrapper}>
@@ -83,10 +87,16 @@ export class CustomListProofRequest extends Component<CustomListProps, void> {
     let logoUrl
     let claim
     if (!item.values) {
-      return <View></View>
+      return <View/>
     }
 
-    const views = Object.keys(item.values).map((label, keyIndex) => {
+    const allValuesAreEmpty = Object.values(item.values).every((value) => value === '' || !value)
+
+    if (allValuesAreEmpty && !this.props.isMissingFieldsShowing) {
+      return <View />
+    }
+
+    const views = Object.keys(item.values || {}).map((label, keyIndex) => {
       let value = ''
       if (item.values) {
         value = item.values[label]
@@ -104,6 +114,10 @@ export class CustomListProofRequest extends Component<CustomListProps, void> {
       }
 
       logoUrl = claim.logoUrl ? { uri: claim.logoUrl } : null
+
+      if ((value === '' || !value) && !this.props.isMissingFieldsShowing) {
+        return <View />
+      }
 
       return (
         <View key={`${index}_${keyIndex}`} style={styles.textInnerItemWrapper}>

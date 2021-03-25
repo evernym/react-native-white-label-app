@@ -1,6 +1,6 @@
 //@flow
 
-export const BLANK_ATTRIBUTE_DATA_TEXT = '(none)'
+export const BLANK_ATTRIBUTE_DATA_TEXT = 'n/a'
 
 // MIME-TYPES for different file types
 export const photoMimeTypes = ['image/jpeg', 'image/png', 'image/jpg']
@@ -32,4 +32,5 @@ export type CredentialListProps = {
     label: string,
     data?: string,
   }>,
+  isMissingFieldsShowing?: boolean,
 }

@@ -13,7 +13,7 @@ import {
   vcxShutdown,
 } from '../../bridge/react-native-cxs/RNCxs'
 
-import { sponsorId, vcxPushType } from '../../external-exports'
+import { sponsorId, vcxPushType, getProvisionTokenFunc } from '../../external-exports'
 
 export function* registerCloudAgentWithToken(
   agencyConfig: *
@@ -30,17 +30,27 @@ export function* registerCloudAgentWithToken(
   }
   yield put({ type: 'REGISTER_CLOUD_AGENT_UNIQUE_ID_SUCCESS' })
 
+  let provisionTokenError, provisionToken
+
   // get provision Token
-  const [provisionTokenError, provisionToken] = yield call(
-    getProvisionToken,
-    agencyConfig,
-    {
-      type: vcxPushType, // 1 means push notification, its the only one registered
-      id,
-      value: `FCM:mock_value_just_to_register`,
-    },
-    sponsorId
-  )
+  if (getProvisionTokenFunc) {
+    [provisionTokenError, provisionToken] = yield call(
+      getProvisionTokenFunc
+    )
+  } else {
+    // default function to get provision token
+    [provisionTokenError, provisionToken] = yield call(
+      getProvisionToken,
+      agencyConfig,
+      {
+        type: vcxPushType,
+        id,
+        value: `FCM:mock_value_just_to_register`,
+      },
+      sponsorId
+    )
+  }
+
   // Since in previous vcx API call, we used wallet
   // we need to close wallet and other open handles
   yield call(flattenAsync(vcxShutdown), true)

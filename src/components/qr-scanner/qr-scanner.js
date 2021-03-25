@@ -13,22 +13,17 @@ import type {
   QR_SCAN_STATUS,
 } from './type-qr-scanner'
 
-import { Container } from '../layout/container'
-import { CustomView } from '../layout/custom-view'
+import { Container } from '../layout'
+import { CustomView } from '../layout'
 import CustomText from '../text'
 import type { AriesConnectionInvite } from '../../invitation/type-invitation'
-import {
-  isValidAriesV1InviteData,
-  isValidAriesOutOfBandInviteData,
-} from '../../invitation/invitation'
 import {
   color,
   OFFSET_2X,
   OFFSET_3X,
   OFFSET_5X,
   colors,
-} from '../../common/styles/constant'
-import { isValidShortInviteQrCode } from './qr-code-types/qr-code-short-invite'
+} from '../../common/styles'
 import {
   SCAN_STATUS,
   BOTTOM_RIGHT,
@@ -37,8 +32,7 @@ import {
   TOP_LEFT,
   QR_CODE_TYPES,
 } from './type-qr-scanner'
-import { isValidUrlQrCode, getUrlQrCodeData } from './qr-code-types/qr-url'
-import { convertSmsPayloadToInvitation } from '../../sms-pending-invitation/sms-pending-invitation-store'
+import { isValidUrl, getUrlData } from './qr-code-types/qr-url'
 import { fetchValidateJWT } from './qr-code-types/qr-code-oidc'
 import { uuid } from '../../services/uuid'
 import {
@@ -47,10 +41,16 @@ import {
 } from '../../qr-code/type-qr-code'
 import { CONNECTION_INVITE_TYPES } from '../../invitation/type-invitation'
 import { flatJsonParse } from '../../common/flat-json-parse'
-import { isValidSMSInvitation } from '../../sms-pending-invitation/sms-invitation-validator'
 import { validateEphemeralProofQrCode } from '../../proof-request/proof-request-qr-code-reader'
 import { EvaIcon, CLOSE_ICON } from '../../common/icons'
 import { moderateScale } from 'react-native-size-matters'
+import {
+  convertProprietaryInvitationToAppInvitation,
+  isProprietaryInvitation,
+  isShortProprietaryInvitation,
+} from '../../invitation/kinds/proprietary-connection-invitation'
+import { isAriesInvitation } from '../../invitation/kinds/aries-connection-invitation'
+import { isAriesOutOfBandInvitation } from '../../invitation/kinds/aries-out-of-band-invitation'
 
 export default class QRScanner extends PureComponent<
   QrScannerProps,
@@ -114,15 +114,15 @@ export default class QRScanner extends PureComponent<
     this.isScanning = true
 
     // check if qr code data is url or json object
-    const urlQrCode = isValidUrlQrCode(event.data)
+    const urlQrCode = isValidUrl(event.data)
 
     if (urlQrCode) {
-      // update UI to reflect that MSDK has read url and now downloading data
+      // update UI to reflect that ConnectMe has read url and now downloading data
       this.setState({ scanStatus: SCAN_STATUS.DOWNLOADING })
 
       // we have different url type qr codes as well,
       // identify which type of url qr it is and get a json object from url
-      const [urlError, urlData] = await getUrlQrCodeData(urlQrCode, event.data)
+      const [urlError, urlData] = await getUrlData(urlQrCode, event.data)
       if (urlError) {
         // we could not get data from url, show error to user
         return this.showError(urlError)
@@ -152,21 +152,19 @@ export default class QRScanner extends PureComponent<
 
     // now we got json object, either via qr code or via downloading from url
 
-    // check if version 1.0 qr invitation
-    const shortInviteQrCode = isValidShortInviteQrCode(qrData)
+    // check if version 1.0 short qr invitation
+    const shortInviteQrCode = isShortProprietaryInvitation(qrData)
     if (shortInviteQrCode) {
       this.setState({ scanStatus: SCAN_STATUS.SCANNING })
-      // TODO: Change name of this prop to onShortInvite
-      return this.props.onRead(shortInviteQrCode)
+      return this.props.onShortProprietaryInvitationRead(shortInviteQrCode)
     }
 
-    // check if version 1.0 SMS invitation
-    const smsInviteQrCode = isValidSMSInvitation(qrData)
+    // check if version 1.0 qr invitation
+    const smsInviteQrCode = isProprietaryInvitation(qrData)
     if (smsInviteQrCode) {
       this.setState({ scanStatus: SCAN_STATUS.SCANNING })
-      // TODO: KS Change name of this prop to something like onSMSInvitation
-      return this.props.onInvitationUrl(
-        convertSmsPayloadToInvitation(smsInviteQrCode)
+      return this.props.onProprietaryInvitationRead(
+        convertProprietaryInvitationToAppInvitation(smsInviteQrCode)
       )
     }
 
@@ -180,10 +178,7 @@ export default class QRScanner extends PureComponent<
 
     // aries invitation can be directly copied as json string as well
     // above case handles when aries invite comes from url encoded
-    const ariesV1Invite = isValidAriesV1InviteData(
-      qrData,
-      JSON.stringify(qrData)
-    )
+    const ariesV1Invite = isAriesInvitation(qrData, JSON.stringify(qrData))
     if (ariesV1Invite) {
       this.setState({ scanStatus: SCAN_STATUS.SCANNING })
       return this.props.onAriesConnectionInviteRead(ariesV1Invite)
@@ -218,7 +213,8 @@ export default class QRScanner extends PureComponent<
 
     // check if ephemeral proof request
     const [, ephemeralProofRequest] = await validateEphemeralProofQrCode(
-      qrData.type === QR_CODE_TYPES.URL_NON_JSON_RESPONSE
+      qrData.type === QR_CODE_TYPES.URL_NON_JSON_RESPONSE ||
+        qrData.type === QR_CODE_TYPES.EPHEMERAL_PROOF_REQUEST_V1
         ? (qrData: GenericObject).data
         : JSON.stringify(qrData)
     )
@@ -232,7 +228,7 @@ export default class QRScanner extends PureComponent<
       )
     }
 
-    const outOfBandInvite = isValidAriesOutOfBandInviteData(qrData)
+    const outOfBandInvite = isAriesOutOfBandInvitation(qrData)
     if (outOfBandInvite) {
       return this.props.onAriesOutOfBandInviteRead(outOfBandInvite)
     }
@@ -326,11 +322,7 @@ export class CameraMarker extends PureComponent<CameraMarkerProps, void> {
         >
           {status}
         </CustomText>
-        <CustomView
-          row
-          center
-          style={[closeIconStyle.closeIcon]}
-        >
+        <CustomView row center style={[closeIconStyle.closeIcon]}>
           <EvaIcon
             name={CLOSE_ICON}
             width={moderateScale(36)}

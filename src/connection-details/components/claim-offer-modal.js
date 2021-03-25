@@ -62,7 +62,7 @@ export class ClaimOfferModal extends Component<any, *> {
 
   state = {
     shouldShowTransactionInfo: false,
-    scheduledDeleteion: false,
+    scheduledDeletion: false,
   }
 
   render() {
@@ -91,7 +91,7 @@ export class ClaimOfferModal extends Component<any, *> {
       credentialOfferAcceptButtonText ||
       (payTokenValue ? 'Accept & Pay' : 'Accept Credential')
     let denyButtonText =
-      credentialOfferDenyButtonText || (this.props.isOOBInvitation ? 'Cancel' : 'Reject')
+      credentialOfferDenyButtonText || (this.props.canBeIgnored ? 'Cancel' : 'Reject')
 
     // NOTE: Just to be safe, we changed the hasNotAcceptedTAA to hardcoded false, so we can be sure 0 tokens doesn't affect the flow.
     const hasNotAcceptedTAA = false
@@ -234,7 +234,7 @@ export class ClaimOfferModal extends Component<any, *> {
   }
 
   componentWillUnmount() {
-    if (this.state.scheduledDeleteion) {
+    if (this.state.scheduledDeletion) {
       this.props.deleteOutOfBandClaimOffer(this.props.uid)
       return
     }
@@ -262,16 +262,16 @@ export class ClaimOfferModal extends Component<any, *> {
     if (!invitationPayload) {
       this.props.claimOfferIgnored(this.props.uid)
     } else {
-      this.setState({ ...this.state, scheduledDeleteion: true })
+      this.setState({ ...this.state, scheduledDeletion: true })
     }
 
     this.hideModal()
   }
 
   onDeny = () => {
-    if (this.props.isOOBInvitation) {
+    if (this.props.canBeIgnored) {
       // on cancel
-      this.setState({ ...this.state, scheduledDeleteion: true })
+      this.setState({ ...this.state, scheduledDeletion: true })
       this.hideModal()
     } else {
       // on reject
@@ -292,7 +292,7 @@ export class ClaimOfferModal extends Component<any, *> {
     const { invitationPayload } = this.props.route.params
 
     if (invitationPayload) {
-      this.setState({ ...this.state, scheduledDeleteion: true })
+      this.setState({ ...this.state, scheduledDeletion: true })
     }
 
     this.hideModal()
@@ -406,7 +406,7 @@ const mapStateToProps = (
       ? claimOfferData.payTokenValue
       : '0'
 
-  const isOOBInvitation = params.invitationPayload
+  const canBeIgnored = params.invitationPayload
 
   return {
     thereIsANewAgreement: getThereIsANewAgreement(state),
@@ -419,7 +419,7 @@ const mapStateToProps = (
     logoUrl: logo,
     claimPrice,
     lock,
-    isOOBInvitation,
+    canBeIgnored,
   }
 }
 

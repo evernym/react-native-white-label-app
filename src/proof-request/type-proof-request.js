@@ -121,6 +121,8 @@ export type ProofRequestAndHeaderProps = ProofRequestProps & HeaderProofData
 
 export type ProofRequestAttributeListState = {
   [string]: string,
+  isMissingFieldsShowing: boolean,
+  showToggleMenu: boolean,
 }
 
 export const NO_SELF_ATTEST: 'NO_SELF_ATTEST' = 'NO_SELF_ATTEST'
@@ -190,7 +192,7 @@ export type ProofRequestProps = {
   invitationPayload?: any,
   attachedRequest?: any,
   lock: LockStore,
-  isOOBInvitation?: boolean,
+  canBeIgnored?: boolean,
 } & ReactNavigation
 
 export type ProofRequestState = {

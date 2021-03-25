@@ -153,7 +153,7 @@ export function* hydrateClaimMapSaga(): Generator<*, *, *> {
         if (claimMap.hasOwnProperty(key) && !claimMap[key].name) {
           const event = connectionHistory.data.connections[
             claimMap[key].senderDID
-          ].data.find(
+            ].data.find(
             (event) =>
               event.originalPayload.type === CLAIM_STORAGE_SUCCESS &&
               claimMap[key].issueDate === event.originalPayload.issueDate
@@ -165,7 +165,9 @@ export function* hydrateClaimMapSaga(): Generator<*, *, *> {
         }
         if (claimMap.hasOwnProperty(key) && !claimMap[key].senderName) {
           const connection = connections[claimMap[key].myPairwiseDID]
-          claimMap[key].senderName = connection.senderName
+          if (connection) {
+            claimMap[key].senderName = connection.senderName
+          }
         }
       }
 
@@ -173,6 +175,7 @@ export function* hydrateClaimMapSaga(): Generator<*, *, *> {
     }
   } catch (e) {
     captureError(e)
+    customLogger.error(`hydrateClaimMapSaga: ${e}`)
     yield put(
       hydrateClaimMapFail({
         code: ERROR_CLAIM_HYDRATE_FAIL.code,

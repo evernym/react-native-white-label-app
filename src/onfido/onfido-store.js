@@ -20,7 +20,6 @@ import type {
 } from './type-onfido'
 import type { CustomError, GenericObject } from '../common/type-common'
 import type { Store } from '../store/type-store'
-import type { QrCodeShortInvite } from '../components/qr-scanner/type-qr-scanner'
 
 import {
   LAUNCH_ONFIDO_SDK,
@@ -47,12 +46,10 @@ import {
 } from './onfido-api'
 import { captureError } from '../services/error/error-handler'
 import { secureDelete, getHydrationItem, secureSet } from '../services/storage'
-import { isValidShortInviteQrCode } from '../components/qr-scanner/qr-code-types/qr-code-short-invite'
 import {
   invitationReceived,
   sendInvitationResponse,
 } from '../invitation/invitation-store'
-import { convertQrCodeToInvitation } from '../qr-code/qr-code'
 import { ResponseType } from '../components/request/type-request'
 import { QR_CODE_SENDER_DETAIL, QR_CODE_SENDER_DID } from '../api/api-constants'
 import { ensureAppHydrated, getEnvironmentName } from '../store/config-store'
@@ -60,6 +57,11 @@ import { getUserPairwiseDid } from '../store/store-selector'
 import { INVITATION_RESPONSE_FAIL } from '../invitation/type-invitation'
 import { SERVER_ENVIRONMENT } from '../store/type-config-store'
 import { NEW_CONNECTION_SUCCESS } from '../store/type-connection-store'
+import {
+  convertShortProprietaryInvitationToAppInvitation,
+  isShortProprietaryInvitation
+} from "../invitation/kinds/proprietary-connection-invitation";
+import type {ShortProprietaryConnectionInvitation} from "../invitation/type-invitation";
 
 const initialState = {
   status: onfidoProcessStatus.IDLE,
@@ -299,8 +301,8 @@ export function* makeConnectionWithOnfidoSaga(
       return
     }
     const invitationData:
-      | QrCodeShortInvite
-      | boolean = isValidShortInviteQrCode(invitationDetails.invite)
+      | ShortProprietaryConnectionInvitation
+      | boolean = isShortProprietaryInvitation(invitationDetails.invite)
     if (!invitationData || typeof invitationData !== 'object') {
       yield put(
         updateOnfidoConnectionStatus(
@@ -317,7 +319,7 @@ export function* makeConnectionWithOnfidoSaga(
     )
     yield put(
       invitationReceived({
-        payload: convertQrCodeToInvitation(invitationData),
+        payload: convertShortProprietaryInvitationToAppInvitation(invitationData),
       })
     )
     onfidoDid = invitationData[QR_CODE_SENDER_DETAIL][QR_CODE_SENDER_DID]

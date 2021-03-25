@@ -66,6 +66,9 @@ import java.util.zip.ZipOutputStream;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import javax.annotation.Nullable;
 
@@ -1793,4 +1796,28 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
             promise.reject(String.valueOf(e.getSdkErrorCode()), e.getSdkMessage());
         }
     }
+
+  @ReactMethod
+  public void getRequestRedirectionUrl(String url, Promise promise) {
+    try {
+      URL urlObj = new URL(url);
+
+      HttpURLConnection con = (HttpURLConnection) urlObj.openConnection();
+      con.setRequestMethod("GET");
+      con.setInstanceFollowRedirects(false);
+
+      int responseCode = con.getResponseCode();
+
+      if (responseCode == 302) {
+        String location = con.getHeaderField("location");
+        promise.resolve(location);
+      }
+      promise.reject("Failed to fetch URL", "Failed to fetch URL");
+    } catch (Exception e) {
+      e.printStackTrace();
+      Log.e(TAG, "getRequestRedirectionUrl - Error: ", e);
+      promise.reject(e.toString(), "");
+    }
+  }
+
 }

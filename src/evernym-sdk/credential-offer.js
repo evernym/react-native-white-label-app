@@ -1,7 +1,7 @@
 // @flow
 
 /*
- * Here is you can customize labels used for Credential Offer dialog.
+ * Here is you can customize Credential Offer dialog here.
  * */
 
 // text which will be used as the header

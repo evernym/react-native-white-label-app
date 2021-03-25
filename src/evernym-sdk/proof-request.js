@@ -1,7 +1,7 @@
 // @flow
 
 /*
- * Here is you can customize labels used for Proof Request dialog.
+ * Here is you can customize Proof Request dialog here.
  * */
 
 // text which will be used as the header

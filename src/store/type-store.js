@@ -26,6 +26,7 @@ import type { PushNotificationStore } from '../push-notification/type-push-notif
 import type { TxnAuthorAgreementStore } from '../txn-author-agreement/type-txn-author-agreement'
 import type { OpenIdConnectStore } from '../open-id-connect/open-id-connect-actions'
 import type { InAppNotificationStore } from '../in-app-notification/in-app-notification-type'
+import type { InviteActionStore } from '../invite-action/type-invite-action'
 
 export type RouteStore = {
   currentScreen: string,
@@ -60,4 +61,5 @@ export type Store = {
   cloudRestore: CloudRestoreStore,
   openIdConnect: OpenIdConnectStore,
   inAppNotification: InAppNotificationStore,
+  inviteAction: InviteActionStore,
 }

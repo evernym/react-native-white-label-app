@@ -7,6 +7,7 @@ import type { ReactNavigation } from '../common/type-common'
 import { Container, CustomView, CustomText, CustomButton } from '../components'
 import { isBiggerThanShortDevice } from '../common/styles'
 import { homeRoute, expiredTokenRoute } from '../common'
+import { TOKEN_EXPIRED, TOKEN_EXPIRED_MESSAGE, TOKEN_UNRESOLVED_MESSAGE } from './type-expired-token'
 import { appLogo } from '../external-exports'
 
 class ExpiredToken extends PureComponent<ReactNavigation, void> {
@@ -15,6 +16,13 @@ class ExpiredToken extends PureComponent<ReactNavigation, void> {
   }
 
   render() {
+    const text =
+      this.props.route &&
+      this.props.route.params &&
+      this.props.route.params.reason === TOKEN_EXPIRED ?
+        TOKEN_EXPIRED_MESSAGE :
+        TOKEN_UNRESOLVED_MESSAGE
+
     return (
       <Container fifth testID="expired-token-container">
         <Container center>
@@ -30,7 +38,7 @@ class ExpiredToken extends PureComponent<ReactNavigation, void> {
               Sorry!
             </CustomText>
             <CustomText transparentBg primary h3 bold center>
-              This invitation has expired!
+              {text}
             </CustomText>
           </CustomView>
         </Container>

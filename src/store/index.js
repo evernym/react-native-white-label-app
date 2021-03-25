@@ -6,11 +6,7 @@ import { createLogger } from 'redux-logger'
 
 import type { Store } from './type-store'
 
-import {
-  customLogger,
-  PiiHiddenTransformer,
-  PiiHiddenActionTransformer,
-} from './custom-logger'
+import { customLogger, PiiHiddenActionTransformer } from './custom-logger'
 import user, { watchUserStore } from './user/user-store'
 import pushNotification, {
   watchPushNotification,
@@ -76,6 +72,9 @@ import {
 } from '../in-app-notification/in-app-notification-store'
 import { watchMessageDownload } from '../message-download/message-download'
 import { watchLongPollingHome } from '../home/long-polling-home'
+import inviteAction, {
+  watchInviteAction,
+} from '../invite-action/invite-action-store'
 
 const sagaMiddleware = createSagaMiddleware()
 
@@ -107,19 +106,26 @@ const appReducer = combineReducers({
   txnAuthorAgreement,
   openIdConnect: openIdConnectReducer,
   inAppNotification: inAppNotificationReducer,
+  inviteAction,
 })
 
 let middlewares = [historyRecorder, automaticCloudBackup]
 
 // "Error", "Warning", "Info", "Debug", "Trace"
-customLogger.init('debug')
+const logLevel = 'debug'
+customLogger.init(logLevel)
 // eslint-disable-next-line no-unused-vars
 let reduxLogger = createLogger({
   logger: customLogger,
-  stateTransformer: PiiHiddenTransformer,
   actionTransformer: PiiHiddenActionTransformer,
+  level: {
+    prevState: false,
+    action: logLevel,
+    nextState: false,
+    error: logLevel,
+  },
 })
-// middlewares.push(reduxLogger)
+middlewares.push(reduxLogger)
 
 middlewares.push(sagaMiddleware)
 
@@ -173,6 +179,7 @@ sagaMiddleware.run(function* (): Generator<*, *, *> {
     watchMessageDownload(),
     watchOutOfBandConnectionForPresentationEstablished(),
     watchLongPollingHome(),
+    watchInviteAction(),
   ])
 })
 

@@ -5,7 +5,7 @@
 // on click accept take user to lock selection screen
 
 import React, { useState, useCallback, useMemo } from 'react'
-import { Alert, View, StyleSheet, Platform, TouchableOpacity } from 'react-native'
+import { Alert, View, StyleSheet, TouchableOpacity } from 'react-native'
 import WebView from 'react-native-webview'
 import { connect, useSelector } from 'react-redux'
 
@@ -47,12 +47,7 @@ export const EulaScreen = ({
   const onAccept = useCallback(() => {
     dispatch(eulaAccept(true))
     dispatch(unlockApp())
-    if (Platform.OS === 'android') {
-      // Android bypasses request for push notification permissions.
-      // So we can run VCX provisioning/initialization immediately.
-      // For ios devices, it will be requested after accepting the very first connection
-      dispatch(vcxInitStart())
-    }
+    dispatch(vcxInitStart())
 
     if (pendingRedirection) {
       pendingRedirection.map((pendingRoute) => {
@@ -119,7 +114,7 @@ const style = StyleSheet.create({
     top: 0,
     right: 0,
     padding: verticalScale(20),
-  }
+  },
 })
 const Loader = <View style={style.loaderContainer}>{OrangeLoader}</View>
 const emptyError = <View />

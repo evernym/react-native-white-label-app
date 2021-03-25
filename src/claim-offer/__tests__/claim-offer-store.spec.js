@@ -17,6 +17,7 @@ import claimOfferStore, {
   claimOfferAccepted,
   claimOfferShowStart,
   resetClaimRequestStatus,
+  getColorTheme,
 } from '../claim-offer-store'
 import {
   CLAIM_OFFERS,
@@ -57,6 +58,7 @@ import {
   VCX_INIT_POOL_SUCCESS,
   VCX_INIT_SUCCESS,
 } from '../../store/type-config-store'
+import { colors } from '../../common/styles'
 
 describe('claim offer store', () => {
   const initialAction = { type: 'INITIAL_TEST_ACTION' }
@@ -237,16 +239,35 @@ describe('claim offer store', () => {
         },
       },
     }
+    const data = {
+      pairwiseIdentifier1: {
+        uid: 'uid',
+        remotePairwiseDID: 'remotePairwiseDID',
+        senderLogoUrl: 'senderLogoUrl',
+      },
+    }
+
+    const expected = {
+      pairwiseIdentifier1: {
+        ...data.pairwiseIdentifier1,
+        colorTheme: colors.main,
+      },
+    }
+    const expectedJSON = JSON.stringify(expected)
 
     return expectSaga(hydrateClaimOffersSaga)
       .provide([
         [
           matchers.call.fn(getHydrationItem, CLAIM_OFFERS),
-          serializedClaimOffers,
+          JSON.stringify(data),
         ],
         [matchers.select.selector(getConnectionHistory), history],
+        [
+          matchers.call.fn(getColorTheme, 'senderLogoUrl'),
+          colors.main
+        ]
       ])
-      .put(hydrateClaimOffers(JSON.parse(serializedClaimOffers)))
+      .put(hydrateClaimOffers(JSON.parse(expectedJSON)))
       .run()
   })
 

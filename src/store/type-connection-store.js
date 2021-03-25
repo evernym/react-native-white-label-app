@@ -19,6 +19,7 @@ export type MyPairwiseInfo = {
   myPairwiseAgentVerKey: string,
   myPairwisePeerVerKey: string,
   senderDID: string,
+  senderName?: string,
 }
 
 export type Connection = {
@@ -33,7 +34,6 @@ export type Connection = {
   attachedRequest?: AriesAttachedRequest,
   isFetching?: boolean,
   isCompleted?: boolean,
-  colorTheme?: string,
 } & MyPairwiseInfo
 
 export const DELETE_PENDING_CONNECTION = 'DELETE_PENDING_CONNECTION'

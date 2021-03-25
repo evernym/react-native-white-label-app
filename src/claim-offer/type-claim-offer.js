@@ -281,6 +281,7 @@ export type ClaimOfferPayload = AdditionalDataPayload & {
   claimRequestStatus: ClaimRequestStatus,
   payTokenValue?: string,
   issueDate?: number,
+  colorTheme?: string,
 }
 
 export type SerializedClaimOffer = {

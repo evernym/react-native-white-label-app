@@ -263,13 +263,18 @@ You can configure a server environment used for agent provisioning inside the `p
         ```
 
 * Information used for application provisioning
+    * `GET_PROVISION_TOKEN_FUNC` - function to be called to get provisioning token.
+       ```
+        GET_PROVISION_TOKEN_FUNC = async () -> [error: string | null, token: string | null] 
+      ```
+       
     * `VCX_PUSH_TYPE` -  type of push notifications
         * 1 - push notification to default app
         * 3 - forwarding
         * 4 - sponsor configured app
        
           ```javascript
-          export const VCX_PUSH_TYPE = 1
+          export const VCX_PUSH_TYPE = 4
           ```
         
     * `SPONSOR_ID` - An ID given to you from Evernym's Support Team after the Sponsor onboarding process is complete.
@@ -888,7 +893,7 @@ You can customize `Proof Request` dialog in the `proof-request.js` module.
         export const CustomEnterAttributeValueModal = () => <Text>Custom Dialog</Text>
         ``` 
 
-#### Question dialog 
+#### Question 
 
 You can customize `Question` dialog in the `question-dialog.js` module.
 
@@ -911,7 +916,50 @@ You can customize `Question` dialog in the `question-dialog.js` module.
         ```javascript
         export const CustomQuestionModal = () => <Text>Custom Question Dialog</Text>
         ``` 
+#### Invite Action
 
+You can customize `Invite Action` dialog in the `invite-action.js` module.
+
+* `HEADLINE` - (string) the text which will be used for the header.
+    * to use default - `New Message`
+        ```javascript
+        export const HEADLINE = null
+        ```
+    * to use custom 
+        ```javascript
+        export const HEADLINE = 'Custom Headline'
+        ```
+
+* `ACCEPT_BUTTON_TEXT` - (string) the text which will be used for top (accept) button.
+    * to use default - `Accept`
+        ```javascript
+        export const ACCEPT_BUTTON_TEXT = null
+        ```
+    * to use custom 
+        ```javascript
+        export const ACCEPT_BUTTON_TEXT = 'Ok'
+        ```
+
+* `DENY_BUTTON_TEXT` - (string) the text which will be used for bottom (deny) button.
+    * to use default - `Reject`
+        ```javascript
+        export const DENY_BUTTON_TEXT = null
+        ```
+    * to use custom 
+        ```javascript
+        export const DENY_BUTTON_TEXT = 'Deny'
+        ```
+
+* `CustomInviteActionModal` - (React Component) custom component for Invite Action dialog rendering (instead of predefined one).
+    * to use default
+        ```javascript
+        export const CustomInviteActionModal = null
+        ```    
+    * to use custom 
+        ```javascript
+        export const CustomInviteActionModal = () => <Text>Custom Invite Action Dialog</Text>
+        ``` 
+      
 #### Settings
 
 You can customize `Settings` view in the `settings.js` module.

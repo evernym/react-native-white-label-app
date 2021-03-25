@@ -1,97 +1,78 @@
 // @flow
-import { Platform } from 'react-native'
-import {
-  put,
-  takeEvery,
-  takeLatest,
-  call,
-  all,
-  select,
-  spawn,
-} from 'redux-saga/effects'
+import { all, call, put, select, spawn, takeEvery, takeLatest } from 'redux-saga/effects'
+import type {
+  AriesOutOfBandInvite,
+  Invitation,
+  InvitationAction,
+  InvitationPayload,
+  InvitationReceivedActionData,
+  InvitationResponseSendAction,
+  InvitationResponseSendData,
+  InvitationStore,
+  OutOfBandInvitationAcceptedAction,
+} from './type-invitation'
 import {
   CONNECTION_INVITE_TYPES,
+  ERROR_INVITATION_ALREADY_ACCEPTED,
+  ERROR_INVITATION_CONNECT,
+  HYDRATE_INVITATIONS,
+  INVITATION_ACCEPTED,
   INVITATION_RECEIVED,
+  INVITATION_REJECTED,
+  INVITATION_RESPONSE_FAIL,
   INVITATION_RESPONSE_SEND,
   INVITATION_RESPONSE_SUCCESS,
-  INVITATION_RESPONSE_FAIL,
-  INVITATION_REJECTED,
-  ERROR_INVITATION_CONNECT,
   OUT_OF_BAND_INVITATION_ACCEPTED,
-  ERROR_INVITATION_ALREADY_ACCEPTED,
-  INVITATION_ACCEPTED,
-  HYDRATE_INVITATIONS,
 } from './type-invitation'
 import { ResponseType } from '../components/request/type-request'
-import {
-  ERROR_INVITATION_RESPONSE_FAILED,
-} from '../api/api-constants'
+import { ERROR_INVITATION_RESPONSE_FAILED } from '../api/api-constants'
 import {
   getAllInvitations,
   getConnection,
   getConnectionByUserDid,
+  getConnectionExists,
   getInvitationPayload,
-
 } from '../store/store-selector'
 import {
+  connectionAttachRequest,
   connectionDeleteAttachedRequest,
-  updateConnectionSerializedState,
+  connectionRequestSent,
+  deletePendingConnection,
   saveNewOneTimeConnection,
   saveNewPendingConnection,
+  sendConnectionReuse,
   updateConnection,
-  deletePendingConnection,
-  connectionRequestSent,
+  updateConnectionSerializedState,
 } from '../store/connections-store'
 import {
-  createConnectionWithInvite,
   acceptInvitationVcx,
-  serializeConnection,
-  createConnectionWithAriesInvite,
-  createConnectionWithAriesOutOfBandInvite,
-  getHandleBySerializedConnection,
-  createCredentialWithAriesOfferObject,
   connectionGetState,
   connectionUpdateStateWithMessage,
+  createConnectionWithAriesInvite,
+  createConnectionWithAriesOutOfBandInvite,
+  createConnectionWithInvite,
+  createCredentialWithAriesOfferObject,
+  getHandleBySerializedConnection,
+  serializeConnection,
+  toUtf8FromBase64,
 } from '../bridge/react-native-cxs/RNCxs'
-import type {
-  AriesOutOfBandInvite,
-  InvitationResponseSendData,
-  InvitationResponseSendAction,
-  InvitationPayload,
-  InvitationStore,
-  InvitationAction,
-  InvitationReceivedActionData,
-  OutOfBandInvitationAcceptedAction,
-  Invitation,
-} from './type-invitation'
 import type { CustomError, GenericObject } from '../common/type-common'
+import { ID, RESET, TYPE } from '../common/type-common'
 import { captureError } from '../services/error/error-handler'
-import { RESET } from '../common/type-common'
 import { ensureVcxInitSuccess } from '../store/route-store'
-import type { MyPairwiseInfo } from '../store/type-connection-store'
+import type { Connection, MyPairwiseInfo } from '../store/type-connection-store'
+import { connectionFail, connectionSuccess, ERROR_CONNECTION } from '../store/type-connection-store'
 import { flattenAsync } from '../common/flatten-async'
-import {
-  connectionFail,
-  connectionSuccess,
-  ERROR_CONNECTION,
-} from '../store/type-connection-store'
 import { flatJsonParse } from '../common/flat-json-parse'
-import { toUtf8FromBase64 } from '../bridge/react-native-cxs/RNCxs'
-import type { Connection } from '../store/type-connection-store'
-import { ID, TYPE } from '../common/type-common'
-import {
-  sendConnectionReuse,
-  connectionAttachRequest,
-} from '../store/connections-store'
-import { getConnectionExists } from '../store/store-selector'
 import {
   acceptClaimOffer,
   acceptOutofbandClaimOffer,
   saveSerializedClaimOffer,
 } from '../claim-offer/claim-offer-store'
 import {
+  CLOUD_AGENT_UNAVAILABLE,
   CONNECTION_ALREADY_EXISTS,
-  CLOUD_AGENT_UNAVAILABLE, CONNECTION_ALREADY_EXISTS_MESSAGE,
+  CONNECTION_ALREADY_EXISTS_MESSAGE,
 } from '../bridge/react-native-cxs/error-cxs'
 import {
   acceptOutofbandPresentationRequest,
@@ -104,8 +85,6 @@ import { INVITATIONS } from '../common'
 import { customLogger } from '../store/custom-logger'
 import { retrySaga } from '../api/api-utils'
 import { checkProtocolStatus } from '../store/protocol-status'
-import ImageColors from 'react-native-image-colors'
-import { pickAndroidColor, pickIosColor } from '../my-credentials/cards/utils'
 import { isConnectionCompleted } from '../store/store-utils'
 
 export const invitationInitialState = {}
@@ -190,8 +169,6 @@ export function* sendResponse(
       yield call(sendResponseOnProprietaryConnectionInvitation, payload)
     }
   } catch (e) {
-    console.log('e')
-    console.log(e)
     yield call(handleConnectionError, e, payload.senderDID)
   }
 }
@@ -253,11 +230,6 @@ export function* sendResponseOnProprietaryConnectionInvitation(
       connectionHandle
     )
 
-    const colorTheme = yield call(
-      getConnectionColorTheme,
-      payload.senderLogoUrl
-    )
-
     const connection = {
       identifier: pairwiseInfo.myPairwiseDid,
       logoUrl: payload.senderLogoUrl,
@@ -272,7 +244,6 @@ export function* sendResponseOnProprietaryConnectionInvitation(
       vcxSerializedConnection,
       publicDID: payload.senderDetail.publicDID,
       isCompleted: false,
-      colorTheme,
       ...payload,
     }
 
@@ -314,11 +285,6 @@ export function* sendResponseOnAriesConnectionInvitation(
       connectionHandle
     )
 
-    const colorTheme = yield call(
-      getConnectionColorTheme,
-      payload.senderLogoUrl
-    )
-
     const connection = {
       identifier: pairwiseInfo.myPairwiseDid,
       logoUrl: payload.senderLogoUrl,
@@ -330,7 +296,6 @@ export function* sendResponseOnAriesConnectionInvitation(
       vcxSerializedConnection,
       publicDID: payload.senderDetail.publicDID,
       isCompleted: false,
-      colorTheme,
       ...payload,
     }
     yield put(updateConnection(connection))
@@ -345,25 +310,6 @@ export function* sendResponseOnAriesConnectionInvitation(
     )
   } catch (e) {
     yield call(handleConnectionError, e, payload.senderDID)
-  }
-}
-
-export function* getConnectionColorTheme(
-  senderLogoUrl: any
-): Generator<*, *, *> {
-  if (!senderLogoUrl) {
-    return colors.main
-  }
-
-  try {
-    const foundColors = yield call(ImageColors.getColors, senderLogoUrl, {
-      fallback: colors.main,
-    })
-    return Platform.OS === 'android'
-      ? pickAndroidColor(foundColors)
-      : pickIosColor(foundColors)
-  } catch (e) {
-    return colors.main
   }
 }
 
@@ -437,8 +383,6 @@ export function* sendResponseOnAriesOutOfBandInvitationWithHandshake(
       connectionHandle
     )
 
-    const colorTheme = yield call(getConnectionColorTheme)
-
     const connection = {
       identifier: pairwiseInfo.myPairwiseDid,
       logoUrl: payload.senderLogoUrl,
@@ -451,7 +395,6 @@ export function* sendResponseOnAriesOutOfBandInvitationWithHandshake(
       publicDID: payload.senderDetail.publicDID,
       attachedRequest,
       isCompleted: false,
-      colorTheme,
       ...payload,
     }
     yield put(updateConnection(connection))
@@ -489,11 +432,6 @@ export function* sendResponseOnAriesOutOfBandInvitationWithoutHandshake(
       connectionHandle
     )
 
-    const colorTheme = yield call(
-      getConnectionColorTheme,
-      payload.senderLogoUrl
-    )
-
     const connection = {
       identifier: payload.senderDID,
       logoUrl: payload.senderLogoUrl,
@@ -502,7 +440,6 @@ export function* sendResponseOnAriesOutOfBandInvitationWithoutHandshake(
       senderName: payload.senderName,
       publicDID: payload.senderDetail.publicDID,
       vcxSerializedConnection,
-      colorTheme,
       attachedRequest,
       myPairwiseDid: '',
       myPairwiseVerKey: '',
@@ -548,7 +485,7 @@ export function* updateAriesConnectionState(
       connectionHandle
     )
 
-    if (connectionState === 1) {
+    if (connectionState === 0) {
       // if connection object moved into state = 1 it means connection failed
       // TODO: update VCX Null state to contain details about connection failure reason
       yield call(
@@ -583,6 +520,7 @@ export function* handleConnectionError(
   senderDID: string
 ): Generator<*, *, *> {
   captureError(new Error(e.message))
+  customLogger.error(`handleConnectionError: ${e.message}`)
   let message
   if (e.code === CONNECTION_ALREADY_EXISTS) {
     yield put(
@@ -755,6 +693,7 @@ export function* hydrateInvitationsSaga(): Generator<*, *, *> {
     customLogger.log(`hydrateInvitationsSaga: ${e}`)
   }
 }
+
 
 function* watchInvitationReceived(): any {
   yield takeEvery(

@@ -13,7 +13,7 @@ import { sendConnectionReuse } from '../store/connections-store'
 import type { ConnectionHistoryEvent } from '../connection-history/type-connection-history'
 import type { ClaimMap } from '../claim/type-claim'
 
-export const BLANK_ATTRIBUTE_DATA_TEXT = '(none)'
+export const BLANK_ATTRIBUTE_DATA_TEXT = 'n/a'
 export const DISSATISFIED_ATTRIBUTE_DATA_TEXT = 'Not found'
 export const MISSING_ATTRIBUTE_DATA_TEXT = 'Missing - Tap to fix'
 
