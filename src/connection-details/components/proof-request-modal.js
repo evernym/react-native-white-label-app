@@ -25,7 +25,7 @@ import { colors } from '../../common/styles/constant'
 
 // $FlowExpectedError[cannot-resolve-module] external file
 import { modalOptions } from '../utils/modalOptions'
-import { CustomProofRequestModal, proofRequestHeadline } from '../../external-exports'
+import {CustomProofRequestModal, proofRequestHeadline} from '../../external-exports'
 
 // TODO: Fix any type
 const ProofRequestModal = (props: any) => {
@@ -95,11 +95,13 @@ const mapStateToProps = (state: Store, props: ClaimProofNavigation) => {
   }
 }
 
-const screen = CustomProofRequestModal || ProofRequestModal
+const screen =
+  CustomProofRequestModal && CustomProofRequestModal.screen ||
+  ProofRequestModal
+
 const navigationOptions =
-  CustomProofRequestModal ?
-    null :
-    modalOptions(proofRequestHeadline, 'CloseIcon')
+  CustomProofRequestModal && CustomProofRequestModal.navigationOptions ||
+  modalOptions(proofRequestHeadline, 'CloseIcon')
 
 export const proofRequestScreen = {
   routeName: proofRequestRoute,

@@ -438,11 +438,13 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   )
 
-const screen = CustomCredentialOfferModal || ClaimOfferModal
+const screen =
+  CustomCredentialOfferModal && CustomCredentialOfferModal.screen ||
+  ClaimOfferModal
+
 const navigationOptions =
-  CustomCredentialOfferModal ?
-    null :
-    modalOptions(credentialOfferHeadline, 'CloseIcon')
+  CustomCredentialOfferModal && CustomCredentialOfferModal.navigationOptions ||
+  modalOptions(credentialOfferHeadline, 'CloseIcon')
 
 export const claimOfferScreen = {
   routeName: claimOfferRoute,

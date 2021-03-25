@@ -12,7 +12,7 @@ import { moderateScale } from 'react-native-size-matters'
 import { colors } from '../../common/styles/constant'
 import type { ReactNavigation } from '../../common/type-common'
 import { modalOptions } from '../utils/modalOptions'
-import { CustomSharedProofModal, proofRequestHeadline } from '../../external-exports'
+import { CustomSharedProofModal, proofRequestHeadline} from '../../external-exports'
 import { checkProofForEmptyFields, showMissingField, showToggleMenu } from '../utils/checkForEmptyAttributes'
 
 type ProofRequestModalProps = {} & ReactNavigation
@@ -66,11 +66,13 @@ const ProofRequestModal = ({
   )
 }
 
-const screen = CustomSharedProofModal || ProofRequestModal
+const screen =
+  CustomSharedProofModal && CustomSharedProofModal.screen ||
+  ProofRequestModal
+
 const navigationOptions =
-  CustomSharedProofModal ?
-    null :
-    modalOptions(proofRequestHeadline, 'Arrow')
+  CustomSharedProofModal && CustomSharedProofModal.navigationOptions ||
+  modalOptions(proofRequestHeadline, 'CloseIcon')
 
 export const proofScreen = {
   routeName: modalContentProofShared,

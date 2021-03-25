@@ -15,3 +15,9 @@ export const SERVER_ENVIRONMENTS = {}
 
 // environment to use by default
 export const DEFAULT_SERVER_ENVIRONMENT = null
+
+/*
+* Function to be called to get provision token
+* Signature: GET_PROVISION_TOKEN_FUNC() -> [error: string | null, token: string | null]
+* */
+export const GET_PROVISION_TOKEN_FUNC = null

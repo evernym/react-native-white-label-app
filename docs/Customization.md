@@ -794,9 +794,12 @@ You can customize `Credential Offer` dialog in the `credential-offer.js` module.
         ```javascript
         export const CustomCredentialOfferModal = null
         ```    
-    * to use custom 
+    * to use custom
         ```javascript
-        export const CustomCredentialOfferModal = () => <Text>Custom Credential Offer Dialog</Text>
+        export const CustomCredentialOfferModal = {
+            screen: () => <Text>Custom Credential Offer Dialog</Text>, // Optional, React Component
+            navigationOptions: {}, // Optional, ModalStack.Screen Options - https://reactnavigation.org/docs/screen-options
+        } 
         ``` 
 
 * `CustomCredentialOfferModal` - (React Component) custom component for received Credential dialog rendering (instead of predefined one).
@@ -806,8 +809,11 @@ You can customize `Credential Offer` dialog in the `credential-offer.js` module.
         ```    
     * to use custom 
         ```javascript
-        export const CustomCredentialModal = () => <Text>Custom Credential Dialog</Text>
-        ``` 
+        export const CustomCredentialModal = {
+            screen: () => <Text>Custom Credential Dialog</Text>, // Optional, React Component
+            navigationOptions: {}, // ModalStack.Screen Options - https://reactnavigation.org/docs/screen-options
+        }        
+       ``` 
 
 #### Proof Request 
 
@@ -850,7 +856,10 @@ You can customize `Proof Request` dialog in the `proof-request.js` module.
         ```    
     * to use custom 
         ```javascript
-        export const CustomProofRequestModal = () => <Text>Custom Proof Request Dialog</Text>
+        export const CustomProofRequestModal = {
+            screen: () => <Text>Custom Proof Request Dialog</Text>, // Optional, React Component
+            navigationOptions: {}, // Optional, ModalStack.Screen Options - https://reactnavigation.org/docs/screen-options
+        } 
         ``` 
 
 * `CustomSharedProofModal` - (React Component) custom component for shared Proof dialog rendering (instead of predefined one).
@@ -860,7 +869,10 @@ You can customize `Proof Request` dialog in the `proof-request.js` module.
         ```    
     * to use custom 
         ```javascript
-        export const CustomSharedProofModal = () => <Text>Custom Proof Dialog</Text>
+        export const CustomSharedProofModal = {
+            screen: () => <Text>Custom Proof Dialog</Text>, // Optional, React Component
+            navigationOptions: {}, // Optional, ModalStack.Screen Options - https://reactnavigation.org/docs/screen-options
+        } 
         ``` 
 
 * `CustomSelectAttributeValueModal` - (React Component) custom component for selecting a credential for filling a requested attribute in Proof (instead of predefined one).
@@ -870,8 +882,11 @@ You can customize `Proof Request` dialog in the `proof-request.js` module.
         ```    
     * to use custom 
         ```javascript
-        export const CustomSelectAttributeValueModal = () => <Text>Custom Dialog</Text>
-        ``` 
+        export const CustomSelectAttributeValueModal = {
+            screen: () => <Text>Custom Dialog</Text>, // Optional, React Component
+            navigationOptions: {}, // Optional, ModalStack.Screen Options - https://reactnavigation.org/docs/screen-options
+        }         
+      ``` 
 
 * `CustomSelectAttributesValuesModal` - (React Component) custom component for selecting a credential for filling a requested attribute group in Proof (instead of predefined one).
     * to use default
@@ -880,18 +895,24 @@ You can customize `Proof Request` dialog in the `proof-request.js` module.
         ```    
     * to use custom 
         ```javascript
-        export const CustomSelectAttributesValuesModal = () => <Text>Custom Dialog</Text>
-        ``` 
+        export const CustomSelectAttributesValuesModal = {
+            screen: () => <Text>Custom Dialog</Text>, // Optional, React Component
+            navigationOptions: {}, // Optional, ModalStack.Screen Options - https://reactnavigation.org/docs/screen-options
+        }          
+      ``` 
 
-* `CustomSelectAttributesValuesModal` - (React Component) custom component for entering a custom value for a requested attribute which can be self attested in Proof (instead of predefined one).
+* `CustomEnterAttributeValueModal` - (React Component) custom component for entering a custom value for a requested attribute which can be self attested in Proof (instead of predefined one).
     * to use default
         ```javascript
         export const CustomEnterAttributeValueModal = null
         ```    
     * to use custom 
         ```javascript
-        export const CustomEnterAttributeValueModal = () => <Text>Custom Dialog</Text>
-        ``` 
+        export const CustomEnterAttributeValueModal = {
+            screen: () => <Text>Custom Dialog</Text>, // Optional, React Component
+            navigationOptions: {}, // Optional, ModalStack.Screen Options - https://reactnavigation.org/docs/screen-options
+        }         
+      ``` 
 
 #### Question 
 
@@ -914,8 +935,11 @@ You can customize `Question` dialog in the `question-dialog.js` module.
         ```    
     * to use custom 
         ```javascript
-        export const CustomQuestionModal = () => <Text>Custom Question Dialog</Text>
-        ``` 
+        export const CustomQuestionModal = {
+            screen: () => <Text>Custom Question Dialog</Text>, // Optional, React Component
+            navigationOptions: {}, // Optional, ModalStack.Screen Options - https://reactnavigation.org/docs/screen-options
+        }         
+      ``` 
 #### Invite Action
 
 You can customize `Invite Action` dialog in the `invite-action.js` module.
@@ -957,8 +981,11 @@ You can customize `Invite Action` dialog in the `invite-action.js` module.
         ```    
     * to use custom 
         ```javascript
-        export const CustomInviteActionModal = () => <Text>Custom Invite Action Dialog</Text>
-        ``` 
+        export const CustomInviteActionModal = {
+            screen: () => <Text>Custom Question Dialog</Text>, // Optional, React Component
+            navigationOptions: {}, // Optional, ModalStack.Screen Options - https://reactnavigation.org/docs/screen-options
+        }        
+      ``` 
       
 #### Settings
 
