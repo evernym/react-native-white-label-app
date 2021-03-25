@@ -22,7 +22,9 @@ import type { CredentialOffer } from '../../claim-offer/type-claim-offer'
 import type { MyPairwiseInfo } from '../../store/type-connection-store'
 import type { ClaimOfferPushPayload } from '../../push-notification/type-push-notification'
 import { getWalletKey } from '../../services/storage'
-import { vcxPushType } from '../../external-exports'
+import {appName, vcxPushType} from '../../external-exports'
+import DeviceInfo from "react-native-device-info"
+import { flattenAsync } from '../../common/flatten-async'
 
 export const paymentHandle = 0
 const commonConfigParams = {
@@ -66,6 +68,8 @@ export async function convertCxsInitToVcxInit(
   walletPoolName: WalletPoolName
 ): Promise<VcxInitConfig> {
   const wallet_key = await getWalletKey()
+  const [, deviceName] = await flattenAsync(DeviceInfo.getDeviceName)()
+
   return {
     agency_endpoint: init.agencyUrl,
     agency_did: init.agencyDID,
@@ -77,7 +81,7 @@ export async function convertCxsInitToVcxInit(
     sdk_to_remote_did: init.myOneTimeDid,
     sdk_to_remote_verkey: init.myOneTimeVerificationKey,
     // TODO: These should be removed after we sdk team fix these as optional
-    institution_name: 'some-random-name',
+    institution_name: deviceName || appName,
     institution_logo_url: 'https://robothash.com/logo.png',
     institution_did: init.oneTimeAgencyDid,
     institution_verkey: init.oneTimeAgencyVerificationKey,
