@@ -44,6 +44,13 @@ const walletPoolName = {
   poolName: 'poolName',
 }
 
+jest.mock('react-native-device-info', () => {
+  return {
+    getDeviceName: () => 'test-name',
+    getModel: () => 'test-model'
+  }
+})
+
 describe('transformer:VCX', () => {
   it('convertAgencyConfigToVcxProvision', async () => {
     const vcxProvisionConfig = await convertAgencyConfigToVcxProvision(

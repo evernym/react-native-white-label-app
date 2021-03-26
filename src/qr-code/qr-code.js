@@ -73,6 +73,7 @@ import {
   getExistingConnection,
   prepareParamsForExistingConnectionRedirect,
 } from '../invitation/invitation-helpers'
+import {usePushNotifications} from "../external-exports";
 
 export class QRCodeScannerScreen extends Component<
   QRCodeScannerScreenProps,
@@ -160,7 +161,7 @@ export class QRCodeScannerScreen extends Component<
 
     const isAuthorized = await getPushNotificationAuthorizationStatus()
 
-    if (Platform.OS === 'ios' && !isAuthorized) {
+    if (Platform.OS === 'ios'&& usePushNotifications && !isAuthorized) {
       navigationFn(pushNotificationPermissionRoute, {
         senderDID: invitation.payload.senderDID,
         navigatedFrom: qrCodeScannerTabRoute,
@@ -271,7 +272,7 @@ export class QRCodeScannerScreen extends Component<
     const isAuthorized = await getPushNotificationAuthorizationStatus()
     const navigationFn = navigation.push || navigation.navigate
 
-    if (Platform.OS === 'ios' && !isAuthorized) {
+    if (Platform.OS === 'ios' && usePushNotifications && !isAuthorized) {
       navigationFn(pushNotificationPermissionRoute, {
         senderDID: invitationPayload.senderDID,
         navigatedFrom: qrCodeScannerTabRoute,

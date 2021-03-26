@@ -21,7 +21,7 @@ Object {
   "agency_verkey": "VCNhKASjLU5tVWnZpjcyEsoV1QC3adrPVMCCjeKMobn",
   "institution_did": "oneTimeAgencyDid",
   "institution_logo_url": "https://robothash.com/logo.png",
-  "institution_name": "some-random-name",
+  "institution_name": "test-name",
   "institution_verkey": "oneTimeAgencyVerKey",
   "payment_method": "sov",
   "protocol_type": "3.0",

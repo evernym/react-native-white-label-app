@@ -25,6 +25,7 @@ import {
 import { customLogger } from '../store/custom-logger'
 import { getUnacknowledgedMessages } from '../store/config-store'
 import { getNewMessagesCount } from '../store/store-selector'
+import {usePushNotifications} from "../external-exports";
 
 export const remoteMessageParser = (message: RemoteMessage) => {
   const {
@@ -61,7 +62,7 @@ export class PushNotification extends Component<PushNotificationProps, void> {
   messageListener = null
 
   componentDidMount = async () => {
-    if (Platform.OS === 'ios') {
+    if (Platform.OS === 'ios' && usePushNotifications) {
       // Sets the current badge number on the app icon to zero. iOS only for now.
       PushNotificationIOS.setApplicationIconBadgeNumber(0)
       // Removes all delivered notifications from notification center
@@ -160,7 +161,7 @@ export class PushNotification extends Component<PushNotificationProps, void> {
     }
 
     if (
-      Platform.OS === 'ios' &&
+      Platform.OS === 'ios' && usePushNotifications &&
       newMessagesCount !== prevProps.newMessagesCount
     ) {
       PushNotificationIOS.setApplicationIconBadgeNumber(newMessagesCount || 0)

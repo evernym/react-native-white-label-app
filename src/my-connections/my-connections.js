@@ -32,7 +32,7 @@ import {
   CustomConnectionEmptyState,
   connectionsHeadline,
   connectionsShowCameraButton,
-  CustomMyConnectionsScreen,
+  CustomMyConnectionsScreen, usePushNotifications,
 } from '../external-exports'
 import { SHOW_UNREAD_MESSAGES_BADGE_NEAR_WITH_MENU } from '../components/header/type-header'
 
@@ -137,7 +137,7 @@ const MyConnections = ({
 
   useEffect(() => {
     if (!Object.keys(unseenMessages).length) {
-      if (Platform.OS === 'ios') {
+      if (Platform.OS === 'ios' && usePushNotifications) {
         // Sets the current badge number on the app icon to zero. iOS only for now.
         PushNotificationIOS.setApplicationIconBadgeNumber(0)
       }

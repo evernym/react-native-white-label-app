@@ -124,11 +124,7 @@ const drawerComponent = (props: Object) => (
   >
     <View style={styles.drawerHeader}>
       {CustomDrawerHeaderContent ? (
-        <CustomDrawerHeaderContent
-          width={verticalScale(136)}
-          height={verticalScale(18)}
-          fill={colors.gray3}
-        />
+        <CustomDrawerHeaderContent/>
       ) : (
         <Image
           source={require('../images/powered_by_logo.png')}
