@@ -3,9 +3,6 @@ import DeviceInfo from 'react-native-device-info'
 import { StyleSheet } from 'react-native'
 import { Dimensions, Platform } from 'react-native'
 
-import { customColors, customFontFamily, customFontSizes } from '../../external-exports'
-import {customLogger} from "@dev/react-native-evernym-sdk/src/store/custom-logger";
-
 // $FlowExpectedError[cannot-resolve-module] external file
 import { COLORS } from '../../../../../../app/evernym-sdk/colors'
 // $FlowExpectedError[cannot-resolve-module] external file
