@@ -66,6 +66,7 @@ import {PROOF_REQUEST_STATUS} from "../proof-request/type-proof-request";
 import {validateOutofbandProofRequestQrCode} from "../proof-request/proof-request-qr-code-reader";
 import {claimOfferReceived} from "../claim-offer/claim-offer-store";
 import {proofRequestReceived} from "../proof-request/proof-request-store";
+import {usePushNotifications} from "../external-exports";
 
 const isReceived = ({ payload, status }) => {
   return (
@@ -293,7 +294,7 @@ export class SplashScreenView extends PureComponent<
           params: params,
         },
       }
-    } else if (Platform.OS === 'ios' && !this.state.isAuthorized) {
+    } else if (Platform.OS === 'ios'&& usePushNotifications && !this.state.isAuthorized) {
       options = {
         routeName: pushNotificationPermissionRoute,
         params,
@@ -303,7 +304,7 @@ export class SplashScreenView extends PureComponent<
   }
 
   prepareOoBRedirectionParams = (routeName: string, params: any) => {
-    if (Platform.OS === 'ios' && !this.state.isAuthorized) {
+    if (Platform.OS === 'ios'&& usePushNotifications && !this.state.isAuthorized) {
       return {
         routeName: pushNotificationPermissionRoute,
         params: {
