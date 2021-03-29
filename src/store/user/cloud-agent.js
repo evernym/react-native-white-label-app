@@ -64,7 +64,7 @@ export function* registerCloudAgentWithToken(
 
   if (provisionTokenError || !provisionToken) {
     return [
-      `CS-007::Error calling getProvisionToken vcx API call ${provisionTokenError}`,
+      `CS-007::Error calling getProvisionToken vcx API call ${provisionTokenError || ''}`,
       null,
     ]
   }

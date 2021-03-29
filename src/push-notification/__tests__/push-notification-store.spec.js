@@ -96,7 +96,7 @@ describe('push notification store should work properly', () => {
       invitation: {},
     }
     const id = await uniqueId()
-    const cxsPushTokenConfig = { uniqueId: id, pushToken: `FCM:${pushToken}` }
+    const cxsPushTokenConfig = { uniqueId: id, pushToken: `${pushToken}` }
 
     return expectSaga(onPushTokenUpdate, updatePushToken(pushToken))
       .withState(vcxInitSuccessState)
