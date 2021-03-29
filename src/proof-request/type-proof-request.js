@@ -21,7 +21,7 @@ import { updateAttributeClaim } from '../proof/proof-store'
 import type { LockStore } from '../lock/type-lock'
 import { applyAttributesForPresentationRequest } from './proof-request-store'
 import { getPredicateTitle } from '../connection-details/utils/getPredicateTitle'
-import { appName } from '../external-exports'
+import { appName } from '../external-imports'
 
 export type RequestedAttribute = {|
   name?: string,

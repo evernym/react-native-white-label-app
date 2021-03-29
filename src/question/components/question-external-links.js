@@ -19,7 +19,7 @@ import {
   venetianRed,
   color, colors,
 } from '../../common/styles'
-import { appName } from '../../external-exports'
+import { appName } from '../../external-imports'
 
 export class QuestionExternalLinks extends PureComponent<QuestionExternalLinksProps> {
   render() {

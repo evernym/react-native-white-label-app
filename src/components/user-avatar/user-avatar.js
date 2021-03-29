@@ -12,7 +12,7 @@ import { selectUserAvatar } from '../../store/user/user-store'
 import type { ImageSource } from '../../common/type-common'
 import { Avatar } from '..'
 import { getUserAvatarSource } from '../../store/store-utils'
-import { defaultUserAvatar } from '../../external-exports'
+import { defaultUserAvatar } from '../../external-imports'
 
 export class UserAvatarComponent extends Component<UserAvatarProps, void> {
   changeAvatar = () => {

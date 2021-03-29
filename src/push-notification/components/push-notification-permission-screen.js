@@ -30,7 +30,7 @@ import type {
   PushNotificationPermissionProps,
   PushNotificationPermissionState,
 } from './type-push-notification-permission'
-import { appName, usePushNotifications } from '../../external-exports'
+import { appName, usePushNotifications } from '../../external-imports'
 
 const pushNotificationsAuthorizationStatus = async () =>
   usePushNotifications ? await messaging().hasPermission() : 0

@@ -41,7 +41,7 @@ import { INVITATION_ACCEPTED } from '../invitation/type-invitation'
 import { CONNECTION_FAIL } from '../store/type-connection-store'
 import { deleteConnectionAction, getConnections } from '../store/connections-store'
 import type { ConnectionHistoryEvent } from '../connection-history/type-connection-history'
-import { CustomConnectionDetailsScreen } from '../external-exports'
+import { CustomConnectionDetailsScreen } from '../external-imports'
 
 const keyExtractor = (item: Object) => item.timestamp
 

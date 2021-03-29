@@ -15,7 +15,7 @@ import {startUpRoute, lockPinSetupRoute} from '../common';
 import {OFFSET_2X, colors, fontFamily, fontSizes} from '../common/styles';
 import {verticalScale, moderateScale} from 'react-native-size-matters';
 
-import { startupBackgroundImage, CustomStartUpScreen } from '../external-exports'
+import { startupBackgroundImage, CustomStartUpScreen } from '../external-imports'
 
 const {width} = Dimensions.get('screen');
 

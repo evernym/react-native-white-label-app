@@ -31,7 +31,7 @@ import {
 } from '../backup/backup-store'
 import { safeSet, walletSet } from '../services/storage'
 import { HAS_VERIFIED_RECOVERY_PHRASE } from './type-backup'
-import { appName } from '../external-exports'
+import { appName } from '../external-imports'
 
 const closeImage = require('../images/icon-Close.png')
 const backup = require('../images/upload13x.png')

@@ -33,7 +33,7 @@ import {
   connectionsHeadline,
   connectionsShowCameraButton,
   CustomMyConnectionsScreen, usePushNotifications,
-} from '../external-exports'
+} from '../external-imports'
 import { SHOW_UNREAD_MESSAGES_BADGE_NEAR_WITH_MENU } from '../components/header/type-header'
 
 const headline = connectionsHeadline || 'My Connections'

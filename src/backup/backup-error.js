@@ -28,7 +28,7 @@ import {
   BACKUP_ERROR_CLOSE_TEST_ID,
 } from './backup-constants'
 import { withStatusBar } from '../components/status-bar/status-bar'
-import { appName } from '../external-exports'
+import { appName } from '../external-imports'
 
 const backImage = require('../images/icon_backArrow_white.png')
 const closeImage = require('../images/iconClose.png')

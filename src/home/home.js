@@ -51,7 +51,7 @@ import {
   homeShowCameraButton,
   homeShowHistoryEvents,
   HomeViewEmptyState,
-} from '../external-exports'
+} from '../external-imports'
 import { SHOW_UNREAD_MESSAGES_BADGE_NEAR_WITH_TITLE } from '../components/header/type-header'
 
 const headline = homeHeadline || 'Home'

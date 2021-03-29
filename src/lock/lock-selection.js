@@ -48,7 +48,7 @@ import {
 import { safeToDownloadSmsInvitation } from '../sms-pending-invitation/sms-pending-invitation-store'
 import { SERVER_ENVIRONMENT } from '../store/type-config-store'
 import { Header } from '../components'
-import { LockHeader } from '../external-exports'
+import { LockHeader } from '../external-imports'
 
 const { width, height } = Dimensions.get('screen')
 

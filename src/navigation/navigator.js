@@ -103,7 +103,7 @@ import {
   customExtraModals,
   customExtraScreens,
   usePushNotifications,
-} from '../external-exports'
+} from '../external-imports'
 import { inviteActionScreen } from '../invite-action/invite-action-screen'
 
 if (Platform.OS !== 'android') {

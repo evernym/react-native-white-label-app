@@ -11,7 +11,7 @@ import { ModalContent } from './modal-content'
 import { ModalButton } from '../../components/connection-details/modal-button'
 import { modalScreenRoute } from '../../common/route-constants'
 import { modalOptions } from '../utils/modalOptions'
-import { CustomCredentialModal } from '../../external-exports'
+import { CustomCredentialModal } from '../../external-imports'
 
 type CredentialReceivedProps = {
   route: {

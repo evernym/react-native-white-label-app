@@ -7,7 +7,7 @@ import {
   privacyPolicyTitle,
   privacyPolicyUrl,
   termsAndConditionsTitle,
-} from '../external-exports'
+} from '../external-imports'
 
 const isAndroid = Platform.OS === 'android'
 export { EULA_URL as TermsAndConditionUrl } from '../eula/type-eula'

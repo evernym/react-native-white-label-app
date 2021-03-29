@@ -25,7 +25,7 @@ import {
 import { customLogger } from '../store/custom-logger'
 import { getUnacknowledgedMessages } from '../store/config-store'
 import { getNewMessagesCount } from '../store/store-selector'
-import {usePushNotifications} from "../external-exports";
+import {usePushNotifications} from "../external-imports";
 
 export const remoteMessageParser = (message: RemoteMessage) => {
   const {

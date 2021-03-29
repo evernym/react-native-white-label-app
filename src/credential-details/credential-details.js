@@ -14,7 +14,7 @@ import { ExpandableText } from '../components/expandable-text/expandable-text'
 import { bindActionCreators } from "redux"
 import { deleteClaim } from '../claim/claim-store'
 import { ViewPushLeft } from '../connection-details/utils/modal-animation'
-import { CustomCredentialDetailsScreen } from '../external-exports'
+import { CustomCredentialDetailsScreen } from '../external-imports'
 import ToggleFields from '../components/toggle-fields/toggle-fields'
 import {
   checkCredentialForEmptyFields,

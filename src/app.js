@@ -24,7 +24,7 @@ import { MSDKAppNavigator } from './navigation/navigator'
 import { sendLogsRoute } from './common'
 import AppStatus from './app-status/app-status'
 import Offline from './offline/offline'
-import { usePushNotifications } from './external-exports'
+import { usePushNotifications } from './external-imports'
 
 if (Platform.Version < 29) {
   // enable react-native-screens

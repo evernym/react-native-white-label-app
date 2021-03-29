@@ -15,7 +15,7 @@ import type { ReactNavigation } from '../../common/type-common'
 import { colors, fontFamily, fontSizes } from '../../common/styles/constant'
 import { ExpandableText } from '../../components/expandable-text/expandable-text'
 import { modalOptions } from '../utils/modalOptions'
-import {CustomEnterAttributeValueModal} from '../../external-exports'
+import {CustomEnterAttributeValueModal} from '../../external-imports'
 import {ModalPushLeft} from "../utils/modal-animation";
 
 const CustomValues = ({

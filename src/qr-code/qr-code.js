@@ -73,7 +73,7 @@ import {
   getExistingConnection,
   prepareParamsForExistingConnectionRedirect,
 } from '../invitation/invitation-helpers'
-import {usePushNotifications} from "../external-exports";
+import {usePushNotifications} from "../external-imports";
 
 export class QRCodeScannerScreen extends Component<
   QRCodeScannerScreenProps,

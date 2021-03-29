@@ -32,7 +32,7 @@ import { BottomUpSliderError } from '../components/bottom-up-slider-screen/compo
 import { GENERIC_ERROR_MESSAGE } from '../common/type-common'
 import { getDIDFromFullyQualifiedDID } from '../store/store-utils'
 import { getConnectionByProp } from '../store/store-selector'
-import { appName, defaultUserAvatar } from '../external-exports'
+import { appName, defaultUserAvatar } from '../external-imports'
 
 export const OpenIdConnectScreen = ({
   request,

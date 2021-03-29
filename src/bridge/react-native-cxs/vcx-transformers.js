@@ -22,7 +22,7 @@ import type { CredentialOffer } from '../../claim-offer/type-claim-offer'
 import type { MyPairwiseInfo } from '../../store/type-connection-store'
 import type { ClaimOfferPushPayload } from '../../push-notification/type-push-notification'
 import { getWalletKey } from '../../services/storage'
-import {appName, vcxPushType} from '../../external-exports'
+import {appName, vcxPushType} from '../../external-imports'
 import DeviceInfo from "react-native-device-info"
 import { flattenAsync } from '../../common/flatten-async'
 

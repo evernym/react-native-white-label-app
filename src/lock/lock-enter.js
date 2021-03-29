@@ -30,7 +30,7 @@ import type { Store } from '../store/type-store'
 import { ENTER_YOUR_PASS_CODE_MESSAGE } from '../common/message-constants'
 import { isBiggerThanShortDevice, } from '../common/styles/constant'
 import { verticalScale } from 'react-native-size-matters'
-import { appName, LockHeader } from '../external-exports'
+import { appName, LockHeader } from '../external-imports'
 
 const lockImage = require('../images/lockCombo.png')
 const backgroundImg = require('../images/wave1.png')

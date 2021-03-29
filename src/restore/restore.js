@@ -24,7 +24,7 @@ import type { RestoreProps } from './type-restore'
 import { saveFileToAppDirectory } from './restore-store'
 import type { Store } from '../store/type-store'
 import { RestoreStatus } from './type-restore'
-import { appLogo, appName } from '../external-exports'
+import { appLogo, appName } from '../external-imports'
 
 export class RestoreStartScreen extends Component<RestoreProps, void> {
   restoreBackup = () => {

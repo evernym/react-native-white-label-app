@@ -19,7 +19,7 @@ import {
   credentialsShowCameraButton,
   CustomMyCredentialsScreen,
   MyCredentialsViewEmptyState,
-} from '../external-exports'
+} from '../external-imports'
 import { SHOW_UNREAD_MESSAGES_BADGE_NEAR_WITH_MENU } from '../components/header/type-header'
 
 const headline = credentialsHeadline || 'MY Credentials'
