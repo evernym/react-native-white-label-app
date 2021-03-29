@@ -25,7 +25,7 @@ import { colors } from '../../common/styles/constant'
 
 // $FlowExpectedError[cannot-resolve-module] external file
 import { modalOptions } from '../utils/modalOptions'
-import {CustomProofRequestModal, proofRequestHeadline} from '../../external-exports'
+import {CustomProofRequestModal, proofRequestHeadline} from '../../external-imports'
 
 // TODO: Fix any type
 const ProofRequestModal = (props: any) => {

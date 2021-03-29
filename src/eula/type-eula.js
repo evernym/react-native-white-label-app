@@ -1,6 +1,6 @@
 // @flow
 import { Platform } from 'react-native'
-import { androidEulaLocal, androidEulaUrl, iosEulaLocal, iosEulaUrl } from '../external-exports'
+import { androidEulaLocal, androidEulaUrl, iosEulaLocal, iosEulaUrl } from '../external-imports'
 
 const isAndroid = Platform.OS === 'android'
 export const EULA_ACCEPT = 'EULA_ACCEPT'

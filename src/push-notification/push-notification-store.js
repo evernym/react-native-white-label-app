@@ -121,7 +121,7 @@ import { showInAppNotification } from '../in-app-notification/in-app-notificatio
 import { ATTRIBUTE_TYPE } from '../proof-request/type-proof-request'
 import { flattenAsync } from '../common/flatten-async'
 import { Platform } from 'react-native'
-import { usePushNotifications } from '../external-exports'
+import {usePushNotifications, vcxPushType} from '../external-imports'
 import { inviteActionReceived } from '../invite-action/invite-action-store'
 
 const blackListedRoute = {
@@ -163,7 +163,7 @@ export function* onPushTokenUpdate(
   action: PushNotificationUpdateTokenAction
 ): Generator<*, *, *> {
   try {
-    const pushToken = `FCM:${action.token}`
+    const pushToken = vcxPushType === 1 ? `FCM:${action.token}`: action.token
     const id = yield uniqueId()
     const vcxResult = yield* ensureVcxInitSuccess()
     if (vcxResult && vcxResult.fail) {

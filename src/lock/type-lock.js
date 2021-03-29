@@ -6,7 +6,7 @@ import type {
 } from '@react-navigation/native'
 
 import { SWITCH_ERROR_ALERTS } from '../store/type-config-store'
-import { appName } from '../external-exports'
+import { appName } from '../external-imports'
 
 export const LOCK_TYPE = {
   FINGERPRINT: 'FINGERPRINT',

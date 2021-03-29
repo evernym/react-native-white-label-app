@@ -66,7 +66,7 @@ import {PROOF_REQUEST_STATUS} from "../proof-request/type-proof-request";
 import {validateOutofbandProofRequestQrCode} from "../proof-request/proof-request-qr-code-reader";
 import {claimOfferReceived} from "../claim-offer/claim-offer-store";
 import {proofRequestReceived} from "../proof-request/proof-request-store";
-import {usePushNotifications} from "../external-exports";
+import {usePushNotifications} from "../external-imports";
 
 const isReceived = ({ payload, status }) => {
   return (

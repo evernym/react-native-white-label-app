@@ -22,7 +22,7 @@ import store from '../store'
 import { BackButton } from '../components/back-button/back-button'
 import { headerNavigationOptions } from '../navigation/navigation-header-config'
 import { colors } from '../common/styles/constant'
-import { appName, sendLogsEmail } from '../external-exports'
+import { appName, sendLogsEmail } from '../external-imports'
 
 export class SendLogs extends Component<SendLogsProps, any> {
   constructor(props: SendLogsProps) {

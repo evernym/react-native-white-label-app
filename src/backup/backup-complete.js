@@ -26,7 +26,7 @@ import {
 } from './backup-constants'
 import styles from './styles'
 import { withStatusBar } from '../components/status-bar/status-bar'
-import { appName } from '../external-exports'
+import { appName } from '../external-imports'
 
 const transparentBands = require('../images/transparentBands.png')
 const closeImage = require('../images/iconClose.png')

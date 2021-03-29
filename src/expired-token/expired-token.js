@@ -8,7 +8,7 @@ import { Container, CustomView, CustomText, CustomButton } from '../components'
 import { isBiggerThanShortDevice } from '../common/styles'
 import { homeRoute, expiredTokenRoute } from '../common'
 import { TOKEN_EXPIRED, TOKEN_EXPIRED_MESSAGE, TOKEN_UNRESOLVED_MESSAGE } from './type-expired-token'
-import { appLogo } from '../external-exports'
+import { appLogo } from '../external-imports'
 
 class ExpiredToken extends PureComponent<ReactNavigation, void> {
   onOk = () => {

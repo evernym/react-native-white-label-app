@@ -13,7 +13,7 @@ import {
   vcxShutdown,
 } from '../../bridge/react-native-cxs/RNCxs'
 
-import { sponsorId, vcxPushType, getProvisionTokenFunc } from '../../external-exports'
+import { sponsorId, vcxPushType, getProvisionTokenFunc } from '../../external-imports'
 
 export function* registerCloudAgentWithToken(
   agencyConfig: *
@@ -38,17 +38,24 @@ export function* registerCloudAgentWithToken(
       getProvisionTokenFunc
     )
   } else {
-    // default function to get provision token
-    [provisionTokenError, provisionToken] = yield call(
-      getProvisionToken,
-      agencyConfig,
-      {
-        type: vcxPushType,
-        id,
-        value: `FCM:mock_value_just_to_register`,
-      },
-      sponsorId
-    )
+    // call function to get token
+    for (let i=0; i<2; i++){
+      // default function to get provision token twice
+      [provisionTokenError, provisionToken] = yield call(
+        getProvisionToken,
+        agencyConfig,
+        {
+          type: vcxPushType,
+          id,
+          value: `FCM:mock_value_just_to_register`,
+        },
+        sponsorId
+      )
+      if (provisionToken){
+        provisionTokenError = null
+        break
+      }
+    }
   }
 
   // Since in previous vcx API call, we used wallet
@@ -57,7 +64,7 @@ export function* registerCloudAgentWithToken(
 
   if (provisionTokenError || !provisionToken) {
     return [
-      `CS-007::Error calling getProvisionToken vcx API call ${provisionTokenError}`,
+      `CS-007::Error calling getProvisionToken vcx API call ${provisionTokenError || ''}`,
       null,
     ]
   }

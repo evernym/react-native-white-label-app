@@ -41,7 +41,7 @@ import {
 import { BACKUP_STORE_STATUS } from './type-backup'
 import { getBackupStatus, getBackupWalletPath } from '../store/store-selector'
 import { withStatusBar } from '../components/status-bar/status-bar'
-import { appName } from '../external-exports'
+import { appName } from '../external-imports'
 
 const transparentBands = require('../images/transparentBands.png')
 const backImage = require('../images/icon_backArrow_white.png')

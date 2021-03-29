@@ -152,7 +152,7 @@ import {
   defaultServerEnvironment,
   serverEnvironments,
   usePushNotifications,
-} from '../external-exports'
+} from '../external-imports'
 import type {
   InviteActionData,
   InviteActionPayload,

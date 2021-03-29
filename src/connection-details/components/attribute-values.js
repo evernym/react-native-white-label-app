@@ -41,7 +41,7 @@ import { ModalPushLeft } from '../utils/modal-animation'
 import { ExpandableText } from '../../components/expandable-text/expandable-text'
 import { BLANK_ATTRIBUTE_DATA_TEXT } from '../type-connection-details'
 import { modalOptions } from '../utils/modalOptions'
-import { CustomSelectAttributeValueModal} from '../../external-exports'
+import { CustomSelectAttributeValueModal} from '../../external-imports'
 
 export const renderAvatarWithSource = (avatarSource: number | ImageSource) => {
   return <Avatar radius={18} src={avatarSource} />

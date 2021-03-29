@@ -39,7 +39,7 @@ import { checkIfAnimationToUse } from '../bridge/react-native-cxs/RNCxs'
 import { customLogger } from '../store/custom-logger'
 
 import { modalOptions } from '../connection-details/utils/modalOptions'
-import { CustomQuestionModal, questionHeadline } from '../external-exports'
+import { CustomQuestionModal, questionHeadline } from '../external-imports'
 
 const headline = questionHeadline || 'Question'
 

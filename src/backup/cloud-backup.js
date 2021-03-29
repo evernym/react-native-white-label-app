@@ -49,7 +49,7 @@ import {
   WALLET_BACKUP_FAILURE,
 } from './type-backup'
 import { safeSet, walletSet } from '../services/storage'
-import { appName } from '../external-exports'
+import { appName } from '../external-imports'
 
 const { height } = Dimensions.get('window')
 

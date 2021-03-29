@@ -12,7 +12,7 @@ import { schemaValidator } from '../../../services/schema-validator'
 import { toUtf8FromBase64 } from '../../../bridge/react-native-cxs/RNCxs'
 import { addBase64Padding } from '../../../common/base64-padding'
 import { flatTryCatch } from '../../../common/flat-try-catch'
-import { trustedDomains } from '../../../external-exports'
+import { trustedDomains } from '../../../external-imports'
 
 export function isValidOIDCQrCode(parsedUrl: Url): QrCodeOIDC | false {
   const { protocol, query, hostname } = parsedUrl

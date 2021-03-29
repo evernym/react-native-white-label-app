@@ -1,6 +1,6 @@
 // @flow
 
-import { storageKey } from '../external-exports'
+import { storageKey } from '../external-imports'
 
 export const PUSH_COM_METHOD = 'pushComMethod'
 export const MSDK_STORAGE_KEY = storageKey

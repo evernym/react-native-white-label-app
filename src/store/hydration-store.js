@@ -300,6 +300,7 @@ export function* hydrate(): any {
 
       const vcxResult = yield* ensureVcxInitSuccess()
       if (vcxResult && vcxResult.fail) {
+        customLogger.log(`Vcx init failed: ${JSON.stringify(vcxResult)}`)
         throw new Error(JSON.stringify(vcxResult.fail.message))
       }
       // NOTE: This will be changed when the TAA flow changes.

@@ -54,7 +54,7 @@ import { colors } from '../../common/styles/constant'
 import { hasMissingAttributes } from '../utils'
 import { authForAction } from '../../lock/lock-auth-for-action.js'
 import { homeDrawerRoute, homeRoute } from '../../common'
-import { proofRequestAcceptButtonText, proofRequestDenyButtonText } from '../../external-exports'
+import { proofRequestAcceptButtonText, proofRequestDenyButtonText } from '../../external-imports'
 
 class ModalContentProof extends Component<
   ProofRequestAndHeaderProps,

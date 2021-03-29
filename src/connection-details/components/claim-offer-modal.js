@@ -50,7 +50,7 @@ import {
   credentialOfferDenyButtonText,
   credentialOfferHeadline,
   CustomCredentialOfferModal,
-} from '../../external-exports'
+} from '../../external-imports'
 
 export class ClaimOfferModal extends Component<any, *> {
   constructor(props: any) {

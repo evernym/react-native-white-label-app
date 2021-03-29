@@ -17,7 +17,7 @@ import { moderateScale, scale, verticalScale } from 'react-native-size-matters'
 import { Header } from '../components'
 import { useFocusEffect } from '@react-navigation/native'
 import { headerNavigationOptions } from '../navigation/navigation-header-config'
-import { LockHeader } from '../external-exports'
+import { LockHeader } from '../external-imports'
 
 let keyboardDidHideListener
 let keyboardDidShowListener

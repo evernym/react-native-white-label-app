@@ -44,7 +44,7 @@ import { getUserAvatarName } from '../../store/store-selector'
 import { VCX_INIT_SUCCESS } from '../type-config-store'
 import { captureError } from '../../services/error/error-handler'
 import AlertAsync from 'react-native-alert-async'
-import { appName } from '../../external-exports'
+import { appName } from '../../external-imports'
 import { customLogger } from '../custom-logger'
 
 const initialState = {

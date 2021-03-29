@@ -2,7 +2,7 @@
 import type { ReactNavigation } from '../common/type-common'
 import type { CustomError } from '../common/type-common'
 import type { RestoreStore, SaveToAppDirectory } from '../restore/type-restore'
-import { appName } from '../external-exports'
+import { appName } from '../external-imports'
 
 export type ReactNavigationBackup = {
   navigation: {

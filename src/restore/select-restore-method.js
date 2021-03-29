@@ -32,7 +32,7 @@ import styles from '../backup/styles'
 import { customLogger } from '../store/custom-logger'
 import { RestoreStatus } from './type-restore'
 import type { RestoreProps } from './type-restore'
-import { appName } from '../external-exports'
+import { appName } from '../external-imports'
 const closeImage = require('../images/icon-Close.png')
 const backup = require('../images/upload13x.png')
 const download = require('../images/download3x.png')

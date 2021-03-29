@@ -36,7 +36,7 @@ import {
   inviteActionAcceptButtonText,
   inviteActionDenyButtonText,
   inviteActionHeadline,
-} from '../external-exports'
+} from '../external-imports'
 import { modalOptions } from '../connection-details/utils/modalOptions'
 import {ModalButtons} from "../components/buttons/modal-buttons";
 

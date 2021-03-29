@@ -33,7 +33,7 @@ import { renderAttachmentIcon } from './modal-content'
 import { ModalPushLeft } from '../utils/modal-animation'
 import { ExpandableText } from '../../components/expandable-text/expandable-text'
 import { modalOptions } from '../utils/modalOptions'
-import { CustomSelectAttributesValuesModal } from '../../external-exports'
+import { CustomSelectAttributesValuesModal } from '../../external-imports'
 
 export const keyExtractor = (item: Object) => item.claimUuid.toString()
 

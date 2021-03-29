@@ -135,7 +135,7 @@ import {
   SERVER_ENVIRONMENT_CHANGED,
   SWITCH_ENVIRONMENT,
 } from './type-config-store'
-import { appName, CustomLogUtils } from '../external-exports'
+import { appName, CustomLogUtils } from '../external-imports'
 
 const { RNIndy } = NativeModules
 

@@ -28,7 +28,7 @@ import {
   companyLogo,
   companyName,
   CustomAboutAppScreen,
-} from '../external-exports'
+} from '../external-imports'
 
 const info = aboutAppInfo || {
   appLogo: true,
