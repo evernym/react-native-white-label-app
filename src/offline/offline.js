@@ -37,7 +37,7 @@ const Offline = ({ offline, overlay }: OfflineProps) => {
   const isVcxLoading = useSelector(getIsLoading)
   
   const isShowLoader = useMemo(() => {
-    return isLoading || isVcxLoading
+    return isOffline ? isLoading : isVcxLoading
   }, [isLoading, isVcxLoading])
 
   const isNeedToReconnect = useMemo(() => {
@@ -60,7 +60,7 @@ const Offline = ({ offline, overlay }: OfflineProps) => {
     offline(!netInfo.isInternetReachable)
   }, [netInfo])
 
-  const internetReconnect = () => () => {
+  const internetReconnect = () => {
     setIsLoading(true)
     const req = setInterval(async () => {
       const state = await NetInfo.fetch()
