@@ -8,6 +8,10 @@ RUN apt-get update -y && apt-get install -y \
 # Install Nodejs
 RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - \
     && apt-get install -y nodejs
-    
+
 # Install Yarn
 RUN npm install -g yarn
+
+RUN useradd -ms /bin/bash -u 1000 msdk
+USER msdk
+WORKDIR /app
