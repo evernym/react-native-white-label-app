@@ -98,6 +98,7 @@ yarn-test:
 
 nodejs-publish:
   stage: publish
+  image: ${CI_REGISTRY_IMAGE}/ubuntu18:${CI_COMMIT_REF_SLUG}
   tags:
     - docker-machine
   script:
