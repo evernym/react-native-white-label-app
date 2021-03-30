@@ -102,7 +102,8 @@ nodejs-publish:
   tags:
     - docker-machine
   script:
-    - echo '//registry.npmjs.org/:_authToken=${NPM_AUTH_TOKEN}' > .npmrc
+    - npm config set //registry.npmjs.org/:_authToken ${NPM_AUTH_TOKEN}
+    - npm config set strict-ssl false
     - VERSION=$(grep '"version"' package.json | cut -d '"' -f 4)
     - if [ $CI_COMMIT_REF_SLUG == "master" ]; then VERSION="${VERSION}-${CI_PIPELINE_ID}"; fi
     - npm version --no-git-tag-version --allow-same-version ${VERSION}
