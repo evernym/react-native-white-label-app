@@ -70,6 +70,9 @@ import {
   VCX_INIT_POOL_SUCCESS,
   VCX_INIT_POOL_NOT_STARTED,
   VCX_INIT_POOL_START,
+  IS_LOADING,
+  IS_VCX_POOL_INIT_FAILED,
+  IS_VCX_INIT_FAILED,
 } from './type-config-store'
 import type {
   ServerEnvironment,
@@ -89,6 +92,9 @@ import type {
   AcknowledgeMessagesAction,
   GetMessagesFailAction,
   AcknowledgeMessagesFailAction,
+  IsLoadingAction,
+  IsVcxPoolInitFailed,
+  IsVcxInitFailed,
 } from './type-config-store'
 import type { CustomError } from '../common/type-common'
 import { downloadEnvironmentDetails } from '../api/api'
@@ -229,7 +235,7 @@ export const baseUrls = {
     agencyDID: 'TGLBMTcW9fHdkSqown9jD8',
     agencyVerificationKey: 'FKGV9jKvorzKPtPJPNLZkYPkLhiS1VbxdvBgd1RjcQHR',
     poolConfig:
-      '{"reqSignature":{},"txn":{"data":{"data":{"alias":"Node1","blskey":"4N8aUNHSgjQVgkpm8nhNEfDf6txHznoYREg9kirmJrkivgL4oSEimFF6nsQ6M41QvhM2Z33nves5vfSn9n1UwNFJBYtWVnHYMATn76vLuL3zU88KyeAYcHfsih3He6UHcXDxcaecHVz6jhCYz1P2UZn2bDVruL5wXpehgBfBaLKm3Ba","blskey_pop":"RahHYiCvoNCtPTrVtP7nMC5eTYrsUA8WjXbdhNc8debh1agE9bGiJxWBXYNFbnJXoXhWFMvyqhqhRoq737YQemH5ik9oL7R4NTTCz2LEZhkgLJzB3QRQqJyBNyv7acbdHrAT8nQ9UkLbaVL9NBpnWXBTw4LEMePaSHEw66RzPNdAX1","client_ip":"54.71.181.31","client_port":9702,"node_ip":"54.71.181.31","node_port":9701,"services":["VALIDATOR"]},"dest":"Gw6pDLhcBcoQesN72qfotTgFa7cbuqZpkX3Xo6pLhPhv"},"metadata":{"from":"Th7MpTaRZVRYnPiabds81Y"},"type":"0"},"txnMetadata":{"seqNo":1,"txnId":"fea82e10e894419fe2bea7d96296a6d46f50f93f9eeda954ec461b2ed2950b62"},"ver":"1"}\n{"reqSignature":{},"txn":{"data":{"data":{"alias":"Node2","blskey":"37rAPpXVoxzKhz7d9gkUe52XuXryuLXoM6P6LbWDB7LSbG62Lsb33sfG7zqS8TK1MXwuCHj1FKNzVpsnafmqLG1vXN88rt38mNFs9TENzm4QHdBzsvCuoBnPH7rpYYDo9DZNJePaDvRvqJKByCabubJz3XXKbEeshzpz4Ma5QYpJqjk","blskey_pop":"Qr658mWZ2YC8JXGXwMDQTzuZCWF7NK9EwxphGmcBvCh6ybUuLxbG65nsX4JvD4SPNtkJ2w9ug1yLTj6fgmuDg41TgECXjLCij3RMsV8CwewBVgVN67wsA45DFWvqvLtu4rjNnE9JbdFTc1Z4WCPA3Xan44K1HoHAq9EVeaRYs8zoF5","client_ip":"54.71.181.31","client_port":9704,"node_ip":"54.71.181.31","node_port":9703,"services":["VALIDATOR"]},"dest":"8ECVSk179mjsjKRLWiQtssMLgp6EPhWXtaYyStWPSGAb"},"metadata":{"from":"EbP4aYNeTHL6q385GuVpRV"},"type":"0"},"txnMetadata":{"seqNo":2,"txnId":"1ac8aece2a18ced660fef8694b61aac3af08ba875ce3026a160acbc3a3af35fc"},"ver":"1"}\n{"reqSignature":{},"txn":{"data":{"data":{"alias":"Node3","blskey":"3WFpdbg7C5cnLYZwFZevJqhubkFALBfCBBok15GdrKMUhUjGsk3jV6QKj6MZgEubF7oqCafxNdkm7eswgA4sdKTRc82tLGzZBd6vNqU8dupzup6uYUf32KTHTPQbuUM8Yk4QFXjEf2Usu2TJcNkdgpyeUSX42u5LqdDDpNSWUK5deC5","blskey_pop":"QwDeb2CkNSx6r8QC8vGQK3GRv7Yndn84TGNijX8YXHPiagXajyfTjoR87rXUu4G4QLk2cF8NNyqWiYMus1623dELWwx57rLCFqGh7N4ZRbGDRP4fnVcaKg1BcUxQ866Ven4gw8y4N56S5HzxXNBZtLYmhGHvDtk6PFkFwCvxYrNYjh","client_ip":"54.71.181.31","client_port":9706,"node_ip":"54.71.181.31","node_port":9705,"services":["VALIDATOR"]},"dest":"DKVxG2fXXTU8yT5N7hGEbXB3dfdAnYv1JczDUHpmDxya"},"metadata":{"from":"4cU41vWW82ArfxJxHkzXPG"},"type":"0"},"txnMetadata":{"seqNo":3,"txnId":"7e9f355dffa78ed24668f0e0e369fd8c224076571c51e2ea8be5f26479edebe4"},"ver":"1"}\n{"reqSignature":{},"txn":{"data":{"data":{"alias":"Node4","blskey":"2zN3bHM1m4rLz54MJHYSwvqzPchYp8jkHswveCLAEJVcX6Mm1wHQD1SkPYMzUDTZvWvhuE6VNAkK3KxVeEmsanSmvjVkReDeBEMxeDaayjcZjFGPydyey1qxBHmTvAnBKoPydvuTAqx5f7YNNRAdeLmUi99gERUU7TD8KfAa6MpQ9bw","blskey_pop":"RPLagxaR5xdimFzwmzYnz4ZhWtYQEj8iR5ZU53T2gitPCyCHQneUn2Huc4oeLd2B2HzkGnjAff4hWTJT6C7qHYB1Mv2wU5iHHGFWkhnTX9WsEAbunJCV2qcaXScKj4tTfvdDKfLiVuU2av6hbsMztirRze7LvYBkRHV3tGwyCptsrP","client_ip":"54.71.181.31","client_port":9708,"node_ip":"54.71.181.31","node_port":9707,"services":["VALIDATOR"]},"dest":"4PS3EDQ3dW1tci1Bp6543CfuuebjFrg36kLAUcskGfaA"},"metadata":{"from":"TWwCRQRZ2ZHMJFn9TzLp7W"},"type":"0"},"txnMetadata":{"seqNo":4,"txnId":"aa5e817d7cc626170eca175822029339a444eb0ee8f0bd20d3b0b76e566fb008"},"ver":"1"}',
+     '{"reqSignature":{},"txn":{"data":{"data":{"alias":"Node1","blskey":"4N8aUNHSgjQVgkpm8nhNEfDf6txHznoYREg9kirmJrkivgL4oSEimFF6nsQ6M41QvhM2Z33nves5vfSn9n1UwNFJBYtWVnHYMATn76vLuL3zU88KyeAYcHfsih3He6UHcXDxcaecHVz6jhCYz1P2UZn2bDVruL5wXpehgBfBaLKm3Ba","blskey_pop":"RahHYiCvoNCtPTrVtP7nMC5eTYrsUA8WjXbdhNc8debh1agE9bGiJxWBXYNFbnJXoXhWFMvyqhqhRoq737YQemH5ik9oL7R4NTTCz2LEZhkgLJzB3QRQqJyBNyv7acbdHrAT8nQ9UkLbaVL9NBpnWXBTw4LEMePaSHEw66RzPNdAX1","client_ip":"54.71.181.31","client_port":9702,"node_ip":"54.71.181.31","node_port":9701,"services":["VALIDATOR"]},"dest":"Gw6pDLhcBcoQesN72qfotTgFa7cbuqZpkX3Xo6pLhPhv"},"metadata":{"from":"Th7MpTaRZVRYnPiabds81Y"},"type":"0"},"txnMetadata":{"seqNo":1,"txnId":"fea82e10e894419fe2bea7d96296a6d46f50f93f9eeda954ec461b2ed2950b62"},"ver":"1"}\n{"reqSignature":{},"txn":{"data":{"data":{"alias":"Node2","blskey":"37rAPpXVoxzKhz7d9gkUe52XuXryuLXoM6P6LbWDB7LSbG62Lsb33sfG7zqS8TK1MXwuCHj1FKNzVpsnafmqLG1vXN88rt38mNFs9TENzm4QHdBzsvCuoBnPH7rpYYDo9DZNJePaDvRvqJKByCabubJz3XXKbEeshzpz4Ma5QYpJqjk","blskey_pop":"Qr658mWZ2YC8JXGXwMDQTzuZCWF7NK9EwxphGmcBvCh6ybUuLxbG65nsX4JvD4SPNtkJ2w9ug1yLTj6fgmuDg41TgECXjLCij3RMsV8CwewBVgVN67wsA45DFWvqvLtu4rjNnE9JbdFTc1Z4WCPA3Xan44K1HoHAq9EVeaRYs8zoF5","client_ip":"54.71.181.31","client_port":9704,"node_ip":"54.71.181.31","node_port":9703,"services":["VALIDATOR"]},"dest":"8ECVSk179mjsjKRLWiQtssMLgp6EPhWXtaYyStWPSGAb"},"metadata":{"from":"EbP4aYNeTHL6q385GuVpRV"},"type":"0"},"txnMetadata":{"seqNo":2,"txnId":"1ac8aece2a18ced660fef8694b61aac3af08ba875ce3026a160acbc3a3af35fc"},"ver":"1"}\n{"reqSignature":{},"txn":{"data":{"data":{"alias":"Node3","blskey":"3WFpdbg7C5cnLYZwFZevJqhubkFALBfCBBok15GdrKMUhUjGsk3jV6QKj6MZgEubF7oqCafxNdkm7eswgA4sdKTRc82tLGzZBd6vNqU8dupzup6uYUf32KTHTPQbuUM8Yk4QFXjEf2Usu2TJcNkdgpyeUSX42u5LqdDDpNSWUK5deC5","blskey_pop":"QwDeb2CkNSx6r8QC8vGQK3GRv7Yndn84TGNijX8YXHPiagXajyfTjoR87rXUu4G4QLk2cF8NNyqWiYMus1623dELWwx57rLCFqGh7N4ZRbGDRP4fnVcaKg1BcUxQ866Ven4gw8y4N56S5HzxXNBZtLYmhGHvDtk6PFkFwCvxYrNYjh","client_ip":"54.71.181.31","client_port":9706,"node_ip":"54.71.181.31","node_port":9705,"services":["VALIDATOR"]},"dest":"DKVxG2fXXTU8yT5N7hGEbXB3dfdAnYv1JczDUHpmDxya"},"metadata":{"from":"4cU41vWW82ArfxJxHkzXPG"},"type":"0"},"txnMetadata":{"seqNo":3,"txnId":"7e9f355dffa78ed24668f0e0e369fd8c224076571c51e2ea8be5f26479edebe4"},"ver":"1"}\n{"reqSignature":{},"txn":{"data":{"data":{"alias":"Node4","blskey":"2zN3bHM1m4rLz54MJHYSwvqzPchYp8jkHswveCLAEJVcX6Mm1wHQD1SkPYMzUDTZvWvhuE6VNAkK3KxVeEmsanSmvjVkReDeBEMxeDaayjcZjFGPydyey1qxBHmTvAnBKoPydvuTAqx5f7YNNRAdeLmUi99gERUU7TD8KfAa6MpQ9bw","blskey_pop":"RPLagxaR5xdimFzwmzYnz4ZhWtYQEj8iR5ZU53T2gitPCyCHQneUn2Huc4oeLd2B2HzkGnjAff4hWTJT6C7qHYB1Mv2wU5iHHGFWkhnTX9WsEAbunJCV2qcaXScKj4tTfvdDKfLiVuU2av6hbsMztirRze7LvYBkRHV3tGwyCptsrP","client_ip":"54.71.181.31","client_port":9708,"node_ip":"54.71.181.31","node_port":9707,"services":["VALIDATOR"]},"dest":"4PS3EDQ3dW1tci1Bp6543CfuuebjFrg36kLAUcskGfaA"},"metadata":{"from":"TWwCRQRZ2ZHMJFn9TzLp7W"},"type":"0"},"txnMetadata":{"seqNo":4,"txnId":"aa5e817d7cc626170eca175822029339a444eb0ee8f0bd20d3b0b76e566fb008"},"ver":"1"}',
     paymentMethod: 'sov',
   },
   [SERVER_ENVIRONMENT.DEVTEAM2]: {
@@ -300,7 +306,25 @@ const initialState: ConfigStore = {
   isInitialized: false,
   messageDownloadStatus: GET_MESSAGES_SUCCESS,
   snackError: null,
+  isLoading: false,
+  isVcxPoolInitFailed: false,
+  isVcxInitFailed: false,
 }
+
+export const isVcxInitFailed = (isFailed) => ({
+  type: IS_VCX_INIT_FAILED,
+  isFailed,
+})
+
+export const isVcxPoolInitFailed = (isFailed) => ({
+  type: IS_VCX_POOL_INIT_FAILED,
+  isFailed,
+})
+
+export const isLoading = (isLoading) => ({
+  type: IS_LOADING,
+  isLoading,
+})
 
 export const hydrated = () => ({
   type: HYDRATED,
@@ -608,6 +632,7 @@ export function* ensureAppHydrated(): Generator<*, *, *> {
 
 export function* initVcx(findingWallet?: any): Generator<*, *, *> {
   if (findingWallet !== true) {
+    yield put(isLoading(true))
     yield* ensureAppHydrated()
     while (true) {
       // Since we have added a feature flag, so we need to wait
@@ -686,10 +711,16 @@ export function* initVcx(findingWallet?: any): Generator<*, *, *> {
         // if agency does not yet support creating cloud agent with token
         // then we try second option to try creating cloud agent without token
         const [
-          ,
+          registerWithTokenError,
           userOneTimeInfoWithoutToken,
         ] = yield* registerCloudAgentWithoutToken(agencyConfig)
-        userOneTimeInfo = userOneTimeInfoWithoutToken
+        if (registerWithTokenError || !userOneTimeInfoWithoutToken) {
+          yield put(vcxInitFail((registerWithTokenError)))
+          yield put(isLoading(false))
+          return
+        } else {
+          userOneTimeInfo = userOneTimeInfoWithoutToken
+        }
       } else {
         userOneTimeInfo = userOneTimeInfoWithToken
       }
@@ -697,11 +728,12 @@ export function* initVcx(findingWallet?: any): Generator<*, *, *> {
       if (findingWallet !== true) {
         yield put(connectRegisterCreateAgentDone(userOneTimeInfo))
       }
+      yield put(isLoading(false))
     } catch (e) {
       captureError(e)
       yield call(vcxShutdown, false)
       yield put(vcxInitFail(ERROR_VCX_PROVISION_FAIL(e.message)))
-
+      yield put(isLoading(false))
       return
     }
   }
@@ -749,6 +781,7 @@ export function* initVcx(findingWallet?: any): Generator<*, *, *> {
 }
 
 export function* connectToPool(): Generator<*, *, *> {
+  yield put(isLoading(true))
   const { agencyUrl, poolConfig }: ConfigStore = yield select(getConfig)
 
   const config: CxsPoolConfig = {
@@ -764,16 +797,16 @@ export function* connectToPool(): Generator<*, *, *> {
       yield put(vcxInitPoolSuccess())
       return
     } catch (e) {
+      yield put(isLoading(false))
       captureError(e)
       lastInitException = e
       // wait for 10 seconds before trying again
       yield call(delay, 10000)
     }
   }
-
+  yield put(isLoading(false))
   // we could not connect to the pool - raise error
   yield put(vcxInitPoolFail(ERROR_VCX_INIT_FAIL(lastInitException.message)))
-  yield call(showSnackError, ERROR_POOL_INIT_FAIL)
 }
 
 export const ERROR_POOL_INIT_FAIL =
@@ -1616,12 +1649,14 @@ export default function configReducer(
       return {
         ...state,
         vcxInitializationState: VCX_INIT_SUCCESS,
+        isVcxInitFailed: false,
       }
     case VCX_INIT_FAIL:
       return {
         ...state,
         vcxInitializationState: VCX_INIT_FAIL,
         vcxInitializationError: action.error,
+        isVcxInitFailed: true,
       }
     case VCX_INIT_POOL_NOT_STARTED:
       return {
@@ -1639,12 +1674,14 @@ export default function configReducer(
       return {
         ...state,
         vcxPoolInitializationState: VCX_INIT_POOL_SUCCESS,
+        isVcxPoolInitFailed: false,
       }
     case VCX_INIT_POOL_FAIL:
       return {
         ...state,
         vcxPoolInitializationState: VCX_INIT_POOL_FAIL,
         vcxPoolInitializationError: action.error,
+        isVcxPoolInitFailed: true,
       }
     case GET_MESSAGES_FAIL:
     case GET_MESSAGES_LOADING:
@@ -1662,6 +1699,11 @@ export default function configReducer(
       return {
         ...state,
         snackError: null,
+      }
+    case IS_LOADING:
+      return {
+        ...state,
+        isLoading: action.isLoading
       }
     default:
       return state

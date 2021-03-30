@@ -242,6 +242,12 @@ export const color = {
         primary: white,
       },
     },
+    yellow: {
+      color: yellowSea,
+      font: {
+        primary: white,
+      },
+    }
   },
 
   border: {

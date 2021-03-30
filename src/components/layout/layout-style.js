@@ -49,6 +49,9 @@ export default StyleSheet.create({
   darkBg: {
     backgroundColor: color.bg.dark.color,
   },
+  yellowBg: {
+    backgroundColor: color.bg.yellow.color,
+  },  
   left: {
     // this is assuming that we are aligning items in column
     alignItems: 'flex-start',

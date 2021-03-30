@@ -17,6 +17,12 @@ import { QUESTION_STATUS } from '../question/type-question'
 /*
 * Selectors related to Config Store
 * */
+export const getIsVcxInitFailed = (state: Store) => state.config.isVcxInitFailed
+
+export const getIsVcxPoolInitFailed = (state: Store) => state.config.isVcxPoolInitFailed
+
+export const getIsLoading = (state: Store) => state.config.isLoading
+
 export const getConfig = (state: Store) => state.config
 
 export const getAgencyUrl = (state: Store) => state.config.agencyUrl
