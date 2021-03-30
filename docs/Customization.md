@@ -266,6 +266,16 @@ You can configure a server environment used for agent provisioning inside the `p
     * `GET_PROVISION_TOKEN_FUNC` - function to be called to get provisioning token.
        ```
         GET_PROVISION_TOKEN_FUNC = async () -> [error: string | null, token: string | null] 
+        /// example
+        export const GET_PROVISION_TOKEN_FUNC =  () => {
+          try {
+             const response = fetch_api(your_endpoint)
+             /// process response
+             return [null, response.token]
+          } catch (error) {
+             return [error.message, null]
+          }
+        }
       ```
        
     * `VCX_PUSH_TYPE` -  type of push notifications
