@@ -48,6 +48,8 @@ exports[`<SelectRecoveryMethod /> should match snapshot 1`] = `
           null,
           null,
           null,
+          null,
+          null,
           Object {
             "color": "#505050",
             "fontSize": 20,
@@ -177,6 +179,8 @@ exports[`<SelectRecoveryMethod /> should match snapshot 1`] = `
             null,
             null,
             null,
+            null,
+            null,
             Object {
               "color": "#FFFFFF",
               "fontSize": 22,
@@ -209,6 +213,8 @@ exports[`<SelectRecoveryMethod /> should match snapshot 1`] = `
             Object {
               "backgroundColor": "transparent",
             },
+            null,
+            null,
             null,
             null,
             null,
@@ -263,6 +269,8 @@ exports[`<SelectRecoveryMethod /> should match snapshot 1`] = `
             Object {
               "color": "#333333",
             },
+            null,
+            null,
             null,
             null,
             null,
@@ -386,6 +394,8 @@ exports[`<SelectRecoveryMethod /> should match snapshot 1`] = `
             null,
             null,
             null,
+            null,
+            null,
             Object {
               "color": "#FFFFFF",
               "fontSize": 22,
@@ -418,6 +428,8 @@ exports[`<SelectRecoveryMethod /> should match snapshot 1`] = `
             Object {
               "backgroundColor": "transparent",
             },
+            null,
+            null,
             null,
             null,
             null,

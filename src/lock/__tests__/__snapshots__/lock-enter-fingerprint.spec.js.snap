@@ -42,6 +42,8 @@ exports[`app lock selection page should in case of fetching invitation show mess
         null,
         null,
         null,
+        null,
+        null,
       ]
     }
   >

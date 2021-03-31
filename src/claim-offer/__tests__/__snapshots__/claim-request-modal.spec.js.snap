@@ -78,6 +78,8 @@ exports[`<ClaimRequestStatusModal /> should hideModal if continue is clicked 1`]
             null,
             null,
             null,
+            null,
+            null,
             Object {
               "marginBottom": 4.785714285714286,
             },
@@ -236,6 +238,8 @@ exports[`<ClaimRequestStatusModal /> should match paid credential success, if se
             null,
             null,
             null,
+            null,
+            null,
             Object {
               "marginBottom": 4.785714285714286,
             },
@@ -378,6 +382,8 @@ exports[`<ClaimRequestStatusModal /> should match snapshot when pending popOver 
             null,
             null,
             null,
+            null,
+            null,
             Object {
               "marginBottom": 4.785714285714286,
             },
@@ -424,6 +430,8 @@ exports[`<ClaimRequestStatusModal /> should match snapshot when pending popOver 
               Object {
                 "backgroundColor": "transparent",
               },
+              null,
+              null,
               null,
               null,
               null,
@@ -523,6 +531,8 @@ exports[`<ClaimRequestStatusModal /> should show arrow right and accepting text,
             Object {
               "backgroundColor": "transparent",
             },
+            null,
+            null,
             null,
             null,
             null,
@@ -673,6 +683,8 @@ exports[`<ClaimRequestStatusModal /> should show arrow right and only Paying tex
             null,
             null,
             null,
+            null,
+            null,
             Object {
               "marginBottom": 4.785714285714286,
             },
@@ -719,6 +731,8 @@ exports[`<ClaimRequestStatusModal /> should show arrow right and only Paying tex
               Object {
                 "backgroundColor": "transparent",
               },
+              null,
+              null,
               null,
               null,
               null,
@@ -818,6 +832,8 @@ exports[`<ClaimRequestStatusModal /> should show check mark, token amount, if pa
             Object {
               "backgroundColor": "transparent",
             },
+            null,
+            null,
             null,
             null,
             null,
@@ -976,6 +992,8 @@ exports[`<ClaimRequestStatusModal /> should show check mark, you accepted text, 
             Object {
               "backgroundColor": "transparent",
             },
+            null,
+            null,
             null,
             null,
             null,

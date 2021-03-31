@@ -237,6 +237,8 @@ exports[`<LockAuthorization /> should match snapshot 1`] = `
               null,
               null,
               null,
+              null,
+              null,
               Object {
                 "fontFamily": "System",
                 "fontSize": 26,

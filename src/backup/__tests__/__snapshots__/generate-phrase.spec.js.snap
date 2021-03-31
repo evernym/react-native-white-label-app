@@ -65,6 +65,8 @@ exports[`<GenerateRecoveryPhrase /> should match snapshot 1`] = `
             null,
             null,
             null,
+            null,
+            null,
             Object {
               "alignSelf": "center",
               "fontSize": 20,
@@ -107,6 +109,8 @@ exports[`<GenerateRecoveryPhrase /> should match snapshot 1`] = `
             Object {
               "backgroundColor": "transparent",
             },
+            null,
+            null,
             null,
             null,
             null,
@@ -195,6 +199,8 @@ exports[`<GenerateRecoveryPhrase /> should match snapshot 1`] = `
               null,
               null,
               null,
+              null,
+              null,
               Object {
                 "color": "#4A90E2",
                 "flexWrap": "wrap",
@@ -241,6 +247,8 @@ exports[`<GenerateRecoveryPhrase /> should match snapshot 1`] = `
             Object {
               "backgroundColor": "transparent",
             },
+            null,
+            null,
             null,
             null,
             null,
@@ -296,6 +304,8 @@ exports[`<GenerateRecoveryPhrase /> should match snapshot 1`] = `
             Object {
               "backgroundColor": "transparent",
             },
+            null,
+            null,
             null,
             null,
             null,
@@ -480,6 +490,8 @@ exports[`<GenerateRecoveryPhrase /> should match snapshot for error state 1`] = 
             null,
             null,
             null,
+            null,
+            null,
             Object {
               "alignSelf": "center",
               "fontSize": 20,
@@ -522,6 +534,8 @@ exports[`<GenerateRecoveryPhrase /> should match snapshot for error state 1`] = 
             Object {
               "backgroundColor": "transparent",
             },
+            null,
+            null,
             null,
             null,
             null,
@@ -612,6 +626,8 @@ exports[`<GenerateRecoveryPhrase /> should match snapshot for error state 1`] = 
               Object {
                 "color": "#4A4A4A",
               },
+              null,
+              null,
             ]
           }
         >
@@ -649,6 +665,8 @@ exports[`<GenerateRecoveryPhrase /> should match snapshot for error state 1`] = 
             Object {
               "backgroundColor": "transparent",
             },
+            null,
+            null,
             null,
             null,
             null,
@@ -704,6 +722,8 @@ exports[`<GenerateRecoveryPhrase /> should match snapshot for error state 1`] = 
             Object {
               "backgroundColor": "transparent",
             },
+            null,
+            null,
             null,
             null,
             null,
@@ -889,6 +909,8 @@ exports[`<GenerateRecoveryPhrase /> should match snapshot for loading state 1`] 
             null,
             null,
             null,
+            null,
+            null,
             Object {
               "alignSelf": "center",
               "fontSize": 20,
@@ -931,6 +953,8 @@ exports[`<GenerateRecoveryPhrase /> should match snapshot for loading state 1`] 
             Object {
               "backgroundColor": "transparent",
             },
+            null,
+            null,
             null,
             null,
             null,
@@ -1027,6 +1051,8 @@ exports[`<GenerateRecoveryPhrase /> should match snapshot for loading state 1`] 
             null,
             null,
             null,
+            null,
+            null,
             Object {
               "alignSelf": "center",
               "fontSize": 16,
@@ -1074,6 +1100,8 @@ exports[`<GenerateRecoveryPhrase /> should match snapshot for loading state 1`] 
             Object {
               "backgroundColor": "transparent",
             },
+            null,
+            null,
             null,
             null,
             null,

@@ -493,6 +493,8 @@ exports[`user about app screen should render properly and snapshot should match 
                                   null,
                                   null,
                                   null,
+                                  null,
+                                  null,
                                 ]
                               }
                             >
@@ -527,6 +529,8 @@ exports[`user about app screen should render properly and snapshot should match 
                                   Object {
                                     "fontWeight": "600",
                                   },
+                                  null,
+                                  null,
                                   null,
                                   null,
                                   null,
@@ -578,6 +582,8 @@ exports[`user about app screen should render properly and snapshot should match 
                                   Object {
                                     "backgroundColor": "transparent",
                                   },
+                                  null,
+                                  null,
                                   null,
                                   null,
                                   null,
@@ -639,6 +645,8 @@ exports[`user about app screen should render properly and snapshot should match 
                                   null,
                                   null,
                                   null,
+                                  null,
+                                  null,
                                   Object {
                                     "paddingBottom": 10,
                                   },
@@ -688,6 +696,8 @@ exports[`user about app screen should render properly and snapshot should match 
                                   Object {
                                     "backgroundColor": "transparent",
                                   },
+                                  null,
+                                  null,
                                   null,
                                   null,
                                   null,
@@ -816,6 +826,8 @@ exports[`user about app screen should render properly and snapshot should match 
                                         Object {
                                           "fontWeight": "600",
                                         },
+                                        null,
+                                        null,
                                         null,
                                         null,
                                         null,
@@ -1013,6 +1025,8 @@ exports[`user about app screen should render properly and snapshot should match 
                                         Object {
                                           "fontWeight": "600",
                                         },
+                                        null,
+                                        null,
                                         null,
                                         null,
                                         null,

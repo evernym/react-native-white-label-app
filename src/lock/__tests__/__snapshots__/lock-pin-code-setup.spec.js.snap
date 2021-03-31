@@ -467,6 +467,8 @@ exports[`<LockPinCodeSetup /> should render pin code box 1`] = `
                               null,
                               null,
                               null,
+                              null,
+                              null,
                               Object {
                                 "fontFamily": "System",
                                 "fontSize": 25.777142857142856,
@@ -502,6 +504,8 @@ exports[`<LockPinCodeSetup /> should render pin code box 1`] = `
                               Object {
                                 "textAlign": "center",
                               },
+                              null,
+                              null,
                               null,
                               null,
                               null,
@@ -1323,6 +1327,8 @@ exports[`<LockPinCodeSetup /> should set pinSetupState and pinReEnterSuccessPin 
                               null,
                               null,
                               null,
+                              null,
+                              null,
                               Object {
                                 "fontFamily": "System",
                                 "fontSize": 25.777142857142856,
@@ -1358,6 +1364,8 @@ exports[`<LockPinCodeSetup /> should set pinSetupState and pinReEnterSuccessPin 
                               Object {
                                 "textAlign": "center",
                               },
+                              null,
+                              null,
                               null,
                               null,
                               null,
@@ -2179,6 +2187,8 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
                               null,
                               null,
                               null,
+                              null,
+                              null,
                               Object {
                                 "fontFamily": "System",
                                 "fontSize": 25.777142857142856,
@@ -2214,6 +2224,8 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
                               Object {
                                 "textAlign": "center",
                               },
+                              null,
+                              null,
                               null,
                               null,
                               null,
@@ -3037,6 +3049,8 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
                               null,
                               null,
                               null,
+                              null,
+                              null,
                               Object {
                                 "fontFamily": "System",
                                 "fontSize": 25.777142857142856,
@@ -3072,6 +3086,8 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
                               Object {
                                 "textAlign": "center",
                               },
+                              null,
+                              null,
                               null,
                               null,
                               null,
@@ -3893,6 +3909,8 @@ exports[`<LockPinCodeSetup /> should show re enter pass code after first entry 1
                               null,
                               null,
                               null,
+                              null,
+                              null,
                               Object {
                                 "fontFamily": "System",
                                 "fontSize": 25.777142857142856,
@@ -3928,6 +3946,8 @@ exports[`<LockPinCodeSetup /> should show re enter pass code after first entry 1
                               Object {
                                 "textAlign": "center",
                               },
+                              null,
+                              null,
                               null,
                               null,
                               null,
