@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Offline-store action: Offline, value: False 1`] = `
+Object {
+  "offline": false,
+}
+`;
+
+exports[`Offline-store action: Offline, value: True 1`] = `
+Object {
+  "offline": true,
+}
+`;

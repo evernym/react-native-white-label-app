@@ -25,11 +25,9 @@ import { EvaIcon, NO_WIFI } from '../common/icons'
 import { colors } from '../common/styles/constant'
 import { CustomText, CustomView, Loader } from '../components'
 
-const Offline = ({ offline, overlay }: OfflineProps) => {
+export const Offline = ({ offline, vcxInitPoolStart, vcxInitStart, overlay }: OfflineProps) => {
   const netInfo = useNetInfo()
   const [isLoading, setIsLoading] = useState(false)
-
-  const dispatch = useDispatch()
 
   const isOffline = useSelector(getOfflineStatus)
   const isPoolError = useSelector(getIsVcxPoolInitFailed)
@@ -38,7 +36,7 @@ const Offline = ({ offline, overlay }: OfflineProps) => {
   
   const isShowLoader = useMemo(() => {
     return isOffline ? isLoading : isVcxLoading
-  }, [isLoading, isVcxLoading])
+  }, [isOffline, isLoading, isVcxLoading])
 
   const isNeedToReconnect = useMemo(() => {
     return isOffline || isVcxError || isPoolError
@@ -72,9 +70,9 @@ const Offline = ({ offline, overlay }: OfflineProps) => {
     }, 3000)
   }
 
-  const poolReconnect = () =>  dispatch(vcxInitPoolStart())
+  const poolReconnect = () => vcxInitPoolStart()
 
-  const vcxReconnect = () => dispatch(vcxInitStart())
+  const vcxReconnect = () => vcxInitStart()
 
   const initReconnectFunction = () => {
     if (isOffline) {
@@ -117,7 +115,11 @@ const Offline = ({ offline, overlay }: OfflineProps) => {
 }
 
 const mapDispatchToProps = (dispatch) =>
-  bindActionCreators({ offline }, dispatch)
+  bindActionCreators({
+    offline,
+    vcxInitPoolStart, 
+    vcxInitStart
+  }, dispatch)
 
 export default connect(null, mapDispatchToProps)(Offline)
 

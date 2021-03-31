@@ -70,9 +70,6 @@ import {
   VCX_INIT_POOL_SUCCESS,
   VCX_INIT_POOL_NOT_STARTED,
   VCX_INIT_POOL_START,
-  IS_LOADING,
-  IS_VCX_POOL_INIT_FAILED,
-  IS_VCX_INIT_FAILED,
 } from './type-config-store'
 import type {
   ServerEnvironment,
@@ -92,9 +89,6 @@ import type {
   AcknowledgeMessagesAction,
   GetMessagesFailAction,
   AcknowledgeMessagesFailAction,
-  IsLoadingAction,
-  IsVcxPoolInitFailed,
-  IsVcxInitFailed,
 } from './type-config-store'
 import type { CustomError } from '../common/type-common'
 import { downloadEnvironmentDetails } from '../api/api'
@@ -310,21 +304,6 @@ const initialState: ConfigStore = {
   isVcxPoolInitFailed: false,
   isVcxInitFailed: false,
 }
-
-export const isVcxInitFailed = (isFailed) => ({
-  type: IS_VCX_INIT_FAILED,
-  isFailed,
-})
-
-export const isVcxPoolInitFailed = (isFailed) => ({
-  type: IS_VCX_POOL_INIT_FAILED,
-  isFailed,
-})
-
-export const isLoading = (isLoading) => ({
-  type: IS_LOADING,
-  isLoading,
-})
 
 export const hydrated = () => ({
   type: HYDRATED,
@@ -632,7 +611,6 @@ export function* ensureAppHydrated(): Generator<*, *, *> {
 
 export function* initVcx(findingWallet?: any): Generator<*, *, *> {
   if (findingWallet !== true) {
-    yield put(isLoading(true))
     yield* ensureAppHydrated()
     while (true) {
       // Since we have added a feature flag, so we need to wait
@@ -715,12 +693,10 @@ export function* initVcx(findingWallet?: any): Generator<*, *, *> {
           userOneTimeInfoWithoutToken,
         ] = yield* registerCloudAgentWithoutToken(agencyConfig)
         if (registerWithTokenError || !userOneTimeInfoWithoutToken) {
-          yield put(vcxInitFail((registerWithTokenError)))
-          yield put(isLoading(false))
+          yield put(vcxInitFail(ERROR_VCX_INIT_FAIL(registerWithTokenError)))
           return
-        } else {
-          userOneTimeInfo = userOneTimeInfoWithoutToken
         }
+        userOneTimeInfo = userOneTimeInfoWithoutToken
       } else {
         userOneTimeInfo = userOneTimeInfoWithToken
       }
@@ -728,12 +704,10 @@ export function* initVcx(findingWallet?: any): Generator<*, *, *> {
       if (findingWallet !== true) {
         yield put(connectRegisterCreateAgentDone(userOneTimeInfo))
       }
-      yield put(isLoading(false))
     } catch (e) {
       captureError(e)
       yield call(vcxShutdown, false)
       yield put(vcxInitFail(ERROR_VCX_PROVISION_FAIL(e.message)))
-      yield put(isLoading(false))
       return
     }
   }
@@ -781,7 +755,6 @@ export function* initVcx(findingWallet?: any): Generator<*, *, *> {
 }
 
 export function* connectToPool(): Generator<*, *, *> {
-  yield put(isLoading(true))
   const { agencyUrl, poolConfig }: ConfigStore = yield select(getConfig)
 
   const config: CxsPoolConfig = {
@@ -797,14 +770,12 @@ export function* connectToPool(): Generator<*, *, *> {
       yield put(vcxInitPoolSuccess())
       return
     } catch (e) {
-      yield put(isLoading(false))
       captureError(e)
       lastInitException = e
       // wait for 10 seconds before trying again
       yield call(delay, 10000)
     }
   }
-  yield put(isLoading(false))
   // we could not connect to the pool - raise error
   yield put(vcxInitPoolFail(ERROR_VCX_INIT_FAIL(lastInitException.message)))
 }
@@ -1644,12 +1615,14 @@ export default function configReducer(
         ...state,
         vcxInitializationState: VCX_INIT_START,
         vcxInitializationError: null,
+        isLoading: true,
       }
     case VCX_INIT_SUCCESS:
       return {
         ...state,
         vcxInitializationState: VCX_INIT_SUCCESS,
         isVcxInitFailed: false,
+        isLoading: false,
       }
     case VCX_INIT_FAIL:
       return {
@@ -1657,6 +1630,7 @@ export default function configReducer(
         vcxInitializationState: VCX_INIT_FAIL,
         vcxInitializationError: action.error,
         isVcxInitFailed: true,
+        isLoading: false,
       }
     case VCX_INIT_POOL_NOT_STARTED:
       return {
@@ -1669,12 +1643,14 @@ export default function configReducer(
         ...state,
         vcxPoolInitializationState: VCX_INIT_POOL_START,
         vcxPoolInitializationError: null,
+        isLoading: true,
       }
     case VCX_INIT_POOL_SUCCESS:
       return {
         ...state,
         vcxPoolInitializationState: VCX_INIT_POOL_SUCCESS,
         isVcxPoolInitFailed: false,
+        isLoading: false,
       }
     case VCX_INIT_POOL_FAIL:
       return {
@@ -1682,6 +1658,7 @@ export default function configReducer(
         vcxPoolInitializationState: VCX_INIT_POOL_FAIL,
         vcxPoolInitializationError: action.error,
         isVcxPoolInitFailed: true,
+        isLoading: false,
       }
     case GET_MESSAGES_FAIL:
     case GET_MESSAGES_LOADING:
@@ -1699,11 +1676,6 @@ export default function configReducer(
       return {
         ...state,
         snackError: null,
-      }
-    case IS_LOADING:
-      return {
-        ...state,
-        isLoading: action.isLoading
       }
     default:
       return state

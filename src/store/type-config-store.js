@@ -28,23 +28,6 @@ export const __uniqueId = '__uniqueId'
 
 export type ServerEnvironment = $Keys<typeof SERVER_ENVIRONMENT>
 
-export const IS_VCX_INIT_FAILED = 'IS_VCX_INIT_FAILED'
-export type IsVcxInitFailed = {
-  type: typeof IS_VCX_INIT_FAILED,
-  isFailed: boolean
-}
-
-export const IS_VCX_POOL_INIT_FAILED = 'IS_VCX_POOL_INIT_FAILED'
-export type IsVcxPoolInitFailed = {
-  type: typeof IS_VCX_POOL_INIT_FAILED,
-  isFailed: boolean
-}
-
-export const IS_LOADING = 'IS_LOADING'
-export type IsLoadingAction = {
-  type: typeof IS_LOADING,
-  isLoading: boolean
-}
 export const APP_INSTALLED = 'APP_INSTALLED'
 export type AppInstalledSuccessAction = {
   type: typeof APP_INSTALLED,
@@ -178,9 +161,6 @@ export type ConfigAction =
   | VcxInitPoolStartAction
   | VcxInitPoolSuccessAction
   | VcxInitPoolFailAction
-  | IsLoadingAction
-  | IsVcxPoolInitFailed
-  | IsVcxInitFailed
 
 export type VcxInitializationState =
   | typeof VCX_INIT_NOT_STARTED
@@ -215,7 +195,7 @@ export type ConfigStore = {
   snackError: ?string,
   isLoading: boolean,
   isVcxPoolInitFailed: boolean,
-  IsVcxInitFailed: Boolean,
+  IsVcxInitFailed: boolean,
 } & AgencyPoolConfig
 
 export type MessageDownloadStatus =
