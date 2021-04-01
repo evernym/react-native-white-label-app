@@ -3,6 +3,7 @@ stages:
   - prebuild
   - check
   - test
+  - publish
 
 ### - Pre-build - ###
 # Helpers / Anchors
@@ -94,3 +95,20 @@ yarn-test:
       - tags
   tags:
     - docker-machine
+
+nodejs-publish:
+  stage: publish
+  image: ${CI_REGISTRY_IMAGE}/ubuntu18:${CI_COMMIT_REF_SLUG}
+  tags:
+    - docker-machine
+  script:
+    - npm config set //registry.npmjs.org/:_authToken ${NPM_AUTH_TOKEN}
+    - VERSION=$(grep '"version"' package.json | cut -d '"' -f 4)
+    - if [ $CI_COMMIT_REF_SLUG == "master" ]; then VERSION="${VERSION}-${CI_PIPELINE_ID}"; fi
+    - npm version --no-git-tag-version --allow-same-version ${VERSION}
+    - npm install
+    - npm publish
+  only:
+    refs:
+      - stable@dev/connectme/react-native-evernym-sdk
+      - master@dev/connectme/react-native-evernym-sdk

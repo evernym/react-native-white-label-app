@@ -11,12 +11,9 @@
     "ios",
     "react-native-evernym-sdk.podspec"
   ],
-  "publishConfig": {
-    "registry": "https://gitlab.corp.evernym.com/api/v4/projects/761/packages/npm/"
-  },
   "scripts": {
     "test": "jest --detectOpenHandles --forceExit",
-    "lint": "flow stop && flow && eslint src",
+    "lint": "flow stop && flow --retries 10 && eslint src",
     "configure": "yarn --cwd ../../.. copyfiles -su 4 'node_modules/@dev/react-native-evernym-sdk/src/evernym-sdk/*.js' ./app && echo 'Evernym React Native SDK configured successfully'",
     "pod:update": "pod repo update",
     "pod:dev:install": "cd ios && CONNECTME_DEBUG=true pod install"
