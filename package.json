@@ -2,14 +2,15 @@
   "name": "@dev/react-native-evernym-sdk",
   "title": "React Native Evernym SDK",
   "version": "0.0.1",
-  "description": "The official React Native SDK from Evernym",
+  "description": "The official React Native SDK for Evernym's Mobile SDK",
   "main": "src/index.js",
   "files": [
     "README.md",
     "android",
     "src",
     "ios",
-    "react-native-evernym-sdk.podspec"
+    "react-native-evernym-sdk.podspec",
+    "configure-android.sh"
   ],
   "scripts": {
     "test": "jest --detectOpenHandles --forceExit",
@@ -20,13 +21,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://git@gitlab.corp.evernym.com/dev/connectme/react-native-evernym-sdk.git",
-    "baseUrl": "https://gitlab.corp.evernym.com/dev/connectme/react-native-evernym-sdk.git"
+    "url": "git@github.com:evernym/react-native-evernym-sdk.git"
   },
   "keywords": [
     "ssi",
-    "verity",
     "evernym",
+    "mobile",
     "react-native"
   ],
   "author": {
@@ -157,36 +157,6 @@
     "watchPathIgnorePatterns": [
       "<rootDir>/node_modules/"
     ]
-  },
-  "detox": {
-    "configurations": {
-      "ios.sim.release": {
-        "binaryPath": "ios/build/Build/Products/Release-iphonesimulator/ConnectMe.app",
-        "build": "xcodebuild -workspace ios/ConnectMe.xcworkspace -scheme ConnectMe -configuration release -sdk iphonesimulator -derivedDataPath ios/build",
-        "type": "ios.simulator",
-        "name": "<pass name from command line flag>"
-      },
-      "ios.sim.debug": {
-        "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/ConnectMe.app",
-        "build": "xcodebuild -workspace ios/ConnectMe.xcworkspace -scheme ConnectMe -sdk iphonesimulator -derivedDataPath ios/build",
-        "type": "ios.simulator",
-        "name": "<pass name from command line flag>"
-      },
-      "android.emu.debug": {
-        "binaryPath": "android/app/build/outputs/apk/debug/app-x86_64-debug.apk",
-        "build": "pushd android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug && popd && mkdir -p android/app/build/outputs/androidTest/x86_64/debug/ && mv android/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk android/app/build/outputs/androidTest/x86_64/debug/app-x86_64-debug-androidTest.apk",
-        "type": "android.emulator",
-        "name": "<pass name from command line flag>"
-      },
-      "android.emu.release": {
-        "binaryPath": "android/app/build/outputs/apk/release/app-x86_64-release.apk",
-        "build": "pushd android && ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release && popd && mkdir -p android/app/build/outputs/androidTest/x86_64/release/ && mv android/app/build/outputs/apk/androidTest/release/app-release-androidTest.apk android/app/build/outputs/androidTest/x86_64/release/app-x86_64-release-androidTest.apk",
-        "type": "android.emulator",
-        "name": "<pass name from command line flag>"
-      }
-    },
-    "test-runner": "jest",
-    "runner-config": "e2e/config.json"
   },
   "lint-staged": {
     "*.js": "prettier --single-quote --no-semi --trailing-comma es5 --write"
