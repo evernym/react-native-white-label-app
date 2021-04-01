@@ -4,9 +4,12 @@ exports[`<SelectRecoveryMethod /> should match snapshot 1`] = `
 <View
   style={
     Object {
-      "backgroundColor": "#ffffff",
+      "backgroundColor": "#FFFFFF",
       "flex": 1,
-      "paddingHorizontal": 20,
+      "flexDirection": "column",
+      "height": "100%",
+      "justifyContent": "flex-end",
+      "width": "100%",
     }
   }
 >

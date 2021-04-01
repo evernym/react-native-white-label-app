@@ -60,14 +60,16 @@ exports[`<LockPinCodeEnter /> redirect to home screen is app is locked and there
       }
     }
   >
-    <View
+    <RCTSafeAreaView
+      emulateUnlessSupported={true}
+      fifth={true}
+      safeArea={true}
       style={
         Object {
           "backgroundColor": "#ffffff",
           "flex": 1,
         }
       }
-      tertiary={true}
     >
       <View
         center={true}
@@ -78,82 +80,167 @@ exports[`<LockPinCodeEnter /> redirect to home screen is app is locked and there
           }
         }
       />
-      <View
-        accessibilityLabel="pin-code-input-boxes-touchable"
-        accessible={false}
-        center={true}
-        focusable={true}
-        hitSlop={
+      <Image
+        source={
           Object {
-            "bottom": 20,
-            "left": 20,
-            "right": 20,
-            "top": 20,
+            "default": "RelativeImageStub",
           }
         }
-        onClick={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
+        style={
+          Array [
+            Object {
+              "marginTop": "-92%",
+              "position": "absolute",
+              "transform": Array [
+                Object {
+                  "rotate": "-180deg",
+                },
+              ],
+              "width": "100%",
+            },
+          ]
+        }
+      />
+      <View
+        center={true}
         style={
           Object {
             "alignItems": "center",
             "justifyContent": "center",
-            "marginBottom": 40,
-            "marginTop": 40,
-            "minHeight": 30,
+            "marginTop": "3%",
           }
         }
-        testID="pin-code-input-boxes-touchable"
+        transparentBg={true}
+      >
+        <View
+          style={
+            Object {
+              "backgroundColor": "#505050",
+              "height": 8,
+              "position": "absolute",
+              "width": "100%",
+            }
+          }
+        />
+        <View
+          style={
+            Object {
+              "backgroundColor": "#505050",
+              "borderRadius": 50,
+            }
+          }
+        >
+          <View
+            clearBg={true}
+            extraLarge={true}
+            halo={true}
+            src={
+              Object {
+                "default": "RelativeImageStub",
+              }
+            }
+            style={
+              Object {
+                "backgroundColor": "transparent",
+              }
+            }
+          >
+            <View
+              center={true}
+              style={
+                Object {
+                  "alignItems": "center",
+                  "backgroundColor": "rgba(0,0,0,0.07)",
+                  "borderRadius": 50,
+                  "height": 100,
+                  "justifyContent": "center",
+                  "width": 100,
+                }
+              }
+            >
+              <View
+                style={Object {}}
+              >
+                <Image
+                  resizeMode="contain"
+                  source={
+                    Object {
+                      "default": "RelativeImageStub",
+                    }
+                  }
+                  style={
+                    Array [
+                      Object {
+                        "height": 80,
+                        "width": 80,
+                      },
+                      Object {
+                        "borderRadius": 40,
+                      },
+                    ]
+                  }
+                />
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+      <View
+        center={true}
+        style={
+          Object {
+            "alignItems": "center",
+            "justifyContent": "center",
+            "paddingVertical": 8,
+          }
+        }
+        verticalSpace={true}
       >
         <Text
-          accessibilityLabel="Enter passcode"
-          accessible={true}
           allowFontScaling={false}
           style={
             Array [
               Object {
-                "fontSize": 19,
+                "fontSize": 17,
               },
               Object {
                 "fontFamily": "System",
               },
               Object {
-                "backgroundColor": "#ffffff",
-                "color": "#777777",
+                "backgroundColor": "#333333",
+                "color": "#ffffff",
               },
               Object {
-                "fontWeight": "800",
+                "fontWeight": "900",
               },
               Object {
                 "textAlign": "center",
               },
-              null,
-              null,
-              null,
-              null,
+              Object {
+                "backgroundColor": "transparent",
+              },
               null,
               null,
               null,
               null,
               null,
               Object {
-                "fontFamily": "System",
-                "fontSize": 26,
-                "fontStyle": "normal",
-                "fontWeight": "700",
-                "letterSpacing": 0.5,
-                "lineHeight": 31,
-                "minHeight": 49.23529411764706,
+                "color": "#464646",
+              },
+              null,
+              null,
+              Object {
+                "fontSize": 16,
+                "marginBottom": "-1%",
+                "marginTop": "2%",
+                "width": "80%",
               },
             ]
           }
-          testID="pass-code-input-text"
         >
-          Enter passcode
+          Please enter your current 
+          AppName
+           passcode!
         </Text>
       </View>
       <View
@@ -473,7 +560,63 @@ exports[`<LockPinCodeEnter /> redirect to home screen is app is locked and there
           />
         </View>
       </View>
-    </View>
+      <View
+        center={true}
+        doubleVerticalSpace={true}
+        style={
+          Object {
+            "alignItems": "center",
+            "justifyContent": "center",
+            "paddingVertical": 16,
+          }
+        }
+      >
+        <Text
+          accessibilityLabel="Or Set Up New Passcode"
+          accessible={true}
+          allowFontScaling={false}
+          onPress={[Function]}
+          style={
+            Array [
+              Object {
+                "fontSize": 15,
+              },
+              Object {
+                "fontFamily": "System",
+              },
+              Object {
+                "backgroundColor": "#333333",
+                "color": "#ffffff",
+              },
+              Object {
+                "fontWeight": "bold",
+              },
+              Object {
+                "textAlign": "center",
+              },
+              Object {
+                "backgroundColor": "transparent",
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              Object {
+                "color": "#79ade7",
+                "marginTop": "1%",
+              },
+            ]
+          }
+          testID="set-up-new-passcode-recovery"
+        >
+          Or Set Up New Passcode
+        </Text>
+      </View>
+    </RCTSafeAreaView>
   </View>
 </View>
 `;
@@ -538,14 +681,16 @@ exports[`<LockPinCodeEnter /> should render pin code box 1`] = `
       }
     }
   >
-    <View
+    <RCTSafeAreaView
+      emulateUnlessSupported={true}
+      fifth={true}
+      safeArea={true}
       style={
         Object {
           "backgroundColor": "#ffffff",
           "flex": 1,
         }
       }
-      tertiary={true}
     >
       <View
         center={true}
@@ -556,82 +701,167 @@ exports[`<LockPinCodeEnter /> should render pin code box 1`] = `
           }
         }
       />
-      <View
-        accessibilityLabel="pin-code-input-boxes-touchable"
-        accessible={false}
-        center={true}
-        focusable={true}
-        hitSlop={
+      <Image
+        source={
           Object {
-            "bottom": 20,
-            "left": 20,
-            "right": 20,
-            "top": 20,
+            "default": "RelativeImageStub",
           }
         }
-        onClick={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
+        style={
+          Array [
+            Object {
+              "marginTop": "-92%",
+              "position": "absolute",
+              "transform": Array [
+                Object {
+                  "rotate": "-180deg",
+                },
+              ],
+              "width": "100%",
+            },
+          ]
+        }
+      />
+      <View
+        center={true}
         style={
           Object {
             "alignItems": "center",
             "justifyContent": "center",
-            "marginBottom": 40,
-            "marginTop": 40,
-            "minHeight": 30,
+            "marginTop": "3%",
           }
         }
-        testID="pin-code-input-boxes-touchable"
+        transparentBg={true}
+      >
+        <View
+          style={
+            Object {
+              "backgroundColor": "#505050",
+              "height": 8,
+              "position": "absolute",
+              "width": "100%",
+            }
+          }
+        />
+        <View
+          style={
+            Object {
+              "backgroundColor": "#505050",
+              "borderRadius": 50,
+            }
+          }
+        >
+          <View
+            clearBg={true}
+            extraLarge={true}
+            halo={true}
+            src={
+              Object {
+                "default": "RelativeImageStub",
+              }
+            }
+            style={
+              Object {
+                "backgroundColor": "transparent",
+              }
+            }
+          >
+            <View
+              center={true}
+              style={
+                Object {
+                  "alignItems": "center",
+                  "backgroundColor": "rgba(0,0,0,0.07)",
+                  "borderRadius": 50,
+                  "height": 100,
+                  "justifyContent": "center",
+                  "width": 100,
+                }
+              }
+            >
+              <View
+                style={Object {}}
+              >
+                <Image
+                  resizeMode="contain"
+                  source={
+                    Object {
+                      "default": "RelativeImageStub",
+                    }
+                  }
+                  style={
+                    Array [
+                      Object {
+                        "height": 80,
+                        "width": 80,
+                      },
+                      Object {
+                        "borderRadius": 40,
+                      },
+                    ]
+                  }
+                />
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+      <View
+        center={true}
+        style={
+          Object {
+            "alignItems": "center",
+            "justifyContent": "center",
+            "paddingVertical": 8,
+          }
+        }
+        verticalSpace={true}
       >
         <Text
-          accessibilityLabel="Enter your passcode"
-          accessible={true}
           allowFontScaling={false}
           style={
             Array [
               Object {
-                "fontSize": 19,
+                "fontSize": 17,
               },
               Object {
                 "fontFamily": "System",
               },
               Object {
-                "backgroundColor": "#ffffff",
-                "color": "#777777",
+                "backgroundColor": "#333333",
+                "color": "#ffffff",
               },
               Object {
-                "fontWeight": "800",
+                "fontWeight": "900",
               },
               Object {
                 "textAlign": "center",
               },
-              null,
-              null,
-              null,
-              null,
+              Object {
+                "backgroundColor": "transparent",
+              },
               null,
               null,
               null,
               null,
               null,
               Object {
-                "fontFamily": "System",
-                "fontSize": 26,
-                "fontStyle": "normal",
-                "fontWeight": "700",
-                "letterSpacing": 0.5,
-                "lineHeight": 31,
-                "minHeight": 49.23529411764706,
+                "color": "#464646",
+              },
+              null,
+              null,
+              Object {
+                "fontSize": 16,
+                "marginBottom": "-1%",
+                "marginTop": "2%",
+                "width": "80%",
               },
             ]
           }
-          testID="pass-code-input-text"
         >
-          Enter your passcode
+          Please enter your current 
+          AppName
+           passcode!
         </Text>
       </View>
       <View
@@ -951,7 +1181,63 @@ exports[`<LockPinCodeEnter /> should render pin code box 1`] = `
           />
         </View>
       </View>
-    </View>
+      <View
+        center={true}
+        doubleVerticalSpace={true}
+        style={
+          Object {
+            "alignItems": "center",
+            "justifyContent": "center",
+            "paddingVertical": 16,
+          }
+        }
+      >
+        <Text
+          accessibilityLabel="Or Set Up New Passcode"
+          accessible={true}
+          allowFontScaling={false}
+          onPress={[Function]}
+          style={
+            Array [
+              Object {
+                "fontSize": 15,
+              },
+              Object {
+                "fontFamily": "System",
+              },
+              Object {
+                "backgroundColor": "#333333",
+                "color": "#ffffff",
+              },
+              Object {
+                "fontWeight": "bold",
+              },
+              Object {
+                "textAlign": "center",
+              },
+              Object {
+                "backgroundColor": "transparent",
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              Object {
+                "color": "#79ade7",
+                "marginTop": "1%",
+              },
+            ]
+          }
+          testID="set-up-new-passcode-recovery"
+        >
+          Or Set Up New Passcode
+        </Text>
+      </View>
+    </RCTSafeAreaView>
   </View>
 </View>
 `;
@@ -1016,14 +1302,16 @@ exports[`<LockPinCodeEnter /> should show 'Enter passcode' message if there is n
       }
     }
   >
-    <View
+    <RCTSafeAreaView
+      emulateUnlessSupported={true}
+      fifth={true}
+      safeArea={true}
       style={
         Object {
           "backgroundColor": "#ffffff",
           "flex": 1,
         }
       }
-      tertiary={true}
     >
       <View
         center={true}
@@ -1034,82 +1322,167 @@ exports[`<LockPinCodeEnter /> should show 'Enter passcode' message if there is n
           }
         }
       />
-      <View
-        accessibilityLabel="pin-code-input-boxes-touchable"
-        accessible={false}
-        center={true}
-        focusable={true}
-        hitSlop={
+      <Image
+        source={
           Object {
-            "bottom": 20,
-            "left": 20,
-            "right": 20,
-            "top": 20,
+            "default": "RelativeImageStub",
           }
         }
-        onClick={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
+        style={
+          Array [
+            Object {
+              "marginTop": "-92%",
+              "position": "absolute",
+              "transform": Array [
+                Object {
+                  "rotate": "-180deg",
+                },
+              ],
+              "width": "100%",
+            },
+          ]
+        }
+      />
+      <View
+        center={true}
         style={
           Object {
             "alignItems": "center",
             "justifyContent": "center",
-            "marginBottom": 40,
-            "marginTop": 40,
-            "minHeight": 30,
+            "marginTop": "3%",
           }
         }
-        testID="pin-code-input-boxes-touchable"
+        transparentBg={true}
+      >
+        <View
+          style={
+            Object {
+              "backgroundColor": "#505050",
+              "height": 8,
+              "position": "absolute",
+              "width": "100%",
+            }
+          }
+        />
+        <View
+          style={
+            Object {
+              "backgroundColor": "#505050",
+              "borderRadius": 50,
+            }
+          }
+        >
+          <View
+            clearBg={true}
+            extraLarge={true}
+            halo={true}
+            src={
+              Object {
+                "default": "RelativeImageStub",
+              }
+            }
+            style={
+              Object {
+                "backgroundColor": "transparent",
+              }
+            }
+          >
+            <View
+              center={true}
+              style={
+                Object {
+                  "alignItems": "center",
+                  "backgroundColor": "rgba(0,0,0,0.07)",
+                  "borderRadius": 50,
+                  "height": 100,
+                  "justifyContent": "center",
+                  "width": 100,
+                }
+              }
+            >
+              <View
+                style={Object {}}
+              >
+                <Image
+                  resizeMode="contain"
+                  source={
+                    Object {
+                      "default": "RelativeImageStub",
+                    }
+                  }
+                  style={
+                    Array [
+                      Object {
+                        "height": 80,
+                        "width": 80,
+                      },
+                      Object {
+                        "borderRadius": 40,
+                      },
+                    ]
+                  }
+                />
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+      <View
+        center={true}
+        style={
+          Object {
+            "alignItems": "center",
+            "justifyContent": "center",
+            "paddingVertical": 8,
+          }
+        }
+        verticalSpace={true}
       >
         <Text
-          accessibilityLabel="Enter passcode"
-          accessible={true}
           allowFontScaling={false}
           style={
             Array [
               Object {
-                "fontSize": 19,
+                "fontSize": 17,
               },
               Object {
                 "fontFamily": "System",
               },
               Object {
-                "backgroundColor": "#ffffff",
-                "color": "#777777",
+                "backgroundColor": "#333333",
+                "color": "#ffffff",
               },
               Object {
-                "fontWeight": "800",
+                "fontWeight": "900",
               },
               Object {
                 "textAlign": "center",
               },
-              null,
-              null,
-              null,
-              null,
+              Object {
+                "backgroundColor": "transparent",
+              },
               null,
               null,
               null,
               null,
               null,
               Object {
-                "fontFamily": "System",
-                "fontSize": 26,
-                "fontStyle": "normal",
-                "fontWeight": "700",
-                "letterSpacing": 0.5,
-                "lineHeight": 31,
-                "minHeight": 49.23529411764706,
+                "color": "#464646",
+              },
+              null,
+              null,
+              Object {
+                "fontSize": 16,
+                "marginBottom": "-1%",
+                "marginTop": "2%",
+                "width": "80%",
               },
             ]
           }
-          testID="pass-code-input-text"
         >
-          Enter passcode
+          Please enter your current 
+          AppName
+           passcode!
         </Text>
       </View>
       <View
@@ -1429,7 +1802,63 @@ exports[`<LockPinCodeEnter /> should show 'Enter passcode' message if there is n
           />
         </View>
       </View>
-    </View>
+      <View
+        center={true}
+        doubleVerticalSpace={true}
+        style={
+          Object {
+            "alignItems": "center",
+            "justifyContent": "center",
+            "paddingVertical": 16,
+          }
+        }
+      >
+        <Text
+          accessibilityLabel="Or Set Up New Passcode"
+          accessible={true}
+          allowFontScaling={false}
+          onPress={[Function]}
+          style={
+            Array [
+              Object {
+                "fontSize": 15,
+              },
+              Object {
+                "fontFamily": "System",
+              },
+              Object {
+                "backgroundColor": "#333333",
+                "color": "#ffffff",
+              },
+              Object {
+                "fontWeight": "bold",
+              },
+              Object {
+                "textAlign": "center",
+              },
+              Object {
+                "backgroundColor": "transparent",
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              Object {
+                "color": "#79ade7",
+                "marginTop": "1%",
+              },
+            ]
+          }
+          testID="set-up-new-passcode-recovery"
+        >
+          Or Set Up New Passcode
+        </Text>
+      </View>
+    </RCTSafeAreaView>
   </View>
 </View>
 `;
@@ -1494,14 +1923,16 @@ exports[`<LockPinCodeEnter /> should show UNLOCKING_APP_WAIT_MESSAGE  1`] = `
       }
     }
   >
-    <View
+    <RCTSafeAreaView
+      emulateUnlessSupported={true}
+      fifth={true}
+      safeArea={true}
       style={
         Object {
           "backgroundColor": "#ffffff",
           "flex": 1,
         }
       }
-      tertiary={true}
     >
       <View
         center={true}
@@ -1512,82 +1943,167 @@ exports[`<LockPinCodeEnter /> should show UNLOCKING_APP_WAIT_MESSAGE  1`] = `
           }
         }
       />
-      <View
-        accessibilityLabel="pin-code-input-boxes-touchable"
-        accessible={false}
-        center={true}
-        focusable={true}
-        hitSlop={
+      <Image
+        source={
           Object {
-            "bottom": 20,
-            "left": 20,
-            "right": 20,
-            "top": 20,
+            "default": "RelativeImageStub",
           }
         }
-        onClick={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
+        style={
+          Array [
+            Object {
+              "marginTop": "-92%",
+              "position": "absolute",
+              "transform": Array [
+                Object {
+                  "rotate": "-180deg",
+                },
+              ],
+              "width": "100%",
+            },
+          ]
+        }
+      />
+      <View
+        center={true}
         style={
           Object {
             "alignItems": "center",
             "justifyContent": "center",
-            "marginBottom": 40,
-            "marginTop": 40,
-            "minHeight": 30,
+            "marginTop": "3%",
           }
         }
-        testID="pin-code-input-boxes-touchable"
+        transparentBg={true}
+      >
+        <View
+          style={
+            Object {
+              "backgroundColor": "#505050",
+              "height": 8,
+              "position": "absolute",
+              "width": "100%",
+            }
+          }
+        />
+        <View
+          style={
+            Object {
+              "backgroundColor": "#505050",
+              "borderRadius": 50,
+            }
+          }
+        >
+          <View
+            clearBg={true}
+            extraLarge={true}
+            halo={true}
+            src={
+              Object {
+                "default": "RelativeImageStub",
+              }
+            }
+            style={
+              Object {
+                "backgroundColor": "transparent",
+              }
+            }
+          >
+            <View
+              center={true}
+              style={
+                Object {
+                  "alignItems": "center",
+                  "backgroundColor": "rgba(0,0,0,0.07)",
+                  "borderRadius": 50,
+                  "height": 100,
+                  "justifyContent": "center",
+                  "width": 100,
+                }
+              }
+            >
+              <View
+                style={Object {}}
+              >
+                <Image
+                  resizeMode="contain"
+                  source={
+                    Object {
+                      "default": "RelativeImageStub",
+                    }
+                  }
+                  style={
+                    Array [
+                      Object {
+                        "height": 80,
+                        "width": 80,
+                      },
+                      Object {
+                        "borderRadius": 40,
+                      },
+                    ]
+                  }
+                />
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+      <View
+        center={true}
+        style={
+          Object {
+            "alignItems": "center",
+            "justifyContent": "center",
+            "paddingVertical": 8,
+          }
+        }
+        verticalSpace={true}
       >
         <Text
-          accessibilityLabel="Loading please wait..."
-          accessible={true}
           allowFontScaling={false}
           style={
             Array [
               Object {
-                "fontSize": 19,
+                "fontSize": 17,
               },
               Object {
                 "fontFamily": "System",
               },
               Object {
-                "backgroundColor": "#ffffff",
-                "color": "#777777",
+                "backgroundColor": "#333333",
+                "color": "#ffffff",
               },
               Object {
-                "fontWeight": "800",
+                "fontWeight": "900",
               },
               Object {
                 "textAlign": "center",
               },
-              null,
-              null,
-              null,
-              null,
+              Object {
+                "backgroundColor": "transparent",
+              },
               null,
               null,
               null,
               null,
               null,
               Object {
-                "fontFamily": "System",
-                "fontSize": 26,
-                "fontStyle": "normal",
-                "fontWeight": "700",
-                "letterSpacing": 0.5,
-                "lineHeight": 31,
-                "minHeight": 49.23529411764706,
+                "color": "#464646",
+              },
+              null,
+              null,
+              Object {
+                "fontSize": 16,
+                "marginBottom": "-1%",
+                "marginTop": "2%",
+                "width": "80%",
               },
             ]
           }
-          testID="pass-code-input-text"
         >
-          Loading please wait...
+          Please enter your current 
+          AppName
+           passcode!
         </Text>
       </View>
       <View
@@ -1907,7 +2423,63 @@ exports[`<LockPinCodeEnter /> should show UNLOCKING_APP_WAIT_MESSAGE  1`] = `
           />
         </View>
       </View>
-    </View>
+      <View
+        center={true}
+        doubleVerticalSpace={true}
+        style={
+          Object {
+            "alignItems": "center",
+            "justifyContent": "center",
+            "paddingVertical": 16,
+          }
+        }
+      >
+        <Text
+          accessibilityLabel="Or Set Up New Passcode"
+          accessible={true}
+          allowFontScaling={false}
+          onPress={[Function]}
+          style={
+            Array [
+              Object {
+                "fontSize": 15,
+              },
+              Object {
+                "fontFamily": "System",
+              },
+              Object {
+                "backgroundColor": "#333333",
+                "color": "#ffffff",
+              },
+              Object {
+                "fontWeight": "bold",
+              },
+              Object {
+                "textAlign": "center",
+              },
+              Object {
+                "backgroundColor": "transparent",
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              Object {
+                "color": "#79ade7",
+                "marginTop": "1%",
+              },
+            ]
+          }
+          testID="set-up-new-passcode-recovery"
+        >
+          Or Set Up New Passcode
+        </Text>
+      </View>
+    </RCTSafeAreaView>
   </View>
 </View>
 `;

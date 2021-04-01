@@ -102,7 +102,7 @@ Now, we have these libraries available in Java and Objective-C. But our app is w
 
 ### Selectors
 
---TODO--
+The list of all selectors can be found [here](../src/store/store-selector.js)
 
 ### Actions
 

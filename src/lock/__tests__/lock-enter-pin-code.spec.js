@@ -113,7 +113,7 @@ describe('<LockPinCodeEnter />', () => {
   })
   it('should redirect to lockSelection screen if redirectToSetupPasscode is called', () => {
     componentInstance.redirectToSetupPasscode()
-    expect(props.navigation.navigate).toHaveBeenCalledWith(lockSelectionRoute)
+    expect(props.navigation.navigate).toHaveBeenCalledWith(lockPinSetupRoute, {fromRecovery: 'false'})
   })
   it('should show UNLOCKING_APP_WAIT_MESSAGE ', () => {
     let wrapper = renderer.create(

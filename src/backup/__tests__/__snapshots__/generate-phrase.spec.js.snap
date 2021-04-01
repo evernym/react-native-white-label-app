@@ -317,99 +317,52 @@ exports[`<GenerateRecoveryPhrase /> should match snapshot 1`] = `
       </Text>
     </View>
     <View
+      accessible={true}
+      focusable={true}
+      isTVSelectable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
         Object {
-          "borderRadius": 3,
-          "marginLeft": 0,
-          "marginRight": 0,
-          "overflow": "hidden",
+          "alignItems": "center",
+          "backgroundColor": "#FFFFFF",
+          "borderRadius": 5,
+          "elevation": 7,
+          "flexDirection": "row",
+          "height": 48,
+          "justifyContent": "center",
+          "marginBottom": 15,
+          "marginLeft": "2%",
+          "marginRight": "2%",
+          "opacity": 1,
+          "shadowColor": "#777777",
+          "shadowOffset": Object {
+            "height": 1,
+            "width": 1,
+          },
+          "shadowOpacity": 0.3,
+          "shadowRadius": 5,
+          "width": "94%",
         }
       }
+      testID="submit-recovery-passphrase"
     >
-      <View
-        accessibilityLabel="submit-recovery-passphrase"
-        accessibilityRole="button"
-        accessibilityState={
-          Object {
-            "busy": false,
-            "disabled": false,
-          }
-        }
-        accessible={true}
-        focusable={true}
-        isTVSelectable={true}
-        onClick={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
+      <Text
         style={
           Object {
-            "borderRadius": 5,
-            "elevation": 7,
-            "height": 48,
-            "marginBottom": 15,
-            "marginLeft": "2%",
-            "marginRight": "2%",
-            "opacity": 1,
-            "shadowColor": "#777777",
-            "shadowOffset": Object {
-              "height": 1,
-              "width": 1,
-            },
-            "shadowOpacity": 0.3,
-            "shadowRadius": 5,
+            "color": "#4A90E2",
+            "fontSize": 18,
+            "fontWeight": "600",
           }
         }
-        testID="submit-recovery-passphrase"
       >
-        <View
-          style={
-            Object {
-              "alignItems": "center",
-              "backgroundColor": "#ffffff",
-              "borderColor": "#2089dc",
-              "borderRadius": 5,
-              "borderWidth": 0,
-              "color": "#4A90E2",
-              "elevation": 7,
-              "flexDirection": "row",
-              "fontSize": 18,
-              "fontWeight": "600",
-              "height": 48,
-              "justifyContent": "center",
-              "marginBottom": 15,
-              "marginLeft": "2%",
-              "marginRight": "2%",
-              "padding": 8,
-              "shadowColor": "#777777",
-              "shadowOffset": Object {
-                "height": 1,
-                "width": 1,
-              },
-              "shadowOpacity": 0.3,
-              "shadowRadius": 5,
-              "textAlign": "center",
-            }
-          }
-        >
-          <Text
-            style={
-              Object {
-                "color": "white",
-                "fontSize": 18,
-                "paddingBottom": 1,
-                "paddingTop": 2,
-                "textAlign": "center",
-              }
-            }
-          >
-            Continue
-          </Text>
-        </View>
-      </View>
+        Continue
+      </Text>
     </View>
   </View>
 </RCTSafeAreaView>
@@ -725,100 +678,52 @@ exports[`<GenerateRecoveryPhrase /> should match snapshot for error state 1`] = 
       </Text>
     </View>
     <View
+      accessible={true}
+      focusable={true}
+      isTVSelectable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
         Object {
-          "borderRadius": 3,
-          "marginLeft": 0,
-          "marginRight": 0,
-          "overflow": "hidden",
+          "alignItems": "center",
+          "backgroundColor": "#FFFFFF",
+          "borderRadius": 5,
+          "elevation": 7,
+          "flexDirection": "row",
+          "height": 48,
+          "justifyContent": "center",
+          "marginBottom": 15,
+          "marginLeft": "2%",
+          "marginRight": "2%",
+          "opacity": 1,
+          "shadowColor": "#777777",
+          "shadowOffset": Object {
+            "height": 1,
+            "width": 1,
+          },
+          "shadowOpacity": 0.3,
+          "shadowRadius": 5,
+          "width": "94%",
         }
       }
+      testID="submit-recovery-passphrase"
     >
-      <View
-        accessibilityLabel="submit-recovery-passphrase"
-        accessibilityRole="button"
-        accessibilityState={
-          Object {
-            "busy": false,
-            "disabled": true,
-          }
-        }
-        accessible={true}
-        focusable={true}
-        isTVSelectable={true}
-        onClick={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
+      <Text
         style={
           Object {
-            "borderRadius": 5,
-            "elevation": 7,
-            "height": 48,
-            "marginBottom": 15,
-            "marginLeft": "2%",
-            "marginRight": "2%",
-            "opacity": 1,
-            "shadowColor": "#777777",
-            "shadowOffset": Object {
-              "height": 1,
-              "width": 1,
-            },
-            "shadowOpacity": 0.3,
-            "shadowRadius": 5,
+            "color": "#4A90E2",
+            "fontSize": 18,
+            "fontWeight": "600",
           }
         }
-        testID="submit-recovery-passphrase"
       >
-        <View
-          style={
-            Object {
-              "alignItems": "center",
-              "backgroundColor": "#ffffff",
-              "borderColor": "#2089dc",
-              "borderRadius": 5,
-              "borderWidth": 0,
-              "color": "#4A90E2",
-              "elevation": 7,
-              "flexDirection": "row",
-              "fontSize": 18,
-              "fontWeight": "600",
-              "height": 48,
-              "justifyContent": "center",
-              "marginBottom": 15,
-              "marginLeft": "2%",
-              "marginRight": "2%",
-              "opacity": 0.4,
-              "padding": 8,
-              "shadowColor": "#777777",
-              "shadowOffset": Object {
-                "height": 1,
-                "width": 1,
-              },
-              "shadowOpacity": 0.3,
-              "shadowRadius": 5,
-              "textAlign": "center",
-            }
-          }
-        >
-          <Text
-            style={
-              Object {
-                "color": "hsl(208, 8%, 63%)",
-                "fontSize": 18,
-                "paddingBottom": 1,
-                "paddingTop": 2,
-                "textAlign": "center",
-              }
-            }
-          >
-            Continue
-          </Text>
-        </View>
-      </View>
+        Continue
+      </Text>
     </View>
   </View>
 </RCTSafeAreaView>
@@ -1095,100 +1000,52 @@ exports[`<GenerateRecoveryPhrase /> should match snapshot for loading state 1`] 
       </Text>
     </View>
     <View
+      accessible={true}
+      focusable={true}
+      isTVSelectable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
         Object {
-          "borderRadius": 3,
-          "marginLeft": 0,
-          "marginRight": 0,
-          "overflow": "hidden",
+          "alignItems": "center",
+          "backgroundColor": "#FFFFFF",
+          "borderRadius": 5,
+          "elevation": 7,
+          "flexDirection": "row",
+          "height": 48,
+          "justifyContent": "center",
+          "marginBottom": 15,
+          "marginLeft": "2%",
+          "marginRight": "2%",
+          "opacity": 1,
+          "shadowColor": "#777777",
+          "shadowOffset": Object {
+            "height": 1,
+            "width": 1,
+          },
+          "shadowOpacity": 0.3,
+          "shadowRadius": 5,
+          "width": "94%",
         }
       }
+      testID="submit-recovery-passphrase"
     >
-      <View
-        accessibilityLabel="submit-recovery-passphrase"
-        accessibilityRole="button"
-        accessibilityState={
-          Object {
-            "busy": false,
-            "disabled": true,
-          }
-        }
-        accessible={true}
-        focusable={true}
-        isTVSelectable={true}
-        onClick={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
+      <Text
         style={
           Object {
-            "borderRadius": 5,
-            "elevation": 7,
-            "height": 48,
-            "marginBottom": 15,
-            "marginLeft": "2%",
-            "marginRight": "2%",
-            "opacity": 1,
-            "shadowColor": "#777777",
-            "shadowOffset": Object {
-              "height": 1,
-              "width": 1,
-            },
-            "shadowOpacity": 0.3,
-            "shadowRadius": 5,
+            "color": "#4A90E2",
+            "fontSize": 18,
+            "fontWeight": "600",
           }
         }
-        testID="submit-recovery-passphrase"
       >
-        <View
-          style={
-            Object {
-              "alignItems": "center",
-              "backgroundColor": "#ffffff",
-              "borderColor": "#2089dc",
-              "borderRadius": 5,
-              "borderWidth": 0,
-              "color": "#4A90E2",
-              "elevation": 7,
-              "flexDirection": "row",
-              "fontSize": 18,
-              "fontWeight": "600",
-              "height": 48,
-              "justifyContent": "center",
-              "marginBottom": 15,
-              "marginLeft": "2%",
-              "marginRight": "2%",
-              "opacity": 0.4,
-              "padding": 8,
-              "shadowColor": "#777777",
-              "shadowOffset": Object {
-                "height": 1,
-                "width": 1,
-              },
-              "shadowOpacity": 0.3,
-              "shadowRadius": 5,
-              "textAlign": "center",
-            }
-          }
-        >
-          <Text
-            style={
-              Object {
-                "color": "hsl(208, 8%, 63%)",
-                "fontSize": 18,
-                "paddingBottom": 1,
-                "paddingTop": 2,
-                "textAlign": "center",
-              }
-            }
-          >
-            Continue
-          </Text>
-        </View>
-      </View>
+        Continue
+      </Text>
     </View>
   </View>
 </RCTSafeAreaView>

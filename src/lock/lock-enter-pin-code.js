@@ -124,7 +124,7 @@ export class LockEnterPin extends PureComponent<
   redirect = (props: LockEnterPinProps) => {
     //This will set isAppLocked to false
     props.unlockApp()
-    if (this.props.inRecovery) {
+    if (typeof this.props.inRecovery === "boolean" && this.props.inRecovery) {
       // If user do restore of backup he has to accept eula again
       this.props.navigation.navigate(eulaRoute)
     } else if (props.pendingRedirection) {
