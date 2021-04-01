@@ -19,6 +19,7 @@ import {
   pushNotificationPermissionRoute,
   claimOfferRoute,
   proofRequestRoute,
+  restoreRoute,
 } from '../common/route-constants'
 import { Container, Loader } from '../components'
 import { TOKEN_EXPIRED_CODE } from '../api/api-constants'
@@ -67,6 +68,7 @@ import {validateOutofbandProofRequestQrCode} from "../proof-request/proof-reques
 import {claimOfferReceived} from "../claim-offer/claim-offer-store";
 import {proofRequestReceived} from "../proof-request/proof-request-store";
 import {usePushNotifications} from "../external-imports";
+import {isLocalBackupsEnabled} from "../settings/settings-utils";
 
 const isReceived = ({ payload, status }) => {
   return (
@@ -535,7 +537,11 @@ export class SplashScreenView extends PureComponent<
         !this.props.lock.isLockEnabled ||
         this.props.lock.isLockEnabled === 'false'
       ) {
-        this.props.navigation.navigate(startUpRoute)
+        if (isLocalBackupsEnabled()) {
+          this.props.navigation.navigate(restoreRoute)
+        } else {
+          this.props.navigation.navigate(startUpRoute)
+        }
         return
       }
       // enabled lock but have not accepted EULA

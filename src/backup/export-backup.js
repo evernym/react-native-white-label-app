@@ -10,7 +10,6 @@ import {
   CustomView,
   CustomText,
   Icon,
-  CustomButton,
   CustomHeader,
   Loader,
 } from '../components'
@@ -21,7 +20,6 @@ import {
   backupErrorRoute,
 } from '../common'
 import {
-  isBiggerThanShortDevice,
   isBiggerThanVeryShortDevice,
 } from '../common/styles'
 import { color } from '../common/styles/constant'
@@ -42,6 +40,7 @@ import { BACKUP_STORE_STATUS } from './type-backup'
 import { getBackupStatus, getBackupWalletPath } from '../store/store-selector'
 import { withStatusBar } from '../components/status-bar/status-bar'
 import { appName } from '../external-imports'
+import {Button} from "../components/buttons/button";
 
 const transparentBands = require('../images/transparentBands.png')
 const backImage = require('../images/icon_backArrow_white.png')
@@ -209,18 +208,17 @@ export class ExportBackupFile extends Component<ExportBackupFileProps, void> {
               somewhere safe.
             </CustomText>
           </CustomView>
-          <CustomButton
-            large={isBiggerThanShortDevice ? true : false}
-            disabled={disableButton}
+          <Button
             onPress={this.encryptAndBackup}
-            testID={EXPORT_BACKUP_SUBMIT_BUTTON_TEST_ID}
-            style={[styles.submitButton]}
-            customColor={{
+            label={EXPORT_BACKUP_BUTTON_TITLE}
+            disabled={disableButton}
+            buttonStyle={styles.submitButton}
+            labelStyle={{
               color: color.bg.thirteenth.color,
               fontWeight: '600',
               fontSize: 18,
             }}
-            title={EXPORT_BACKUP_BUTTON_TITLE}
+            testID={EXPORT_BACKUP_SUBMIT_BUTTON_TEST_ID}
           />
         </CustomView>
       </Container>

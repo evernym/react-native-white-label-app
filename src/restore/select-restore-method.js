@@ -1,6 +1,7 @@
 // @flow
 
 import React, { Component } from 'react'
+import { Image, ImageBackground, View } from 'react-native'
 import { Platform } from 'react-native'
 
 import {
@@ -26,16 +27,21 @@ import {
   Icon,
   CustomHeader,
 } from '../components'
-import { DocumentPicker } from 'react-native-document-picker'
+import DocumentPicker  from 'react-native-document-picker'
 import { color } from '../common/styles/constant'
 import styles from '../backup/styles'
 import { customLogger } from '../store/custom-logger'
 import { RestoreStatus } from './type-restore'
 import type { RestoreProps } from './type-restore'
-import { appName } from '../external-imports'
+import {appName, startupBackgroundImage} from '../external-imports'
 const closeImage = require('../images/icon-Close.png')
 const backup = require('../images/upload13x.png')
 const download = require('../images/download3x.png')
+
+
+const restoreBackground = startupBackgroundImage || require('../images/home_background.png')
+const restoreBackgroundMode = startupBackgroundImage ? 'cover' : 'contain'
+const powerByLogo = require('../images/powered_by_logo.png');
 
 export class SelectRestoreMethod extends Component<RestoreProps, void> {
   static navigationOptions = ({
@@ -78,21 +84,25 @@ export class SelectRestoreMethod extends Component<RestoreProps, void> {
     this.props.updateStatusBarTheme(statusBarColor)
   }
 
-  zipRestore = () => {
-    DocumentPicker.show(
-      {
-        filetype: [
+  zipRestore = async () => {
+    try {
+      const res = await DocumentPicker.pick({
+        type: [
           Platform.OS === 'android' ? 'application/zip' : 'public.zip-archive',
         ],
-      },
-      (error, res) => {
-        if (res) {
-          this.props.saveFileToAppDirectory(res)
-        } else {
-          customLogger.log('err', error)
-        }
-      }
-    )
+      });
+      console.log(
+        res.uri,
+        res.type, // mime type
+        res.name,
+        res.size
+      );
+      this.props.saveFileToAppDirectory(res)
+    } catch (err) {
+      console.log('error')
+      console.log(err)
+      customLogger.log('err', err)
+    }
   }
 
   cloudRestore = () => {
@@ -102,76 +112,88 @@ export class SelectRestoreMethod extends Component<RestoreProps, void> {
   render() {
     return (
       <Container style={[styles.selectRecoveryMethod]}>
-        <CustomView center>
-          <CustomText transparentBg center style={[styles.backuptitle]}>
-            Where is your backup?
-          </CustomText>
-        </CustomView>
-        <Container
-          {...(this.props.isCloudBackupEnabled
-            ? { spaceBetween: true }
-            : { center: true })}
-          style={[styles.selectContainer]}
-        >
-          {this.props.isCloudBackupEnabled && (
-            <CustomView
-              onPress={this.cloudRestore}
-              spaceAround
-              center
-              style={[styles.selectMethod, { backgroundColor: '#86B93B' }]}
-            >
-              <Icon
-                iconStyle={[{ marginBottom: 10 }]}
-                mediumLarge
-                src={backup}
-              />
-              <CustomText center transparentBg style={[styles.title2]}>
-                In the Evernym Cloud
-              </CustomText>
-              <CustomText
-                size="14"
-                center
-                transparentBg
-                style={{ color: colors.white }}
-              >
-                You have a backup in the Evernym Cloud and you have your
-                Recovery Phrase.
-              </CustomText>
-            </CustomView>
-          )}
-          {this.props.isCloudBackupEnabled && (
+        <ImageBackground
+          source={restoreBackground}
+          style={styles.background}
+          resizeMode={restoreBackgroundMode}>
+          <View style={styles.wrapper}>
             <CustomView center>
-              <CustomText primary transparentBg center style={[styles.title1]}>
-                or
+              <CustomText transparentBg center style={[styles.backuptitle]}>
+                Where is your backup?
               </CustomText>
             </CustomView>
-          )}
-          <CustomView
-            onPress={this.zipRestore}
-            spaceAround
-            secondary
-            center
-            style={[styles.selectMethod]}
-          >
-            <Icon
-              mediumLarge
-              iconStyle={[{ marginBottom: 10 }]}
-              src={download}
-            />
-            <CustomText transparentBg center style={[styles.title2]}>
-              On this device
-            </CustomText>
-            <CustomText
-              size="14"
-              transparentBg
-              center
-              style={[{ color: colors.white }]}
+            <Container
+              {...(this.props.isCloudBackupEnabled
+                ? { spaceBetween: true }
+                : { center: true })}
+              style={[styles.selectContainer]}
             >
-              You have a {appName} backup .zip file on this device and your
-              Recovery Phrase ready.
-            </CustomText>
-          </CustomView>
-        </Container>
+              {/*{this.props.isCloudBackupEnabled && (*/}
+              {/*  <CustomView*/}
+              {/*    onPress={this.cloudRestore}*/}
+              {/*    spaceAround*/}
+              {/*    center*/}
+              {/*    style={[styles.selectMethod, { backgroundColor: '#86B93B' }]}*/}
+              {/*  >*/}
+              {/*    <Icon*/}
+              {/*      iconStyle={[{ marginBottom: 10 }]}*/}
+              {/*      mediumLarge*/}
+              {/*      src={backup}*/}
+              {/*    />*/}
+              {/*    <CustomText center transparentBg style={[styles.title2]}>*/}
+              {/*      In the Evernym Cloud*/}
+              {/*    </CustomText>*/}
+              {/*    <CustomText*/}
+              {/*      size="14"*/}
+              {/*      center*/}
+              {/*      transparentBg*/}
+              {/*      style={{ color: colors.white }}*/}
+              {/*    >*/}
+              {/*      You have a backup in the Evernym Cloud and you have your*/}
+              {/*      Recovery Phrase.*/}
+              {/*    </CustomText>*/}
+              {/*  </CustomView>*/}
+              {/*)}*/}
+              {/*{this.props.isCloudBackupEnabled && (*/}
+              {/*  <CustomView center>*/}
+              {/*    <CustomText primary transparentBg center style={[styles.title1]}>*/}
+              {/*      or*/}
+              {/*    </CustomText>*/}
+              {/*  </CustomView>*/}
+              {/*)}*/}
+              <CustomView
+                onPress={this.zipRestore}
+                spaceAround
+                secondary
+                center
+                style={[styles.selectMethod]}
+              >
+                <Icon
+                  mediumLarge
+                  iconStyle={[{ marginBottom: 10 }]}
+                  src={download}
+                />
+                <CustomText transparentBg center style={[styles.title2]}>
+                  On this device
+                </CustomText>
+                <CustomText
+                  size="14"
+                  transparentBg
+                  center
+                  style={[{ color: colors.white }]}
+                >
+                  You have a {appName} backup .zip file on this device and your
+                  Recovery Phrase ready.
+                </CustomText>
+              </CustomView>
+            </Container>
+            {!startupBackgroundImage &&
+            <Image
+              source={powerByLogo}
+              style={styles.image}
+            />}
+          </View>
+        </ImageBackground>
       </Container>
     )
   }

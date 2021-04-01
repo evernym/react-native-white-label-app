@@ -1,8 +1,9 @@
 // @flow
 import React, { useState, useEffect, useRef, useCallback } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import {
+  eulaRoute,
   lockPinSetupRoute,
   lockSelectionRoute,
   lockSetupSuccessRoute,
@@ -18,6 +19,7 @@ import { Header } from '../components'
 import { useFocusEffect } from '@react-navigation/native'
 import { headerNavigationOptions } from '../navigation/navigation-header-config'
 import { LockHeader } from '../external-imports'
+import {getIsInRecovery} from "../store/store-selector";
 
 let keyboardDidHideListener
 let keyboardDidShowListener
@@ -42,6 +44,7 @@ export function LockPinSetup(props: ReactNavigation) {
   const [showCustomKeyboard, setShowCustomKeyboard] = useState(
     defaults.showCustomKeyboard
   )
+  const inRecovery = useSelector(getIsInRecovery)
   const pinCodeBox = useRef<any>()
 
   useFocusEffect(
@@ -126,11 +129,15 @@ export function LockPinSetup(props: ReactNavigation) {
       navigation.isFocused()
     ) {
       dispatch(setPinAction(confirmedPin || ''))
-      existingPin
-        ? navigation.navigate(lockSetupSuccessRoute, {
+      if (existingPin) {
+        navigation.navigate(lockSetupSuccessRoute, {
           changePin: true,
         })
-        : navigation.navigate(lockSelectionRoute)
+      } else if (inRecovery === 'true') {
+        navigation.navigate(eulaRoute)
+      } else {
+        navigation.navigate(lockSelectionRoute)
+      }
     }
   }, [keyboardHidden, pinSetupState])
 

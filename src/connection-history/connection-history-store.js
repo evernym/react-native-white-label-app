@@ -235,7 +235,11 @@ export function* loadHistorySaga(): Generator<*, *, *> {
 
       if ('connectionsUpdated' in oldHistory && 'connections' in oldHistory) {
         history = oldHistory
-      } else if ('newBadge' in oldHistory[oldHistoryKeys[0]]) {
+      } else if (
+        oldHistoryKeys &&
+        oldHistoryKeys[0] &&
+        oldHistory[oldHistoryKeys[0]] &&
+        'newBadge' in oldHistory[oldHistoryKeys[0]]) {
         newHistory = {
           ...newHistory,
           connections: oldHistory,

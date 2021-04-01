@@ -11,11 +11,10 @@ import {
   CustomView,
   CustomText,
   Icon,
-  CustomButton,
   CustomHeader,
   Loader,
 } from '../components'
-import { isBiggerThanShortDevice } from '../common/styles'
+import { fontSizes } from '../common/styles'
 import {
   genRecoveryPhraseRoute,
   verifyRecoveryPhraseRoute,
@@ -42,6 +41,7 @@ import styles, { chatBubbleTextOffset } from './styles'
 import { getBackupPassphrase, getBackupStatus } from '../store/store-selector'
 import { PASSPHRASE_GENERATION_ERROR } from '../common'
 import { withStatusBar } from '../components/status-bar/status-bar'
+import {Button} from "../components/buttons/button";
 
 const closeImage = require('../images/iconClose.png')
 const transparentBands = require('../images/transparentBands.png')
@@ -261,17 +261,16 @@ export class GenerateRecoveryPhrase extends Component<
         {viewOnlyMode && (
           <CustomView>
             <CustomView center />
-            <CustomButton
-              large={isBiggerThanShortDevice ? true : false}
+            <Button
+              buttonStyle={[styles.submitButton]}
+              label={'Got It'}
               onPress={this.backToSettings}
               testID={SUBMIT_RECOVERY_PHRASE_TEST_ID}
-              style={[styles.submitButton]}
-              customColor={{
+              labelStyle={{
                 color: color.bg.eleventh.color,
                 fontWeight: '600',
-                fontSize: 18,
+                fontSize: fontSizes.size3,
               }}
-              title={'Got It'}
             />
           </CustomView>
         )}
@@ -286,18 +285,17 @@ export class GenerateRecoveryPhrase extends Component<
                 Are you sure you wrote it down?
               </CustomText>
             </CustomView>
-            <CustomButton
-              disabled={disableButton}
-              large={isBiggerThanShortDevice ? true : false}
+            <Button
               onPress={this.verifyRecoveryPhrase}
-              testID={SUBMIT_RECOVERY_PHRASE_TEST_ID}
-              style={[styles.submitButton]}
-              customColor={{
+              label={SUBMIT_RECOVERY_PHRASE_BUTTON_TITLE}
+              disabled={disableButton}
+              buttonStyle={styles.submitButton}
+              labelStyle={{
                 color: color.bg.eleventh.color,
                 fontWeight: '600',
                 fontSize: 18,
               }}
-              title={SUBMIT_RECOVERY_PHRASE_BUTTON_TITLE}
+              testID={SUBMIT_RECOVERY_PHRASE_TEST_ID}
             />
           </CustomView>
         )}
