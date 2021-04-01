@@ -11,9 +11,6 @@
     "ios",
     "react-native-evernym-sdk.podspec"
   ],
-  "publishConfig": {
-    "registry": "https://gitlab.corp.evernym.com/api/v4/projects/761/packages/npm/"
-  },
   "scripts": {
     "test": "jest --detectOpenHandles --forceExit",
     "lint": "flow --retries 10 && eslint src",
