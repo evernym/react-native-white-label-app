@@ -10,15 +10,7 @@ exports[`<QRScannerScreen /> match snapshot when camera is not authorized 1`] = 
       "flex": 1,
     }
   }
->
-  <View
-    style={
-      Object {
-        "flex": 1,
-      }
-    }
-  />
-</View>
+/>
 `;
 
 exports[`<QRScannerScreen /> should convert qr code to invitation 1`] = `
@@ -66,13 +58,5 @@ exports[`<QRScannerScreen /> should match snapshot 1`] = `
       "flex": 1,
     }
   }
->
-  <View
-    style={
-      Object {
-        "flex": 1,
-      }
-    }
-  />
-</View>
+/>
 `;
