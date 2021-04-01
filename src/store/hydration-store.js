@@ -298,7 +298,7 @@ export function* hydrate(): any {
       // the call to vcxShutdown as this will mess up the inRecovery logic of items from the wallet
       yield put(safeToDownloadSmsInvitation())
 
-      const vcxResult = yield* ensureVcxInitSuccess()
+      yield* ensureVcxInitSuccess()
       // NOTE: This will be changed when the TAA flow changes.
       // yield* hydrateTxnAuthorAgreementSaga()
     } catch (e) {

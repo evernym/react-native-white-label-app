@@ -6,22 +6,15 @@ import renderer from 'react-test-renderer'
 import merge from 'lodash.merge'
 import { Provider } from 'react-redux'
 
-import configReducer, {
-  changeServerEnvironment,
-} from '../../store/config-store'
 import { getStore } from '../../../__mocks__/static-data'
 import { configStoreNotHydratedInstalledVcxInit } from '../../../__mocks__/data/config-store-mock-data'
 import { Offline } from '../offline'
-import offlineReducer, { offline } from '../offline-store'
-
-const getConfigStoreInitialState = () =>
-  configReducer(undefined, { type: 'INITIAL_TEST_ACTION' })
 
 const  getProps = () => {
   return {
       offline: jest.fn(),
       overlay: true,
-      vcxInitPoolStart: jest.fn(), 
+      vcxInitPoolStart: jest.fn(),
       vcxInitStart: jest.fn(),
     }
 }
@@ -32,7 +25,7 @@ const setup = (currentStore) => {
     <Provider store={currentStore}>
       <Offline {...props}></Offline>
     </Provider>)
-  const instance: Offline = component.getInstance()
+  const instance = component.getInstance()
 
   return { props, component, instance }
 }

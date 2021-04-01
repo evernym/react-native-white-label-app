@@ -195,7 +195,7 @@ export type ConfigStore = {
   snackError: ?string,
   isLoading: boolean,
   isVcxPoolInitFailed: boolean,
-  IsVcxInitFailed: boolean,
+  isVcxInitFailed: boolean,
 } & AgencyPoolConfig
 
 export type MessageDownloadStatus =

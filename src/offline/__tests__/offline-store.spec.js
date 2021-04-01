@@ -1,10 +1,6 @@
 // @flow
-import React from 'react'
 import 'react-native'
-import renderer from 'react-test-renderer'
-import { Provider } from 'react-redux'
 
-import { getStore } from '../../../__mocks__/static-data'
 import offlineReducer, { offline } from '../offline-store'
 
 describe('Offline-store', () => {

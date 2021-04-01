@@ -1,7 +1,7 @@
 // @flow
 import React from 'react'
 import { Text, Animated, StyleSheet } from 'react-native'
-import { color, fontFamily, fontSizes as fonts, OFFSET_1X } from '../common/styles/constant'
+import { color, fontFamily, fontSizes as fonts } from '../common/styles/constant'
 import debounce from 'lodash.debounce'
 import type { GenericObject } from '../common/type-common'
 

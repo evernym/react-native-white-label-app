@@ -1,8 +1,8 @@
 // @flow
 
 import React, { useEffect, useState, useMemo } from 'react'
-import { View, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native'
-import { connect, useSelector, useDispatch } from 'react-redux'
+import { View, StyleSheet, ActivityIndicator } from 'react-native'
+import { connect, useSelector } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import NetInfo, { useNetInfo } from '@react-native-community/netinfo'
 
@@ -12,18 +12,12 @@ import { color } from '../common/styles/constant'
 import { offline } from './offline-store'
 import {
   getOfflineStatus,
-  getVcxPoolInitializationError,
-  getVcxInitializationError,
   getIsLoading,
-  getVcxPoolInitializationState,
   getIsVcxPoolInitFailed,
   getIsVcxInitFailed,
 } from '../store/store-selector'
 import { vcxInitPoolStart, vcxInitStart } from '../store/route-store'
-import { Container } from '../components'
-import { EvaIcon, NO_WIFI } from '../common/icons'
-import { colors } from '../common/styles/constant'
-import { CustomText, CustomView, Loader } from '../components'
+import { CustomText, CustomView } from '../components'
 
 export const Offline = ({ offline, vcxInitPoolStart, vcxInitStart, overlay }: OfflineProps) => {
   const netInfo = useNetInfo()
@@ -33,7 +27,7 @@ export const Offline = ({ offline, vcxInitPoolStart, vcxInitStart, overlay }: Of
   const isPoolError = useSelector(getIsVcxPoolInitFailed)
   const isVcxError = useSelector(getIsVcxInitFailed)
   const isVcxLoading = useSelector(getIsLoading)
-  
+
   const isShowLoader = useMemo(() => {
     return isOffline ? isLoading : isVcxLoading
   }, [isOffline, isLoading, isVcxLoading])
@@ -52,6 +46,7 @@ export const Offline = ({ offline, vcxInitPoolStart, vcxInitStart, overlay }: Of
     if (isPoolError) {
       return 'pool'
     }
+    return ''
   }, [isOffline, isVcxError, isPoolError])
 
   useEffect(() => {
@@ -99,25 +94,12 @@ export const Offline = ({ offline, vcxInitPoolStart, vcxInitStart, overlay }: Of
       </View>}
     </CustomView> :
     null
-
-  // return isOffline && overlay ?
-  //   <View style={styles.overlay}>
-  //     <Container vCenter hCenter>
-  //       <EvaIcon
-  //         name={NO_WIFI}
-  //         width={64}
-  //         height={64}
-  //         fill={colors.white}
-  //       />
-  //     </Container>
-  //   </View> :
-  //   null
 }
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators({
     offline,
-    vcxInitPoolStart, 
+    vcxInitPoolStart,
     vcxInitStart
   }, dispatch)
 

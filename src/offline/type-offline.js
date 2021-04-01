@@ -1,4 +1,6 @@
 // @flow
+import { vcxInitPoolStart, vcxInitStart } from "../store/route-store";
+
 export const OFFLINE_STATUS = 'OFFLINE_STATUS'
 
 export type OfflineStore = {
@@ -14,7 +16,8 @@ export type OfflineStatus = {
 
 export type OfflineProps = {
   overlay?: boolean,
-  isOffline: boolean,
   offline: (offline: boolean) => void,
   render?: (isConnected: ?boolean) => any,
+  vcxInitPoolStart: typeof vcxInitPoolStart,
+  vcxInitStart: typeof vcxInitStart,
 }

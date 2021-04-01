@@ -689,11 +689,11 @@ export function* initVcx(findingWallet?: any): Generator<*, *, *> {
         // if agency does not yet support creating cloud agent with token
         // then we try second option to try creating cloud agent without token
         const [
-          registerWithTokenError,
+          registerWithoutTokenError,
           userOneTimeInfoWithoutToken,
         ] = yield* registerCloudAgentWithoutToken(agencyConfig)
-        if (registerWithTokenError || !userOneTimeInfoWithoutToken) {
-          yield put(vcxInitFail(ERROR_VCX_INIT_FAIL(registerWithTokenError)))
+        if (registerWithoutTokenError || !userOneTimeInfoWithoutToken) {
+          yield put(vcxInitFail(ERROR_VCX_INIT_FAIL(registerWithoutTokenError)))
           return
         }
         userOneTimeInfo = userOneTimeInfoWithoutToken
