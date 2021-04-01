@@ -179,25 +179,27 @@ export class QRCodeScannerScreen extends Component<
   }
 
   componentDidMount() {
-    PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.CAMERA
-    )
-      .then(permission => {
-        if (permission ==='never_ask_again' || permission ==='denied') {
-          this.props.navigation.goBack()
-          Alert.alert(
-            'Camera Permission Needed',
-            'Please go into your device settings and enable camera permissions for Connect.Me to use the camera feature.',
-            [
-              {
-                text: 'OK',
-              },
-            ]
-          )
-          this.setState({ permission: false })
-        }
-        this.setState({ permission: true })
-      })
+    if (Platform.OS === 'android') {
+      PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.CAMERA
+      )
+        .then(permission => {
+          if (permission ==='never_ask_again' || permission ==='denied') {
+            this.props.navigation.goBack()
+            Alert.alert(
+              'Camera Permission Needed',
+              'Please go into your device settings and enable camera permissions for Connect.Me to use the camera feature.',
+              [
+                {
+                  text: 'OK',
+                },
+              ]
+            )
+            this.setState({ permission: false })
+          }
+          this.setState({ permission: true })
+        })
+    }
     // we don't use detox anymore
     // if (detox === 'yes') {
     //   setTimeout(async () => {
@@ -244,7 +246,7 @@ export class QRCodeScannerScreen extends Component<
       <Container dark collapsable={true}>
         {this.state.isCameraEnabled &&
           this.props.navigation.isFocused() &&
-          this.state.permission ? (
+          (this.state.permission || Platform.OS === 'ios') ? (
           <QRScanner
             onShortProprietaryInvitationRead={
               this.onShortProprietaryInvitationRead
