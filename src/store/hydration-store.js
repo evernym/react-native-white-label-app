@@ -206,7 +206,10 @@ export function* confirmFirstInstallationWithWallet(): Generator<*, *, *> {
 export function* hydrate(): any {
   try {
     let isAlreadyInstalled = yield call(safeGet, IS_ALREADY_INSTALLED)
-    if (isAlreadyInstalled !== 'true') {
+    let inRecovery = yield call(safeGet, IN_RECOVERY)
+    inRecovery = inRecovery === 'true'
+
+    if (isAlreadyInstalled !== 'true' && !inRecovery) {
       try {
         yield* confirmFirstInstallationWithWallet()
       } catch (e) {
@@ -225,7 +228,7 @@ export function* hydrate(): any {
         yield* alreadyInstalledNotFound()
         return
       }
-      isEulaAccept = JSON.parse(isEulaAccept)
+      isEulaAccept = isEulaAccept === 'true'
       yield put(hydrateEulaAccept(isEulaAccept))
 
       // restore app lock settings
@@ -243,15 +246,19 @@ export function* hydrate(): any {
 
       //InRecovery determines if we are in the recovery flow
       //and still need to choose if we want to use previous pin or set new pin
-      let inRecovery = yield call(safeGet, IN_RECOVERY)
-      if (inRecovery === 'true') {
-        yield put(setInRecovery(inRecovery))
+      if (inRecovery) {
+        yield put(setInRecovery(inRecovery.toString()))
       }
       if (isTouchIdEnabled === 'true') {
         yield put(enableTouchIdAction())
       } else {
         yield put(disableTouchIdAction())
       }
+
+      if (inRecovery) {
+        yield call(simpleInit)
+      }
+
       // Splash screen does redirection on the basis of three flags
       // 1. if app is opened for first time or not
       // 2. If user has already accepted privacy policy or not
@@ -260,10 +267,6 @@ export function* hydrate(): any {
       // so we are raising this action which tells splash screen that we have values
       // for all three flags and redirection logic can move forward
       yield put(initialized())
-
-      if (inRecovery === 'true') {
-        yield call(simpleInit)
-      }
 
       yield* hydrateSwitchedEnvironmentDetails()
       yield* hydratePushTokenSaga()
@@ -285,7 +288,7 @@ export function* hydrate(): any {
       // find and try to retry actions which was interrupted by closing the app
       yield* retryInterruptedActionsSaga()
 
-      if (inRecovery === 'true') {
+      if (inRecovery) {
         // TODO: Move vcx shutdown logic inside ensureVcxInitSuccess
         yield call(vcxShutdown, false)
         // NOTE: VERY IMPORTANT!! Do not invoke put vcxInitReset here

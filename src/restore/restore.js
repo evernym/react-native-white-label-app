@@ -1,19 +1,22 @@
 // @flow
 
 import React, { Component } from 'react'
-import { Image, StyleSheet } from 'react-native'
+import { Image, StyleSheet, ImageBackground, View, Dimensions } from 'react-native'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import { moderateScale } from 'react-native-size-matters';
 
-import { Container, CustomView, CustomText, CustomButton } from '../components'
+import {CustomView, CustomText} from '../components'
 import {
   isBiggerThanShortDevice,
   venetianRed,
-  cornFlowerBlue,
   colors,
-} from '../common/styles/constant'
+  fontSizes,
+  OFFSET_2X,
+} from '../common/styles'
 import {
-  lockSelectionRoute,
+  eulaRoute,
+  lockPinSetupRoute,
   restorePassphraseRoute,
   restoreRoute,
   selectRestoreMethodRoute,
@@ -24,15 +27,26 @@ import type { RestoreProps } from './type-restore'
 import { saveFileToAppDirectory } from './restore-store'
 import type { Store } from '../store/type-store'
 import { RestoreStatus } from './type-restore'
-import { appLogo, appName } from '../external-imports'
+import { appName, startupBackgroundImage} from '../external-imports'
+import {Button} from "../components/buttons/button";
+
+const {width} = Dimensions.get('screen');
+
+const restoreBackground = startupBackgroundImage || require('../images/home_background.png')
+const restoreBackgroundMode = startupBackgroundImage ? 'cover' : 'contain'
+const powerByLogo = require('../images/powered_by_logo.png');
 
 export class RestoreStartScreen extends Component<RestoreProps, void> {
   restoreBackup = () => {
-    this.props.navigation.navigate(selectRestoreMethodRoute)
+    if (this.props.isEulaAccepted) {
+      this.props.navigation.navigate(selectRestoreMethodRoute)
+    } else {
+      this.props.navigation.navigate(eulaRoute, {inRecovery: true })
+    }
   }
 
   startFresh = () => {
-    this.props.navigation.navigate(lockSelectionRoute)
+    this.props.navigation.navigate(lockPinSetupRoute)
   }
 
   componentDidUpdate(prevProps: RestoreProps) {
@@ -64,165 +78,132 @@ export class RestoreStartScreen extends Component<RestoreProps, void> {
       this.props.restore.status === RestoreStatus.RESTORE_FAILED ||
       (this.props.restore.status === RestoreStatus.FILE_SAVE_ERROR &&
         this.props.restore.error)
-    let restoreIcon = appLogo || require('../images/logo_evernym.png')
-    let restoreBackground = require('../images/wave2.png')
-    let restoreButtonTitle = 'Restore From A Backup'
-    let restoreButtonColor = cornFlowerBlue
 
-    if (error) {
-      restoreIcon = require('../images/alertRed.png')
-      restoreBackground = require('../images/transparentBands2.png')
-      restoreButtonTitle = 'Select A Different File'
-      restoreButtonColor = venetianRed
-    }
+    const restoreButtonTitle = error ? 'Select A Different File' : 'Restore From A Backup'
+
     return (
-      <Container
-        safeArea
-        testID={'restore-container'}
-        style={[
-          error ? styles.restoreErrorContainer : styles.restoreMainContainer,
-        ]}
-      >
-        <Image
-          source={restoreBackground}
-          style={[styles.backgroundWaveImage]}
-        />
-        <Container testID={'restore-innercontainer'}>
-          <CustomView center>
-            <Image
-              source={restoreIcon}
-              style={[
-                error ? styles.errorImageContainer : styles.imageContainer,
-              ]}
-            />
+      <ImageBackground
+        source={restoreBackground}
+        style={styles.background}
+        resizeMode={restoreBackgroundMode}>
+        <View style={styles.wrapper}>
+          <CustomView verticalSpace>
+            {error ? (
+              <CustomView
+                center
+                doubleVerticalSpace
+              >
+                <CustomText
+                  transparentBg
+                  style={[styles.errorText]}
+                  medium
+                  h4a
+                  center
+                >
+                  Either your passphrase was incorrect or the backup file you
+                  chose is corrupt or not a {appName} backup file. Please try
+                  again or start fresh.
+                </CustomText>
+              </CustomView>
+            ) : null}
+            {!error ? (
+              <CustomView
+                center
+                doubleVerticalSpace
+                style={[styles.textContainer]}
+              >
+                <CustomText
+                  center
+                  transparentBg
+                  style={[styles.marginHorizontal, styles.textBox]}
+                  medium
+                  h4a
+                >
+                  You can restore from a backup or start with a brand new install.
+                </CustomText>
+                <CustomText transparentBg style={[styles.textBox]} h4a medium>
+                  How would you like to proceed?
+                </CustomText>
+              </CustomView>
+            ) : null}
+            <View style={styles.buttonContainer}>
+              <Button
+                buttonStyle={[
+                  styles.customButton,
+                  error ? { backgroundColor: colors.red } : {}
+                ]}
+                label={restoreButtonTitle}
+                onPress={this.restoreBackup}
+                testID={'restore-from-backup'}
+                labelStyle={styles.buttonText}
+              />
+              <Button
+                buttonStyle={[styles.customButton]}
+                label={'Start Fresh'}
+                onPress={this.startFresh}
+                testID={'start-fresh'}
+                labelStyle={styles.buttonText}
+              />
+            </View>
           </CustomView>
-
-          {error ? (
-            <CustomView center pad>
-              <CustomText
-                transparentBg
-                style={[styles.errorText]}
-                center
-                medium
-                h4a
-                center
-              >
-                Either your passphrase was incorrect or the backup file you
-                chose is corrupt or not a {appName} backup file. Please try
-                again or start fresh.
-              </CustomText>
-            </CustomView>
-          ) : null}
-        </Container>
-        <CustomView verticalSpace>
-          {!error ? (
-            <CustomView
-              center
-              doubleVerticalSpace
-              style={[styles.textContainer]}
-            >
-              <CustomText
-                transparentBg
-                style={[styles.secondText, styles.textBox]}
-                medium
-                center
-                h4a
-              >
-                Thanks for installing {appName}.
-              </CustomText>
-              <CustomText
-                center
-                transparentBg
-                style={[styles.marginHorizontal, styles.textBox]}
-                medium
-                h4a
-              >
-                You can restore from a backup or start with a brand new install.
-              </CustomText>
-              <CustomText transparentBg style={[styles.textBox]} h4a medium>
-                How would you like to proceed?
-              </CustomText>
-            </CustomView>
-          ) : null}
-          <CustomView pad>
-            <CustomButton
-              large={isBiggerThanShortDevice ? true : false}
-              style={[styles.customButton, styles.buttonShadow]}
-              title={restoreButtonTitle}
-              onPress={this.restoreBackup}
-              testID={'restore-from-backup'}
-              customColor={{
-                color: restoreButtonColor,
-                fontWeight: '600',
-              }}
-            />
-            <CustomButton
-              large={isBiggerThanShortDevice ? true : false}
-              style={[styles.customButton, styles.buttonShadow]}
-              title={'Start Fresh'}
-              onPress={this.startFresh}
-              testID={'start-fresh'}
-              customColor={{
-                color: restoreButtonColor,
-                fontWeight: '600',
-              }}
-            />
-          </CustomView>
-        </CustomView>
-      </Container>
+          {!startupBackgroundImage &&
+          <Image
+            source={powerByLogo}
+            style={styles.image}
+          />}
+        </View>
+      </ImageBackground>
     )
   }
 }
 
 const styles = StyleSheet.create({
-  restoreMainContainer: {
-    backgroundColor: colors.white,
-  },
-  restoreErrorContainer: {
-    backgroundColor: venetianRed,
-  },
-  backgroundWaveImage: {
-    position: 'absolute',
-    top: isBiggerThanShortDevice ? '30%' : '20%',
-    left: 0,
-    right: 0,
-    resizeMode: 'stretch',
+  background: {
     width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    flexDirection: 'row',
+  },
+  wrapper: {
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
+  },
+  buttonContainer: {
+    marginBottom: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   customButton: {
-    width: '100%',
-    height: isBiggerThanShortDevice ? 57 : 43,
+    marginBottom: 10,
     borderRadius: 5,
-    marginTop: 10,
-  },
-  buttonShadow: {
     shadowColor: colors.gray2,
     shadowOffset: {
-      width: 0,
-      height: 5,
+      width: 1,
+      height: 1,
     },
     shadowRadius: 5,
     shadowOpacity: 0.3,
-    elevation: 4,
+    elevation: 7,
+    height: isBiggerThanShortDevice ? 58 : 48,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.main,
+    width: width - OFFSET_2X * 2,
   },
-  imageContainer: {
-    marginTop: isBiggerThanShortDevice ? '30%' : '20%',
-    zIndex: -1,
-  },
-  errorImageContainer: {
-    marginTop: '5%',
-    zIndex: -1,
+  buttonText: {
+    color: colors.white,
+    fontWeight: '600',
+    fontSize: fontSizes.size3,
   },
   textContainer: {
     marginBottom: '10%',
   },
-  secondText: {
-    marginBottom: '6%',
-  },
   errorText: {
-    color: colors.white,
+    color: colors.red,
     paddingLeft: '5%',
     paddingRight: '5%',
+    marginBottom: '10%',
   },
   marginHorizontal: {
     marginLeft: '6%',
@@ -232,12 +213,18 @@ const styles = StyleSheet.create({
   textBox: {
     color: '#717171',
   },
+  image: {
+    position: 'absolute',
+    bottom: moderateScale(32),
+    right: moderateScale(10),
+  },
 })
 
 const mapStateToProps = (state: Store) => {
   return {
     restore: state.restore,
     route: state.route.currentScreen,
+    isEulaAccepted: state.eula && state.eula.isEulaAccept
   }
 }
 

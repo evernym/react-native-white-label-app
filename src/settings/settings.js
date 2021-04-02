@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react'
-import { ActivityIndicator, Platform, ScrollView, Switch, TouchableOpacity, View } from 'react-native'
+import { Platform, ScrollView, Switch, TouchableOpacity, View } from 'react-native'
 import { moderateScale, verticalScale } from 'react-native-size-matters'
 import { Apptentive } from 'apptentive-react-native'
 import moment from 'moment'
@@ -16,7 +16,6 @@ import {
   exportBackupFileRoute,
   genRecoveryPhraseRoute,
   lockAuthorizationHomeRoute,
-  lockEnterPinRoute,
   lockPinSetupRoute,
   lockTouchIdSetupRoute,
   qrCodeScannerTabRoute,
@@ -38,7 +37,6 @@ import { withStatusBar } from '../components/status-bar/status-bar'
 import {
   AUTO_CLOUD_BACKUP_ENABLED,
   CLOUD_BACKUP_FAILURE,
-  CLOUD_BACKUP_LOADING,
   WALLET_BACKUP_FAILURE,
 } from '../backup/type-backup'
 import { safeSet, walletSet } from '../services/storage'
@@ -46,13 +44,13 @@ import { addPendingRedirection } from '../lock/lock-store'
 import { setupApptentive } from '../feedback'
 import { customLogger } from '../store/custom-logger'
 import { NotificationCard } from '../in-app-notification/in-app-notification-card'
-import { ARROW_RIGHT_ICON, BACKUP_ICON, CHAT_ICON, EvaIcon, INFO_ICON } from '../common/icons'
+import { ARROW_RIGHT_ICON, CHAT_ICON, EvaIcon, INFO_ICON, SAVE_ICON} from '../common/icons'
 import { sendLogsRoute } from '../common'
 import { style } from './settings-styles'
 import { formatBackupString } from './settings-utils'
 import {
   ABOUT,
-  BACKUP_RECOVERY,
+  VIEW_BACKUP_PASSPHRASE,
   BIOMETRICS,
   CLOUD_BACKUP,
   DEFAULT_OPTIONS,
@@ -143,14 +141,16 @@ export class Settings extends Component<SettingsProps, SettingsState> {
       })
     }
   }
+
   viewRecoveryPhrase = () => {
-    this.props.addPendingRedirection([
-      { routeName: genRecoveryPhraseRoute, params: { viewOnlyMode: true } },
-    ])
     const { navigation } = this.props
-    if (navigation.isFocused()) {
-      navigation.push && navigation.push(lockEnterPinRoute, {})
-    }
+    navigation.navigate(lockAuthorizationHomeRoute, {
+      onSuccess: () => {
+        this.props.navigation.push(genRecoveryPhraseRoute, {
+          viewOnlyMode: true,
+        })
+      },
+    })
   }
 
   openAboutApp = () => {
@@ -269,27 +269,27 @@ export class Settings extends Component<SettingsProps, SettingsState> {
     )
   }
 
-  getCloudBackupSubtitle = () => {
-    if (this.props.cloudBackupStatus === CLOUD_BACKUP_LOADING) {
-      return 'Backing up...'
-    } else if (
-      this.props.cloudBackupStatus === CLOUD_BACKUP_FAILURE ||
-      this.props.cloudBackupStatus === WALLET_BACKUP_FAILURE
-    ) {
-      return (
-        <CustomText
-          transparentBg
-          h7
-          bold
-          style={[style.backupTimeSubtitleStyle, style.subtitleFail]}
-        >
-          {this.props.cloudBackupStatus === CLOUD_BACKUP_FAILURE
-            ? 'Backup failed. Tap to retry'
-            : 'Backup failed, size limit exceeded'}
-        </CustomText>
-      )
-    } else return this.getLastCloudBackupTime()
-  }
+  // getCloudBackupSubtitle = () => {
+  //   if (this.props.cloudBackupStatus === CLOUD_BACKUP_LOADING) {
+  //     return 'Backing up...'
+  //   } else if (
+  //     this.props.cloudBackupStatus === CLOUD_BACKUP_FAILURE ||
+  //     this.props.cloudBackupStatus === WALLET_BACKUP_FAILURE
+  //   ) {
+  //     return (
+  //       <CustomText
+  //         transparentBg
+  //         h7
+  //         bold
+  //         style={[style.backupTimeSubtitleStyle, style.subtitleFail]}
+  //       >
+  //         {this.props.cloudBackupStatus === CLOUD_BACKUP_FAILURE
+  //           ? 'Backup failed. Tap to retry'
+  //           : 'Backup failed, size limit exceeded'}
+  //       </CustomText>
+  //     )
+  //   } else return this.getLastCloudBackupTime()
+  // }
 
   getLastCloudBackupTime() {
     // return this.props.lastSuccessfulCloudBackup === 'error' ? (
@@ -386,7 +386,6 @@ export class Settings extends Component<SettingsProps, SettingsState> {
 
   render() {
     const {
-      cloudBackupStatus,
       hasVerifiedRecoveryPhrase,
       cloudBackupError,
     } = this.props
@@ -420,66 +419,66 @@ export class Settings extends Component<SettingsProps, SettingsState> {
           sliderOffColor={colors.white}
         />
       )
-    const cloudToggleSwitch =
-      Platform.OS === 'ios' ? (
-        <Switch
-          disabled={this.state.disableTouchIdSwitch}
-          trackColor={{ true: colors.main }}
-          onValueChange={this.toggleAutoCloudBackupEnabled}
-          value={this.props.autoCloudBackupEnabled}
-        />
-      ) : (
-        <ToggleSwitch
-          isOn={true}
-          onToggle={this.toggleAutoCloudBackupEnabled}
-          value={this.props.autoCloudBackupEnabled}
-          buttonWidth={moderateScale(55)}
-          buttonHeight={moderateScale(30)}
-          buttonRadius={moderateScale(30)}
-          sliderWidth={moderateScale(28)}
-          sliderHeight={moderateScale(28)}
-          sliderRadius={moderateScale(58)}
-          buttonOnColor={colors.main}
-          buttonOffColor={colors.gray4}
-          sliderOnColor={colors.white}
-          sliderOffColor={colors.white}
-        />
-      )
+    // const cloudToggleSwitch =
+    //   Platform.OS === 'ios' ? (
+    //     <Switch
+    //       disabled={this.state.disableTouchIdSwitch}
+    //       trackColor={{ true: colors.main }}
+    //       onValueChange={this.toggleAutoCloudBackupEnabled}
+    //       value={this.props.autoCloudBackupEnabled}
+    //     />
+    //   ) : (
+    //     <ToggleSwitch
+    //       isOn={true}
+    //       onToggle={this.toggleAutoCloudBackupEnabled}
+    //       value={this.props.autoCloudBackupEnabled}
+    //       buttonWidth={moderateScale(55)}
+    //       buttonHeight={moderateScale(30)}
+    //       buttonRadius={moderateScale(30)}
+    //       sliderWidth={moderateScale(28)}
+    //       sliderHeight={moderateScale(28)}
+    //       sliderRadius={moderateScale(58)}
+    //       buttonOnColor={colors.main}
+    //       buttonOffColor={colors.gray4}
+    //       sliderOnColor={colors.white}
+    //       sliderOffColor={colors.white}
+    //     />
+    //   )
 
     const defaultSettingsItemList = {
-      // [MANUAL_BACKUP]: {
-      //   title: this.renderBackupTitleText(),
-      //   subtitle: this.getLastBackupTitle(),
-      //   avatar: (
-      //     <EvaIcon
-      //       name={SAVE_ICON}
-      //       color={
-      //         this.props.connectionsUpdated && !this.props.isAutoBackupEnabled
-      //           ? // || (this.props.connectionsUpdated && this.props.isAutoBackupEnabled && hasCloudBackupFailed)
-      //           colors.red
-      //           : colors.gray2
-      //       }
-      //     />
-      //   ),
-      //   rightIcon: '',
-      //   onPress: this.onBackup,
-      // },
-      [CLOUD_BACKUP]: {
-        title: 'Automatic Cloud Backups',
-        subtitle: this.getCloudBackupSubtitle(),
-        avatar: <EvaIcon
-          name={BACKUP_ICON}
-          color={hasCloudBackupFailed ? colors.red : colors.gray2}
-        />,
-        rightIcon: cloudBackupStatus === CLOUD_BACKUP_LOADING ? (
-          <ActivityIndicator />
-        ) : (
-          cloudToggleSwitch
+      [MANUAL_BACKUP]: {
+        title: this.renderBackupTitleText(),
+        subtitle: this.getLastBackupTitle(),
+        avatar: (
+          <EvaIcon
+            name={SAVE_ICON}
+            color={
+              this.props.connectionsUpdated && !this.props.isAutoBackupEnabled
+                ? // || (this.props.connectionsUpdated && this.props.isAutoBackupEnabled && hasCloudBackupFailed)
+                colors.red
+                : colors.gray2
+            }
+          />
         ),
-        onPress: cloudBackupStatus === CLOUD_BACKUP_LOADING
-          ? () => {}
-          : this.onCloudBackupPressed,
+        rightIcon: null,
+        onPress: this.onBackup,
       },
+      // [CLOUD_BACKUP]: {
+      //   title: 'Automatic Cloud Backups',
+      //   subtitle: this.getCloudBackupSubtitle(),
+      //   avatar: <EvaIcon
+      //     name={BACKUP_ICON}
+      //     color={hasCloudBackupFailed ? colors.red : colors.gray2}
+      //   />,
+      //   rightIcon: cloudBackupStatus === CLOUD_BACKUP_LOADING ? (
+      //     <ActivityIndicator />
+      //   ) : (
+      //     cloudToggleSwitch
+      //   ),
+      //   onPress: cloudBackupStatus === CLOUD_BACKUP_LOADING
+      //     ? () => {}
+      //     : this.onCloudBackupPressed,
+      // },
       [BIOMETRICS]: {
         title: 'Biometrics',
         subtitle: 'Use your finger or face to secure app',
@@ -499,7 +498,7 @@ export class Settings extends Component<SettingsProps, SettingsState> {
         rightIcon: <EvaIcon name={ARROW_RIGHT_ICON} color={colors.gray3} />,
         onPress: this.onChangePinClick,
       },
-      [BACKUP_RECOVERY]: {
+      [VIEW_BACKUP_PASSPHRASE]: {
         title: 'Recovery Phrase',
         subtitle: `View your Recovery Phrase`,
         avatar: <SvgCustomIcon name="ViewPassPhrase" fill={colors.gray2} />,
@@ -539,12 +538,16 @@ export class Settings extends Component<SettingsProps, SettingsState> {
     const options = settingsOptions.map((option) => {
       const defaultOptionData = defaultSettingsItemList[option.name] || {}
 
+      // Cloud backups are disabled
       if (option.name === CLOUD_BACKUP) {
-        if (!this.props.isCloudBackupEnabled || !hasVerifiedRecoveryPhrase) {
-          return null
-        }
+        return null
       }
-      if (option.name === BACKUP_RECOVERY) {
+      // if (option.name === CLOUD_BACKUP) {
+      //   if (!this.props.isCloudBackupEnabled || !hasVerifiedRecoveryPhrase) {
+      //     return null
+      //   }
+      // }
+      if (option.name === VIEW_BACKUP_PASSPHRASE) {
         if (!hasVerifiedRecoveryPhrase) {
           return null
         }
@@ -619,9 +622,7 @@ export class Settings extends Component<SettingsProps, SettingsState> {
                           {item && item.subtitle}
                         </ListItem.Subtitle>
                       </ListItem.Content>
-                      {item.rightIcon !== ''
-                        ? item.rightIcon
-                        : { name: 'chevron-right' }}
+                      {item.rightIcon && item.rightIcon}
                     </ListItem.Content>
                   </TouchableOpacity>
 

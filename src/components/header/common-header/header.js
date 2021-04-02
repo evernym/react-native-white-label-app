@@ -34,6 +34,7 @@ export const Header = (props: HeaderProps) => {
               width={moderateScale(32)}
               height={moderateScale(32)}
               style={styles.menuIcon}
+              {...props.color ? {color: props.color} : {}}
             />
           </TouchableOpacity>
         )}
@@ -47,7 +48,7 @@ export const Header = (props: HeaderProps) => {
 
 const goBack = (props: any) => {
   const { navigation } = props
-  const backRedirectRoute = props.route.params?.backRedirectRoute
+  const backRedirectRoute = props.route && props.route.params?.backRedirectRoute
   if (backRedirectRoute) {
     navigation.navigate(backRedirectRoute)
   } else {

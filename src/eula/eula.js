@@ -17,7 +17,7 @@ import type {
 } from '../common/type-common'
 
 import { Container, FooterActions } from '../components'
-import { eulaRoute, homeRoute } from '../common'
+import {eulaRoute, homeRoute, selectRestoreMethodRoute} from '../common'
 import { eulaAccept, shareEula } from './eula-store'
 import { EULA_URL, localEulaSource } from './type-eula'
 import { OrangeLoader } from '../components/loader-gif/loader-gif'
@@ -26,12 +26,13 @@ import { vcxInitStart } from '../store/route-store'
 import { moderateScale, verticalScale } from 'react-native-size-matters'
 import { EvaIcon, SHARE_ICON } from '../common/icons'
 
-import { getPendingRedirection } from '../store/store-selector'
+import { getPendingRedirection} from '../store/store-selector'
 import { CustomEulaScreen } from '../external-imports'
 
 export const EulaScreen = ({
   dispatch,
   navigation,
+  route
 }: ReactNavigation & ReduxConnect) => {
   const pendingRedirection = useSelector(getPendingRedirection)
 
@@ -46,6 +47,12 @@ export const EulaScreen = ({
 
   const onAccept = useCallback(() => {
     dispatch(eulaAccept(true))
+
+    if (route && route.params && route.params.inRecovery) {
+      navigation.navigate(selectRestoreMethodRoute)
+      return
+    }
+
     dispatch(unlockApp())
     dispatch(vcxInitStart())
 

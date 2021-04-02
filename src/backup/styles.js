@@ -14,6 +14,7 @@ import {
   OFFSET_3X,
   OFFSET_1X,
 } from '../common/styles'
+import { moderateScale, verticalScale } from 'react-native-size-matters';
 
 const SPACE_FILLER = 50
 const amountSpacing = isBiggerThanShortDevice ? PADDING_VERTICAL * 2 : 0
@@ -152,6 +153,11 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     elevation: 7,
     height: isBiggerThanShortDevice ? 58 : 48,
+    width: '94%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.white,
   },
   backgroundImageVerify: {
     flex: 1,
@@ -159,9 +165,6 @@ const styles = StyleSheet.create({
   },
   exportBackup: {
     backgroundColor: color.bg.thirteenth.color,
-  },
-  wrapper: {
-    paddingHorizontal: PADDING_HORIZONTAL,
   },
   title: {
     fontWeight: '600',
@@ -247,8 +250,11 @@ const styles = StyleSheet.create({
     // marginHorizontal:20,
   },
   selectRecoveryMethod: {
-    backgroundColor: color.bg.fifth.color,
-    paddingHorizontal: 20,
+    width: '100%',
+    height: '100%',
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
+    backgroundColor: colors.white,
   },
   title1: {
     fontWeight: '400',
@@ -281,6 +287,27 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 4,
   },
+  background: {
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    flexDirection: 'row',
+  },
+  wrapper: {
+    width: '100%',
+    height: '100%',
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
+  },
+  image: {
+    position: 'absolute',
+    bottom: moderateScale(32),
+    right: moderateScale(10),
+  },
+  header: {
+    flex:1,
+    marginTop: verticalScale(8),
+  }
 })
 
 const QUESTION_SENDER_LOGO_DIMENSION = 32

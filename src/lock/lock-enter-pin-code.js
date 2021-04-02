@@ -12,7 +12,6 @@ import {
   lockEnterPinRoute,
   lockPinSetupRoute,
   homeRoute,
-  lockSelectionRoute,
 } from '../common'
 import { clearPendingRedirect } from './lock-store'
 import {
@@ -151,18 +150,14 @@ export class LockEnterPin extends PureComponent<
   }
 
   redirectToSetupPasscode = () => {
-    this.props.navigation.navigate(lockSelectionRoute)
+    this.props.navigation.navigate(lockPinSetupRoute, {
+      fromRecovery: this.props.inRecovery
+    })
   }
 
   render() {
-    const { isFetchingInvitation, route, inRecovery } = this.props
-    let fromRecovery = false
-    if (route) {
-      fromRecovery =
-        (route.params && route.params.fromScreen === 'recovery'
-          ? true
-          : false) || inRecovery === 'true'
-    }
+    const { isFetchingInvitation } = this.props
+
     let message = this.props.existingPin
       ? ENTER_YOUR_PASS_CODE_MESSAGE
       : ENTER_PASS_CODE_MESSAGE
@@ -180,7 +175,7 @@ export class LockEnterPin extends PureComponent<
           route={this.props.route}
         />
         <LockEnter
-          fromRecovery={fromRecovery}
+          fromRecovery={this.props.inRecovery}
           onSuccess={this.onSuccess}
           message={message}
           setupNewPassCode={this.redirectToSetupPasscode}
@@ -206,13 +201,9 @@ const mapStateToProps = (state: Store, { route }: ReactNavigation) => ({
       state.smsPendingInvitation[smsToken] &&
       state.smsPendingInvitation[smsToken].isFetching === true
   ),
-  existingPin: route
-    ? route.params
-      ? route.params.existingPin
-      : false
-    : false,
+  existingPin: route && route.params && route.params.existingPin || false,
   isAppLocked: state.lock.isAppLocked,
-  inRecovery: state.lock.inRecovery,
+  inRecovery: state.lock.inRecovery === 'true',
   currentScreen: state.route.currentScreen,
 })
 

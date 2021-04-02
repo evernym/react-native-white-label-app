@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Image, Keyboard, StyleSheet, TextInput, Platform } from 'react-native'
-import { Container, CustomView, CustomText } from '../index'
+import { Container, CustomView, CustomText, Header } from '../index'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { color, colors } from '../../common/styles/constant'
 import {
@@ -14,11 +14,13 @@ import {
 import type { BackupRestorePassphraseProps } from './type-backup-restore-passphrase'
 import ErrorBanner from '../banner/banner-danger'
 import { baseUrls, changeEnvironment } from '../../store/config-store'
+import { verticalScale } from 'react-native-size-matters';
 
 export class BackupRestorePassphrase extends Component<
   BackupRestorePassphraseProps,
   void
 > {
+
   submitPhrase = (event: any) => {
     // IMPORTANT: Because of the way that event.nativeEvent works, the nativeEvent property
     // of event will be null if you invoke event.nativeEvent after any await calls
@@ -72,6 +74,11 @@ export class BackupRestorePassphrase extends Component<
           extraScrollHeight={100}
         >
           <Container testID={`${testID}-inputbox`}>
+            <Header
+              transparent={true}
+              navigation={this.props.navigation}
+              color={colors.white}
+            />
             <CustomView center>
               {filename || isCloudRestoreAttempt ? (
                 <CustomView center>
@@ -177,6 +184,10 @@ const styles = StyleSheet.create({
     marginRight: 20,
     height: dangerBannerHeight,
   },
+  header: {
+    flex:1,
+    marginTop: verticalScale(8),
+  }
 })
 
 const mapDispatchToProps = (dispatch) =>

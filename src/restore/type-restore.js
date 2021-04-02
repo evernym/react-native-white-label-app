@@ -94,6 +94,7 @@ export type RestoreProps = {
   restore: RestoreStore,
   route: string,
   isCloudBackupEnabled: false,
+  isEulaAccepted: false,
 } & ReactNavigation
 
 export type RestorePassphraseProps = {

@@ -47,9 +47,7 @@ export class CloudRestoreModal extends Component<CloudBackupScreenProps, void> {
       this.props.restore.status === RestoreStatus.RESTORE_DATA_STORE_SUCCESS
     ) {
       // TODO: the params have to be removed when the lockEnterPinRoute design is changed in according with the recovery screen.
-      this.props.navigation.navigate(lockEnterPinRoute, {
-        fromScreen: 'recovery', //cloudbackupRoute?
-      })
+      this.props.navigation.navigate(lockEnterPinRoute)
     }
     if (this.props.error) {
       this.props.navigation.navigate(cloudRestoreRoute)
