@@ -1,0 +1,190 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Data renderer snapshots should match snapshot 1`] = `
+<Text
+  ellipsizeMode="tail"
+  numberOfLines={2}
+  onTextLayout={[Function]}
+  style={
+    Array [
+      Object {
+        "color": "#505050",
+        "fontFamily": "System",
+        "fontSize": 15.088235294117647,
+        "fontWeight": "700",
+        "lineHeight": 18.26470588235294,
+        "textAlign": "left",
+        "width": "100%",
+      },
+      undefined,
+    ]
+  }
+>
+  data
+</Text>
+`;
+
+exports[`Data renderer snapshots should match snapshot with empty data 1`] = `
+<Text
+  style={
+    Array [
+      Object {
+        "color": "#505050",
+        "fontFamily": "System",
+        "fontSize": 11.911764705882351,
+        "fontWeight": "700",
+        "textAlign": "left",
+        "width": "100%",
+      },
+      undefined,
+    ]
+  }
+>
+  n/a
+</Text>
+`;
+
+exports[`Data renderer snapshots should match snapshot with empty data 2`] = `
+<Text
+  style={
+    Array [
+      Object {
+        "color": "#505050",
+        "fontFamily": "System",
+        "fontSize": 11.911764705882351,
+        "fontWeight": "700",
+        "textAlign": "left",
+        "width": "100%",
+      },
+      undefined,
+    ]
+  }
+>
+  n/a
+</Text>
+`;
+
+exports[`Data renderer snapshots should match snapshot with icon 1`] = `
+<Text
+  ellipsizeMode="tail"
+  numberOfLines={2}
+  onTextLayout={[Function]}
+  style={
+    Array [
+      Object {
+        "color": "#505050",
+        "fontFamily": "System",
+        "fontSize": 15.088235294117647,
+        "fontWeight": "700",
+        "lineHeight": 18.26470588235294,
+        "textAlign": "left",
+        "width": "100%",
+      },
+      undefined,
+    ]
+  }
+>
+  data
+</Text>
+`;
+
+exports[`Render attachment icon snapshots should match snapshot 1`] = `
+<View
+  style={
+    Object {
+      "paddingBottom": 9.571428571428571,
+      "width": "90%",
+    }
+  }
+>
+  <ExpandableText
+    style={
+      Array [
+        Object {
+          "color": "#A5A5A5",
+          "fontFamily": "System",
+          "fontSize": 11.117647058823529,
+          "lineHeight": 13.5,
+          "marginBottom": 1.9142857142857141,
+          "textAlign": "left",
+          "width": "100%",
+        },
+        undefined,
+      ]
+    }
+    text="label"
+  />
+  <DataRenderer
+    data="data"
+    label="label"
+    remotePairwiseDID="remotePairwiseDID"
+    uid="uid"
+  />
+</View>
+`;
+
+exports[`Render attachment icon snapshots should match snapshot with icon 1`] = `
+<View
+  style={
+    Object {
+      "flexDirection": "row",
+    }
+  }
+>
+  <SvgCustomIcon
+    name="Attachment"
+    style={
+      Object {
+        "marginRight": 15.314285714285713,
+      }
+    }
+    width={24}
+  />
+  <View
+    style={
+      Object {
+        "paddingBottom": 9.571428571428571,
+        "width": "90%",
+      }
+    }
+  >
+    <ExpandableText
+      style={
+        Array [
+          Object {
+            "color": "#A5A5A5",
+            "fontFamily": "System",
+            "fontSize": 11.117647058823529,
+            "lineHeight": 13.5,
+            "marginBottom": 1.9142857142857141,
+            "textAlign": "left",
+            "width": "100%",
+          },
+          undefined,
+        ]
+      }
+      text="label"
+    />
+    <Text
+      style={
+        Object {
+          "color": "#505050",
+          "fontFamily": "System",
+          "fontSize": 11.117647058823529,
+          "fontWeight": "600",
+          "textAlign": "left",
+          "width": "100%",
+        }
+      }
+    >
+      CSV file
+    </Text>
+    <DataRenderer
+      data="{\\"mime-type\\": \\"text/csv\\", \\"extension\\": \\"csv\\", \\"name\\": \\"my_csv.csv\\",\\"data\\": { \\"base64\\": \\"VXNNtaXRoCgo=\\"}}"
+      label="label_link"
+      remotePairwiseDID="remotePairwiseDID"
+      uid="uid"
+    />
+  </View>
+</View>
+`;
