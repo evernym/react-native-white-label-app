@@ -10,13 +10,14 @@ import { getStore } from '../../../__mocks__/static-data'
 import { configStoreNotHydratedInstalledVcxInit } from '../../../__mocks__/data/config-store-mock-data'
 import { Offline } from '../offline'
 
-const  getProps = () => {
+const getProps = () => {
   return {
-      offline: jest.fn(),
-      overlay: true,
-      vcxInitPoolStart: jest.fn(),
-      vcxInitStart: jest.fn(),
-    }
+    offline: jest.fn(),
+    overlay: true,
+    vcxInitPoolStart: jest.fn(),
+    vcxInitStart: jest.fn(),
+    getUnacknowledgedMessages: jest.fn(),
+  }
 }
 
 const setup = (currentStore) => {
@@ -24,7 +25,8 @@ const setup = (currentStore) => {
   const component = renderer.create(
     <Provider store={currentStore}>
       <Offline {...props}></Offline>
-    </Provider>)
+    </Provider>
+  )
   const instance = component.getInstance()
 
   return { props, component, instance }
@@ -32,17 +34,20 @@ const setup = (currentStore) => {
 
 describe('<Offline /> for offline case', () => {
   const currentState = getStore().getState()
-    const store = { ...getStore(), getState() {
+  const store = {
+    ...getStore(),
+    getState() {
       return merge(
         {},
         {
           ...currentState,
           offline: {
-            offline: true
-          }
-        })
-      }
-    }
+            offline: true,
+          },
+        }
+      )
+    },
+  }
   it('should match snapshot for offline case', () => {
     const { component } = setup(store)
     let tree = component.toJSON()
@@ -52,7 +57,9 @@ describe('<Offline /> for offline case', () => {
   it('current text error for offline case', () => {
     const { component } = setup(store)
     let tree = component.root.findByType(Text).props.children
-    expect(tree[0] + tree[1].props.children).toBe('No internet connection detected. Reconnect')
+    expect(tree[0] + tree[1].props.children).toBe(
+      'No internet connection detected. Reconnect'
+    )
   })
 
   it('click is working for offline case', () => {
@@ -66,7 +73,9 @@ describe('<Offline /> for offline case', () => {
 
 describe('<Offline /> for disconnect agent case', () => {
   const currentState = getStore().getState()
-    const store = { ...getStore(), getState() {
+  const store = {
+    ...getStore(),
+    getState() {
       return merge(
         {},
         {
@@ -74,10 +83,11 @@ describe('<Offline /> for disconnect agent case', () => {
           config: {
             ...configStoreNotHydratedInstalledVcxInit,
             isVcxInitFailed: true,
-          }
-        })
-      }
-    }
+          },
+        }
+      )
+    },
+  }
   it('should match snapshot for disconnect agent case', () => {
     const { component } = setup(store)
     let tree = component.toJSON()
@@ -87,7 +97,9 @@ describe('<Offline /> for disconnect agent case', () => {
   it('current text error for disconnect agent case', () => {
     const { component } = setup(store)
     let tree = component.root.findByType(Text).props.children
-    expect(tree[0] + tree[1].props.children).toBe('No agent connection detected. Reconnect')
+    expect(tree[0] + tree[1].props.children).toBe(
+      'No agent connection detected. Reconnect'
+    )
   })
 
   it('click is working for disconnect agent case', () => {
@@ -97,9 +109,49 @@ describe('<Offline /> for disconnect agent case', () => {
   })
 })
 
+describe('<Offline /> for fail get messages case', () => {
+  const currentState = getStore().getState()
+  const store = {
+    ...getStore(),
+    getState() {
+      return merge(
+        {},
+        {
+          ...currentState,
+          config: {
+            ...configStoreNotHydratedInstalledVcxInit,
+            isGetMessagesFailed: true,
+          },
+        }
+      )
+    },
+  }
+  it('should match snapshot for fail get messages case', () => {
+    const { component } = setup(store)
+    let tree = component.toJSON()
+    expect(tree).toMatchSnapshot()
+  })
+
+  it('current text error for fail get messages case', () => {
+    const { component } = setup(store)
+    let tree = component.root.findByType(Text).props.children
+    expect(tree[0] + tree[1].props.children).toBe(
+      'No agent connection detected. Reconnect'
+    )
+  })
+
+  it('click is working for fail get messages case', () => {
+    const { component } = setup(store)
+    let tree = component.root.findByType(Text).props.children
+    tree[1].props.onPress()
+  })
+})
+
 describe('<Offline /> for disconnect pool case', () => {
   const currentState = getStore().getState()
-    const store = { ...getStore(), getState() {
+  const store = {
+    ...getStore(),
+    getState() {
       return merge(
         {},
         {
@@ -107,10 +159,11 @@ describe('<Offline /> for disconnect pool case', () => {
           config: {
             ...configStoreNotHydratedInstalledVcxInit,
             isVcxPoolInitFailed: true,
-          }
-        })
-      }
-    }
+          },
+        }
+      )
+    },
+  }
   it('should match snapshot for disconnect pool case', () => {
     const { component } = setup(store)
     let tree = component.toJSON()
@@ -120,7 +173,9 @@ describe('<Offline /> for disconnect pool case', () => {
   it('current text error for disconnect pool case', () => {
     const { component } = setup(store)
     let tree = component.root.findByType(Text).props.children
-    expect(tree[0] + tree[1].props.children).toBe('No pool connection detected. Reconnect')
+    expect(tree[0] + tree[1].props.children).toBe(
+      'No pool connection detected. Reconnect'
+    )
   })
 
   it('click is working for disconnect pool case', () => {
@@ -129,4 +184,3 @@ describe('<Offline /> for disconnect pool case', () => {
     tree[1].props.onPress()
   })
 })
-

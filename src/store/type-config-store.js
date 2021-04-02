@@ -196,6 +196,7 @@ export type ConfigStore = {
   isLoading: boolean,
   isVcxPoolInitFailed: boolean,
   isVcxInitFailed: boolean,
+  isGetMessagesFailed: boolean,
 } & AgencyPoolConfig
 
 export type MessageDownloadStatus =

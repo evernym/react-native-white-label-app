@@ -10,22 +10,31 @@ import type { OfflineProps } from './type-offline'
 
 import { color } from '../common/styles/constant'
 import { offline } from './offline-store'
+import { getUnacknowledgedMessages } from '../store/config-store'
 import {
   getOfflineStatus,
   getIsLoading,
   getIsVcxPoolInitFailed,
   getIsVcxInitFailed,
+  getIsGetMessagesFailed,
 } from '../store/store-selector'
 import { vcxInitPoolStart, vcxInitStart } from '../store/route-store'
 import { CustomText, CustomView } from '../components'
 
-export const Offline = ({ offline, vcxInitPoolStart, vcxInitStart, overlay }: OfflineProps) => {
+export const Offline = ({
+  offline,
+  vcxInitPoolStart,
+  vcxInitStart,
+  getUnacknowledgedMessages,
+  overlay,
+}: OfflineProps) => {
   const netInfo = useNetInfo()
   const [isLoading, setIsLoading] = useState(false)
 
   const isOffline = useSelector(getOfflineStatus)
   const isPoolError = useSelector(getIsVcxPoolInitFailed)
   const isVcxError = useSelector(getIsVcxInitFailed)
+  const isGetMessagesError = useSelector(getIsGetMessagesFailed)
   const isVcxLoading = useSelector(getIsLoading)
 
   const isShowLoader = useMemo(() => {
@@ -33,21 +42,21 @@ export const Offline = ({ offline, vcxInitPoolStart, vcxInitStart, overlay }: Of
   }, [isOffline, isLoading, isVcxLoading])
 
   const isNeedToReconnect = useMemo(() => {
-    return isOffline || isVcxError || isPoolError
-  }, [isOffline, isVcxError, isPoolError])
+    return isOffline || isVcxError || isPoolError || isGetMessagesError
+  }, [isOffline, isVcxError, isPoolError, isGetMessagesError])
 
   const currentErrorForMessage = useMemo(() => {
     if (isOffline) {
       return 'internet'
     }
-    if (isVcxError) {
+    if (isVcxError || isGetMessagesError) {
       return 'agent'
     }
     if (isPoolError) {
       return 'pool'
     }
     return ''
-  }, [isOffline, isVcxError, isPoolError])
+  }, [isOffline, isVcxError, isPoolError, isGetMessagesError])
 
   useEffect(() => {
     offline(!netInfo.isInternetReachable)
@@ -65,6 +74,8 @@ export const Offline = ({ offline, vcxInitPoolStart, vcxInitStart, overlay }: Of
     }, 3000)
   }
 
+  const getMessageRetry = () => getUnacknowledgedMessages()
+
   const poolReconnect = () => vcxInitPoolStart()
 
   const vcxReconnect = () => vcxInitStart()
@@ -76,32 +87,45 @@ export const Offline = ({ offline, vcxInitPoolStart, vcxInitStart, overlay }: Of
     if (isVcxError) {
       return vcxReconnect()
     }
+    if (isGetMessagesError) {
+      return getMessageRetry()
+    }
     if (isPoolError) {
       return poolReconnect()
     }
   }
 
-  return isNeedToReconnect && overlay ?
-    <CustomView doubleVerticalSpace horizontalSpace bg={'yellow'} >
-      {!isShowLoader ?
-      <CustomText bg center>
-        {`No ${currentErrorForMessage} connection detected. `}
-          <CustomText bg bold underline onPress={initReconnectFunction}>Reconnect</CustomText>
-      </CustomText> :
-      <View style={styles.overlay}>
-        <CustomText bg center>Attempting to reconnect... </CustomText>
-        <ActivityIndicator size='large' color={color.actions.fifth}/>
-      </View>}
-    </CustomView> :
-    null
+  return isNeedToReconnect && overlay ? (
+    <CustomView doubleVerticalSpace horizontalSpace bg={'yellow'}>
+      {!isShowLoader ? (
+        <CustomText bg center>
+          {`No ${currentErrorForMessage} connection detected. `}
+          <CustomText bg bold underline onPress={initReconnectFunction}>
+            Reconnect
+          </CustomText>
+        </CustomText>
+      ) : (
+        <View style={styles.overlay}>
+          <CustomText bg center>
+            Attempting to reconnect...{' '}
+          </CustomText>
+          <ActivityIndicator size="large" color={color.actions.fifth} />
+        </View>
+      )}
+    </CustomView>
+  ) : null
 }
 
 const mapDispatchToProps = (dispatch) =>
-  bindActionCreators({
-    offline,
-    vcxInitPoolStart,
-    vcxInitStart
-  }, dispatch)
+  bindActionCreators(
+    {
+      offline,
+      vcxInitPoolStart,
+      vcxInitStart,
+      getUnacknowledgedMessages,
+    },
+    dispatch
+  )
 
 export default connect(null, mapDispatchToProps)(Offline)
 
@@ -110,6 +134,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
 })

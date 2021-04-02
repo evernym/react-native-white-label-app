@@ -162,6 +162,87 @@ exports[`<Offline /> for disconnect pool case should match snapshot for disconne
 </View>
 `;
 
+exports[`<Offline /> for fail get messages case should match snapshot for fail get messages case 1`] = `
+<View
+  bg="yellow"
+  doubleVerticalSpace={true}
+  horizontalSpace={true}
+  style={
+    Object {
+      "backgroundColor": "#EB9B2D",
+      "paddingHorizontal": 15,
+      "paddingVertical": 16,
+    }
+  }
+>
+  <Text
+    allowFontScaling={false}
+    style={
+      Array [
+        Object {
+          "fontSize": 17,
+        },
+        Object {
+          "fontFamily": "System",
+        },
+        Object {},
+        null,
+        Object {
+          "textAlign": "center",
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  >
+    No agent connection detected. 
+    <Text
+      allowFontScaling={false}
+      onPress={[Function]}
+      style={
+        Array [
+          Object {
+            "fontSize": 17,
+          },
+          Object {
+            "fontFamily": "System",
+          },
+          Object {},
+          Object {
+            "fontWeight": "bold",
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          Object {
+            "textDecorationLine": "underline",
+          },
+          null,
+        ]
+      }
+    >
+      Reconnect
+    </Text>
+  </Text>
+</View>
+`;
+
 exports[`<Offline /> for offline case should match snapshot for offline case 1`] = `
 <View
   bg="yellow"

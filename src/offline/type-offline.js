@@ -1,5 +1,6 @@
 // @flow
-import { vcxInitPoolStart, vcxInitStart } from "../store/route-store";
+import { vcxInitPoolStart, vcxInitStart } from '../store/route-store'
+import { getUnacknowledgedMessages } from '../store/config-store'
 
 export const OFFLINE_STATUS = 'OFFLINE_STATUS'
 
@@ -20,4 +21,5 @@ export type OfflineProps = {
   render?: (isConnected: ?boolean) => any,
   vcxInitPoolStart: typeof vcxInitPoolStart,
   vcxInitStart: typeof vcxInitStart,
+  getUnacknowledgedMessages: typeof getUnacknowledgedMessages,
 }
