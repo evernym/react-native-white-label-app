@@ -14,4 +14,5 @@ export type BackupRestorePassphraseProps = {
     poolConfig: string,
     paymentMethod: string
   ) => void,
+  navigation?: any,
 }

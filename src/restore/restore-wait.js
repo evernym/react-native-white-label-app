@@ -19,9 +19,7 @@ export class RestoreWaitScreen extends Component<RestoreWaitScreenProps, void> {
       this.props.route === restoreWaitRoute
     ) {
       // TODO: the params have to be removed when the lockEnterPinRoute design is changed in according with the recovery screen.
-      this.props.navigation.navigate(lockEnterPinRoute, {
-        fromScreen: 'recovery',
-      })
+      this.props.navigation.navigate(lockEnterPinRoute)
     }
 
     if (

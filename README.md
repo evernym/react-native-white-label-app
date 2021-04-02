@@ -1,13 +1,33 @@
-# react-native-evernym-sdk
-
-* [Creating a new application](#creating-a-new-application)
-    * [Create base app](#create-base-app)
-    * [Base app configuration](#base-app-configuration)
-    * [Android](#android)
-    * [iOS](#ios)
+* [Introduction](#introduction)
+  * [Decentralized Identifier - DID](#decentralized-identifier---did)
+  * [Verifiable Credentials](#verifiable-credentials)
+* [React MSDK](#react-msdk)
+* [Creating a new application with React MSDK](#creating-a-new-application-with-react-msdk)
+  * [Create base app](#create-base-app)
+  * [Base app configuration](#base-app-configuration)
+  * [Android](#android)
+  * [iOS](#ios)
 * [Customization](#customization)
 
-## Creating a new application
+## Introduction
+
+Self Sovereign Identity is a lifetime portable identity for any person, organization, or thing that does not depend on any centralized authority and can never be taken away. Self-sovereign identity is a two-party relationship model, with no third party coming between you and the organization, now considered your “peer”.
+
+SSI is possible today with DIDs and Verifiable Credentials.
+
+### Decentralized Identifier - DID
+DID is a new type of globally unique identifier (URI) that does not require a centralized registration authority because control of the identifier can be proved using cryptography. You can think of it like one of the identifiers we’re more familiar with—a domain name or a phone number—without a central registrar like ICANN or NANP.
+
+### Verifiable Credentials
+Verifiable Credential (VC) is the new format for interoperable digital credential being defined by the W3C Verifiable Claims Working Group. Verifiable credentials conform to the [W3C’s Verifiable Credentials Data Model](https://www.w3.org/TR/vc-data-model/), and they facilitate interactions using a pattern called the triangle of trust:
+
+Issuers create credentials, usually by having JSON docs [digitally signed](https://en.wikipedia.org/wiki/Digital_signature) in a special way. Holders store them, and verifiers ask for proof based upon them. Verifiable presentations that Holders provide to Verifiers are packages of evidence—either credentials, or data derived from one or more credentials—built by holders to satisfy a verifier’s requirements. Verifiers learn with certainty which issuers have attested something by checking digital signatures against a verifiable data registry (typically, a blockchain).
+
+## React MSDK
+React MSDK is built as an [Aries compatible](https://www.hyperledger.org/projects/aries) React Native package which allows the quick building of customized applications representing a Holder side in the Verifiable Credentials model.
+The application will be able to establish secure connections with institutions, accept and store Verifiable Credentials from Issuers, and provide Zero Knowledge Proofs to Verifiers.
+
+## Creating a new application with React MSDK
 
 To create a new project, you would need to go through the following steps.
 

@@ -10,14 +10,10 @@ import {
   CustomView,
   CustomText,
   Icon,
-  CustomButton,
   CustomHeader,
 } from '../components'
 import { backupCompleteRoute, settingsRoute } from '../common'
-import {
-  isBiggerThanVeryShortDevice,
-  isBiggerThanShortDevice,
-} from '../common/styles'
+import { isBiggerThanVeryShortDevice } from '../common/styles'
 import { color } from '../common/styles/constant'
 import {
   BACKUP_COMPLETE_CLOSE_TEST_ID,
@@ -27,6 +23,7 @@ import {
 import styles from './styles'
 import { withStatusBar } from '../components/status-bar/status-bar'
 import { appName } from '../external-imports'
+import { Button } from '../components/buttons/button'
 
 const transparentBands = require('../images/transparentBands.png')
 const closeImage = require('../images/iconClose.png')
@@ -111,17 +108,16 @@ export class BackupComplete extends PureComponent<BackupCompleteProps, void> {
               </CustomView>
             </CustomView>
           </Container>
-          <CustomButton
-            large={isBiggerThanShortDevice ? true : false}
+          <Button
             onPress={this.backupComplete}
-            testID={BACKUP_COMPLETE_SUBMIT_BUTTON}
-            style={[styles.submitButton]}
-            customColor={{
+            label={BACKUP_COMPLETE_SUBMIT_BUTTON_TITLE}
+            buttonStyle={styles.submitButton}
+            labelStyle={{
               color: color.bg.fourteenth.color,
               fontWeight: '600',
               fontSize: 18,
             }}
-            title={BACKUP_COMPLETE_SUBMIT_BUTTON_TITLE}
+            testID={BACKUP_COMPLETE_SUBMIT_BUTTON}
           />
         </Container>
       </Container>

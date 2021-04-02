@@ -1,4 +1,6 @@
 import moment from 'moment'
+import { customSettingsOptions } from '../external-imports'
+import { MANUAL_BACKUP } from './settings-constants'
 
 export const formatBackupString = (date?: string) => {
   const now = moment().valueOf()
@@ -13,3 +15,7 @@ export const formatBackupString = (date?: string) => {
   else if (minutes >= 2) return 'A few minutes ago'
   else return 'Just now'
 }
+
+export const isLocalBackupsEnabled = () =>
+  customSettingsOptions &&
+  !!customSettingsOptions.find((option) => option.name === MANUAL_BACKUP)

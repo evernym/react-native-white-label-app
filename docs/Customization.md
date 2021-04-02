@@ -266,6 +266,16 @@ You can configure a server environment used for agent provisioning inside the `p
     * `GET_PROVISION_TOKEN_FUNC` - function to be called to get provisioning token.
        ```
         GET_PROVISION_TOKEN_FUNC = async () -> [error: string | null, token: string | null] 
+        /// example
+        export const GET_PROVISION_TOKEN_FUNC =  () => {
+          try {
+             const response = fetch_api(your_endpoint)
+             /// process response
+             return [null, response.token]
+          } catch (error) {
+             return [error.message, null]
+          }
+        }
       ```
        
     * `VCX_PUSH_TYPE` -  type of push notifications
@@ -1018,6 +1028,8 @@ You can customize `Settings` view in the `settings.js` module.
         * `Logs` - send logs to development team
         * `About` - application information
         * `Feedback` - give the app a feedback
+        * `ManualBackup` - ability to create the application local backup file which can be used for restoring or sharing the app.
+        * `ViewRecoveryPassphrase` - show passphrase used for local backup generation (works only if `ManualBackup` is enabled).
     * to change predefined (for predefined options `title, subtitle, avatar, rightIcon, onPress` are optional fields / defaults will be used if they are not specified) 
         ```javascript
         // Menu contains Home and Connections tabs

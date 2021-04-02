@@ -89,15 +89,16 @@ export type StoreError = { error: ?CustomError }
 export type RestoreStoreStatus = $Keys<typeof RestoreStatus>
 
 export type RestoreProps = {
-  updateStatusBarTheme: string => void,
-  saveFileToAppDirectory: SaveToAppDirectory => void,
+  updateStatusBarTheme: (string) => void,
+  saveFileToAppDirectory: (SaveToAppDirectory) => void,
   restore: RestoreStore,
   route: string,
   isCloudBackupEnabled: false,
+  isEulaAccepted: false,
 } & ReactNavigation
 
 export type RestorePassphraseProps = {
-  submitPassphrase: string => void,
+  submitPassphrase: (string) => void,
   restore: RestoreStore,
 } & ReactNavigation
 

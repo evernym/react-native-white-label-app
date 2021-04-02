@@ -16,6 +16,7 @@ import type { ProofRequestPayload } from '../proof-request/type-proof-request'
 export type QRCodeScannerScreenState = {
   isCameraEnabled: boolean,
   appState: ?string,
+  permission: boolean,
 }
 
 export type QRCodeScannerScreenProps = {

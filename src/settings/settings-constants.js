@@ -1,9 +1,9 @@
 // Options
 export const MANUAL_BACKUP = 'ManualBackup'
 export const CLOUD_BACKUP = 'CloudBackup'
+export const VIEW_BACKUP_PASSPHRASE = 'ViewRecoveryPassphrase'
 export const BIOMETRICS = 'Biometrics'
 export const PASSCODE = 'Passcode'
-export const BACKUP_RECOVERY = 'BackupRecovery'
 export const ABOUT = 'About'
 export const LOGS = 'Logs'
 export const FEEDBACK = 'Feedback'

@@ -235,7 +235,12 @@ export function* loadHistorySaga(): Generator<*, *, *> {
 
       if ('connectionsUpdated' in oldHistory && 'connections' in oldHistory) {
         history = oldHistory
-      } else if ('newBadge' in oldHistory[oldHistoryKeys[0]]) {
+      } else if (
+        oldHistoryKeys &&
+        oldHistoryKeys[0] &&
+        oldHistory[oldHistoryKeys[0]] &&
+        'newBadge' in oldHistory[oldHistoryKeys[0]]
+      ) {
         newHistory = {
           ...newHistory,
           connections: oldHistory,
@@ -965,7 +970,7 @@ export function convertQuestionAnswerToHistoryEvent(
 
 export function convertInviteActionReceivedToHistoryEvent(
   action: InviteActionReceivedAction,
-  connection: Connection,
+  connection: Connection
 ): ConnectionHistoryEvent {
   return {
     action: HISTORY_EVENT_STATUS[INVITE_ACTION_RECEIVED],
@@ -989,13 +994,14 @@ export function convertInviteActionToHistoryEvent(
   action: InviteActionReceivedAction,
   inviteActionPayload: InviteActionPayload,
   event: ConnectionHistoryEvent,
-  actionResponse: string,
+  actionResponse: string
 ): ConnectionHistoryEvent {
   return {
-    action: HISTORY_EVENT_STATUS[
-      actionResponse === INVITE_ACTION_RESPONSES.REJECTED
-        ? INVITE_ACTION_REJECTED
-        : INVITE_ACTION_ACCEPTED
+    action:
+      HISTORY_EVENT_STATUS[
+        actionResponse === INVITE_ACTION_RESPONSES.REJECTED
+          ? INVITE_ACTION_REJECTED
+          : INVITE_ACTION_ACCEPTED
       ],
     data: { payload: inviteActionPayload, ...action },
     id: uuid(),
@@ -1005,7 +1011,7 @@ export function convertInviteActionToHistoryEvent(
         actionResponse === INVITE_ACTION_RESPONSES.REJECTED
           ? INVITE_ACTION_REJECTED
           : INVITE_ACTION_ACCEPTED
-        ],
+      ],
     timestamp: moment().format(),
     type: HISTORY_EVENT_TYPE.INVITE_ACTION,
     remoteDid: inviteActionPayload.from_did,
@@ -1673,7 +1679,10 @@ export function* historyEventOccurredSaga(
         getConnection,
         event.inviteAction.from_did
       )
-      historyEvent = convertInviteActionReceivedToHistoryEvent(event, connection)
+      historyEvent = convertInviteActionReceivedToHistoryEvent(
+        event,
+        connection
+      )
     }
 
     if (event.type === INVITE_ACTION_REJECTED) {

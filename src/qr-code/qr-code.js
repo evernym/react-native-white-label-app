@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react'
-import { Alert, AppState, Platform } from 'react-native'
+import { Alert, AppState, Platform, PermissionsAndroid } from 'react-native'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
@@ -73,7 +73,7 @@ import {
   getExistingConnection,
   prepareParamsForExistingConnectionRedirect,
 } from '../invitation/invitation-helpers'
-import {usePushNotifications} from "../external-imports";
+import { usePushNotifications } from '../external-imports'
 
 export class QRCodeScannerScreen extends Component<
   QRCodeScannerScreenProps,
@@ -82,6 +82,7 @@ export class QRCodeScannerScreen extends Component<
   state = {
     appState: AppState.currentState,
     isCameraEnabled: true,
+    permission: false,
   }
 
   permissionCheckIntervalId: ?IntervalID = undefined
@@ -161,7 +162,7 @@ export class QRCodeScannerScreen extends Component<
 
     const isAuthorized = await getPushNotificationAuthorizationStatus()
 
-    if (Platform.OS === 'ios'&& usePushNotifications && !isAuthorized) {
+    if (Platform.OS === 'ios' && usePushNotifications && !isAuthorized) {
       navigationFn(pushNotificationPermissionRoute, {
         senderDID: invitation.payload.senderDID,
         navigatedFrom: qrCodeScannerTabRoute,
@@ -178,6 +179,26 @@ export class QRCodeScannerScreen extends Component<
   }
 
   componentDidMount() {
+    if (Platform.OS === 'android') {
+      PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.CAMERA).then(
+        (permission) => {
+          if (permission === 'never_ask_again' || permission === 'denied') {
+            this.props.navigation.goBack()
+            Alert.alert(
+              'Camera Permission Needed',
+              'Please go into your device settings and enable camera permissions for Connect.Me to use the camera feature.',
+              [
+                {
+                  text: 'OK',
+                },
+              ]
+            )
+            this.setState({ permission: false })
+          }
+          this.setState({ permission: true })
+        }
+      )
+    }
     // we don't use detox anymore
     // if (detox === 'yes') {
     //   setTimeout(async () => {
@@ -222,7 +243,9 @@ export class QRCodeScannerScreen extends Component<
   render() {
     return (
       <Container dark collapsable={true}>
-        {this.state.isCameraEnabled && this.props.navigation.isFocused() ? (
+        {this.state.isCameraEnabled &&
+        this.props.navigation.isFocused() &&
+        (this.state.permission || Platform.OS === 'ios') ? (
           <QRScanner
             onShortProprietaryInvitationRead={
               this.onShortProprietaryInvitationRead

@@ -4,12 +4,7 @@ import 'react-native'
 import renderer from 'react-test-renderer'
 import { Provider } from 'react-redux'
 import { LockEnterPin } from '../lock-enter-pin-code'
-import {
-  homeRoute,
-  lockPinSetupRoute,
-  lockEnterPinRoute,
-  lockSelectionRoute,
-} from '../../common'
+import { homeRoute, lockPinSetupRoute, lockEnterPinRoute } from '../../common'
 import {
   getStore,
   getNavigation,
@@ -113,7 +108,9 @@ describe('<LockPinCodeEnter />', () => {
   })
   it('should redirect to lockSelection screen if redirectToSetupPasscode is called', () => {
     componentInstance.redirectToSetupPasscode()
-    expect(props.navigation.navigate).toHaveBeenCalledWith(lockSelectionRoute)
+    expect(props.navigation.navigate).toHaveBeenCalledWith(lockPinSetupRoute, {
+      fromRecovery: 'false',
+    })
   })
   it('should show UNLOCKING_APP_WAIT_MESSAGE ', () => {
     let wrapper = renderer.create(

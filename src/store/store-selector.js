@@ -354,7 +354,8 @@ export const getIsTouchIdEnabled = (state: Store) => state.lock.isTouchIdEnabled
 
 export const getShowDevMode = (state: Store) => state.lock.showDevMode
 
-export const getIsInRecovery = (state: Store) => state.lock.inRecovery
+export const getIsInRecovery = (state: Store) =>
+  state.lock && state.lock.inRecovery
 
 export const getIsBiometricsAvailable = (state: Store) =>
   state.lock.biometricsAvaliable
