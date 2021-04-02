@@ -47,6 +47,8 @@ exports[`<Loader /> should check that custom message works 1`] = `
         null,
         null,
         null,
+        null,
+        null,
         Object {
           "color": "#464646",
         },
@@ -175,6 +177,8 @@ exports[`<Loader /> should check that showMessage works as expected when true 1`
         null,
         null,
         null,
+        null,
+        null,
         Object {
           "color": "#464646",
         },
@@ -232,6 +236,8 @@ exports[`<Loader /> should render properly and match the snapshot 1`] = `
         Object {
           "backgroundColor": "transparent",
         },
+        null,
+        null,
         null,
         null,
         null,

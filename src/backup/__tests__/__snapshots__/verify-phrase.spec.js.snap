@@ -265,6 +265,8 @@ exports[`<VerifyRecoveryPhrase /> should match snapshot 1`] = `
                 null,
                 null,
                 null,
+                null,
+                null,
                 Object {
                   "fontSize": 22,
                   "fontWeight": "600",
@@ -308,6 +310,8 @@ exports[`<VerifyRecoveryPhrase /> should match snapshot 1`] = `
                 Object {
                   "backgroundColor": "transparent",
                 },
+                null,
+                null,
                 null,
                 null,
                 null,

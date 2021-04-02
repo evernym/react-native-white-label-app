@@ -364,6 +364,8 @@ exports[`<OpenIdConnectScreen /> should match in fail state 1`] = `
                                 null,
                                 null,
                                 null,
+                                null,
+                                null,
                                 Object {
                                   "color": "#EB9B2D",
                                 },
@@ -904,6 +906,8 @@ exports[`<OpenIdConnectScreen /> should match in progress state 1`] = `
                                 null,
                                 null,
                                 null,
+                                null,
+                                null,
                                 Object {
                                   "color": "#464646",
                                 },
@@ -1291,6 +1295,8 @@ exports[`<OpenIdConnectScreen /> should match in received state 1`] = `
                                   null,
                                   null,
                                   null,
+                                  null,
+                                  null,
                                   Object {
                                     "color": "#EB9B2D",
                                   },
@@ -1324,6 +1330,8 @@ exports[`<OpenIdConnectScreen /> should match in received state 1`] = `
                                   "fontFamily": "System",
                                 },
                                 Object {},
+                                null,
+                                null,
                                 null,
                                 null,
                                 null,
@@ -1891,6 +1899,8 @@ exports[`<OpenIdConnectScreen /> should match in signature verification failed 1
                                   null,
                                   null,
                                   null,
+                                  null,
+                                  null,
                                   Object {
                                     "color": "#EB9B2D",
                                   },
@@ -1937,6 +1947,8 @@ exports[`<OpenIdConnectScreen /> should match in signature verification failed 1
                                 null,
                                 null,
                                 null,
+                                null,
+                                null,
                                 Object {
                                   "color": "#EB9B2D",
                                 },
@@ -1960,6 +1972,8 @@ exports[`<OpenIdConnectScreen /> should match in signature verification failed 1
                                   "fontFamily": "System",
                                 },
                                 Object {},
+                                null,
+                                null,
                                 null,
                                 null,
                                 null,
@@ -2516,6 +2530,8 @@ exports[`<OpenIdConnectScreen /> should match in success state 1`] = `
                               Object {
                                 "textAlign": "center",
                               },
+                              null,
+                              null,
                               null,
                               null,
                               null,

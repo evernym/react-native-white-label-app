@@ -4,16 +4,14 @@ import 'react-native'
 import { Alert, Platform } from 'react-native'
 import renderer from 'react-test-renderer'
 
-import {
-  qrCodeScannerTabRoute,
-} from '../../common/'
-import { QRCodeScannerScreen} from '../qr-code'
+import { qrCodeScannerTabRoute } from '../../common/'
+import { QRCodeScannerScreen } from '../qr-code'
 import {
   getNavigation,
   qrData,
   validQrCodeEnvironmentSwitchUrl,
 } from '../../../__mocks__/static-data'
-import {convertShortProprietaryInvitationToAppInvitation} from "../../invitation/kinds/proprietary-connection-invitation";
+import { convertShortProprietaryInvitationToAppInvitation } from '../../invitation/kinds/proprietary-connection-invitation'
 
 describe('<QRScannerScreen />', () => {
   function getProps() {
@@ -76,7 +74,7 @@ describe('<QRScannerScreen />', () => {
 
     const { component } = setup()
     expect(component.toJSON()).toMatchSnapshot()
-    
+
     Platform.OS = existingOS
   })
 
@@ -87,12 +85,14 @@ describe('<QRScannerScreen />', () => {
     const { component, instance } = setup()
     instance.setState({ permission: true })
     expect(component.toJSON()).toMatchSnapshot()
-    
+
     Platform.OS = existingOS
   })
 
   it('should convert qr code to invitation', () => {
-    expect(convertShortProprietaryInvitationToAppInvitation(qrData)).toMatchSnapshot()
+    expect(
+      convertShortProprietaryInvitationToAppInvitation(qrData)
+    ).toMatchSnapshot()
   })
 
   it('should redirect user to invitation screen on success read', () => {

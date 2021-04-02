@@ -51,61 +51,6 @@ exports[`<QuestionExternalLinks /> should render MAX_EXTERNAL_LINKS_TO_SHOW link
             null,
             null,
             null,
-            Object {
-              "color": "blue",
-            },
-          ]
-        }
-      >
-        An external link
-      </Text>
-    </View>
-  </View>
-  <View
-    style={
-      Object {
-        "marginVertical": 8,
-      }
-    }
-  >
-    <View
-      accessible={true}
-      focusable={true}
-      isTVSelectable={true}
-      onClick={[Function]}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
-      style={
-        Object {
-          "opacity": 1,
-        }
-      }
-    >
-      <Text
-        allowFontScaling={false}
-        numberOfLines={2}
-        style={
-          Array [
-            Object {
-              "fontSize": 15,
-            },
-            Object {
-              "fontFamily": "System",
-            },
-            Object {},
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
             null,
             null,
             Object {
@@ -156,61 +101,6 @@ exports[`<QuestionExternalLinks /> should render MAX_EXTERNAL_LINKS_TO_SHOW link
             Object {},
             null,
             null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            Object {
-              "color": "blue",
-            },
-          ]
-        }
-      >
-        An external link
-      </Text>
-    </View>
-  </View>
-  <View
-    style={
-      Object {
-        "marginVertical": 8,
-      }
-    }
-  >
-    <View
-      accessible={true}
-      focusable={true}
-      isTVSelectable={true}
-      onClick={[Function]}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
-      style={
-        Object {
-          "opacity": 1,
-        }
-      }
-    >
-      <Text
-        allowFontScaling={false}
-        numberOfLines={2}
-        style={
-          Array [
-            Object {
-              "fontSize": 15,
-            },
-            Object {
-              "fontFamily": "System",
-            },
-            Object {},
             null,
             null,
             null,
@@ -279,61 +169,6 @@ exports[`<QuestionExternalLinks /> should render MAX_EXTERNAL_LINKS_TO_SHOW link
             null,
             null,
             null,
-            Object {
-              "color": "blue",
-            },
-          ]
-        }
-      >
-        An external link
-      </Text>
-    </View>
-  </View>
-  <View
-    style={
-      Object {
-        "marginVertical": 8,
-      }
-    }
-  >
-    <View
-      accessible={true}
-      focusable={true}
-      isTVSelectable={true}
-      onClick={[Function]}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
-      style={
-        Object {
-          "opacity": 1,
-        }
-      }
-    >
-      <Text
-        allowFontScaling={false}
-        numberOfLines={2}
-        style={
-          Array [
-            Object {
-              "fontSize": 15,
-            },
-            Object {
-              "fontFamily": "System",
-            },
-            Object {},
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
             null,
             null,
             Object {
@@ -384,61 +219,6 @@ exports[`<QuestionExternalLinks /> should render MAX_EXTERNAL_LINKS_TO_SHOW link
             Object {},
             null,
             null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            Object {
-              "color": "blue",
-            },
-          ]
-        }
-      >
-        An external link
-      </Text>
-    </View>
-  </View>
-  <View
-    style={
-      Object {
-        "marginVertical": 8,
-      }
-    }
-  >
-    <View
-      accessible={true}
-      focusable={true}
-      isTVSelectable={true}
-      onClick={[Function]}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
-      style={
-        Object {
-          "opacity": 1,
-        }
-      }
-    >
-      <Text
-        allowFontScaling={false}
-        numberOfLines={2}
-        style={
-          Array [
-            Object {
-              "fontSize": 15,
-            },
-            Object {
-              "fontFamily": "System",
-            },
-            Object {},
             null,
             null,
             null,
@@ -507,61 +287,6 @@ exports[`<QuestionExternalLinks /> should render MAX_EXTERNAL_LINKS_TO_SHOW link
             null,
             null,
             null,
-            Object {
-              "color": "blue",
-            },
-          ]
-        }
-      >
-        An external link
-      </Text>
-    </View>
-  </View>
-  <View
-    style={
-      Object {
-        "marginVertical": 8,
-      }
-    }
-  >
-    <View
-      accessible={true}
-      focusable={true}
-      isTVSelectable={true}
-      onClick={[Function]}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
-      style={
-        Object {
-          "opacity": 1,
-        }
-      }
-    >
-      <Text
-        allowFontScaling={false}
-        numberOfLines={2}
-        style={
-          Array [
-            Object {
-              "fontSize": 15,
-            },
-            Object {
-              "fontFamily": "System",
-            },
-            Object {},
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
             null,
             null,
             Object {
@@ -612,61 +337,6 @@ exports[`<QuestionExternalLinks /> should render MAX_EXTERNAL_LINKS_TO_SHOW link
             Object {},
             null,
             null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            Object {
-              "color": "blue",
-            },
-          ]
-        }
-      >
-        An external link
-      </Text>
-    </View>
-  </View>
-  <View
-    style={
-      Object {
-        "marginVertical": 8,
-      }
-    }
-  >
-    <View
-      accessible={true}
-      focusable={true}
-      isTVSelectable={true}
-      onClick={[Function]}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
-      style={
-        Object {
-          "opacity": 1,
-        }
-      }
-    >
-      <Text
-        allowFontScaling={false}
-        numberOfLines={2}
-        style={
-          Array [
-            Object {
-              "fontSize": 15,
-            },
-            Object {
-              "fontFamily": "System",
-            },
-            Object {},
             null,
             null,
             null,
@@ -735,61 +405,6 @@ exports[`<QuestionExternalLinks /> should render MAX_EXTERNAL_LINKS_TO_SHOW link
             null,
             null,
             null,
-            Object {
-              "color": "blue",
-            },
-          ]
-        }
-      >
-        An external link
-      </Text>
-    </View>
-  </View>
-  <View
-    style={
-      Object {
-        "marginVertical": 8,
-      }
-    }
-  >
-    <View
-      accessible={true}
-      focusable={true}
-      isTVSelectable={true}
-      onClick={[Function]}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
-      style={
-        Object {
-          "opacity": 1,
-        }
-      }
-    >
-      <Text
-        allowFontScaling={false}
-        numberOfLines={2}
-        style={
-          Array [
-            Object {
-              "fontSize": 15,
-            },
-            Object {
-              "fontFamily": "System",
-            },
-            Object {},
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
             null,
             null,
             Object {
@@ -840,61 +455,6 @@ exports[`<QuestionExternalLinks /> should render MAX_EXTERNAL_LINKS_TO_SHOW link
             Object {},
             null,
             null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            Object {
-              "color": "blue",
-            },
-          ]
-        }
-      >
-        An external link
-      </Text>
-    </View>
-  </View>
-  <View
-    style={
-      Object {
-        "marginVertical": 8,
-      }
-    }
-  >
-    <View
-      accessible={true}
-      focusable={true}
-      isTVSelectable={true}
-      onClick={[Function]}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
-      style={
-        Object {
-          "opacity": 1,
-        }
-      }
-    >
-      <Text
-        allowFontScaling={false}
-        numberOfLines={2}
-        style={
-          Array [
-            Object {
-              "fontSize": 15,
-            },
-            Object {
-              "fontFamily": "System",
-            },
-            Object {},
             null,
             null,
             null,
@@ -963,61 +523,6 @@ exports[`<QuestionExternalLinks /> should render MAX_EXTERNAL_LINKS_TO_SHOW link
             null,
             null,
             null,
-            Object {
-              "color": "blue",
-            },
-          ]
-        }
-      >
-        An external link
-      </Text>
-    </View>
-  </View>
-  <View
-    style={
-      Object {
-        "marginVertical": 8,
-      }
-    }
-  >
-    <View
-      accessible={true}
-      focusable={true}
-      isTVSelectable={true}
-      onClick={[Function]}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
-      style={
-        Object {
-          "opacity": 1,
-        }
-      }
-    >
-      <Text
-        allowFontScaling={false}
-        numberOfLines={2}
-        style={
-          Array [
-            Object {
-              "fontSize": 15,
-            },
-            Object {
-              "fontFamily": "System",
-            },
-            Object {},
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
             null,
             null,
             Object {
@@ -1077,6 +582,8 @@ exports[`<QuestionExternalLinks /> should render MAX_EXTERNAL_LINKS_TO_SHOW link
             null,
             null,
             null,
+            null,
+            null,
             Object {
               "color": "blue",
             },
@@ -1123,6 +630,539 @@ exports[`<QuestionExternalLinks /> should render MAX_EXTERNAL_LINKS_TO_SHOW link
               "fontFamily": "System",
             },
             Object {},
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            Object {
+              "color": "blue",
+            },
+          ]
+        }
+      >
+        An external link
+      </Text>
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "marginVertical": 8,
+      }
+    }
+  >
+    <View
+      accessible={true}
+      focusable={true}
+      isTVSelectable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+    >
+      <Text
+        allowFontScaling={false}
+        numberOfLines={2}
+        style={
+          Array [
+            Object {
+              "fontSize": 15,
+            },
+            Object {
+              "fontFamily": "System",
+            },
+            Object {},
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            Object {
+              "color": "blue",
+            },
+          ]
+        }
+      >
+        An external link
+      </Text>
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "marginVertical": 8,
+      }
+    }
+  >
+    <View
+      accessible={true}
+      focusable={true}
+      isTVSelectable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+    >
+      <Text
+        allowFontScaling={false}
+        numberOfLines={2}
+        style={
+          Array [
+            Object {
+              "fontSize": 15,
+            },
+            Object {
+              "fontFamily": "System",
+            },
+            Object {},
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            Object {
+              "color": "blue",
+            },
+          ]
+        }
+      >
+        An external link
+      </Text>
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "marginVertical": 8,
+      }
+    }
+  >
+    <View
+      accessible={true}
+      focusable={true}
+      isTVSelectable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+    >
+      <Text
+        allowFontScaling={false}
+        numberOfLines={2}
+        style={
+          Array [
+            Object {
+              "fontSize": 15,
+            },
+            Object {
+              "fontFamily": "System",
+            },
+            Object {},
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            Object {
+              "color": "blue",
+            },
+          ]
+        }
+      >
+        An external link
+      </Text>
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "marginVertical": 8,
+      }
+    }
+  >
+    <View
+      accessible={true}
+      focusable={true}
+      isTVSelectable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+    >
+      <Text
+        allowFontScaling={false}
+        numberOfLines={2}
+        style={
+          Array [
+            Object {
+              "fontSize": 15,
+            },
+            Object {
+              "fontFamily": "System",
+            },
+            Object {},
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            Object {
+              "color": "blue",
+            },
+          ]
+        }
+      >
+        An external link
+      </Text>
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "marginVertical": 8,
+      }
+    }
+  >
+    <View
+      accessible={true}
+      focusable={true}
+      isTVSelectable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+    >
+      <Text
+        allowFontScaling={false}
+        numberOfLines={2}
+        style={
+          Array [
+            Object {
+              "fontSize": 15,
+            },
+            Object {
+              "fontFamily": "System",
+            },
+            Object {},
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            Object {
+              "color": "blue",
+            },
+          ]
+        }
+      >
+        An external link
+      </Text>
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "marginVertical": 8,
+      }
+    }
+  >
+    <View
+      accessible={true}
+      focusable={true}
+      isTVSelectable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+    >
+      <Text
+        allowFontScaling={false}
+        numberOfLines={2}
+        style={
+          Array [
+            Object {
+              "fontSize": 15,
+            },
+            Object {
+              "fontFamily": "System",
+            },
+            Object {},
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            Object {
+              "color": "blue",
+            },
+          ]
+        }
+      >
+        An external link
+      </Text>
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "marginVertical": 8,
+      }
+    }
+  >
+    <View
+      accessible={true}
+      focusable={true}
+      isTVSelectable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+    >
+      <Text
+        allowFontScaling={false}
+        numberOfLines={2}
+        style={
+          Array [
+            Object {
+              "fontSize": 15,
+            },
+            Object {
+              "fontFamily": "System",
+            },
+            Object {},
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            Object {
+              "color": "blue",
+            },
+          ]
+        }
+      >
+        An external link
+      </Text>
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "marginVertical": 8,
+      }
+    }
+  >
+    <View
+      accessible={true}
+      focusable={true}
+      isTVSelectable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+    >
+      <Text
+        allowFontScaling={false}
+        numberOfLines={2}
+        style={
+          Array [
+            Object {
+              "fontSize": 15,
+            },
+            Object {
+              "fontFamily": "System",
+            },
+            Object {},
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            Object {
+              "color": "blue",
+            },
+          ]
+        }
+      >
+        An external link
+      </Text>
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "marginVertical": 8,
+      }
+    }
+  >
+    <View
+      accessible={true}
+      focusable={true}
+      isTVSelectable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+    >
+      <Text
+        allowFontScaling={false}
+        numberOfLines={2}
+        style={
+          Array [
+            Object {
+              "fontSize": 15,
+            },
+            Object {
+              "fontFamily": "System",
+            },
+            Object {},
+            null,
+            null,
             null,
             null,
             null,
@@ -1198,6 +1238,8 @@ exports[`<QuestionExternalLinks /> should render links if links are passed 1`] =
             null,
             null,
             null,
+            null,
+            null,
             Object {
               "color": "blue",
             },
@@ -1255,6 +1297,8 @@ exports[`<QuestionExternalLinks /> should render links if links are passed 1`] =
             null,
             null,
             null,
+            null,
+            null,
             Object {
               "color": "blue",
             },
@@ -1289,6 +1333,8 @@ exports[`<QuestionExternalLinks /> should render validation error if wrong data 
           "fontFamily": "System",
         },
         Object {},
+        null,
+        null,
         null,
         null,
         null,

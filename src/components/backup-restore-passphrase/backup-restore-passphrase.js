@@ -14,13 +14,12 @@ import {
 import type { BackupRestorePassphraseProps } from './type-backup-restore-passphrase'
 import ErrorBanner from '../banner/banner-danger'
 import { baseUrls, changeEnvironment } from '../../store/config-store'
-import { verticalScale } from 'react-native-size-matters';
+import { verticalScale } from 'react-native-size-matters'
 
 export class BackupRestorePassphrase extends Component<
   BackupRestorePassphraseProps,
   void
 > {
-
   submitPhrase = (event: any) => {
     // IMPORTANT: Because of the way that event.nativeEvent works, the nativeEvent property
     // of event will be null if you invoke event.nativeEvent after any await calls
@@ -185,9 +184,9 @@ const styles = StyleSheet.create({
     height: dangerBannerHeight,
   },
   header: {
-    flex:1,
+    flex: 1,
     marginTop: verticalScale(8),
-  }
+  },
 })
 
 const mapDispatchToProps = (dispatch) =>

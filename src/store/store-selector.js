@@ -1,6 +1,9 @@
 // @flow
 import type { Store } from './type-store'
-import type { ClaimOfferPayload, SerializedClaimOffersPerDid } from '../claim-offer/type-claim-offer'
+import type {
+  ClaimOfferPayload,
+  SerializedClaimOffersPerDid,
+} from '../claim-offer/type-claim-offer'
 import { CLAIM_OFFER_STATUS } from '../claim-offer/type-claim-offer'
 import type { Connection, ConnectionStore } from './type-connection-store'
 import type { ConnectionHistoryEvent } from '../connection-history/type-connection-history'
@@ -15,49 +18,72 @@ import type { QuestionStoreMessage } from '../question/type-question'
 import { QUESTION_STATUS } from '../question/type-question'
 
 /*
-* Selectors related to Config Store
-* */
+ * Selectors related to Config Store
+ * */
+export const getIsGetMessagesFailed = (state: Store) =>
+  state.config.isGetMessagesFailed
+
+export const getIsVcxInitFailed = (state: Store) => state.config.isVcxInitFailed
+
+export const getIsVcxPoolInitFailed = (state: Store) =>
+  state.config.isVcxPoolInitFailed
+
+export const getIsLoading = (state: Store) => state.config.isLoading
+
 export const getConfig = (state: Store) => state.config
 
 export const getAgencyUrl = (state: Store) => state.config.agencyUrl
 
 export const getAgencyDID = (state: Store) => state.config.agencyDID
 
-export const getAgencyVerificationKey = (state: Store) => state.config.agencyVerificationKey
+export const getAgencyVerificationKey = (state: Store) =>
+  state.config.agencyVerificationKey
 
 export const getPoolConfig = (state: Store) => state.config.poolConfig
 
-export const getMessageDownloadStatus = (state: Store) => state.config.messageDownloadStatus
+export const getMessageDownloadStatus = (state: Store) =>
+  state.config.messageDownloadStatus
 
 export const getSnackError = (state: Store) => state.config.snackError
 
 export const getEnvironmentName = (state: Store) =>
-  findKey(baseUrls, (environment) => environment.agencyUrl === state.config.agencyUrl)
+  findKey(
+    baseUrls,
+    (environment) => environment.agencyUrl === state.config.agencyUrl
+  )
 
-export const getErrorAlertsSwitchValue = (state: Store) => state.config.showErrorAlerts
+export const getErrorAlertsSwitchValue = (state: Store) =>
+  state.config.showErrorAlerts
 
-export const getVcxInitializationState = (state: Store) => state.config.vcxInitializationState
+export const getVcxInitializationState = (state: Store) =>
+  state.config.vcxInitializationState
 
-export const getVcxInitializationError = (state: Store) => state.config.vcxInitializationError
+export const getVcxInitializationError = (state: Store) =>
+  state.config.vcxInitializationError
 
-export const getVcxPoolInitializationState = (state: Store) => state.config.vcxPoolInitializationState
+export const getVcxPoolInitializationState = (state: Store) =>
+  state.config.vcxPoolInitializationState
 
-export const getVcxPoolInitializationError = (state: Store) => state.config.vcxPoolInitializationError
+export const getVcxPoolInitializationError = (state: Store) =>
+  state.config.vcxPoolInitializationError
 
 export const getHydrationState = (state: Store) => state.config.isHydrated
 
-export const getIsAlreadyInstalled = (state: Store) => state.config.isAlreadyInstalled
+export const getIsAlreadyInstalled = (state: Store) =>
+  state.config.isAlreadyInstalled
 
 export const getIsInitialized = (state: Store) => state.config.isInitialized
 
 /*
-* Selectors related to Connections Store
-* */
+ * Selectors related to Connections Store
+ * */
 export const getAllConnection = (state: Store) => state.connections.data
 
-export const getConnectionHydrationState = (state: Store) => state.connections.hydrated
+export const getConnectionHydrationState = (state: Store) =>
+  state.connections.hydrated
 
-export const getAllOneTimeConnection = (state: Store) => state.connections.oneTimeConnections
+export const getAllOneTimeConnection = (state: Store) =>
+  state.connections.oneTimeConnections
 
 export const getConnectionTheme = (state: Store, logoUrl: string) =>
   state.connections.connectionThemes[logoUrl] ||
@@ -114,7 +140,7 @@ export const getAllDid = (connections: ConnectionStore) => {
 export const getConnectionByProp = (
   state: Store,
   property: string,
-  valueToMatch: any,
+  valueToMatch: any
 ): Array<Connection> => {
   const connections = getAllConnection(state)
   if (connections) {
@@ -127,7 +153,7 @@ export const getConnectionByProp = (
     // with which we will make connections
     const savedConnections: Array<any> = Object.values(connections)
     return savedConnections.filter(
-      (connection) => connection[property] === valueToMatch,
+      (connection) => connection[property] === valueToMatch
     )
   }
 
@@ -142,7 +168,7 @@ export const getConnectionExists = (state: Store, did: string) => {
 
 export const getNewMessagesCount = (state: Store) => {
   const receivedConnections: Connection[] = (getConnections(
-    state.connections.data,
+    state.connections.data
   ): any)
 
   const customFlat = (array: Array<Array<Object>>) => [].concat(...array)
@@ -165,7 +191,7 @@ export const getNewMessagesCount = (state: Store) => {
 
 export const getConnection = (
   state: Store,
-  senderDID: string,
+  senderDID: string
 ): Array<Connection> => {
   const connections = getAllConnection(state)
   let foundConnections: Array<Connection> = []
@@ -180,7 +206,7 @@ export const getConnection = (
     // with which we will make connections
     const savedConnections: Array<any> = Object.values(connections)
     foundConnections = savedConnections.filter(
-      (connection: Connection) => connection.senderDID === senderDID,
+      (connection: Connection) => connection.senderDID === senderDID
     )
   }
 
@@ -200,7 +226,7 @@ export const getConnection = (
     // with which we will make connections
     const savedConnections: Array<any> = Object.values(oneTimeConnections)
     return savedConnections.filter(
-      (connection: Connection) => connection.senderDID === senderDID,
+      (connection: Connection) => connection.senderDID === senderDID
     )
   }
 
@@ -209,7 +235,7 @@ export const getConnection = (
 
 export const getConnectionLogoUrl = (
   state: Store,
-  remotePairwiseDid: string,
+  remotePairwiseDid: string
 ): string => {
   const connections = getConnection(state, remotePairwiseDid)
   return connections.length > 0 ? connections[0].logoUrl : ''
@@ -262,8 +288,8 @@ export const getUserPairwiseDid = (state: Store, senderDID: string) => {
 }
 
 /*
-* Selectors related to Deep Link Store
-* */
+ * Selectors related to Deep Link Store
+ * */
 export const getDeepLinkTokens = (state: Store) => state.deepLink.tokens
 
 export const getIsDeepLinkLoading = (state: Store) => state.deepLink.isLoading
@@ -271,8 +297,8 @@ export const getIsDeepLinkLoading = (state: Store) => state.deepLink.isLoading
 export const getDeepError = (state: Store) => state.deepLink.error
 
 /*
-* Selectors related to Push Notification Store
-* */
+ * Selectors related to Push Notification Store
+ * */
 export const getPushToken = (state: Store) => state.pushNotification.pushToken
 
 export const getPendingFetchAdditionalDataKey = (state: Store) =>
@@ -291,31 +317,34 @@ export const getNavigateToRoute = (state: Store) =>
   state.pushNotification.navigateRoute
 
 /*
-* Selectors related to Route Store
-* */
+ * Selectors related to Route Store
+ * */
 export const getCurrentScreen = (state: Store) => state.route.currentScreen
 
 export const getCurrentScreenTimestamp = (state: Store) => state.route.timeStamp
 
 /*
-* Selectors related to User Store
-* */
+ * Selectors related to User Store
+ * */
 export const getUserOneTimeInfo = (state: Store) => state.user.userOneTimeInfo
 
-export const getUserAvatarName = (state: Store): ?string => state.user.avatarName
+export const getUserAvatarName = (state: Store): ?string =>
+  state.user.avatarName
 
 export const getUserError = (state: Store) => state.user.error
 
 export const getUserIsFetching = (state: Store) => state.user.isFetching
 
 /*
-* Selectors related to Lock Store
-* */
+ * Selectors related to Lock Store
+ * */
 export const getIsAppLocked = (state: Store) => state.lock.isAppLocked
 
-export const getPendingRedirection = (state: Store) => state.lock.pendingRedirection
+export const getPendingRedirection = (state: Store) =>
+  state.lock.pendingRedirection
 
-export const getPendingRedirectionParams = (state: Store) => state.lock.pendingRedirectionParams
+export const getPendingRedirectionParams = (state: Store) =>
+  state.lock.pendingRedirectionParams
 
 export const getCheckPinStatus = (state: Store) => state.lock.checkPinStatus
 
@@ -325,25 +354,32 @@ export const getIsTouchIdEnabled = (state: Store) => state.lock.isTouchIdEnabled
 
 export const getShowDevMode = (state: Store) => state.lock.showDevMode
 
-export const getIsInRecovery = (state: Store) => state.lock && state.lock.inRecovery
+export const getIsInRecovery = (state: Store) =>
+  state.lock && state.lock.inRecovery
 
-export const getIsBiometricsAvailable = (state: Store) => state.lock.biometricsAvaliable
+export const getIsBiometricsAvailable = (state: Store) =>
+  state.lock.biometricsAvaliable
 
-export const getNumberOfFailedPinAttempts = (state: Store) => state.lock.numberOfFailedPinAttempts
+export const getNumberOfFailedPinAttempts = (state: Store) =>
+  state.lock.numberOfFailedPinAttempts
 
-export const getRecordedTimeOfPinFailedAttempt = (state: Store) => state.lock.recordedTimeOfPinFailedAttempt
+export const getRecordedTimeOfPinFailedAttempt = (state: Store) =>
+  state.lock.recordedTimeOfPinFailedAttempt
 
 export const getIsShouldLockApp = (state: Store) => state.lock.shouldLockApp
 
-export const getNumberOfAttemptsMessage = (state: Store) => state.lock.numberOfAttemptsMessage
+export const getNumberOfAttemptsMessage = (state: Store) =>
+  state.lock.numberOfAttemptsMessage
 
-export const getLockdownTimeMessage = (state: Store) => state.lock.lockdownTimeMessage
+export const getLockdownTimeMessage = (state: Store) =>
+  state.lock.lockdownTimeMessage
 
-export const getLastUnlockSuccessTime = (state: Store) => state.lock.lastUnlockSuccessTime
+export const getLastUnlockSuccessTime = (state: Store) =>
+  state.lock.lastUnlockSuccessTime
 
 /*
-* Selectors related to Claim Offer Store
-* */
+ * Selectors related to Claim Offer Store
+ * */
 export const getClaimOffer = (state: Store, claimOfferId: string) =>
   state.claimOffer[claimOfferId]
 
@@ -352,7 +388,7 @@ export const getClaimOffers = (state: Store) => state.claimOffer
 export const getSerializedClaimOffer = (
   state: Store,
   userDID: string,
-  messageId: string,
+  messageId: string
 ) => {
   const userClaimOffers = state.claimOffer.vcxSerializedClaimOffers[userDID]
   if (!userClaimOffers) {
@@ -375,8 +411,8 @@ export const getSerializedClaimOffers = (state: Store, userDID: string) => {
 }
 
 /*
-* Selectors related to Proof Request Store
-* */
+ * Selectors related to Proof Request Store
+ * */
 export const getProofRequest = (state: Store, proofRequestId: string) =>
   state.proofRequest[proofRequestId]
 
@@ -394,29 +430,29 @@ export const getProofRequesterName = (state: Store, proofRequestId: string) => {
 
 export const getOriginalProofRequestData = (
   state: Store,
-  proofRequestId: string,
+  proofRequestId: string
 ) => state.proofRequest[proofRequestId].originalProofRequestData
 
 export const getProofRequestPairwiseDid = (
   state: Store,
-  proofRequestId: string,
+  proofRequestId: string
 ) => state.proofRequest[proofRequestId].remotePairwiseDID
 
 export const getProofRequests = (state: Store) => state.proofRequest
 
 /*
-* Selectors related to Invitation Store
-* */
+ * Selectors related to Invitation Store
+ * */
 export const getInvitationPayload = (
   state: Store,
-  invitationSenderDID: string,
+  invitationSenderDID: string
 ) => state.invitation[invitationSenderDID].payload
 
 export const getAllInvitations = (state: Store) => state.invitation
 
 /*
-* Selectors related to Claim Store
-* */
+ * Selectors related to Claim Store
+ * */
 export const getClaimMap = (state: Store) => state.claim.claimMap
 
 export const getClaimForOffer = (state: Store, offer: ClaimOfferPayload) =>
@@ -424,12 +460,12 @@ export const getClaimForOffer = (state: Store, offer: ClaimOfferPayload) =>
     (claim: any) =>
       claim.senderDID === offer.remotePairwiseDID &&
       claim.name === offer.data.name &&
-      claim.issueDate === offer.issueDate,
+      claim.issueDate === offer.issueDate
   )
 
 /*
-* Selectors related to Proof Store
-* */
+ * Selectors related to Proof Store
+ * */
 export const getProofData = (state: Store, proofRequestId: string) =>
   state.proof[proofRequestId] ? state.proof[proofRequestId].proofData : {}
 
@@ -437,14 +473,14 @@ export const getProof = (state: Store, proofRequestId: string) =>
   state.proof[proofRequestId]
 
 /*
-* Selectors related to Connection History Store
-* */
+ * Selectors related to Connection History Store
+ * */
 export const getConnectionHistory = (state: Store) => state.history
 
 //TODO - delete this selector and handle it in the reducer (no need to filter twice)
 export const getPendingHistoryEvent = (
   state: Store,
-  claim: ClaimOfferPayload,
+  claim: ClaimOfferPayload
 ) => {
   const historyItems =
     state.history && state.history.data && state.history.data.connections
@@ -459,7 +495,7 @@ export const getHistoryEvent = (
   state: Store,
   uid: string,
   remoteDid: string,
-  type: string,
+  type: string
 ) => {
   const historyItems =
     state.history &&
@@ -482,7 +518,7 @@ export const getPendingHistory = (
   state: Store,
   uid: string,
   remoteDid: string,
-  type: string,
+  type: string
 ) => {
   const historyItems =
     state.history && state.history.data && state.history.data.connections
@@ -500,7 +536,7 @@ export const getPendingHistory = (
 export const getUniqueHistoryItem = (
   state: Store,
   remoteDid: string,
-  type: string,
+  type: string
 ) => {
   const historyItems =
     state &&
@@ -514,12 +550,12 @@ export const getUniqueHistoryItem = (
 }
 
 export const getLastConnectionEvent = (
-  historyItems: [ConnectionHistoryEvent],
+  historyItems: [ConnectionHistoryEvent]
 ) => {
   return historyItems.reduce(
     (result, item) =>
       item.type === HISTORY_EVENT_TYPE.INVITATION ? item : result,
-    undefined,
+    undefined
   )
 }
 
@@ -527,7 +563,7 @@ export const getClaimReceivedHistory = (
   state: Store,
   uid: string,
   remoteDid: string,
-  type: string,
+  type: string
 ) => {
   const historyItems =
     state.history && state.history.data && state.history.data.connections
@@ -554,28 +590,27 @@ export const getUnseenMessages = (state: Store) => {
     CLAIM_OFFER_STATUS.RECEIVED,
     obj,
     (claimOfferMessage: ClaimOfferPayload) =>
-      claimOfferMessage.remotePairwiseDID,
+      claimOfferMessage.remotePairwiseDID
   )
   addUidsWithStatusToConnections(
     proofRequest,
     PROOF_REQUEST_STATUS.RECEIVED,
     obj,
     (proofRequestMessage: ProofRequestPayload) =>
-      proofRequestMessage.remotePairwiseDID,
+      proofRequestMessage.remotePairwiseDID
   )
   addUidsWithStatusToConnections(
     question.data,
     QUESTION_STATUS.RECEIVED,
     obj,
-    (questionMessage: QuestionStoreMessage) =>
-      questionMessage.payload.from_did,
+    (questionMessage: QuestionStoreMessage) => questionMessage.payload.from_did
   )
   return obj
 }
 
 /*
-* Selectors related to Wallet Store
-* */
+ * Selectors related to Wallet Store
+ * */
 export const getWalletBalance = (state: Store) =>
   state.wallet.walletBalance.data
 
@@ -589,69 +624,78 @@ export const getWalletHistory = (state: Store) => state.wallet.walletHistory
 export const getWalletBackup = (state: Store) => state.wallet.backup
 
 /*
-* Selectors related to Eula Store
-* */
+ * Selectors related to Eula Store
+ * */
 export const getIsEulaAccepted = (state: Store) => state.eula.isEulaAccept
 
 /*
-* Selectors related to Backup Store
-* */
+ * Selectors related to Backup Store
+ * */
 export const getBackupPassphrase = (state: Store) => state.backup.passphrase
 
 export const getBackupStatus = (state: Store) => state.backup.status
 
 export const getBackupWalletHandle = (state: Store) => state.backup.walletHandle
 
-export const getCloudBackupStatus = (state: Store) => state.backup.cloudBackupStatus
+export const getCloudBackupStatus = (state: Store) =>
+  state.backup.cloudBackupStatus
 
-export const getCloudBackupPending = (state: Store) => state.backup.cloudBackupPending
+export const getCloudBackupPending = (state: Store) =>
+  state.backup.cloudBackupPending
 
-export const getAutoCloudBackupEnabled = (state: Store) => state.backup.autoCloudBackupEnabled
+export const getAutoCloudBackupEnabled = (state: Store) =>
+  state.backup.autoCloudBackupEnabled
 
-export const getHasVerifiedRecoveryPhrase = (state: Store) => state.backup.hasVerifiedRecoveryPhrase
+export const getHasVerifiedRecoveryPhrase = (state: Store) =>
+  state.backup.hasVerifiedRecoveryPhrase
 
-export const getBackupWalletPath = (state: Store) => state.backup.backupWalletPath
+export const getBackupWalletPath = (state: Store) =>
+  state.backup.backupWalletPath
 
 export const getSalt = (state: Store) => state.backup.passphrase.salt
 
-export const getPrepareBackupStatus = (state: Store) => state.backup.prepareBackupStatus
+export const getPrepareBackupStatus = (state: Store) =>
+  state.backup.prepareBackupStatus
 
 /*
-* Selectors related to Send Logs Store
-* */
-export const getLogEncryptionStatus = (state: Store) => state.sendlogs.encryptLogStatus
+ * Selectors related to Send Logs Store
+ * */
+export const getLogEncryptionStatus = (state: Store) =>
+  state.sendlogs.encryptLogStatus
 
 /*
-* Selectors related to Restore Store
-* */
+ * Selectors related to Restore Store
+ * */
 export const getRestoreStatus = (state: Store) => state.restore.status
 
-export const getRestoreFileName = (state: Store) => state.restore.restoreFile.fileName
+export const getRestoreFileName = (state: Store) =>
+  state.restore.restoreFile.fileName
 
 export const getRestorePassphrase = (state: Store) => state.restore.passphrase
 
 export const getRestoreError = (state: Store) => state.restore.error
 
 /*
-* Selectors related to Ledger Store
-* */
+ * Selectors related to Ledger Store
+ * */
 export const getFees = (state: Store) => state.ledger.fees
 
 /*
-* Selectors related to Offline Store
-* */
+ * Selectors related to Offline Store
+ * */
 export const getOfflineStatus = (state: Store) => state.offline.offline
 
 /*
-* Selectors related to Question Store
-* */
+ * Selectors related to Question Store
+ * */
 export const getQuestion = (state: Store) => state.question.data
 
-export const getQuestionStorageStatus = (state: Store) => state.question.storageStatus
+export const getQuestionStorageStatus = (state: Store) =>
+  state.question.storageStatus
 
 /*
-* Selectors related to TxnAuthorAgreement Store
-* */
+ * Selectors related to TxnAuthorAgreement Store
+ * */
 export const getTaaAcceptedVersion = (state: Store) =>
   state.txnAuthorAgreement.taaAcceptedVersion
 
@@ -665,20 +709,23 @@ export const getThereIsANewAgreement = (state: Store) =>
   state.txnAuthorAgreement.thereIsANewAgreement
 
 /*
-* Selectors related to Cloud Restore Store
-* */
-export const getCloudRestoreMessage = (state: Store) => state.cloudRestore.message
+ * Selectors related to Cloud Restore Store
+ * */
+export const getCloudRestoreMessage = (state: Store) =>
+  state.cloudRestore.message
 
 export const getCloudRestoreError = (state: Store) => state.cloudRestore.error
 
 /*
-* Selectors related to OpenId Connect Store
-* */
+ * Selectors related to OpenId Connect Store
+ * */
 export const getOpenIdConnectData = (state: Store) => state.openIdConnect.data
 
-export const getOpenIdConnectVersion = (state: Store) => state.openIdConnect.version
+export const getOpenIdConnectVersion = (state: Store) =>
+  state.openIdConnect.version
 
 /*
-* Selectors related to InApp Notification  Store
-* */
-export const getInAppNotification = (state: Store) => state.inAppNotification.notification
+ * Selectors related to InApp Notification  Store
+ * */
+export const getInAppNotification = (state: Store) =>
+  state.inAppNotification.notification

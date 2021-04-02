@@ -67,6 +67,8 @@ class CustomText extends React.Component<GenericObject, void> {
       // this props is purely for testing purpose, and should not be used in any
       // production code
       showLayoutDetails = false,
+      underline,
+      horizontalSpaced,
     } = props
 
     // preference is given to color prop to set text color
@@ -125,6 +127,8 @@ class CustomText extends React.Component<GenericObject, void> {
       charcoal ? styles.colorCharcoal : null,
       secondaryColor ? styles.greyColor : null,
       darkgray ? styles.darkgray : null,
+      underline ? styles.underline : null,
+      horizontalSpaced ? styles.horizontalSpaced : null
     ]
     if (Array.isArray(style) && style.length) {
       // style does exist, is an array, and is not empty
@@ -172,6 +176,9 @@ class CustomText extends React.Component<GenericObject, void> {
     }
     if (props.onLayout) {
       filteredProps.onLayout = props.onLayout
+    }
+    if (props.onPress) {
+      filteredProps.onPress = props.onPress
     }
 
     if (showLayoutDetails && __DEV__) {
@@ -322,6 +329,12 @@ export const styles = StyleSheet.create({
   },
   darkgray: {
     color: color.textColor.darkgray,
+  },
+  underline: {
+    textDecorationLine: 'underline'
+  },
+  horizontalSpaced: {
+    marginHorizontal: 20,
   },
 })
 

@@ -102,6 +102,8 @@ exports[`<WalletTabSendDetails /> should render properly and match the snapshot 
               null,
               null,
               null,
+              null,
+              null,
               Object {
                 "lineHeight": 20,
               },
@@ -228,6 +230,8 @@ exports[`<WalletTabSendDetails /> should render properly and match the snapshot 
               null,
               null,
               null,
+              null,
+              null,
               Object {
                 "lineHeight": 20,
               },
@@ -327,6 +331,8 @@ exports[`<WalletTabSendDetails /> should render properly and match the snapshot 
           null,
           null,
           null,
+          null,
+          null,
           Object {
             "marginTop": 19,
           },
@@ -367,6 +373,8 @@ exports[`<WalletTabSendDetails /> should render properly and match the snapshot 
           Object {
             "backgroundColor": "transparent",
           },
+          null,
+          null,
           null,
           null,
           null,
@@ -432,6 +440,8 @@ exports[`<WalletTabSendDetails /> should render properly and match the snapshot 
             null,
             null,
             null,
+            null,
+            null,
             Object {
               "color": "#6D6D6D",
               "fontSize": 14,
@@ -466,6 +476,8 @@ exports[`<WalletTabSendDetails /> should render properly and match the snapshot 
               Object {
                 "color": "rgba(237, 156, 46, 1)",
               },
+              null,
+              null,
               null,
               null,
               null,
@@ -521,6 +533,8 @@ exports[`<WalletTabSendDetails /> should render properly and match the snapshot 
           Object {
             "color": "#333333",
           },
+          null,
+          null,
           null,
           null,
           null,

@@ -57,6 +57,8 @@ exports[`<SplashScreen /> should match snapshot 1`] = `
           null,
           null,
           null,
+          null,
+          null,
           Object {
             "color": "#464646",
           },

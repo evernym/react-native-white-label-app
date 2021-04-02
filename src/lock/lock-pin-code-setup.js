@@ -19,7 +19,7 @@ import { Header } from '../components'
 import { useFocusEffect } from '@react-navigation/native'
 import { headerNavigationOptions } from '../navigation/navigation-header-config'
 import { LockHeader } from '../external-imports'
-import {getIsInRecovery} from "../store/store-selector";
+import { getIsInRecovery } from '../store/store-selector'
 
 let keyboardDidHideListener
 let keyboardDidShowListener
@@ -148,9 +148,7 @@ export function LockPinSetup(props: ReactNavigation) {
         route={props.route}
         transparent={true}
       />
-      <CustomView center>
-        {LockHeader ? <LockHeader/> : <View/> }
-      </CustomView>
+      <CustomView center>{LockHeader ? <LockHeader /> : <View />}</CustomView>
       <CustomText center h4 bg="tertiary" style={[styles.title]} tertiary thick>
         {`${enteredPin ? 'Re-enter passcode' : enterPasscodeText}`}
       </CustomText>

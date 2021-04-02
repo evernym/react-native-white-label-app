@@ -1,6 +1,6 @@
 import moment from 'moment'
-import {customSettingsOptions} from "../external-imports";
-import {MANUAL_BACKUP} from "./settings-constants";
+import { customSettingsOptions } from '../external-imports'
+import { MANUAL_BACKUP } from './settings-constants'
 
 export const formatBackupString = (date?: string) => {
   const now = moment().valueOf()
@@ -18,4 +18,4 @@ export const formatBackupString = (date?: string) => {
 
 export const isLocalBackupsEnabled = () =>
   customSettingsOptions &&
-  !!customSettingsOptions.find(option => option.name === MANUAL_BACKUP)
+  !!customSettingsOptions.find((option) => option.name === MANUAL_BACKUP)

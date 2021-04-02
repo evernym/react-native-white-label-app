@@ -202,6 +202,8 @@ exports[`app lock selection page should render properly 1`] = `
               null,
               null,
               null,
+              null,
+              null,
               Object {
                 "fontFamily": "System",
                 "fontSize": 25.777142857142856,
@@ -270,6 +272,8 @@ exports[`app lock selection page should render properly 1`] = `
                 "backgroundColor": "#ffffff",
                 "color": "#777777",
               },
+              null,
+              null,
               null,
               null,
               null,
@@ -356,6 +360,8 @@ exports[`app lock selection page should render properly 1`] = `
                 null,
                 null,
                 null,
+                null,
+                null,
               ]
             }
           >
@@ -383,6 +389,8 @@ exports[`app lock selection page should render properly 1`] = `
               Object {
                 "textAlign": "center",
               },
+              null,
+              null,
               null,
               null,
               null,
@@ -459,6 +467,8 @@ exports[`app lock selection page should render properly 1`] = `
                     null,
                     null,
                     null,
+                    null,
+                    null,
                   ]
                 }
               >
@@ -478,6 +488,8 @@ exports[`app lock selection page should render properly 1`] = `
                       "backgroundColor": "#ffffff",
                       "color": "#777777",
                     },
+                    null,
+                    null,
                     null,
                     null,
                     null,

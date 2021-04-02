@@ -281,6 +281,8 @@ exports[`Restore Passphrase screen should render properly and match the snapshot
                   null,
                   null,
                   null,
+                  null,
+                  null,
                   Object {
                     "fontWeight": "bold",
                   },
@@ -321,6 +323,8 @@ exports[`Restore Passphrase screen should render properly and match the snapshot
                 Object {
                   "backgroundColor": "transparent",
                 },
+                null,
+                null,
                 null,
                 null,
                 null,

@@ -28,47 +28,62 @@ import {
   getSmsPendingInvitation,
   safeToDownloadSmsInvitation,
 } from '../sms-pending-invitation/sms-pending-invitation-store'
-import type {RedirectionData, SplashScreenProps} from './type-splash-screen'
+import type { RedirectionData, SplashScreenProps } from './type-splash-screen'
 import type { Store } from '../store/type-store'
 import { SMSPendingInvitationStatus } from '../sms-pending-invitation/type-sms-pending-invitation'
 import type {
   AriesOutOfBandInvite,
   InvitationPayload,
 } from '../invitation/type-invitation'
-import type {
-  SMSPendingInvitations,
-} from '../sms-pending-invitation/type-sms-pending-invitation'
+import type { SMSPendingInvitations } from '../sms-pending-invitation/type-sms-pending-invitation'
 import { deepLinkProcessed } from '../deep-link/deep-link-store'
 import { DEEP_LINK_STATUS } from '../deep-link/type-deep-link'
 import { getAllDid, getAllPublicDid } from '../store/store-selector'
 import { getPushNotificationAuthorizationStatus } from '../push-notification/components/push-notification-permission-screen'
-import { TOKEN_EXPIRED, TOKEN_UNRESOLVED } from '../expired-token/type-expired-token'
 import {
-  convertProprietaryInvitationToAppInvitation, convertShortProprietaryInvitationToAppInvitation,
-  isProprietaryInvitation, isShortProprietaryInvitation
-} from "../invitation/kinds/proprietary-connection-invitation";
+  TOKEN_EXPIRED,
+  TOKEN_UNRESOLVED,
+} from '../expired-token/type-expired-token'
+import {
+  convertProprietaryInvitationToAppInvitation,
+  convertShortProprietaryInvitationToAppInvitation,
+  isProprietaryInvitation,
+  isShortProprietaryInvitation,
+} from '../invitation/kinds/proprietary-connection-invitation'
 import {
   convertAriesInvitationToAppInvitation,
-  isAriesInvitation
-} from "../invitation/kinds/aries-connection-invitation";
+  isAriesInvitation,
+} from '../invitation/kinds/aries-connection-invitation'
 import {
   convertAriesOutOfBandInvitationToAppInvitation,
-  isAriesOutOfBandInvitation
-} from "../invitation/kinds/aries-out-of-band-invitation";
-import {getExistingConnection, prepareParamsForExistingConnectionRedirect} from "../invitation/invitation-helpers";
-import {getAttachedRequest, invitationReceived} from "../invitation/invitation-store";
-import {ID, TYPE} from "../common/type-common";
-import type {ClaimOfferPayload, CredentialOffer} from "../claim-offer/type-claim-offer";
-import {convertAriesCredentialOfferToCxsClaimOffer} from "../bridge/react-native-cxs/vcx-transformers";
-import {CLAIM_OFFER_STATUS} from "../claim-offer/type-claim-offer";
-import {convertClaimOfferPushPayloadToAppClaimOffer} from "../push-notification/push-notification-store";
-import type {AriesPresentationRequest, ProofRequestPayload} from "../proof-request/type-proof-request";
-import {PROOF_REQUEST_STATUS} from "../proof-request/type-proof-request";
-import {validateOutofbandProofRequestQrCode} from "../proof-request/proof-request-qr-code-reader";
-import {claimOfferReceived} from "../claim-offer/claim-offer-store";
-import {proofRequestReceived} from "../proof-request/proof-request-store";
-import {usePushNotifications} from "../external-imports";
-import {isLocalBackupsEnabled} from "../settings/settings-utils";
+  isAriesOutOfBandInvitation,
+} from '../invitation/kinds/aries-out-of-band-invitation'
+import {
+  getExistingConnection,
+  prepareParamsForExistingConnectionRedirect,
+} from '../invitation/invitation-helpers'
+import {
+  getAttachedRequest,
+  invitationReceived,
+} from '../invitation/invitation-store'
+import { ID, TYPE } from '../common/type-common'
+import type {
+  ClaimOfferPayload,
+  CredentialOffer,
+} from '../claim-offer/type-claim-offer'
+import { convertAriesCredentialOfferToCxsClaimOffer } from '../bridge/react-native-cxs/vcx-transformers'
+import { CLAIM_OFFER_STATUS } from '../claim-offer/type-claim-offer'
+import { convertClaimOfferPushPayloadToAppClaimOffer } from '../push-notification/push-notification-store'
+import type {
+  AriesPresentationRequest,
+  ProofRequestPayload,
+} from '../proof-request/type-proof-request'
+import { PROOF_REQUEST_STATUS } from '../proof-request/type-proof-request'
+import { validateOutofbandProofRequestQrCode } from '../proof-request/proof-request-qr-code-reader'
+import { claimOfferReceived } from '../claim-offer/claim-offer-store'
+import { proofRequestReceived } from '../proof-request/proof-request-store'
+import { usePushNotifications } from '../external-imports'
+import { isLocalBackupsEnabled } from '../settings/settings-utils'
 
 const isReceived = ({ payload, status }) => {
   return (
@@ -88,7 +103,7 @@ type SplashScreenState = {
 export class SplashScreenView extends PureComponent<
   SplashScreenProps,
   SplashScreenState
-  > {
+> {
   state = {
     isAuthorized: false,
     handledLinks: [],
@@ -101,7 +116,7 @@ export class SplashScreenView extends PureComponent<
     if (
       this.props.deepLink.isLoading === false &&
       JSON.stringify(nextDeepLinkTokens) !==
-      JSON.stringify(prevProps.deepLink.tokens)
+        JSON.stringify(prevProps.deepLink.tokens)
     ) {
       Object.keys(nextDeepLinkTokens).map((smsToken) => {
         if (
@@ -119,7 +134,7 @@ export class SplashScreenView extends PureComponent<
     if (props.lock.isAppLocked === false) {
       props.navigation.navigate(route, params)
     } else {
-      props.addPendingRedirection([{ routeName: route, params  }])
+      props.addPendingRedirection([{ routeName: route, params }])
     }
   }
 
@@ -136,7 +151,7 @@ export class SplashScreenView extends PureComponent<
       ({ invitationToken }) =>
         invitationToken &&
         this.props.deepLink.tokens[invitationToken].status !==
-        DEEP_LINK_STATUS.PROCESSED
+          DEEP_LINK_STATUS.PROCESSED
     )
     return unHandledSmsPendingInvitations
   }
@@ -151,11 +166,11 @@ export class SplashScreenView extends PureComponent<
       ({ error }) => error && error.code && error.code === TOKEN_EXPIRED_CODE
     )
     if (isAnyOneOfSmsPendingInvitationWasExpired) {
-      this.redirect(this.props, expiredTokenRoute, {reason: TOKEN_EXPIRED})
+      this.redirect(this.props, expiredTokenRoute, { reason: TOKEN_EXPIRED })
     } else if (isAnyOneOfSmsPendingInvitationHasError) {
       // * This condition is needed to avoid un wanted redirection to home screen if unHandledSmsPendingInvitations are empty
       // * or if we are in middle of other invitation fetching process
-      this.redirect(this.props, expiredTokenRoute, {reason: TOKEN_UNRESOLVED})
+      this.redirect(this.props, expiredTokenRoute, { reason: TOKEN_UNRESOLVED })
     }
     unHandledSmsPendingInvitations.map(({ error, invitationToken }) => {
       error ? this.props.deepLinkProcessed(invitationToken) : null
@@ -166,7 +181,7 @@ export class SplashScreenView extends PureComponent<
     // Check if the pending sms invitations have changed, or if there is unhandled sms invitations to proceed
     if (
       JSON.stringify(prevProps.smsPendingInvitation) !==
-      JSON.stringify(this.props.smsPendingInvitation) ||
+        JSON.stringify(this.props.smsPendingInvitation) ||
       typeof this.getUnHandledSmsPendingInvitations() !== 'undefined'
     ) {
       const unHandledSmsPendingInvitations = this.getUnHandledSmsPendingInvitations()
@@ -175,13 +190,15 @@ export class SplashScreenView extends PureComponent<
         isReceived
       )
 
-      const navigationFn = this.props.navigation.push || this.props.navigation.navigate
+      const navigationFn =
+        this.props.navigation.push || this.props.navigation.navigate
 
       const isAuthorized = await getPushNotificationAuthorizationStatus()
       this.setState({ isAuthorized })
       let pendingRedirectionList: any = []
       for (let { payload, invitationToken } of unseenSmsPendingInvitations) {
-        const handledLinks = this.state && this.state.handledLinks ? this.state.handledLinks : []
+        const handledLinks =
+          this.state && this.state.handledLinks ? this.state.handledLinks : []
         if (handledLinks.includes(invitationToken)) {
           continue
         }
@@ -191,7 +208,10 @@ export class SplashScreenView extends PureComponent<
           let invitation: InvitationPayload | null = null
           let redirectData: RedirectionData | null = null
 
-          const ariesV1Invite = isAriesInvitation(payload, JSON.stringify(payload))
+          const ariesV1Invite = isAriesInvitation(
+            payload,
+            JSON.stringify(payload)
+          )
           if (ariesV1Invite) {
             invitation = convertAriesInvitationToAppInvitation(ariesV1Invite)
             redirectData = this.checkExistingConnectionAndPrepareRedirectData(
@@ -202,7 +222,9 @@ export class SplashScreenView extends PureComponent<
 
           const ariesV1OutOfBandInvite = isAriesOutOfBandInvitation(payload)
           if (ariesV1OutOfBandInvite) {
-            invitation = convertAriesOutOfBandInvitationToAppInvitation(ariesV1OutOfBandInvite)
+            invitation = convertAriesOutOfBandInvitationToAppInvitation(
+              ariesV1OutOfBandInvite
+            )
             redirectData = await this.handleAriesOutOfBandInvitationAndPrepareRedirectData(
               invitation,
               invitationToken
@@ -211,16 +233,22 @@ export class SplashScreenView extends PureComponent<
 
           const proprietaryInvitation = isProprietaryInvitation(payload)
           if (proprietaryInvitation) {
-            invitation = convertProprietaryInvitationToAppInvitation(proprietaryInvitation)
+            invitation = convertProprietaryInvitationToAppInvitation(
+              proprietaryInvitation
+            )
             redirectData = this.checkExistingConnectionAndPrepareRedirectData(
               invitation,
               invitationToken
             )
           }
 
-          const shortProprietaryInvitation = isShortProprietaryInvitation(payload)
+          const shortProprietaryInvitation = isShortProprietaryInvitation(
+            payload
+          )
           if (shortProprietaryInvitation) {
-            invitation = convertShortProprietaryInvitationToAppInvitation(shortProprietaryInvitation)
+            invitation = convertShortProprietaryInvitationToAppInvitation(
+              shortProprietaryInvitation
+            )
             redirectData = this.checkExistingConnectionAndPrepareRedirectData(
               invitation,
               invitationToken
@@ -245,8 +273,8 @@ export class SplashScreenView extends PureComponent<
       }
 
       pendingRedirectionList.length !== 0 &&
-      this.props.lock.isAppLocked === true &&
-      this.props.addPendingRedirection(pendingRedirectionList)
+        this.props.lock.isAppLocked === true &&
+        this.props.addPendingRedirection(pendingRedirectionList)
 
       // * all error token links should be processed
     }
@@ -255,7 +283,7 @@ export class SplashScreenView extends PureComponent<
   checkExistingConnectionAndPrepareRedirectData = (
     invitation: InvitationPayload,
     invitationToken: string
-  ) : RedirectionData => {
+  ): RedirectionData => {
     const publicDID = invitation.senderDetail.publicDID
     const senderDID = invitation.senderDID
 
@@ -275,9 +303,12 @@ export class SplashScreenView extends PureComponent<
 
     if (existingConnection) {
       routeName = homeRoute // --> This needs to be homeRoute, because that is the name of the DrawerNavigator
-      params = prepareParamsForExistingConnectionRedirect(existingConnection, invitation)
+      params = prepareParamsForExistingConnectionRedirect(
+        existingConnection,
+        invitation
+      )
     } else {
-      this.props.invitationReceived({payload: invitation})
+      this.props.invitationReceived({ payload: invitation })
     }
 
     return this.prepareRedirectionParams(routeName, params)
@@ -290,13 +321,17 @@ export class SplashScreenView extends PureComponent<
     }
     if (routeName === homeRoute) {
       options = {
-        routeName : homeRoute,
+        routeName: homeRoute,
         params: {
           screen: homeDrawerRoute,
           params: params,
         },
       }
-    } else if (Platform.OS === 'ios'&& usePushNotifications && !this.state.isAuthorized) {
+    } else if (
+      Platform.OS === 'ios' &&
+      usePushNotifications &&
+      !this.state.isAuthorized
+    ) {
       options = {
         routeName: pushNotificationPermissionRoute,
         params,
@@ -306,7 +341,11 @@ export class SplashScreenView extends PureComponent<
   }
 
   prepareOoBRedirectionParams = (routeName: string, params: any) => {
-    if (Platform.OS === 'ios'&& usePushNotifications && !this.state.isAuthorized) {
+    if (
+      Platform.OS === 'ios' &&
+      usePushNotifications &&
+      !this.state.isAuthorized
+    ) {
       return {
         routeName: pushNotificationPermissionRoute,
         params: {
@@ -314,7 +353,7 @@ export class SplashScreenView extends PureComponent<
           navigatedFrom: homeRoute,
           intendedRoute: routeName,
           intendedPayload: params,
-        }
+        },
       }
     } else {
       return {
@@ -336,9 +375,9 @@ export class SplashScreenView extends PureComponent<
       params: {
         screen: homeDrawerRoute,
         params: {
-          senderDID: senderDID
+          senderDID: senderDID,
         },
-      }
+      },
     }
 
     // TODO: think of refactoring and reusing qr-code here
@@ -364,9 +403,7 @@ export class SplashScreenView extends PureComponent<
         invitation,
         invitationToken
       )
-    } else if (
-      invite['request~attach']?.length
-    ) {
+    } else if (invite['request~attach']?.length) {
       // Invite: Has `handshake_protocols` and has `request~attach`
       // Action:
       //  1. Create a new connection or reuse existing
@@ -384,10 +421,14 @@ export class SplashScreenView extends PureComponent<
 
       if (req[TYPE].endsWith('offer-credential')) {
         const credentialOffer = (req: CredentialOffer)
-        const claimOffer = convertAriesCredentialOfferToCxsClaimOffer(credentialOffer)
+        const claimOffer = convertAriesCredentialOfferToCxsClaimOffer(
+          credentialOffer
+        )
         const uid = credentialOffer[ID]
 
-        const existingCredential: ClaimOfferPayload = this.props.claimOffers[uid]
+        const existingCredential: ClaimOfferPayload = this.props.claimOffers[
+          uid
+        ]
 
         if (
           existingCredential &&
@@ -422,20 +463,19 @@ export class SplashScreenView extends PureComponent<
           }
         )
 
-        return this.prepareOoBRedirectionParams(
-          claimOfferRoute,
-          {
-            uid: credentialOffer[ID],
-            invitationPayload: invitation,
-            attachedRequest: req,
-            senderName: invitation.senderName,
-            backRedirectRoute: homeRoute,
-          })
+        return this.prepareOoBRedirectionParams(claimOfferRoute, {
+          uid: credentialOffer[ID],
+          invitationPayload: invitation,
+          attachedRequest: req,
+          senderName: invitation.senderName,
+          backRedirectRoute: homeRoute,
+        })
       } else if (req[TYPE].endsWith('request-presentation')) {
         const presentationRequest = (req: AriesPresentationRequest)
         const uid = presentationRequest[ID]
 
-        const existingProofRequest: ProofRequestPayload = this.props.proofRequests[uid]
+        const existingProofRequest: ProofRequestPayload = this.props
+          .proofRequests[uid]
 
         if (
           existingProofRequest &&
@@ -465,15 +505,13 @@ export class SplashScreenView extends PureComponent<
           hidden: true,
         })
 
-        return this.prepareOoBRedirectionParams(
-          proofRequestRoute,
-          {
-            uid,
-            invitationPayload: invitation,
-            attachedRequest: req,
-            senderName: invitation.senderName,
-            backRedirectRoute: homeRoute,
-          })
+        return this.prepareOoBRedirectionParams(proofRequestRoute, {
+          uid,
+          invitationPayload: invitation,
+          attachedRequest: req,
+          senderName: invitation.senderName,
+          backRedirectRoute: homeRoute,
+        })
       }
     } else {
       // Implement this case
@@ -571,15 +609,15 @@ export class SplashScreenView extends PureComponent<
 }
 
 const mapStateToProps = ({
-                           config,
-                           deepLink,
-                           lock,
-                           smsPendingInvitation,
-                           eula,
-                           connections,
-                           claimOffer,
-                           proofRequest,
-                         }: Store) => ({
+  config,
+  deepLink,
+  lock,
+  smsPendingInvitation,
+  eula,
+  connections,
+  claimOffer,
+  proofRequest,
+}: Store) => ({
   isInitialized: config.isInitialized,
   // DeepLink should be it's own component that will handle only deep link logic
   // in that way, we will be able to restrict re-render and re-run of code

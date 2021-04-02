@@ -1,13 +1,9 @@
 // @flow
 import React from 'react'
-import {
-  StyleSheet,
-  TouchableOpacity,
-  Text,
-} from 'react-native'
-import {colors, fontFamily, fontSizes} from "../../common/styles";
+import { StyleSheet, TouchableOpacity, Text } from 'react-native'
+import { colors, fontFamily, fontSizes } from '../../common/styles'
 import { verticalScale, moderateScale } from 'react-native-size-matters'
-import SvgCustomIcon from "../svg-custom-icon";
+import SvgCustomIcon from '../svg-custom-icon'
 
 type ButtonProps = {
   onPress: () => any,
@@ -20,13 +16,14 @@ type ButtonProps = {
 }
 
 export const Button = ({
-                         onPress,
-                         label,
-                         svgIcon,
-                         buttonStyle,
-                         labelStyle,
-                         disabled,
-                         testID}: ButtonProps) => {
+  onPress,
+  label,
+  svgIcon,
+  buttonStyle,
+  labelStyle,
+  disabled,
+  testID,
+}: ButtonProps) => {
   return (
     <TouchableOpacity
       disabled={disabled}
@@ -34,14 +31,8 @@ export const Button = ({
       style={buttonStyle || styles.button}
       testID={testID}
     >
-      <Text style={labelStyle || styles.label}>
-        {label}
-      </Text>
-      {svgIcon &&
-      <SvgCustomIcon
-        style={styles.icon}
-        name={svgIcon}
-      />}
+      <Text style={labelStyle || styles.label}>{label}</Text>
+      {svgIcon && <SvgCustomIcon style={styles.icon} name={svgIcon} />}
     </TouchableOpacity>
   )
 }
@@ -68,6 +59,6 @@ const styles = StyleSheet.create({
   },
   icon: {
     position: 'absolute',
-    right: 10
+    right: 10,
   },
 })

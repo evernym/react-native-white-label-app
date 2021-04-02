@@ -111,6 +111,8 @@ exports[`Restore screen should render properly and match the snapshot 1`] = `
             null,
             null,
             null,
+            null,
+            null,
             Object {
               "color": "#FFFFFF",
             },

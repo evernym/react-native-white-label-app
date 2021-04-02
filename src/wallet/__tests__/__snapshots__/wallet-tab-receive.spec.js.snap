@@ -59,6 +59,8 @@ exports[`<WalletTabReceive /> should render properly and match the snapshot 1`] 
                 null,
                 null,
                 null,
+                null,
+                null,
                 Object {
                   "letterSpacing": -0.38,
                   "lineHeight": 18,
@@ -102,6 +104,8 @@ exports[`<WalletTabReceive /> should render properly and match the snapshot 1`] 
                 Object {
                   "color": "#333333",
                 },
+                null,
+                null,
                 null,
                 null,
                 null,

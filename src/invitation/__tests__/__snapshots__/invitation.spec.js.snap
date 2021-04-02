@@ -86,6 +86,8 @@ exports[`<Invitation /> should match snapshot 1`] = `
                     null,
                     null,
                     null,
+                    null,
+                    null,
                     Object {
                       "lineHeight": 30,
                       "marginHorizontal": 30,
@@ -361,6 +363,8 @@ exports[`<Invitation /> should match snapshot 1`] = `
               null,
               null,
               null,
+              null,
+              null,
             ]
           }
         >
@@ -434,6 +438,8 @@ exports[`<Invitation /> should match snapshot 1`] = `
                 Object {
                   "color": "#d0021b",
                 },
+                null,
+                null,
                 null,
                 null,
                 null,

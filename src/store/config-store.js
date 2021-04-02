@@ -300,6 +300,10 @@ const initialState: ConfigStore = {
   isInitialized: false,
   messageDownloadStatus: GET_MESSAGES_SUCCESS,
   snackError: null,
+  isLoading: false,
+  isVcxPoolInitFailed: false,
+  isVcxInitFailed: false,
+  isGetMessagesFailed: false,
 }
 
 export const hydrated = () => ({
@@ -686,9 +690,13 @@ export function* initVcx(findingWallet?: any): Generator<*, *, *> {
         // if agency does not yet support creating cloud agent with token
         // then we try second option to try creating cloud agent without token
         const [
-          ,
+          registerWithoutTokenError,
           userOneTimeInfoWithoutToken,
         ] = yield* registerCloudAgentWithoutToken(agencyConfig)
+        if (registerWithoutTokenError || !userOneTimeInfoWithoutToken) {
+          yield put(vcxInitFail(ERROR_VCX_INIT_FAIL(registerWithoutTokenError)))
+          return
+        }
         userOneTimeInfo = userOneTimeInfoWithoutToken
       } else {
         userOneTimeInfo = userOneTimeInfoWithToken
@@ -701,7 +709,6 @@ export function* initVcx(findingWallet?: any): Generator<*, *, *> {
       captureError(e)
       yield call(vcxShutdown, false)
       yield put(vcxInitFail(ERROR_VCX_PROVISION_FAIL(e.message)))
-
       return
     }
   }
@@ -770,10 +777,8 @@ export function* connectToPool(): Generator<*, *, *> {
       yield call(delay, 10000)
     }
   }
-
   // we could not connect to the pool - raise error
   yield put(vcxInitPoolFail(ERROR_VCX_INIT_FAIL(lastInitException.message)))
-  yield call(showSnackError, ERROR_POOL_INIT_FAIL)
 }
 
 export const ERROR_POOL_INIT_FAIL =
@@ -1611,17 +1616,22 @@ export default function configReducer(
         ...state,
         vcxInitializationState: VCX_INIT_START,
         vcxInitializationError: null,
+        isLoading: true,
       }
     case VCX_INIT_SUCCESS:
       return {
         ...state,
         vcxInitializationState: VCX_INIT_SUCCESS,
+        isVcxInitFailed: false,
+        isLoading: false,
       }
     case VCX_INIT_FAIL:
       return {
         ...state,
         vcxInitializationState: VCX_INIT_FAIL,
         vcxInitializationError: action.error,
+        isVcxInitFailed: true,
+        isLoading: false,
       }
     case VCX_INIT_POOL_NOT_STARTED:
       return {
@@ -1634,24 +1644,41 @@ export default function configReducer(
         ...state,
         vcxPoolInitializationState: VCX_INIT_POOL_START,
         vcxPoolInitializationError: null,
+        isLoading: true,
       }
     case VCX_INIT_POOL_SUCCESS:
       return {
         ...state,
         vcxPoolInitializationState: VCX_INIT_POOL_SUCCESS,
+        isVcxPoolInitFailed: false,
+        isLoading: false,
       }
     case VCX_INIT_POOL_FAIL:
       return {
         ...state,
         vcxPoolInitializationState: VCX_INIT_POOL_FAIL,
         vcxPoolInitializationError: action.error,
+        isVcxPoolInitFailed: true,
+        isLoading: false,
+      }
+    case GET_UN_ACKNOWLEDGED_MESSAGES:
+      return {
+        ...state,
+        isLoading: true,
       }
     case GET_MESSAGES_FAIL:
+      return {
+        ...state,
+        isGetMessagesFailed: true,
+        isLoading: false,
+      }
     case GET_MESSAGES_LOADING:
     case GET_MESSAGES_SUCCESS:
       return {
         ...state,
         messageDownloadStatus: action.type,
+        isGetMessagesFailed: false,
+        isLoading: true,
       }
     case SHOW_SNACK_ERROR:
       return {

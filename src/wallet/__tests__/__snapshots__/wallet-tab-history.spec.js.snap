@@ -43,6 +43,8 @@ exports[`<WalletTabHistory /> should render no history view properly and match t
           null,
           null,
           null,
+          null,
+          null,
           Object {
             "color": "#9B9B9B",
             "marginVertical": 10,
@@ -241,6 +243,8 @@ exports[`<WalletTabHistory /> should render properly and match the snapshot 1`] 
                           null,
                           null,
                           null,
+                          null,
+                          null,
                           Object {
                             "color": "#6D6D6D",
                             "fontSize": 16,
@@ -279,6 +283,8 @@ exports[`<WalletTabHistory /> should render properly and match the snapshot 1`] 
                           null,
                           null,
                           null,
+                          null,
+                          null,
                           Object {
                             "color": "#9B9B9B",
                             "fontSize": 14,
@@ -303,6 +309,8 @@ exports[`<WalletTabHistory /> should render properly and match the snapshot 1`] 
                           "backgroundColor": "#ffffff",
                           "color": "#333333",
                         },
+                        null,
+                        null,
                         null,
                         null,
                         null,
@@ -359,6 +367,8 @@ exports[`<WalletTabHistory /> should render properly and match the snapshot 1`] 
                         null,
                         null,
                         null,
+                        null,
+                        null,
                         Object {
                           "color": "#EB9B2D",
                           "fontSize": 18,
@@ -385,6 +395,8 @@ exports[`<WalletTabHistory /> should render properly and match the snapshot 1`] 
                         Object {
                           "fontWeight": "bold",
                         },
+                        null,
+                        null,
                         null,
                         null,
                         null,
@@ -577,6 +589,8 @@ exports[`<WalletTabHistory /> should render properly and match the snapshot 1`] 
                           null,
                           null,
                           null,
+                          null,
+                          null,
                           Object {
                             "color": "#6D6D6D",
                             "fontSize": 16,
@@ -615,6 +629,8 @@ exports[`<WalletTabHistory /> should render properly and match the snapshot 1`] 
                           null,
                           null,
                           null,
+                          null,
+                          null,
                           Object {
                             "color": "#9B9B9B",
                             "fontSize": 14,
@@ -639,6 +655,8 @@ exports[`<WalletTabHistory /> should render properly and match the snapshot 1`] 
                           "backgroundColor": "#ffffff",
                           "color": "#333333",
                         },
+                        null,
+                        null,
                         null,
                         null,
                         null,
@@ -695,6 +713,8 @@ exports[`<WalletTabHistory /> should render properly and match the snapshot 1`] 
                         null,
                         null,
                         null,
+                        null,
+                        null,
                         Object {
                           "color": "#EB9B2D",
                           "fontSize": 18,
@@ -721,6 +741,8 @@ exports[`<WalletTabHistory /> should render properly and match the snapshot 1`] 
                         Object {
                           "fontWeight": "bold",
                         },
+                        null,
+                        null,
                         null,
                         null,
                         null,

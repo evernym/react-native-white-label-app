@@ -229,6 +229,8 @@ exports[`<LockPinCodeEnter /> redirect to home screen is app is locked and there
               },
               null,
               null,
+              null,
+              null,
               Object {
                 "fontSize": 16,
                 "marginBottom": "-1%",
@@ -597,6 +599,8 @@ exports[`<LockPinCodeEnter /> redirect to home screen is app is locked and there
               Object {
                 "backgroundColor": "transparent",
               },
+              null,
+              null,
               null,
               null,
               null,
@@ -850,6 +854,8 @@ exports[`<LockPinCodeEnter /> should render pin code box 1`] = `
               },
               null,
               null,
+              null,
+              null,
               Object {
                 "fontSize": 16,
                 "marginBottom": "-1%",
@@ -1218,6 +1224,8 @@ exports[`<LockPinCodeEnter /> should render pin code box 1`] = `
               Object {
                 "backgroundColor": "transparent",
               },
+              null,
+              null,
               null,
               null,
               null,
@@ -1471,6 +1479,8 @@ exports[`<LockPinCodeEnter /> should show 'Enter passcode' message if there is n
               },
               null,
               null,
+              null,
+              null,
               Object {
                 "fontSize": 16,
                 "marginBottom": "-1%",
@@ -1839,6 +1849,8 @@ exports[`<LockPinCodeEnter /> should show 'Enter passcode' message if there is n
               Object {
                 "backgroundColor": "transparent",
               },
+              null,
+              null,
               null,
               null,
               null,
@@ -2092,6 +2104,8 @@ exports[`<LockPinCodeEnter /> should show UNLOCKING_APP_WAIT_MESSAGE  1`] = `
               },
               null,
               null,
+              null,
+              null,
               Object {
                 "fontSize": 16,
                 "marginBottom": "-1%",
@@ -2460,6 +2474,8 @@ exports[`<LockPinCodeEnter /> should show UNLOCKING_APP_WAIT_MESSAGE  1`] = `
               Object {
                 "backgroundColor": "transparent",
               },
+              null,
+              null,
               null,
               null,
               null,

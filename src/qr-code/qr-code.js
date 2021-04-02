@@ -73,7 +73,7 @@ import {
   getExistingConnection,
   prepareParamsForExistingConnectionRedirect,
 } from '../invitation/invitation-helpers'
-import {usePushNotifications} from "../external-imports";
+import { usePushNotifications } from '../external-imports'
 
 export class QRCodeScannerScreen extends Component<
   QRCodeScannerScreenProps,
@@ -162,7 +162,7 @@ export class QRCodeScannerScreen extends Component<
 
     const isAuthorized = await getPushNotificationAuthorizationStatus()
 
-    if (Platform.OS === 'ios'&& usePushNotifications && !isAuthorized) {
+    if (Platform.OS === 'ios' && usePushNotifications && !isAuthorized) {
       navigationFn(pushNotificationPermissionRoute, {
         senderDID: invitation.payload.senderDID,
         navigatedFrom: qrCodeScannerTabRoute,
@@ -180,11 +180,9 @@ export class QRCodeScannerScreen extends Component<
 
   componentDidMount() {
     if (Platform.OS === 'android') {
-      PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.CAMERA
-      )
-        .then(permission => {
-          if (permission ==='never_ask_again' || permission ==='denied') {
+      PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.CAMERA).then(
+        (permission) => {
+          if (permission === 'never_ask_again' || permission === 'denied') {
             this.props.navigation.goBack()
             Alert.alert(
               'Camera Permission Needed',
@@ -198,7 +196,8 @@ export class QRCodeScannerScreen extends Component<
             this.setState({ permission: false })
           }
           this.setState({ permission: true })
-        })
+        }
+      )
     }
     // we don't use detox anymore
     // if (detox === 'yes') {
@@ -245,8 +244,8 @@ export class QRCodeScannerScreen extends Component<
     return (
       <Container dark collapsable={true}>
         {this.state.isCameraEnabled &&
-          this.props.navigation.isFocused() &&
-          (this.state.permission || Platform.OS === 'ios') ? (
+        this.props.navigation.isFocused() &&
+        (this.state.permission || Platform.OS === 'ios') ? (
           <QRScanner
             onShortProprietaryInvitationRead={
               this.onShortProprietaryInvitationRead

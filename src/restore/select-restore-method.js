@@ -17,23 +17,18 @@ import { saveFileToAppDirectory } from './restore-store'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import {
-  Container,
-  CustomView,
-  CustomText,
-  Icon,
-  Header,
-} from '../components'
-import DocumentPicker  from 'react-native-document-picker'
+import { Container, CustomView, CustomText, Icon, Header } from '../components'
+import DocumentPicker from 'react-native-document-picker'
 import styles from '../backup/styles'
 import { customLogger } from '../store/custom-logger'
 import { RestoreStatus } from './type-restore'
 import type { RestoreProps } from './type-restore'
-import {appName, startupBackgroundImage} from '../external-imports'
+import { appName, startupBackgroundImage } from '../external-imports'
 const download = require('../images/download3x.png')
-const restoreBackground = startupBackgroundImage || require('../images/home_background.png')
+const restoreBackground =
+  startupBackgroundImage || require('../images/home_background.png')
 const restoreBackgroundMode = startupBackgroundImage ? 'cover' : 'contain'
-const powerByLogo = require('../images/powered_by_logo.png');
+const powerByLogo = require('../images/powered_by_logo.png')
 
 export class SelectRestoreMethod extends Component<RestoreProps, void> {
   componentDidUpdate(prevProps: RestoreProps) {
@@ -58,13 +53,13 @@ export class SelectRestoreMethod extends Component<RestoreProps, void> {
         type: [
           Platform.OS === 'android' ? 'application/zip' : 'public.zip-archive',
         ],
-      });
+      })
       console.log(
         res.uri,
         res.type, // mime type
         res.name,
         res.size
-      );
+      )
       this.props.saveFileToAppDirectory(res)
     } catch (err) {
       customLogger.log('err', err)
@@ -80,7 +75,8 @@ export class SelectRestoreMethod extends Component<RestoreProps, void> {
       <ImageBackground
         source={restoreBackground}
         style={styles.background}
-        resizeMode={restoreBackgroundMode}>
+        resizeMode={restoreBackgroundMode}
+      >
         <View style={styles.wrapper}>
           <View style={styles.header}>
             <Header
@@ -159,11 +155,9 @@ export class SelectRestoreMethod extends Component<RestoreProps, void> {
               </CustomText>
             </CustomView>
           </Container>
-          {!startupBackgroundImage &&
-          <Image
-            source={powerByLogo}
-            style={styles.image}
-          />}
+          {!startupBackgroundImage && (
+            <Image source={powerByLogo} style={styles.image} />
+          )}
         </View>
       </ImageBackground>
     )

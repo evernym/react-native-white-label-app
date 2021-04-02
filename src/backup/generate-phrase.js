@@ -5,12 +5,7 @@ import { Image } from 'react-native'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import type { Store } from '../store/type-store'
-import {
-  Container,
-  CustomView,
-  CustomText,
-  Loader,
-} from '../components'
+import { Container, CustomView, CustomText, Loader } from '../components'
 import { fontSizes } from '../common/styles'
 import {
   genRecoveryPhraseRoute,
@@ -37,7 +32,7 @@ import styles, { chatBubbleTextOffset } from './styles'
 import { getBackupPassphrase, getBackupStatus } from '../store/store-selector'
 import { PASSPHRASE_GENERATION_ERROR } from '../common'
 import { withStatusBar } from '../components/status-bar/status-bar'
-import { Button } from "../components/buttons/button";
+import { Button } from '../components/buttons/button'
 
 const transparentBands = require('../images/transparentBands.png')
 const textBubble = require('../images/textBubble.png')

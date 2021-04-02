@@ -34,7 +34,7 @@ export const Header = (props: HeaderProps) => {
               width={moderateScale(32)}
               height={moderateScale(32)}
               style={styles.menuIcon}
-              {...props.color ? {color: props.color} : {}}
+              {...(props.color ? { color: props.color } : {})}
             />
           </TouchableOpacity>
         )}

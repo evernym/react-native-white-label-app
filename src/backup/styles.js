@@ -7,14 +7,11 @@ import {
   color,
   isBiggerThanMediumDevice,
   fontSizes as fonts,
-  fontFamily, colors,
+  fontFamily,
+  colors,
 } from '../common/styles/constant'
-import {
-  blackTransparent,
-  OFFSET_3X,
-  OFFSET_1X,
-} from '../common/styles'
-import { moderateScale, verticalScale } from 'react-native-size-matters';
+import { blackTransparent, OFFSET_3X, OFFSET_1X } from '../common/styles'
+import { moderateScale, verticalScale } from 'react-native-size-matters'
 
 const SPACE_FILLER = 50
 const amountSpacing = isBiggerThanShortDevice ? PADDING_VERTICAL * 2 : 0
@@ -305,9 +302,9 @@ const styles = StyleSheet.create({
     right: moderateScale(10),
   },
   header: {
-    flex:1,
+    flex: 1,
     marginTop: verticalScale(8),
-  }
+  },
 })
 
 const QUESTION_SENDER_LOGO_DIMENSION = 32

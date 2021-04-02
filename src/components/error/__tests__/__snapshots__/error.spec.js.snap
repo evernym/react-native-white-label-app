@@ -77,6 +77,8 @@ exports[`<Error /> should render errorText 1`] = `
         null,
         null,
         null,
+        null,
+        null,
         Object {
           "marginTop": "5%",
         },

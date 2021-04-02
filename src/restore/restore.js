@@ -1,12 +1,18 @@
 // @flow
 
 import React, { Component } from 'react'
-import { Image, StyleSheet, ImageBackground, View, Dimensions } from 'react-native'
+import {
+  Image,
+  StyleSheet,
+  ImageBackground,
+  View,
+  Dimensions,
+} from 'react-native'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { moderateScale } from 'react-native-size-matters';
+import { moderateScale } from 'react-native-size-matters'
 
-import {CustomView, CustomText} from '../components'
+import { CustomView, CustomText } from '../components'
 import {
   isBiggerThanShortDevice,
   venetianRed,
@@ -27,21 +33,22 @@ import type { RestoreProps } from './type-restore'
 import { saveFileToAppDirectory } from './restore-store'
 import type { Store } from '../store/type-store'
 import { RestoreStatus } from './type-restore'
-import { appName, startupBackgroundImage} from '../external-imports'
-import {Button} from "../components/buttons/button";
+import { appName, startupBackgroundImage } from '../external-imports'
+import { Button } from '../components/buttons/button'
 
-const {width} = Dimensions.get('screen');
+const { width } = Dimensions.get('screen')
 
-const restoreBackground = startupBackgroundImage || require('../images/home_background.png')
+const restoreBackground =
+  startupBackgroundImage || require('../images/home_background.png')
 const restoreBackgroundMode = startupBackgroundImage ? 'cover' : 'contain'
-const powerByLogo = require('../images/powered_by_logo.png');
+const powerByLogo = require('../images/powered_by_logo.png')
 
 export class RestoreStartScreen extends Component<RestoreProps, void> {
   restoreBackup = () => {
     if (this.props.isEulaAccepted) {
       this.props.navigation.navigate(selectRestoreMethodRoute)
     } else {
-      this.props.navigation.navigate(eulaRoute, {inRecovery: true })
+      this.props.navigation.navigate(eulaRoute, { inRecovery: true })
     }
   }
 
@@ -79,20 +86,20 @@ export class RestoreStartScreen extends Component<RestoreProps, void> {
       (this.props.restore.status === RestoreStatus.FILE_SAVE_ERROR &&
         this.props.restore.error)
 
-    const restoreButtonTitle = error ? 'Select A Different File' : 'Restore From A Backup'
+    const restoreButtonTitle = error
+      ? 'Select A Different File'
+      : 'Restore From A Backup'
 
     return (
       <ImageBackground
         source={restoreBackground}
         style={styles.background}
-        resizeMode={restoreBackgroundMode}>
+        resizeMode={restoreBackgroundMode}
+      >
         <View style={styles.wrapper}>
           <CustomView verticalSpace>
             {error ? (
-              <CustomView
-                center
-                doubleVerticalSpace
-              >
+              <CustomView center doubleVerticalSpace>
                 <CustomText
                   transparentBg
                   style={[styles.errorText]}
@@ -119,7 +126,8 @@ export class RestoreStartScreen extends Component<RestoreProps, void> {
                   medium
                   h4a
                 >
-                  You can restore from a backup or start with a brand new install.
+                  You can restore from a backup or start with a brand new
+                  install.
                 </CustomText>
                 <CustomText transparentBg style={[styles.textBox]} h4a medium>
                   How would you like to proceed?
@@ -130,7 +138,7 @@ export class RestoreStartScreen extends Component<RestoreProps, void> {
               <Button
                 buttonStyle={[
                   styles.customButton,
-                  error ? { backgroundColor: colors.red } : {}
+                  error ? { backgroundColor: colors.red } : {},
                 ]}
                 label={restoreButtonTitle}
                 onPress={this.restoreBackup}
@@ -146,11 +154,9 @@ export class RestoreStartScreen extends Component<RestoreProps, void> {
               />
             </View>
           </CustomView>
-          {!startupBackgroundImage &&
-          <Image
-            source={powerByLogo}
-            style={styles.image}
-          />}
+          {!startupBackgroundImage && (
+            <Image source={powerByLogo} style={styles.image} />
+          )}
         </View>
       </ImageBackground>
     )
@@ -224,7 +230,7 @@ const mapStateToProps = (state: Store) => {
   return {
     restore: state.restore,
     route: state.route.currentScreen,
-    isEulaAccepted: state.eula && state.eula.isEulaAccept
+    isEulaAccepted: state.eula && state.eula.isEulaAccept,
   }
 }
 

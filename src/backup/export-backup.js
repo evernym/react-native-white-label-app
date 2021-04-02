@@ -18,14 +18,9 @@ import {
   backupCompleteRoute,
   backupErrorRoute,
 } from '../common'
-import {
-  colors,
-  isBiggerThanVeryShortDevice,
-} from '../common/styles'
+import { colors, isBiggerThanVeryShortDevice } from '../common/styles'
 import { color } from '../common/styles/constant'
-import type {
-  ExportBackupFileProps,
-} from './type-backup'
+import type { ExportBackupFileProps } from './type-backup'
 import styles from './styles'
 import { exportBackup } from './backup-store'
 import type { Store } from '../store/type-store'
@@ -37,7 +32,7 @@ import { BACKUP_STORE_STATUS } from './type-backup'
 import { getBackupStatus, getBackupWalletPath } from '../store/store-selector'
 import { withStatusBar } from '../components/status-bar/status-bar'
 import { appName } from '../external-imports'
-import {Button} from "../components/buttons/button";
+import { Button } from '../components/buttons/button'
 
 const transparentBands = require('../images/transparentBands.png')
 const encryptedFile = require('../images/encryptedFile.png')
