@@ -1,6 +1,27 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<QRScannerScreen /> match snapshot when camera is not authorized 1`] = `
+exports[`<QRScannerScreen /> match snapshot when camera is not authorized for android platform 1`] = `
+<View
+  collapsable={true}
+  dark={true}
+  style={
+    Object {
+      "backgroundColor": "#000000",
+      "flex": 1,
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "flex": 1,
+      }
+    }
+  />
+</View>
+`;
+
+exports[`<QRScannerScreen /> match snapshot when camera is not authorized for ios platform 1`] = `
 <View
   collapsable={true}
   dark={true}
@@ -56,7 +77,28 @@ Object {
 }
 `;
 
-exports[`<QRScannerScreen /> should match snapshot 1`] = `
+exports[`<QRScannerScreen /> should match snapshot for android platform 1`] = `
+<View
+  collapsable={true}
+  dark={true}
+  style={
+    Object {
+      "backgroundColor": "#000000",
+      "flex": 1,
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "flex": 1,
+      }
+    }
+  />
+</View>
+`;
+
+exports[`<QRScannerScreen /> should match snapshot for ios platform 1`] = `
 <View
   collapsable={true}
   dark={true}

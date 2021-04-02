@@ -1,7 +1,7 @@
 // @flow
 import React from 'react'
 import 'react-native'
-import { Alert } from 'react-native'
+import { Alert, Platform } from 'react-native'
 import renderer from 'react-test-renderer'
 
 import {
@@ -45,17 +45,50 @@ describe('<QRScannerScreen />', () => {
     return { props, component, instance }
   }
 
-  it('should match snapshot', () => {
+  it('should match snapshot for ios platform', () => {
+    const existingOS = Platform.OS
+    Platform.OS = 'ios'
+
     const { instance, component } = setup()
     instance.setState({ isCameraEnabled: true })
-
     let tree = component.toJSON()
     expect(tree).toMatchSnapshot()
+
+    Platform.OS = existingOS
   })
 
-  it('match snapshot when camera is not authorized', () => {
+  it('should match snapshot for android platform', () => {
+    const existingOS = Platform.OS
+    Platform.OS = 'android'
+
+    const { instance, component } = setup()
+    instance.setState({ isCameraEnabled: true })
+    instance.setState({ permission: true })
+    let tree = component.toJSON()
+    expect(tree).toMatchSnapshot()
+
+    Platform.OS = existingOS
+  })
+
+  it('match snapshot when camera is not authorized for ios platform', () => {
+    const existingOS = Platform.OS
+    Platform.OS = 'ios'
+
     const { component } = setup()
     expect(component.toJSON()).toMatchSnapshot()
+    
+    Platform.OS = existingOS
+  })
+
+  it('match snapshot when camera is not authorized for android platform', () => {
+    const existingOS = Platform.OS
+    Platform.OS = 'android'
+
+    const { component, instance } = setup()
+    instance.setState({ permission: true })
+    expect(component.toJSON()).toMatchSnapshot()
+    
+    Platform.OS = existingOS
   })
 
   it('should convert qr code to invitation', () => {
