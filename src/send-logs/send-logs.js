@@ -89,11 +89,13 @@ export class SendLogs extends Component<SendLogsProps, any> {
         recipients: [sendLogsEmail || 'cmsupport@evernym.com'],
         body: '',
         isHTML: false,
-        attachment: {
-          path: logFile, // The absolute path of the file from which to read data.
-          type: 'text', // Mime Type: jpg, png, doc, ppt, html, pdf, csv, vcard, json, zip, text, mp3, wav, aiff, flac, ogg, xls
-          name: logFile, // Optional: Custom filename for attachment
-        },
+        attachments: [
+          {
+            path: logFile, // The absolute path of the file from which to read data.
+            type: 'text', // Mime Type: jpg, png, doc, ppt, html, pdf, csv, vcard, json, zip, text, mp3, wav, aiff, flac, ogg, xls
+            name: logFile, // Optional: Custom filename for attachment
+          },
+        ],
       },
       (error, event) => {
         const sentButton = {
