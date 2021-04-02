@@ -63,165 +63,6 @@ exports[`Restore screen should render properly and match the snapshot 1`] = `
             "paddingVertical": 16,
           }
         }
-        style={
-          Array [
-            Object {
-              "marginTop": "20%",
-              "zIndex": -1,
-            },
-          ]
-        }
-      />
-    </View>
-  </View>
-  <View
-    style={
-      Object {
-        "paddingVertical": 8,
-      }
-    }
-    verticalSpace={true}
-  >
-    <View
-      center={true}
-      doubleVerticalSpace={true}
-      style={
-        Object {
-          "alignItems": "center",
-          "justifyContent": "center",
-          "marginBottom": "10%",
-          "paddingVertical": 16,
-        }
-      }
-    >
-      <Text
-        allowFontScaling={false}
-        style={
-          Array [
-            Object {
-              "fontSize": 17,
-            },
-            Object {
-              "fontFamily": "System",
-            },
-            Object {
-              "backgroundColor": "#333333",
-              "color": "#ffffff",
-            },
-            Object {
-              "fontWeight": "500",
-            },
-            Object {
-              "textAlign": "center",
-            },
-            Object {
-              "backgroundColor": "transparent",
-            },
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            Object {
-              "marginBottom": "6%",
-            },
-            Object {
-              "color": "#717171",
-            },
-          ]
-        }
-      >
-        Thanks for installing 
-        AppName
-        .
-      </Text>
-      <Text
-        allowFontScaling={false}
-        style={
-          Array [
-            Object {
-              "fontSize": 17,
-            },
-            Object {
-              "fontFamily": "System",
-            },
-            Object {
-              "backgroundColor": "#333333",
-              "color": "#ffffff",
-            },
-            Object {
-              "fontWeight": "500",
-            },
-            Object {
-              "textAlign": "center",
-            },
-            Object {
-              "backgroundColor": "transparent",
-            },
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            Object {
-              "marginBottom": "6%",
-              "marginLeft": "6%",
-              "marginRight": "6%",
-            },
-            Object {
-              "color": "#717171",
-            },
-          ]
-        }
-      >
-        You can restore from a backup or start with a brand new install.
-      </Text>
-      <Text
-        allowFontScaling={false}
-        style={
-          Array [
-            Object {
-              "fontSize": 17,
-            },
-            Object {
-              "fontFamily": "System",
-            },
-            Object {
-              "backgroundColor": "#333333",
-              "color": "#ffffff",
-            },
-            Object {
-              "fontWeight": "500",
-            },
-            null,
-            Object {
-              "backgroundColor": "transparent",
-            },
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            Object {
-              "color": "#717171",
-            },
-          ]
-        }
       >
         <Text
           allowFontScaling={false}
@@ -246,6 +87,8 @@ exports[`Restore screen should render properly and match the snapshot 1`] = `
               Object {
                 "backgroundColor": "transparent",
               },
+              null,
+              null,
               null,
               null,
               null,
@@ -288,6 +131,8 @@ exports[`Restore screen should render properly and match the snapshot 1`] = `
               Object {
                 "backgroundColor": "transparent",
               },
+              null,
+              null,
               null,
               null,
               null,
