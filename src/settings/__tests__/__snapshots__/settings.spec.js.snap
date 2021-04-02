@@ -1116,7 +1116,7 @@ exports[`user settings screen should render properly and snapshot should match i
                                         }
                                         testID="listItemTitle"
                                       >
-                                        View/Change your AppName passcode
+                                        Change your AppName passcode
                                       </Text>
                                     </View>
                                     <View

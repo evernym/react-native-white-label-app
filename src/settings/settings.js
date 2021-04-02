@@ -489,7 +489,7 @@ export class Settings extends Component<SettingsProps, SettingsState> {
       },
       [PASSCODE]: {
         title: 'Passcode',
-        subtitle: `View/Change your ${appName} passcode`,
+        subtitle: `Change your ${appName} passcode`,
         avatar: <SvgCustomIcon
           name="Passcode"
           fill={colors.gray2}
