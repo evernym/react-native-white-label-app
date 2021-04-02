@@ -1,12 +1,11 @@
 // @flow
 import { put, call } from 'redux-saga/effects'
-import { alreadyInstalledNotFound, deleteDeviceSpecificData, hydrate } from '../hydration-store'
+import { deleteDeviceSpecificData, hydrate } from '../hydration-store'
 import { alreadyInstalledAction, hydrated, initialized } from '../config-store'
 import { safeGet, secureGet } from "../../services/storage";
 import { IS_ALREADY_INSTALLED } from "../../common";
 import { IN_RECOVERY } from "../../lock/type-lock";
 import { lockEnable } from "../../lock/lock-store";
-import { simpleInit } from "../../bridge/react-native-cxs/RNCxs";
 
 describe('hydration store should update dependant store correctly', () => {
   // TODO Write this test in proper way and check for all generators and values

@@ -6,15 +6,16 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { moderateScale } from 'react-native-size-matters';
 
-import {CustomView, CustomText, CustomButton} from '../components'
+import {CustomView, CustomText} from '../components'
 import {
   isBiggerThanShortDevice,
   venetianRed,
   colors,
   fontSizes,
   OFFSET_2X,
-} from '../common/styles/constant'
+} from '../common/styles'
 import {
+  eulaRoute,
   lockPinSetupRoute,
   restorePassphraseRoute,
   restoreRoute,
@@ -37,7 +38,11 @@ const powerByLogo = require('../images/powered_by_logo.png');
 
 export class RestoreStartScreen extends Component<RestoreProps, void> {
   restoreBackup = () => {
-    this.props.navigation.navigate(selectRestoreMethodRoute)
+    if (this.props.isEulaAccepted) {
+      this.props.navigation.navigate(selectRestoreMethodRoute)
+    } else {
+      this.props.navigation.navigate(eulaRoute, {inRecovery: true })
+    }
   }
 
   startFresh = () => {
@@ -77,93 +82,82 @@ export class RestoreStartScreen extends Component<RestoreProps, void> {
     const restoreButtonTitle = error ? 'Select A Different File' : 'Restore From A Backup'
 
     return (
-      <View
-        style={styles.restoreContainer}
-      >
-        <ImageBackground
-          source={restoreBackground}
-          style={styles.background}
-          resizeMode={restoreBackgroundMode}>
-          <View style={styles.wrapper}>
-            <CustomView verticalSpace>
-              {error ? (
-                <CustomView
+      <ImageBackground
+        source={restoreBackground}
+        style={styles.background}
+        resizeMode={restoreBackgroundMode}>
+        <View style={styles.wrapper}>
+          <CustomView verticalSpace>
+            {error ? (
+              <CustomView
+                center
+                doubleVerticalSpace
+              >
+                <CustomText
+                  transparentBg
+                  style={[styles.errorText]}
+                  medium
+                  h4a
                   center
-                  doubleVerticalSpace
                 >
-                  <CustomText
-                    transparentBg
-                    style={[styles.errorText]}
-                    medium
-                    h4a
-                    center
-                  >
-                    Either your passphrase was incorrect or the backup file you
-                    chose is corrupt or not a {appName} backup file. Please try
-                    again or start fresh.
-                  </CustomText>
-                </CustomView>
-              ) : null}
-              {!error ? (
-                <CustomView
+                  Either your passphrase was incorrect or the backup file you
+                  chose is corrupt or not a {appName} backup file. Please try
+                  again or start fresh.
+                </CustomText>
+              </CustomView>
+            ) : null}
+            {!error ? (
+              <CustomView
+                center
+                doubleVerticalSpace
+                style={[styles.textContainer]}
+              >
+                <CustomText
                   center
-                  doubleVerticalSpace
-                  style={[styles.textContainer]}
+                  transparentBg
+                  style={[styles.marginHorizontal, styles.textBox]}
+                  medium
+                  h4a
                 >
-                  <CustomText
-                    center
-                    transparentBg
-                    style={[styles.marginHorizontal, styles.textBox]}
-                    medium
-                    h4a
-                  >
-                    You can restore from a backup or start with a brand new install.
-                  </CustomText>
-                  <CustomText transparentBg style={[styles.textBox]} h4a medium>
-                    How would you like to proceed?
-                  </CustomText>
-                </CustomView>
-              ) : null}
-              <View style={styles.buttonContainer}>
-                <Button
-                  buttonStyle={[
-                    styles.customButton,
-                    error ? { backgroundColor: colors.red } : {}
-                  ]}
-                  label={restoreButtonTitle}
-                  onPress={this.restoreBackup}
-                  testID={'restore-from-backup'}
-                  labelStyle={styles.buttonText}
-                />
-                <Button
-                  buttonStyle={[styles.customButton]}
-                  label={'Start Fresh'}
-                  onPress={this.startFresh}
-                  testID={'start-fresh'}
-                  labelStyle={styles.buttonText}
-                />
-              </View>
-            </CustomView>
-            {!startupBackgroundImage &&
-            <Image
-              source={powerByLogo}
-              style={styles.image}
-            />}
-          </View>
-        </ImageBackground>
-      </View>
+                  You can restore from a backup or start with a brand new install.
+                </CustomText>
+                <CustomText transparentBg style={[styles.textBox]} h4a medium>
+                  How would you like to proceed?
+                </CustomText>
+              </CustomView>
+            ) : null}
+            <View style={styles.buttonContainer}>
+              <Button
+                buttonStyle={[
+                  styles.customButton,
+                  error ? { backgroundColor: colors.red } : {}
+                ]}
+                label={restoreButtonTitle}
+                onPress={this.restoreBackup}
+                testID={'restore-from-backup'}
+                labelStyle={styles.buttonText}
+              />
+              <Button
+                buttonStyle={[styles.customButton]}
+                label={'Start Fresh'}
+                onPress={this.startFresh}
+                testID={'start-fresh'}
+                labelStyle={styles.buttonText}
+              />
+            </View>
+          </CustomView>
+          {!startupBackgroundImage &&
+          <Image
+            source={powerByLogo}
+            style={styles.image}
+          />}
+        </View>
+      </ImageBackground>
     )
   }
 }
 
 const styles = StyleSheet.create({
-  restoreContainer: {
-    width: '100%',
-    height: '100%',
-    justifyContent: 'center',
-    flexDirection: 'row',
-    backgroundColor: colors.white,
-  },
   background: {
     width: '100%',
     height: '100%',
@@ -202,15 +196,8 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     fontSize: fontSizes.size3,
   },
-  errorImageContainer: {
-    marginTop: '5%',
-    zIndex: -1,
-  },
   textContainer: {
     marginBottom: '10%',
-  },
-  secondText: {
-    marginBottom: '6%',
   },
   errorText: {
     color: colors.red,
@@ -237,6 +224,7 @@ const mapStateToProps = (state: Store) => {
   return {
     restore: state.restore,
     route: state.route.currentScreen,
+    isEulaAccepted: state.eula && state.eula.isEulaAccept
   }
 }
 

@@ -209,10 +209,6 @@ export function* hydrate(): any {
     let inRecovery = yield call(safeGet, IN_RECOVERY)
     inRecovery = inRecovery === 'true'
 
-    if (inRecovery) {
-      yield call(simpleInit)
-    }
-
     if (isAlreadyInstalled !== 'true' && !inRecovery) {
       try {
         yield* confirmFirstInstallationWithWallet()
@@ -226,7 +222,7 @@ export function* hydrate(): any {
     try {
       // check if privacy policy was accepted or not
       let isEulaAccept = yield call(safeGet, STORAGE_KEY_EULA_ACCEPTANCE)
-      if (!isEulaAccept && !inRecovery) {
+      if (!isEulaAccept) {
         // if eula was not accepted, then we know that lock was never set
         // so no need to go any further
         yield* alreadyInstalledNotFound()
@@ -241,7 +237,7 @@ export function* hydrate(): any {
         call(safeGet, TOUCH_ID_STORAGE_KEY),
       ])
 
-      if (isLockEnabled !== 'true' && !inRecovery) {
+      if (isLockEnabled !== 'true') {
         yield* alreadyInstalledNotFound()
         // do not move forward and end here
         return
@@ -258,6 +254,11 @@ export function* hydrate(): any {
       } else {
         yield put(disableTouchIdAction())
       }
+
+      if (inRecovery) {
+        yield call(simpleInit)
+      }
+
       // Splash screen does redirection on the basis of three flags
       // 1. if app is opened for first time or not
       // 2. If user has already accepted privacy policy or not

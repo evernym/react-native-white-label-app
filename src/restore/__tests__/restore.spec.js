@@ -16,6 +16,7 @@ describe('Restore screen', () => {
       updateStatusBarTheme: jest.fn(),
       saveFileToAppDirectory: jest.fn(),
       isCloudBackupEnabled: false,
+      isEulaAccepted: false,
     }
   }
 

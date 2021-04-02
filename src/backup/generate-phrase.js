@@ -5,13 +5,10 @@ import { Image } from 'react-native'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import type { Store } from '../store/type-store'
-import type { ReactNavigation } from '../common/type-common'
 import {
   Container,
   CustomView,
   CustomText,
-  Icon,
-  CustomHeader,
   Loader,
 } from '../components'
 import { fontSizes } from '../common/styles'
@@ -20,7 +17,7 @@ import {
   verifyRecoveryPhraseRoute,
   settingsRoute,
 } from '../common'
-import { color } from '../common/styles/constant'
+import { color } from '../common/styles'
 import type {
   GenerateRecoveryPhraseProps,
   GenerateRecoveryPhraseState,
@@ -32,7 +29,6 @@ import type {
 import { BACKUP_STORE_STATUS } from './type-backup'
 import { generateRecoveryPhrase } from './backup-store'
 import {
-  RECOVERY_PHRASE_CLOSE_TEST_ID,
   SHOW_RECOVERY_PHRASE_TEST_ID,
   SUBMIT_RECOVERY_PHRASE_TEST_ID,
   SUBMIT_RECOVERY_PHRASE_BUTTON_TITLE,
@@ -41,9 +37,8 @@ import styles, { chatBubbleTextOffset } from './styles'
 import { getBackupPassphrase, getBackupStatus } from '../store/store-selector'
 import { PASSPHRASE_GENERATION_ERROR } from '../common'
 import { withStatusBar } from '../components/status-bar/status-bar'
-import {Button} from "../components/buttons/button";
+import { Button } from "../components/buttons/button";
 
-const closeImage = require('../images/iconClose.png')
 const transparentBands = require('../images/transparentBands.png')
 const textBubble = require('../images/textBubble.png')
 
@@ -141,30 +136,6 @@ export class GenerateRecoveryPhrase extends Component<
     } = this.props
     goBack(null)
   }
-
-  static navigationOptions = ({ navigation }: ReactNavigation) => ({
-    header: (
-      <CustomHeader
-        flatHeader
-        largeHeader
-        backgroundColor={color.bg.eleventh.color}
-      >
-        <CustomView />
-
-        <CustomView style={[styles.headerSpacer]}>
-          <Icon
-            medium
-            onPress={() => navigation.navigate(settingsRoute)}
-            testID={RECOVERY_PHRASE_CLOSE_TEST_ID}
-            iconStyle={[styles.headerIcon]}
-            src={closeImage}
-          />
-        </CustomView>
-      </CustomHeader>
-    ),
-    gestureEnabled: false,
-    headerShown: true,
-  })
 
   //TODO fix refactor UI
   //first the image should be used as a ImageBackground component

@@ -12,7 +12,6 @@ import {
   lockEnterPinRoute,
   lockPinSetupRoute,
   homeRoute,
-  eulaRoute,
 } from '../common'
 import { clearPendingRedirect } from './lock-store'
 import {
@@ -24,7 +23,6 @@ import { UNLOCKING_APP_WAIT_MESSAGE } from '../common/message-constants'
 import { unlockApp } from './lock-store'
 import { View, Keyboard, Platform, StyleSheet } from 'react-native'
 import { Header } from '../components'
-import {eulaScreen} from "../eula/eula";
 
 export class LockEnterPin extends PureComponent<
   LockEnterPinProps,
@@ -124,10 +122,7 @@ export class LockEnterPin extends PureComponent<
   redirect = (props: LockEnterPinProps) => {
     //This will set isAppLocked to false
     props.unlockApp()
-    if (typeof this.props.inRecovery === "boolean" && this.props.inRecovery) {
-      // If user do restore of backup he has to accept eula again
-      this.props.navigation.navigate(eulaRoute)
-    } else if (props.pendingRedirection) {
+    if (props.pendingRedirection) {
       props.pendingRedirection.map((pendingRedirection) => {
         props.navigation.navigate(
           pendingRedirection.routeName,

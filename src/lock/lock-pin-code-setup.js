@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import {
-  eulaRoute,
+  homeRoute,
   lockPinSetupRoute,
   lockSelectionRoute,
   lockSetupSuccessRoute,
@@ -134,7 +134,7 @@ export function LockPinSetup(props: ReactNavigation) {
           changePin: true,
         })
       } else if (inRecovery === 'true') {
-        navigation.navigate(eulaRoute)
+        navigation.navigate(homeRoute)
       } else {
         navigation.navigate(lockSelectionRoute)
       }

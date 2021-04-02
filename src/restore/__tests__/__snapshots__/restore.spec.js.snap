@@ -2,9 +2,9 @@
 
 exports[`Restore screen should render properly and match the snapshot 1`] = `
 <View
+  accessibilityIgnoresInvertColors={true}
   style={
     Object {
-      "backgroundColor": "#FFFFFF",
       "flexDirection": "row",
       "height": "100%",
       "justifyContent": "center",
@@ -12,269 +12,257 @@ exports[`Restore screen should render properly and match the snapshot 1`] = `
     }
   }
 >
+  <Image
+    resizeMode="contain"
+    source={
+      Object {
+        "default": "RelativeImageStub",
+      }
+    }
+    style={
+      Array [
+        Object {
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        },
+        Object {
+          "height": "100%",
+          "width": "100%",
+        },
+        undefined,
+      ]
+    }
+  />
   <View
-    accessibilityIgnoresInvertColors={true}
     style={
       Object {
-        "flexDirection": "row",
-        "height": "100%",
-        "justifyContent": "center",
-        "width": "100%",
+        "flexDirection": "column",
+        "justifyContent": "flex-end",
       }
     }
   >
+    <View
+      style={
+        Object {
+          "paddingVertical": 8,
+        }
+      }
+      verticalSpace={true}
+    >
+      <View
+        center={true}
+        doubleVerticalSpace={true}
+        style={
+          Object {
+            "alignItems": "center",
+            "justifyContent": "center",
+            "marginBottom": "10%",
+            "paddingVertical": 16,
+          }
+        }
+      >
+        <Text
+          allowFontScaling={false}
+          style={
+            Array [
+              Object {
+                "fontSize": 17,
+              },
+              Object {
+                "fontFamily": "System",
+              },
+              Object {
+                "backgroundColor": "#333333",
+                "color": "#ffffff",
+              },
+              Object {
+                "fontWeight": "500",
+              },
+              Object {
+                "textAlign": "center",
+              },
+              Object {
+                "backgroundColor": "transparent",
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              Object {
+                "marginBottom": "6%",
+                "marginLeft": "6%",
+                "marginRight": "6%",
+              },
+              Object {
+                "color": "#717171",
+              },
+            ]
+          }
+        >
+          You can restore from a backup or start with a brand new install.
+        </Text>
+        <Text
+          allowFontScaling={false}
+          style={
+            Array [
+              Object {
+                "fontSize": 17,
+              },
+              Object {
+                "fontFamily": "System",
+              },
+              Object {
+                "backgroundColor": "#333333",
+                "color": "#ffffff",
+              },
+              Object {
+                "fontWeight": "500",
+              },
+              null,
+              Object {
+                "backgroundColor": "transparent",
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              Object {
+                "color": "#717171",
+              },
+            ]
+          }
+        >
+          How would you like to proceed?
+        </Text>
+      </View>
+      <View
+        style={
+          Object {
+            "alignItems": "center",
+            "justifyContent": "center",
+            "marginBottom": 50,
+          }
+        }
+      >
+        <View
+          accessible={true}
+          focusable={true}
+          isTVSelectable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "#86B93B",
+              "borderRadius": 5,
+              "elevation": 7,
+              "flexDirection": "row",
+              "height": 48,
+              "justifyContent": "center",
+              "marginBottom": 10,
+              "opacity": 1,
+              "shadowColor": "#777777",
+              "shadowOffset": Object {
+                "height": 1,
+                "width": 1,
+              },
+              "shadowOpacity": 0.3,
+              "shadowRadius": 5,
+              "width": 280,
+            }
+          }
+          testID="restore-from-backup"
+        >
+          <Text
+            style={
+              Object {
+                "color": "#FFFFFF",
+                "fontSize": 19,
+                "fontWeight": "600",
+              }
+            }
+          >
+            Restore From A Backup
+          </Text>
+        </View>
+        <View
+          accessible={true}
+          focusable={true}
+          isTVSelectable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "#86B93B",
+              "borderRadius": 5,
+              "elevation": 7,
+              "flexDirection": "row",
+              "height": 48,
+              "justifyContent": "center",
+              "marginBottom": 10,
+              "opacity": 1,
+              "shadowColor": "#777777",
+              "shadowOffset": Object {
+                "height": 1,
+                "width": 1,
+              },
+              "shadowOpacity": 0.3,
+              "shadowRadius": 5,
+              "width": 280,
+            }
+          }
+          testID="start-fresh"
+        >
+          <Text
+            style={
+              Object {
+                "color": "#FFFFFF",
+                "fontSize": 19,
+                "fontWeight": "600",
+              }
+            }
+          >
+            Start Fresh
+          </Text>
+        </View>
+      </View>
+    </View>
     <Image
-      resizeMode="contain"
       source={
         Object {
           "default": "RelativeImageStub",
         }
       }
       style={
-        Array [
-          Object {
-            "bottom": 0,
-            "left": 0,
-            "position": "absolute",
-            "right": 0,
-            "top": 0,
-          },
-          Object {
-            "height": "100%",
-            "width": "100%",
-          },
-          undefined,
-        ]
+        Object {
+          "bottom": 30.628571428571426,
+          "position": "absolute",
+          "right": 9.571428571428571,
+        }
       }
     />
-    <View
-      style={
-        Object {
-          "flexDirection": "column",
-          "justifyContent": "flex-end",
-        }
-      }
-    >
-      <View
-        style={
-          Object {
-            "paddingVertical": 8,
-          }
-        }
-        verticalSpace={true}
-      >
-        <View
-          center={true}
-          doubleVerticalSpace={true}
-          style={
-            Object {
-              "alignItems": "center",
-              "justifyContent": "center",
-              "marginBottom": "10%",
-              "paddingVertical": 16,
-            }
-          }
-        >
-          <Text
-            allowFontScaling={false}
-            style={
-              Array [
-                Object {
-                  "fontSize": 17,
-                },
-                Object {
-                  "fontFamily": "System",
-                },
-                Object {
-                  "backgroundColor": "#333333",
-                  "color": "#ffffff",
-                },
-                Object {
-                  "fontWeight": "500",
-                },
-                Object {
-                  "textAlign": "center",
-                },
-                Object {
-                  "backgroundColor": "transparent",
-                },
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                Object {
-                  "marginBottom": "6%",
-                  "marginLeft": "6%",
-                  "marginRight": "6%",
-                },
-                Object {
-                  "color": "#717171",
-                },
-              ]
-            }
-          >
-            You can restore from a backup or start with a brand new install.
-          </Text>
-          <Text
-            allowFontScaling={false}
-            style={
-              Array [
-                Object {
-                  "fontSize": 17,
-                },
-                Object {
-                  "fontFamily": "System",
-                },
-                Object {
-                  "backgroundColor": "#333333",
-                  "color": "#ffffff",
-                },
-                Object {
-                  "fontWeight": "500",
-                },
-                null,
-                Object {
-                  "backgroundColor": "transparent",
-                },
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                Object {
-                  "color": "#717171",
-                },
-              ]
-            }
-          >
-            How would you like to proceed?
-          </Text>
-        </View>
-        <View
-          style={
-            Object {
-              "alignItems": "center",
-              "justifyContent": "center",
-              "marginBottom": 50,
-            }
-          }
-        >
-          <View
-            accessible={true}
-            focusable={true}
-            isTVSelectable={true}
-            onClick={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
-            style={
-              Object {
-                "alignItems": "center",
-                "backgroundColor": "#86B93B",
-                "borderRadius": 5,
-                "elevation": 7,
-                "flexDirection": "row",
-                "height": 48,
-                "justifyContent": "center",
-                "marginBottom": 10,
-                "opacity": 1,
-                "shadowColor": "#777777",
-                "shadowOffset": Object {
-                  "height": 1,
-                  "width": 1,
-                },
-                "shadowOpacity": 0.3,
-                "shadowRadius": 5,
-                "width": 280,
-              }
-            }
-            testID="restore-from-backup"
-          >
-            <Text
-              style={
-                Object {
-                  "color": "#FFFFFF",
-                  "fontSize": 19,
-                  "fontWeight": "600",
-                }
-              }
-            >
-              Restore From A Backup
-            </Text>
-          </View>
-          <View
-            accessible={true}
-            focusable={true}
-            isTVSelectable={true}
-            onClick={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
-            style={
-              Object {
-                "alignItems": "center",
-                "backgroundColor": "#86B93B",
-                "borderRadius": 5,
-                "elevation": 7,
-                "flexDirection": "row",
-                "height": 48,
-                "justifyContent": "center",
-                "marginBottom": 10,
-                "opacity": 1,
-                "shadowColor": "#777777",
-                "shadowOffset": Object {
-                  "height": 1,
-                  "width": 1,
-                },
-                "shadowOpacity": 0.3,
-                "shadowRadius": 5,
-                "width": 280,
-              }
-            }
-            testID="start-fresh"
-          >
-            <Text
-              style={
-                Object {
-                  "color": "#FFFFFF",
-                  "fontSize": 19,
-                  "fontWeight": "600",
-                }
-              }
-            >
-              Start Fresh
-            </Text>
-          </View>
-        </View>
-      </View>
-      <Image
-        source={
-          Object {
-            "default": "RelativeImageStub",
-          }
-        }
-        style={
-          Object {
-            "bottom": 30.628571428571426,
-            "position": "absolute",
-            "right": 9.571428571428571,
-          }
-        }
-      />
-    </View>
   </View>
 </View>
 `;

@@ -8,7 +8,6 @@ import {
   homeRoute,
   lockPinSetupRoute,
   lockEnterPinRoute,
-  lockSelectionRoute,
 } from '../../common'
 import {
   getStore,

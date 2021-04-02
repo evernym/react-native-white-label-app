@@ -37,7 +37,6 @@ import { withStatusBar } from '../components/status-bar/status-bar'
 import {
   AUTO_CLOUD_BACKUP_ENABLED,
   CLOUD_BACKUP_FAILURE,
-  CLOUD_BACKUP_LOADING,
   WALLET_BACKUP_FAILURE,
 } from '../backup/type-backup'
 import { safeSet, walletSet } from '../services/storage'
@@ -270,27 +269,27 @@ export class Settings extends Component<SettingsProps, SettingsState> {
     )
   }
 
-  getCloudBackupSubtitle = () => {
-    if (this.props.cloudBackupStatus === CLOUD_BACKUP_LOADING) {
-      return 'Backing up...'
-    } else if (
-      this.props.cloudBackupStatus === CLOUD_BACKUP_FAILURE ||
-      this.props.cloudBackupStatus === WALLET_BACKUP_FAILURE
-    ) {
-      return (
-        <CustomText
-          transparentBg
-          h7
-          bold
-          style={[style.backupTimeSubtitleStyle, style.subtitleFail]}
-        >
-          {this.props.cloudBackupStatus === CLOUD_BACKUP_FAILURE
-            ? 'Backup failed. Tap to retry'
-            : 'Backup failed, size limit exceeded'}
-        </CustomText>
-      )
-    } else return this.getLastCloudBackupTime()
-  }
+  // getCloudBackupSubtitle = () => {
+  //   if (this.props.cloudBackupStatus === CLOUD_BACKUP_LOADING) {
+  //     return 'Backing up...'
+  //   } else if (
+  //     this.props.cloudBackupStatus === CLOUD_BACKUP_FAILURE ||
+  //     this.props.cloudBackupStatus === WALLET_BACKUP_FAILURE
+  //   ) {
+  //     return (
+  //       <CustomText
+  //         transparentBg
+  //         h7
+  //         bold
+  //         style={[style.backupTimeSubtitleStyle, style.subtitleFail]}
+  //       >
+  //         {this.props.cloudBackupStatus === CLOUD_BACKUP_FAILURE
+  //           ? 'Backup failed. Tap to retry'
+  //           : 'Backup failed, size limit exceeded'}
+  //       </CustomText>
+  //     )
+  //   } else return this.getLastCloudBackupTime()
+  // }
 
   getLastCloudBackupTime() {
     // return this.props.lastSuccessfulCloudBackup === 'error' ? (
@@ -387,7 +386,6 @@ export class Settings extends Component<SettingsProps, SettingsState> {
 
   render() {
     const {
-      cloudBackupStatus,
       hasVerifiedRecoveryPhrase,
       cloudBackupError,
     } = this.props
@@ -421,31 +419,31 @@ export class Settings extends Component<SettingsProps, SettingsState> {
           sliderOffColor={colors.white}
         />
       )
-    const cloudToggleSwitch =
-      Platform.OS === 'ios' ? (
-        <Switch
-          disabled={this.state.disableTouchIdSwitch}
-          trackColor={{ true: colors.main }}
-          onValueChange={this.toggleAutoCloudBackupEnabled}
-          value={this.props.autoCloudBackupEnabled}
-        />
-      ) : (
-        <ToggleSwitch
-          isOn={true}
-          onToggle={this.toggleAutoCloudBackupEnabled}
-          value={this.props.autoCloudBackupEnabled}
-          buttonWidth={moderateScale(55)}
-          buttonHeight={moderateScale(30)}
-          buttonRadius={moderateScale(30)}
-          sliderWidth={moderateScale(28)}
-          sliderHeight={moderateScale(28)}
-          sliderRadius={moderateScale(58)}
-          buttonOnColor={colors.main}
-          buttonOffColor={colors.gray4}
-          sliderOnColor={colors.white}
-          sliderOffColor={colors.white}
-        />
-      )
+    // const cloudToggleSwitch =
+    //   Platform.OS === 'ios' ? (
+    //     <Switch
+    //       disabled={this.state.disableTouchIdSwitch}
+    //       trackColor={{ true: colors.main }}
+    //       onValueChange={this.toggleAutoCloudBackupEnabled}
+    //       value={this.props.autoCloudBackupEnabled}
+    //     />
+    //   ) : (
+    //     <ToggleSwitch
+    //       isOn={true}
+    //       onToggle={this.toggleAutoCloudBackupEnabled}
+    //       value={this.props.autoCloudBackupEnabled}
+    //       buttonWidth={moderateScale(55)}
+    //       buttonHeight={moderateScale(30)}
+    //       buttonRadius={moderateScale(30)}
+    //       sliderWidth={moderateScale(28)}
+    //       sliderHeight={moderateScale(28)}
+    //       sliderRadius={moderateScale(58)}
+    //       buttonOnColor={colors.main}
+    //       buttonOffColor={colors.gray4}
+    //       sliderOnColor={colors.white}
+    //       sliderOffColor={colors.white}
+    //     />
+    //   )
 
     const defaultSettingsItemList = {
       [MANUAL_BACKUP]: {

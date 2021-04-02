@@ -9,9 +9,8 @@ import {
   Container,
   CustomView,
   CustomText,
-  Icon,
-  CustomHeader,
   Loader,
+  Header,
 } from '../components'
 
 import {
@@ -20,19 +19,17 @@ import {
   backupErrorRoute,
 } from '../common'
 import {
+  colors,
   isBiggerThanVeryShortDevice,
 } from '../common/styles'
 import { color } from '../common/styles/constant'
 import type {
   ExportBackupFileProps,
-  ReactNavigationBackup,
 } from './type-backup'
 import styles from './styles'
 import { exportBackup } from './backup-store'
 import type { Store } from '../store/type-store'
 import {
-  EXPORT_BACKUP_BACK_TEST_ID,
-  EXPORT_BACKUP_CLOSE_TEST_ID,
   EXPORT_BACKUP_SUBMIT_BUTTON_TEST_ID,
   EXPORT_BACKUP_BUTTON_TITLE,
 } from './backup-constants'
@@ -43,8 +40,6 @@ import { appName } from '../external-imports'
 import {Button} from "../components/buttons/button";
 
 const transparentBands = require('../images/transparentBands.png')
-const backImage = require('../images/icon_backArrow_white.png')
-const closeImage = require('../images/iconClose.png')
 const encryptedFile = require('../images/encryptedFile.png')
 
 export class ExportBackupFile extends Component<ExportBackupFileProps, void> {
@@ -116,52 +111,21 @@ export class ExportBackupFile extends Component<ExportBackupFileProps, void> {
     )
   }
 
-  static navigationOptions = ({
-    navigation: { goBack, navigate },
-    route,
-  }: ReactNavigationBackup) => ({
-    header: () => (
-      <CustomHeader
-        flatHeader
-        largeHeader
-        backgroundColor={color.bg.thirteenth.color}
-      >
-        <CustomView style={[styles.headerSpacer]}>
-          <Icon
-            medium
-            onPress={() => goBack(null)}
-            testID={EXPORT_BACKUP_BACK_TEST_ID}
-            iconStyle={[styles.headerBackIcon]}
-            src={backImage}
-          />
-        </CustomView>
-
-        <CustomView style={[styles.headerSpacer]}>
-          <Icon
-            medium
-            onPress={() => navigate(route.params.initialRoute)}
-            testID={EXPORT_BACKUP_CLOSE_TEST_ID}
-            iconStyle={[styles.headerIcon]}
-            src={closeImage}
-          />
-        </CustomView>
-      </CustomHeader>
-    ),
-    gestureEnabled: true,
-    headerShown: true,
-  })
-
   render() {
     const { backupPath, backupStatus } = this.props
     const disableButton =
       backupStatus === BACKUP_STORE_STATUS.GENERATE_BACKUP_FILE_LOADING ||
       backupStatus === BACKUP_STORE_STATUS.GENERATE_PHRASE_LOADING
-        ? true
-        : false
 
     return (
       <Container style={[styles.exportBackup]} safeArea>
         <Image source={transparentBands} style={[styles.backgroundImage]} />
+        <Header
+          transparent={true}
+          navigation={this.props.navigation}
+          route={this.props.route}
+          color={colors.white}
+        />
         <Container style={[styles.wrapper]}>
           <CustomView center>
             <CustomText transparentBg center style={[styles.exportBackupTitle]}>

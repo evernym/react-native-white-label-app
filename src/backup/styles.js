@@ -14,7 +14,7 @@ import {
   OFFSET_3X,
   OFFSET_1X,
 } from '../common/styles'
-import { moderateScale } from 'react-native-size-matters';
+import { moderateScale, verticalScale } from 'react-native-size-matters';
 
 const SPACE_FILLER = 50
 const amountSpacing = isBiggerThanShortDevice ? PADDING_VERTICAL * 2 : 0
@@ -294,15 +294,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   wrapper: {
+    width: '100%',
+    height: '100%',
     flexDirection: 'column',
     justifyContent: 'flex-end',
-    paddingHorizontal: 20,
   },
   image: {
     position: 'absolute',
     bottom: moderateScale(32),
     right: moderateScale(10),
   },
+  header: {
+    flex:1,
+    marginTop: verticalScale(8),
+  }
 })
 
 const QUESTION_SENDER_LOGO_DIMENSION = 32
