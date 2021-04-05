@@ -134,7 +134,8 @@
     "prettier": "2.0.5",
     "react-test-renderer": "16.9.0",
     "reactotron-react-native": "5.0.0",
-    "redux-saga-test-plan": "4.0.0-rc.3"
+    "redux-saga-test-plan": "4.0.0-rc.3",
+    "yarnhook": "^0.5.1"
   },
   "jest": {
     "testEnvironment": "node",
@@ -166,7 +167,7 @@
       "post-checkout": "yarnhook",
       "post-merge": "yarnhook",
       "pre-commit": "yarn run lint-staged",
-      "pre-push": "onerror \"npm test && npm run lint\" -t \"Push Failed\" -s Purr"
+      "pre-push": "yarn run test && yarn run lint"
     }
   }
 }
