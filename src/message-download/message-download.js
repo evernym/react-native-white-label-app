@@ -168,48 +168,13 @@ function* downloadErrorSaga(): Generator<*, *, *> {
     // if there are no connections, then we wait for a new connection
     yield take(NEW_CONNECTION_SUCCESS)
   }
-  const failCountToShowError = 2
 
   while (true) {
-    let failCount = 0
-    for (let i = 0; i < failCountToShowError; i++) {
+    for (let i = 0; i < 2; i++) {
       const { fail, success }: { fail?: any, success?: any } = yield race({
         success: take(GET_MESSAGES_SUCCESS),
         fail: take(GET_MESSAGES_FAIL),
       })
-
-      if (fail) {
-        // keep accumulating error messages for download message failure
-        failCount += 1
-        continue
-      }
-
-      if (success) {
-        // if we get even one success before failure touches count of 3
-        // then we reset failure counter to 0
-        // and start counting failure from 0 by restarting for loop
-        failCount = 0
-        // break to outer while loop
-        break
-      }
-    }
-
-    if (failCount === failCountToShowError) {
-      // we got GET_MESSAGES_FAIL successively 3 times
-      // now it is the time to show error to user in snack
-      yield put({
-        type: SHOW_SNACK_ERROR,
-        error: ERROR_MESSAGE_DOWNLOAD_FAIL,
-      })
-
-      // clear error for snack after 5 seconds
-      yield call(delay, 5000)
-      yield put({
-        type: CLEAR_SNACK_ERROR,
-      })
     }
   }
 }
-
-const ERROR_MESSAGE_DOWNLOAD_FAIL =
-  'Unable to reach cloud agent. Check your internet connection or try to restart app.'
