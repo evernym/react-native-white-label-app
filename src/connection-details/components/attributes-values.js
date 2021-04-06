@@ -29,7 +29,7 @@ import { colors, fontSizes, fontFamily } from '../../common/styles/constant'
 import { Avatar } from '../../components'
 import { DefaultLogo } from '../../components/default-logo/default-logo'
 import { CHECKMARK_ICON, EvaIcon } from '../../common/icons'
-import { renderAttachmentIcon } from './modal-content'
+import { RenderAttachmentIcon } from '../../components/attachment/attachment'
 import { ModalPushLeft } from '../utils/modal-animation'
 import { ExpandableText } from '../../components/expandable-text/expandable-text'
 import { modalOptions } from '../utils/modalOptions'
@@ -84,18 +84,15 @@ const AttributesValues = ({
     return (
       <TouchableOpacity
         onPress={() => setSelectedValueIndex(index)}
-        style={styles.itemContainer}>
+        style={styles.itemContainer}
+      >
         <View style={styles.itemInnerContainer}>
           <View style={styles.itemValuesContainer}>
             <View style={styles.avatarSection}>
               {typeof item.logoUrl === 'string' ? (
                 <Avatar radius={18} src={{ uri: item.logoUrl }} />
               ) : (
-                <DefaultLogo
-                  text={item.senderName}
-                  size={32}
-                  fontSize={17}
-                />
+                <DefaultLogo text={item.senderName} size={32} fontSize={17} />
               )}
             </View>
             <View style={styles.infoSectionRow}>
@@ -109,7 +106,7 @@ const AttributesValues = ({
           <View style={styles.itemAttributesContainer}>
             {Object.keys(item.values).map((label, keyIndex) => (
               <View key={`${index}_${keyIndex}`}>
-                {renderAttachmentIcon(
+                {RenderAttachmentIcon(
                   label,
                   item.values[label],
                   item.claimUuid || '',
@@ -134,14 +131,16 @@ const AttributesValues = ({
     <View style={styles.descriptionWrapper}>
       <ExpandableText
         style={styles.descriptionTitle}
-        text={params?.sender + ' requires following attributes coming from the same credential:'}
+        text={
+          params?.sender +
+          ' requires following attributes coming from the same credential:'
+        }
       />
       <ExpandableText
         style={styles.labelText}
-        text={params?.label || 'Attribute'}/>
-      <Text style={styles.descriptionTitle}>
-        {params.items.length} sources
-      </Text>
+        text={params?.label || 'Attribute'}
+      />
+      <Text style={styles.descriptionTitle}>{params.items.length} sources</Text>
     </View>
   )
 
@@ -170,11 +169,13 @@ const AttributesValues = ({
 }
 
 const screen =
-  CustomSelectAttributesValuesModal && CustomSelectAttributesValuesModal.screen ||
+  (CustomSelectAttributesValuesModal &&
+    CustomSelectAttributesValuesModal.screen) ||
   AttributesValues
 
 const navigationOptions =
-  CustomSelectAttributesValuesModal && CustomSelectAttributesValuesModal.navigationOptions ||
+  (CustomSelectAttributesValuesModal &&
+    CustomSelectAttributesValuesModal.navigationOptions) ||
   modalOptions('Select Attributes Values', 'Arrow', ModalPushLeft)
 
 export const AttributesValuesScreen = {

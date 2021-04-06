@@ -8,11 +8,11 @@ import type { Store } from '../../store/type-store'
 import Icon from '../icon'
 import { verticalScale, moderateScale } from 'react-native-size-matters'
 import { colors, fontSizes, fontFamily } from '../../common/styles/constant'
-import { renderAttachmentIcon } from '../../connection-details/components/modal-content'
 import { DefaultLogo } from '../default-logo/default-logo'
 import { ATTRIBUTE_TYPE } from '../../proof-request/type-proof-request'
 import { getPredicateTitle } from '../../connection-details/utils/getPredicateTitle'
 import { renderUserAvatar } from '../../components/user-avatar/user-avatar'
+import { RenderAttachmentIcon } from '../../components/attachment/attachment'
 import { getUserAvatarSource } from '../../store/store-utils'
 
 export class CustomListProofRequest extends Component<CustomListProps, void> {
@@ -42,17 +42,19 @@ export class CustomListProofRequest extends Component<CustomListProps, void> {
     let logo
 
     if (claim) {
-      logo = claim.logoUrl ?
+      logo = claim.logoUrl ? (
         <Icon
           medium
           round
           resizeMode="cover"
           src={{ uri: claim.logoUrl }}
           testID={`proof-requester-logo-${index}`}
-        /> :
+        />
+      ) : (
         <DefaultLogo text={claim.senderName || ''} size={30} fontSize={18} />
+      )
     } else {
-      logo = renderUserAvatar({ size: 'superSmall'})
+      logo = renderUserAvatar({ size: 'superSmall' })
     }
 
     const data =
@@ -68,16 +70,14 @@ export class CustomListProofRequest extends Component<CustomListProps, void> {
       <View key={index} style={styles.wrapper}>
         <View style={styles.textAvatarWrapper}>
           <View style={styles.textWrapper}>
-            {renderAttachmentIcon(
+            {RenderAttachmentIcon(
               item.label || '',
               data,
               item.claimUuid || '',
               item.claimUuid || ''
             )}
           </View>
-          <View style={styles.avatarWrapper}>
-            {logo}
-          </View>
+          <View style={styles.avatarWrapper}>{logo}</View>
         </View>
       </View>
     )
@@ -87,10 +87,12 @@ export class CustomListProofRequest extends Component<CustomListProps, void> {
     let logoUrl
     let claim
     if (!item.values) {
-      return <View/>
+      return <View />
     }
 
-    const allValuesAreEmpty = Object.values(item.values).every((value) => value === '' || !value)
+    const allValuesAreEmpty = Object.values(item.values).every(
+      (value) => value === '' || !value
+    )
 
     if (allValuesAreEmpty && !this.props.isMissingFieldsShowing) {
       return <View />
@@ -121,7 +123,7 @@ export class CustomListProofRequest extends Component<CustomListProps, void> {
 
       return (
         <View key={`${index}_${keyIndex}`} style={styles.textInnerItemWrapper}>
-          {renderAttachmentIcon(
+          {RenderAttachmentIcon(
             label || '',
             value,
             item.claimUuid || '',

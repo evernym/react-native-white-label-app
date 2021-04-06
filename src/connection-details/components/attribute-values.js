@@ -31,7 +31,8 @@ import { colors, fontSizes, fontFamily } from '../../common/styles/constant'
 import { Avatar, UserAvatar } from '../../components'
 import { DefaultLogo } from '../../components/default-logo/default-logo'
 import { ALERT_ICON, CHECKMARK_ICON, EvaIcon } from '../../common/icons'
-import { DataRenderer, getFileExtensionName } from './modal-content'
+import { DataRenderer } from '../../components/attachment/data-renderer'
+import { getFileExtensionName } from '../../components/attachment/helpers'
 import {
   isSelected,
   keyExtractor,
@@ -41,16 +42,16 @@ import { ModalPushLeft } from '../utils/modal-animation'
 import { ExpandableText } from '../../components/expandable-text/expandable-text'
 import { BLANK_ATTRIBUTE_DATA_TEXT } from '../type-connection-details'
 import { modalOptions } from '../utils/modalOptions'
-import { CustomSelectAttributeValueModal} from '../../external-imports'
+import { CustomSelectAttributeValueModal } from '../../external-imports'
 
 export const renderAvatarWithSource = (avatarSource: number | ImageSource) => {
   return <Avatar radius={18} src={avatarSource} />
 }
 
 const AttributeValues = ({
-                           navigation: { goBack, navigate },
-                           route: { params },
-                         }: ReactNavigation) => {
+  navigation: { goBack, navigate },
+  route: { params },
+}: ReactNavigation) => {
   const [selectedValueIndex, setSelectedValueIndex] = useState(
     params.items.findIndex((item: Object) =>
       isSelected(item, params.attributesFilledFromCredential)
@@ -107,19 +108,23 @@ const AttributeValues = ({
             </View>
             <View style={styles.infoSection}>
               <View style={styles.infoSection}>
-                {
-                  !item.data || item.data === '' ?
-                    <Text style={styles.contentGray}>{BLANK_ATTRIBUTE_DATA_TEXT}</Text> :
-                    <ExpandableText
-                      style={styles.credentialNameText}
-                      text={item.label.toLowerCase().endsWith('_link')
+                {!item.data || item.data === '' ? (
+                  <Text style={styles.contentGray}>
+                    {BLANK_ATTRIBUTE_DATA_TEXT}
+                  </Text>
+                ) : (
+                  <ExpandableText
+                    style={styles.credentialNameText}
+                    text={
+                      item.label.toLowerCase().endsWith('_link')
                         ? `${getFileExtensionName(
-                          JSON.parse(item.data)['mime-type']
-                        )} file`
-                        : item.data}
-                      lines={1}
-                    />
-                }
+                            JSON.parse(item.data)['mime-type']
+                          )} file`
+                        : item.data
+                    }
+                    lines={1}
+                  />
+                )}
               </View>
               <View style={styles.infoSection}>
                 <View style={styles.attributesSection}>
@@ -156,12 +161,12 @@ const AttributeValues = ({
 
   const renderHeader = () => (
     <>
-      <StatusBar
-        backgroundColor={colors.black}
-        barStyle={'light-content'}
-      />
+      <StatusBar backgroundColor={colors.black} barStyle={'light-content'} />
       <View style={styles.descriptionWrapper}>
-        <ExpandableText style={styles.labelText} text={params?.label || 'Attribute'} />
+        <ExpandableText
+          style={styles.labelText}
+          text={params?.label || 'Attribute'}
+        />
         <Text style={styles.descriptionTitle}>
           {params.items.length} sources
         </Text>
@@ -243,11 +248,12 @@ const AttributeValues = ({
 }
 
 const screen =
-  CustomSelectAttributeValueModal && CustomSelectAttributeValueModal.screen ||
+  (CustomSelectAttributeValueModal && CustomSelectAttributeValueModal.screen) ||
   AttributeValues
 
 const navigationOptions =
-  CustomSelectAttributeValueModal && CustomSelectAttributeValueModal.navigationOptions ||
+  (CustomSelectAttributeValueModal &&
+    CustomSelectAttributeValueModal.navigationOptions) ||
   modalOptions('Select Attribute Values', 'Arrow', ModalPushLeft)
 
 export const AttributeValuesScreen = {
@@ -366,5 +372,5 @@ const styles = StyleSheet.create({
     width: '100%',
     textAlign: 'left',
     fontFamily: fontFamily,
-  }
+  },
 })

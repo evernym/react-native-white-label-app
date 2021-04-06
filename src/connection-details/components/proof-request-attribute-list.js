@@ -37,7 +37,7 @@ import { ModalHeader } from './modal-header'
 import { colors, fontFamily, fontSizes } from '../../common/styles/constant'
 // utils
 import { generateStateForMissingAttributes, isInvalidValues } from '../utils'
-import { renderAttachmentIcon } from './modal-content'
+import { RenderAttachmentIcon } from '../../components/attachment/attachment'
 import { ALERT_ICON, ARROW_FORWARD_ICON, EvaIcon } from '../../common/icons'
 import Icon from '../../components/icon'
 import { attributesValueRoute } from '../../common'
@@ -55,7 +55,7 @@ import {
 class ProofRequestAttributeList extends Component<
   ProofRequestAttributeListAndHeaderProps & ReactNavigation,
   ProofRequestAttributeListState
-  > {
+> {
   state = {
     isMissingFieldsShowing: false,
     showToggleMenu: false,
@@ -86,7 +86,7 @@ class ProofRequestAttributeList extends Component<
     const { hasEmpty, allEmpty } = checkProofForEmptyFields(data)
     this.setState({
       showToggleMenu: showToggleMenu(hasEmpty, allEmpty),
-      isMissingFieldsShowing: showMissingField(hasEmpty, allEmpty)
+      isMissingFieldsShowing: showMissingField(hasEmpty, allEmpty),
     })
   }
 
@@ -256,7 +256,7 @@ class ProofRequestAttributeList extends Component<
                   <View>
                     <View style={styles.textAvatarWrapper}>
                       <View style={styles.textInnerWrapper}>
-                        {renderAttachmentIcon(
+                        {RenderAttachmentIcon(
                           label,
                           value,
                           selectedItem.claimUuid || '',
@@ -324,7 +324,7 @@ class ProofRequestAttributeList extends Component<
               <View>
                 <View style={styles.textAvatarWrapper}>
                   <View style={styles.textInnerWrapper}>
-                    {renderAttachmentIcon(
+                    {RenderAttachmentIcon(
                       attribute.label,
                       value,
                       attribute.claimUuid || '',
@@ -332,7 +332,7 @@ class ProofRequestAttributeList extends Component<
                     )}
                   </View>
                   <View style={styles.avatarWrapper}>
-                    {renderUserAvatar({ size: 'superSmall'})}
+                    {renderUserAvatar({ size: 'superSmall' })}
                   </View>
                 </View>
               </View>
@@ -366,8 +366,8 @@ class ProofRequestAttributeList extends Component<
       const value = attribute.values[label]
         ? attribute.values[label]
         : this.state?.[adjustedLabel]
-          ? this.state?.[adjustedLabel]
-          : undefined
+        ? this.state?.[adjustedLabel]
+        : undefined
 
       if (value) {
         return (
@@ -429,7 +429,7 @@ class ProofRequestAttributeList extends Component<
                       </Text>
                     </View>
                     <View style={[styles.avatarWrapper, { paddingLeft: 4 }]}>
-                      {renderUserAvatar({ size: 'superSmall'})}
+                      {renderUserAvatar({ size: 'superSmall' })}
                     </View>
                     <View style={styles.iconWrapper}>
                       <EvaIcon
@@ -528,7 +528,7 @@ class ProofRequestAttributeList extends Component<
               <View>
                 <View style={styles.textAvatarWrapper}>
                   <View style={styles.textInnerWrapper}>
-                    {renderAttachmentIcon(
+                    {RenderAttachmentIcon(
                       attribute.label,
                       `${getPredicateTitle(attribute.p_type)} ${
                         attribute.p_value
@@ -582,7 +582,7 @@ class ProofRequestAttributeList extends Component<
       <View key={index} style={styles.wrapper}>
         <View style={styles.textAvatarWrapper}>
           <View style={styles.textInnerWrapper}>
-            {renderAttachmentIcon(
+            {RenderAttachmentIcon(
               attribute.label,
               `${getPredicateTitle(attribute.p_type)} ${attribute.p_value}`,
               '',
