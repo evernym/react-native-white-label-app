@@ -1028,7 +1028,7 @@ You can customize `Settings` view in the `settings.js` module.
         * `Logs` - send logs to development team
         * `About` - application information
         * `Feedback` - give the app a feedback
-        * `ManualBackup` - ability to create the application local backup file which can be used for restoring or sharing the app.
+        * `ManualBackup` - ability to create the application local backup file which can be used for restoring or sharing the app. Note, that you may need to configure document picker: https://github.com/rnmods/react-native-document-picker/blob/4053e6106440a8f711a0e82a74949c7e51213105/install-old.md
         * `ViewRecoveryPassphrase` - show passphrase used for local backup generation (works only if `ManualBackup` is enabled).
     * to change predefined (for predefined options `title, subtitle, avatar, rightIcon, onPress` are optional fields / defaults will be used if they are not specified) 
         ```javascript
