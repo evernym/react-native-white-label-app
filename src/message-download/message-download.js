@@ -35,11 +35,7 @@ import {
 import { getConnectionsCount } from '../store/store-selector'
 
 export function* watchMessageDownload(): any {
-  yield all([
-    watchManualDownloadTrigger(),
-    watchInfiniteDownloader(),
-    watchDownloadError(),
-  ])
+  yield all([watchManualDownloadTrigger(), watchInfiniteDownloader()])
 }
 
 function* watchManualDownloadTrigger(): any {
@@ -57,10 +53,6 @@ function* watchManualDownloadTrigger(): any {
 
 function* watchInfiniteDownloader(): any {
   yield takeLeading('TRIGGER_AUTOMATIC_DOWNLOAD', infiniteDownloadSaga)
-}
-
-function* watchDownloadError(): any {
-  yield takeLeading(VCX_INIT_SUCCESS, downloadErrorSaga)
 }
 
 function* triggerDownloadSaga(action: { type: string }): Generator<*, *, *> {
@@ -158,23 +150,6 @@ export function* infiniteDownloadSaga(action: {
       break
     } else {
       limit--
-    }
-  }
-}
-
-function* downloadErrorSaga(): Generator<*, *, *> {
-  const connectionsCount: number = yield select(getConnectionsCount)
-  if (connectionsCount === 0) {
-    // if there are no connections, then we wait for a new connection
-    yield take(NEW_CONNECTION_SUCCESS)
-  }
-
-  while (true) {
-    for (let i = 0; i < 2; i++) {
-      const { fail, success }: { fail?: any, success?: any } = yield race({
-        success: take(GET_MESSAGES_SUCCESS),
-        fail: take(GET_MESSAGES_FAIL),
-      })
     }
   }
 }
