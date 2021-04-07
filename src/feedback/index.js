@@ -1,12 +1,8 @@
 // @flow
 
-import {
-  Apptentive,
-  ApptentiveConfiguration as apptentiveCredentials,
-  ApptentiveConfiguration,
-} from 'apptentive-react-native'
+import { Apptentive, ApptentiveConfiguration } from 'apptentive-react-native'
 import { customLogger } from '../store/custom-logger'
-
+import { apptentiveCredentials } from '../external-imports'
 let apptentivePromise = null
 
 export function setupApptentive() {
