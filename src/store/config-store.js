@@ -159,6 +159,8 @@ import type {
   InviteActionRequest,
 } from '../invite-action/type-invite-action'
 import { INVITE_ACTION_PROTOCOL } from '../invite-action/type-invite-action'
+import { retrySaga } from '../api/api-utils'
+import { CLOUD_AGENT_UNAVAILABLE } from '../bridge/react-native-cxs/error-cxs'
 
 /**
  * this file contains configuration which is changed only from user action
@@ -854,6 +856,15 @@ export function* getMessagesSaga(
         // throw error
       }
     }
+    yield* retrySaga(
+      call(
+        downloadMessages,
+        MESSAGE_RESPONSE_CODE.MESSAGE_PENDING,
+        params?.uid || null,
+        params?.forDid || allConnectionsPairwiseDids.join(',')
+      ),
+      CLOUD_AGENT_UNAVAILABLE
+    )
     yield put(getMessagesSuccess())
   } catch (e) {
     captureError(e)
