@@ -2,9 +2,9 @@
 import * as React from 'react'
 import { Dimensions, Image, Text, View, Platform } from 'react-native'
 import {
-  createStackNavigator,
   TransitionPresets,
 } from '@react-navigation/stack'
+import { createNativeStackNavigator  } from 'react-native-screens/native-stack'
 import { createDrawerNavigator, DrawerItemList } from '@react-navigation/drawer'
 import { enableScreens } from 'react-native-screens'
 import VersionNumber from 'react-native-version-number'
@@ -106,9 +106,7 @@ import {
 } from '../external-imports'
 import { inviteActionScreen } from '../invite-action/invite-action-screen'
 
-if (Platform.OS !== 'android') {
-  enableScreens()
-}
+enableScreens()
 
 const { width } = Dimensions.get('screen')
 
@@ -280,7 +278,7 @@ function AppDrawer() {
   )
 }
 
-const CardStack = createStackNavigator()
+const CardStack = createNativeStackNavigator()
 const cardStackOptions = {
   // we are using headerShown property instead of headerMode: 'none'
   // to hide header from screen
@@ -459,7 +457,7 @@ function CardStackScreen() {
   )
 }
 
-const ModalStack = createStackNavigator()
+const ModalStack = createNativeStackNavigator()
 const modalStackOptions = {
   headerShown: false,
   gestureEnabled: true,
