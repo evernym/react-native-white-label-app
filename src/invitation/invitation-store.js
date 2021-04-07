@@ -60,7 +60,7 @@ import type { CustomError, GenericObject } from '../common/type-common'
 import { ID, RESET, TYPE } from '../common/type-common'
 import { captureError } from '../services/error/error-handler'
 import { ensureVcxInitSuccess } from '../store/route-store'
-import type { Connection, MyPairwiseInfo } from '../store/type-connection-store'
+import type { Connection } from '../store/type-connection-store'
 import { connectionFail, connectionSuccess, ERROR_CONNECTION } from '../store/type-connection-store'
 import { flattenAsync } from '../common/flatten-async'
 import { flatJsonParse } from '../common/flat-json-parse'
@@ -216,18 +216,12 @@ export function* sendResponseOnProprietaryConnectionInvitation(
       payload
     )
 
-    let pairwiseInfo: MyPairwiseInfo = yield* retrySaga(
+    let {
+      connection: pairwiseInfo,
+      serializedConnection: vcxSerializedConnection,
+    } = yield* retrySaga(
       call(acceptInvitationVcx, connectionHandle),
       CLOUD_AGENT_UNAVAILABLE
-    )
-
-    // once the connection is successful, we need to save serialized connection
-    // in secure storage as well, because libIndy does not handle persistence
-    // once we have persisted serialized state, we can hydrate vcx
-    // if we need anything from that connection
-    const vcxSerializedConnection: string = yield call(
-      serializeConnection,
-      connectionHandle
     )
 
     const connection = {
@@ -271,18 +265,12 @@ export function* sendResponseOnAriesConnectionInvitation(
       payload
     )
 
-    let pairwiseInfo: MyPairwiseInfo = yield* retrySaga(
+    let {
+      connection: pairwiseInfo,
+      serializedConnection: vcxSerializedConnection,
+    } = yield* retrySaga(
       call(acceptInvitationVcx, connectionHandle),
       CLOUD_AGENT_UNAVAILABLE
-    )
-
-    // once the connection is successful, we need to save serialized connection
-    // in secure storage as well, because libIndy does not handle persistence
-    // once we have persisted serialized state, we can hydrate vcx
-    // if we need anything from that connection
-    const vcxSerializedConnection: string = yield call(
-      serializeConnection,
-      connectionHandle
     )
 
     const connection = {
@@ -368,19 +356,12 @@ export function* sendResponseOnAriesOutOfBandInvitationWithHandshake(
       payload
     )
 
-    // we need to setup regular connection
-    let pairwiseInfo: MyPairwiseInfo = yield* retrySaga(
+    let {
+      connection: pairwiseInfo,
+      serializedConnection: vcxSerializedConnection,
+    } = yield* retrySaga(
       call(acceptInvitationVcx, connectionHandle),
       CLOUD_AGENT_UNAVAILABLE
-    )
-
-    //  we need to save serialized connection
-    // in secure storage as well, because VCX does not handle persistence
-    // once we have persisted serialized state, we can hydrate vcx
-    // if we need anything from that connection
-    const vcxSerializedConnection: string = yield call(
-      serializeConnection,
-      connectionHandle
     )
 
     const connection = {

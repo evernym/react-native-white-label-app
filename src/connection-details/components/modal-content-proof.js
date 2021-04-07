@@ -36,6 +36,7 @@ import {
   denyProofRequest,
   applyAttributesForPresentationRequest,
   deleteOutofbandPresentationRequest,
+  convertSelectedCredentialsToVCXFormat,
 } from '../../proof-request/proof-request-store'
 import { newConnectionSeen } from '../../connection-history/connection-history-store'
 import { updateAttributeClaim, getProof } from '../../proof/proof-store'
@@ -132,22 +133,7 @@ class ModalContentProof extends Component<
       this.props.data &&
       this.props.data.requestedAttributes !== nextProps.data.requestedAttributes
     ) {
-      const attributesFilledFromCredential = nextProps.data.requestedAttributes.reduce(
-        (acc, item) => {
-          const items = { ...acc }
-          if (Array.isArray(item)) {
-            if (item[0].claimUuid) {
-              items[`${item[0].key}`] = [
-                item[0].claimUuid,
-                true,
-                item[0].cred_info,
-              ]
-            }
-          }
-          return items
-        },
-        {}
-      )
+      const attributesFilledFromCredential = convertSelectedCredentialsToVCXFormat(nextProps.data.requestedAttributes)
       this.setState({ attributesFilledFromCredential })
     }
   }

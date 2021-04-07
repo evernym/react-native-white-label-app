@@ -27,6 +27,7 @@ import type { TxnAuthorAgreementStore } from '../txn-author-agreement/type-txn-a
 import type { OpenIdConnectStore } from '../open-id-connect/open-id-connect-actions'
 import type { InAppNotificationStore } from '../in-app-notification/in-app-notification-type'
 import type { InviteActionStore } from '../invite-action/type-invite-action'
+import type { ShowCredentialStore } from '../show-credential/type-show-credential'
 
 export type RouteStore = {
   currentScreen: string,
@@ -62,4 +63,5 @@ export type Store = {
   openIdConnect: OpenIdConnectStore,
   inAppNotification: InAppNotificationStore,
   inviteAction: InviteActionStore,
+  showCredential: ShowCredentialStore,
 }

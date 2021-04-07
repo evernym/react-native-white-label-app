@@ -1537,18 +1537,25 @@ export function* historyEventOccurredSaga(
     }
 
     if (event.type === ERROR_SEND_PROOF) {
+      const storedProofReceivedEvent = yield select(
+        getHistoryEvent,
+        event.uid,
+        event.remoteDid,
+        PROOF_REQUEST_RECEIVED
+      )
       const storedUpdateAttributeEvent = yield select(
         getPendingHistory,
         event.uid,
         event.remoteDid,
         UPDATE_ATTRIBUTE_CLAIM
       )
+      const oldHistoryEvent = storedProofReceivedEvent || storedUpdateAttributeEvent
       const errorSendProofEvent = convertErrorSendProofToHistoryEvent(
         event,
-        storedUpdateAttributeEvent
+        oldHistoryEvent
       )
-      if (storedUpdateAttributeEvent) {
-        yield put(deleteHistoryEvent(storedUpdateAttributeEvent))
+      if (oldHistoryEvent) {
+        yield put(deleteHistoryEvent(oldHistoryEvent))
       }
       historyEvent = errorSendProofEvent
     }
@@ -1559,12 +1566,19 @@ export function* historyEventOccurredSaga(
         event.uid
       )
       const proof: Proof = yield select(getProof, event.uid)
-      const oldHistoryEvent = yield select(
+      const storedProofReceivedEvent = yield select(
+        getHistoryEvent,
+        event.uid,
+        proofRequest.remotePairwiseDID,
+        PROOF_REQUEST_RECEIVED
+      )
+      const storedUpdateAttributeClaimEvent = yield select(
         getPendingHistory,
         event.uid,
         proofRequest.remotePairwiseDID,
         UPDATE_ATTRIBUTE_CLAIM
       )
+      const oldHistoryEvent = storedProofReceivedEvent || storedUpdateAttributeClaimEvent
       historyEvent = convertProofSendToHistoryEvent(
         event,
         proofRequest,

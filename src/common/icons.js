@@ -16,7 +16,6 @@ type CommonIconProps = {
 
 export const HOME_ICON = 'home-outline'
 export const CONNECTIONS_ICON = 'people-outline'
-export const CREDENTIALS_ICON = 'home-outline'
 export const SETTINGS_ICON = 'settings-2-outline'
 
 export const CAMERA_ICON = 'camera-outline'
@@ -32,14 +31,10 @@ export const INFO_ICON = 'info-outline'
 export const ARROW_RIGHT_ICON = 'chevron-right-outline'
 export const LOCK_ICON = 'lock'
 export const SAVE_ICON = 'save-outline'
-export const BACKUP_ICON = 'cloud-upload-outline'
-export const ATTACHMENT_ICON = 'attach-2-outline'
-export const PHOTO_ATTACHMENT_ICON = 'image-outline'
 export const ALERT_ICON = 'alert-circle-outline'
 export const ARROW_FORWARD_ICON = 'arrow-ios-forward-outline'
 export const CHECKMARK_ICON = 'checkmark-outline'
 export const SHARE_ICON = 'share-outline'
-export const NO_WIFI = 'wifi-off-outline'
 
 // common icon class is implemented to set default values (except name) for icons
 // in that case we should only set icon name and get an icon with default color and size

@@ -1,35 +1,14 @@
 // @flow
-import React, { useCallback } from 'react'
+import React  from 'react'
 import {
-  Text,
   View,
   StyleSheet,
-  Image,
-  TouchableOpacity,
-  Alert,
 } from 'react-native'
-import RNFetchBlob from 'rn-fetch-blob'
-import FileViewer from 'react-native-file-viewer'
-
-import { BLANK_ATTRIBUTE_DATA_TEXT } from './type-credential-list'
-import { flattenAsync } from '../../common/flatten-async'
-import { verticalScale, moderateScale } from 'react-native-size-matters'
-import { colors, fontSizes, fontFamily } from '../../common/styles/constant'
+import { moderateScale } from 'react-native-size-matters'
+import { colors } from '../../common/styles/constant'
 import { RenderAttachmentIcon } from '../../components/attachment/attachment'
 
-import type {
-  CredentialListProps,
-  AttachmentPropType,
-  PhotoAttachmentPropType,
-} from './type-credential-list'
-import { photoMimeTypes } from './type-credential-list'
-
-import {
-  EvaIcon,
-  ATTACHMENT_ICON,
-  PHOTO_ATTACHMENT_ICON,
-} from '../../common/icons'
-import { ExpandableText } from '../../components/expandable-text/expandable-text'
+import type { CredentialListProps, } from './type-credential-list'
 
 export const CredentialList = ({
   uid,

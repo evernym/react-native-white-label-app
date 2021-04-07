@@ -1,30 +1,17 @@
 // @flow
-import React, { useMemo, useCallback, useState, useEffect } from 'react'
+import React, { useMemo, useState, useEffect } from 'react'
 import {
-  Text,
   View,
   ScrollView,
   StyleSheet,
-  Image,
-  TouchableOpacity,
-  Alert,
   InteractionManager,
-  Platform,
 } from 'react-native'
-import RNFetchBlob from 'rn-fetch-blob'
-import FileViewer from 'react-native-file-viewer'
 
 import { RenderAttachmentIcon } from '../../components/attachment/attachment'
-import { DataRenderer } from '../../components/attachment/data-renderer'
 import { Avatar } from '../../components/avatar/avatar'
-import { BLANK_ATTRIBUTE_DATA_TEXT } from '../type-connection-details'
-import { flattenAsync } from '../../common/flatten-async'
 import { Loader } from '../../components'
-import { verticalScale, moderateScale } from 'react-native-size-matters'
-import { colors, fontSizes, fontFamily } from '../../common/styles/constant'
-import SvgCustomIcon from '../../components/svg-custom-icon'
+import { colors } from '../../common/styles/constant'
 import { ModalHeader } from './modal-header'
-import { ExpandableText } from '../../components/expandable-text/expandable-text'
 import {
   checkCredentialForEmptyFields,
   showMissingField,

@@ -1,15 +1,13 @@
 // @flow
 import React from 'react'
-import { Text, View, Image } from 'react-native'
+import { Text, View } from 'react-native'
 
 import type { AttachmentPropType } from './type-attachment'
 
 import SvgCustomIcon from '../svg-custom-icon'
 import { ExpandableText } from '../expandable-text/expandable-text'
 import {
-  PhotoAttachment,
   checkObjectTypes,
-  getIcon,
   getFileExtensionName,
 } from './helpers'
 import { attachMimeTypes } from './type-attachment'

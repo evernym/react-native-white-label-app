@@ -12,7 +12,7 @@ import { CONNECTIONS } from '../common'
 import {
   getAllConnection,
   getThemes,
-  getConnection as getConnectionBySenderDid,
+  getConnection as getConnectionBySenderDid, getAllConnections,
 } from './store-selector'
 import { color } from '../common/styles/constant'
 import { bubbleSize } from '../common/styles'
@@ -30,7 +30,7 @@ import type {
   SendConnectionRedirectAction,
   SendConnectionReuseAction,
   UpdateConnectionSerializedStateAction,
-  DeletePendingConnectionEventAction,
+  DeletePendingConnectionEventAction, DeleteOneTimeConnectionAction, DeleteOneTimeConnectionSuccessAction,
 } from './type-connection-store'
 import type {
   AriesOutOfBandInvite,
@@ -60,6 +60,8 @@ import {
   UPDATE_CONNECTION,
   DELETE_PENDING_CONNECTION,
   CONNECTION_REQUEST_SENT,
+  DELETE_ONE_TIME_CONNECTION,
+  DELETE_ONE_TIME_CONNECTION_SUCCESS,
 } from './type-connection-store'
 import {
   deleteConnection,
@@ -212,6 +214,40 @@ export function* deleteConnectionOccurredSaga(
 
 export function* watchDeleteConnectionOccurred(): any {
   yield takeLatest(DELETE_CONNECTION, deleteConnectionOccurredSaga)
+}
+
+export const deleteOneTimeConnection = (identifier: string): DeleteOneTimeConnectionAction => ({
+  type: DELETE_ONE_TIME_CONNECTION,
+  identifier,
+})
+
+export const deleteOneTimeConnectionSuccess = (identifier: string): DeleteOneTimeConnectionSuccessAction => ({
+  type: DELETE_ONE_TIME_CONNECTION_SUCCESS,
+  identifier,
+})
+
+export function* deleteOneTimeConnectionOccurredSaga(
+  action: DeleteOneTimeConnectionAction
+): Generator<*, *, *> {
+  const connections = yield select(getAllConnections)
+  const connection = connections[action.identifier]
+  try {
+    if (connection && connection.vcxSerializedConnection) {
+      const connectionHandle = yield call(
+        getHandleBySerializedConnection,
+        connection.vcxSerializedConnection
+      )
+      yield call(deleteConnection, connectionHandle)
+      yield put(deleteOneTimeConnectionSuccess(connection.identifier))
+    }
+  } catch (e) {
+    captureError(e)
+    yield put(deleteConnectionFailure(connection, e))
+  }
+}
+
+export function* watchDeleteOneTimeConnectionOccurred(): any {
+  yield takeEvery(DELETE_ONE_TIME_CONNECTION, deleteOneTimeConnectionOccurredSaga)
 }
 
 export function* loadNewConnectionSaga(): Generator<*, *, *> {
@@ -503,6 +539,7 @@ export function* watchUpdateConnectionTheme(): any {
 export function* watchConnection(): any {
   yield all([
     watchDeleteConnectionOccurred(),
+    watchDeleteOneTimeConnectionOccurred(),
     watchConnectionsChanged(),
     watchUpdateConnectionTheme(),
     watchSendConnectionRedirect(),
@@ -591,6 +628,16 @@ export default function connections(
           },
         },
       }
+    case DELETE_ONE_TIME_CONNECTION_SUCCESS: {
+      const {
+        [action.identifier] : connection,
+        ...oneTimeConnections
+      } = state.oneTimeConnections || {}
+      return {
+        ...state,
+        oneTimeConnections,
+      }
+    }
     case NEW_CONNECTION_SUCCESS:
       const { identifier } = action
       return {

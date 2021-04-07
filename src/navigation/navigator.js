@@ -105,6 +105,7 @@ import {
   usePushNotifications,
 } from '../external-imports'
 import { inviteActionScreen } from '../invite-action/invite-action-screen'
+import { ShowCredentialScreen } from "../show-credential/show-credential";
 
 if (Platform.OS !== 'android') {
   enableScreens()
@@ -548,6 +549,12 @@ export function MSDKAppNavigator() {
         component={inviteActionScreen.screen}
         options={inviteActionScreen.screen.navigationOptions}
       />
+      <CardStack.Screen
+        name={ShowCredentialScreen.routeName}
+        component={ShowCredentialScreen.screen}
+        options={ShowCredentialScreen.screen.navigationOptions}
+      />
+
       {usePushNotifications && (
         <ModalStack.Screen
           name={pushNotificationPermissionScreen.routeName}

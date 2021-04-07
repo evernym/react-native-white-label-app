@@ -36,7 +36,10 @@ import proofRequest, {
   watchOutOfBandConnectionForPresentationEstablished,
 } from '../proof-request/proof-request-store'
 import invitation, { watchInvitation } from '../invitation/invitation-store'
-import claim, { watchClaim, watchDeleteClaim } from '../claim/claim-store'
+import claim, {
+  watchClaim,
+  watchDeleteClaim,
+} from '../claim/claim-store'
 import question, { watchQuestion } from '../question/question-store'
 import txnAuthorAgreement, {
   watchTxnAuthorAgreement,
@@ -46,7 +49,6 @@ import history, {
   watchConnectionHistory,
 } from '../connection-history/connection-history-store'
 import historyRecorder from '../connection-history/history-middleware'
-import automaticCloudBackup from '../backup/automatic-cloudbackup-middleware'
 import wallet, { watchWalletStore } from '../wallet/wallet-store'
 import eula, { watchEula } from '../eula/eula-store'
 import restore, { watchRestore } from '../restore/restore-store'
@@ -75,6 +77,7 @@ import { watchLongPollingHome } from '../home/long-polling-home'
 import inviteAction, {
   watchInviteAction,
 } from '../invite-action/invite-action-store'
+import showCredential, { watchShowCredentialDoneSaga, watchShowCredential } from '../show-credential/show-credential-store'
 
 const sagaMiddleware = createSagaMiddleware()
 
@@ -107,9 +110,10 @@ const appReducer = combineReducers({
   openIdConnect: openIdConnectReducer,
   inAppNotification: inAppNotificationReducer,
   inviteAction,
+  showCredential,
 })
 
-let middlewares = [historyRecorder, automaticCloudBackup]
+let middlewares = [historyRecorder]
 
 // "Error", "Warning", "Info", "Debug", "Trace"
 const logLevel = 'debug'
@@ -151,6 +155,8 @@ sagaMiddleware.run(function* (): Generator<*, *, *> {
     watchInvitation(),
     watchClaim(),
     watchDeleteClaim(),
+    watchShowCredential(),
+    watchShowCredentialDoneSaga(),
     watchPressEventInLockSelectionScreen(),
     watchEnableTouchId(),
     watchDisableTouchId(),

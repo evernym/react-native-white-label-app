@@ -16,7 +16,7 @@ import type {
   NotificationPayloadInfo,
   SelectedAttribute,
 } from '../push-notification/type-push-notification'
-import type { ClaimMap } from '../claim/type-claim'
+import type { ClaimMap} from '../claim/type-claim'
 import { updateAttributeClaim } from '../proof/proof-store'
 import type { LockStore } from '../lock/type-lock'
 import { applyAttributesForPresentationRequest } from './proof-request-store'
@@ -157,6 +157,8 @@ export type ProofRequestPayload = AdditionalProofDataPayload & {
   dissatisfiedAttributes?: DissatisfiedAttribute[],
   requestedAttrsJson?: RequestedAttrsJson,
   selfAttestedAttributes?: any,
+  hidden?: boolean,
+  autoAccept?: boolean,
 }
 
 export type ProofRequestProps = {

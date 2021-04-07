@@ -1598,6 +1598,83 @@ RCT_EXPORT_METHOD(credentialReject:(NSInteger)credential_handle
    }];
 }
 
+RCT_EXPORT_METHOD(credentialGetPresentationProposal:(NSInteger)credential_handle
+                                           resolver: (RCTPromiseResolveBlock) resolve
+                                           rejecter: (RCTPromiseRejectBlock) reject)
+{
+  [[[ConnectMeVcx alloc] init] credentialGetPresentationProposal:credential_handle
+                                                      completion:^(NSError *error, NSString *presentationProposal)
+  {
+    if (error != nil && error.code != 0)
+    {
+      NSString *indyErrorCode = [NSString stringWithFormat:@"%ld", (long)error.code];
+      reject(indyErrorCode, @"Error occurred while getting Presentation Proposal", error);
+    } else {
+      resolve(presentationProposal);
+    }
+  }];
+}
+
+RCT_EXPORT_METHOD(createConnection:(NSString *)sourceId
+                             resolver: (RCTPromiseResolveBlock) resolve
+                             rejecter: (RCTPromiseRejectBlock) reject)
+{
+  [[[ConnectMeVcx alloc] init] connectionCreateInvite:sourceId
+                                           completion:^(NSError *error, NSInteger connectionHandle)
+  {
+    if (error != nil && error.code != 0)
+    {
+      NSString *indyErrorCode = [NSString stringWithFormat:@"%ld", (long)error.code];
+      reject(indyErrorCode, @"Error occurred while creating connection", error);
+    } else {
+      resolve(connectionHandle);
+    }
+  }];
+}
+
+RCT_EXPORT_METHOD(createOutOfBandConnection:(NSString *)sourceId
+                                   goalCode:(NSString *)goalCode
+                                       goal:(NSString *)goal
+                                  handshake:(BOOL *)handshake
+                              requestAttach:(NSString *)requestAttach
+                                   resolver: (RCTPromiseResolveBlock) resolve
+                                   rejecter: (RCTPromiseRejectBlock) reject)
+{
+  [[[ConnectMeVcx alloc] init] connectionCreateOutofband:sourceId
+                                                goalCode:goalCode
+                                                    goal:goal
+                                               handshake:handshake
+                                           requestAttach:requestAttach
+                                              completion:^(NSError *error, NSInteger connectionHandle)
+  {
+    if (error != nil && error.code != 0)
+    {
+      NSString *indyErrorCode = [NSString stringWithFormat:@"%ld", (long)error.code];
+      reject(indyErrorCode, @"Error occurred while creating connection", error);
+    } else {
+      resolve(connectionHandle);
+    }
+  }];
+}
+
+RCT_EXPORT_METHOD(getConnectionInvite:(NSInteger)connection_handle
+                             resolver: (RCTPromiseResolveBlock) resolve
+                             rejecter: (RCTPromiseRejectBlock) reject)
+{
+  [[[ConnectMeVcx alloc] init] getConnectionInviteDetails:connection_handle
+                                              abbreviated:0
+                                               completion:^(NSError *error, NSString *invitation)
+  {
+    if (error != nil && error.code != 0)
+    {
+      NSString *indyErrorCode = [NSString stringWithFormat:@"%ld", (long)error.code];
+      reject(indyErrorCode, @"Error occurred while getting connection invitation", error);
+    } else {
+      resolve(invitation);
+    }
+  }];
+}
+
 RCT_EXPORT_METHOD(getRequestRedirectionUrl:(NSString *)url
                   resolver: (RCTPromiseResolveBlock) resolve
                   rejecter: (RCTPromiseRejectBlock) reject)

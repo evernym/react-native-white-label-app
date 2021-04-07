@@ -79,6 +79,7 @@ import {
 import { ensureVcxInitAndPoolConnectSuccess } from '../store/route-store'
 import Snackbar from 'react-native-snackbar'
 import { colors, venetianRed } from '../common/styles/constant'
+import { customLogger } from '../store/custom-logger'
 
 export const updateAttributeClaim = (
   uid: string,
@@ -668,6 +669,7 @@ export function* updateAttributeClaimAndSendProof(
     }
     yield put(proofSuccess(proof, action.uid))
   } catch (e) {
+    customLogger.log(`updateAttributeClaimAndSendProof: {:?}`, e)
     yield put(errorSendProofFail(action.uid, action.remoteDid, e))
     Snackbar.show({
       text: 'Error generating proof. Please try again.',

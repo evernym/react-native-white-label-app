@@ -4,12 +4,12 @@ import { Text, View, ScrollView, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import { verticalScale, moderateScale } from 'react-native-size-matters'
 import { colors, fontFamily, fontSizes } from '../common/styles/constant'
-import { credentialDetailsRoute } from '../common/route-constants'
+import { credentialDetailsRoute, showCredentialRoute } from '../common/route-constants'
 import type { CredentialDetailsProps } from './type-credential-details'
 import { Avatar } from '../components/avatar/avatar'
 import { DefaultLogo } from '../components/default-logo/default-logo'
 import { CredentialList } from './credential-list/credential-list'
-import { HeaderWithDeletion } from '../components'
+import { HeaderWithDeletion} from '../components'
 import { ExpandableText } from '../components/expandable-text/expandable-text'
 import { bindActionCreators } from "redux"
 import { deleteClaim } from '../claim/claim-store'
@@ -21,6 +21,7 @@ import {
   showMissingField,
   showToggleMenu,
 } from '../connection-details/utils/checkForEmptyAttributes'
+import { Button } from "../components/buttons/button";
 
 const CredentialDetails = (props: CredentialDetailsProps) => {
   const {
@@ -56,6 +57,14 @@ const CredentialDetails = (props: CredentialDetailsProps) => {
     props.deleteClaim(claimOfferUuid)
     props.navigation.goBack(null)
   }, [claimOfferUuid])
+
+  const show = async () => {
+    props.navigation.navigate(showCredentialRoute, {
+      credentialName,
+      attributes: data,
+      claimOfferUuid: claimOfferUuid,
+    })
+  }
 
   return (
     <View style={styles.container}>
@@ -112,6 +121,11 @@ const CredentialDetails = (props: CredentialDetailsProps) => {
           />
         </View>
       </ScrollView>
+      <Button
+        onPress={show}
+        label="Show"
+        svgIcon="Send"
+      />
     </View>
   )
 }

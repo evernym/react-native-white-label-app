@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
   s.source_files = "ios/**/*.{h,c,m,swift}"
   s.requires_arc = true
 
-  s.dependency "React-Core"
+  s.dependency "React"
   s.dependency "Onfido", "16.0.0"
   s.dependency "vcx"
 

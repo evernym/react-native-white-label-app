@@ -31,6 +31,7 @@ import {
   getRemotePairwiseDidAndName,
   getProofRequest,
   getConnection,
+  getSelectedCredentials,
 } from '../store/store-selector'
 import {
   PROOF_REQUESTS,
@@ -79,12 +80,13 @@ import { customLogger } from '../store/custom-logger'
 import {
   resetTempProofData,
   errorSendProofFail,
-  updateAttributeClaim,
+  updateAttributeClaim, generateProofSaga, getProof, updateAttributeClaimAndSendProof,
 } from '../proof/proof-store'
 import { secureSet, getHydrationItem } from '../services/storage'
 import { retrySaga } from '../api/api-utils'
 import { ensureVcxInitAndPoolConnectSuccess, ensureVcxInitSuccess } from '../store/route-store'
 import { PROOF_FAIL } from '../proof/type-proof'
+import { credentialPresentationSent } from '../show-credential/type-show-credential'
 
 const proofRequestInitialState = {}
 
@@ -159,13 +161,32 @@ export function convertMissingAttributeListToObject(
         key: missingAttribute.key,
       },
     }),
-    {}
+    {},
+  )
+}
+
+export const convertSelectedCredentialsToVCXFormat = (selectedCredentials: Array<Attribute>) => {
+  return selectedCredentials.reduce(
+    (acc, item) => {
+      const items = { ...acc }
+      if (Array.isArray(item)) {
+        if (item[0].claimUuid) {
+          items[`${item[0].key}`] = [
+            item[0].claimUuid,
+            true,
+            item[0].cred_info,
+          ]
+        }
+      }
+      return items
+    },
+    {},
   )
 }
 
 export const missingAttributesFound = (
   missingAttributeList: MissingAttribute[],
-  uid: string
+  uid: string,
 ) => ({
   type: MISSING_ATTRIBUTES_FOUND,
   missingAttributes: convertMissingAttributeListToObject(missingAttributeList),
@@ -320,8 +341,26 @@ export const proofSerialized = (serializedProof: string, uid: string) => ({
   uid,
 })
 
-export function* serializeProofRequestSaga(
-  action: ProofRequestReceivedAction
+export function *autoAcceptProofRequest(
+  action: ProofRequestReceivedAction,
+): Generator<*, *, *> {
+  yield call(generateProofSaga, getProof(action.payloadInfo.uid))
+  const selectedCredentials = yield select(store => getSelectedCredentials(store, action.payloadInfo.uid))
+  const attributesFilledFromCredential = convertSelectedCredentialsToVCXFormat(selectedCredentials)
+  yield call(
+    updateAttributeClaimAndSendProof,
+    updateAttributeClaim(
+      action.payloadInfo.uid,
+      action.payloadInfo.remotePairwiseDID,
+      attributesFilledFromCredential,
+      {},
+    )
+  )
+  yield put(credentialPresentationSent())
+}
+
+export function* proofRequestReceivedSaga(
+  action: ProofRequestReceivedAction,
 ): Generator<*, *, *> {
   try {
     const { proofHandle } = action.payload
@@ -329,32 +368,34 @@ export function* serializeProofRequestSaga(
       const serializedProof: string = yield call(proofSerialize, proofHandle)
       yield put(proofSerialized(serializedProof, action.payloadInfo.uid))
     }
+
+    if (action.payloadInfo.autoAccept) {
+      yield call(autoAcceptProofRequest, action)
+    }
   } catch (e) {
+    customLogger.log(`proofRequestReceivedSaga ${e}`)
     captureError(e)
-    // TODO:KS Add action for serialization failure
-    // need to figure out what happens if serialization fails
-    customLogger.log('failed to serialize proof')
   }
 }
 
 export function* watchProofRequestReceived(): any {
-  yield takeEvery(PROOF_REQUEST_RECEIVED, serializeProofRequestSaga)
+  yield takeEvery(PROOF_REQUEST_RECEIVED, proofRequestReceivedSaga)
 }
 
 function* denyProofRequestSaga(
-  action: DenyProofRequestAction
+  action: DenyProofRequestAction,
 ): Generator<*, *, *> {
   try {
     const { uid } = action
     const remoteDid: string = yield select(getProofRequestPairwiseDid, uid)
     const userPairwiseDid: string | null = yield select(
       getUserPairwiseDid,
-      remoteDid
+      remoteDid,
     )
 
     if (!userPairwiseDid) {
       customLogger.log(
-        'Connection not found while trying to deny proof request.'
+        'Connection not found while trying to deny proof request.',
       )
 
       return

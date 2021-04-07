@@ -85,6 +85,11 @@ export const getConnectionHydrationState = (state: Store) =>
 export const getAllOneTimeConnection = (state: Store) =>
   state.connections.oneTimeConnections
 
+export const getAllConnections = (state: Store) => ({
+  ...state.connections.data,
+  ...state.connections.oneTimeConnections,
+})
+
 export const getConnectionTheme = (state: Store, logoUrl: string) =>
   state.connections.connectionThemes[logoUrl] ||
   state.connections.connectionThemes['default']
@@ -143,7 +148,13 @@ export const getConnectionByProp = (
   valueToMatch: any
 ): Array<Connection> => {
   const connections = getAllConnection(state)
-  if (connections) {
+  const oneTimeConnections = getAllOneTimeConnection(state)
+  const allConnections = {
+    ...connections,
+    ...oneTimeConnections,
+  }
+
+  if (allConnections) {
     // Had to use `any` type here even though we know `Array<Connection>`
     // will be returned, as of now Flow returns mixed type for
     // all Object.{map,keys,values} operations and we can't do
@@ -151,7 +162,7 @@ export const getConnectionByProp = (
     // in this case, because for $Exact type, we should know each
     // key in advance which is not the case here because we don't know DIDs
     // with which we will make connections
-    const savedConnections: Array<any> = Object.values(connections)
+    const savedConnections: Array<any> = Object.values(allConnections)
     return savedConnections.filter(
       (connection) => connection[property] === valueToMatch
     )
@@ -265,16 +276,22 @@ export const getConnectionByUserDid = (state: Store, userDID: string) => {
 
 export const getAllConnectionsPairwiseDid = (state: Store) => {
   const connections = getAllConnection(state)
+  const oneTimeConnections = getAllOneTimeConnection(state)
+  const allConnections = {
+    ...connections,
+    ...oneTimeConnections,
+  }
 
   let myPairwiseDIDs = []
 
-  if (connections) {
-    Object.keys(connections).forEach((userDID) => {
-      if (connections[userDID] && connections[userDID].myPairwiseDid) {
+  if (allConnections) {
+    Object.keys(allConnections).forEach((userDID) => {
+      if (allConnections[userDID] && allConnections[userDID].myPairwiseDid) {
         myPairwiseDIDs.push(userDID)
       }
     })
   }
+
   return myPairwiseDIDs
 }
 
@@ -729,3 +746,16 @@ export const getOpenIdConnectVersion = (state: Store) =>
  * */
 export const getInAppNotification = (state: Store) =>
   state.inAppNotification.notification
+
+export const getSelectedCredentials = (state: Store, uid: string) => state.proofRequest[uid].data.requestedAttributes
+
+/*
+ * Selectors related to Show Credential Store
+ * */
+export const getShowCredentialData = (state: Store) => state.showCredential.data
+
+export const getShowCredentialConnectionIdentifier = (state: Store) => state.showCredential.connectionIdentifier
+
+export const getShowCredentialError = (state: Store) => state.showCredential.error
+
+export const getIsCredentialSent = (state: Store) => state.showCredential.isSent

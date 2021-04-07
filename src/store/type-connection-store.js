@@ -1,9 +1,5 @@
 // @flow
-import type {
-  AriesAttachedRequest,
-  AriesOutOfBandInvite,
-  InvitationPayload,
-} from '../invitation/type-invitation'
+import type { AriesAttachedRequest, AriesOutOfBandInvite, InvitationPayload } from '../invitation/type-invitation'
 import type { CustomError, GenericObject } from '../common/type-common'
 
 export const UPDATE_CONNECTION_THEME = 'UPDATE_CONNECTION_THEME'
@@ -34,6 +30,7 @@ export type Connection = {
   attachedRequest?: AriesAttachedRequest,
   isFetching?: boolean,
   isCompleted?: boolean,
+  thid?: string,
 } & MyPairwiseInfo
 
 export const DELETE_PENDING_CONNECTION = 'DELETE_PENDING_CONNECTION'
@@ -180,3 +177,15 @@ export const connectionSuccess = (identifier: string, senderDid: string) => ({
   identifier,
   senderDid,
 })
+
+export const DELETE_ONE_TIME_CONNECTION = 'DELETE_ONE_TIME_CONNECTION'
+export type DeleteOneTimeConnectionAction = {
+  type: typeof DELETE_ONE_TIME_CONNECTION,
+  identifier: string,
+}
+
+export const DELETE_ONE_TIME_CONNECTION_SUCCESS = 'DELETE_ONE_TIME_CONNECTION_SUCCESS'
+export type DeleteOneTimeConnectionSuccessAction = {
+  type: typeof DELETE_ONE_TIME_CONNECTION_SUCCESS,
+  identifier: string,
+}

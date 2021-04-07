@@ -634,6 +634,7 @@ export function* updatePayloadToRelevantStoreSaga(
               uid,
               senderLogoUrl,
               remotePairwiseDID,
+              ...additionalData.additionalPayloadInfo,
             }
           )
         )

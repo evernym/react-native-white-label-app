@@ -1797,6 +1797,85 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
         }
     }
 
+    @ReactMethod
+    public void credentialGetPresentationProposal(int credentialHandle, Promise promise) {
+        Log.d(TAG, "credentialGetPresentationProposal()");
+        try {
+            CredentialApi.credentialGetPresentationProposal(credentialHandle).exceptionally((t) -> {
+                VcxException ex = (VcxException) t;
+                ex.printStackTrace();
+                Log.e(TAG, "credentialGetPresentationProposal - Error: ", ex);
+                promise.reject(String.valueOf(ex.getSdkErrorCode()), ex.getSdkMessage());
+                return null;
+            }).thenAccept(result -> BridgeUtils.resolveIfValid(promise, result));
+
+        } catch (VcxException e) {
+            e.printStackTrace();
+            Log.e(TAG, "credentialGetPresentationProposal - Error: ", e);
+            promise.reject(String.valueOf(e.getSdkErrorCode()), e.getSdkMessage());
+        }
+    }
+
+    @ReactMethod
+    public void createConnection(String sourceId, Promise promise) {
+        Log.d(TAG, "vcxConnectionCreate()");
+        try {
+            ConnectionApi.vcxConnectionCreate(sourceId).whenComplete((result, e) -> {
+                if (e != null) {
+                    VcxException ex = (VcxException) e;
+                    ex.printStackTrace();
+                    Log.e(TAG, "vcxConnectionCreate - Error: ", ex);
+                    promise.reject(String.valueOf(ex.getSdkErrorCode()), ex.getSdkMessage());
+                } else {
+                    BridgeUtils.resolveIfValid(promise, result);
+                }
+            });
+        } catch (VcxException e) {
+            e.printStackTrace();
+            Log.e(TAG, "vcxConnectionCreate - Error: ", e);
+            promise.reject(String.valueOf(e.getSdkErrorCode()), e.getSdkMessage());
+        }
+    }
+
+    @ReactMethod
+    public void createOutOfBandConnection(String sourceId, String goalCode, String goal, boolean handshake, String requestAttach, Promise promise) {
+        Log.d(TAG, "connectionCreateOutofband()");
+        try {
+            ConnectionApi.vcxConnectionCreateOutofband(sourceId, goalCode, goal, handshake, requestAttach).whenComplete((result, e) -> {
+                if (e != null) {
+                    VcxException ex = (VcxException) e;
+                    ex.printStackTrace();
+                    Log.e(TAG, "connectionCreateOutofband - Error: ", ex);
+                    promise.reject(String.valueOf(ex.getSdkErrorCode()), ex.getSdkMessage());
+                } else {
+                    BridgeUtils.resolveIfValid(promise, result);
+                }
+            });
+        } catch (VcxException e) {
+            e.printStackTrace();
+            Log.e(TAG, "connectionCreateOutofband - Error: ", e);
+            promise.reject(String.valueOf(e.getSdkErrorCode()), e.getSdkMessage());
+        }
+    }
+
+    @ReactMethod
+    public void getConnectionInvite(int connectionHandle, Promise promise) {
+        Log.d(TAG, "connectionInviteDetails()");
+        try {
+            ConnectionApi.connectionInviteDetails(connectionHandle, 0).exceptionally((t) -> {
+                VcxException ex = (VcxException) t;
+                ex.printStackTrace();
+                Log.e(TAG, "connectionInviteDetails - Error: ", ex);
+                promise.reject(String.valueOf(ex.getSdkErrorCode()), ex.getSdkMessage());
+                return null;
+            }).thenAccept(result -> BridgeUtils.resolveIfValid(promise, result));
+        } catch (VcxException e) {
+            e.printStackTrace();
+            Log.e(TAG, "connectionInviteDetails - Error: ", e);
+            promise.reject(String.valueOf(e.getSdkErrorCode()), e.getSdkMessage());
+        }
+    }
+
   @ReactMethod
   public void getRequestRedirectionUrl(String url, Promise promise) {
     try {

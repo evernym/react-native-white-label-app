@@ -39,7 +39,6 @@ import type {
   AgencyPoolConfig,
   MessagePaymentDetails,
 } from '../../store/type-config-store'
-import type { MyPairwiseInfo } from '../../store/type-connection-store'
 import type {
   ClaimPushPayload,
   GetClaimVcxResult,
@@ -60,30 +59,21 @@ import {
   convertSovrinAtomsToSovrinTokens,
   convertVcxLedgerFeesToLedgerFees,
 } from '../../sovrin-token/sovrin-token-converter'
+import { uuid } from "../../services/uuid";
+import type { GenericObject } from '../../common/type-common'
 
 const { RNIndy } = NativeModules
 
 export async function acceptInvitationVcx(
   connectionHandle: number
-): Promise<MyPairwiseInfo> {
-  // hard coding connection options to QR type for now, because vcx needs connection options
-  // API for vcx assumes that it is running on enterprise side and not from consumer side
-  // hence it tries to create connection with connection type.
-  // However, our need is not to create a connection but to create a connection instance
-  // with existing invitation. So, for now for any invitation type QR or SMS
-  // we are hard coding connection option to QR
-  const connectionOptions = { connection_type: 'QR', phone: '' }
-  await RNIndy.vcxAcceptInvitation(
-    connectionHandle,
-    JSON.stringify(connectionOptions)
-  )
+): Promise<GenericObject> {
+  await RNIndy.vcxAcceptInvitation(connectionHandle, '{}')
+
   // TODO:KS Remove below API call once sdk team returns pairwise info in above api
   // above call does not return pairwise did information, but we need pairwise info
   // to store that information and have those details available while making a connection
   // we have to make an extra call to get pairwise info
-  const serializedConnection: string = await serializeConnection(
-    connectionHandle
-  )
+  const serializedConnection: string = await serializeConnection(connectionHandle)
 
   const {
     data,
@@ -99,7 +89,10 @@ export async function acceptInvitationVcx(
   // } else if (data.pw_did) {
   // }
 
-  return convertVcxConnectionToCxsConnection(data)
+  return {
+    connection: convertVcxConnectionToCxsConnection(data),
+    serializedConnection
+  }
 }
 
 export async function updatePushTokenVcx(pushTokenConfig: CxsPushTokenConfig) {
@@ -930,4 +923,45 @@ export async function getRequestRedirectionUrl(
   url: string
 ): Promise<string> {
   return RNIndy.getRequestRedirectionUrl(url)
+}
+
+export async function credentialGetPresentationProposal(
+  url: string
+): Promise<string> {
+  return RNIndy.credentialGetPresentationProposal(url)
+}
+
+export async function createOutOfBandConnectionInvitation(
+  goal: string,
+  handshake?: boolean,
+  attachment?: string | null,
+): Promise<GenericObject> {
+  const connectionHandle = await RNIndy.createOutOfBandConnection(
+    uuid(),
+    null,
+    goal,
+    handshake,
+    attachment
+  )
+
+  let {
+    connection: pairwiseInfo,
+    serializedConnection: vcxSerializedConnection,
+  } =  await acceptInvitationVcx(connectionHandle)
+
+  const invitation = await getConnectionInvite(connectionHandle)
+
+  return {
+    pairwiseInfo,
+    vcxSerializedConnection,
+    invitation,
+  }
+}
+
+export async function createConnection(): Promise<number> {
+  return RNIndy.createConnection(uuid())
+}
+
+export async function getConnectionInvite(connectionHandle: number): Promise<string> {
+  return RNIndy.getConnectionInvite(connectionHandle)
 }
