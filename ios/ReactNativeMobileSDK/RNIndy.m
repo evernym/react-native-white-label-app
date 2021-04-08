@@ -1627,7 +1627,7 @@ RCT_EXPORT_METHOD(createConnection:(NSString *)sourceId
       NSString *indyErrorCode = [NSString stringWithFormat:@"%ld", (long)error.code];
       reject(indyErrorCode, @"Error occurred while creating connection", error);
     } else {
-      resolve(connectionHandle);
+      resolve(@(connectionHandle));
     }
   }];
 }
@@ -1652,7 +1652,7 @@ RCT_EXPORT_METHOD(createOutOfBandConnection:(NSString *)sourceId
       NSString *indyErrorCode = [NSString stringWithFormat:@"%ld", (long)error.code];
       reject(indyErrorCode, @"Error occurred while creating connection", error);
     } else {
-      resolve(connectionHandle);
+      resolve(@(connectionHandle));
     }
   }];
 }
@@ -1662,8 +1662,8 @@ RCT_EXPORT_METHOD(getConnectionInvite:(NSInteger)connection_handle
                              rejecter: (RCTPromiseRejectBlock) reject)
 {
   [[[ConnectMeVcx alloc] init] getConnectionInviteDetails:connection_handle
-                                              abbreviated:0
-                                               completion:^(NSError *error, NSString *invitation)
+                                              abbreviated:FALSE
+                                               withCompletion:^(NSError *error, NSString *invitation)
   {
     if (error != nil && error.code != 0)
     {
