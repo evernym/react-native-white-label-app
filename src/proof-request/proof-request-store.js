@@ -31,7 +31,7 @@ import {
   getRemotePairwiseDidAndName,
   getProofRequest,
   getConnection,
-  getSelectedCredentials,
+  getSelectedCredentials, getShowCredentialUuid,
 } from '../store/store-selector'
 import {
   PROOF_REQUESTS,
@@ -165,18 +165,13 @@ export function convertMissingAttributeListToObject(
   )
 }
 
-export const convertSelectedCredentialsToVCXFormat = (selectedCredentials: Array<Attribute>) => {
+export const convertSelectedCredentialsToVCXFormat = (selectedCredentials: Array<Attribute>, credentialUuid?: string) => {
   return selectedCredentials.reduce(
     (acc, item) => {
       const items = { ...acc }
-      if (Array.isArray(item)) {
-        if (item[0].claimUuid) {
-          items[`${item[0].key}`] = [
-            item[0].claimUuid,
-            true,
-            item[0].cred_info,
-          ]
-        }
+      if (Array.isArray(item) && item.length > 0) {
+        const cred = credentialUuid && item.find(credential => credential.claimUuid === credentialUuid) || item[0]
+        items[cred.key] = [cred.claimUuid, true, cred.cred_info]
       }
       return items
     },
@@ -346,7 +341,8 @@ export function *autoAcceptProofRequest(
 ): Generator<*, *, *> {
   yield call(generateProofSaga, getProof(action.payloadInfo.uid))
   const selectedCredentials = yield select(store => getSelectedCredentials(store, action.payloadInfo.uid))
-  const attributesFilledFromCredential = convertSelectedCredentialsToVCXFormat(selectedCredentials)
+  const credentialUuid = yield select(getShowCredentialUuid)
+  const attributesFilledFromCredential = convertSelectedCredentialsToVCXFormat(selectedCredentials, credentialUuid)
   yield call(
     updateAttributeClaimAndSendProof,
     updateAttributeClaim(

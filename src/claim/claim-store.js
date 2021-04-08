@@ -369,8 +369,8 @@ export function* getClaim(claimOfferUuid: string): Generator<*, *, *> {
     return
   }
 
-  const claim: GenericObject = yield select(getClaimForOffer, claimOffer)
-  if (!claim){
+  const { claimUuid, claim }: GenericObject = yield select(getClaimForOffer, claimOffer)
+  if (!claim || !claimUuid){
     return
   }
 
@@ -388,6 +388,7 @@ export function* getClaim(claimOfferUuid: string): Generator<*, *, *> {
 
   return {
     claim,
+    claimUuid,
     handle: claimHandle,
     vcxSerializedClaimOffer
   }

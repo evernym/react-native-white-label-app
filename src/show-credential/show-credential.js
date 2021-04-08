@@ -22,7 +22,7 @@ import {
   getShowCredentialError,
 } from '../store/store-selector'
 import { Loader } from '../components'
-import { showCredential, credentialPresentationSent } from './type-show-credential'
+import { showCredential, showCredentialFinished } from './type-show-credential'
 
 const { width } = Dimensions.get('screen')
 
@@ -42,13 +42,13 @@ export const ShowCredential = ({
 
   useEffect(() => {
     if (isSent) {
-      goBack(null)
+      onDone()
     }
   }, [isSent])
 
   const onDone = useCallback(() => {
     goBack(null)
-    dispatch(credentialPresentationSent())
+    dispatch(showCredentialFinished())
   }, [dispatch])
 
   useEffect(() => {
@@ -56,6 +56,12 @@ export const ShowCredential = ({
       Alert.alert(
         'Cannot show credential',
         error,
+        [
+          {
+            text: 'OK',
+            onPress: onDone,
+          },
+        ]
       )
     }
   }, [error])

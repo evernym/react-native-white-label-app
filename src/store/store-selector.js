@@ -472,13 +472,22 @@ export const getAllInvitations = (state: Store) => state.invitation
  * */
 export const getClaimMap = (state: Store) => state.claim.claimMap
 
-export const getClaimForOffer = (state: Store, offer: ClaimOfferPayload) =>
-  Object.values(state.claim.claimMap).find(
-    (claim: any) =>
+export const getClaimForOffer = (state: Store, offer: ClaimOfferPayload) => {
+  for (const claimUuid of Object.keys(state.claim.claimMap)) {
+    let claim = state.claim.claimMap[claimUuid]
+    if (
       claim.senderDID === offer.remotePairwiseDID &&
       claim.name === offer.data.name &&
       claim.issueDate === offer.issueDate
-  )
+    ){
+      return {
+        claimUuid,
+        claim,
+      }
+    }
+  }
+  return {}
+}
 
 /*
  * Selectors related to Proof Store
@@ -755,6 +764,8 @@ export const getSelectedCredentials = (state: Store, uid: string) => state.proof
 export const getShowCredentialData = (state: Store) => state.showCredential.data
 
 export const getShowCredentialConnectionIdentifier = (state: Store) => state.showCredential.connectionIdentifier
+
+export const getShowCredentialUuid = (state: Store) => state.showCredential.credentialUuid
 
 export const getShowCredentialError = (state: Store) => state.showCredential.error
 

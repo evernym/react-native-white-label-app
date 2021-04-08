@@ -8,7 +8,8 @@ import { customLogger } from '../store/custom-logger'
 import { getClaim } from '../claim/claim-store'
 import type {
   ShowCredentialAction,
-  ShowCredentialActions, CredentialPresentationSentAction,
+  ShowCredentialActions,
+  CredentialPresentationSentAction,
   ShowCredentialStore,
 } from './type-show-credential'
 import {
@@ -16,9 +17,10 @@ import {
   CREDENTIAL_PRESENTATION_SENT,
   SHOW_CREDENTIAL_FAIL,
   SHOW_CREDENTIAL_READY,
+  SHOW_CREDENTIAL_FINISHED,
   ShowCredentialStoreInitialState,
   showCredentialFail,
-  showCredentialReady, SHOW_CREDENTIAL_DONE, showCredentialDone,
+  showCredentialReady,
 } from './type-show-credential'
 import { getShowCredentialConnectionIdentifier } from '../store/store-selector'
 
@@ -61,7 +63,7 @@ export function* preparePresentationProposalSaga(
       thid: JSON.parse(presentationProposal)['@id'],
     }
 
-    yield put(showCredentialReady(invitation, connection.identifier))
+    yield put(showCredentialReady(invitation, claim.claimUuid, connection.identifier))
     yield put(saveNewOneTimeConnection(connection))
   } catch (error) {
     customLogger.log(`preparePresentationProposalSaga: error: ${error}`)
@@ -73,16 +75,17 @@ export function* watchShowCredential(): any {
   yield takeEvery(SHOW_CREDENTIAL, preparePresentationProposalSaga)
 }
 
-export function* credentialPresentationSentSaga(
+export function* credentialPresentationFinishedSaga(
   action: CredentialPresentationSentAction,
 ): Generator<*, *, *> {
-  yield put(showCredentialDone())
   const connectionIdentifier = yield select(getShowCredentialConnectionIdentifier)
-  yield put(deleteOneTimeConnection(connectionIdentifier))
+  if (connectionIdentifier) {
+    yield put(deleteOneTimeConnection(connectionIdentifier))
+  }
 }
 
-export function* watchShowCredentialDoneSaga(): any {
-  yield takeEvery(CREDENTIAL_PRESENTATION_SENT, credentialPresentationSentSaga)
+export function* watchShowCredentialFinishedSaga(): any {
+  yield takeEvery(SHOW_CREDENTIAL_FINISHED, credentialPresentationFinishedSaga)
 }
 
 export default function showCredentialReducer(
@@ -96,6 +99,7 @@ export default function showCredentialReducer(
       return {
         ...state,
         data: action.presentationProposal,
+        credentialUuid: action.credentialUuid,
         connectionIdentifier: action.connectionIdentifier,
       }
     case SHOW_CREDENTIAL_FAIL:
@@ -109,7 +113,7 @@ export default function showCredentialReducer(
         isSent: true,
       }
 
-    case SHOW_CREDENTIAL_DONE:
+    case SHOW_CREDENTIAL_FINISHED:
       return ShowCredentialStoreInitialState
 
     default:

@@ -926,9 +926,9 @@ export async function getRequestRedirectionUrl(
 }
 
 export async function credentialGetPresentationProposal(
-  url: string
+  credentialHandle: number
 ): Promise<string> {
-  return RNIndy.credentialGetPresentationProposal(url)
+  return RNIndy.credentialGetPresentationProposal(credentialHandle)
 }
 
 export async function createOutOfBandConnectionInvitation(
