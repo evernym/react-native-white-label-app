@@ -1,7 +1,10 @@
 // @flow
 import React from 'react'
 import { connect } from 'react-redux'
-import { AppState } from 'react-native'
+import { AppState, StyleSheet, View, Dimensions } from 'react-native'
+import SplashScreen from 'react-native-splash-screen'
+import { BlurView } from '@react-native-community/blur'
+
 import { getUnacknowledgedMessages } from './../store/config-store'
 import { getRestoreStatus } from './../store/store-selector'
 import type { Store } from './../store/type-store'
@@ -12,7 +15,7 @@ import type {
   ConnectProps,
 } from './type-app-status'
 
-class AppStatusComponent extends React.Component<
+export class AppStatusComponent extends React.Component<
   AppStatusProps,
   AppStatusState
 > {
@@ -42,9 +45,40 @@ class AppStatusComponent extends React.Component<
   }
 
   render() {
+    if (this.state.appState && this.state.appState.match(/inactive|background/)) {
+      return (
+        <View style={styles.container}>
+          <BlurView 
+            style={styles.blurView}
+            reducedTransparencyFallbackColor={String('gray')}
+            blurType='light'
+            blurAmount={20}
+          />
+        </View>
+      )
+    }
+
     return null
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    zIndex:1,
+    position: "absolute",
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0
+  },
+  blurView:{
+    position: "absolute",
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0
+  }
+})
 
 const mapStateToProps = (state: Store): ConnectProps => {
   return {
