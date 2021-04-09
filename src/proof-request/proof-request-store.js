@@ -280,7 +280,7 @@ function* getConnectionHandle(
   try {
     const [connection]: [Connection] = yield select(getConnection, remoteDid)
 
-    if (!connection.vcxSerializedConnection) {
+    if (!connection || !connection.vcxSerializedConnection) {
       captureError(new Error('OCS-002 No pairwise connection found'))
       yield put(
         errorSendProofFail(uid, remoteDid, {

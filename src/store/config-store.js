@@ -161,6 +161,7 @@ import type {
   InviteActionRequest,
 } from '../invite-action/type-invite-action'
 import { INVITE_ACTION_PROTOCOL } from '../invite-action/type-invite-action'
+import { updateVerifierState } from "../verifier/verifier-store";
 
 /**
  * this file contains configuration which is changed only from user action
@@ -1340,6 +1341,9 @@ function* handleAriesMessage(message: DownloadedMessage): Generator<*, *, *> {
       let message = payload['@msg']
       let proofRequest = JSON.parse(message)
 
+      console.log('proofrequest')
+      console.log(message)
+
       if (proofRequest['~service']) {
         // Aries Proof Request
         message = yield call(convertToAriesProofRequest, proofRequest)
@@ -1412,6 +1416,15 @@ function* handleAriesMessage(message: DownloadedMessage): Generator<*, *, *> {
       )
 
       messageType = MESSAGE_TYPE.INVITE_ACTION
+
+      yield fork(updateMessageStatus, [{ pairwiseDID: forDID, uids: [uid] }])
+    }
+
+    if (payloadType.name === 'presentation') {
+      yield call(
+        updateVerifierState,
+        payload['@msg']
+      )
 
       yield fork(updateMessageStatus, [{ pairwiseDID: forDID, uids: [uid] }])
     }

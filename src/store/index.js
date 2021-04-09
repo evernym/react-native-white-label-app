@@ -78,6 +78,7 @@ import inviteAction, {
   watchInviteAction,
 } from '../invite-action/invite-action-store'
 import showCredential, { watchShowCredentialFinishedSaga, watchShowCredential } from '../show-credential/show-credential-store'
+import verifier, { watchVerifier } from "../verifier/verifier-store";
 
 const sagaMiddleware = createSagaMiddleware()
 
@@ -111,6 +112,7 @@ const appReducer = combineReducers({
   inAppNotification: inAppNotificationReducer,
   inviteAction,
   showCredential,
+  verifier,
 })
 
 let middlewares = [historyRecorder]
@@ -129,7 +131,7 @@ let reduxLogger = createLogger({
     error: logLevel,
   },
 })
-middlewares.push(reduxLogger)
+// middlewares.push(reduxLogger)
 
 middlewares.push(sagaMiddleware)
 
@@ -186,6 +188,7 @@ sagaMiddleware.run(function* (): Generator<*, *, *> {
     watchOutOfBandConnectionForPresentationEstablished(),
     watchLongPollingHome(),
     watchInviteAction(),
+    watchVerifier(),
   ])
 })
 

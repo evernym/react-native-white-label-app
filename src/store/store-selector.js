@@ -770,3 +770,10 @@ export const getShowCredentialUuid = (state: Store) => state.showCredential.cred
 export const getShowCredentialError = (state: Store) => state.showCredential.error
 
 export const getIsCredentialSent = (state: Store) => state.showCredential.isSent
+
+/*
+ * Selectors related to Verifier Store
+ * */
+export const getVerifiers = (state: Store) => state.verifier
+
+export const getVerifier = (state: Store, uuid: string) => state.verifier[uuid]

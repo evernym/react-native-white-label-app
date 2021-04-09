@@ -18,7 +18,7 @@ import {
   homeDrawerRoute,
   homeRoute,
   invitationRoute,
-  openIdConnectRoute,
+  openIdConnectRoute, presentationProposalRoute,
   proofRequestRoute,
   pushNotificationPermissionRoute,
   qrCodeScannerTabRoute,
@@ -38,6 +38,7 @@ import type {
   QRCodeScannerScreenState,
 } from './type-qr-code'
 import type {
+  AriesPresentationProposal,
   AriesPresentationRequest,
   ProofRequestPayload,
   QrCodeEphemeralProofRequest,
@@ -63,7 +64,10 @@ import {
 import { ID, TYPE } from '../common/type-common'
 import { proofRequestReceived } from '../proof-request/proof-request-store'
 import { claimOfferReceived } from '../claim-offer/claim-offer-store'
-import { validateOutofbandProofRequestQrCode } from '../proof-request/proof-request-qr-code-reader'
+import {
+  presentationProposalSchema,
+  validateOutofbandProofRequestQrCode
+} from '../proof-request/proof-request-qr-code-reader'
 import { getPushNotificationAuthorizationStatus } from '../push-notification/components/push-notification-permission-screen'
 import Snackbar from 'react-native-snackbar'
 import { convertShortProprietaryInvitationToAppInvitation } from '../invitation/kinds/proprietary-connection-invitation'
@@ -74,6 +78,8 @@ import {
   prepareParamsForExistingConnectionRedirect,
 } from '../invitation/invitation-helpers'
 import { usePushNotifications } from '../external-imports'
+import { schemaValidator } from "../services/schema-validator";
+import { presentationProposalReceived } from "../verifier/verifier-store";
 
 export class QRCodeScannerScreen extends Component<
   QRCodeScannerScreenProps,
@@ -472,8 +478,32 @@ export class QRCodeScannerScreen extends Component<
           attachedRequest: req,
           senderName: invitation.senderName,
         })
+      } else if (req[TYPE].endsWith('propose-presentation')) {
+        const presentationProposal = (req: AriesPresentationProposal)
+        if (!schemaValidator.validate(presentationProposalSchema, presentationProposal)) {
+          Alert.alert('Invalid invitation', "Invalid formatted Presentation Proposal")
+          return
+        }
+
+        const uid = presentationProposal[ID]
+
+        this.props.presentationProposalReceived(presentationProposal, {
+          uid,
+          senderLogoUrl: invitation.senderLogoUrl,
+          remotePairwiseDID: invitation.senderDID,
+          hidden: true,
+        })
+
+        await this.handleOutOfBandNavigation({
+          mainRoute: presentationProposalRoute,
+          backRedirectRoute: this.props.route.params?.backRedirectRoute,
+          uid: uid,
+          invitationPayload: invitation,
+          attachedRequest: req,
+          senderName: invitation.senderName,
+        })
       }
-    } else {
+    }  else {
       // Implement this case
       this.props.navigation.goBack(null)
       Alert.alert(
@@ -519,6 +549,7 @@ const mapDispatchToProps = (dispatch) =>
       openIdConnectUpdateStatus,
       claimOfferReceived,
       proofRequestReceived,
+      presentationProposalReceived,
     },
     dispatch
   )

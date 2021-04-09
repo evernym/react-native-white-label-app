@@ -1708,4 +1708,149 @@ RCT_EXPORT_METHOD(getRequestRedirectionUrl:(NSString *)url
   [dataTask resume];
 }
 
+  /*
+   * Proof Verifier API
+   */
+RCT_EXPORT_METHOD(createProofVerifierWithProposal:(NSString *)sourceId
+                              presentationProposal:(NSString *)presentationProposal
+                                              name:(NSString *)name
+                                          resolver: (RCTPromiseResolveBlock) resolve
+                                          rejecter: (RCTPromiseRejectBlock) reject)
+{
+    [[[ConnectMeVcx alloc] init] createProofVerifierWithProposal:sourceId
+                                            presentationProposal:presentationProposal
+                                                            name:name
+                                                      completion:^(NSError *error, NSInteger handle) {
+      if (error != nil && error.code != 0)
+      {
+        NSString *indyErrorCode = [NSString stringWithFormat:@"%ld", (long)error.code];
+        reject(indyErrorCode, @"Error occurred while creating proof verifier with proposal", error);
+      } else {
+        resolve(@(handle));
+      }
+    }];
+}
+
+RCT_EXPORT_METHOD(proofVerifierUpdateState: (NSInteger) proofHandle
+                                  resolver: (RCTPromiseResolveBlock) resolve
+                                  rejecter: (RCTPromiseRejectBlock) reject)
+{
+  [[[ConnectMeVcx alloc] init] proofVerifierUpdateState:proofHandle
+                                             completion:^(NSError *error, NSInteger state)
+  {
+    if (error != nil && error.code != 0) {
+      NSString *indyErrorCode = [NSString stringWithFormat:@"%ld", (long)error.code];
+      reject(indyErrorCode, @"Error occurred while updating proof verifier state", error);
+    } else {
+      resolve(@(state));
+    }
+  }];
+}
+
+RCT_EXPORT_METHOD(proofVerifierUpdateStateWithMessage: (NSInteger) proofHandle
+                                              message:(NSString *)message
+                                             resolver: (RCTPromiseResolveBlock) resolve
+                                             rejecter: (RCTPromiseRejectBlock) reject)
+{
+  [[[ConnectMeVcx alloc] init] proofVerifierUpdateStateWithMessage:proofHandle
+                                                           message:message
+                                                        completion:^(NSError *error, NSInteger state)
+  {
+    if (error != nil && error.code != 0) {
+      NSString *indyErrorCode = [NSString stringWithFormat:@"%ld", (long)error.code];
+      reject(indyErrorCode, @"Error occurred while updating proof verifier state", error);
+    } else {
+      resolve(@(state));
+    }
+  }];
+}
+
+RCT_EXPORT_METHOD(proofVerifierGetState: (NSInteger) proofHandle
+                               resolver: (RCTPromiseResolveBlock) resolve
+                               rejecter: (RCTPromiseRejectBlock) reject)
+{
+  [[[ConnectMeVcx alloc] init] proofVerifierGetState:proofHandle
+                                          completion:^(NSError *error, NSInteger state)
+  {
+    if (error != nil && error.code != 0) {
+      NSString *indyErrorCode = [NSString stringWithFormat:@"%ld", (long)error.code];
+      reject(indyErrorCode, @"Error occurred while getting proof verifier state", error);
+    } else {
+      resolve(@(state));
+    }
+  }];
+}
+
+RCT_EXPORT_METHOD(proofVerifierSendRequest: (NSInteger) proofHandle
+                          connectionHandle: (NSInteger) connectionHandle
+                                  resolver: (RCTPromiseResolveBlock) resolve
+                                  rejecter: (RCTPromiseRejectBlock) reject)
+{
+  [[[ConnectMeVcx alloc] init] proofVerifierSendRequest:credentialHandle
+                                       connectionHandle:connectionHandle
+                                             completion:^(NSError *error) {
+    if (error != nil && error.code != 0)
+    {
+      NSString *indyErrorCode = [NSString stringWithFormat:@"%ld", (long)error.code];
+      reject(indyErrorCode, @"Error occurred while sending proof request", error);
+    }
+    else {
+      resolve(@{});
+    }
+  }];
+}
+
+RCT_EXPORT_METHOD(proofVerifierSerialize: (NSInteger)proofHandle
+                                resolver: (RCTPromiseResolveBlock) resolve
+                                rejecter: (RCTPromiseRejectBlock) reject)
+{
+  [[[ConnectMeVcx alloc] init] proofVerifierSerialize:proofHandle
+                                           completion:^(NSError *error, NSString *serialized) {
+    if (error != nil && error.code != 0)
+    {
+      NSString *indyErrorCode = [NSString stringWithFormat:@"%ld", (long)error.code];
+      reject(indyErrorCode, @"Error occurred while serializing proof verifier", error);
+    }else{
+      resolve(serialized);
+    }
+  }];
+}
+
+RCT_EXPORT_METHOD(proofVerifierDeserialize: (NSString *)serialized
+                                  resolver: (RCTPromiseResolveBlock) resolve
+                                  rejecter: (RCTPromiseRejectBlock) reject)
+{
+  [[[ConnectMeVcx alloc] init] proofVerifierDeserialize:serialized
+                                             completion:^(NSError *error, NSInteger proofHandle) {
+    if (error != nil && error.code != 0) {
+      NSString *indyErrorCode = [NSString stringWithFormat:@"%ld", (long)error.code];
+      reject(indyErrorCode, @"Error occurred while deserializing proof verifier", error);
+    }
+    else {
+      resolve(@(proofHandle));
+    }
+  }];
+}
+
+RCT_EXPORT_METHOD(proofVerifierGetProofMessage:(NSInteger) proofHandle
+                                      resolver: (RCTPromiseResolveBlock) resolve
+                                      rejecter: (RCTPromiseRejectBlock) reject)
+{
+  [[[ConnectMeVcx alloc] init] proofVerifierGetProofMessage:proofHandle
+                                                 completion:^(NSError *error, NSInteger proofState, NSString *message)
+  {
+    if (error != nil && error.code != 0) {
+      NSString *indyErrorCode = [NSString stringWithFormat:@"%ld", (long)error.code];
+      reject(indyErrorCode, @"Error occurred while getting proof", error);
+    }
+    else {
+      resolve(@{
+        @"proofState": @(proofState),
+        @"message": message
+      });
+    }
+  }];
+}
+
+
 @end

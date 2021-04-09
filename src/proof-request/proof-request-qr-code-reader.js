@@ -227,3 +227,42 @@ const proofRequestDataSchema = {
   },
   required: ['name', 'version', 'requested_attributes'],
 }
+
+export const presentationProposalSchema = {
+  type: 'object',
+  properties: {
+    '@id': { type: 'string', minLength: 4, maxLength: 1024 },
+    '@type': { type: 'string', minLength: 3, maxLength: 500 },
+    comment: { type: ['null', 'string'] },
+    presentation_proposal: {
+      type: 'object',
+      '@type': { type: 'string', minLength: 3, maxLength: 500 },
+      attributes: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            name: { type: 'string', minLength: 1, maxLength: 1024 },
+            value: { type: ['null', 'string'] },
+            cred_def_id: { type: ['null', 'string'] },
+          },
+          required: ['name'],
+        },
+      },
+      predicates: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            name: { type: 'string', minLength: 1, maxLength: 1024 },
+            predicate: { type: ['null', 'string'] },
+            threshold: { type: ['null', 'string'] },
+            cred_def_id: { type: ['null', 'string'] },
+          },
+          required: ['name'],
+        },
+      },
+    },
+  },
+  required: ['@id', '@type', 'presentation_proposal'],
+}

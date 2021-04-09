@@ -965,3 +965,31 @@ export async function createConnection(): Promise<number> {
 export async function getConnectionInvite(connectionHandle: number): Promise<string> {
   return RNIndy.getConnectionInvite(connectionHandle)
 }
+
+export async function createProofVerifierWithProposal(presentationProposal: string, name: string): Promise<string> {
+  return RNIndy.createProofVerifierWithProposal(
+    uuid(),
+    presentationProposal,
+    name,
+  )
+}
+
+export async function proofVerifierSendRequest(handle: number, connectionHandle: number): Promise<null> {
+  return RNIndy.proofVerifierSendRequest(handle, connectionHandle)
+}
+
+export async function proofVerifierSerialize(handle: number): Promise<string> {
+  return RNIndy.proofVerifierSerialize(handle)
+}
+
+export async function proofVerifierDeserialize(serialized: number): Promise<number> {
+  return RNIndy.proofVerifierDeserialize(serialized,)
+}
+
+export async function proofVerifierUpdateStateWithMessage(handle: number, message: number): Promise<number> {
+  return RNIndy.proofVerifierUpdateStateWithMessage(handle, message)
+}
+
+export async function proofVerifierGetProofMessage(handle: number): Promise<any> {
+  return RNIndy.proofVerifierGetProofMessage(handle)
+}

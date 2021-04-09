@@ -501,3 +501,29 @@ export const ATTRIBUTE_TYPE = {
   FILLED_PREDICATE: 'FILLED_PREDICATE',
   DISSATISFIED_PREDICATE: 'DISSATISFIED_PREDICATE',
 }
+
+export type AriesPresentationPreviewAttribute = {
+  name: string,
+  value?: string | null,
+  cred_def_id?: string | null,
+}
+
+export type AriesPresentationPreviewPredicate = {
+  name: string,
+  predicate?: string | null,
+  threshold?: string | null,
+  cred_def_id?: string | null,
+}
+
+export type AriesPresentationPreview = {
+  '@type': string,
+  attributes?: Array<AriesPresentationPreviewAttribute>,
+  predicates?: Array<AriesPresentationPreviewPredicate>,
+}
+
+export type AriesPresentationProposal = {
+  '@id': string,
+  '@type': string,
+  comment: string,
+  presentation_proposal: AriesPresentationPreview,
+}

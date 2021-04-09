@@ -106,6 +106,7 @@ import {
 } from '../external-imports'
 import { inviteActionScreen } from '../invite-action/invite-action-screen'
 import { ShowCredentialScreen } from "../show-credential/show-credential";
+import { PresentationProposalScreen } from "../verifier/presentation-proposal-screen";
 
 if (Platform.OS !== 'android') {
   enableScreens()
@@ -553,6 +554,11 @@ export function MSDKAppNavigator() {
         name={ShowCredentialScreen.routeName}
         component={ShowCredentialScreen.screen}
         options={ShowCredentialScreen.screen.navigationOptions}
+      />
+      <CardStack.Screen
+        name={PresentationProposalScreen.routeName}
+        component={PresentationProposalScreen.screen}
+        options={PresentationProposalScreen.screen.navigationOptions}
       />
 
       {usePushNotifications && (

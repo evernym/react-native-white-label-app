@@ -86,6 +86,7 @@ import { customLogger } from '../store/custom-logger'
 import { retrySaga } from '../api/api-utils'
 import { checkProtocolStatus } from '../store/protocol-status'
 import { isConnectionCompleted } from '../store/store-utils'
+import { presentationProposalAccepted } from "../verifier/verifier-store";
 
 export const invitationInitialState = {}
 
@@ -390,6 +391,8 @@ export function* sendResponseOnAriesOutOfBandInvitationWithoutHandshake(
   payload: InvitationPayload
 ): Generator<*, *, *> {
   try {
+    console.log('1 sendResponseOnAriesOutOfBandInvitationWithoutHandshake')
+
     const attachedRequest = yield call(
       getAttachedRequest,
       ((payload.originalObject: any): AriesOutOfBandInvite)
@@ -399,22 +402,40 @@ export function* sendResponseOnAriesOutOfBandInvitationWithoutHandshake(
     if (vcxResult && vcxResult.fail) {
       throw new Error({ message: vcxResult.fail.message })
     }
+    console.log('2 sendResponseOnAriesOutOfBandInvitationWithoutHandshake')
 
     const connectionHandle: number = yield call(
       createConnectionWithAriesOutOfBandInvite,
       payload
     )
 
-    yield put(invitationSuccess(payload.senderDID))
 
-    // we received an invitation reflecting one-time channel
-    const vcxSerializedConnection: string = yield call(
-      serializeConnection,
-      connectionHandle
-    )
+    let pairwiseInfo = {}
+    let vcxSerializedConnection
+    console.log('3 sendResponseOnAriesOutOfBandInvitationWithoutHandshake')
+
+    if (attachedRequest[TYPE].endsWith('offer-credential') || attachedRequest[TYPE].endsWith('propose-presentation')) {
+      console.log('4 sendResponseOnAriesOutOfBandInvitationWithoutHandshake')
+
+      // for these message we need to create agent tot use service decorator
+      const data = yield* retrySaga(
+        call(acceptInvitationVcx, connectionHandle),
+        CLOUD_AGENT_UNAVAILABLE
+      )
+      pairwiseInfo = data.connection
+      vcxSerializedConnection = data.serializedConnection
+    } else {
+      vcxSerializedConnection = yield call(
+        serializeConnection,
+        connectionHandle
+      )
+    }
+
+    yield put(invitationSuccess(payload.senderDID))
+    console.log('5 sendResponseOnAriesOutOfBandInvitationWithoutHandshake')
 
     const connection = {
-      identifier: payload.senderDID,
+      identifier: pairwiseInfo.myPairwiseDid || payload.senderDID,
       logoUrl: payload.senderLogoUrl,
       senderDID: payload.senderDID,
       senderEndpoint: payload.senderEndpoint,
@@ -422,14 +443,16 @@ export function* sendResponseOnAriesOutOfBandInvitationWithoutHandshake(
       publicDID: payload.senderDetail.publicDID,
       vcxSerializedConnection,
       attachedRequest,
-      myPairwiseDid: '',
-      myPairwiseVerKey: '',
-      myPairwiseAgentDid: '',
-      myPairwiseAgentVerKey: '',
-      myPairwisePeerVerKey: '',
+      myPairwiseDid: pairwiseInfo.myPairwiseDid,
+      myPairwiseVerKey: pairwiseInfo.myPairwiseVerKey,
+      myPairwiseAgentDid: pairwiseInfo.myPairwiseAgentDid,
+      myPairwiseAgentVerKey: pairwiseInfo.myPairwiseAgentVerKey,
+      myPairwisePeerVerKey: pairwiseInfo.myPairwisePeerVerKey,
     }
 
     yield put(saveNewOneTimeConnection(connection))
+    console.log('6 sendResponseOnAriesOutOfBandInvitationWithoutHandshake')
+
     yield* processAttachedRequest(payload.senderDID)
   } catch (e) {
     yield call(handleConnectionError, e, payload.senderDID)
@@ -623,6 +646,8 @@ export async function getAttachedRequest(
 }
 
 export function* processAttachedRequest(did: string): Generator<*, *, *> {
+  console.log('1 processAttachedRequest')
+
   const connection = yield select(getConnectionByUserDid, did)
   const attachedRequest = connection.attachedRequest
   if (!attachedRequest) {
@@ -632,6 +657,7 @@ export function* processAttachedRequest(did: string): Generator<*, *, *> {
   yield put(connectionDeleteAttachedRequest(connection.identifier))
 
   const uid = attachedRequest[ID]
+  console.log('2 processAttachedRequest')
 
   if (attachedRequest[TYPE].endsWith('offer-credential')) {
     const { claimHandle } = yield call(
@@ -649,6 +675,9 @@ export function* processAttachedRequest(did: string): Generator<*, *, *> {
     yield put(acceptClaimOffer(uid, connection.senderDID))
   } else if (attachedRequest[TYPE].endsWith('request-presentation')) {
     yield put(outOfBandConnectionForPresentationEstablished(uid))
+  } else if (attachedRequest[TYPE].endsWith('propose-presentation')) {
+    console.log('3 processAttachedRequest')
+    yield put(presentationProposalAccepted(uid))
   }
 }
 
