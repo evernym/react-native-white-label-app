@@ -50,6 +50,7 @@ export class AppStatusComponent extends React.Component<
         <View style={styles.container}>
           <BlurView 
             style={styles.blurView}
+            // $FlowFixMe
             reducedTransparencyFallbackColor={String('gray')}
             blurType='light'
             blurAmount={20}
