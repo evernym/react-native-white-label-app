@@ -90,7 +90,7 @@ export const InviteActionComponent = ({
           onIgnore={() => handleInviteAction(INVITE_ACTION_RESPONSES.REJECTED)}
           denyButtonText={buttonDenyText}
           acceptBtnText={buttonAcceptText}
-          colorBackground={colors.green1}
+          colorBackground={colors.main}
           secondColorBackground={colors.red}
         />
       </>
