@@ -1,5 +1,5 @@
 // @flow
-import React, { useCallback, useMemo, useEffect} from 'react'
+import React, { useCallback, useMemo} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   View,
@@ -22,7 +22,7 @@ import { ModalButtons } from "../components/buttons/modal-buttons";
 import { ModalHeader } from "../connection-details/components/modal-header";
 import { CONNECTION_INVITE_TYPES } from "../invitation/type-invitation";
 import { acceptOutOfBandInvitation } from "../invitation/invitation-store";
-import { presentationProposalAccepted } from "./verifier-store";
+import { outofbandPresentationProposalAccepted, presentationProposalAccepted } from './verifier-store'
 
 export type PresentationProposalProps = {
   backRedirectRoute?: string | null,
@@ -36,18 +36,17 @@ export const PresentationProposalComponent = ( {
                                                  navigation,
                                                  route: { params },
                                                }: ReactNavigation ) => {
-  const { uid, backRedirectRoute, senderName, invitationPayload, attachedRequest } = params
+  const { uid, backRedirectRoute, senderName, invitationPayload, attachedRequest }: PresentationProposalProps = params
 
   const dispatch = useDispatch()
 
   const verifier = useSelector(state => getVerifier(state, uid))
-  console.log('verifier.senderLogoUrl')
-  console.log(verifier.senderLogoUrl)
 
   const presentationProposal = useMemo(() => verifier.presentationProposal, [verifier])
 
   const onAccept = useCallback(() => {
     if (invitationPayload.type && invitationPayload.type === CONNECTION_INVITE_TYPES.ARIES_OUT_OF_BAND){
+      dispatch(outofbandPresentationProposalAccepted(uid))
       dispatch(acceptOutOfBandInvitation(invitationPayload, attachedRequest))
     } else {
       dispatch(presentationProposalAccepted(uid))
@@ -56,12 +55,11 @@ export const PresentationProposalComponent = ( {
       screen: homeDrawerRoute,
       params: undefined,
     })
-  }, [uid])
+  }, [uid, invitationPayload, attachedRequest])
 
   const onDeny = useCallback(() => {
     if (backRedirectRoute) {
       navigation.navigate(backRedirectRoute)
-
     } else {
       navigation.goBack(null)
     }
@@ -78,7 +76,7 @@ export const PresentationProposalComponent = ( {
   return !presentationProposal ?
     <Loader/> :
     <>
-      <View style={styles.modalWrapper}>
+      <View style={styles.contentWrapper}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <StatusBar backgroundColor={colors.black} barStyle={'light-content'} />
           <ModalHeader
@@ -93,15 +91,15 @@ export const PresentationProposalComponent = ( {
             renderItem={({ item }) => renderItem(item)}
           />
         </ScrollView>
-        <ModalButtons
-          onPress={onAccept}
-          onIgnore={onDeny}
-          acceptBtnText={'Accept'}
-          denyButtonText={'Deny'}
-          colorBackground={colors.green1}
-          secondColorBackground={colors.red}
-        />
       </View>
+      <ModalButtons
+        onPress={onAccept}
+        onIgnore={onDeny}
+        acceptBtnText={'Accept'}
+        denyButtonText={'Deny'}
+        colorBackground={colors.main}
+        secondColorBackground={colors.red}
+      />
     </>
 }
 
@@ -114,7 +112,7 @@ PresentationProposalScreen.screen.navigationOptions =
   modalOptions('Presentation Proposal', 'CloseIcon')
 
 const styles = StyleSheet.create({
-  modalWrapper: {
+  contentWrapper: {
     flex: 1,
     paddingLeft: '5%',
     paddingRight: '5%',

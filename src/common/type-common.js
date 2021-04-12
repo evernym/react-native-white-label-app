@@ -171,3 +171,15 @@ export type ReduxConnect = {
 
 export const ID = '@id'
 export const TYPE = '@type'
+
+export const ARIES_MESSAGE_TYPES = {
+  CREDENTIAL_OFFER: "https://didcomm.org/issue-credential/1.0/offer-credential",
+  CREDENTIAL_REQUEST: "https://didcomm.org/issue-credential/1.0/request-credential",
+  CREDENTIAL: "https://didcomm.org/issue-credential/1.0/issue-credential",
+  CREDENTIAL_PREVIEW: "https://didcomm.org/issue-credential/1.0/credential-preview",
+  CREDENTIAL_ACK: "https://didcomm.org/issue-credential/1.0/ack",
+  PRESENTATION_PROPOSAL: "https://didcomm.org/present-proof/1.0/propose-presentation",
+  PRESENTATION_REQUEST: "https://didcomm.org/present-proof/1.0/request-presentation",
+  PRESENTATION: "https://didcomm.org/present-proof/1.0/presentation",
+  PRESENTATION_PREVIEW: "https://didcomm.org/present-proof/1.0/presentation-preview",
+}

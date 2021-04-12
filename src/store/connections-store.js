@@ -193,13 +193,17 @@ export function* deleteConnectionOccurredSaga(
     action.senderDID
   )
 
+  if (!connection) {
+    return
+  }
+
   const { [connection.identifier]: deleted, ...rest } = connections
 
   try {
     yield call(secureSet, CONNECTIONS, JSON.stringify(rest))
     yield put(deleteConnectionSuccess(rest, action.senderDID))
 
-    if (connection.vcxSerializedConnection) {
+    if (connection.vcxSerializedConnection && connection.myPairwiseAgentDid) {
       const connectionHandle = yield call(
         getHandleBySerializedConnection,
         connection.vcxSerializedConnection

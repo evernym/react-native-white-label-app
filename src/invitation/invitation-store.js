@@ -38,7 +38,6 @@ import {
   connectionDeleteAttachedRequest,
   connectionRequestSent,
   deletePendingConnection,
-  saveNewOneTimeConnection,
   saveNewPendingConnection,
   sendConnectionReuse,
   updateConnection,
@@ -57,7 +56,7 @@ import {
   toUtf8FromBase64,
 } from '../bridge/react-native-cxs/RNCxs'
 import type { CustomError, GenericObject } from '../common/type-common'
-import { ID, RESET, TYPE } from '../common/type-common'
+import { ARIES_MESSAGE_TYPES, ID, RESET, TYPE } from '../common/type-common'
 import { captureError } from '../services/error/error-handler'
 import { ensureVcxInitSuccess } from '../store/route-store'
 import type { Connection } from '../store/type-connection-store'
@@ -158,6 +157,13 @@ export function* sendResponse(
     yield put(deletePendingConnection(connection[0].identifier))
   }
 
+  const vcxResult = yield* ensureVcxInitSuccess()
+  if (vcxResult && vcxResult.fail) {
+    throw new Error({ message: vcxResult.fail.message })
+  }
+
+  yield call(savePendingConnection, payload)
+
   try {
     // aries connection
     if (payload.type === CONNECTION_INVITE_TYPES.ARIES_V1_QR) {
@@ -205,13 +211,6 @@ export function* sendResponseOnProprietaryConnectionInvitation(
   payload: InvitationPayload
 ): Generator<*, *, *> {
   try {
-    yield call(savePendingConnection, payload)
-
-    const vcxResult = yield* ensureVcxInitSuccess()
-    if (vcxResult && vcxResult.fail) {
-      throw new Error({ message: vcxResult.fail.message })
-    }
-
     const connectionHandle: number = yield call(
       createConnectionWithInvite,
       payload
@@ -254,13 +253,6 @@ export function* sendResponseOnAriesConnectionInvitation(
   payload: InvitationPayload
 ): Generator<*, *, *> {
   try {
-    yield call(savePendingConnection, payload)
-
-    const vcxResult = yield* ensureVcxInitSuccess()
-    if (vcxResult && vcxResult.fail) {
-      throw new Error({ message: vcxResult.fail.message })
-    }
-
     const connectionHandle: number = yield call(
       createConnectionWithAriesInvite,
       payload
@@ -340,13 +332,6 @@ export function* sendResponseOnAriesOutOfBandInvitationWithHandshake(
   payload: InvitationPayload
 ): Generator<*, *, *> {
   try {
-    yield call(savePendingConnection, payload)
-
-    const vcxResult = yield* ensureVcxInitSuccess()
-    if (vcxResult && vcxResult.fail) {
-      throw new Error({ message: vcxResult.fail.message })
-    }
-
     const attachedRequest = yield call(
       getAttachedRequest,
       ((payload.originalObject: any): AriesOutOfBandInvite)
@@ -391,33 +376,21 @@ export function* sendResponseOnAriesOutOfBandInvitationWithoutHandshake(
   payload: InvitationPayload
 ): Generator<*, *, *> {
   try {
-    console.log('1 sendResponseOnAriesOutOfBandInvitationWithoutHandshake')
-
     const attachedRequest = yield call(
       getAttachedRequest,
       ((payload.originalObject: any): AriesOutOfBandInvite)
     )
-
-    const vcxResult = yield* ensureVcxInitSuccess()
-    if (vcxResult && vcxResult.fail) {
-      throw new Error({ message: vcxResult.fail.message })
-    }
-    console.log('2 sendResponseOnAriesOutOfBandInvitationWithoutHandshake')
 
     const connectionHandle: number = yield call(
       createConnectionWithAriesOutOfBandInvite,
       payload
     )
 
-
     let pairwiseInfo = {}
     let vcxSerializedConnection
-    console.log('3 sendResponseOnAriesOutOfBandInvitationWithoutHandshake')
 
-    if (attachedRequest[TYPE].endsWith('offer-credential') || attachedRequest[TYPE].endsWith('propose-presentation')) {
-      console.log('4 sendResponseOnAriesOutOfBandInvitationWithoutHandshake')
-
-      // for these message we need to create agent tot use service decorator
+    if ([ARIES_MESSAGE_TYPES.CREDENTIAL_OFFER, ARIES_MESSAGE_TYPES.PRESENTATION_PROPOSAL].includes(attachedRequest[TYPE])) {
+      // for these message we need to create pairwise agent to use service decorator
       const data = yield* retrySaga(
         call(acceptInvitationVcx, connectionHandle),
         CLOUD_AGENT_UNAVAILABLE
@@ -431,11 +404,10 @@ export function* sendResponseOnAriesOutOfBandInvitationWithoutHandshake(
       )
     }
 
-    yield put(invitationSuccess(payload.senderDID))
-    console.log('5 sendResponseOnAriesOutOfBandInvitationWithoutHandshake')
+    const identifier = pairwiseInfo.myPairwiseDid || payload.senderDID
 
     const connection = {
-      identifier: pairwiseInfo.myPairwiseDid || payload.senderDID,
+      identifier,
       logoUrl: payload.senderLogoUrl,
       senderDID: payload.senderDID,
       senderEndpoint: payload.senderEndpoint,
@@ -450,10 +422,11 @@ export function* sendResponseOnAriesOutOfBandInvitationWithoutHandshake(
       myPairwisePeerVerKey: pairwiseInfo.myPairwisePeerVerKey,
     }
 
-    yield put(saveNewOneTimeConnection(connection))
-    console.log('6 sendResponseOnAriesOutOfBandInvitationWithoutHandshake')
+    yield put(updateConnection(connection))
+    yield put(invitationSuccess(connection.senderDID))
+    yield put(connectionSuccess(identifier, connection.senderDID))
 
-    yield* processAttachedRequest(payload.senderDID)
+    yield* processAttachedRequest(identifier)
   } catch (e) {
     yield call(handleConnectionError, e, payload.senderDID)
   }
@@ -646,8 +619,6 @@ export async function getAttachedRequest(
 }
 
 export function* processAttachedRequest(did: string): Generator<*, *, *> {
-  console.log('1 processAttachedRequest')
-
   const connection = yield select(getConnectionByUserDid, did)
   const attachedRequest = connection.attachedRequest
   if (!attachedRequest) {
@@ -657,9 +628,8 @@ export function* processAttachedRequest(did: string): Generator<*, *, *> {
   yield put(connectionDeleteAttachedRequest(connection.identifier))
 
   const uid = attachedRequest[ID]
-  console.log('2 processAttachedRequest')
 
-  if (attachedRequest[TYPE].endsWith('offer-credential')) {
+  if (attachedRequest[TYPE] === ARIES_MESSAGE_TYPES.CREDENTIAL_OFFER) {
     const { claimHandle } = yield call(
       createCredentialWithAriesOfferObject,
       uid,
@@ -673,10 +643,9 @@ export function* processAttachedRequest(did: string): Generator<*, *, *> {
       uid
     )
     yield put(acceptClaimOffer(uid, connection.senderDID))
-  } else if (attachedRequest[TYPE].endsWith('request-presentation')) {
+  } else if (attachedRequest[TYPE] === ARIES_MESSAGE_TYPES.PRESENTATION_REQUEST) {
     yield put(outOfBandConnectionForPresentationEstablished(uid))
-  } else if (attachedRequest[TYPE].endsWith('propose-presentation')) {
-    console.log('3 processAttachedRequest')
+  } else if (attachedRequest[TYPE] === ARIES_MESSAGE_TYPES.PRESENTATION_PROPOSAL) {
     yield put(presentationProposalAccepted(uid))
   }
 }

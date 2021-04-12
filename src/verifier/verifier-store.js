@@ -1,3 +1,4 @@
+// @flow
 import { all, call, put, select, takeEvery } from 'redux-saga/effects'
 import {
   createProofVerifierWithProposal,
@@ -10,6 +11,7 @@ import {
 } from '../bridge/react-native-cxs/RNCxs'
 import { getConnection, getVerifier, getVerifiers } from '../store/store-selector'
 import type {
+  OutOfBandPresentationProposalAcceptedAction,
   PresentationProposalAcceptedAction,
   PresentationProposalReceivedAction,
   PresentationRequestSentAction,
@@ -17,9 +19,10 @@ import type {
   PresentationVerifiedAction,
   RequestedProof,
   VerifierActions,
-  VerifierStore
-} from "./type-verifier";
+  VerifierStore,
+} from './type-verifier'
 import {
+  OUTOFBAND_PRESENTATION_PROPOSAL_ACCEPTED,
   PRESENTATION_PROPOSAL_ACCEPTED,
   PRESENTATION_PROPOSAL_RECEIVED,
   PRESENTATION_REQUEST_SENT,
@@ -28,7 +31,7 @@ import {
   PROOF_SATE,
   VERIFIER_STATE,
   VerifierStoreInitialState,
-} from "./type-verifier";
+} from './type-verifier'
 import type { Connection } from "../store/type-connection-store";
 import { secureSet } from "../services/storage";
 import { VERIFIERS } from "../common";
@@ -43,36 +46,45 @@ export const presentationProposalReceived = (
 ): PresentationProposalReceivedAction => ({
   type: PRESENTATION_PROPOSAL_RECEIVED,
   presentationProposal,
-  payloadInfo
+  payloadInfo,
 })
+
 export const presentationProposalAccepted = (
-  uuid: string,
+  uid: string,
 ): PresentationProposalAcceptedAction => ({
   type: PRESENTATION_PROPOSAL_ACCEPTED,
-  uuid,
+  uid,
 })
+
+export const outofbandPresentationProposalAccepted = (
+  uid: string,
+): OutOfBandPresentationProposalAcceptedAction => ({
+  type: OUTOFBAND_PRESENTATION_PROPOSAL_ACCEPTED,
+  uid,
+})
+
 export const presentationRequestSent = (
-  uuid: string,
+  uid: string,
   serialized: string,
 ): PresentationRequestSentAction => ({
   type: PRESENTATION_REQUEST_SENT,
-  uuid,
+  uid,
   serialized,
 })
 export const presentationVerified = (
-  uuid: string,
+  uid: string,
   requestedProof: RequestedProof,
 ): PresentationVerifiedAction => ({
   type: PRESENTATION_VERIFIED,
-  uuid,
+  uid,
   requestedProof,
 })
 export const presentationVerificationFailed = (
-  uuid: string,
+  uid: string,
   error: string,
 ): PresentationVerificationFailedAction => ({
   type: PRESENTATION_VERIFICATION_FAILED,
-  uuid,
+  uid,
   error,
 })
 
@@ -92,69 +104,52 @@ export function* getConnectionHandle(
 export function* presentationProposalAcceptedSaga(
   action: PresentationProposalAcceptedAction,
 ): Generator<*, *, *> {
-  console.log('1 presentationProposalAcceptedSaga')
-  const verifier = yield select(getVerifier, action.uuid)
+  const verifier = yield select(getVerifier, action.uid)
   if (!verifier){
-    yield put(presentationVerificationFailed(action.uuid, "Cannot accept presentation proposal. Verifier not found"))
+    yield put(presentationVerificationFailed(action.uid, "Cannot accept presentation proposal. Verifier not found"))
     return
   }
-  console.log('verifier')
-  console.log(verifier)
-  console.log('2 presentationProposalAcceptedSaga')
 
   const connection = yield call(getConnectionHandle, verifier.senderDID)
   if (!connection) {
-    yield put(presentationVerificationFailed(action.uuid, "Cannot accept presentation proposal. Connection not found"))
+    yield put(presentationVerificationFailed(action.uid, "Cannot accept presentation proposal. Connection not found"))
     return
   }
-  console.log('3 presentationProposalAcceptedSaga')
 
   const handle = yield call(createProofVerifierWithProposal, JSON.stringify(verifier.presentationProposal), verifier.presentationProposal.comment)
   yield call(proofVerifierSendRequest, handle, connection)
   const serialized = yield call(proofVerifierSerialize, handle)
-  console.log('4 presentationProposalAcceptedSaga')
 
-  yield put(presentationRequestSent(action.uuid, serialized))
+  yield put(presentationRequestSent(action.uid, serialized))
 }
 
 export function* updateVerifierState(
   message: string,
 ): Generator<*, *, *> {
+  let uid = JSON.parse(message)['~thread']['thid']
+
   try {
-    console.log('1 updateVerifierState')
-    console.log(message)
-    const verifiers = yield select(getVerifiers)
-    console.log(JSON.stringify(verifiers))
-
-    let uid = JSON.parse(message)['~thread']['thid']
-
     const verifier = yield select(getVerifier, uid)
     if (!verifier){
       return
     }
-    console.log('2 updateVerifierState')
 
     const handle = yield call(proofVerifierDeserialize, verifier.vcxSerializedStateObject)
     const state = yield call(proofVerifierUpdateStateWithMessage, handle, message)
-    console.log('3 updateVerifierState')
 
     // proof request rejected
     if (state === VERIFIER_STATE.PROOF_REQUEST_REJECTED){
       yield put(presentationVerificationFailed(uid, "Presentation Request rejected"))
       return
     }
-    console.log('4 updateVerifierState')
 
     // proof received
     if (state === VERIFIER_STATE.PROOF_RECEIVED){
-      console.log('5 updateVerifierState')
-
       const { proofState, message } = yield call(proofVerifierGetProofMessage, handle)
       if (!proofState || !message){
         yield put(presentationVerificationFailed(uid, "Presentation verification failed"))
         return
       }
-      console.log('6 updateVerifierState')
 
       if (proofState === PROOF_SATE.VERIFIER) {
         console.log('7 updateVerifierState')
@@ -166,7 +161,6 @@ export function* updateVerifierState(
           yield put(presentationVerificationFailed(uid, "Presentation verification failed"))
           return
         }
-        console.log('8 updateVerifierState')
 
         yield put(presentationVerified(uid, indyProof.requested_proof))
       } else {
@@ -176,7 +170,7 @@ export function* updateVerifierState(
     }
   } catch (error) {
     customLogger.log(`updateVerifierState: ${error}`)
-    yield put(presentationVerificationFailed(uuid, `Presentation verification failed`))
+    yield put(presentationVerificationFailed(uid, `Presentation verification failed`))
   }
 }
 
@@ -224,33 +218,33 @@ export default function verifierReducer(
         [action.payloadInfo.uid]: {
           presentationProposal: action.presentationProposal,
           uid: action.payloadInfo.uid,
+          senderName: action.payloadInfo.senderName,
           senderDID: action.payloadInfo.remotePairwiseDID,
           senderLogoUrl: action.payloadInfo.senderLogoUrl,
           hidden: action.payloadInfo.hidden,
-          ...VerifierStoreInitialState,
         },
       }
     case PRESENTATION_REQUEST_SENT:
       return {
         ...state,
-        [action.uuid]: {
-          ...state[action.uuid],
+        [action.uid]: {
+          ...state[action.uid],
           vcxSerializedStateObject: action.serialized,
         },
       }
     case PRESENTATION_VERIFIED:
       return {
         ...state,
-        [action.uuid]: {
-          ...state[action.uuid],
+        [action.uid]: {
+          ...state[action.uid],
           requestedProof: action.requestedProof,
         },
       }
     case PRESENTATION_VERIFICATION_FAILED:
       return {
         ...state,
-        [action.uuid]: {
-          ...state[action.uuid],
+        [action.uid]: {
+          ...state[action.uid],
           error: action.error,
         },
       }

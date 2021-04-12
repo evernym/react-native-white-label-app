@@ -253,25 +253,8 @@ export const getConnectionLogoUrl = (
 }
 
 export const getConnectionByUserDid = (state: Store, userDID: string) => {
-  const connections = getAllConnection(state)
-
-  if (connections) {
-    const connection = connections[userDID]
-    if (connection) {
-      return connection
-    }
-  }
-
-  const oneTimeConnections = getAllOneTimeConnection(state)
-
-  if (oneTimeConnections) {
-    const connection = oneTimeConnections[userDID]
-    if (connection) {
-      return connection
-    }
-  }
-
-  return null
+  const connections = getAllConnections(state) || {}
+  return connections[userDID]
 }
 
 export const getAllConnectionsPairwiseDid = (state: Store) => {
@@ -776,4 +759,4 @@ export const getIsCredentialSent = (state: Store) => state.showCredential.isSent
  * */
 export const getVerifiers = (state: Store) => state.verifier
 
-export const getVerifier = (state: Store, uuid: string) => state.verifier[uuid]
+export const getVerifier = (state: Store, uid: string) => state.verifier[uid]

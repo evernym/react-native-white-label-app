@@ -487,12 +487,16 @@ export class QRCodeScannerScreen extends Component<
 
         const uid = presentationProposal[ID]
 
-        this.props.presentationProposalReceived(presentationProposal, {
-          uid,
-          senderLogoUrl: invitation.senderLogoUrl,
-          remotePairwiseDID: invitation.senderDID,
-          hidden: true,
-        })
+        this.props.presentationProposalReceived(
+          presentationProposal,
+          {
+            uid,
+            senderLogoUrl: invitation.senderLogoUrl,
+            senderName: invitation.senderName,
+            remotePairwiseDID: invitation.senderDID,
+            hidden: true,
+          }
+        )
 
         await this.handleOutOfBandNavigation({
           mainRoute: presentationProposalRoute,

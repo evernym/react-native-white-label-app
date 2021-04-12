@@ -1,3 +1,4 @@
+// @flow
 import type { AriesPresentationProposal } from "../proof-request/type-proof-request";
 import type { NotificationPayloadInfo } from "../push-notification/type-push-notification";
 
@@ -8,30 +9,36 @@ export type PresentationProposalReceivedAction = {
   payloadInfo: NotificationPayloadInfo,
 }
 
+export const OUTOFBAND_PRESENTATION_PROPOSAL_ACCEPTED = 'OUTOFBAND_PRESENTATION_PROPOSAL_ACCEPTED'
+export type OutOfBandPresentationProposalAcceptedAction = {
+  type: typeof OUTOFBAND_PRESENTATION_PROPOSAL_ACCEPTED,
+  uid: string,
+}
+
 export const PRESENTATION_PROPOSAL_ACCEPTED = 'PRESENTATION_PROPOSAL_ACCEPTED'
 export type PresentationProposalAcceptedAction = {
   type: typeof PRESENTATION_PROPOSAL_ACCEPTED,
-  uuid: string,
+  uid: string,
 }
 
 export const PRESENTATION_REQUEST_SENT = 'PRESENTATION_REQUEST_SENT'
 export type PresentationRequestSentAction = {
   type: typeof PRESENTATION_REQUEST_SENT,
-  uuid: string,
+  uid: string,
   serialized: string,
 }
 
 export const PRESENTATION_VERIFIED = 'PRESENTATION_VERIFIED'
 export type PresentationVerifiedAction = {
   type: typeof PRESENTATION_VERIFIED,
-  uuid: string,
+  uid: string,
   requestedProof: RequestedProof,
 }
 
 export const PRESENTATION_VERIFICATION_FAILED = 'PRESENTATION_VERIFICATION_FAILED'
 export type PresentationVerificationFailedAction = {
   type: typeof PRESENTATION_VERIFICATION_FAILED,
-  uuid: string,
+  uid: string,
   error: string,
 }
 
@@ -87,6 +94,7 @@ export const PROOF_SATE = {
 
 export type VerifierActions =
   | PresentationProposalReceivedAction
+  | OutOfBandPresentationProposalAcceptedAction
   | PresentationProposalAcceptedAction
   | PresentationRequestSentAction
   | PresentationVerifiedAction
@@ -96,10 +104,11 @@ export type VerifierData = {
   uid: string,
   presentationProposal: AriesPresentationProposal,
   senderDID: string,
-  senderLogoUrl?: ?string,
+  senderName: string | null,
+  senderLogoUrl: string | null,
   vcxSerializedStateObject?: string,
-  hidden?: boolean,
   requestedProof?: RequestedProof | null,
+  hidden?: boolean,
   error?: string,
 }
 

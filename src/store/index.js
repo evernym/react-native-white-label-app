@@ -131,7 +131,7 @@ let reduxLogger = createLogger({
     error: logLevel,
   },
 })
-// middlewares.push(reduxLogger)
+middlewares.push(reduxLogger)
 
 middlewares.push(sagaMiddleware)
 

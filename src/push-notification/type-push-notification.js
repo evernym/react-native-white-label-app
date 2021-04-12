@@ -180,6 +180,7 @@ export type ClaimOfferMessagePayload = {
 
 export type NotificationPayloadInfo = {
   uid: string,
+  senderName?: string,
   senderLogoUrl: ?string,
   remotePairwiseDID: string,
   hidden?: boolean,

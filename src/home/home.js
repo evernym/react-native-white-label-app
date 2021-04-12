@@ -282,6 +282,16 @@ export class HomeScreen extends Component<HomeProps, void> {
       statusMessage = 'You rejected action'
     else if (status === HISTORY_EVENT_STATUS.INVITE_ACTION_ACCEPTED)
       statusMessage = 'You accepted action'
+    else if (
+      status === HISTORY_EVENT_STATUS.PRESENTATION_PROPOSAL_ACCEPTED ||
+      status === HISTORY_EVENT_STATUS.PRESENTATION_REQUEST_SENT
+    )
+      statusMessage = `Requesting "${action}" proof from "${issuerName}".`
+    else if (status === HISTORY_EVENT_STATUS.PRESENTATION_VERIFIED) {
+      statusMessage = `"${action}" proof verification passed`
+    } else if (status === HISTORY_EVENT_STATUS.PRESENTATION_VERIFICATION_FAILED) {
+      statusMessage = `"${action}" proof verification failed`
+    }
     else {
       return <View />
     }

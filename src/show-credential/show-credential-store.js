@@ -30,19 +30,15 @@ export function* preparePresentationProposalSaga(
   try {
     const claim = yield call(getClaim, action.claimOfferUuid)
     if (!claim) {
-      yield put(showCredentialFail('Cannot prepare Presentation Proposal'))
+      yield put(showCredentialFail('Cannot prepare Presentation Proposal. Credential not found'))
       return
     }
 
-    let presentationProposal = yield call(credentialGetPresentationProposal, claim.handle)
+    const presentationProposal = yield call(credentialGetPresentationProposal, claim.handle)
     if (!presentationProposal) {
       yield put(showCredentialFail('Cannot prepare Presentation Proposal'))
       return
     }
-
-    const presentationProposalParsed = JSON.parse(presentationProposal)
-    presentationProposalParsed.comment = claim.claim.name
-    presentationProposal = JSON.stringify(presentationProposalParsed)
 
     const {
       invitation,

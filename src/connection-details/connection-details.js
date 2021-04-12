@@ -42,6 +42,11 @@ import { CONNECTION_FAIL } from '../store/type-connection-store'
 import { deleteConnectionAction, getConnections } from '../store/connections-store'
 import type { ConnectionHistoryEvent } from '../connection-history/type-connection-history'
 import { CustomConnectionDetailsScreen } from '../external-imports'
+import {
+  OUTOFBAND_PRESENTATION_PROPOSAL_ACCEPTED,
+  PRESENTATION_PROPOSAL_ACCEPTED, PRESENTATION_PROPOSAL_RECEIVED,
+  PRESENTATION_REQUEST_SENT, PRESENTATION_VERIFICATION_FAILED, PRESENTATION_VERIFIED,
+} from '../verifier/type-verifier'
 
 const keyExtractor = (item: Object) => item.timestamp
 
@@ -376,6 +381,69 @@ const ConnectionDetails = ({
           received={true}
           data={item}
           repeatable={true}
+          navigation={navigation}
+          type={item.action}
+        />
+      )
+    } else if (item.action === PRESENTATION_PROPOSAL_RECEIVED) {
+      if (item.showBadge === false) {
+        return <View/>
+      }
+
+      return (
+        <CredentialCard
+          messageDate={formattedTime}
+          messageTitle={'New Presentation Proposal'}
+          messageContent={item.name}
+          showButtons={true}
+          uid={item.originalPayload.payloadInfo.uid}
+          navigation={navigation}
+          colorBackground={themeForLogo.primary}
+          type={item.action}
+        />
+      )
+    } else if (
+      item.action === OUTOFBAND_PRESENTATION_PROPOSAL_ACCEPTED ||
+      item.action === PRESENTATION_PROPOSAL_ACCEPTED ||
+      item.action === PRESENTATION_REQUEST_SENT
+    ) {
+      return (
+        <ConnectionPending
+          date={formattedTime}
+          title={item.name}
+          content={'WAITING FOR PROOF'}
+        />
+      )
+    } else if (item.action === PRESENTATION_VERIFIED) {
+      return (
+        <ConnectionCard
+          messageDate={formattedTime}
+          headerText={item.name}
+          infoType={'VERIFIED PROOF'}
+          infoDate={formattedDate}
+          noOfAttributes={item.data.length}
+          buttonText={'VIEW PROOF DATA'}
+          showBadge={true}
+          colorBackground={themeForLogo.primary}
+          navigation={navigation}
+          received={true}
+          data={item}
+          imageUrl={route.params.image}
+          institutionalName={route.params.senderName}
+          secondColorBackground={themeForLogo.secondary}
+          type={item.action}
+        />
+      )
+    } else if (item.action === PRESENTATION_VERIFICATION_FAILED) {
+      return (
+        <ConnectionCard
+          messageDate={formattedTime}
+          headerText={item.name}
+          infoType={'FAILED TO VERIFY PROOF'}
+          infoDate={formattedDate}
+          showBadge={false}
+          colorBackground={colors.red}
+          data={item}
           navigation={navigation}
           type={item.action}
         />
