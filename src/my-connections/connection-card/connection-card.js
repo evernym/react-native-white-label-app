@@ -1,16 +1,20 @@
 // @flow
 import React, { useCallback } from 'react'
-import { View, Text, TouchableOpacity, Image } from 'react-native'
+import { View, Text, TouchableOpacity, Image, ActivityIndicator } from 'react-native'
 import type { ConnectionCardProps } from './type-connection-card'
 import { styles } from './styles'
 import { DefaultLogo } from '../../components/default-logo/default-logo'
 import { UnreadMessagesBadge } from '../../components'
 import { isNewConnection } from '../../store/store-utils'
+import { CONNECTION_FAIL } from '../../store/type-connection-store'
+import { INVITATION_ACCEPTED } from '../../invitation/type-invitation'
+
+const errorImage = require('../../images/error_outline.png')
 
 const ConnectionCard = (props: ConnectionCardProps) => {
   const onButtonPress = useCallback(() => {
     {
-      props.onPress(props.senderName, props.image, props.senderDID)
+      props.onPress()
       props.onNewConnectionSeen(props.senderDID)
     }
   }, [props])
@@ -41,7 +45,14 @@ const ConnectionCard = (props: ConnectionCardProps) => {
       {/*{*/}
       {/*  renderUnreadMessagesBadge()*/}
       {/*}*/}
+      {props.status === CONNECTION_FAIL && <Image style={styles.errorImage} source={errorImage}/>}
+
       <View style={styles.avatarSection}>
+        {props.status === INVITATION_ACCEPTED &&
+          <View style={styles.loader}>
+            <ActivityIndicator type="dark" size="large" />
+          </View>
+        }
         {typeof props.image === 'string' ? (
           <Image
             source={{ uri: props.image }}

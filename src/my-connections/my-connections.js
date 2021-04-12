@@ -1,6 +1,6 @@
 // @flow
 import React, { useCallback, useEffect, useMemo } from 'react'
-import { Platform, View, FlatList } from 'react-native'
+import { Platform, View, FlatList, Alert } from 'react-native'
 import { connect, useSelector } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import Snackbar from 'react-native-snackbar'
@@ -10,7 +10,7 @@ import { newConnectionSeen } from '../connection-history/connection-history-stor
 import { HeaderWithMenu, CameraButton } from '../components'
 import { ConnectionCard } from './connection-card/connection-card'
 import { qrCodeScannerTabRoute } from '../common'
-import { getConnections } from '../store/connections-store'
+import { getConnections, deleteConnectionAction } from '../store/connections-store'
 import { connectionHistRoute } from '../common'
 import {
   getAllConnection,
@@ -26,6 +26,7 @@ import { GET_MESSAGES_LOADING } from '../store/type-config-store'
 import { withStatusBar } from '../components/status-bar/status-bar'
 import { colors } from '../common/styles'
 import type { MyConnectionsProps } from './type-my-connections'
+import { CONNECTION_FAIL } from '../store/type-connection-store'
 
 import { EmptyState } from '../home/empty-state'
 import {
@@ -35,6 +36,8 @@ import {
   CustomMyConnectionsScreen, usePushNotifications,
 } from '../external-imports'
 import { SHOW_UNREAD_MESSAGES_BADGE_NEAR_WITH_MENU } from '../components/header/type-header'
+import { ResponseType } from '../components/request/type-request'
+import { sendInvitationResponse } from '../invitation/invitation-store'
 
 const headline = connectionsHeadline || 'My Connections'
 const showCameraButton = typeof connectionsShowCameraButton === 'boolean' ? connectionsShowCameraButton : true
@@ -53,6 +56,8 @@ const MyConnections = ({
                          navigation,
                          onNewConnectionSeen,
                          getUnacknowledgedMessages,
+                         sendInvitationResponse,
+                         deleteConnectionAction,
                        }: MyConnectionsProps) => {
   const allConnections = useSelector(getAllConnection)
   const history = useSelector(getHistory)
@@ -177,11 +182,33 @@ const MyConnections = ({
       events,
       identifier,
     } = item
+
+    const onPress = () => {
+      if (status === CONNECTION_FAIL) {
+        return Alert.alert(
+          'Failed to connect',
+          `Unable to make a connection with ${senderName}. What would you like to do?`,
+          [
+            {
+              text: 'Delete',
+              onPress: () => deleteConnectionAction(senderDID),
+            },
+            {
+              text: 'Retry',
+              onPress: () => sendInvitationResponse({
+                response: ResponseType.accepted,
+                senderDID,
+              }),
+            },
+          ]
+        )
+      }
+      return onCardPress(senderName, logoUrl, senderDID, identifier)
+    }
+
     return (
       <ConnectionCard
-        onPress={() => {
-          onCardPress(senderName, logoUrl, senderDID, identifier)
-        }}
+        onPress={onPress}
         image={logoUrl}
         question={questionTitle}
         {...{
@@ -237,6 +264,8 @@ const mapDispatchToProps = (dispatch) =>
     {
       onNewConnectionSeen: newConnectionSeen,
       getUnacknowledgedMessages,
+      sendInvitationResponse,
+      deleteConnectionAction
     },
     dispatch,
   )

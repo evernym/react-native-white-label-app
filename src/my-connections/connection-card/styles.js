@@ -121,6 +121,23 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: colors.white,
   },
+  errorImage: {
+    position: 'absolute',
+    right: 10,
+    top: 10,
+    width: 24,
+    height: 24,
+  },
+  loader: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1
+  }
 })
 
 export { styles }
