@@ -22,12 +22,9 @@ exports[`<OpenIdConnectScreen /> should match in fail state 1`] = `
     <View
       pointerEvents="box-none"
       style={
-        Array [
-          Object {
-            "zIndex": 1,
-          },
-          false,
-        ]
+        Object {
+          "zIndex": 1,
+        }
       }
     >
       <View
@@ -110,6 +107,7 @@ exports[`<OpenIdConnectScreen /> should match in fail state 1`] = `
             >
               <Text
                 accessibilityRole="header"
+                aria-level="1"
                 numberOfLines={1}
                 onLayout={[Function]}
                 style={
@@ -148,6 +146,14 @@ exports[`<OpenIdConnectScreen /> should match in fail state 1`] = `
         }
       >
         <View
+          collapsable={false}
+          style={
+            Object {
+              "opacity": 1,
+            }
+          }
+        />
+        <View
           accessibilityElementsHidden={false}
           closing={false}
           gestureVelocityImpact={0.3}
@@ -155,6 +161,7 @@ exports[`<OpenIdConnectScreen /> should match in fail state 1`] = `
           onClose={[Function]}
           onGestureBegin={[Function]}
           onGestureCanceled={[Function]}
+          onGestureEnd={[Function]}
           onOpen={[Function]}
           onTransitionStart={[Function]}
           pointerEvents="box-none"
@@ -195,11 +202,11 @@ exports[`<OpenIdConnectScreen /> should match in fail state 1`] = `
           }
         >
           <View
+            needsOffscreenAlphaCompositing={false}
             pointerEvents="box-none"
             style={
               Object {
                 "flex": 1,
-                "opacity": 1,
               }
             }
           >
@@ -590,12 +597,9 @@ exports[`<OpenIdConnectScreen /> should match in progress state 1`] = `
     <View
       pointerEvents="box-none"
       style={
-        Array [
-          Object {
-            "zIndex": 1,
-          },
-          false,
-        ]
+        Object {
+          "zIndex": 1,
+        }
       }
     >
       <View
@@ -678,6 +682,7 @@ exports[`<OpenIdConnectScreen /> should match in progress state 1`] = `
             >
               <Text
                 accessibilityRole="header"
+                aria-level="1"
                 numberOfLines={1}
                 onLayout={[Function]}
                 style={
@@ -716,6 +721,14 @@ exports[`<OpenIdConnectScreen /> should match in progress state 1`] = `
         }
       >
         <View
+          collapsable={false}
+          style={
+            Object {
+              "opacity": 1,
+            }
+          }
+        />
+        <View
           accessibilityElementsHidden={false}
           closing={false}
           gestureVelocityImpact={0.3}
@@ -723,6 +736,7 @@ exports[`<OpenIdConnectScreen /> should match in progress state 1`] = `
           onClose={[Function]}
           onGestureBegin={[Function]}
           onGestureCanceled={[Function]}
+          onGestureEnd={[Function]}
           onOpen={[Function]}
           onTransitionStart={[Function]}
           pointerEvents="box-none"
@@ -763,11 +777,11 @@ exports[`<OpenIdConnectScreen /> should match in progress state 1`] = `
           }
         >
           <View
+            needsOffscreenAlphaCompositing={false}
             pointerEvents="box-none"
             style={
               Object {
                 "flex": 1,
-                "opacity": 1,
               }
             }
           >
@@ -960,12 +974,9 @@ exports[`<OpenIdConnectScreen /> should match in received state 1`] = `
     <View
       pointerEvents="box-none"
       style={
-        Array [
-          Object {
-            "zIndex": 1,
-          },
-          false,
-        ]
+        Object {
+          "zIndex": 1,
+        }
       }
     >
       <View
@@ -1048,6 +1059,7 @@ exports[`<OpenIdConnectScreen /> should match in received state 1`] = `
             >
               <Text
                 accessibilityRole="header"
+                aria-level="1"
                 numberOfLines={1}
                 onLayout={[Function]}
                 style={
@@ -1086,6 +1098,14 @@ exports[`<OpenIdConnectScreen /> should match in received state 1`] = `
         }
       >
         <View
+          collapsable={false}
+          style={
+            Object {
+              "opacity": 1,
+            }
+          }
+        />
+        <View
           accessibilityElementsHidden={false}
           closing={false}
           gestureVelocityImpact={0.3}
@@ -1093,6 +1113,7 @@ exports[`<OpenIdConnectScreen /> should match in received state 1`] = `
           onClose={[Function]}
           onGestureBegin={[Function]}
           onGestureCanceled={[Function]}
+          onGestureEnd={[Function]}
           onOpen={[Function]}
           onTransitionStart={[Function]}
           pointerEvents="box-none"
@@ -1133,11 +1154,11 @@ exports[`<OpenIdConnectScreen /> should match in received state 1`] = `
           }
         >
           <View
+            needsOffscreenAlphaCompositing={false}
             pointerEvents="box-none"
             style={
               Object {
                 "flex": 1,
-                "opacity": 1,
               }
             }
           >
@@ -1564,12 +1585,9 @@ exports[`<OpenIdConnectScreen /> should match in signature verification failed 1
     <View
       pointerEvents="box-none"
       style={
-        Array [
-          Object {
-            "zIndex": 1,
-          },
-          false,
-        ]
+        Object {
+          "zIndex": 1,
+        }
       }
     >
       <View
@@ -1652,6 +1670,7 @@ exports[`<OpenIdConnectScreen /> should match in signature verification failed 1
             >
               <Text
                 accessibilityRole="header"
+                aria-level="1"
                 numberOfLines={1}
                 onLayout={[Function]}
                 style={
@@ -1690,6 +1709,14 @@ exports[`<OpenIdConnectScreen /> should match in signature verification failed 1
         }
       >
         <View
+          collapsable={false}
+          style={
+            Object {
+              "opacity": 1,
+            }
+          }
+        />
+        <View
           accessibilityElementsHidden={false}
           closing={false}
           gestureVelocityImpact={0.3}
@@ -1697,6 +1724,7 @@ exports[`<OpenIdConnectScreen /> should match in signature verification failed 1
           onClose={[Function]}
           onGestureBegin={[Function]}
           onGestureCanceled={[Function]}
+          onGestureEnd={[Function]}
           onOpen={[Function]}
           onTransitionStart={[Function]}
           pointerEvents="box-none"
@@ -1737,11 +1765,11 @@ exports[`<OpenIdConnectScreen /> should match in signature verification failed 1
           }
         >
           <View
+            needsOffscreenAlphaCompositing={false}
             pointerEvents="box-none"
             style={
               Object {
                 "flex": 1,
-                "opacity": 1,
               }
             }
           >
@@ -2206,12 +2234,9 @@ exports[`<OpenIdConnectScreen /> should match in success state 1`] = `
     <View
       pointerEvents="box-none"
       style={
-        Array [
-          Object {
-            "zIndex": 1,
-          },
-          false,
-        ]
+        Object {
+          "zIndex": 1,
+        }
       }
     >
       <View
@@ -2294,6 +2319,7 @@ exports[`<OpenIdConnectScreen /> should match in success state 1`] = `
             >
               <Text
                 accessibilityRole="header"
+                aria-level="1"
                 numberOfLines={1}
                 onLayout={[Function]}
                 style={
@@ -2332,6 +2358,14 @@ exports[`<OpenIdConnectScreen /> should match in success state 1`] = `
         }
       >
         <View
+          collapsable={false}
+          style={
+            Object {
+              "opacity": 1,
+            }
+          }
+        />
+        <View
           accessibilityElementsHidden={false}
           closing={false}
           gestureVelocityImpact={0.3}
@@ -2339,6 +2373,7 @@ exports[`<OpenIdConnectScreen /> should match in success state 1`] = `
           onClose={[Function]}
           onGestureBegin={[Function]}
           onGestureCanceled={[Function]}
+          onGestureEnd={[Function]}
           onOpen={[Function]}
           onTransitionStart={[Function]}
           pointerEvents="box-none"
@@ -2379,11 +2414,11 @@ exports[`<OpenIdConnectScreen /> should match in success state 1`] = `
           }
         >
           <View
+            needsOffscreenAlphaCompositing={false}
             pointerEvents="box-none"
             style={
               Object {
                 "flex": 1,
-                "opacity": 1,
               }
             }
           >

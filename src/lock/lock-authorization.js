@@ -13,7 +13,6 @@ import LockEnter from './lock-enter'
 import { lockAuthorizationHomeRoute } from '../common'
 import { useInteractionDone } from '../hooks/use-interactions-done'
 import { LoaderGif } from '../components/loader-gif/loader-gif'
-import { Header } from '../components'
 import { colors } from '../common/styles/constant'
 
 export const LockAuthorization = ({
@@ -30,7 +29,6 @@ export const LockAuthorization = ({
     LoaderGif
   ) : (
     <View style={styles.container}>
-      <Header transparent={true} navigation={navigation} route={route} />
       <LockEnter onSuccess={onSuccess} />
     </View>
   )

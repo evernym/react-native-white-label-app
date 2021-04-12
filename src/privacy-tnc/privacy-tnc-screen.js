@@ -16,7 +16,6 @@ import {
 import { OrangeLoader } from '../components/loader-gif/loader-gif'
 import { localEulaSource } from '../eula/type-eula'
 import { privacyTNCRoute } from '../common'
-import { Header } from '../components'
 
 export class PrivacyTNC extends PureComponent<
   PrivacyTNCProps,
@@ -46,11 +45,6 @@ export class PrivacyTNC extends PureComponent<
 
     return (
       <View style={styles.container}>
-        <Header
-          headline={title}
-          navigation={this.props.navigation}
-          route={this.props.route}
-        />
         <WebView
           source={{ uri: webViewUri }}
           startInLoadingState={true}

@@ -13,49 +13,6 @@ exports[`<LockPinCodeEnter /> redirect to home screen is app is locked and there
   <View
     style={
       Object {
-        "flexDirection": "row",
-        "height": 63.52941176470588,
-        "paddingTop": 19.058823529411764,
-        "width": "100%",
-      }
-    }
-  >
-    <View
-      accessibilityLabel="left-icon"
-      accessible={true}
-      style={
-        Object {
-          "alignItems": "center",
-          "flexDirection": "row",
-          "width": "15%",
-        }
-      }
-    />
-    <View
-      style={
-        Object {
-          "alignItems": "center",
-          "flexDirection": "row",
-          "justifyContent": "center",
-          "width": "85%",
-        }
-      }
-    >
-      <Text
-        style={
-          Object {
-            "color": "#777777",
-            "fontFamily": "System",
-            "fontSize": 21.057142857142857,
-            "marginLeft": -47.85714285714286,
-          }
-        }
-      />
-    </View>
-  </View>
-  <View
-    style={
-      Object {
         "flex": 1,
       }
     }
@@ -635,49 +592,6 @@ exports[`<LockPinCodeEnter /> should render pin code box 1`] = `
     }
   }
 >
-  <View
-    style={
-      Object {
-        "flexDirection": "row",
-        "height": 63.52941176470588,
-        "paddingTop": 19.058823529411764,
-        "width": "100%",
-      }
-    }
-  >
-    <View
-      accessibilityLabel="left-icon"
-      accessible={true}
-      style={
-        Object {
-          "alignItems": "center",
-          "flexDirection": "row",
-          "width": "15%",
-        }
-      }
-    />
-    <View
-      style={
-        Object {
-          "alignItems": "center",
-          "flexDirection": "row",
-          "justifyContent": "center",
-          "width": "85%",
-        }
-      }
-    >
-      <Text
-        style={
-          Object {
-            "color": "#777777",
-            "fontFamily": "System",
-            "fontSize": 21.057142857142857,
-            "marginLeft": -47.85714285714286,
-          }
-        }
-      />
-    </View>
-  </View>
   <View
     style={
       Object {
@@ -1263,49 +1177,6 @@ exports[`<LockPinCodeEnter /> should show 'Enter passcode' message if there is n
   <View
     style={
       Object {
-        "flexDirection": "row",
-        "height": 63.52941176470588,
-        "paddingTop": 19.058823529411764,
-        "width": "100%",
-      }
-    }
-  >
-    <View
-      accessibilityLabel="left-icon"
-      accessible={true}
-      style={
-        Object {
-          "alignItems": "center",
-          "flexDirection": "row",
-          "width": "15%",
-        }
-      }
-    />
-    <View
-      style={
-        Object {
-          "alignItems": "center",
-          "flexDirection": "row",
-          "justifyContent": "center",
-          "width": "85%",
-        }
-      }
-    >
-      <Text
-        style={
-          Object {
-            "color": "#777777",
-            "fontFamily": "System",
-            "fontSize": 21.057142857142857,
-            "marginLeft": -47.85714285714286,
-          }
-        }
-      />
-    </View>
-  </View>
-  <View
-    style={
-      Object {
         "flex": 1,
       }
     }
@@ -1885,49 +1756,6 @@ exports[`<LockPinCodeEnter /> should show UNLOCKING_APP_WAIT_MESSAGE  1`] = `
     }
   }
 >
-  <View
-    style={
-      Object {
-        "flexDirection": "row",
-        "height": 63.52941176470588,
-        "paddingTop": 19.058823529411764,
-        "width": "100%",
-      }
-    }
-  >
-    <View
-      accessibilityLabel="left-icon"
-      accessible={true}
-      style={
-        Object {
-          "alignItems": "center",
-          "flexDirection": "row",
-          "width": "15%",
-        }
-      }
-    />
-    <View
-      style={
-        Object {
-          "alignItems": "center",
-          "flexDirection": "row",
-          "justifyContent": "center",
-          "width": "85%",
-        }
-      }
-    >
-      <Text
-        style={
-          Object {
-            "color": "#777777",
-            "fontFamily": "System",
-            "fontSize": 21.057142857142857,
-            "marginLeft": -47.85714285714286,
-          }
-        }
-      />
-    </View>
-  </View>
   <View
     style={
       Object {

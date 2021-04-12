@@ -6,7 +6,7 @@ import { connect, useSelector } from 'react-redux'
 import type { MyCredentialsProps, CredentialItem } from './type-my-credentials'
 import type { ClaimOfferPayload } from '../claim-offer/type-claim-offer'
 
-import { HeaderWithMenu, CameraButton } from '../components'
+import { CameraButton } from '../components'
 import { CredentialsCards } from './cards/credentials-cards'
 import { myCredentialsRoute, qrCodeScannerTabRoute } from '../common'
 import { colors } from '../common/styles/constant'
@@ -23,19 +23,16 @@ import {
 import { SHOW_UNREAD_MESSAGES_BADGE_NEAR_WITH_MENU } from '../components/header/type-header'
 
 const headline = credentialsHeadline || 'MY Credentials'
-const showCameraButton = typeof credentialsShowCameraButton === 'boolean' ? credentialsShowCameraButton : true
+const showCameraButton =
+  typeof credentialsShowCameraButton === 'boolean'
+    ? credentialsShowCameraButton
+    : true
 
-const MyCredentialsScreen = ({
-                                  route,
-                                  navigation,
-                                }: MyCredentialsProps) => {
+const MyCredentialsScreen = ({ route, navigation }: MyCredentialsProps) => {
   const claimOffer = useSelector(getClaimOffers)
 
   const credentials = useMemo(() => {
-    const {
-      vcxSerializedClaimOffers: serializedOffers,
-      ...offers
-    } = claimOffer
+    const { vcxSerializedClaimOffers: serializedOffers, ...offers } = claimOffer
 
     const credentials: Array<CredentialItem> = []
 
@@ -63,22 +60,19 @@ const MyCredentialsScreen = ({
     return credentials
   }, [claimOffer])
 
-  const hasNoCredentials = useMemo(() => credentials.length === 0, [credentials])
+  const hasNoCredentials = useMemo(() => credentials.length === 0, [
+    credentials,
+  ])
 
   return (
     <View style={styles.outerContainer}>
-      <HeaderWithMenu
-        headline={headline}
-        navigation={navigation}
-        route={route}
-        showUnreadMessagesBadge={SHOW_UNREAD_MESSAGES_BADGE_NEAR_WITH_MENU}
-      />
-      <View
-        style={styles.container}
-      >
-        {hasNoCredentials && (
-          MyCredentialsViewEmptyState ? <MyCredentialsViewEmptyState /> : <EmptyState />
-        )}
+      <View style={styles.container}>
+        {hasNoCredentials &&
+          (MyCredentialsViewEmptyState ? (
+            <MyCredentialsViewEmptyState />
+          ) : (
+            <EmptyState />
+          ))}
         {!hasNoCredentials && (
           <CredentialsCards
             credentials={credentials}
@@ -89,12 +83,11 @@ const MyCredentialsScreen = ({
         )}
       </View>
 
-      {
-        showCameraButton &&
+      {showCameraButton && (
         <CameraButton
           onPress={() => navigation.navigate(qrCodeScannerTabRoute)}
         />
-      }
+      )}
     </View>
   )
 }
@@ -104,10 +97,7 @@ const mapDispatchToProps = (dispatch) =>
 
 const screen = CustomMyCredentialsScreen || MyCredentialsScreen
 
-export const MyCredentials = connect(
-  null,
-  mapDispatchToProps,
-)(screen)
+export const MyCredentials = connect(null, mapDispatchToProps)(screen)
 
 export const myCredentialsScreen = {
   routeName: myCredentialsRoute,

@@ -1,13 +1,21 @@
 // @flow
 import * as React from 'react'
 import { Dimensions, Image, Text, View, Platform } from 'react-native'
+import { TransitionPresets } from '@react-navigation/stack'
+import { createNativeStackNavigator } from 'react-native-screens/native-stack'
 import {
-  TransitionPresets,
-} from '@react-navigation/stack'
-import { createNativeStackNavigator  } from 'react-native-screens/native-stack'
-import { createDrawerNavigator, DrawerItemList } from '@react-navigation/drawer'
+  createDrawerNavigator,
+  DrawerItemList,
+  DrawerItem,
+} from '@react-navigation/drawer'
 import { enableScreens } from 'react-native-screens'
 import VersionNumber from 'react-native-version-number'
+
+import {
+  headerOptionForDrawerStack,
+  headerDefaultOptions,
+  emptyHeaderOptions,
+} from './navigation-header-config'
 
 import { aboutAppScreen } from '../about-app/about-app'
 import { homeScreen } from '../home/home'
@@ -73,7 +81,7 @@ import {
   HOME_ICON,
   SETTINGS_ICON,
 } from '../common/icons'
-import { colors } from '../common/styles/constant'
+import { colors, gamboge } from '../common/styles/constant'
 import { UnreadMessagesBadge } from '../components'
 import { moderateScale, verticalScale } from 'react-native-size-matters'
 import { startUpScreen } from '../start-up/start-up-screen'
@@ -106,6 +114,8 @@ import {
 } from '../external-imports'
 import { inviteActionScreen } from '../invite-action/invite-action-screen'
 
+import { TermsAndConditionsTitle } from '../common/privacyTNC-constants'
+
 enableScreens()
 
 const { width } = Dimensions.get('screen')
@@ -122,7 +132,7 @@ const drawerComponent = (props: Object) => (
   >
     <View style={styles.drawerHeader}>
       {CustomDrawerHeaderContent ? (
-        <CustomDrawerHeaderContent/>
+        <CustomDrawerHeaderContent />
       ) : (
         <Image
           source={require('../images/powered_by_logo.png')}
@@ -244,7 +254,7 @@ const menuNavigationOptions = customMenuNavigationOptions || [
 const extraScreens = customExtraScreens || []
 const extraModals = customExtraModals || []
 
-function AppDrawer() {
+function AppDrawer(navigation) {
   const tabs = menuNavigationOptions.map((option) => {
     const defaultOption = defaultDrawerItemOptions[option.name] || {}
 
@@ -256,6 +266,10 @@ function AppDrawer() {
         options={{
           drawerIcon: drawerIcon(option.icon || defaultOption.icon),
           drawerLabel: drawerItemLabel(option.label || defaultOption.label),
+          ...headerOptionForDrawerStack({
+            navigation,
+            headline: option.route || defaultOption.route,
+          }),
         }}
       />
     )
@@ -271,7 +285,10 @@ function AppDrawer() {
       <Drawer.Screen
         name={homeDrawerRoute}
         component={homeScreen.screen}
-        options={homeDrawerItemOptions}
+        options={{
+          ...homeDrawerItemOptions,
+          ...headerOptionForDrawerStack({ navigation, headline: 'Home' }),
+        }}
       />
       {tabs}
     </Drawer.Navigator>
@@ -294,7 +311,7 @@ const cardStackOptions = {
   headerShown: false,
 }
 
-function CardStackScreen() {
+function CardStackScreen(navigation) {
   // Back button press listening needs to be initialized on a screen inside of a navigator.
   // This is highest screen in the stack that we can put this hook in.
   useBackHandler()
@@ -311,6 +328,12 @@ function CardStackScreen() {
       <CardStack.Screen
         name={privacyTNCScreen.routeName}
         component={privacyTNCScreen.screen}
+        options={headerDefaultOptions({
+          navigation,
+          headline: TermsAndConditionsTitle,
+          headerHideShadow: true,
+          transparent: false,
+        })}
       />
       <CardStack.Screen
         name={designStyleGuideScreen.routeName}
@@ -340,6 +363,12 @@ function CardStackScreen() {
       <CardStack.Screen
         name={lockAuthorizationScreen.routeName}
         component={lockAuthorizationScreen.screen}
+        options={headerDefaultOptions({
+          navigation,
+          headline: undefined,
+          headerHideShadow: true,
+          transparent: false,
+        })}
       />
       <CardStack.Screen
         name={lockSetupSuccessScreen.routeName}
@@ -356,6 +385,12 @@ function CardStackScreen() {
       <CardStack.Screen
         name={lockSelectionScreen.routeName}
         component={lockSelectionScreen.screen}
+        options={headerDefaultOptions({
+          navigation,
+          headline: undefined,
+          headerHideShadow: true,
+          transparent: false,
+        })}
       />
       <CardStack.Screen
         name={startUpScreen.routeName}
@@ -377,14 +412,32 @@ function CardStackScreen() {
       <CardStack.Screen
         name={lockPinSetupScreen.routeName}
         component={lockPinSetupScreen.screen}
+        options={headerDefaultOptions({
+          navigation,
+          headline: undefined,
+          headerHideShadow: true,
+          transparent: false,
+        })}
       />
       <CardStack.Screen
         name={aboutAppScreen.routeName}
         component={aboutAppScreen.screen}
+        options={headerDefaultOptions({
+          navigation,
+          headline: 'About this App',
+          headerHideShadow: true,
+          transparent: false,
+        })}
       />
       <CardStack.Screen
         name={onfidoScreen.routeName}
         component={onfidoScreen.screen}
+        options={headerDefaultOptions({
+          navigation,
+          headline: undefined,
+          headerHideShadow: true,
+          transparent: false,
+        })}
       />
       <CardStack.Screen
         name={backupCompleteScreen.routeName}
@@ -397,6 +450,16 @@ function CardStackScreen() {
       <CardStack.Screen
         name={exportBackupFileScreen.routeName}
         component={exportBackupFileScreen.screen}
+        options={headerDefaultOptions({
+          navigation,
+          headline: undefined,
+          headerHideShadow: true,
+          transparent: true,
+          headerStyles: {
+            backgroundColor: gamboge,
+          },
+          arrowColor: colors.white,
+        })}
       />
       <CardStack.Screen
         name={generateRecoveryPhraseScreen.routeName}
@@ -426,6 +489,7 @@ function CardStackScreen() {
       <CardStack.Screen
         name={lockEnterPinScreen.routeName}
         component={lockEnterPinScreen.screen}
+        options={emptyHeaderOptions()}
       />
       <CardStack.Screen
         name={restorePassphraseScreen.routeName}
@@ -434,6 +498,12 @@ function CardStackScreen() {
       <CardStack.Screen
         name={selectRestoreMethodScreen.routeName}
         component={selectRestoreMethodScreen.screen}
+        options={headerDefaultOptions({
+          navigation,
+          headline: undefined,
+          headerHideShadow: true,
+          transparent: true,
+        })}
       />
       <CardStack.Screen
         name={sendLogsScreen.routeName}

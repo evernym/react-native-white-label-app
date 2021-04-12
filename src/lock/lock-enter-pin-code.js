@@ -164,12 +164,6 @@ export class LockEnterPin extends PureComponent<
 
     return (
       <View style={styles.container}>
-        <Header
-          hideBackButton={true}
-          transparent={true}
-          navigation={this.props.navigation}
-          route={this.props.route}
-        />
         <LockEnter
           fromRecovery={this.props.inRecovery}
           onSuccess={this.onSuccess}

@@ -14,7 +14,7 @@ import {
   CONNECTION_ALREADY_EXIST,
   HISTORY_EVENT_STATUS,
 } from '../connection-history/type-connection-history'
-import { HeaderWithMenu, CameraButton } from '../components'
+import { CameraButton } from '../components'
 import {
   homeDrawerRoute,
   qrCodeScannerTabRoute,
@@ -303,12 +303,6 @@ export class HomeScreen extends Component<HomeProps, void> {
   render() {
     return (
       <View style={styles.outerContainer}>
-        <HeaderWithMenu
-          headline={headline}
-          navigation={this.props.navigation}
-          route={this.props.route}
-          showUnreadMessagesBadge={SHOW_UNREAD_MESSAGES_BADGE_NEAR_WITH_TITLE}
-        />
         <View
           style={styles.container}
           testID="home-container"

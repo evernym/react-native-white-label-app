@@ -17,7 +17,7 @@ import { saveFileToAppDirectory } from './restore-store'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { Container, CustomView, CustomText, Icon, Header } from '../components'
+import { Container, CustomView, CustomText, Icon } from '../components'
 import DocumentPicker from 'react-native-document-picker'
 import styles from '../backup/styles'
 import { customLogger } from '../store/custom-logger'
@@ -78,13 +78,7 @@ export class SelectRestoreMethod extends Component<RestoreProps, void> {
         resizeMode={restoreBackgroundMode}
       >
         <View style={styles.wrapper}>
-          <View style={styles.header}>
-            <Header
-              transparent={true}
-              navigation={this.props.navigation}
-              route={this.props.route}
-            />
-          </View>
+          <View style={styles.header}></View>
           <CustomView center>
             <CustomText transparentBg center style={[styles.backuptitle]}>
               Where is your backup?

@@ -7,7 +7,7 @@ import Snackbar from 'react-native-snackbar'
 import PushNotificationIOS from '@react-native-community/push-notification-ios'
 
 import { newConnectionSeen } from '../connection-history/connection-history-store'
-import { HeaderWithMenu, CameraButton } from '../components'
+import { CameraButton } from '../components'
 import { ConnectionCard } from './connection-card/connection-card'
 import { qrCodeScannerTabRoute } from '../common'
 import { getConnections, deleteConnectionAction } from '../store/connections-store'
@@ -33,14 +33,18 @@ import {
   CustomConnectionEmptyState,
   connectionsHeadline,
   connectionsShowCameraButton,
-  CustomMyConnectionsScreen, usePushNotifications,
+  CustomMyConnectionsScreen,
+  usePushNotifications,
 } from '../external-imports'
 import { SHOW_UNREAD_MESSAGES_BADGE_NEAR_WITH_MENU } from '../components/header/type-header'
 import { ResponseType } from '../components/request/type-request'
 import { sendInvitationResponse } from '../invitation/invitation-store'
 
 const headline = connectionsHeadline || 'My Connections'
-const showCameraButton = typeof connectionsShowCameraButton === 'boolean' ? connectionsShowCameraButton : true
+const showCameraButton =
+  typeof connectionsShowCameraButton === 'boolean'
+    ? connectionsShowCameraButton
+    : true
 
 const {
   container,
@@ -52,13 +56,11 @@ const {
 const numColumns = 2
 
 const MyConnections = ({
-                         route,
-                         navigation,
-                         onNewConnectionSeen,
-                         getUnacknowledgedMessages,
-                         sendInvitationResponse,
-                         deleteConnectionAction,
-                       }: MyConnectionsProps) => {
+  route,
+  navigation,
+  onNewConnectionSeen,
+  getUnacknowledgedMessages,
+}: MyConnectionsProps) => {
   const allConnections = useSelector(getAllConnection)
   const history = useSelector(getHistory)
   const hydrated = useSelector(getConnectionHydrationState)
@@ -69,13 +71,17 @@ const MyConnections = ({
   const connections = useMemo(() => {
     return getConnections(allConnections)
       .map((connection: any, index) => {
-        if (history &&
+        if (
+          history &&
           history.connections &&
           history.connections[connection.senderDID] &&
           history.connections[connection.senderDID].data &&
-          history.connections[connection.senderDID].data.length) {
-          const event = history.connections[connection.senderDID].data[
-          history.connections[connection.senderDID].data.length - 1]
+          history.connections[connection.senderDID].data.length
+        ) {
+          const event =
+            history.connections[connection.senderDID].data[
+              history.connections[connection.senderDID].data.length - 1
+            ]
           return {
             ...connection,
             index,
@@ -153,7 +159,7 @@ const MyConnections = ({
     senderName: string,
     image: ?string,
     senderDID: string,
-    identifier: string,
+    identifier: string
   ) => {
     navigation.navigate(connectionHistRoute, {
       senderName,
@@ -227,17 +233,14 @@ const MyConnections = ({
 
   return (
     <View style={outerContainer}>
-      <HeaderWithMenu
-        headline={headline}
-        navigation={navigation}
-        route={route}
-        showUnreadMessagesBadge={SHOW_UNREAD_MESSAGES_BADGE_NEAR_WITH_MENU}
-      />
       {/*<NotificationCard/>*/}
       <View style={container}>
-        {hasNoConnection && (
-          CustomConnectionEmptyState ? <CustomConnectionEmptyState /> : <EmptyState />
-        )}
+        {hasNoConnection &&
+          (CustomConnectionEmptyState ? (
+            <CustomConnectionEmptyState />
+          ) : (
+            <EmptyState />
+          ))}
         <FlatList
           keyExtractor={keyExtractor}
           style={flatListContainer}
@@ -249,12 +252,11 @@ const MyConnections = ({
           {...{ numColumns }}
         />
       </View>
-      {
-        showCameraButton &&
+      {showCameraButton && (
         <CameraButton
           onPress={() => navigation.navigate(qrCodeScannerTabRoute)}
         />
-      }
+      )}
     </View>
   )
 }
@@ -267,11 +269,11 @@ const mapDispatchToProps = (dispatch) =>
       sendInvitationResponse,
       deleteConnectionAction
     },
-    dispatch,
+    dispatch
   )
 
 const screen = CustomMyConnectionsScreen || MyConnections
 
 export const MyConnectionsScreen = withStatusBar()(
-  connect(null, mapDispatchToProps)(screen),
+  connect(null, mapDispatchToProps)(screen)
 )

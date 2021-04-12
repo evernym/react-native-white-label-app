@@ -22,12 +22,9 @@ exports[`user settings screen should render properly and snapshot should match i
     <View
       pointerEvents="box-none"
       style={
-        Array [
-          Object {
-            "zIndex": 1,
-          },
-          false,
-        ]
+        Object {
+          "zIndex": 1,
+        }
       }
     >
       <View
@@ -110,6 +107,7 @@ exports[`user settings screen should render properly and snapshot should match i
             >
               <Text
                 accessibilityRole="header"
+                aria-level="1"
                 numberOfLines={1}
                 onLayout={[Function]}
                 style={
@@ -148,6 +146,14 @@ exports[`user settings screen should render properly and snapshot should match i
         }
       >
         <View
+          collapsable={false}
+          style={
+            Object {
+              "opacity": 1,
+            }
+          }
+        />
+        <View
           accessibilityElementsHidden={false}
           closing={false}
           gestureVelocityImpact={0.3}
@@ -155,6 +161,7 @@ exports[`user settings screen should render properly and snapshot should match i
           onClose={[Function]}
           onGestureBegin={[Function]}
           onGestureCanceled={[Function]}
+          onGestureEnd={[Function]}
           onOpen={[Function]}
           onTransitionStart={[Function]}
           pointerEvents="box-none"
@@ -195,11 +202,11 @@ exports[`user settings screen should render properly and snapshot should match i
           }
         >
           <View
+            needsOffscreenAlphaCompositing={false}
             pointerEvents="box-none"
             style={
               Object {
                 "flex": 1,
-                "opacity": 1,
               }
             }
           >
@@ -504,179 +511,6 @@ exports[`user settings screen should render properly and snapshot should match i
                           }
                           testID="settings-container"
                         >
-                          <View
-                            style={
-                              Object {
-                                "backgroundColor": "#FFFFFF",
-                                "elevation": 0,
-                                "flexDirection": "row",
-                                "height": 63.52941176470588,
-                                "paddingTop": 19.058823529411764,
-                                "shadowColor": "#000000",
-                                "shadowOffset": Object {
-                                  "height": 2,
-                                  "width": 0,
-                                },
-                                "shadowOpacity": 0.2,
-                                "shadowRadius": 10,
-                                "width": "100%",
-                                "zIndex": 1,
-                              }
-                            }
-                          >
-                            <View
-                              style={
-                                Object {
-                                  "alignItems": "center",
-                                  "flexDirection": "row",
-                                  "width": "15%",
-                                }
-                              }
-                            >
-                              <View
-                                accessible={true}
-                                focusable={true}
-                                isTVSelectable={true}
-                                onClick={[Function]}
-                                onResponderGrant={[Function]}
-                                onResponderMove={[Function]}
-                                onResponderRelease={[Function]}
-                                onResponderTerminate={[Function]}
-                                onResponderTerminationRequest={[Function]}
-                                onStartShouldSetResponder={[Function]}
-                                style={
-                                  Object {
-                                    "opacity": 1,
-                                  }
-                                }
-                                testID="burger-menu"
-                              >
-                                <View
-                                  style={
-                                    Object {
-                                      "transform": Array [
-                                        Object {
-                                          "scale": 1,
-                                        },
-                                      ],
-                                    }
-                                  }
-                                >
-                                  <RNSVGSvgView
-                                    accessibilityLabel="burger-menu"
-                                    accessible={true}
-                                    align="xMidYMid"
-                                    bbHeight={30.628571428571426}
-                                    bbWidth={30.628571428571426}
-                                    fill="#777777"
-                                    focusable={false}
-                                    height={30.628571428571426}
-                                    meetOrSlice={0}
-                                    minX={0}
-                                    minY={0}
-                                    style={
-                                      Array [
-                                        Object {
-                                          "backgroundColor": "transparent",
-                                          "borderWidth": 0,
-                                        },
-                                        Object {
-                                          "marginBottom": 1.9142857142857141,
-                                          "marginLeft": 14.357142857142858,
-                                        },
-                                        Object {
-                                          "flex": 0,
-                                          "height": 30,
-                                          "width": 30,
-                                        },
-                                      ]
-                                    }
-                                    vbHeight={24}
-                                    vbWidth={24}
-                                    width={30.628571428571426}
-                                  >
-                                    <RNSVGGroup
-                                      fill={4286019447}
-                                      propList={
-                                        Array [
-                                          "fill",
-                                        ]
-                                      }
-                                    >
-                                      <RNSVGGroup>
-                                        <RNSVGGroup>
-                                          <RNSVGRect
-                                            height="24"
-                                            matrix={
-                                              Array [
-                                                -1,
-                                                1.2246467991473532e-16,
-                                                -1.2246467991473532e-16,
-                                                -1,
-                                                24,
-                                                24,
-                                              ]
-                                            }
-                                            opacity={0}
-                                            width="24"
-                                            x={0}
-                                            y={0}
-                                          />
-                                          <RNSVGRect
-                                            height="2"
-                                            rx=".95"
-                                            ry=".95"
-                                            width="18"
-                                            x="3"
-                                            y="11"
-                                          />
-                                          <RNSVGRect
-                                            height="2"
-                                            rx=".95"
-                                            ry=".95"
-                                            width="18"
-                                            x="3"
-                                            y="16"
-                                          />
-                                          <RNSVGRect
-                                            height="2"
-                                            rx=".95"
-                                            ry=".95"
-                                            width="18"
-                                            x="3"
-                                            y="6"
-                                          />
-                                        </RNSVGGroup>
-                                      </RNSVGGroup>
-                                    </RNSVGGroup>
-                                  </RNSVGSvgView>
-                                </View>
-                              </View>
-                            </View>
-                            <View
-                              style={
-                                Object {
-                                  "alignItems": "center",
-                                  "flexDirection": "row",
-                                  "justifyContent": "center",
-                                  "width": "85%",
-                                }
-                              }
-                            >
-                              <Text
-                                style={
-                                  Object {
-                                    "color": "#777777",
-                                    "fontFamily": "System",
-                                    "fontSize": 21.057142857142857,
-                                    "marginLeft": -47.85714285714286,
-                                  }
-                                }
-                              >
-                                Settings
-                              </Text>
-                            </View>
-                          </View>
                           <RCTScrollView>
                             <View>
                               <View

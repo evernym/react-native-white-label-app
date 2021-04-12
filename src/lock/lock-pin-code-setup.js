@@ -15,7 +15,6 @@ import { PIN_SETUP_STATE } from './type-lock'
 import { Keyboard, StyleSheet, Platform, View } from 'react-native'
 import { colors, OFFSET_2X, fontFamily } from '../common/styles'
 import { moderateScale, scale, verticalScale } from 'react-native-size-matters'
-import { Header } from '../components'
 import { useFocusEffect } from '@react-navigation/native'
 import { headerNavigationOptions } from '../navigation/navigation-header-config'
 import { LockHeader } from '../external-imports'
@@ -143,11 +142,6 @@ export function LockPinSetup(props: ReactNavigation) {
 
   return (
     <Container tertiary>
-      <Header
-        navigation={props.navigation}
-        route={props.route}
-        transparent={true}
-      />
       <CustomView center>{LockHeader ? <LockHeader /> : <View />}</CustomView>
       <CustomText center h4 bg="tertiary" style={[styles.title]} tertiary thick>
         {`${enteredPin ? 'Re-enter passcode' : enterPasscodeText}`}

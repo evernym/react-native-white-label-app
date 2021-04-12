@@ -35,6 +35,17 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingTop: Platform.OS === 'android' ? 0 : verticalScale(24),
   },
+  headerTransparent: {
+    position: 'absolute',
+    backgroundColor: 'transparent',
+    zIndex: 100,
+    top: 0,
+    left: 0,
+    right: 0,
+    elevation: 0,
+    shadowOpacity: 0,
+    borderBottomWidth: 0,
+  },
   iconSection: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -54,6 +65,13 @@ export const styles = StyleSheet.create({
     fontFamily: fontFamily,
     fontSize: moderateScale(22),
     marginLeft: moderateScale(-50),
+    color: colors.gray2,
+  },
+  labelForOptions: {
+    fontFamily: fontFamily,
+    fontSize: moderateScale(22),
+    marginRight: moderateScale(32 + 15),
+    textAlign: 'center',
     color: colors.gray2,
   },
   iconAndNameWrapper: {

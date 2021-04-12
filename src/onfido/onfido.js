@@ -18,7 +18,6 @@ import {
   CustomView,
   CustomButton,
   Loader,
-  Header,
 } from '../components'
 import { launchOnfidoSDK, resetOnfidoStatues } from './onfido-store'
 import { colors, toryBlue } from '../common/styles'
@@ -90,11 +89,6 @@ export class Onfido extends Component<OnfidoProps, void> {
 
     return (
       <Container tertiary>
-        <Header
-          headline=""
-          navigation={this.props.navigation}
-          route={this.props.route}
-        />
         <Container center horizontalSpace>
           {hasError(status, connectionStatus) ? (
             <OnfidoError status={status} connectionStatus={connectionStatus} />

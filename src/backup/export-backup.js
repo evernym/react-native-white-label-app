@@ -5,13 +5,7 @@ import { Image } from 'react-native'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import {
-  Container,
-  CustomView,
-  CustomText,
-  Loader,
-  Header,
-} from '../components'
+import { Container, CustomView, CustomText, Loader } from '../components'
 
 import {
   exportBackupFileRoute,
@@ -115,12 +109,6 @@ export class ExportBackupFile extends Component<ExportBackupFileProps, void> {
     return (
       <Container style={[styles.exportBackup]} safeArea>
         <Image source={transparentBands} style={[styles.backgroundImage]} />
-        <Header
-          transparent={true}
-          navigation={this.props.navigation}
-          route={this.props.route}
-          color={colors.white}
-        />
         <Container style={[styles.wrapper]}>
           <CustomView center>
             <CustomText transparentBg center style={[styles.exportBackupTitle]}>
