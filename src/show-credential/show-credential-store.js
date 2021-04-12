@@ -45,18 +45,19 @@ export function* preparePresentationProposalSaga(
       pairwiseInfo,
       vcxSerializedConnection,
     } = yield call(
-      createOutOfBandConnectionInvitation, `Show \"${claim.claim.name}\" Credential`, false, presentationProposal,
+      createOutOfBandConnectionInvitation,
+      `Show \"${claim.claim.name}\" Credential`,
+      false,
+      presentationProposal,
     )
 
-    console.log('invitation')
-    console.log(invitation)
+    const attachedRequest = invitation ? JSON.parse(invitation)['request~attach'][0] : undefined
 
     const connection = {
       identifier: pairwiseInfo.myPairwiseDid,
       ...pairwiseInfo,
       vcxSerializedConnection,
-      senderName: claim.claim.name,
-      thid: JSON.parse(presentationProposal)['@id'],
+      attachedRequest,
     }
 
     yield put(showCredentialReady(invitation, claim.claimUuid, connection.identifier))

@@ -142,6 +142,7 @@ import {
   registerCloudAgentWithoutToken,
 } from './user/cloud-agent'
 import {
+  getAttachedRequestData,
   processAttachedRequest,
   updateAriesConnectionState,
 } from '../invitation/invitation-store'
@@ -162,6 +163,7 @@ import type {
 } from '../invite-action/type-invite-action'
 import { INVITE_ACTION_PROTOCOL } from '../invite-action/type-invite-action'
 import { updateVerifierState } from "../verifier/verifier-store";
+import { presentationProposalSchema } from "../proof-request/proof-request-qr-code-reader";
 
 /**
  * this file contains configuration which is changed only from user action
@@ -1251,7 +1253,7 @@ function* handleAriesMessage(message: DownloadedMessage): Generator<*, *, *> {
     vcxSerializedConnection,
     logoUrl: senderLogoUrl,
     senderName,
-    thid,
+    attachedRequest,
   }: Connection = connection
 
   const connectionHandle = yield call(
@@ -1341,9 +1343,6 @@ function* handleAriesMessage(message: DownloadedMessage): Generator<*, *, *> {
       let message = payload['@msg']
       let proofRequest = JSON.parse(message)
 
-      console.log('proofrequest')
-      console.log(message)
-
       if (proofRequest['~service']) {
         // Aries Proof Request
         message = yield call(convertToAriesProofRequest, proofRequest)
@@ -1358,14 +1357,19 @@ function* handleAriesMessage(message: DownloadedMessage): Generator<*, *, *> {
         proofHandle,
       }
 
-      if (proofRequest['thread_id'] && thid === proofRequest['thread_id']) {
-        additionalData.ephemeralProofRequest = proofRequest['~service'] ? message : undefined
-        additionalData.additionalPayloadInfo = {
-          hidden: true,
-          autoAccept: true,
-          identifier: forDID,
+      if (proofRequest['thread_id'] && attachedRequest) {
+        const data = yield call(getAttachedRequestData, attachedRequest.data)
+
+        if (data && schemaValidator.validate(presentationProposalSchema, data) &&
+          data["@id"] === proofRequest['thread_id']){
+          additionalData.ephemeralProofRequest = proofRequest['~service'] ? message : undefined
+          additionalData.additionalPayloadInfo = {
+            hidden: true,
+            autoAccept: true,
+            identifier: forDID,
+          }
+          redirectToScreen = false
         }
-        redirectToScreen = false
       }
     }
 

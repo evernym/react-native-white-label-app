@@ -585,15 +585,9 @@ function* outOfBandInvitationAccepted(
   }
 }
 
-export async function getAttachedRequest(
-  invite: AriesOutOfBandInvite
+export async function getAttachedRequestData(
+  req: GenericObject
 ): GenericObject {
-  const requests = invite['request~attach']
-  if (!requests || !requests.length) {
-    return null
-  }
-
-  const req = requests[0].data
   if (!req) {
     return null
   }
@@ -622,6 +616,17 @@ export async function getAttachedRequest(
   }
 
   return null
+}
+
+export async function getAttachedRequest(
+  invite: AriesOutOfBandInvite
+): GenericObject {
+  const requests = invite['request~attach']
+  if (!requests || !requests.length) {
+    return null
+  }
+
+  return getAttachedRequestData(requests[0].data)
 }
 
 export function* processAttachedRequest(did: string): Generator<*, *, *> {

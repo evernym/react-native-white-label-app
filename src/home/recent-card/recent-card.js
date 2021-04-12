@@ -48,6 +48,7 @@ import { ResponseType } from '../../components/request/type-request'
 import { deleteConnectionAction } from '../../store/connections-store'
 import { LOADING_ACTIONS } from '../../connection-history/type-connection-history'
 import { PRESENTATION_VERIFICATION_FAILED } from '../../verifier/type-verifier'
+import { renderUserAvatar } from "../../components/user-avatar/user-avatar";
 
 class RecentCardComponent extends React.Component<RecentCardProps, void> {
   render() {
@@ -59,7 +60,10 @@ class RecentCardComponent extends React.Component<RecentCardProps, void> {
     const cardContent = (
       <View style={styles.container}>
         <View style={styles.iconSection}>
-          {renderImageOrText(props.logoUrl, props.issuerName)}
+          { props.issuerName ?
+            renderImageOrText(props.logoUrl, props.issuerName) :
+            renderUserAvatar({ size: 'superSmall' })
+          }
         </View>
         <View style={styles.textSection}>
           <View style={styles.textMessageSection}>
