@@ -92,6 +92,7 @@ import {
 } from '../backup/type-backup'
 import { hydrateInvitationsSaga } from '../invitation/invitation-store'
 import { hydrateInviteActionSaga } from '../invite-action/invite-action-store'
+import { hydrateVerifierSaga } from '../verifier/verifier-store'
 
 export function* deleteDeviceSpecificData(): Generator<*, *, *> {
   try {
@@ -285,6 +286,7 @@ export function* hydrate(): any {
       yield* hydrateClaimMapSaga()
       yield* hydrateQuestionSaga()
       yield* hydrateInviteActionSaga()
+      yield* hydrateVerifierSaga()
       // find and try to retry actions which was interrupted by closing the app
       yield* retryInterruptedActionsSaga()
 

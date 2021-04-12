@@ -9,12 +9,12 @@ import {
   FlatList,
 } from 'react-native'
 import { verticalScale, moderateScale } from 'react-native-size-matters'
-import { homeDrawerRoute, homeRoute, presentationProposalRoute } from '../common/route-constants'
+import { homeDrawerRoute, homeRoute, presentationProposalRoute } from '../common'
 import type { ReactNavigation } from '../common/type-common'
-import { colors, fontSizes, fontFamily } from '../common/styles/constant'
+import { colors, fontSizes, fontFamily } from '../common/styles'
 import { ExpandableText } from '../components/expandable-text/expandable-text'
 import { modalOptions } from '../connection-details/utils/modalOptions'
-import { getVerifier } from '../store/store-selector'
+import { getLockStore, getVerifier } from '../store/store-selector'
 import { Loader } from '../components'
 import type { InvitationPayload } from "../invitation/type-invitation";
 import type { AriesPresentationPreviewAttribute, AriesPresentationProposal } from "../proof-request/type-proof-request";
@@ -22,7 +22,8 @@ import { ModalButtons } from "../components/buttons/modal-buttons";
 import { ModalHeader } from "../connection-details/components/modal-header";
 import { CONNECTION_INVITE_TYPES } from "../invitation/type-invitation";
 import { acceptOutOfBandInvitation } from "../invitation/invitation-store";
-import { outofbandPresentationProposalAccepted, presentationProposalAccepted } from './verifier-store'
+import { presentationProposalAccepted } from './verifier-store'
+import { authForAction } from '../lock/lock-auth-for-action'
 
 export type PresentationProposalProps = {
   backRedirectRoute?: string | null,
@@ -41,12 +42,12 @@ export const PresentationProposalComponent = ( {
   const dispatch = useDispatch()
 
   const verifier = useSelector(state => getVerifier(state, uid))
+  const lock = useSelector(getLockStore)
 
   const presentationProposal = useMemo(() => verifier.presentationProposal, [verifier])
 
-  const onAccept = useCallback(() => {
-    if (invitationPayload.type && invitationPayload.type === CONNECTION_INVITE_TYPES.ARIES_OUT_OF_BAND){
-      dispatch(outofbandPresentationProposalAccepted(uid))
+  const onAcceptAuthSuccess = useCallback(() => {
+    if (invitationPayload.type === CONNECTION_INVITE_TYPES.ARIES_OUT_OF_BAND){
       dispatch(acceptOutOfBandInvitation(invitationPayload, attachedRequest))
     } else {
       dispatch(presentationProposalAccepted(uid))
@@ -56,6 +57,14 @@ export const PresentationProposalComponent = ( {
       params: undefined,
     })
   }, [uid, invitationPayload, attachedRequest])
+
+  const onAccept = useCallback(() => {
+    authForAction({
+      lock,
+      navigation,
+      onSuccess: onAcceptAuthSuccess,
+    })
+  }, [onAcceptAuthSuccess])
 
   const onDeny = useCallback(() => {
     if (backRedirectRoute) {
@@ -96,7 +105,7 @@ export const PresentationProposalComponent = ( {
         onPress={onAccept}
         onIgnore={onDeny}
         acceptBtnText={'Accept'}
-        denyButtonText={'Deny'}
+        denyButtonText={'Cancel'}
         colorBackground={colors.main}
         secondColorBackground={colors.red}
       />
@@ -118,8 +127,6 @@ const styles = StyleSheet.create({
     paddingRight: '5%',
   },
   attributeWrapper: {
-    backgroundColor: colors.white,
-    position: 'relative',
     paddingTop: moderateScale(12),
     borderBottomColor: colors.gray4,
     borderBottomWidth: StyleSheet.hairlineWidth,

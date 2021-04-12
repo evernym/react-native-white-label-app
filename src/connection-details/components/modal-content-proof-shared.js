@@ -24,7 +24,7 @@ const ProofRequestModal = ({
   const { data, colorBackground } = route.params
 
   const claimMap = useSelector(getClaimMap)
-  const { hasEmpty, allEmpty } = useMemo(() => checkProofForEmptyFields(data), [data])
+  const { hasEmpty, allEmpty } = useMemo(() => checkProofForEmptyFields(data.data), [data])
   const [isMissingFieldsShowing, toggleMissingFields] = useState(showMissingField(hasEmpty, allEmpty))
   const isToggleMenuShowing = showToggleMenu(hasEmpty, allEmpty)
 
@@ -51,7 +51,7 @@ const ProofRequestModal = ({
         <View style={styles.outerModalWrapper}>
           <View style={styles.innerModalWrapper}>
             <CustomListProofRequest
-              items={data}
+              items={data.data}
               claimMap={claimMap}
               isMissingFieldsShowing={isMissingFieldsShowing}
             />

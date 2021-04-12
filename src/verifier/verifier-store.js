@@ -2,15 +2,16 @@
 import { all, call, put, select, takeEvery } from 'redux-saga/effects'
 import {
   createProofVerifierWithProposal,
-  getHandleBySerializedConnection,
   proofVerifierDeserialize,
+  proofVerifierGetPresentationRequest,
   proofVerifierGetProofMessage,
   proofVerifierSendRequest,
   proofVerifierSerialize,
   proofVerifierUpdateStateWithMessage,
 } from '../bridge/react-native-cxs/RNCxs'
-import { getConnection, getVerifier, getVerifiers } from '../store/store-selector'
+import { getVerifier, getVerifiers } from '../store/store-selector'
 import type {
+  HydrateVerifierStoreAction,
   OutOfBandPresentationProposalAcceptedAction,
   PresentationProposalAcceptedAction,
   PresentationProposalReceivedAction,
@@ -22,6 +23,7 @@ import type {
   VerifierStore,
 } from './type-verifier'
 import {
+  HYDRATE_VERIFIER_STORE,
   OUTOFBAND_PRESENTATION_PROPOSAL_ACCEPTED,
   PRESENTATION_PROPOSAL_ACCEPTED,
   PRESENTATION_PROPOSAL_RECEIVED,
@@ -32,13 +34,20 @@ import {
   VERIFIER_STATE,
   VerifierStoreInitialState,
 } from './type-verifier'
-import type { Connection } from "../store/type-connection-store";
-import { secureSet } from "../services/storage";
-import { VERIFIERS } from "../common";
-import { captureError } from "../services/error/error-handler";
-import { customLogger } from "../store/custom-logger";
-import type { AriesPresentationProposal } from "../proof-request/type-proof-request";
-import type { NotificationPayloadInfo } from "../push-notification/type-push-notification";
+import { getHydrationItem, secureSet } from '../services/storage'
+import { VERIFIERS } from '../common'
+import { captureError } from '../services/error/error-handler'
+import { customLogger } from '../store/custom-logger'
+import type { AriesPresentationProposal } from '../proof-request/type-proof-request'
+import type { NotificationPayloadInfo } from '../push-notification/type-push-notification'
+import { getConnectionHandle } from '../store/connections-store'
+
+export const hydrateVerifierStore = (
+  data: VerifierStore,
+): HydrateVerifierStoreAction => ({
+  type: PRESENTATION_PROPOSAL_RECEIVED,
+  data,
+})
 
 export const presentationProposalReceived = (
   presentationProposal: AriesPresentationProposal,
@@ -65,10 +74,12 @@ export const outofbandPresentationProposalAccepted = (
 
 export const presentationRequestSent = (
   uid: string,
+  presentationRequest: string,
   serialized: string,
 ): PresentationRequestSentAction => ({
   type: PRESENTATION_REQUEST_SENT,
   uid,
+  presentationRequest,
   serialized,
 })
 export const presentationVerified = (
@@ -88,49 +99,68 @@ export const presentationVerificationFailed = (
   error,
 })
 
-export function* getConnectionHandle(
-  senderDID: string,
-): Generator<*, *, *> {
-  const [connection]: [Connection] = yield select(getConnection, senderDID)
-  if (!connection || !connection.vcxSerializedConnection) {
-    return
-  }
-  return yield call(
-    getHandleBySerializedConnection,
-    connection.vcxSerializedConnection
-  )
-}
-
 export function* presentationProposalAcceptedSaga(
   action: PresentationProposalAcceptedAction,
 ): Generator<*, *, *> {
   const verifier = yield select(getVerifier, action.uid)
-  if (!verifier){
-    yield put(presentationVerificationFailed(action.uid, "Cannot accept presentation proposal. Verifier not found"))
+  if (!verifier) {
+    yield put(presentationVerificationFailed(action.uid, 'Cannot accept presentation proposal. Verifier not found'))
     return
   }
 
   const connection = yield call(getConnectionHandle, verifier.senderDID)
   if (!connection) {
-    yield put(presentationVerificationFailed(action.uid, "Cannot accept presentation proposal. Connection not found"))
+    yield put(presentationVerificationFailed(action.uid, 'Cannot accept presentation proposal. Connection not found'))
     return
   }
 
-  const handle = yield call(createProofVerifierWithProposal, JSON.stringify(verifier.presentationProposal), verifier.presentationProposal.comment)
+  const handle = yield call(
+    createProofVerifierWithProposal,
+    JSON.stringify(verifier.presentationProposal),
+    verifier.presentationProposal.comment,
+  )
   yield call(proofVerifierSendRequest, handle, connection)
+  const presentationRequest = yield call(proofVerifierGetPresentationRequest, handle)
   const serialized = yield call(proofVerifierSerialize, handle)
 
-  yield put(presentationRequestSent(action.uid, serialized))
+  yield put(presentationRequestSent(action.uid, presentationRequest, serialized))
+}
+
+function prepareRequestedProofData(presentationRequestMessage: string, proofMessage: string) {
+  const proof = JSON.parse(proofMessage)
+  const presentationRequest = JSON.parse(presentationRequestMessage)
+
+  const indyProof =
+    proof['libindy_proof'] ? JSON.parse(proof['libindy_proof']) : undefined
+
+  const requestAttributes =
+    presentationRequest['proof_request_data'] ?
+      presentationRequest['proof_request_data']['requested_attributes'] : undefined
+
+  if (!indyProof || !requestAttributes) {
+    return
+  }
+
+  Object.keys(indyProof.requested_proof.revealed_attrs)
+    .map((key) => {
+      indyProof.requested_proof.revealed_attrs[key] = {
+        attribute: requestAttributes[key] ? requestAttributes[key]['name'] : '',
+        ...indyProof.requested_proof.revealed_attrs[key],
+      }
+    })
+
+  return indyProof.requested_proof
 }
 
 export function* updateVerifierState(
   message: string,
 ): Generator<*, *, *> {
-  let uid = JSON.parse(message)['~thread']['thid']
+  const parsedMessage = JSON.parse(message) || {}
+  const uid = parsedMessage['~thread'] ? parsedMessage['~thread']['thid'] : ''
 
   try {
     const verifier = yield select(getVerifier, uid)
-    if (!verifier){
+    if (!verifier) {
       return
     }
 
@@ -138,39 +168,32 @@ export function* updateVerifierState(
     const state = yield call(proofVerifierUpdateStateWithMessage, handle, message)
 
     // proof request rejected
-    if (state === VERIFIER_STATE.PROOF_REQUEST_REJECTED){
-      yield put(presentationVerificationFailed(uid, "Presentation Request rejected"))
-      return
+    if (state === VERIFIER_STATE.PROOF_REQUEST_REJECTED) {
+      throw new Error('Presentation Request rejected')
     }
 
     // proof received
-    if (state === VERIFIER_STATE.PROOF_RECEIVED){
+    if (state === VERIFIER_STATE.PROOF_RECEIVED) {
       const { proofState, message } = yield call(proofVerifierGetProofMessage, handle)
-      if (!proofState || !message){
-        yield put(presentationVerificationFailed(uid, "Presentation verification failed"))
-        return
+      if (!proofState || !message) {
+        throw new Error('Presentation verification failed')
       }
 
       if (proofState === PROOF_SATE.VERIFIER) {
-        console.log('7 updateVerifierState')
-
         // proof accepted
-        const proof = JSON.parse(message)
-        const indyProof = proof["libindy_proof"] ? JSON.parse(proof["libindy_proof"]): undefined
-        if (!indyProof){
-          yield put(presentationVerificationFailed(uid, "Presentation verification failed"))
-          return
+        const requestedProof = prepareRequestedProofData(verifier.presentationRequest, message)
+        if (!requestedProof) {
+          throw new Error('Presentation verification failed')
         }
 
-        yield put(presentationVerified(uid, indyProof.requested_proof))
+        yield put(presentationVerified(uid, requestedProof))
       } else {
-        // proof verification failed
-        yield put(presentationVerificationFailed(uid, "Proof verification failed"))
+        throw new Error('Presentation verification failed')
       }
     }
   } catch (error) {
     customLogger.log(`updateVerifierState: ${error}`)
-    yield put(presentationVerificationFailed(uid, `Presentation verification failed`))
+    yield put(presentationVerificationFailed(uid, error))
   }
 }
 
@@ -181,6 +204,18 @@ export function* persistVerifier(): Generator<*, *, *> {
   } catch (e) {
     captureError(e)
     customLogger.log(`persistVerifier Error: ${e}`)
+  }
+}
+
+export function* hydrateVerifierSaga(): Generator<*, *, *> {
+  try {
+    const verifiers = yield call(getHydrationItem, VERIFIERS)
+    if (verifiers) {
+      yield put(hydrateVerifierStore(JSON.parse(verifiers)))
+    }
+  } catch (e) {
+    captureError(e)
+    customLogger.log(`hydrateVerifierSaga: ${e}`)
   }
 }
 
@@ -196,7 +231,7 @@ function* watchPersistVerifierStore(): any {
       PRESENTATION_VERIFIED,
       PRESENTATION_VERIFICATION_FAILED,
     ],
-    persistVerifier
+    persistVerifier,
   )
 }
 
@@ -212,6 +247,12 @@ export default function verifierReducer(
   action: VerifierActions,
 ) {
   switch (action.type) {
+    case HYDRATE_VERIFIER_STORE: {
+      return {
+        ...state,
+        ...action.data,
+      }
+    }
     case PRESENTATION_PROPOSAL_RECEIVED:
       return {
         ...state,
@@ -229,6 +270,7 @@ export default function verifierReducer(
         ...state,
         [action.uid]: {
           ...state[action.uid],
+          presentationRequest: action.presentationRequest,
           vcxSerializedStateObject: action.serialized,
         },
       }

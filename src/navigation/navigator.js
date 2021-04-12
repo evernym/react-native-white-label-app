@@ -107,6 +107,7 @@ import {
 import { inviteActionScreen } from '../invite-action/invite-action-screen'
 import { ShowCredentialScreen } from "../show-credential/show-credential";
 import { PresentationProposalScreen } from "../verifier/presentation-proposal-screen";
+import { ReceivedProofScreen } from '../connection-details/components/received-proof-modal'
 
 if (Platform.OS !== 'android') {
   enableScreens()
@@ -559,6 +560,11 @@ export function MSDKAppNavigator() {
         name={PresentationProposalScreen.routeName}
         component={PresentationProposalScreen.screen}
         options={PresentationProposalScreen.screen.navigationOptions}
+      />
+      <CardStack.Screen
+        name={ReceivedProofScreen.routeName}
+        component={ReceivedProofScreen.screen}
+        options={ReceivedProofScreen.screen.navigationOptions}
       />
 
       {usePushNotifications && (

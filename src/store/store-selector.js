@@ -338,6 +338,8 @@ export const getUserIsFetching = (state: Store) => state.user.isFetching
 /*
  * Selectors related to Lock Store
  * */
+export const getLockStore = (state: Store) => state.lock
+
 export const getIsAppLocked = (state: Store) => state.lock.isAppLocked
 
 export const getPendingRedirection = (state: Store) =>

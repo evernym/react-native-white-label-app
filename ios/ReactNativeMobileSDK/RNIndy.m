@@ -1786,7 +1786,7 @@ RCT_EXPORT_METHOD(proofVerifierSendRequest: (NSInteger) proofHandle
                                   resolver: (RCTPromiseResolveBlock) resolve
                                   rejecter: (RCTPromiseRejectBlock) reject)
 {
-  [[[ConnectMeVcx alloc] init] proofVerifierSendRequest:credentialHandle
+  [[[ConnectMeVcx alloc] init] proofVerifierSendRequest:proofHandle
                                        connectionHandle:connectionHandle
                                              completion:^(NSError *error) {
     if (error != nil && error.code != 0)
@@ -1848,6 +1848,23 @@ RCT_EXPORT_METHOD(proofVerifierGetProofMessage:(NSInteger) proofHandle
         @"proofState": @(proofState),
         @"message": message
       });
+    }
+  }];
+}
+
+RCT_EXPORT_METHOD(getConnectionInvite:(NSInteger)proofHandle
+                             resolver: (RCTPromiseResolveBlock) resolve
+                             rejecter: (RCTPromiseRejectBlock) reject)
+{
+  [[[ConnectMeVcx alloc] init] proofVerifierGetProofRequestMessage:proofHandle
+                                                        completion:^(NSError *error, NSString *message)
+  {
+    if (error != nil && error.code != 0)
+    {
+      NSString *indyErrorCode = [NSString stringWithFormat:@"%ld", (long)error.code];
+      reject(indyErrorCode, @"Error occurred while getting proof request message", error);
+    } else {
+      resolve(message);
     }
   }];
 }

@@ -1,76 +1,70 @@
 // @flow
-import {
-  put,
-  takeLatest,
-  takeEvery,
-  call,
-  select,
-  all,
-} from 'redux-saga/effects'
-import { secureSet, secureDelete, getHydrationItem } from '../services/storage'
+import { all, call, put, select, takeEvery, takeLatest } from 'redux-saga/effects'
+import { getHydrationItem, secureDelete, secureSet } from '../services/storage'
 import { CONNECTIONS } from '../common'
 import {
   getAllConnection,
+  getAllConnections,
+  getConnection as getConnectionBySenderDid,
+  getConnection,
   getThemes,
-  getConnection as getConnectionBySenderDid, getAllConnections,
 } from './store-selector'
 import { color } from '../common/styles/constant'
 import { bubbleSize } from '../common/styles'
 import type { CustomError, GenericObject } from '../common/type-common'
+import { RESET } from '../common/type-common'
 import type {
-  ConnectionStore,
   Connection,
-  Connections,
-  ConnectionThemes,
   ConnectionAttachRequestAction,
   ConnectionDeleteAttachedRequestAction,
-  DeleteConnectionSuccessEventAction,
-  DeleteConnectionFailureEventAction,
+  Connections,
+  ConnectionStore,
+  ConnectionThemes,
   DeleteConnectionEventAction,
+  DeleteConnectionFailureEventAction,
+  DeleteConnectionSuccessEventAction,
+  DeleteOneTimeConnectionAction,
+  DeleteOneTimeConnectionSuccessAction,
+  DeletePendingConnectionEventAction,
   SendConnectionRedirectAction,
   SendConnectionReuseAction,
   UpdateConnectionSerializedStateAction,
-  DeletePendingConnectionEventAction, DeleteOneTimeConnectionAction, DeleteOneTimeConnectionSuccessAction,
 } from './type-connection-store'
-import type {
-  AriesOutOfBandInvite,
-  InvitationPayload,
-} from '../invitation/type-invitation'
 import {
   CONNECTION_ATTACH_REQUEST,
   CONNECTION_DELETE_ATTACHED_REQUEST,
-  NEW_CONNECTION,
-  DELETE_CONNECTION_SUCCESS,
-  DELETE_CONNECTION_FAILURE,
-  DELETE_CONNECTION,
-  STORAGE_KEY_THEMES,
-  HYDRATE_CONNECTION_THEMES,
-  UPDATE_CONNECTION_THEME,
-  UPDATE_STATUS_BAR_THEME,
-  HYDRATE_CONNECTIONS,
-  SEND_CONNECTION_REDIRECT,
-  SEND_CONNECTION_REUSE,
-  UPDATE_CONNECTION_SERIALIZED_STATE,
-  SEND_REDIRECT_SUCCESS,
-  SEND_REUSE_SUCCESS,
   CONNECTION_FAIL,
-  NEW_ONE_TIME_CONNECTION,
-  NEW_CONNECTION_SUCCESS,
-  NEW_PENDING_CONNECTION,
-  UPDATE_CONNECTION,
-  DELETE_PENDING_CONNECTION,
   CONNECTION_REQUEST_SENT,
+  DELETE_CONNECTION,
+  DELETE_CONNECTION_FAILURE,
+  DELETE_CONNECTION_SUCCESS,
   DELETE_ONE_TIME_CONNECTION,
   DELETE_ONE_TIME_CONNECTION_SUCCESS,
+  DELETE_PENDING_CONNECTION,
+  HYDRATE_CONNECTION_THEMES,
+  HYDRATE_CONNECTIONS,
+  NEW_CONNECTION,
+  NEW_CONNECTION_SUCCESS,
+  NEW_ONE_TIME_CONNECTION,
+  NEW_PENDING_CONNECTION,
+  SEND_CONNECTION_REDIRECT,
+  SEND_CONNECTION_REUSE,
+  SEND_REDIRECT_SUCCESS,
+  SEND_REUSE_SUCCESS,
+  STORAGE_KEY_THEMES,
+  UPDATE_CONNECTION,
+  UPDATE_CONNECTION_SERIALIZED_STATE,
+  UPDATE_CONNECTION_THEME,
+  UPDATE_STATUS_BAR_THEME,
 } from './type-connection-store'
+import type { AriesOutOfBandInvite, InvitationPayload } from '../invitation/type-invitation'
 import {
-  deleteConnection,
-  getHandleBySerializedConnection,
-  createConnectionWithInvite,
   connectionRedirect,
   connectionReuse,
+  createConnectionWithInvite,
+  deleteConnection,
+  getHandleBySerializedConnection,
 } from '../bridge/react-native-cxs/RNCxs'
-import { RESET } from '../common/type-common'
 import { promptBackupBanner } from '../backup/backup-store'
 import { HYDRATED } from './type-config-store'
 import { captureError } from '../services/error/error-handler'
@@ -526,6 +520,19 @@ function* sendConnectionReuseSaga(
     captureError(e)
     customLogger.error(`connectionReuse: ${e}`)
   }
+}
+
+export function* getConnectionHandle(
+  senderDID: string,
+): Generator<*, *, *> {
+  const [connection]: [Connection] = yield select(getConnection, senderDID)
+  if (!connection || !connection.vcxSerializedConnection) {
+    return
+  }
+  return yield call(
+    getHandleBySerializedConnection,
+    connection.vcxSerializedConnection,
+  )
 }
 
 export function* watchSendConnectionRedirect(): any {

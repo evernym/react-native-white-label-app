@@ -993,3 +993,7 @@ export async function proofVerifierUpdateStateWithMessage(handle: number, messag
 export async function proofVerifierGetProofMessage(handle: number): Promise<any> {
   return RNIndy.proofVerifierGetProofMessage(handle)
 }
+
+export async function proofVerifierGetPresentationRequest(handle: number): Promise<string> {
+  return RNIndy.proofVerifierGetPresentationRequest(handle,)
+}

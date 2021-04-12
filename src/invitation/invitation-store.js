@@ -56,7 +56,7 @@ import {
   toUtf8FromBase64,
 } from '../bridge/react-native-cxs/RNCxs'
 import type { CustomError, GenericObject } from '../common/type-common'
-import { ARIES_MESSAGE_TYPES, ID, RESET, TYPE } from '../common/type-common'
+import { ID, RESET, TYPE } from '../common/type-common'
 import { captureError } from '../services/error/error-handler'
 import { ensureVcxInitSuccess } from '../store/route-store'
 import type { Connection } from '../store/type-connection-store'
@@ -85,7 +85,7 @@ import { customLogger } from '../store/custom-logger'
 import { retrySaga } from '../api/api-utils'
 import { checkProtocolStatus } from '../store/protocol-status'
 import { isConnectionCompleted } from '../store/store-utils'
-import { presentationProposalAccepted } from "../verifier/verifier-store";
+import { outofbandPresentationProposalAccepted, presentationProposalAccepted } from '../verifier/verifier-store'
 
 export const invitationInitialState = {}
 
@@ -389,7 +389,7 @@ export function* sendResponseOnAriesOutOfBandInvitationWithoutHandshake(
     let pairwiseInfo = {}
     let vcxSerializedConnection
 
-    if ([ARIES_MESSAGE_TYPES.CREDENTIAL_OFFER, ARIES_MESSAGE_TYPES.PRESENTATION_PROPOSAL].includes(attachedRequest[TYPE])) {
+    if (attachedRequest[TYPE].endsWith('offer-credential') || attachedRequest[TYPE].endsWith('propose-presentation')) {
       // for these message we need to create pairwise agent to use service decorator
       const data = yield* retrySaga(
         call(acceptInvitationVcx, connectionHandle),
@@ -576,6 +576,12 @@ function* outOfBandInvitationAccepted(
         connectionExists
       )
     )
+  } else if (attachedRequest[TYPE].endsWith('propose-presentation')) {
+    yield put(
+      outofbandPresentationProposalAccepted(
+        action.attachedRequest[ID],
+      )
+    )
   }
 }
 
@@ -629,7 +635,7 @@ export function* processAttachedRequest(did: string): Generator<*, *, *> {
 
   const uid = attachedRequest[ID]
 
-  if (attachedRequest[TYPE] === ARIES_MESSAGE_TYPES.CREDENTIAL_OFFER) {
+  if (attachedRequest[TYPE].endsWith('offer-credential')) {
     const { claimHandle } = yield call(
       createCredentialWithAriesOfferObject,
       uid,
@@ -643,9 +649,9 @@ export function* processAttachedRequest(did: string): Generator<*, *, *> {
       uid
     )
     yield put(acceptClaimOffer(uid, connection.senderDID))
-  } else if (attachedRequest[TYPE] === ARIES_MESSAGE_TYPES.PRESENTATION_REQUEST) {
+  } else if (attachedRequest[TYPE].endsWith('request-presentation')) {
     yield put(outOfBandConnectionForPresentationEstablished(uid))
-  } else if (attachedRequest[TYPE] === ARIES_MESSAGE_TYPES.PRESENTATION_PROPOSAL) {
+  } else if (attachedRequest[TYPE].endsWith('propose-presentation')) {
     yield put(presentationProposalAccepted(uid))
   }
 }

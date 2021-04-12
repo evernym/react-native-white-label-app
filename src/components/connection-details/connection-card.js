@@ -17,6 +17,7 @@ import {
   connectionsDrawerRoute,
   modalContentProofShared,
   modalScreenRoute,
+  receivedProofRoute,
 } from '../../common'
 import {
   SEND_CLAIM_REQUEST_FAIL,
@@ -37,6 +38,7 @@ import { sendInvitationResponse } from '../../invitation/invitation-store'
 import { deleteConnectionAction } from '../../store/connections-store'
 import { ExpandableText } from '../expandable-text/expandable-text'
 import type { ReactNavigation } from '../../common/type-common'
+import { PRESENTATION_VERIFIED } from '../../verifier/type-verifier'
 
 type ConnectionCardProps = {
   messageDate: string,
@@ -119,6 +121,11 @@ const ConnectionCardComponent = ({
         institutionalName,
         colorBackground,
         secondColorBackground,
+      })
+    } else if (type === PRESENTATION_VERIFIED) {
+      navigation.navigate(receivedProofRoute, {
+        data,
+        colorBackground,
       })
     } else {
       return null

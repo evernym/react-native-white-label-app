@@ -2,6 +2,12 @@
 import type { AriesPresentationProposal } from "../proof-request/type-proof-request";
 import type { NotificationPayloadInfo } from "../push-notification/type-push-notification";
 
+export const HYDRATE_VERIFIER_STORE = 'HYDRATE_VERIFIER_STORE'
+export type HydrateVerifierStoreAction = {
+  type: typeof HYDRATE_VERIFIER_STORE,
+  data: VerifierStore,
+}
+
 export const PRESENTATION_PROPOSAL_RECEIVED = 'PRESENTATION_PROPOSAL_RECEIVED'
 export type PresentationProposalReceivedAction = {
   type: typeof PRESENTATION_PROPOSAL_RECEIVED,
@@ -25,6 +31,7 @@ export const PRESENTATION_REQUEST_SENT = 'PRESENTATION_REQUEST_SENT'
 export type PresentationRequestSentAction = {
   type: typeof PRESENTATION_REQUEST_SENT,
   uid: string,
+  presentationRequest: string,
   serialized: string,
 }
 
@@ -42,23 +49,25 @@ export type PresentationVerificationFailedAction = {
   error: string,
 }
 
-export type AttributeValue = {
+export type RevealedAttribute = {
+  attribute: string,
   raw: string,
   encoded: string,
-}
-
-export type RevealedAttribute = {
   sub_proof_index: number,
-} & AttributeValue
+}
 
 export type RevealedAttributeGroup = {
   sub_proof_index: number,
   values: {
-    +[string]: AttributeValue,
+    +[string]: {
+      raw: string,
+      encoded: string,
+    },
   }
 }
 
 export type SubProofReferent = {
+  attribute: string,
   sub_proof_index: number,
 }
 
@@ -93,6 +102,7 @@ export const PROOF_SATE = {
 }
 
 export type VerifierActions =
+  | HydrateVerifierStoreAction
   | PresentationProposalReceivedAction
   | OutOfBandPresentationProposalAcceptedAction
   | PresentationProposalAcceptedAction
@@ -106,6 +116,7 @@ export type VerifierData = {
   senderDID: string,
   senderName: string | null,
   senderLogoUrl: string | null,
+  presentationRequest?: string,
   vcxSerializedStateObject?: string,
   requestedProof?: RequestedProof | null,
   hidden?: boolean,

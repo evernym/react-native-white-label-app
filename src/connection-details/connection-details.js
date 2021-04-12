@@ -415,13 +415,19 @@ const ConnectionDetails = ({
         />
       )
     } else if (item.action === PRESENTATION_VERIFIED) {
+      const noOfAttributes = Object.keys({
+        ...item.data.revealed_attrs,
+        ...item.data.revealed_attr_groups,
+        ...item.data.unrevealed_attrs,
+        ...item.data.predicates,
+      }).length
       return (
         <ConnectionCard
           messageDate={formattedTime}
           headerText={item.name}
           infoType={'VERIFIED PROOF'}
           infoDate={formattedDate}
-          noOfAttributes={item.data.length}
+          noOfAttributes={noOfAttributes}
           buttonText={'VIEW PROOF DATA'}
           showBadge={true}
           colorBackground={themeForLogo.primary}
