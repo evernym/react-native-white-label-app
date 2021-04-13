@@ -3,10 +3,6 @@ export type ShowCredentialAction = {
   type: typeof SHOW_CREDENTIAL,
   claimOfferUuid: string,
 }
-export const showCredential = (claimOfferUuid: string): ShowCredentialAction => ({
-  type: SHOW_CREDENTIAL,
-  claimOfferUuid,
-})
 
 export const SHOW_CREDENTIAL_READY = 'SHOW_CREDENTIAL_READY'
 export type ShowCredentialReadyAction = {
@@ -15,42 +11,22 @@ export type ShowCredentialReadyAction = {
   credentialUuid: string,
   connectionIdentifier: string,
 }
-export const showCredentialReady = (
-  presentationProposal: string,
-  credentialUuid: string,
-  connectionIdentifier: string,
-): ShowCredentialReadyAction => ({
-  type: SHOW_CREDENTIAL_READY,
-  presentationProposal,
-  credentialUuid,
-  connectionIdentifier,
-})
 
 export const SHOW_CREDENTIAL_FAIL = 'SHOW_CREDENTIAL_FAIL'
 export type ShowCredentialFailAction = {
   type: typeof SHOW_CREDENTIAL_FAIL,
   error: string,
 }
-export const showCredentialFail = (error: string): ShowCredentialFailAction => ({
-  type: SHOW_CREDENTIAL_FAIL,
-  error,
-})
 
 export const CREDENTIAL_PRESENTATION_SENT = 'CREDENTIAL_PRESENTATION_SENT'
 export type CredentialPresentationSentAction = {
   type: typeof CREDENTIAL_PRESENTATION_SENT,
 }
-export const credentialPresentationSent = (): CredentialPresentationSentAction => ({
-  type: CREDENTIAL_PRESENTATION_SENT,
-})
 
 export const SHOW_CREDENTIAL_FINISHED = 'SHOW_CREDENTIAL_FINISHED'
 export type ShowCredentialFinishedAction = {
   type: typeof SHOW_CREDENTIAL_FINISHED,
 }
-export const showCredentialFinished = (): ShowCredentialFinishedAction => ({
-  type: SHOW_CREDENTIAL_FINISHED,
-})
 
 export type ShowCredentialActions =
   | ShowCredentialAction
@@ -74,6 +50,3 @@ export const ShowCredentialStoreInitialState = {
   error: null,
   isSent: false,
 }
-
-
-

@@ -746,3 +746,18 @@ export const getIsCredentialSent = (state: Store) => state.showCredential.isSent
 export const getVerifiers = (state: Store) => state.verifier
 
 export const getVerifier = (state: Store, uid: string) => state.verifier[uid]
+
+export const getVerifierPresentationProposal = (state: Store, uid: string) =>
+  state.verifier[uid]?.presentationProposal
+
+export const getVerifierProofRequest = (state: Store, uid: string) =>
+  state.verifier[uid]?.proofRequest
+
+export const getVerifierRequestedProof = (state: Store, uid: string) =>
+  state.verifier[uid]?.requestedProof
+
+export const getVerifierSenderLogo = (state: Store, uid: string) =>
+  state.verifier[uid]?.senderLogoUrl
+
+export const getVerifierSenderName = (state: Store, uid: string) =>
+  state.verifier[uid]?.senderName

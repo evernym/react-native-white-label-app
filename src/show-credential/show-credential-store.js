@@ -1,4 +1,4 @@
-import { call, put, takeEvery, all } from 'redux-saga/effects'
+import { all, call, put, takeEvery } from 'redux-saga/effects'
 import {
   createOutOfBandConnectionInvitation,
   credentialGetPresentationProposal,
@@ -7,49 +7,93 @@ import { saveNewOneTimeConnection } from '../store/connections-store'
 import { customLogger } from '../store/custom-logger'
 import { getClaim } from '../claim/claim-store'
 import type {
+  CredentialPresentationSentAction,
   ShowCredentialAction,
   ShowCredentialActions,
+  ShowCredentialFailAction,
+  ShowCredentialFinishedAction,
+  ShowCredentialReadyAction,
   ShowCredentialStore,
 } from './type-show-credential'
 import {
-  SHOW_CREDENTIAL,
   CREDENTIAL_PRESENTATION_SENT,
+  SHOW_CREDENTIAL,
   SHOW_CREDENTIAL_FAIL,
-  SHOW_CREDENTIAL_READY,
   SHOW_CREDENTIAL_FINISHED,
+  SHOW_CREDENTIAL_READY,
   ShowCredentialStoreInitialState,
-  showCredentialFail,
-  showCredentialReady,
 } from './type-show-credential'
+import { ensureVcxInitSuccess } from '../store/route-store'
+
+export const showCredential = (
+  claimOfferUuid: string
+): ShowCredentialAction => ({
+  type: SHOW_CREDENTIAL,
+  claimOfferUuid,
+})
+
+export const showCredentialReady = (
+  presentationProposal: string,
+  credentialUuid: string,
+  connectionIdentifier: string
+): ShowCredentialReadyAction => ({
+  type: SHOW_CREDENTIAL_READY,
+  presentationProposal,
+  credentialUuid,
+  connectionIdentifier,
+})
+
+export const showCredentialFail = (
+  error: string
+): ShowCredentialFailAction => ({
+  type: SHOW_CREDENTIAL_FAIL,
+  error,
+})
+
+export const credentialPresentationSent = (): CredentialPresentationSentAction => ({
+  type: CREDENTIAL_PRESENTATION_SENT,
+})
+
+export const showCredentialFinished = (): ShowCredentialFinishedAction => ({
+  type: SHOW_CREDENTIAL_FINISHED,
+})
 
 export function* preparePresentationProposalSaga(
-  action: ShowCredentialAction,
+  action: ShowCredentialAction
 ): Generator<*, *, *> {
   try {
+    const vcxResult = yield* ensureVcxInitSuccess()
+    if (vcxResult && vcxResult.fail) {
+      throw new Error(
+        'Cannot prepare Presentation Proposal. Library is not initialized'
+      )
+    }
+
     const claim = yield call(getClaim, action.claimOfferUuid)
     if (!claim) {
-      yield put(showCredentialFail('Cannot prepare Presentation Proposal. Credential not found'))
-      return
+      throw new Error(
+        'Cannot prepare Presentation Proposal. Credential not found'
+      )
     }
 
-    const presentationProposal = yield call(credentialGetPresentationProposal, claim.handle)
+    const presentationProposal = yield call(
+      credentialGetPresentationProposal,
+      claim.handle
+    )
     if (!presentationProposal) {
-      yield put(showCredentialFail('Cannot prepare Presentation Proposal'))
-      return
+      throw new Error('Cannot prepare Presentation Proposal')
     }
 
-    const {
-      invitation,
-      pairwiseInfo,
-      vcxSerializedConnection,
-    } = yield call(
+    const { invitation, pairwiseInfo, vcxSerializedConnection } = yield call(
       createOutOfBandConnectionInvitation,
       `Show \"${claim.claim.name}\" Credential`,
       false,
-      presentationProposal,
+      presentationProposal
     )
 
-    const attachedRequest = invitation ? JSON.parse(invitation)['request~attach'][0] : undefined
+    const attachedRequest = invitation
+      ? JSON.parse(invitation)['request~attach'][0]
+      : undefined
 
     const connection = {
       identifier: pairwiseInfo.myPairwiseDid,
@@ -58,7 +102,9 @@ export function* preparePresentationProposalSaga(
       attachedRequest,
     }
 
-    yield put(showCredentialReady(invitation, claim.claimUuid, connection.identifier))
+    yield put(
+      showCredentialReady(invitation, claim.claimUuid, connection.identifier)
+    )
     yield put(saveNewOneTimeConnection(connection))
   } catch (error) {
     customLogger.log(`preparePresentationProposalSaga: error: ${error}`)
@@ -71,15 +117,12 @@ export function* watchShowCredential(): any {
 }
 
 export function* watchShowCredentialStore(): any {
-  yield all([
-    watchShowCredential(),
-  ])
+  yield all([watchShowCredential()])
 }
-
 
 export default function showCredentialReducer(
   state: ShowCredentialStore = ShowCredentialStoreInitialState,
-  action: ShowCredentialActions,
+  action: ShowCredentialActions
 ) {
   switch (action.type) {
     case SHOW_CREDENTIAL:

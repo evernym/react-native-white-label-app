@@ -28,6 +28,7 @@ describe('<QRScannerScreen />', () => {
       allDid: {},
       claimOffers: {},
       proofRequests: {},
+      verifiers: {},
       openIdConnectUpdateStatus: jest.fn(),
       claimOfferReceived: jest.fn(),
       proofRequestReceived: jest.fn(),

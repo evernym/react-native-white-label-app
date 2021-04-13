@@ -76,14 +76,20 @@ import { customLogger } from '../store/custom-logger'
 import {
   resetTempProofData,
   errorSendProofFail,
-  updateAttributeClaim, generateProofSaga, getProof, updateAttributeClaimAndSendProof,
+  updateAttributeClaim,
+  generateProofSaga,
+  getProof,
+  updateAttributeClaimAndSendProof,
 } from '../proof/proof-store'
 import { secureSet, getHydrationItem } from '../services/storage'
 import { retrySaga } from '../api/api-utils'
-import { ensureVcxInitAndPoolConnectSuccess, ensureVcxInitSuccess } from '../store/route-store'
+import {
+  ensureVcxInitAndPoolConnectSuccess,
+  ensureVcxInitSuccess,
+} from '../store/route-store'
 import { PROOF_FAIL } from '../proof/type-proof'
-import { credentialPresentationSent } from '../show-credential/type-show-credential'
-import { getConnectionHandle } from "../store/connections-store";
+import { getConnectionHandle } from '../store/connections-store'
+import { credentialPresentationSent } from '../show-credential/show-credential-store'
 
 const proofRequestInitialState = {}
 
@@ -158,27 +164,30 @@ export function convertMissingAttributeListToObject(
         key: missingAttribute.key,
       },
     }),
-    {},
+    {}
   )
 }
 
-export const convertSelectedCredentialsToVCXFormat = (selectedCredentials: Array<Attribute>, credentialUuid?: string) => {
-  return selectedCredentials.reduce(
-    (acc, item) => {
-      const items = { ...acc }
-      if (Array.isArray(item) && item.length > 0) {
-        const cred = credentialUuid && item.find(credential => credential.claimUuid === credentialUuid) || item[0]
-        items[cred.key] = [cred.claimUuid, true, cred.cred_info]
-      }
-      return items
-    },
-    {},
-  )
+export const convertSelectedCredentialsToVCXFormat = (
+  selectedCredentials: Array<Attribute>,
+  credentialUuid?: string
+) => {
+  return selectedCredentials.reduce((acc, item) => {
+    const items = { ...acc }
+    if (Array.isArray(item) && item.length > 0) {
+      const cred =
+        (credentialUuid &&
+          item.find((credential) => credential.claimUuid === credentialUuid)) ||
+        item[0]
+      items[cred.key] = [cred.claimUuid, true, cred.cred_info]
+    }
+    return items
+  }, {})
 }
 
 export const missingAttributesFound = (
   missingAttributeList: MissingAttribute[],
-  uid: string,
+  uid: string
 ) => ({
   type: MISSING_ATTRIBUTES_FOUND,
   missingAttributes: convertMissingAttributeListToObject(missingAttributeList),
@@ -305,27 +314,32 @@ export const proofSerialized = (serializedProof: string, uid: string) => ({
   uid,
 })
 
-export function *autoAcceptProofRequest(
-  action: ProofRequestReceivedAction,
+export function* autoAcceptProofRequest(
+  action: ProofRequestReceivedAction
 ): Generator<*, *, *> {
   yield call(generateProofSaga, getProof(action.payloadInfo.uid))
-  const selectedCredentials = yield select(store => getSelectedCredentials(store, action.payloadInfo.uid))
+  const selectedCredentials = yield select((store) =>
+    getSelectedCredentials(store, action.payloadInfo.uid)
+  )
   const credentialUuid = yield select(getShowCredentialUuid)
-  const attributesFilledFromCredential = convertSelectedCredentialsToVCXFormat(selectedCredentials, credentialUuid)
+  const attributesFilledFromCredential = convertSelectedCredentialsToVCXFormat(
+    selectedCredentials,
+    credentialUuid
+  )
   yield call(
     updateAttributeClaimAndSendProof,
     updateAttributeClaim(
       action.payloadInfo.uid,
       action.payloadInfo.remotePairwiseDID,
       attributesFilledFromCredential,
-      {},
+      {}
     )
   )
   yield put(credentialPresentationSent())
 }
 
 export function* proofRequestReceivedSaga(
-  action: ProofRequestReceivedAction,
+  action: ProofRequestReceivedAction
 ): Generator<*, *, *> {
   try {
     const { proofHandle } = action.payload
@@ -348,7 +362,7 @@ export function* watchProofRequestReceived(): any {
 }
 
 function* denyProofRequestSaga(
-  action: DenyProofRequestAction,
+  action: DenyProofRequestAction
 ): Generator<*, *, *> {
   try {
     const { uid } = action

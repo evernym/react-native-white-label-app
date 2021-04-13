@@ -41,9 +41,13 @@ import { customLogger } from '../store/custom-logger'
 import type { AriesPresentationProposal } from '../proof-request/type-proof-request'
 import type { NotificationPayloadInfo } from '../push-notification/type-push-notification'
 import { getConnectionHandle } from '../store/connections-store'
+import {
+  ensureVcxInitAndPoolConnectSuccess,
+  ensureVcxInitSuccess,
+} from '../store/route-store'
 
 export const hydrateVerifierStore = (
-  data: VerifierStore,
+  data: VerifierStore
 ): HydrateVerifierStoreAction => ({
   type: HYDRATE_VERIFIER_STORE,
   data,
@@ -51,7 +55,7 @@ export const hydrateVerifierStore = (
 
 export const proofProposalReceived = (
   presentationProposal: AriesPresentationProposal,
-  payloadInfo: NotificationPayloadInfo,
+  payloadInfo: NotificationPayloadInfo
 ): ProofProposalReceivedAction => ({
   type: PROOF_PROPOSAL_RECEIVED,
   presentationProposal,
@@ -59,14 +63,14 @@ export const proofProposalReceived = (
 })
 
 export const proofProposalAccepted = (
-  uid: string,
+  uid: string
 ): ProofProposalAcceptedAction => ({
   type: PROOF_PROPOSAL_ACCEPTED,
   uid,
 })
 
 export const outofbandProofProposalAccepted = (
-  uid: string,
+  uid: string
 ): OutOfBandProofProposalAcceptedAction => ({
   type: OUTOFBAND_PROOF_PROPOSAL_ACCEPTED,
   uid,
@@ -75,7 +79,7 @@ export const outofbandProofProposalAccepted = (
 export const proofRequestSent = (
   uid: string,
   proofRequest: string,
-  serialized: string,
+  serialized: string
 ): ProofRequestSentAction => ({
   type: PROOF_REQUEST_SENT,
   uid,
@@ -84,7 +88,7 @@ export const proofRequestSent = (
 })
 export const proofVerified = (
   uid: string,
-  requestedProof: RequestedProof,
+  requestedProof: RequestedProof
 ): ProofVerifiedAction => ({
   type: PROOF_VERIFIED,
   uid,
@@ -92,7 +96,7 @@ export const proofVerified = (
 })
 export const proofVerificationFailed = (
   uid: string,
-  error: string,
+  error: string
 ): ProofVerificationFailedAction => ({
   type: PROOF_VERIFICATION_FAILED,
   uid,
@@ -100,24 +104,29 @@ export const proofVerificationFailed = (
 })
 
 export function* proofProposalAcceptedSaga(
-  action: ProofProposalAcceptedAction,
+  action: ProofProposalAcceptedAction
 ): Generator<*, *, *> {
+  const vcxResult = yield* ensureVcxInitSuccess()
+  if (vcxResult && vcxResult.fail) {
+    throw new Error(
+      'Cannot accept presentation proposal. Library is not initialized'
+    )
+  }
+
   const verifier = yield select(getVerifier, action.uid)
   if (!verifier) {
-    yield put(proofVerificationFailed(action.uid, 'Cannot accept presentation proposal. Verifier not found'))
-    return
+    throw new Error('Cannot accept presentation proposal. Verifier not found')
   }
 
   const connection = yield call(getConnectionHandle, verifier.senderDID)
   if (!connection) {
-    yield put(proofVerificationFailed(action.uid, 'Cannot accept presentation proposal. Connection not found'))
-    return
+    throw new Error('Cannot accept presentation proposal. Connection not found')
   }
 
   const handle = yield call(
     createProofVerifierWithProposal,
     JSON.stringify(verifier.presentationProposal),
-    verifier.presentationProposal.comment,
+    verifier.presentationProposal.comment
   )
   yield call(proofVerifierSendRequest, handle, connection)
   const proofRequest = yield call(proofVerifierGetProofRequest, handle)
@@ -128,7 +137,7 @@ export function* proofProposalAcceptedSaga(
 
 function prepareRequestedProofData(
   proofRequestMessage: string,
-  proofMessage: string,
+  proofMessage: string
 ): RequestedProof | null {
   const proof = JSON.parse(proofMessage)
   const proofRequest = JSON.parse(proofRequestMessage)
@@ -136,7 +145,9 @@ function prepareRequestedProofData(
     return null
   }
 
-  const indyProof = proof['libindy_proof'] ? JSON.parse(proof['libindy_proof']) : undefined
+  const indyProof = proof['libindy_proof']
+    ? JSON.parse(proof['libindy_proof'])
+    : undefined
   const proofRequestData = proofRequest['proof_request_data']
   if (!indyProof || !proofRequestData) {
     return null
@@ -145,43 +156,51 @@ function prepareRequestedProofData(
   const requestedAttributes = proofRequestData['requested_attributes'] || {}
   const requestedPredicates = proofRequestData['requested_predicates'] || {}
 
-  const revealed_attrs: Array<any> =
-    indyProof.requested_proof.revealed_attrs ?
-      Object.keys(indyProof.requested_proof.revealed_attrs)
-        .map((key) => ({
-          attribute: requestedAttributes[key] ? requestedAttributes[key].name : '',
-          ...indyProof.requested_proof.revealed_attrs[key],
-        })) : []
+  const revealed_attrs: Array<any> = indyProof.requested_proof.revealed_attrs
+    ? Object.keys(indyProof.requested_proof.revealed_attrs).map((key) => ({
+        attribute: requestedAttributes[key]
+          ? requestedAttributes[key].name
+          : '',
+        ...indyProof.requested_proof.revealed_attrs[key],
+      }))
+    : []
 
-  const revealed_attr_groups: Array<any> =
-    indyProof.requested_proof.revealed_attr_groups ?
-      Object.values(indyProof.requested_proof.revealed_attr_groups) : []
+  const revealed_attr_groups: Array<any> = indyProof.requested_proof
+    .revealed_attr_groups
+    ? Object.values(indyProof.requested_proof.revealed_attr_groups)
+    : []
 
-  const self_attested_attrs: Array<any> = indyProof.requested_proof.self_attested_attrs ?
-    Object.keys(indyProof.requested_proof.self_attested_attrs)
-      .map((key) => ({
-        attribute: requestedAttributes[key] ? requestedAttributes[key].name : '',
+  const self_attested_attrs: Array<any> = indyProof.requested_proof
+    .self_attested_attrs
+    ? Object.keys(indyProof.requested_proof.self_attested_attrs).map((key) => ({
+        attribute: requestedAttributes[key]
+          ? requestedAttributes[key].name
+          : '',
         ...indyProof.requested_proof.self_attested_attrs[key],
-      })) : []
+      }))
+    : []
 
-  const unrevealed_attrs: Array<any> = indyProof.requested_proof.unrevealed_attrs ?
-    Object.keys(indyProof.requested_proof.unrevealed_attrs)
-      .map((key) => ({
-        attribute: requestedAttributes[key] ? requestedAttributes[key].name : '',
+  const unrevealed_attrs: Array<any> = indyProof.requested_proof
+    .unrevealed_attrs
+    ? Object.keys(indyProof.requested_proof.unrevealed_attrs).map((key) => ({
+        attribute: requestedAttributes[key]
+          ? requestedAttributes[key].name
+          : '',
         ...indyProof.requested_proof.unrevealed_attrs[key],
-      })) : []
+      }))
+    : []
 
-  const predicates: Array<any> =
-    Object.keys(indyProof.requested_proof.predicates)
-      .map((key) => {
-        const predicate = requestedPredicates[key]
-        return {
-          attribute: predicate ? predicate.name : '',
-          p_type: predicate ? predicate.p_type : '',
-          p_value: predicate ? predicate.p_value : 0,
-          ...indyProof.requested_proof.predicates[key],
-        }
-      })
+  const predicates: Array<any> = Object.keys(
+    indyProof.requested_proof.predicates
+  ).map((key) => {
+    const predicate = requestedPredicates[key]
+    return {
+      attribute: predicate ? predicate.name : '',
+      p_type: predicate ? predicate.p_type : '',
+      p_value: predicate ? predicate.p_value : 0,
+      ...indyProof.requested_proof.predicates[key],
+    }
+  })
 
   return {
     revealed_attrs,
@@ -192,9 +211,12 @@ function prepareRequestedProofData(
   }
 }
 
-export function* updateVerifierState(
-  message: string,
-): Generator<*, *, *> {
+export function* updateVerifierState(message: string): Generator<*, *, *> {
+  const vcxResult = yield* ensureVcxInitAndPoolConnectSuccess()
+  if (vcxResult && vcxResult.fail) {
+    throw new Error('Cannot update Verifier state. Library is not initialized')
+  }
+
   const parsedMessage = JSON.parse(message) || {}
   const uid = parsedMessage['~thread'] ? parsedMessage['~thread']['thid'] : ''
 
@@ -204,8 +226,15 @@ export function* updateVerifierState(
       return
     }
 
-    const handle = yield call(proofVerifierDeserialize, verifier.vcxSerializedStateObject)
-    const state = yield call(proofVerifierUpdateStateWithMessage, handle, message)
+    const handle = yield call(
+      proofVerifierDeserialize,
+      verifier.vcxSerializedStateObject
+    )
+    const state = yield call(
+      proofVerifierUpdateStateWithMessage,
+      handle,
+      message
+    )
 
     // proof request rejected
     if (state === VERIFIER_STATE.PROOF_REQUEST_REJECTED) {
@@ -214,13 +243,19 @@ export function* updateVerifierState(
 
     // proof received
     if (state === VERIFIER_STATE.PROOF_RECEIVED) {
-      const { proofState, message } = yield call(proofVerifierGetProofMessage, handle)
+      const { proofState, message } = yield call(
+        proofVerifierGetProofMessage,
+        handle
+      )
       if (!proofState || !message || proofState !== PROOF_SATE.VERIFIER) {
         throw new Error('Proof verification failed')
       }
 
       // proof accepted
-      const requestedProof = prepareRequestedProofData(verifier.proofRequest, message)
+      const requestedProof = prepareRequestedProofData(
+        verifier.proofRequest,
+        message
+      )
       if (!requestedProof) {
         throw new Error('Proof verification failed')
       }
@@ -267,20 +302,17 @@ function* watchPersistVerifierStore(): any {
       PROOF_VERIFIED,
       PROOF_VERIFICATION_FAILED,
     ],
-    persistVerifier,
+    persistVerifier
   )
 }
 
 export function* watchVerifier(): any {
-  yield all([
-    watchProofProposalAccepted(),
-    watchPersistVerifierStore(),
-  ])
+  yield all([watchProofProposalAccepted(), watchPersistVerifierStore()])
 }
 
 export default function verifierReducer(
   state: VerifierStore = VerifierStoreInitialState,
-  action: VerifierActions,
+  action: VerifierActions
 ) {
   switch (action.type) {
     case HYDRATE_VERIFIER_STORE: {

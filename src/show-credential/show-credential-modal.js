@@ -1,13 +1,7 @@
 // @flow
 import React, { useCallback, useMemo, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  Alert,
-  View,
-  StyleSheet,
-  Dimensions,
-  Text,
-} from 'react-native'
+import { Alert, View, StyleSheet, Dimensions, Text } from 'react-native'
 import { verticalScale, moderateScale } from 'react-native-size-matters'
 import { showCredentialRoute } from '../common/route-constants'
 import type { ReactNavigation } from '../common/type-common'
@@ -22,18 +16,18 @@ import {
   getShowCredentialError,
 } from '../store/store-selector'
 import { Loader } from '../components'
-import { showCredential, showCredentialFinished } from './type-show-credential'
 import {
   CustomShowCredentialModal,
   showCredentialHeadline,
 } from '../external-imports'
+import { showCredential, showCredentialFinished } from './show-credential-store'
 
 const { width } = Dimensions.get('screen')
 
 export const ShowCredentialModal = ({
-                                      navigation: { goBack },
-                                      route: { params },
-                                    }: ReactNavigation) => {
+  navigation: { goBack },
+  route: { params },
+}: ReactNavigation) => {
   const dispatch = useDispatch()
 
   const data = useSelector(getShowCredentialData)
@@ -57,54 +51,49 @@ export const ShowCredentialModal = ({
 
   useEffect(() => {
     if (error) {
-      Alert.alert(
-        'Cannot show credential',
-        error,
-        [
-          {
-            text: 'OK',
-            onPress: onDone,
-          },
-        ],
-      )
+      Alert.alert('Cannot show credential', error, [
+        {
+          text: 'OK',
+          onPress: onDone,
+        },
+      ])
     }
   }, [error])
 
   const attributesLabel = useMemo(() => {
     const countAttributes = params.attributes.length
-    const countAttachments = params.attributes.filter(attribute => attribute.label.endsWith('_link'))
+    const countAttachments = params.attributes.filter((attribute) =>
+      attribute.label.endsWith('_link')
+    )
 
-    return countAttachments > 0 ?
-      `${countAttributes} attributes, ${countAttachments} attachments` :
-      `${countAttributes} attributes`
+    return countAttachments > 0
+      ? `${countAttributes} attributes, ${countAttachments} attachments`
+      : `${countAttributes} attributes`
   }, [params])
 
-  return !data ?
-    <Loader/> :
+  return !data ? (
+    <Loader />
+  ) : (
     <View style={styles.modalWrapper}>
-      <ExpandableText
-        style={styles.titleText}
-        text={params.credentialName}
-      />
+      <ExpandableText style={styles.titleText} text={params.credentialName} />
       <View style={styles.qrCodeWrapper}>
-        <QRCode value={data} size={moderateScale(width * 0.8)}/>
+        <QRCode value={data} size={moderateScale(width * 0.8)} />
       </View>
       <Text style={styles.text}>
         Present this QR code to a verifier for scanning
       </Text>
-      <Text style={styles.text}>
-        {attributesLabel}
-      </Text>
-      <Button onPress={onDone} label="Done"/>
+      <Text style={styles.text}>{attributesLabel}</Text>
+      <Button onPress={onDone} label="Done" />
     </View>
+  )
 }
 
 const screen =
-  CustomShowCredentialModal && CustomShowCredentialModal.screen ||
+  (CustomShowCredentialModal && CustomShowCredentialModal.screen) ||
   ShowCredentialModal
 
 const navigationOptions =
-  CustomShowCredentialModal && CustomShowCredentialModal.navigationOptions ||
+  (CustomShowCredentialModal && CustomShowCredentialModal.navigationOptions) ||
   modalOptions(showCredentialHeadline, 'CloseIcon')
 
 export const ShowCredentialScreen = {

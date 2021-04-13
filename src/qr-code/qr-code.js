@@ -39,7 +39,6 @@ import type {
   QRCodeScannerScreenState,
 } from './type-qr-code'
 import type {
-  AriesPresentationProposal,
   AriesPresentationRequest,
   ProofRequestPayload,
   QrCodeEphemeralProofRequest,
@@ -56,6 +55,7 @@ import {
   getAllPublicDid,
   getClaimOffers,
   getProofRequests,
+  getVerifiers,
 } from '../store/store-selector'
 import { withStatusBar } from '../components/status-bar/status-bar'
 import {
@@ -81,6 +81,7 @@ import {
 import { usePushNotifications } from '../external-imports'
 import { schemaValidator } from "../services/schema-validator";
 import { proofProposalReceived } from "../verifier/verifier-store";
+import type { VerifierData } from '../verifier/type-verifier'
 
 export class QRCodeScannerScreen extends Component<
   QRCodeScannerScreenProps,
@@ -470,7 +471,6 @@ export class QRCodeScannerScreen extends Component<
           remotePairwiseDID: invitation.senderDID,
           hidden: true,
         })
-
         await this.handleOutOfBandNavigation({
           mainRoute: proofRequestRoute,
           backRedirectRoute: this.props.route.params?.backRedirectRoute,
@@ -480,16 +480,31 @@ export class QRCodeScannerScreen extends Component<
           senderName: invitation.senderName,
         })
       } else if (req[TYPE].endsWith('propose-presentation')) {
-        const presentationProposal = (req: AriesPresentationProposal)
-        if (!schemaValidator.validate(presentationProposalSchema, presentationProposal)) {
+        if (!schemaValidator.validate(presentationProposalSchema, req)) {
           Alert.alert('Invalid invitation', "Invalid formatted Presentation Proposal")
           return
         }
 
-        const uid = presentationProposal[ID]
+        const uid = req[ID]
+
+        const existingVerifier: VerifierData = this.props.verifiers[uid]
+
+        if (existingVerifier) {
+          this.props.navigation.navigate(homeRoute, {
+            screen: homeDrawerRoute,
+            params: undefined,
+          })
+          // we already have accepted that presentation proposal
+          Snackbar.show({
+            text: 'The presentation proposal has already been accepted.',
+            backgroundColor: colors.red,
+            duration: Snackbar.LENGTH_LONG,
+          })
+          return
+        }
 
         this.props.presentationProposalReceived(
-          presentationProposal,
+          req,
           {
             uid,
             senderLogoUrl: invitation.senderLogoUrl,
@@ -544,6 +559,7 @@ const mapStateToProps = (state: Store) => ({
   historyData: state.history && state.history.data,
   claimOffers: getClaimOffers(state),
   proofRequests: getProofRequests(state),
+  verifiers: getVerifiers(state),
 })
 
 const mapDispatchToProps = (dispatch) =>

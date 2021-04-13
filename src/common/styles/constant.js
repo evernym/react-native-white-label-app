@@ -4,9 +4,9 @@ import { StyleSheet } from 'react-native'
 import { Dimensions, Platform } from 'react-native'
 
 // $FlowExpectedError[cannot-resolve-module] external file
-import { COLORS } from '../../../../app/evernym-sdk/colors'
+import { COLORS } from '../../../../../../app/evernym-sdk/colors'
 // $FlowExpectedError[cannot-resolve-module] external file
-import { FONT_FAMILY, FONT_SIZES } from '../../../../app/evernym-sdk/font'
+import { FONT_FAMILY, FONT_SIZES } from '../../../../../../app/evernym-sdk/font'
 
 // Colors
 export const colors = COLORS || {
