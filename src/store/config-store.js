@@ -152,6 +152,7 @@ import {
   QUESTIONANSWER_PROTOCOL,
 } from '../question/type-question'
 import {
+  autoAcceptCredentialPresentationRequest,
   defaultServerEnvironment,
   serverEnvironments,
   usePushNotifications,
@@ -1356,6 +1357,7 @@ function* handleAriesMessage(message: DownloadedMessage): Generator<*, *, *> {
       additionalData = {
         ...proofRequest,
         proofHandle,
+        identifier: forDID,
       }
 
       if (proofRequest['thread_id'] && attachedRequest) {
@@ -1363,14 +1365,16 @@ function* handleAriesMessage(message: DownloadedMessage): Generator<*, *, *> {
 
         if (data && schemaValidator.validate(presentationProposalSchema, data) &&
           data["@id"] === proofRequest['thread_id']){
-          additionalData.ephemeralProofRequest = proofRequest['~service'] ? message : undefined
-          additionalData.additionalPayloadInfo = {
-            // hidden: true,
-            // autoAccept: true,
-            identifier: forDID,
-          }
-          // redirectToScreen = false
           yield put(deleteOneTimeConnection(forDID))
+
+          additionalData.ephemeralProofRequest = proofRequest['~service'] ? message : undefined
+          if (autoAcceptCredentialPresentationRequest){
+            additionalData.additionalPayloadInfo = {
+              hidden: true,
+              autoAccept: true,
+            }
+            redirectToScreen = false
+          }
         }
       }
     }
