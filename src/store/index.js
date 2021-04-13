@@ -77,7 +77,7 @@ import { watchLongPollingHome } from '../home/long-polling-home'
 import inviteAction, {
   watchInviteAction,
 } from '../invite-action/invite-action-store'
-import showCredential, { watchShowCredentialFinishedSaga, watchShowCredential } from '../show-credential/show-credential-store'
+import showCredential, { watchShowCredentialStore } from '../show-credential/show-credential-store'
 import verifier, { watchVerifier } from "../verifier/verifier-store";
 
 const sagaMiddleware = createSagaMiddleware()
@@ -157,8 +157,7 @@ sagaMiddleware.run(function* (): Generator<*, *, *> {
     watchInvitation(),
     watchClaim(),
     watchDeleteClaim(),
-    watchShowCredential(),
-    watchShowCredentialFinishedSaga(),
+    watchShowCredentialStore(),
     watchPressEventInLockSelectionScreen(),
     watchEnableTouchId(),
     watchDisableTouchId(),

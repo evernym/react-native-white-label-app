@@ -406,7 +406,7 @@ const mapStateToProps = (
       ? claimOfferData.payTokenValue
       : '0'
 
-  const canBeIgnored = params.invitationPayload
+  const canBeIgnored = params.hidden
 
   return {
     thereIsANewAgreement: getThereIsANewAgreement(state),

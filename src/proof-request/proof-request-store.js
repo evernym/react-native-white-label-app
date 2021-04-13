@@ -26,12 +26,10 @@ import type {
   SelfAttestedAttributes,
 } from './type-proof-request'
 import {
-  getUserPairwiseDid,
   getProofRequestPairwiseDid,
-  getRemotePairwiseDidAndName,
   getProofRequest,
-  getConnection,
-  getSelectedCredentials, getShowCredentialUuid,
+  getSelectedCredentials,
+  getShowCredentialUuid,
 } from '../store/store-selector'
 import {
   PROOF_REQUESTS,
@@ -67,12 +65,10 @@ import type {
 } from '../push-notification/type-push-notification'
 import {
   sendProof as sendProofApi,
-  getHandleBySerializedConnection,
   proofSerialize,
   proofReject,
   proofDeserialize,
 } from '../bridge/react-native-cxs/RNCxs'
-import type { Connection } from '../store/type-connection-store'
 import { RESET } from '../common/type-common'
 import { getProofRequests } from '../store/store-selector'
 import { captureError } from '../services/error/error-handler'
@@ -87,6 +83,7 @@ import { retrySaga } from '../api/api-utils'
 import { ensureVcxInitAndPoolConnectSuccess, ensureVcxInitSuccess } from '../store/route-store'
 import { PROOF_FAIL } from '../proof/type-proof'
 import { credentialPresentationSent } from '../show-credential/type-show-credential'
+import { getConnectionHandle } from "../store/connections-store";
 
 const proofRequestInitialState = {}
 
@@ -242,7 +239,7 @@ export function* proofAccepted(
   let connectionHandle = 0
   if (!ephemeralProofRequest) {
     // if this proof request is not ephemeral, then we expects a pairwise connection
-    connectionHandle = yield* getConnectionHandle(remotePairwiseDID, uid)
+    connectionHandle = yield* getConnectionHandle(remotePairwiseDID)
   }
 
   if (typeof connectionHandle === 'undefined') {
@@ -270,34 +267,6 @@ export function* proofAccepted(
     yield put(
       errorSendProofFail(uid, remotePairwiseDID, ERROR_SEND_PROOF(e.message))
     )
-  }
-}
-
-function* getConnectionHandle(
-  remoteDid: string,
-  uid: string
-): Generator<*, *, *> {
-  try {
-    const [connection]: [Connection] = yield select(getConnection, remoteDid)
-
-    if (!connection || !connection.vcxSerializedConnection) {
-      captureError(new Error('OCS-002 No pairwise connection found'))
-      yield put(
-        errorSendProofFail(uid, remoteDid, {
-          code: 'OCS-002',
-          message: 'No pairwise connection found',
-        })
-      )
-      return
-    }
-
-    const connectionHandle: number = yield call(
-      getHandleBySerializedConnection,
-      connection.vcxSerializedConnection
-    )
-    return connectionHandle
-  } catch (e) {
-    return
   }
 }
 
@@ -384,18 +353,6 @@ function* denyProofRequestSaga(
   try {
     const { uid } = action
     const remoteDid: string = yield select(getProofRequestPairwiseDid, uid)
-    const userPairwiseDid: string | null = yield select(
-      getUserPairwiseDid,
-      remoteDid,
-    )
-
-    if (!userPairwiseDid) {
-      customLogger.log(
-        'Connection not found while trying to deny proof request.',
-      )
-
-      return
-    }
 
     const vcxResult = yield* ensureVcxInitSuccess()
     if (vcxResult && vcxResult.fail) {
@@ -410,23 +367,15 @@ function* denyProofRequestSaga(
       getProofRequest,
       uid
     )
-    const { proofHandle } = proofRequestPayload
-    const connection: {
-      remotePairwiseDID: string,
-      remoteName: string,
-    } & Connection = yield select(getRemotePairwiseDidAndName, userPairwiseDid)
-    if (!connection.vcxSerializedConnection) {
-      customLogger.log(
-        'Serialized connection not found while trying to deny proof request.'
-      )
-      return
-    }
+    const { proofHandle, ephemeralProofRequest } = proofRequestPayload
 
     try {
-      const connectionHandle: number = yield call(
-        getHandleBySerializedConnection,
-        connection.vcxSerializedConnection
-      )
+      let connectionHandle = 0
+      if (!ephemeralProofRequest) {
+        // if this proof request is not ephemeral, then we expects a pairwise connection
+        connectionHandle = yield call(getConnectionHandle, remoteDid)
+      }
+
       try {
         try {
           yield call(proofReject, proofHandle, connectionHandle)

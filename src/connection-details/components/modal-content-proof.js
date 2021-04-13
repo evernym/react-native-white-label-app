@@ -359,12 +359,11 @@ const mapStateToProps = (state: Store, mergeProps) => {
     remotePairwiseDID,
     missingAttributes = {},
     dissatisfiedAttributes = [],
-    ephemeralProofRequest,
   } = proofRequestData
   const { name } = requester
   const proofGenerationError = state.proof[uid] ? state.proof[uid].error : null
 
-  const canBeIgnored = mergeProps.invitationPayload || ephemeralProofRequest
+  const canBeIgnored = mergeProps.hidden
 
   return {
     data,

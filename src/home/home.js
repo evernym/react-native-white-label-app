@@ -22,6 +22,7 @@ import {
   claimOfferRoute,
   questionRoute,
   inviteActionRoute,
+  proofProposalRoute,
 } from '../common'
 import {
   sendConnectionRedirect,
@@ -116,6 +117,10 @@ export class HomeScreen extends Component<HomeProps, void> {
 
         case MESSAGE_TYPE.INVITE_ACTION:
           this.props.navigation.navigate(inviteActionRoute, { uid })
+          break
+
+        case MESSAGE_TYPE.PRESENTATION_PROPOSAL:
+          this.props.navigation.navigate(proofProposalRoute, { uid })
           break
       }
     }

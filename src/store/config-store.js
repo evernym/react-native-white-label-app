@@ -164,7 +164,7 @@ import type {
 import { INVITE_ACTION_PROTOCOL } from '../invite-action/type-invite-action'
 import { updateVerifierState } from "../verifier/verifier-store";
 import { presentationProposalSchema } from "../proof-request/proof-request-qr-code-reader";
-import { connectionDeleteAttachedRequest } from './connections-store'
+import { deleteOneTimeConnection } from './connections-store'
 
 /**
  * this file contains configuration which is changed only from user action
@@ -1365,12 +1365,12 @@ function* handleAriesMessage(message: DownloadedMessage): Generator<*, *, *> {
           data["@id"] === proofRequest['thread_id']){
           additionalData.ephemeralProofRequest = proofRequest['~service'] ? message : undefined
           additionalData.additionalPayloadInfo = {
-            hidden: true,
-            autoAccept: true,
+            // hidden: true,
+            // autoAccept: true,
             identifier: forDID,
           }
-          redirectToScreen = false
-          yield put(connectionDeleteAttachedRequest(forDID))
+          // redirectToScreen = false
+          yield put(deleteOneTimeConnection(forDID))
         }
       }
     }
@@ -1433,6 +1433,17 @@ function* handleAriesMessage(message: DownloadedMessage): Generator<*, *, *> {
       )
 
       yield fork(updateMessageStatus, [{ pairwiseDID: forDID, uids: [uid] }])
+    }
+
+    if (payloadType.name === 'problem-report') {
+      const payloadMessageType = JSON.parse(payload['@msg'])['@type']
+      if (payloadMessageType && payloadMessageType.includes('present-proof')) {
+        yield call(
+          updateVerifierState,
+          payload['@msg']
+        )
+        yield fork(updateMessageStatus, [{ pairwiseDID: forDID, uids: [uid] }])
+      }
     }
 
     if (payloadType && payloadType.name === 'aries' && payload['@msg']) {

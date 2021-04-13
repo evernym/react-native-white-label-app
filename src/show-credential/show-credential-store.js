@@ -1,15 +1,14 @@
-import { call, put, takeEvery, select } from 'redux-saga/effects'
+import { call, put, takeEvery, all } from 'redux-saga/effects'
 import {
   createOutOfBandConnectionInvitation,
   credentialGetPresentationProposal,
 } from '../bridge/react-native-cxs/RNCxs'
-import { deleteOneTimeConnection, saveNewOneTimeConnection } from '../store/connections-store'
+import { saveNewOneTimeConnection } from '../store/connections-store'
 import { customLogger } from '../store/custom-logger'
 import { getClaim } from '../claim/claim-store'
 import type {
   ShowCredentialAction,
   ShowCredentialActions,
-  CredentialPresentationSentAction,
   ShowCredentialStore,
 } from './type-show-credential'
 import {
@@ -22,7 +21,6 @@ import {
   showCredentialFail,
   showCredentialReady,
 } from './type-show-credential'
-import { getShowCredentialConnectionIdentifier } from '../store/store-selector'
 
 export function* preparePresentationProposalSaga(
   action: ShowCredentialAction,
@@ -72,18 +70,12 @@ export function* watchShowCredential(): any {
   yield takeEvery(SHOW_CREDENTIAL, preparePresentationProposalSaga)
 }
 
-export function* credentialPresentationFinishedSaga(
-  action: CredentialPresentationSentAction,
-): Generator<*, *, *> {
-  const connectionIdentifier = yield select(getShowCredentialConnectionIdentifier)
-  if (connectionIdentifier) {
-    yield put(deleteOneTimeConnection(connectionIdentifier))
-  }
+export function* watchShowCredentialStore(): any {
+  yield all([
+    watchShowCredential(),
+  ])
 }
 
-export function* watchShowCredentialFinishedSaga(): any {
-  yield takeEvery(SHOW_CREDENTIAL_FINISHED, credentialPresentationFinishedSaga)
-}
 
 export default function showCredentialReducer(
   state: ShowCredentialStore = ShowCredentialStoreInitialState,

@@ -16,6 +16,7 @@ import { SwipeRow } from 'react-native-swipe-list-view'
 import { removeEvent } from '../../connection-history/connection-history-store'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import { renderUserAvatar } from "../../components/user-avatar/user-avatar";
 
 const NewBannerCardComponent = (props: NewBannerCardProps) => {
   const onDelete = useCallback(() => {
@@ -45,13 +46,15 @@ const NewBannerCardComponent = (props: NewBannerCardProps) => {
                 source={{ uri: props.logoUrl }}
                 style={styles.issuerLogo}
               />
-            ) : (
+            ) :
+              props.issuerName ?
               <DefaultLogo
                 text={props.issuerName[0]}
                 size={moderateScale(34, 0.15)}
                 fontSize={isiPhone5 ? fonts.size4 : fonts.size3}
-              />
-            )}
+              /> :
+                renderUserAvatar({ size: 'small' })
+            }
           </View>
           <View style={styles.textSection}>
             <View style={styles.textIssuerSection}>
@@ -60,7 +63,7 @@ const NewBannerCardComponent = (props: NewBannerCardProps) => {
                 ellipsizeMode="tail"
                 numberOfLines={1}
               >
-                {props.issuerName}
+                {props.issuerName || 'Unknown'}
               </Text>
             </View>
             <View style={styles.textMessageSection}>
