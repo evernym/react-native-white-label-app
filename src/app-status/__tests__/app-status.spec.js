@@ -1,7 +1,6 @@
 // @flow
 import React from 'react'
 import 'react-native'
-import { Text } from 'react-native'
 import renderer from 'react-test-renderer'
 
 import { AppStatusComponent } from '../app-status'

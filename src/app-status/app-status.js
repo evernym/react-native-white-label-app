@@ -1,8 +1,7 @@
 // @flow
 import React from 'react'
 import { connect } from 'react-redux'
-import { AppState, StyleSheet, View, Dimensions } from 'react-native'
-import SplashScreen from 'react-native-splash-screen'
+import { AppState, StyleSheet, View } from 'react-native'
 import { BlurView } from '@react-native-community/blur'
 
 import { getUnacknowledgedMessages } from './../store/config-store'
