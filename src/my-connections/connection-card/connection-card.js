@@ -1,6 +1,10 @@
 // @flow
 import React, { useCallback } from 'react'
 import { View, Text, TouchableOpacity, Image, ActivityIndicator } from 'react-native'
+import { moderateScale } from 'react-native-size-matters'
+
+import { colors } from '../../common/styles/constant'
+import { EvaIcon, ERROR_ICON } from '../../common/icons'
 import type { ConnectionCardProps } from './type-connection-card'
 import { styles } from './styles'
 import { DefaultLogo } from '../../components/default-logo/default-logo'
@@ -45,7 +49,16 @@ const ConnectionCard = (props: ConnectionCardProps) => {
       {/*{*/}
       {/*  renderUnreadMessagesBadge()*/}
       {/*}*/}
-      {props.status === CONNECTION_FAIL && <Image style={styles.errorImage} source={errorImage}/>}
+      {props.status === CONNECTION_FAIL && 
+        <View style={styles.errorImage}>
+          <EvaIcon
+            name={ERROR_ICON}
+            width={moderateScale(24)}
+            height={moderateScale(24)}
+            color={colors.red}
+          />
+        </View>
+      }
 
       <View style={styles.avatarSection}>
         {props.status === INVITATION_ACCEPTED &&
