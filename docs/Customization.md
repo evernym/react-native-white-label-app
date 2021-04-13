@@ -622,6 +622,17 @@ You can also configure application `Show Credentail` modal dialog or disable thi
   * to use custom
       ```javascript
       export const SHOW_CREDENTIAL = false
+    
+* `AUTO_ACCEPT_CREDENTIAL_PRESENTATION_REQUEST` - (boolean, Optional) whether you want to automatically accept following `presentation request` and generate proof or show it to user for manually accepting.
+  
+  **NOTE**: acceptably if `SHOW_CREDENTIAL` feature is enable
+  * to use default - `false`
+      ```javascript
+      export const AUTO_ACCEPT_CREDENTIAL_PRESENTATION_REQUEST = null
+      ```
+  * to use custom
+      ```javascript
+      export const AUTO_ACCEPT_CREDENTIAL_PRESENTATION_REQUEST = true
 
 * `SHOW_CREDENTIAL_HEADLINE` - (string, Optional) the text which will be used for the header.
   * to use default - `show`
