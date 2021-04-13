@@ -133,7 +133,10 @@ import type {
 } from './../question/type-question'
 import { MESSAGE_TYPE } from '../api/api-constants'
 import { saveSerializedClaimOffer } from './../claim-offer/claim-offer-store'
-import { getAllConnections, getPendingFetchAdditionalDataKey } from './store-selector'
+import {
+  getAllConnections,
+  getPendingFetchAdditionalDataKey,
+} from './store-selector'
 import { captureError } from '../services/error/error-handler'
 import { customLogger } from '../store/custom-logger'
 import { ensureVcxInitAndPoolConnectSuccess } from './route-store'
@@ -163,8 +166,10 @@ import type {
   InviteActionRequest,
 } from '../invite-action/type-invite-action'
 import { INVITE_ACTION_PROTOCOL } from '../invite-action/type-invite-action'
-import { updateVerifierState } from "../verifier/verifier-store";
-import { presentationProposalSchema } from "../proof-request/proof-request-qr-code-reader";
+import { retrySaga } from '../api/api-utils'
+import { CLOUD_AGENT_UNAVAILABLE } from '../bridge/react-native-cxs/error-cxs'
+import { updateVerifierState } from '../verifier/verifier-store'
+import { presentationProposalSchema } from '../proof-request/proof-request-qr-code-reader'
 import { deleteOneTimeConnection } from './connections-store'
 
 /**
@@ -286,8 +291,8 @@ const isDevEnvironment = __DEV__ && process.env.NODE_ENV !== 'test'
 export const defaultEnvironment = defaultServerEnvironment
   ? SERVER_ENVIRONMENT[defaultServerEnvironment]
   : isDevEnvironment
-    ? SERVER_ENVIRONMENT.DEVTEAM1
-    : SERVER_ENVIRONMENT.PROD
+  ? SERVER_ENVIRONMENT.DEVTEAM1
+  : SERVER_ENVIRONMENT.PROD
 
 const initialState: ConfigStore = {
   ...baseUrls[defaultEnvironment],
@@ -861,6 +866,15 @@ export function* getMessagesSaga(
         // throw error
       }
     }
+    yield* retrySaga(
+      call(
+        downloadMessages,
+        MESSAGE_RESPONSE_CODE.MESSAGE_PENDING,
+        params?.uid || null,
+        params?.forDid || allConnectionsPairwiseDids.join(',')
+      ),
+      CLOUD_AGENT_UNAVAILABLE
+    )
     yield put(getMessagesSuccess())
   } catch (e) {
     captureError(e)
@@ -880,7 +894,7 @@ export const traverseAndGetAllMessages = (
         connection.msgs &&
         connection.msgs.map((message) => {
           messages.push({ ...message, pairwiseDID: connection.pairwiseDID })
-        }),
+        })
     )
   } else {
     return []
@@ -932,7 +946,7 @@ export function* processMessages(
       }
 
       let { myPairwiseDid: pairwiseDID, senderDID } =
-      connection && connection[0]
+        connection && connection[0]
 
       if (
         !(
@@ -965,13 +979,15 @@ export const convertToAriesProofRequest = async (message: GenericObject) =>
   JSON.stringify({
     '@type': 'https://didcomm.org/present-proof/1.0/request-presentation',
     '@id': message['thread_id'],
-    'comment': 'Proof Request',
+    comment: 'Proof Request',
     'request_presentations~attach': [
       {
         '@id': 'libindy-request-presentation-0',
         'mime-type': 'application/json',
-        'data': {
-          'base64': await toBase64FromUtf8(JSON.stringify(message['proof_request_data'])),
+        data: {
+          base64: await toBase64FromUtf8(
+            JSON.stringify(message['proof_request_data'])
+          ),
         },
       },
     ],
@@ -1065,9 +1081,9 @@ export const convertDecryptedPayloadToInviteAction = (
     if (parsedGoalCode.hasOwnProperty('invite_action_meta_data')) {
       parsedGoalCode = {
         inviteActionTitle:
-        parsedGoalCode.invite_action_meta_data.invite_action_title,
+          parsedGoalCode.invite_action_meta_data.invite_action_title,
         inviteActionDetails:
-        parsedGoalCode.invite_action_meta_data.invite_action_detail,
+          parsedGoalCode.invite_action_meta_data.invite_action_detail,
         acceptText: parsedGoalCode.invite_action_meta_data.accept_text,
         denyText: parsedGoalCode.invite_action_meta_data.deny_text,
         token: parsedGoalCode.invite_action_meta_data.id_pal_token,
@@ -1235,7 +1251,7 @@ function* handleProprietaryMessage(
       fetchAdditionalDataError({
         code: 'OCS-000',
         message: `Invalid additional data: ${e}`,
-      }),
+      })
     )
   }
 }
@@ -1260,7 +1276,7 @@ function* handleAriesMessage(message: DownloadedMessage): Generator<*, *, *> {
 
   const connectionHandle = yield call(
     getHandleBySerializedConnection,
-    vcxSerializedConnection,
+    vcxSerializedConnection
   )
 
   try {
@@ -1337,7 +1353,7 @@ function* handleAriesMessage(message: DownloadedMessage): Generator<*, *, *> {
     if (
       type === MESSAGE_TYPE.PROOF_REQUEST ||
       ['proof_request', 'proof-request', 'presentation-request'].includes(
-        payloadType.name.toLowerCase(),
+        payloadType.name.toLowerCase()
       )
     ) {
       messageType = MESSAGE_TYPE.PROOF_REQUEST
@@ -1363,12 +1379,17 @@ function* handleAriesMessage(message: DownloadedMessage): Generator<*, *, *> {
       if (proofRequest['thread_id'] && attachedRequest) {
         const data = yield call(getAttachedRequestData, attachedRequest.data)
 
-        if (data && schemaValidator.validate(presentationProposalSchema, data) &&
-          data["@id"] === proofRequest['thread_id']){
+        if (
+          data &&
+          schemaValidator.validate(presentationProposalSchema, data) &&
+          data['@id'] === proofRequest['thread_id']
+        ) {
           yield put(deleteOneTimeConnection(forDID))
 
-          additionalData.ephemeralProofRequest = proofRequest['~service'] ? message : undefined
-          if (autoAcceptCredentialPresentationRequest){
+          additionalData.ephemeralProofRequest = proofRequest['~service']
+            ? message
+            : undefined
+          if (autoAcceptCredentialPresentationRequest) {
             additionalData.additionalPayloadInfo = {
               hidden: true,
               autoAccept: true,
@@ -1431,10 +1452,7 @@ function* handleAriesMessage(message: DownloadedMessage): Generator<*, *, *> {
     }
 
     if (payloadType.name === 'presentation') {
-      yield call(
-        updateVerifierState,
-        payload['@msg']
-      )
+      yield call(updateVerifierState, payload['@msg'])
 
       yield fork(updateMessageStatus, [{ pairwiseDID: forDID, uids: [uid] }])
     }
@@ -1442,10 +1460,7 @@ function* handleAriesMessage(message: DownloadedMessage): Generator<*, *, *> {
     if (payloadType.name === 'problem-report') {
       const payloadMessageType = JSON.parse(payload['@msg'])['@type']
       if (payloadMessageType && payloadMessageType.includes('present-proof')) {
-        yield call(
-          updateVerifierState,
-          payload['@msg']
-        )
+        yield call(updateVerifierState, payload['@msg'])
         yield fork(updateMessageStatus, [{ pairwiseDID: forDID, uids: [uid] }])
       }
     }
@@ -1512,14 +1527,14 @@ function* handleAriesMessage(message: DownloadedMessage): Generator<*, *, *> {
       fetchAdditionalDataError({
         code: 'OCS-000',
         message: `Invalid additional data: ${e}`,
-      }),
+      })
     )
   }
 }
 
 // TODO: change the data type from any to proper type
 export function* acknowledgeServer(
-  data: Array<DownloadedConnectionMessages>,
+  data: Array<DownloadedConnectionMessages>
 ): Generator<*, *, *> {
   // toLowerCase here to handle type 'question' and 'Question'
   const msgTypes = [MESSAGE_TYPE.QUESTION, MESSAGE_TYPE.QUESTION.toLowerCase()]
@@ -1540,7 +1555,7 @@ export function* acknowledgeServer(
             isAries = decryptedPayload['@type']['name'] === 'aries'
             isMsgTypeAriesQuestion = JSON.parse(decryptedPayload['@msg'])[
               '@type'
-              ].includes('question')
+            ].includes('question')
           }
 
           if (isAries) {

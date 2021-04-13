@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AppStatusComponent /> AppStatusComponent with blur snapshot 1`] = `
+<View
+  style={
+    Object {
+      "bottom": 0,
+      "left": 0,
+      "position": "absolute",
+      "right": 0,
+      "top": 0,
+      "zIndex": 1,
+    }
+  }
+/>
+`;
+
+exports[`<AppStatusComponent /> AppStatusComponent without blur snapshot 1`] = `null`;

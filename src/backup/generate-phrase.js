@@ -5,8 +5,14 @@ import { Image } from 'react-native'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import type { Store } from '../store/type-store'
-import { Container, CustomView, CustomText, Loader } from '../components'
-import { fontSizes } from '../common/styles'
+import {
+  Container,
+  CustomView,
+  CustomText,
+  Loader,
+  Header,
+} from '../components'
+import { colors, fontSizes } from '../common/styles'
 import {
   genRecoveryPhraseRoute,
   verifyRecoveryPhraseRoute,
@@ -176,6 +182,11 @@ export class GenerateRecoveryPhrase extends Component<
     return (
       <Container style={[styles.genRecovery]} safeArea>
         <Image source={transparentBands} style={[styles.backgroundImage]} />
+        <Header
+          transparent={true}
+          navigation={this.props.navigation}
+          color={colors.white}
+        />
         <Container>
           <CustomView>
             <CustomText

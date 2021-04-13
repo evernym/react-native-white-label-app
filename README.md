@@ -1,3 +1,5 @@
+## React Native Evernym SDK
+
 * [Introduction](#introduction)
   * [Decentralized Identifier - DID](#decentralized-identifier---did)
   * [Verifiable Credentials](#verifiable-credentials)

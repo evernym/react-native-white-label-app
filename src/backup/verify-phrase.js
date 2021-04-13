@@ -118,6 +118,7 @@ export class VerifyRecoveryPhrase extends Component<
         placeholder={VERIFY_INPUT_PLACEHOLDER}
         onSubmit={this.verifyRecoveryPhrase}
         errorState={this.state.error}
+        navigation={this.props.navigation}
       />
     )
   }

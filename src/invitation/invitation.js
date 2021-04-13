@@ -26,6 +26,7 @@ import { SMSPendingInvitationStatus } from '../sms-pending-invitation/type-sms-p
 import { Request } from '../components/request/request'
 import { Platform } from 'react-native'
 import { allowPushNotifications } from '../push-notification/push-notification-store'
+import { usePushNotifications } from '../external-imports'
 
 export class Invitation extends Component<InvitationProps, void> {
   render() {
@@ -82,7 +83,7 @@ export class Invitation extends Component<InvitationProps, void> {
       const { payload } = invitation
       if (payload) {
         if (response === ResponseType.accepted) {
-          if (Platform.OS === 'android') {
+          if (Platform.OS === 'android' && usePushNotifications) {
             // for android, we don't need to show push permission screen
             // so we can safely register push notification on Android
             // For ios, we are already showing permission screen
@@ -286,7 +287,7 @@ const mapStateToProps = (
     smsToken &&
     state.smsPendingInvitation[smsToken] &&
     state.smsPendingInvitation[smsToken].status !==
-    SMSPendingInvitationStatus.SEEN
+      SMSPendingInvitationStatus.SEEN
 
   return {
     invitation: state.invitation[senderDID],
