@@ -1,3 +1,4 @@
+// @flow
 export const SHOW_CREDENTIAL = 'SHOW_CREDENTIAL'
 export type ShowCredentialAction = {
   type: typeof SHOW_CREDENTIAL,

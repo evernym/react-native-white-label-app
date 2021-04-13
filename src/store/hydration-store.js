@@ -28,6 +28,7 @@ import {
   PASSPHRASE_STORAGE_KEY,
   LAST_SUCCESSFUL_CLOUD_BACKUP,
   WALLET_KEY,
+  VERIFIERS,
 } from '../common'
 import { STORAGE_KEY_USER_ONE_TIME_INFO } from '../store/user/type-user-store'
 import { CLAIM_OFFERS } from '../claim-offer/type-claim-offer'
@@ -136,6 +137,7 @@ function* deleteSecureStorageData(): Generator<*, *, *> {
       QUESTION_STORAGE_KEY,
       AUTO_CLOUD_BACKUP_ENABLED,
       HAS_VERIFIED_RECOVERY_PHRASE,
+      VERIFIERS,
     ]
     const deleteOperations = []
     for (let index = 0; index < secureKeysToDelete.length; index++) {
