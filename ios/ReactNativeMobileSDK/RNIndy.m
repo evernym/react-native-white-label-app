@@ -1852,7 +1852,7 @@ RCT_EXPORT_METHOD(proofVerifierGetProofMessage:(NSInteger) proofHandle
   }];
 }
 
-RCT_EXPORT_METHOD(getConnectionInvite:(NSInteger)proofHandle
+RCT_EXPORT_METHOD(proofVerifierGetPresentationRequest:(NSInteger)proofHandle
                              resolver: (RCTPromiseResolveBlock) resolve
                              rejecter: (RCTPromiseRejectBlock) reject)
 {

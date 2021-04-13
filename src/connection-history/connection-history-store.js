@@ -177,15 +177,19 @@ import {
 } from '../invite-action/type-invite-action.js'
 import { selectInviteAction } from '../invite-action/invite-action-store'
 import {
-  OUTOFBAND_PRESENTATION_PROPOSAL_ACCEPTED,
-  PRESENTATION_PROPOSAL_ACCEPTED,
-  PRESENTATION_PROPOSAL_RECEIVED, PRESENTATION_REQUEST_SENT, PRESENTATION_VERIFICATION_FAILED,
-  PRESENTATION_VERIFIED,
+  OUTOFBAND_PROOF_PROPOSAL_ACCEPTED,
+  PROOF_PROPOSAL_ACCEPTED,
+  PROOF_PROPOSAL_RECEIVED,
+  PROOF_REQUEST_SENT,
+  PROOF_VERIFICATION_FAILED,
+  PROOF_VERIFIED,
 } from '../verifier/type-verifier'
 import type {
-  PresentationProposalAcceptedAction,
-  PresentationProposalReceivedAction,
-  PresentationRequestSentAction, PresentationVerificationFailedAction, PresentationVerifiedAction,
+  ProofProposalAcceptedAction,
+  ProofProposalReceivedAction,
+  ProofRequestSentAction,
+  ProofVerificationFailedAction,
+  ProofVerifiedAction,
 } from '../verifier/type-verifier'
 
 const initialState = {
@@ -1037,15 +1041,15 @@ export function convertInviteActionToHistoryEvent(
 }
 
 export function convertPresentationProposalReceivedToHistoryEvent(
-  action: PresentationProposalReceivedAction
+  action: ProofProposalReceivedAction
 ): ConnectionHistoryEvent {
   return {
-    action: HISTORY_EVENT_STATUS[PRESENTATION_PROPOSAL_RECEIVED],
+    action: HISTORY_EVENT_STATUS[PROOF_PROPOSAL_RECEIVED],
     // $FlowFixMe
     data: action.presentationProposal,
     id: uuid(),
     name: action.presentationProposal.comment,
-    status: HISTORY_EVENT_STATUS[PRESENTATION_PROPOSAL_RECEIVED],
+    status: HISTORY_EVENT_STATUS[PROOF_PROPOSAL_RECEIVED],
     timestamp: moment().format(),
     type: HISTORY_EVENT_TYPE.PROOF,
     remoteDid: action.payloadInfo.remotePairwiseDID,
@@ -1057,16 +1061,16 @@ export function convertPresentationProposalReceivedToHistoryEvent(
 }
 
 export function convertPresentationProposalAcceptedToHistoryEvent(
-  action: PresentationProposalAcceptedAction,
+  action: ProofProposalAcceptedAction,
   event: ConnectionHistoryEvent,
 ): ConnectionHistoryEvent {
   return {
-    action: HISTORY_EVENT_STATUS[PRESENTATION_PROPOSAL_ACCEPTED],
+    action: HISTORY_EVENT_STATUS[PROOF_PROPOSAL_ACCEPTED],
     // $FlowFixMe
     data: event.data,
     id: uuid(),
     name: event.name,
-    status: HISTORY_EVENT_STATUS[PRESENTATION_PROPOSAL_ACCEPTED],
+    status: HISTORY_EVENT_STATUS[PROOF_PROPOSAL_ACCEPTED],
     timestamp: moment().format(),
     type: HISTORY_EVENT_TYPE.PROOF,
     remoteDid: event.remoteDid,
@@ -1078,16 +1082,16 @@ export function convertPresentationProposalAcceptedToHistoryEvent(
 }
 
 export function convertPresentationRequestSentToHistoryEvent(
-  action: PresentationRequestSentAction,
+  action: ProofRequestSentAction,
   event: ConnectionHistoryEvent,
 ): ConnectionHistoryEvent {
   return {
-    action: HISTORY_EVENT_STATUS[PRESENTATION_REQUEST_SENT],
+    action: HISTORY_EVENT_STATUS[PROOF_REQUEST_SENT],
     // $FlowFixMe
     data: event.data,
     id: uuid(),
     name: event.name,
-    status: HISTORY_EVENT_STATUS[PRESENTATION_REQUEST_SENT],
+    status: HISTORY_EVENT_STATUS[PROOF_REQUEST_SENT],
     timestamp: moment().format(),
     type: HISTORY_EVENT_TYPE.PROOF,
     remoteDid: event.remoteDid,
@@ -1099,16 +1103,16 @@ export function convertPresentationRequestSentToHistoryEvent(
 }
 
 export function convertPresentationVerifiedToHistoryEvent(
-  action: PresentationVerifiedAction,
+  action: ProofVerifiedAction,
   event: ConnectionHistoryEvent,
 ): ConnectionHistoryEvent {
   return {
-    action: HISTORY_EVENT_STATUS[PRESENTATION_VERIFIED],
+    action: HISTORY_EVENT_STATUS[PROOF_VERIFIED],
     // $FlowFixMe
     data: action.requestedProof,
     id: uuid(),
     name: event.name,
-    status: HISTORY_EVENT_STATUS[PRESENTATION_VERIFIED],
+    status: HISTORY_EVENT_STATUS[PROOF_VERIFIED],
     timestamp: moment().format(),
     type: HISTORY_EVENT_TYPE.PROOF,
     remoteDid: event.remoteDid,
@@ -1120,16 +1124,16 @@ export function convertPresentationVerifiedToHistoryEvent(
 }
 
 export function convertPresentationVerificationFailedToHistoryEvent(
-  action: PresentationVerificationFailedAction,
+  action: ProofVerificationFailedAction,
   event: ConnectionHistoryEvent,
 ): ConnectionHistoryEvent {
   return {
-    action: HISTORY_EVENT_STATUS[PRESENTATION_VERIFICATION_FAILED],
+    action: HISTORY_EVENT_STATUS[PROOF_VERIFICATION_FAILED],
     // $FlowFixMe
     data: event.data,
     id: uuid(),
     name: event.name,
-    status: HISTORY_EVENT_STATUS[PRESENTATION_VERIFICATION_FAILED],
+    status: HISTORY_EVENT_STATUS[PROOF_VERIFICATION_FAILED],
     timestamp: moment().format(),
     type: HISTORY_EVENT_TYPE.PROOF,
     remoteDid: event.remoteDid,
@@ -1861,25 +1865,25 @@ export function* historyEventOccurredSaga(
       if (oldHistoryEvent) yield put(deleteHistoryEvent(oldHistoryEvent))
     }
 
-    if (event.type === PRESENTATION_PROPOSAL_RECEIVED) {
+    if (event.type === PROOF_PROPOSAL_RECEIVED) {
       historyEvent = convertPresentationProposalReceivedToHistoryEvent(event)
       const existingEvent = yield select(
         getHistoryEvent,
         historyEvent.originalPayload.payloadInfo.uid,
         historyEvent.remoteDid,
-        PRESENTATION_PROPOSAL_RECEIVED
+        PROOF_PROPOSAL_RECEIVED
       )
       if (existingEvent) historyEvent = null
     }
 
-      if (event.type === PRESENTATION_PROPOSAL_ACCEPTED || event.type === OUTOFBAND_PRESENTATION_PROPOSAL_ACCEPTED) {
+      if (event.type === PROOF_PROPOSAL_ACCEPTED || event.type === OUTOFBAND_PROOF_PROPOSAL_ACCEPTED) {
       const verifier = yield select(getVerifier, event.uid)
 
       const storedPresentationProposalReceivedEvent = yield select(
         getHistoryEvent,
         event.uid,
         verifier.senderDID,
-        PRESENTATION_PROPOSAL_RECEIVED
+        PROOF_PROPOSAL_RECEIVED
       )
       const oldHistoryEvent = storedPresentationProposalReceivedEvent
 
@@ -1893,21 +1897,21 @@ export function* historyEventOccurredSaga(
       }
     }
 
-    if (event.type === PRESENTATION_REQUEST_SENT) {
+    if (event.type === PROOF_REQUEST_SENT) {
       const verifier = yield select(getVerifier, event.uid)
 
       const storedPresentationProposalAcceptedEvent = yield select(
         getPendingHistory,
         event.uid,
         verifier.senderDID,
-        PRESENTATION_PROPOSAL_ACCEPTED
+        PROOF_PROPOSAL_ACCEPTED
       )
 
       const storedOutofbandPresentationProposalAcceptedEvent = yield select(
         getPendingHistory,
         event.uid,
         verifier.senderDID,
-        OUTOFBAND_PRESENTATION_PROPOSAL_ACCEPTED
+        OUTOFBAND_PROOF_PROPOSAL_ACCEPTED
       )
 
       const oldHistoryEvent =
@@ -1923,14 +1927,14 @@ export function* historyEventOccurredSaga(
       historyEvent = presentationRequestSentEvent
     }
 
-    if (event.type === PRESENTATION_VERIFIED) {
+    if (event.type === PROOF_VERIFIED) {
       const verifier = yield select(getVerifier, event.uid)
 
       const storedPresentationRequestSentEvent = yield select(
         getPendingHistory,
         event.uid,
         verifier.senderDID,
-        PRESENTATION_REQUEST_SENT
+        PROOF_REQUEST_SENT
       )
 
       const oldHistoryEvent = storedPresentationRequestSentEvent
@@ -1944,20 +1948,20 @@ export function* historyEventOccurredSaga(
       historyEvent = errorSendProofEvent
     }
 
-    if (event.type === PRESENTATION_VERIFICATION_FAILED) {
+    if (event.type === PROOF_VERIFICATION_FAILED) {
       const verifier = yield select(getVerifier, event.uid)
 
       const storedPresentationProposalAcceptedEvent = yield select(
         getPendingHistory,
         event.uid,
         verifier.senderDID,
-        PRESENTATION_PROPOSAL_ACCEPTED
+        PROOF_PROPOSAL_ACCEPTED
       )
       const storedPresentationRequestSentEvent = yield select(
         getPendingHistory,
         event.uid,
         verifier.senderDID,
-        PRESENTATION_REQUEST_SENT
+        PROOF_REQUEST_SENT
       )
       const oldHistoryEvent =
         storedPresentationProposalAcceptedEvent ||  storedPresentationRequestSentEvent

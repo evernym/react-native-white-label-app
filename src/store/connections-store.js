@@ -753,6 +753,18 @@ export default function connections(
             [action.identifier]: connection,
           },
         }
+      } else if (state.oneTimeConnections && state.oneTimeConnections[action.identifier]) {
+        // eslint-disable-next-line no-unused-vars
+        const { attachedRequest, ...connection } =
+        state.oneTimeConnections?.[action.identifier] ?? {}
+
+        return {
+          ...state,
+          oneTimeConnections: {
+            ...state.oneTimeConnections,
+            [action.identifier]: connection,
+          },
+        }
       } else {
         return state
       }

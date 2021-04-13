@@ -18,3 +18,16 @@ export const CustomMyCredentialsScreen = null
 
 // custom component to use for Credential Details screen rendering (instead of predefined one)
 export const CustomCredentialDetailsScreen = null
+
+/*
+ * Here is you can customize Show Credential dialog here.
+ * */
+
+// whether you want to use the feature of presenting a credential
+export const SHOW_CREDENTIAL = null
+
+// text which will be used as the header
+export const SHOW_CREDENTIAL_HEADLINE = null
+
+// custom component to use for Show Credential dialog rendering (instead of predefined one)
+export const CustomShowCredentialModal = null

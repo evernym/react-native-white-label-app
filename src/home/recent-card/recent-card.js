@@ -47,7 +47,7 @@ import { sendInvitationResponse } from '../../invitation/invitation-store'
 import { ResponseType } from '../../components/request/type-request'
 import { deleteConnectionAction } from '../../store/connections-store'
 import { LOADING_ACTIONS } from '../../connection-history/type-connection-history'
-import { PRESENTATION_VERIFICATION_FAILED } from '../../verifier/type-verifier'
+import { PROOF_VERIFICATION_FAILED } from '../../verifier/type-verifier'
 import { renderUserAvatar } from "../../components/user-avatar/user-avatar";
 
 class RecentCardComponent extends React.Component<RecentCardProps, void> {
@@ -213,7 +213,7 @@ export const FAILED_ACTIONS = [
   PAID_CREDENTIAL_REQUEST_FAIL,
   ERROR_SEND_PROOF,
   DENY_PROOF_REQUEST_FAIL,
-  PRESENTATION_VERIFICATION_FAILED,
+  PROOF_VERIFICATION_FAILED,
 ]
 
 function getRetryStatus(event: *): boolean {

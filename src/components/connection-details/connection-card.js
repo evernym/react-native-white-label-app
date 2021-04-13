@@ -38,7 +38,7 @@ import { sendInvitationResponse } from '../../invitation/invitation-store'
 import { deleteConnectionAction } from '../../store/connections-store'
 import { ExpandableText } from '../expandable-text/expandable-text'
 import type { ReactNavigation } from '../../common/type-common'
-import { PRESENTATION_VERIFIED } from '../../verifier/type-verifier'
+import { PROOF_VERIFIED } from '../../verifier/type-verifier'
 
 type ConnectionCardProps = {
   messageDate: string,
@@ -122,7 +122,7 @@ const ConnectionCardComponent = ({
         colorBackground,
         secondColorBackground,
       })
-    } else if (type === PRESENTATION_VERIFIED) {
+    } else if (type === PROOF_VERIFIED) {
       navigation.navigate(receivedProofRoute, {
         data,
         colorBackground,

@@ -43,9 +43,12 @@ import { deleteConnectionAction, getConnections } from '../store/connections-sto
 import type { ConnectionHistoryEvent } from '../connection-history/type-connection-history'
 import { CustomConnectionDetailsScreen } from '../external-imports'
 import {
-  OUTOFBAND_PRESENTATION_PROPOSAL_ACCEPTED,
-  PRESENTATION_PROPOSAL_ACCEPTED, PRESENTATION_PROPOSAL_RECEIVED,
-  PRESENTATION_REQUEST_SENT, PRESENTATION_VERIFICATION_FAILED, PRESENTATION_VERIFIED,
+  OUTOFBAND_PROOF_PROPOSAL_ACCEPTED,
+  PROOF_PROPOSAL_ACCEPTED,
+  PROOF_PROPOSAL_RECEIVED,
+  PROOF_REQUEST_SENT,
+  PROOF_VERIFICATION_FAILED,
+  PROOF_VERIFIED,
 } from '../verifier/type-verifier'
 
 const keyExtractor = (item: Object) => item.timestamp
@@ -385,7 +388,7 @@ const ConnectionDetails = ({
           type={item.action}
         />
       )
-    } else if (item.action === PRESENTATION_PROPOSAL_RECEIVED) {
+    } else if (item.action === PROOF_PROPOSAL_RECEIVED) {
       if (item.showBadge === false) {
         return <View/>
       }
@@ -403,9 +406,9 @@ const ConnectionDetails = ({
         />
       )
     } else if (
-      item.action === OUTOFBAND_PRESENTATION_PROPOSAL_ACCEPTED ||
-      item.action === PRESENTATION_PROPOSAL_ACCEPTED ||
-      item.action === PRESENTATION_REQUEST_SENT
+      item.action === OUTOFBAND_PROOF_PROPOSAL_ACCEPTED ||
+      item.action === PROOF_PROPOSAL_ACCEPTED ||
+      item.action === PROOF_REQUEST_SENT
     ) {
       return (
         <ConnectionPending
@@ -414,7 +417,7 @@ const ConnectionDetails = ({
           content={'WAITING FOR PROOF'}
         />
       )
-    } else if (item.action === PRESENTATION_VERIFIED) {
+    } else if (item.action === PROOF_VERIFIED) {
       const noOfAttributes = Object.keys({
         ...item.data.revealed_attrs,
         ...item.data.revealed_attr_groups,
@@ -440,7 +443,7 @@ const ConnectionDetails = ({
           type={item.action}
         />
       )
-    } else if (item.action === PRESENTATION_VERIFICATION_FAILED) {
+    } else if (item.action === PROOF_VERIFICATION_FAILED) {
       return (
         <ConnectionCard
           messageDate={formattedTime}

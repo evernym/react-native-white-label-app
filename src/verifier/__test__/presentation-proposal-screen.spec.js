@@ -11,7 +11,7 @@ import {
   getStore,
 } from '../../../__mocks__/static-data'
 import merge from 'lodash.merge'
-import { PresentationProposalComponent } from '../presentation-proposal-screen'
+import { ProofProposalComponent } from '../proof-proposal-modal'
 
 const getProps = () => {
   return {
@@ -69,7 +69,7 @@ const setup = (currentStore) => {
   const props = getProps()
   const component = renderer.create(
     <Provider store={currentStore}>
-      <PresentationProposalComponent {...props}/>
+      <ProofProposalComponent {...props}/>
     </Provider>
   )
   const instance = component.getInstance()

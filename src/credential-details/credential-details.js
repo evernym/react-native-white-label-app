@@ -9,19 +9,19 @@ import type { CredentialDetailsProps } from './type-credential-details'
 import { Avatar } from '../components/avatar/avatar'
 import { DefaultLogo } from '../components/default-logo/default-logo'
 import { CredentialList } from './credential-list/credential-list'
-import { HeaderWithDeletion} from '../components'
+import { HeaderWithDeletion } from '../components'
 import { ExpandableText } from '../components/expandable-text/expandable-text'
-import { bindActionCreators } from "redux"
+import { bindActionCreators } from 'redux'
 import { deleteClaim } from '../claim/claim-store'
 import { ViewPushLeft } from '../connection-details/utils/modal-animation'
-import { CustomCredentialDetailsScreen } from '../external-imports'
+import { CustomCredentialDetailsScreen, showCredential } from '../external-imports'
 import ToggleFields from '../components/toggle-fields/toggle-fields'
 import {
   checkCredentialForEmptyFields,
   showMissingField,
   showToggleMenu,
 } from '../connection-details/utils/checkForEmptyAttributes'
-import { Button } from "../components/buttons/button";
+import { Button } from '../components/buttons/button'
 
 const CredentialDetails = (props: CredentialDetailsProps) => {
   const {
@@ -46,7 +46,7 @@ const CredentialDetails = (props: CredentialDetailsProps) => {
     return {
       data,
       hasEmpty,
-      allEmpty
+      allEmpty,
     }
   }, [attributes])
 
@@ -69,7 +69,7 @@ const CredentialDetails = (props: CredentialDetailsProps) => {
   return (
     <View style={styles.container}>
       <HeaderWithDeletion
-        headline='Credential Details'
+        headline="Credential Details"
         navigation={props.navigation}
         onDeleteButtonTitle={'Delete Credential'}
         onDelete={onDelete}
@@ -91,7 +91,7 @@ const CredentialDetails = (props: CredentialDetailsProps) => {
                 testID={`sender-avatar`}
               />
             ) : (
-              <DefaultLogo text={issuerName} size={96} fontSize={48} />
+              <DefaultLogo text={issuerName} size={96} fontSize={48}/>
             )}
           </View>
           <View style={styles.contentWrapper}>
@@ -121,11 +121,13 @@ const CredentialDetails = (props: CredentialDetailsProps) => {
           />
         </View>
       </ScrollView>
+      {showCredential &&
       <Button
         onPress={show}
         label="Show"
         svgIcon="Send"
       />
+      }
     </View>
   )
 }

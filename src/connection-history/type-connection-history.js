@@ -79,19 +79,19 @@ import {
   INVITE_ACTION_ACCEPTED,
 } from '../invite-action/type-invite-action.js'
 import {
-  PRESENTATION_PROPOSAL_ACCEPTED,
-  PRESENTATION_PROPOSAL_RECEIVED,
-  PRESENTATION_REQUEST_SENT,
-  PRESENTATION_VERIFICATION_FAILED,
-  PRESENTATION_VERIFIED,
+  PROOF_PROPOSAL_ACCEPTED,
+  PROOF_PROPOSAL_RECEIVED,
+  PROOF_REQUEST_SENT,
+  PROOF_VERIFICATION_FAILED,
+  PROOF_VERIFIED,
 } from '../verifier/type-verifier'
 import type {
-  OutOfBandPresentationProposalAcceptedAction,
-  PresentationProposalAcceptedAction,
-  PresentationProposalReceivedAction,
-  PresentationRequestSentAction,
-  PresentationVerificationFailedAction,
-  PresentationVerifiedAction,
+  OutOfBandProofProposalAcceptedAction,
+  ProofProposalAcceptedAction,
+  ProofProposalReceivedAction,
+  ProofRequestSentAction,
+  ProofVerificationFailedAction,
+  ProofVerifiedAction,
 } from '../verifier/type-verifier'
 
 export const HISTORY_EVENT_STATUS = {
@@ -129,11 +129,11 @@ export const HISTORY_EVENT_STATUS = {
   [INVITE_ACTION_RECEIVED]: INVITE_ACTION_RECEIVED,
   [INVITE_ACTION_REJECTED]: INVITE_ACTION_REJECTED,
   [INVITE_ACTION_ACCEPTED]: INVITE_ACTION_ACCEPTED,
-  [PRESENTATION_PROPOSAL_RECEIVED]: PRESENTATION_PROPOSAL_RECEIVED,
-  [PRESENTATION_PROPOSAL_ACCEPTED]: PRESENTATION_PROPOSAL_ACCEPTED,
-  [PRESENTATION_REQUEST_SENT]: PRESENTATION_REQUEST_SENT,
-  [PRESENTATION_VERIFIED]: PRESENTATION_VERIFIED,
-  [PRESENTATION_VERIFICATION_FAILED]: PRESENTATION_VERIFICATION_FAILED,
+  [PROOF_PROPOSAL_RECEIVED]: PROOF_PROPOSAL_RECEIVED,
+  [PROOF_PROPOSAL_ACCEPTED]: PROOF_PROPOSAL_ACCEPTED,
+  [PROOF_REQUEST_SENT]: PROOF_REQUEST_SENT,
+  [PROOF_VERIFIED]: PROOF_VERIFIED,
+  [PROOF_VERIFICATION_FAILED]: PROOF_VERIFICATION_FAILED,
 }
 
 export const HISTORY_EVENT_TYPE = {
@@ -210,12 +210,12 @@ export type HistoryEventOccurredEventType =
   | DeleteConnectionSuccessEventAction
   | QuestionReceivedAction
   | OutofbandClaimOfferAcceptedAction
-  | PresentationProposalReceivedAction
-  | OutOfBandPresentationProposalAcceptedAction
-  | PresentationProposalAcceptedAction
-  | PresentationRequestSentAction
-  | PresentationVerifiedAction
-  | PresentationVerificationFailedAction
+  | ProofProposalReceivedAction
+  | OutOfBandProofProposalAcceptedAction
+  | ProofProposalAcceptedAction
+  | ProofRequestSentAction
+  | ProofVerifiedAction
+  | ProofVerificationFailedAction
 
 export type HistoryEventOccurredAction = {
   type: typeof HISTORY_EVENT_OCCURRED,
@@ -300,8 +300,8 @@ export const LOADING_ACTIONS = [
   HISTORY_EVENT_STATUS[UPDATE_ATTRIBUTE_CLAIM],
   HISTORY_EVENT_STATUS[DENY_PROOF_REQUEST],
   HISTORY_EVENT_STATUS[DENY_CLAIM_OFFER],
-  HISTORY_EVENT_STATUS[PRESENTATION_PROPOSAL_ACCEPTED],
-  HISTORY_EVENT_STATUS[PRESENTATION_REQUEST_SENT],
+  HISTORY_EVENT_STATUS[PROOF_PROPOSAL_ACCEPTED],
+  HISTORY_EVENT_STATUS[PROOF_REQUEST_SENT],
 ]
 
 export const PENDING_ACTIONS = [
@@ -321,7 +321,7 @@ export const PENDING_ACTIONS = [
   HISTORY_EVENT_STATUS[ERROR_SEND_PROOF],
   HISTORY_EVENT_STATUS[DENY_PROOF_REQUEST_FAIL],
   HISTORY_EVENT_STATUS[DENY_CLAIM_OFFER_FAIL],
-  HISTORY_EVENT_STATUS[PRESENTATION_PROPOSAL_RECEIVED],
-  HISTORY_EVENT_STATUS[PRESENTATION_PROPOSAL_ACCEPTED],
-  HISTORY_EVENT_STATUS[PRESENTATION_REQUEST_SENT],
+  HISTORY_EVENT_STATUS[PROOF_PROPOSAL_RECEIVED],
+  HISTORY_EVENT_STATUS[PROOF_PROPOSAL_ACCEPTED],
+  HISTORY_EVENT_STATUS[PROOF_REQUEST_SENT],
 ]

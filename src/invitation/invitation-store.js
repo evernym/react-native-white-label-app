@@ -85,7 +85,7 @@ import { customLogger } from '../store/custom-logger'
 import { retrySaga } from '../api/api-utils'
 import { checkProtocolStatus } from '../store/protocol-status'
 import { isConnectionCompleted } from '../store/store-utils'
-import { outofbandPresentationProposalAccepted, presentationProposalAccepted } from '../verifier/verifier-store'
+import { outofbandProofProposalAccepted, proofProposalAccepted } from '../verifier/verifier-store'
 
 export const invitationInitialState = {}
 
@@ -578,7 +578,7 @@ function* outOfBandInvitationAccepted(
     )
   } else if (attachedRequest[TYPE].endsWith('propose-presentation')) {
     yield put(
-      outofbandPresentationProposalAccepted(
+      outofbandProofProposalAccepted(
         action.attachedRequest[ID],
       )
     )
@@ -657,7 +657,7 @@ export function* processAttachedRequest(did: string): Generator<*, *, *> {
   } else if (attachedRequest[TYPE].endsWith('request-presentation')) {
     yield put(outOfBandConnectionForPresentationEstablished(uid))
   } else if (attachedRequest[TYPE].endsWith('propose-presentation')) {
-    yield put(presentationProposalAccepted(uid))
+    yield put(proofProposalAccepted(uid))
   }
 }
 

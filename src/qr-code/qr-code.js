@@ -18,7 +18,8 @@ import {
   homeDrawerRoute,
   homeRoute,
   invitationRoute,
-  openIdConnectRoute, presentationProposalRoute,
+  openIdConnectRoute,
+  proofProposalRoute,
   proofRequestRoute,
   pushNotificationPermissionRoute,
   qrCodeScannerTabRoute,
@@ -79,7 +80,7 @@ import {
 } from '../invitation/invitation-helpers'
 import { usePushNotifications } from '../external-imports'
 import { schemaValidator } from "../services/schema-validator";
-import { presentationProposalReceived } from "../verifier/verifier-store";
+import { proofProposalReceived } from "../verifier/verifier-store";
 
 export class QRCodeScannerScreen extends Component<
   QRCodeScannerScreenProps,
@@ -499,7 +500,7 @@ export class QRCodeScannerScreen extends Component<
         )
 
         await this.handleOutOfBandNavigation({
-          mainRoute: presentationProposalRoute,
+          mainRoute: proofProposalRoute,
           backRedirectRoute: this.props.route.params?.backRedirectRoute,
           uid: uid,
           invitationPayload: invitation,
@@ -553,7 +554,7 @@ const mapDispatchToProps = (dispatch) =>
       openIdConnectUpdateStatus,
       claimOfferReceived,
       proofRequestReceived,
-      presentationProposalReceived,
+      presentationProposalReceived: proofProposalReceived,
     },
     dispatch
   )

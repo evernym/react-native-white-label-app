@@ -8,43 +8,43 @@ export type HydrateVerifierStoreAction = {
   data: VerifierStore,
 }
 
-export const PRESENTATION_PROPOSAL_RECEIVED = 'PRESENTATION_PROPOSAL_RECEIVED'
-export type PresentationProposalReceivedAction = {
-  type: typeof PRESENTATION_PROPOSAL_RECEIVED,
+export const PROOF_PROPOSAL_RECEIVED = 'PROOF_PROPOSAL_RECEIVED'
+export type ProofProposalReceivedAction = {
+  type: typeof PROOF_PROPOSAL_RECEIVED,
   presentationProposal: AriesPresentationProposal,
   payloadInfo: NotificationPayloadInfo,
 }
 
-export const OUTOFBAND_PRESENTATION_PROPOSAL_ACCEPTED = 'OUTOFBAND_PRESENTATION_PROPOSAL_ACCEPTED'
-export type OutOfBandPresentationProposalAcceptedAction = {
-  type: typeof OUTOFBAND_PRESENTATION_PROPOSAL_ACCEPTED,
+export const OUTOFBAND_PROOF_PROPOSAL_ACCEPTED = 'OUTOFBAND_PROOF_PROPOSAL_ACCEPTED'
+export type OutOfBandProofProposalAcceptedAction = {
+  type: typeof OUTOFBAND_PROOF_PROPOSAL_ACCEPTED,
   uid: string,
 }
 
-export const PRESENTATION_PROPOSAL_ACCEPTED = 'PRESENTATION_PROPOSAL_ACCEPTED'
-export type PresentationProposalAcceptedAction = {
-  type: typeof PRESENTATION_PROPOSAL_ACCEPTED,
+export const PROOF_PROPOSAL_ACCEPTED = 'PROOF_PROPOSAL_ACCEPTED'
+export type ProofProposalAcceptedAction = {
+  type: typeof PROOF_PROPOSAL_ACCEPTED,
   uid: string,
 }
 
-export const PRESENTATION_REQUEST_SENT = 'PRESENTATION_REQUEST_SENT'
-export type PresentationRequestSentAction = {
-  type: typeof PRESENTATION_REQUEST_SENT,
+export const PROOF_REQUEST_SENT = 'PROOF_REQUEST_SENT'
+export type ProofRequestSentAction = {
+  type: typeof PROOF_REQUEST_SENT,
   uid: string,
-  presentationRequest: string,
+  proofRequest: string,
   serialized: string,
 }
 
-export const PRESENTATION_VERIFIED = 'PRESENTATION_VERIFIED'
-export type PresentationVerifiedAction = {
-  type: typeof PRESENTATION_VERIFIED,
+export const PROOF_VERIFIED = 'PROOF_VERIFIED'
+export type ProofVerifiedAction = {
+  type: typeof PROOF_VERIFIED,
   uid: string,
   requestedProof: RequestedProof,
 }
 
-export const PRESENTATION_VERIFICATION_FAILED = 'PRESENTATION_VERIFICATION_FAILED'
-export type PresentationVerificationFailedAction = {
-  type: typeof PRESENTATION_VERIFICATION_FAILED,
+export const PROOF_VERIFICATION_FAILED = 'PROOF_VERIFICATION_FAILED'
+export type ProofVerificationFailedAction = {
+  type: typeof PROOF_VERIFICATION_FAILED,
   uid: string,
   error: string,
 }
@@ -66,27 +66,28 @@ export type RevealedAttributeGroup = {
   }
 }
 
-export type SubProofReferent = {
+export type SelfAttestedAttribute = {
+  attribute: string,
+  value: string,
+}
+
+export type UnrevealedAttribute = {
   attribute: string,
   sub_proof_index: number,
 }
 
+export type Predicate = {
+  attribute: string,
+  p_type: string,
+  p_value: number,
+}
+
 export type RequestedProof = {
-  revealed_attrs: {
-    +[string]: RevealedAttribute,
-  },
-  revealed_attr_groups: {
-    +[string]: RevealedAttributeGroup,
-  },
-  self_attested_attrs: {
-    +[string]: string,
-  },
-  unrevealed_attrs: {
-    +[string]: SubProofReferent,
-  },
-  predicates: {
-    +[string]: SubProofReferent,
-  }
+  revealed_attrs: Array<RevealedAttribute>,
+  revealed_attr_groups: Array<RevealedAttributeGroup>,
+  self_attested_attrs: Array<SelfAttestedAttribute>,
+  unrevealed_attrs: Array<UnrevealedAttribute>,
+  predicates: Array<Predicate>
 }
 
 export const VERIFIER_STATE = {
@@ -103,12 +104,12 @@ export const PROOF_SATE = {
 
 export type VerifierActions =
   | HydrateVerifierStoreAction
-  | PresentationProposalReceivedAction
-  | OutOfBandPresentationProposalAcceptedAction
-  | PresentationProposalAcceptedAction
-  | PresentationRequestSentAction
-  | PresentationVerifiedAction
-  | PresentationVerificationFailedAction
+  | ProofProposalReceivedAction
+  | OutOfBandProofProposalAcceptedAction
+  | ProofProposalAcceptedAction
+  | ProofRequestSentAction
+  | ProofVerifiedAction
+  | ProofVerificationFailedAction
 
 export type VerifierData = {
   uid: string,
@@ -116,7 +117,7 @@ export type VerifierData = {
   senderDID: string,
   senderName: string | null,
   senderLogoUrl: string | null,
-  presentationRequest?: string,
+  proofRequest?: string,
   vcxSerializedStateObject?: string,
   requestedProof?: RequestedProof | null,
   hidden?: boolean,

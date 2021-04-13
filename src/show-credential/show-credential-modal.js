@@ -23,13 +23,17 @@ import {
 } from '../store/store-selector'
 import { Loader } from '../components'
 import { showCredential, showCredentialFinished } from './type-show-credential'
+import {
+  CustomShowCredentialModal,
+  showCredentialHeadline,
+} from '../external-imports'
 
 const { width } = Dimensions.get('screen')
 
-export const ShowCredential = ({
-                          navigation: { goBack },
-                          route: { params },
-                        }: ReactNavigation) => {
+export const ShowCredentialModal = ({
+                                      navigation: { goBack },
+                                      route: { params },
+                                    }: ReactNavigation) => {
   const dispatch = useDispatch()
 
   const data = useSelector(getShowCredentialData)
@@ -61,7 +65,7 @@ export const ShowCredential = ({
             text: 'OK',
             onPress: onDone,
           },
-        ]
+        ],
       )
     }
   }, [error])
@@ -71,38 +75,44 @@ export const ShowCredential = ({
     const countAttachments = params.attributes.filter(attribute => attribute.label.endsWith('_link'))
 
     return countAttachments > 0 ?
-      `${countAttributes} attributes, ${countAttachments} attachments`:
+      `${countAttributes} attributes, ${countAttachments} attachments` :
       `${countAttributes} attributes`
   }, [params])
 
   return !data ?
     <Loader/> :
-    <>
-      <View style={styles.modalWrapper}>
-        <ExpandableText
-          style={styles.titleText}
-          text={params.credentialName}
-        />
-        <View style={styles.qrCodeWrapper}>
-          <QRCode value={data} size={moderateScale(width * 0.8)}/>
-        </View>
-        <Text style={styles.text}>
-          Present this QR code to a verifier for scanning
-        </Text>
-        <Text style={styles.text}>
-          {attributesLabel}
-        </Text>
-        <Button onPress={onDone} label="Done"/>
+    <View style={styles.modalWrapper}>
+      <ExpandableText
+        style={styles.titleText}
+        text={params.credentialName}
+      />
+      <View style={styles.qrCodeWrapper}>
+        <QRCode value={data} size={moderateScale(width * 0.8)}/>
       </View>
-    </>
+      <Text style={styles.text}>
+        Present this QR code to a verifier for scanning
+      </Text>
+      <Text style={styles.text}>
+        {attributesLabel}
+      </Text>
+      <Button onPress={onDone} label="Done"/>
+    </View>
 }
+
+const screen =
+  CustomShowCredentialModal && CustomShowCredentialModal.screen ||
+  ShowCredentialModal
+
+const navigationOptions =
+  CustomShowCredentialModal && CustomShowCredentialModal.navigationOptions ||
+  modalOptions(showCredentialHeadline, 'CloseIcon')
 
 export const ShowCredentialScreen = {
   routeName: showCredentialRoute,
-  screen: ShowCredential,
+  screen,
 }
 
-ShowCredentialScreen.screen.navigationOptions = modalOptions('Show Credential', 'CloseIcon')
+ShowCredentialScreen.screen.navigationOptions = navigationOptions
 
 const styles = StyleSheet.create({
   modalWrapper: {

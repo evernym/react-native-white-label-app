@@ -164,6 +164,7 @@ import type {
 import { INVITE_ACTION_PROTOCOL } from '../invite-action/type-invite-action'
 import { updateVerifierState } from "../verifier/verifier-store";
 import { presentationProposalSchema } from "../proof-request/proof-request-qr-code-reader";
+import { connectionDeleteAttachedRequest } from './connections-store'
 
 /**
  * this file contains configuration which is changed only from user action
@@ -1369,6 +1370,7 @@ function* handleAriesMessage(message: DownloadedMessage): Generator<*, *, *> {
             identifier: forDID,
           }
           redirectToScreen = false
+          yield put(connectionDeleteAttachedRequest(forDID))
         }
       }
     }

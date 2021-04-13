@@ -10,7 +10,7 @@ import {
   defaultUUID,
   getStore,
 } from '../../../__mocks__/static-data'
-import { ShowCredential } from '../show-credential'
+import { ShowCredentialModal } from '../show-credential-modal'
 import merge from 'lodash.merge'
 
 const getProps = () => {
@@ -50,7 +50,7 @@ const setup = (currentStore) => {
   const props = getProps()
   const component = renderer.create(
     <Provider store={currentStore}>
-      <ShowCredential {...props}/>
+      <ShowCredentialModal {...props}/>
     </Provider>
   )
   const instance = component.getInstance()
@@ -58,7 +58,7 @@ const setup = (currentStore) => {
   return { props, component, instance }
 }
 
-describe('<ShowCredential />', () => {
+describe('<ShowCredentialModal />', () => {
   it('should match loading snapshot', () => {
     const store = getState({
       data: null,

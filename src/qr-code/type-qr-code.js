@@ -12,7 +12,7 @@ import { proofRequestReceived } from '../proof-request/proof-request-store'
 import type { ClaimOfferPayload } from '../claim-offer/type-claim-offer'
 import type { InvitationPayload } from '../invitation/type-invitation'
 import type { ProofRequestPayload } from '../proof-request/type-proof-request'
-import { presentationProposalReceived } from '../verifier/verifier-store'
+import { proofProposalReceived } from '../verifier/verifier-store'
 
 export type QRCodeScannerScreenState = {
   isCameraEnabled: boolean,
@@ -37,7 +37,7 @@ export type QRCodeScannerScreenProps = {
   ) => void,
   claimOfferReceived: typeof claimOfferReceived,
   proofRequestReceived: typeof proofRequestReceived,
-  presentationProposalReceived: typeof presentationProposalReceived,
+  presentationProposalReceived: typeof proofProposalReceived,
 } & ReactNavigation
 
 export type OutOfBandNavigation = {

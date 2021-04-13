@@ -1,5 +1,5 @@
 // @flow
-import React, { useCallback, useMemo} from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   View,
@@ -9,23 +9,29 @@ import {
   FlatList,
 } from 'react-native'
 import { verticalScale, moderateScale } from 'react-native-size-matters'
-import { homeDrawerRoute, homeRoute, presentationProposalRoute } from '../common'
+import { homeDrawerRoute, homeRoute, proofProposalRoute } from '../common'
 import type { ReactNavigation } from '../common/type-common'
 import { colors, fontSizes, fontFamily } from '../common/styles'
 import { ExpandableText } from '../components/expandable-text/expandable-text'
 import { modalOptions } from '../connection-details/utils/modalOptions'
 import { getLockStore, getVerifier } from '../store/store-selector'
 import { Loader } from '../components'
-import type { InvitationPayload } from "../invitation/type-invitation";
-import type { AriesPresentationPreviewAttribute, AriesPresentationProposal } from "../proof-request/type-proof-request";
-import { ModalButtons } from "../components/buttons/modal-buttons";
-import { ModalHeader } from "../connection-details/components/modal-header";
-import { CONNECTION_INVITE_TYPES } from "../invitation/type-invitation";
-import { acceptOutOfBandInvitation } from "../invitation/invitation-store";
-import { presentationProposalAccepted } from './verifier-store'
+import type { InvitationPayload } from '../invitation/type-invitation'
+import type { AriesPresentationPreviewAttribute, AriesPresentationProposal } from '../proof-request/type-proof-request'
+import { ModalButtons } from '../components/buttons/modal-buttons'
+import { ModalHeader } from '../connection-details/components/modal-header'
+import { CONNECTION_INVITE_TYPES } from '../invitation/type-invitation'
+import { acceptOutOfBandInvitation } from '../invitation/invitation-store'
+import { proofProposalAccepted } from './verifier-store'
 import { authForAction } from '../lock/lock-auth-for-action'
+import {
+  CustomProofProposalModal,
+  proofProposalHeadline,
+  proofProposalAcceptButtonText,
+  proofProposalDenyButtonText,
+} from '../external-imports'
 
-export type PresentationProposalProps = {
+export type ProofProposalProps = {
   backRedirectRoute?: string | null,
   uid: string,
   invitationPayload: InvitationPayload,
@@ -33,11 +39,11 @@ export type PresentationProposalProps = {
   senderName: string,
 }
 
-export const PresentationProposalComponent = ( {
-                                                 navigation,
-                                                 route: { params },
-                                               }: ReactNavigation ) => {
-  const { uid, backRedirectRoute, senderName, invitationPayload, attachedRequest }: PresentationProposalProps = params
+export const ProofProposalComponent = ({
+                                         navigation,
+                                         route: { params },
+                                       }: ReactNavigation) => {
+  const { uid, backRedirectRoute, senderName, invitationPayload, attachedRequest }: ProofProposalProps = params
 
   const dispatch = useDispatch()
 
@@ -47,10 +53,10 @@ export const PresentationProposalComponent = ( {
   const presentationProposal = useMemo(() => verifier.presentationProposal, [verifier])
 
   const onAcceptAuthSuccess = useCallback(() => {
-    if (invitationPayload.type === CONNECTION_INVITE_TYPES.ARIES_OUT_OF_BAND){
+    if (invitationPayload.type === CONNECTION_INVITE_TYPES.ARIES_OUT_OF_BAND) {
       dispatch(acceptOutOfBandInvitation(invitationPayload, attachedRequest))
     } else {
-      dispatch(presentationProposalAccepted(uid))
+      dispatch(proofProposalAccepted(uid))
     }
     navigation.navigate(homeRoute, {
       screen: homeDrawerRoute,
@@ -74,23 +80,25 @@ export const PresentationProposalComponent = ( {
     }
   }, [backRedirectRoute])
 
-  const keyExtractor = (attribute: AriesPresentationPreviewAttribute, index: number) =>
-    `${attribute.name}-${index}`
+  const keyExtractor = (_: any, index: number) => index.toString()
 
   const renderItem = (attribute: AriesPresentationPreviewAttribute) =>
     <View style={styles.attributeWrapper}>
-      <ExpandableText text={attribute.name} style={styles.attribute} />
+      <ExpandableText text={attribute.name} style={styles.attribute}/>
     </View>
+
+  const acceptBtnText = proofProposalAcceptButtonText || 'Accept'
+  const denyButtonText = proofProposalDenyButtonText || 'Cancel'
 
   return !presentationProposal ?
     <Loader/> :
     <>
       <View style={styles.contentWrapper}>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <StatusBar backgroundColor={colors.black} barStyle={'light-content'} />
+          <StatusBar backgroundColor={colors.black} barStyle={'light-content'}/>
           <ModalHeader
             institutionalName={senderName}
-            credentialName={presentationProposal.comment || 'Presentation Proposal'}
+            credentialName={presentationProposal.comment || 'Proof Proposal'}
             credentialText={'Offers you to present data'}
             imageUrl={verifier.senderLogoUrl}
           />
@@ -104,21 +112,28 @@ export const PresentationProposalComponent = ( {
       <ModalButtons
         onPress={onAccept}
         onIgnore={onDeny}
-        acceptBtnText={'Accept'}
-        denyButtonText={'Cancel'}
+        acceptBtnText={acceptBtnText}
+        denyButtonText={denyButtonText}
         colorBackground={colors.main}
         secondColorBackground={colors.red}
       />
     </>
 }
 
-export const PresentationProposalScreen = {
-  routeName: presentationProposalRoute,
-  screen: PresentationProposalComponent,
+const screen =
+  CustomProofProposalModal && CustomProofProposalModal.screen ||
+  ProofProposalComponent
+
+const navigationOptions =
+  CustomProofProposalModal && CustomProofProposalModal.navigationOptions ||
+  modalOptions(proofProposalHeadline, 'CloseIcon')
+
+export const ProofProposalModal = {
+  routeName: proofProposalRoute,
+  screen,
 }
 
-PresentationProposalScreen.screen.navigationOptions =
-  modalOptions('Presentation Proposal', 'CloseIcon')
+ProofProposalModal.screen.navigationOptions = navigationOptions
 
 const styles = StyleSheet.create({
   contentWrapper: {

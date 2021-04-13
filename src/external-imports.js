@@ -37,7 +37,6 @@ import {
   CustomSelectAttributeValueModal as iCustomSelectAttributeValueModal,
   CustomSelectAttributesValuesModal as iCustomSelectAttributesValuesModal,
   CustomProofRequestModal as iCustomProofRequestModal,
-  CustomSharedProofModal as iCustomSharedProofModal,
   // $FlowExpectedError[cannot-resolve-module] external file
 } from '../../../../app/evernym-sdk/proof-request'
 
@@ -129,6 +128,9 @@ import {
   SHOW_CAMERA_BUTTON as CREDENTIALS_SHOW_CAMERA_BUTTON,
   MyCredentialsViewEmptyState as iMyCredentialsViewEmptyState,
   CustomMyCredentialsScreen as iCustomMyCredentialsScreen,
+  SHOW_CREDENTIAL,
+  SHOW_CREDENTIAL as SHOW_CREDENTIAL_HEADLINE,
+  CustomShowCredentialModal as iCustomShowCredentialModal,
   // $FlowExpectedError[cannot-resolve-module] external file
 } from '../../../../app/evernym-sdk/credentials'
 
@@ -150,6 +152,22 @@ import {
   CustomInviteActionModal as iCustomInviteActionModal,
   // $FlowExpectedError[cannot-resolve-module] external file
 } from '../../../../app/evernym-sdk/invite-action'
+
+import {
+  RECEIVED_PROOF_HEADLINE,
+  CustomReceivedProofModal as iCustomReceivedProofModal,
+  SHARED_PROOF_HEADLINE,
+  CustomSharedProofModal as iCustomSharedProofModal,
+  // $FlowExpectedError[cannot-resolve-module] external file
+} from '../../../../app/evernym-sdk/proof'
+
+import {
+  HEADLINE as PROOF_PROPOSAL_HEADLINE,
+  ACCEPT_BUTTON_TEXT as PROOF_PROPOSAL_ACCEPT_BUTTON_TEXT,
+  DENY_BUTTON_TEXT as PROOF_PROPOSAL_DENY_BUTTON_TEXT,
+  CustomProofProposalModal as iCustomProofProposalModal,
+  // $FlowExpectedError[cannot-resolve-module] external file
+} from '../../../../app/evernym-sdk/proof-proposal'
 
 export const appName = APP_NAME || 'appName'
 export const appLogo = APP_LOGO
@@ -179,6 +197,7 @@ export const CustomEnterAttributeValueModal = iCustomEnterAttributeValueModal
 export const CustomSelectAttributeValueModal = iCustomSelectAttributeValueModal
 export const CustomSelectAttributesValuesModal = iCustomSelectAttributesValuesModal
 export const CustomProofRequestModal = iCustomProofRequestModal
+export const sharedProofHeadline = SHARED_PROOF_HEADLINE || 'Proof'
 export const CustomSharedProofModal = iCustomSharedProofModal
 export const proofRequestHeadline = PROOF_REQUEST_HEADLINE || 'Proof Request'
 export const proofRequestAcceptButtonText = PROOF_REQUEST_ACCEPT_BUTTON_TEXT
@@ -254,3 +273,15 @@ export const inviteActionHeadline = INVITE_ACTION_HEADLINE || 'New Message'
 export const inviteActionAcceptButtonText = INVITE_ACTION_ACCEPT_BUTTON_TEXT
 export const inviteActionDenyButtonText = INVITE_ACTION_DENY_BUTTON_TEXT
 export const CustomInviteActionModal = iCustomInviteActionModal
+
+export const receivedProofHeadline = RECEIVED_PROOF_HEADLINE || 'Proof'
+export const CustomReceivedProofModal = iCustomReceivedProofModal
+
+export const proofProposalHeadline = PROOF_PROPOSAL_HEADLINE || 'Proof Proposal'
+export const proofProposalAcceptButtonText = PROOF_PROPOSAL_ACCEPT_BUTTON_TEXT
+export const proofProposalDenyButtonText = PROOF_PROPOSAL_DENY_BUTTON_TEXT
+export const CustomProofProposalModal = iCustomProofProposalModal
+
+export const showCredential = SHOW_CREDENTIAL || true
+export const showCredentialHeadline = SHOW_CREDENTIAL_HEADLINE || 'Show Credential'
+export const CustomShowCredentialModal = iCustomShowCredentialModal
