@@ -7,7 +7,7 @@ import {
 } from '../../external-imports'
 import { colors } from '../../common/styles'
 
-export const withModalStyleHoc = (Component, headline, icon) => 
+export const withModalStyleHoc = (Component: any, headline: string, icon: string) => 
   (props) => (
     <>
       <ModalHeaderBar
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   }
 })
-export const modalOptions = (headline, icon, animation) => (
+export const modalOptions = (headline: string, icon: string, animation: any) => (
   ({
      navigation: { goBack, isFocused },
    }) => ({
