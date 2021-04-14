@@ -38,7 +38,6 @@ import {
 } from '../claim-offer/type-claim-offer'
 import { UPDATE_ATTRIBUTE_CLAIM, ERROR_SEND_PROOF } from '../proof/type-proof'
 import { INVITATION_ACCEPTED } from '../invitation/type-invitation'
-import { CONNECTION_FAIL } from '../store/type-connection-store'
 import { deleteConnectionAction, getConnections } from '../store/connections-store'
 import type { ConnectionHistoryEvent } from '../connection-history/type-connection-history'
 import { CustomConnectionDetailsScreen } from '../external-imports'
@@ -352,31 +351,6 @@ const ConnectionDetails = ({
           messageTitle={'Deleted Credential'}
           messageContent={'You deleted the credential "' + item.name + '"'}
           showButtons={false}
-          type={item.action}
-        />
-      )
-    } else if (item.action === INVITATION_ACCEPTED) {
-      return (
-        <ConnectionPending
-          date={formattedTime}
-          title={item.name}
-          content={'CONNECTING - PLEASE WAIT'}
-        />
-      )
-    } else if (item.action === CONNECTION_FAIL) {
-      return (
-        <ConnectionCard
-          messageDate={formattedTime}
-          headerText={item.name}
-          infoType={'FAILED TO CONNECT'}
-          infoDate={formattedDate}
-          buttonText={'RETRY'}
-          showBadge={false}
-          colorBackground={colors.red}
-          received={true}
-          data={item}
-          repeatable={true}
-          navigation={navigation}
           type={item.action}
         />
       )

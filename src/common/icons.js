@@ -19,6 +19,7 @@ export const CONNECTIONS_ICON = 'people-outline'
 export const CREDENTIALS_ICON = 'home-outline'
 export const SETTINGS_ICON = 'settings-2-outline'
 
+export const ERROR_ICON = 'alert-circle-outline'
 export const CAMERA_ICON = 'camera-outline'
 export const CHECK_MARK_ICON = 'checkmark-circle-2-outline'
 export const HOME_MENU_ICON = 'menu-outline'
