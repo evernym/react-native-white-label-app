@@ -75,6 +75,7 @@ import inviteAction, {
 } from '../invite-action/invite-action-store'
 import showCredential, { watchShowCredentialStore } from '../show-credential/show-credential-store'
 import verifier, { watchVerifier } from "../verifier/verifier-store";
+import logToApptentiveMiddleware from '../log-to-apptentive/log-to-apptentive-middleware'
 
 const sagaMiddleware = createSagaMiddleware()
 
