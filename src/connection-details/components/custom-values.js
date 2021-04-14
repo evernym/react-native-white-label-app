@@ -14,7 +14,7 @@ import type { ReactNavigation } from '../../common/type-common'
 // styles
 import { colors, fontFamily, fontSizes } from '../../common/styles/constant'
 import { ExpandableText } from '../../components/expandable-text/expandable-text'
-import { modalOptions } from '../utils/modalOptions'
+import { modalOptions, withModalStyleHoc } from '../utils/modalOptions'
 import {CustomEnterAttributeValueModal} from '../../external-imports'
 import {ModalPushLeft} from "../utils/modal-animation";
 
@@ -71,7 +71,7 @@ const navigationOptions =
 
 export const CustomValuesScreen = {
   routeName: customValuesRoute,
-  screen,
+  screen: withModalStyleHoc(screen, 'Custom Values', 'CloseIcon'),
 }
 
 CustomValuesScreen.screen.navigationOptions = navigationOptions

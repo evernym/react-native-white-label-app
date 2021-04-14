@@ -44,7 +44,7 @@ import { colors } from '../../common/styles/constant'
 import { acceptOutOfBandInvitation } from '../../invitation/invitation-store'
 import { authForAction } from '../../lock/lock-auth-for-action'
 
-import { modalOptions } from '../utils/modalOptions'
+import { modalOptions, withModalStyleHoc } from '../utils/modalOptions'
 import {
   credentialOfferAcceptButtonText,
   credentialOfferDenyButtonText,
@@ -448,7 +448,7 @@ const navigationOptions =
 
 export const claimOfferScreen = {
   routeName: claimOfferRoute,
-  screen: connect(mapStateToProps, mapDispatchToProps)(screen),
+  screen: connect(mapStateToProps, mapDispatchToProps)(withModalStyleHoc(screen, credentialOfferHeadline, 'CloseIcon')),
 }
 
 claimOfferScreen.screen.navigationOptions = navigationOptions

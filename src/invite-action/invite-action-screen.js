@@ -37,7 +37,7 @@ import {
   inviteActionDenyButtonText,
   inviteActionHeadline,
 } from '../external-imports'
-import { modalOptions } from '../connection-details/utils/modalOptions'
+import { modalOptions, withModalStyleHoc } from '../connection-details/utils/modalOptions'
 import {ModalButtons} from "../components/buttons/modal-buttons";
 
 export const InviteActionComponent = ({
@@ -138,7 +138,7 @@ const navigationOptions =
 
 export const inviteActionScreen = {
   routeName: inviteActionRoute,
-  screen: connect(mapStateToProps, mapDispatchToProps)(screen),
+  screen: connect(mapStateToProps, mapDispatchToProps)(withModalStyleHoc(screen, inviteActionHeadline, 'CloseIcon')),
 }
 
 inviteActionScreen.screen.navigationOptions = navigationOptions

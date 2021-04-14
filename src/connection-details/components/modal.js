@@ -10,7 +10,7 @@ import { colors } from '../../common/styles/constant'
 import { ModalContent } from './modal-content'
 import { ModalButton } from '../../components/connection-details/modal-button'
 import { modalScreenRoute } from '../../common/route-constants'
-import { modalOptions } from '../utils/modalOptions'
+import { modalOptions, withModalStyleHoc } from '../utils/modalOptions'
 import { CustomCredentialModal } from '../../external-imports'
 
 type CredentialReceivedProps = {
@@ -62,7 +62,7 @@ const navigationOptions =
 
 export const fulfilledMessageScreen = {
   routeName: modalScreenRoute,
-  screen: connect()(screen),
+  screen: connect()(withModalStyleHoc(screen, headline, 'Arrow')),
 }
 
 fulfilledMessageScreen.screen.navigationOptions = navigationOptions

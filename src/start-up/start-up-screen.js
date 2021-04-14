@@ -10,7 +10,6 @@ import {
   Image,
   Text, View,
 } from 'react-native';
-import {headerOptionsWithNoBack} from '../navigation/navigation-header-config';
 import {startUpRoute, lockPinSetupRoute} from '../common';
 import {OFFSET_2X, colors, fontFamily, fontSizes} from '../common/styles';
 import {verticalScale, moderateScale} from 'react-native-size-matters';
@@ -99,10 +98,6 @@ const screen = CustomStartUpScreen || StartUpScreen
 export const startUpScreen = {
   routeName: startUpRoute,
   screen,
-  options: headerOptionsWithNoBack({
-    title: '',
-    headerShown: false,
-  }),
 };
 
 const style = StyleSheet.create({

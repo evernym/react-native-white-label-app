@@ -38,7 +38,7 @@ import { QuestionActions } from './components/question-screen-actions'
 import { checkIfAnimationToUse } from '../bridge/react-native-cxs/RNCxs'
 import { customLogger } from '../store/custom-logger'
 
-import { modalOptions } from '../connection-details/utils/modalOptions'
+import { modalOptions, withModalStyleHoc } from '../connection-details/utils/modalOptions'
 import { CustomQuestionModal, questionHeadline } from '../external-imports'
 
 const headline = questionHeadline || 'Question'
@@ -322,7 +322,7 @@ const navigationOptions =
 
 export const questionScreen = {
   routeName: questionRoute,
-  screen: connect(mapStateToProps, mapDispatchToProps)(screen),
+  screen: connect(mapStateToProps, mapDispatchToProps)(withModalStyleHoc(screen, headline, 'CloseIcon')),
 }
 
 questionScreen.screen.navigationOptions = navigationOptions
