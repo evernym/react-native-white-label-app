@@ -395,6 +395,7 @@ function CardStackScreen(navigation) {
       <CardStack.Screen
         name={startUpScreen.routeName}
         component={startUpScreen.screen}
+        options={startUpScreen.options}
       />
       <CardStack.Screen
         name={expiredTokenScreen.routeName}
@@ -507,12 +508,7 @@ function CardStackScreen(navigation) {
       <CardStack.Screen
         name={sendLogsScreen.routeName}
         component={sendLogsScreen.screen}
-        options={headerDefaultOptions({
-          navigation,
-          headline: 'Send logs',
-          headerHideShadow: true,
-          transparent: false,
-        })}
+        options={sendLogsScreen.options}
       />
       <CardStack.Screen
         name={credentialDetailsScreen.routeName}

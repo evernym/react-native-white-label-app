@@ -24,7 +24,11 @@ import type { ComponentStatus, CustomError } from '../common/type-common'
 import type { Connection } from '../store/type-connection-store'
 
 import { CustomView } from '../components'
-import { homeDrawerRoute, homeRoute, questionRoute } from '../common/route-constants'
+import {
+  homeDrawerRoute,
+  homeRoute,
+  questionRoute,
+} from '../common/route-constants'
 import { QUESTION_STATUS } from './type-question'
 import {
   updateQuestionStatus,
@@ -38,7 +42,7 @@ import { QuestionActions } from './components/question-screen-actions'
 import { checkIfAnimationToUse } from '../bridge/react-native-cxs/RNCxs'
 import { customLogger } from '../store/custom-logger'
 
-import { modalOptions, withModalStyleHoc } from '../connection-details/utils/modalOptions'
+import { modalOptions } from '../connection-details/utils/modalOptions'
 import { CustomQuestionModal, questionHeadline } from '../external-imports'
 
 const headline = questionHeadline || 'Question'
@@ -46,7 +50,7 @@ const headline = questionHeadline || 'Question'
 export class Question extends Component<
   QuestionScreenProps,
   QuestionScreenState
-  > {
+> {
   state = {
     response: null,
   }
@@ -312,17 +316,15 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   )
 
-const screen =
-  CustomQuestionModal && CustomQuestionModal.screen ||
-  Question
+const screen = (CustomQuestionModal && CustomQuestionModal.screen) || Question
 
 const navigationOptions =
-  CustomQuestionModal && CustomQuestionModal.navigationOptions ||
+  (CustomQuestionModal && CustomQuestionModal.navigationOptions) ||
   modalOptions(headline, 'CloseIcon')
 
 export const questionScreen = {
   routeName: questionRoute,
-  screen: connect(mapStateToProps, mapDispatchToProps)(withModalStyleHoc(screen, headline, 'CloseIcon')),
+  screen: connect(mapStateToProps, mapDispatchToProps)(screen),
 }
 
 questionScreen.screen.navigationOptions = navigationOptions

@@ -11,7 +11,7 @@ import { modalContentProofShared } from '../../common/route-constants'
 import { moderateScale } from 'react-native-size-matters'
 import { colors } from '../../common/styles/constant'
 import type { ReactNavigation } from '../../common/type-common'
-import { modalOptions, withModalStyleHoc } from '../utils/modalOptions'
+import { modalOptions } from '../utils/modalOptions'
 import {
   CustomSharedProofModal,
   proofRequestHeadline,
@@ -81,7 +81,7 @@ const navigationOptions =
 
 export const proofScreen = {
   routeName: modalContentProofShared,
-  screen: withModalStyleHoc(screen, proofRequestHeadline, 'CloseIcon'),
+  screen,
 }
 
 proofScreen.screen.navigationOptions = navigationOptions

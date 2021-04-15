@@ -32,7 +32,7 @@ import { CHECKMARK_ICON, EvaIcon } from '../../common/icons'
 import { RenderAttachmentIcon } from '../../components/attachment/attachment'
 import { ModalPushLeft } from '../utils/modal-animation'
 import { ExpandableText } from '../../components/expandable-text/expandable-text'
-import { modalOptions, withModalStyleHoc } from '../utils/modalOptions'
+import { modalOptions } from '../utils/modalOptions'
 import { CustomSelectAttributesValuesModal } from '../../external-imports'
 
 export const keyExtractor = (item: Object) => item.claimUuid.toString()
@@ -180,7 +180,7 @@ const navigationOptions =
 
 export const AttributesValuesScreen = {
   routeName: attributesValueRoute,
-  screen: withModalStyleHoc(screen, 'Select Attributes Values', 'Arrow'),
+  screen,
 }
 
 AttributesValuesScreen.screen.navigationOptions = navigationOptions

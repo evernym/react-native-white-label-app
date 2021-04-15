@@ -20,6 +20,7 @@ import {
 } from '../send-logs/type-send-logs'
 import store from '../store'
 import { BackButton } from '../components/back-button/back-button'
+import { headerNavigationOptions } from '../navigation/navigation-header-config'
 import { colors } from '../common/styles/constant'
 import { appName, sendLogsEmail } from '../external-imports'
 
@@ -214,4 +215,15 @@ const buttonColor = {
 export const sendLogsScreen = {
   routeName: sendLogsRoute,
   screen: connect(mapStateToProps)(SendLogs),
+  options() {
+    return headerNavigationOptions({
+      title: 'Send logs',
+      headerLeft: () => {
+        return <BackButton onPress={SendLogs.goBack} />
+      },
+      headerStyle: {
+        borderBottomWidth: 0,
+      },
+    })
+  },
 }

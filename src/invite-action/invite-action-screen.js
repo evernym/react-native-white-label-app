@@ -37,15 +37,15 @@ import {
   inviteActionDenyButtonText,
   inviteActionHeadline,
 } from '../external-imports'
-import { modalOptions, withModalStyleHoc } from '../connection-details/utils/modalOptions'
-import {ModalButtons} from "../components/buttons/modal-buttons";
+import { modalOptions } from '../connection-details/utils/modalOptions'
+import { ModalButtons } from '../components/buttons/modal-buttons'
 
 export const InviteActionComponent = ({
-                                        inviteAction,
-                                        senderLogoUrl,
-                                        initiateFinalizedAction,
-                                        navigation,
-                                      }: InviteActionScreenProps) => {
+  inviteAction,
+  senderLogoUrl,
+  initiateFinalizedAction,
+  navigation,
+}: InviteActionScreenProps) => {
   const handleInviteAction = (args: string) => {
     initiateFinalizedAction(inviteAction.payload.uid, args)
     navigation.navigate(homeDrawerRoute)
@@ -129,16 +129,16 @@ const mapDispatchToProps = (dispatch) =>
   )
 
 const screen =
-  CustomInviteActionModal && CustomInviteActionModal.screen ||
+  (CustomInviteActionModal && CustomInviteActionModal.screen) ||
   InviteActionComponent
 
 const navigationOptions =
-  CustomInviteActionModal && CustomInviteActionModal.navigationOptions ||
+  (CustomInviteActionModal && CustomInviteActionModal.navigationOptions) ||
   modalOptions(inviteActionHeadline, 'CloseIcon')
 
 export const inviteActionScreen = {
   routeName: inviteActionRoute,
-  screen: connect(mapStateToProps, mapDispatchToProps)(withModalStyleHoc(screen, inviteActionHeadline, 'CloseIcon')),
+  screen: connect(mapStateToProps, mapDispatchToProps)(screen),
 }
 
 inviteActionScreen.screen.navigationOptions = navigationOptions

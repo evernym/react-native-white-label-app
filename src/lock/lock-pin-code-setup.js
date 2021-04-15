@@ -16,6 +16,7 @@ import { Keyboard, StyleSheet, Platform, View } from 'react-native'
 import { colors, OFFSET_2X, fontFamily } from '../common/styles'
 import { moderateScale, scale, verticalScale } from 'react-native-size-matters'
 import { useFocusEffect } from '@react-navigation/native'
+import { headerNavigationOptions } from '../navigation/navigation-header-config'
 import { LockHeader } from '../external-imports'
 import { getIsInRecovery } from '../store/store-selector'
 
@@ -188,4 +189,10 @@ const styles = StyleSheet.create({
 export const lockPinSetupScreen = {
   routeName: lockPinSetupRoute,
   screen: LockPinSetup,
+  options: {
+    ...headerNavigationOptions({
+      title: 'App Security',
+      backReset: true,
+    }),
+  },
 }

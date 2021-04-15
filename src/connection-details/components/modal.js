@@ -10,7 +10,7 @@ import { colors } from '../../common/styles/constant'
 import { ModalContent } from './modal-content'
 import { ModalButton } from '../../components/connection-details/modal-button'
 import { modalScreenRoute } from '../../common/route-constants'
-import { modalOptions, withModalStyleHoc } from '../utils/modalOptions'
+import { modalOptions } from '../utils/modalOptions'
 import { CustomCredentialModal } from '../../external-imports'
 
 type CredentialReceivedProps = {
@@ -26,7 +26,12 @@ type CredentialReceivedProps = {
 } & ReduxConnect
 
 const CredentialModal = (props: CredentialReceivedProps) => {
-  const { data, institutionalName, imageUrl, colorBackground } = props.route.params
+  const {
+    data,
+    institutionalName,
+    imageUrl,
+    colorBackground,
+  } = props.route.params
   const navigation = useNavigation()
   const hideModal = useCallback(() => {
     navigation.goBack(null)
@@ -45,24 +50,20 @@ const CredentialModal = (props: CredentialReceivedProps) => {
         credentialText="Accepted Credential"
         colorBackground={colorBackground}
       />
-      <ModalButton
-        onClose={hideModal}
-        colorBackground={colorBackground}
-      />
+      <ModalButton onClose={hideModal} colorBackground={colorBackground} />
     </View>
   )
 }
 
 const headline = 'My Credential'
 const screen = CustomCredentialModal || CredentialModal
-const navigationOptions =
-  CustomCredentialModal ?
-    null :
-    modalOptions(headline, 'Arrow')
+const navigationOptions = CustomCredentialModal
+  ? null
+  : modalOptions(headline, 'Arrow')
 
 export const fulfilledMessageScreen = {
   routeName: modalScreenRoute,
-  screen: connect()(withModalStyleHoc(screen, headline, 'Arrow')),
+  screen: connect()(screen),
 }
 
 fulfilledMessageScreen.screen.navigationOptions = navigationOptions

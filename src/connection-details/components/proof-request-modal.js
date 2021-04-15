@@ -24,8 +24,11 @@ import ModalContentProof from './modal-content-proof'
 import { colors } from '../../common/styles/constant'
 
 // $FlowExpectedError[cannot-resolve-module] external file
-import { modalOptions, withModalStyleHoc } from '../utils/modalOptions'
-import {CustomProofRequestModal, proofRequestHeadline} from '../../external-imports'
+import { modalOptions } from '../utils/modalOptions'
+import {
+  CustomProofRequestModal,
+  proofRequestHeadline,
+} from '../../external-imports'
 
 // TODO: Fix any type
 const ProofRequestModal = (props: any) => {
@@ -96,16 +99,16 @@ const mapStateToProps = (state: Store, props: ClaimProofNavigation) => {
 }
 
 const screen =
-  CustomProofRequestModal && CustomProofRequestModal.screen ||
+  (CustomProofRequestModal && CustomProofRequestModal.screen) ||
   ProofRequestModal
 
 const navigationOptions =
-  CustomProofRequestModal && CustomProofRequestModal.navigationOptions ||
+  (CustomProofRequestModal && CustomProofRequestModal.navigationOptions) ||
   modalOptions(proofRequestHeadline, 'CloseIcon')
 
 export const proofRequestScreen = {
   routeName: proofRequestRoute,
-  screen: connect(mapStateToProps)(withModalStyleHoc(screen, proofRequestHeadline, 'CloseIcon')),
+  screen: connect(mapStateToProps)(screen),
 }
 
 proofRequestScreen.screen.navigationOptions = navigationOptions

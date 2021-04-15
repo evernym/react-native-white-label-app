@@ -41,7 +41,7 @@ import {
 import { ModalPushLeft } from '../utils/modal-animation'
 import { ExpandableText } from '../../components/expandable-text/expandable-text'
 import { BLANK_ATTRIBUTE_DATA_TEXT } from '../type-connection-details'
-import { modalOptions, withModalStyleHoc } from '../utils/modalOptions'
+import { modalOptions } from '../utils/modalOptions'
 import { CustomSelectAttributeValueModal } from '../../external-imports'
 
 export const renderAvatarWithSource = (avatarSource: number | ImageSource) => {
@@ -258,7 +258,7 @@ const navigationOptions =
 
 export const AttributeValuesScreen = {
   routeName: attributeValueRoute,
-  screen: withModalStyleHoc(screen, 'Select Attribute Values', 'Arrow'),
+  screen,
 }
 AttributeValuesScreen.screen.navigationOptions = navigationOptions
 

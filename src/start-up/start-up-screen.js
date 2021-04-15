@@ -1,6 +1,6 @@
 // @flow
-import React, {useEffect, useRef, useCallback} from 'react';
-import {CustomText} from '../components';
+import React, { useEffect, useRef, useCallback } from 'react'
+import { CustomText } from '../components'
 import {
   TouchableOpacity,
   StyleSheet,
@@ -8,89 +8,99 @@ import {
   Dimensions,
   Animated,
   Image,
-  Text, View,
-} from 'react-native';
-import {startUpRoute, lockPinSetupRoute} from '../common';
-import {OFFSET_2X, colors, fontFamily, fontSizes} from '../common/styles';
-import {verticalScale, moderateScale} from 'react-native-size-matters';
+  Text,
+  View,
+} from 'react-native'
+import { headerOptionsWithNoBack } from '../navigation/navigation-header-config'
+import { startUpRoute, lockPinSetupRoute } from '../common'
+import { OFFSET_2X, colors, fontFamily, fontSizes } from '../common/styles'
+import { verticalScale, moderateScale } from 'react-native-size-matters'
 
-import { startupBackgroundImage, CustomStartUpScreen } from '../external-imports'
+import {
+  startupBackgroundImage,
+  CustomStartUpScreen,
+} from '../external-imports'
 
-const {width} = Dimensions.get('screen');
+const { width } = Dimensions.get('screen')
 
-const defaultBackground = require('../images/home_background.png');
-const powerByLogo = require('../images/powered_by_logo.png');
+const defaultBackground = require('../images/home_background.png')
+const powerByLogo = require('../images/powered_by_logo.png')
 
 function StartUpScreen(props: { navigation: Function }) {
-  const {navigation} = props;
-  const animation = useRef(new Animated.Value(width * 2)).current;
+  const { navigation } = props
+  const animation = useRef(new Animated.Value(width * 2)).current
   const handlePress = useCallback(() => {
-    navigation.navigate(lockPinSetupRoute);
-  });
+    navigation.navigate(lockPinSetupRoute)
+  })
 
   useEffect(() => {
     Animated.timing(animation, {
       toValue: 0,
       duration: 300,
       useNativeDriver: true,
-    }).start();
-  }, [animation]);
+    }).start()
+  }, [animation])
 
-  const renderButton = useCallback(() => (
-    <TouchableOpacity style={style.button} onPress={handlePress}>
-      <CustomText h4 transparentBg thick>
-        Set Up
-      </CustomText>
-    </TouchableOpacity>
-  ), [handlePress]);
+  const renderButton = useCallback(
+    () => (
+      <TouchableOpacity style={style.button} onPress={handlePress}>
+        <CustomText h4 transparentBg thick>
+          Set Up
+        </CustomText>
+      </TouchableOpacity>
+    ),
+    [handlePress]
+  )
 
-  const renderCustomStartUpScreen = useCallback(() => (
-    <View style={style.container}>
-      <ImageBackground
-        source={startupBackgroundImage}
-        style={style.background}
-        resizeMode="cover">
-        <Animated.View
-          style={{
-            ...style.wrapper,
-            transform: [{translateX: animation}],
-          }}
+  const renderCustomStartUpScreen = useCallback(
+    () => (
+      <View style={style.container}>
+        <ImageBackground
+          source={startupBackgroundImage}
+          style={style.background}
+          resizeMode="cover"
         >
-          {renderButton()}
-        </Animated.View>
-      </ImageBackground>
-    </View>
-  ), [startupBackgroundImage]);
+          <Animated.View
+            style={{
+              ...style.wrapper,
+              transform: [{ translateX: animation }],
+            }}
+          >
+            {renderButton()}
+          </Animated.View>
+        </ImageBackground>
+      </View>
+    ),
+    [startupBackgroundImage]
+  )
 
-  const renderDefaultStartUpScreen = useCallback(() => (
-    <View style={style.container}>
-      <ImageBackground
-        source={defaultBackground}
-        style={style.background}
-        resizeMode="contain"
-      >
-        <Animated.View
-          style={{
-            ...style.wrapper,
-            transform: [{translateX: animation}],
-          }}
+  const renderDefaultStartUpScreen = useCallback(
+    () => (
+      <View style={style.container}>
+        <ImageBackground
+          source={defaultBackground}
+          style={style.background}
+          resizeMode="contain"
         >
-          <Text style={style.infoText}>
-            You splash screen goes here
-          </Text>
-          {renderButton()}
-          <Image
-            source={powerByLogo}
-            style={style.image}
-          />
-        </Animated.View>
-      </ImageBackground>
-    </View>
-  ), [startupBackgroundImage]);
+          <Animated.View
+            style={{
+              ...style.wrapper,
+              transform: [{ translateX: animation }],
+            }}
+          >
+            <Text style={style.infoText}>You splash screen goes here</Text>
+            {renderButton()}
+            <Image source={powerByLogo} style={style.image} />
+          </Animated.View>
+        </ImageBackground>
+      </View>
+    ),
+    [startupBackgroundImage]
+  )
 
-  return startupBackgroundImage ?
-    renderCustomStartUpScreen() :
-    renderDefaultStartUpScreen();
+  return startupBackgroundImage
+    ? renderCustomStartUpScreen()
+    : renderDefaultStartUpScreen()
 }
 
 const screen = CustomStartUpScreen || StartUpScreen
@@ -98,7 +108,11 @@ const screen = CustomStartUpScreen || StartUpScreen
 export const startUpScreen = {
   routeName: startUpRoute,
   screen,
-};
+  options: headerOptionsWithNoBack({
+    title: '',
+    headerShown: false,
+  }),
+}
 
 const style = StyleSheet.create({
   container: {
@@ -144,4 +158,4 @@ const style = StyleSheet.create({
     marginHorizontal: moderateScale(36),
     marginBottom: verticalScale(100),
   },
-});
+})
