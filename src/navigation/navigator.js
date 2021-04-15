@@ -1,7 +1,10 @@
 // @flow
 import * as React from 'react'
 import { Dimensions, Image, Text, View, Platform } from 'react-native'
-import { TransitionPresets } from '@react-navigation/stack'
+import {
+  createStackNavigator,
+  TransitionPresets
+} from '@react-navigation/stack'
 import { createNativeStackNavigator } from 'react-native-screens/native-stack'
 import {
   createDrawerNavigator,
@@ -527,7 +530,7 @@ function CardStackScreen(navigation) {
   )
 }
 
-const ModalStack = createNativeStackNavigator()
+const ModalStack = createStackNavigator()
 const modalStackOptions = {
   headerShown: false,
   gestureEnabled: true,

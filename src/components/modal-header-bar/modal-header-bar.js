@@ -55,6 +55,6 @@ const styles = StyleSheet.create({
     fontSize: verticalScale(fontSizes.size3),
     fontFamily,
   },
-  svgIconStyleRight: { position: 'absolute', right: 14, top: 55 },
-  svgIconStyleLeft: { position: 'absolute', left: 14, top: 55 },
+  svgIconStyleRight: { position: 'absolute', right: 0, top: 35, padding: 20 },
+  svgIconStyleLeft: { position: 'absolute', left: 0, top: 35, padding: 20 },
 })
