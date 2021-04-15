@@ -17,7 +17,7 @@ import { modalOptions } from '../connection-details/utils/modalOptions'
 import { getLockStore, getVerifier } from '../store/store-selector'
 import { Loader } from '../components'
 import type { InvitationPayload } from '../invitation/type-invitation'
-import type { AriesPresentationPreviewAttribute, AriesPresentationProposal } from '../proof-request/type-proof-request'
+import type { AriesPresentationPreviewAttribute } from '../proof-request/type-proof-request'
 import { ModalButtons } from '../components/buttons/modal-buttons'
 import { ModalHeader } from '../connection-details/components/modal-header'
 import { CONNECTION_INVITE_TYPES } from '../invitation/type-invitation'
@@ -35,7 +35,6 @@ export type ProofProposalProps = {
   backRedirectRoute?: string | null,
   uid: string,
   invitationPayload: InvitationPayload,
-  attachedRequest: AriesPresentationProposal,
   senderName: string,
 }
 
@@ -43,7 +42,7 @@ export const ProofProposalComponent = ({
                                          navigation,
                                          route: { params },
                                        }: ReactNavigation) => {
-  const { uid, backRedirectRoute, senderName, invitationPayload, attachedRequest }: ProofProposalProps = params
+  const { uid, backRedirectRoute, senderName, invitationPayload }: ProofProposalProps = params
 
   const dispatch = useDispatch()
 
@@ -54,7 +53,7 @@ export const ProofProposalComponent = ({
 
   const onAcceptAuthSuccess = useCallback(() => {
     if (invitationPayload.type === CONNECTION_INVITE_TYPES.ARIES_OUT_OF_BAND) {
-      dispatch(acceptOutOfBandInvitation(invitationPayload, attachedRequest))
+      dispatch(acceptOutOfBandInvitation(invitationPayload))
     } else {
       dispatch(proofProposalAccepted(uid))
     }
@@ -62,7 +61,7 @@ export const ProofProposalComponent = ({
       screen: homeDrawerRoute,
       params: undefined,
     })
-  }, [uid, invitationPayload, attachedRequest])
+  }, [uid, invitationPayload])
 
   const onAccept = useCallback(() => {
     authForAction({

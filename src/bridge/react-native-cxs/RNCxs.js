@@ -958,10 +958,6 @@ export async function createOutOfBandConnectionInvitation(
   }
 }
 
-export async function createConnection(): Promise<number> {
-  return RNIndy.createConnection(uuid())
-}
-
 export async function getConnectionInvite(connectionHandle: number): Promise<string> {
   return RNIndy.getConnectionInvite(connectionHandle)
 }

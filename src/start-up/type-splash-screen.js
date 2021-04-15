@@ -12,6 +12,8 @@ import {claimOfferReceived} from "../claim-offer/claim-offer-store";
 import {proofRequestReceived} from "../proof-request/proof-request-store";
 import type {ClaimOfferStore} from "../claim-offer/type-claim-offer";
 import type {ProofRequestStore} from "../proof-request/type-proof-request";
+import { proofProposalReceived } from '../verifier/verifier-store'
+import type { VerifierStore } from '../verifier/type-verifier'
 
 export type SplashScreenProps = {
   historyData: ConnectionHistoryData,
@@ -24,6 +26,7 @@ export type SplashScreenProps = {
   allPublicDid: { [publicDID: string]: Connection },
   claimOffers: ClaimOfferStore,
   proofRequests: ProofRequestStore,
+  verifier: VerifierStore,
   getSmsPendingInvitation: (token: string) => void,
   addPendingRedirection: (
     pendingRedirection: Array<?PendingRedirection>
@@ -33,6 +36,7 @@ export type SplashScreenProps = {
   invitationReceived: typeof invitationReceived,
   claimOfferReceived: typeof claimOfferReceived,
   proofRequestReceived: typeof proofRequestReceived,
+  proofProposalReceived: typeof proofProposalReceived,
 } & ReactNavigation
 
 export type RedirectionData = {

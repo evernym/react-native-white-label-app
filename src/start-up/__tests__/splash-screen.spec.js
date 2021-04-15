@@ -42,6 +42,7 @@ describe('<SplashScreen />', () => {
       history,
       claimOffer,
       proofRequest,
+      verifiers,
     } = store.getState()
     const props = {
       historyData: history.data,
@@ -61,8 +62,10 @@ describe('<SplashScreen />', () => {
       allDid: {},
       claimOffers: claimOffer,
       proofRequests: proofRequest,
+      verifier: verifiers,
       claimOfferReceived: jest.fn(),
       proofRequestReceived: jest.fn(),
+      proofProposalReceived: jest.fn(),
       ...overrideProps,
     }
 

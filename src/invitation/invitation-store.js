@@ -126,11 +126,9 @@ export const invitationRejected = (senderDID: string) => ({
 
 export const acceptOutOfBandInvitation = (
   invitationPayload: InvitationPayload,
-  attachedRequest: GenericObject
 ): OutOfBandInvitationAcceptedAction => ({
   type: OUT_OF_BAND_INVITATION_ACCEPTED,
   invitationPayload,
-  attachedRequest,
 })
 
 export const hydrateInvitations = (invitations: { +[string]: Invitation }) => ({
@@ -332,11 +330,6 @@ export function* sendResponseOnAriesOutOfBandInvitationWithHandshake(
   payload: InvitationPayload
 ): Generator<*, *, *> {
   try {
-    const attachedRequest = yield call(
-      getAttachedRequest,
-      ((payload.originalObject: any): AriesOutOfBandInvite)
-    )
-
     const connectionHandle: number = yield call(
       createConnectionWithAriesOutOfBandInvite,
       payload
@@ -360,7 +353,7 @@ export function* sendResponseOnAriesOutOfBandInvitationWithHandshake(
       myPairwisePeerVerKey: pairwiseInfo.myPairwisePeerVerKey,
       vcxSerializedConnection,
       publicDID: payload.senderDetail.publicDID,
-      attachedRequest,
+      attachedRequest: payload.attachedRequest,
       isCompleted: false,
       ...payload,
     }
@@ -378,8 +371,6 @@ export function* sendResponseOnAriesOutOfBandInvitationWithoutHandshake(
   try {
     const attachedRequest = yield call(
       getAttachedRequest,
-      ((payload.originalObject: any): AriesOutOfBandInvite)
-    )
 
     const connectionHandle: number = yield call(
       createConnectionWithAriesOutOfBandInvite,
@@ -389,7 +380,10 @@ export function* sendResponseOnAriesOutOfBandInvitationWithoutHandshake(
     let pairwiseInfo = {}
     let vcxSerializedConnection
 
-    if (attachedRequest[TYPE].endsWith('offer-credential') || attachedRequest[TYPE].endsWith('propose-presentation')) {
+    const attachedRequest = payload.attachedRequest
+
+    if (attachedRequest &&
+      (attachedRequest[TYPE].endsWith('offer-credential') || attachedRequest[TYPE].endsWith('propose-presentation'))) {
       // for these message we need to create pairwise agent to use service decorator
       const data = yield* retrySaga(
         call(acceptInvitationVcx, connectionHandle),
@@ -426,7 +420,7 @@ export function* sendResponseOnAriesOutOfBandInvitationWithoutHandshake(
     yield put(invitationSuccess(connection.senderDID))
     yield put(connectionSuccess(identifier, connection.senderDID))
 
-    yield* processAttachedRequest(identifier)
+    yield* processAttachedRequest(connection)
   } catch (e) {
     yield call(handleConnectionError, e, payload.senderDID)
   }
@@ -485,7 +479,7 @@ export function* updateAriesConnectionState(
 
     if (isCompleted) {
       yield put(connectionSuccess(connection.identifier, connection.senderDID))
-      yield* processAttachedRequest(identifier)
+      yield* processAttachedRequest(connection)
     }
   } catch (e) {
     yield call(handleConnectionError, e, connection.senderDID)
@@ -520,7 +514,7 @@ export function* handleConnectionError(
 function* outOfBandInvitationAccepted(
   action: OutOfBandInvitationAcceptedAction
 ): Generator<*, *, *> {
-  const { invitationPayload, attachedRequest } = action
+  const { invitationPayload } = action
 
   const connectionExists = yield select(
     getConnectionExists,
@@ -545,7 +539,9 @@ function* outOfBandInvitationAccepted(
       action.invitationPayload.senderDID
     )
 
-    yield put(connectionAttachRequest(connection.identifier, attachedRequest))
+    if (invitationPayload.attachedRequest) {
+      yield put(connectionAttachRequest(connection.identifier, invitationPayload.attachedRequest))
+    }
 
     if (!invitationPayload.originalObject) {
       return
@@ -558,30 +554,35 @@ function* outOfBandInvitationAccepted(
         senderDID: action.invitationPayload.senderDID,
       })
     )
-  }
 
-  if (attachedRequest[TYPE].endsWith('offer-credential')) {
-    yield put(
-      acceptOutofbandClaimOffer(
-        action.attachedRequest[ID],
-        action.invitationPayload.senderDID,
-        connectionExists
+    if (!invitationPayload.attachedRequest){
+      return
+    }
+
+    const type_ = invitationPayload.attachedRequest[TYPE]
+    const id = invitationPayload.attachedRequest[ID]
+
+    if (type_.endsWith('offer-credential')) {
+      yield put(
+        acceptOutofbandClaimOffer(
+          id,
+          action.invitationPayload.senderDID,
+          connectionExists
+        )
       )
-    )
-  } else if (attachedRequest[TYPE].endsWith('request-presentation')) {
-    yield put(
-      acceptOutofbandPresentationRequest(
-        action.attachedRequest[ID],
-        action.invitationPayload.senderDID,
-        connectionExists
+    } else if (type_.endsWith('request-presentation')) {
+      yield put(
+        acceptOutofbandPresentationRequest(
+          id,
+          action.invitationPayload.senderDID,
+          connectionExists
+        )
       )
-    )
-  } else if (attachedRequest[TYPE].endsWith('propose-presentation')) {
-    yield put(
-      outofbandProofProposalAccepted(
-        action.attachedRequest[ID],
+    } else if (type_.endsWith('propose-presentation')) {
+      yield put(
+        outofbandProofProposalAccepted(id)
       )
-    )
+    }
   }
 }
 
@@ -629,18 +630,16 @@ export async function getAttachedRequest(
   return getAttachedRequestData(requests[0].data)
 }
 
-export function* processAttachedRequest(did: string): Generator<*, *, *> {
+export function* processAttachedRequest(connection: GenericObject): Generator<*, *, *> {
   const connection = yield select(getConnectionByUserDid, did)
   const attachedRequest = connection.attachedRequest
   if (!attachedRequest) {
     return
   }
-
-  yield put(connectionDeleteAttachedRequest(connection.identifier))
-
   const uid = attachedRequest[ID]
+  const type_ = attachedRequest[TYPE]
 
-  if (attachedRequest[TYPE].endsWith('offer-credential')) {
+  if (type_.endsWith('offer-credential')) {
     const { claimHandle } = yield call(
       createCredentialWithAriesOfferObject,
       uid,
@@ -654,11 +653,13 @@ export function* processAttachedRequest(did: string): Generator<*, *, *> {
       uid
     )
     yield put(acceptClaimOffer(uid, connection.senderDID))
-  } else if (attachedRequest[TYPE].endsWith('request-presentation')) {
+  } else if (type_.endsWith('request-presentation')) {
     yield put(outOfBandConnectionForPresentationEstablished(uid))
-  } else if (attachedRequest[TYPE].endsWith('propose-presentation')) {
+  } else if (type_.endsWith('propose-presentation')) {
     yield put(proofProposalAccepted(uid))
   }
+
+  yield put(connectionDeleteAttachedRequest(connection.identifier))
 }
 
 export function* persistInvitations(): Generator<*, *, *> {

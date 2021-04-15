@@ -6,6 +6,7 @@ import isUrl from "validator/lib/isURL";
 import type {GenericObject} from "../../common/type-common";
 import {ID, TYPE} from "../../common/type-common";
 import {schemaValidator} from "../../services/schema-validator";
+import { getAttachedRequest } from '../invitation-store'
 
 export function isAriesOutOfBandInvitation(
   invite: GenericObject
@@ -39,7 +40,7 @@ export async function isEncodedAriesOutOfBandInvitation(
   return isAriesOutOfBandInvitation(qrData)
 }
 
-export function convertAriesOutOfBandInvitationToAppInvitation(
+export async function convertAriesOutOfBandInvitationToAppInvitation(
   invite: AriesOutOfBandInvite
 ): InvitationPayload | null {
   const payload = invite
@@ -63,6 +64,8 @@ export function convertAriesOutOfBandInvitationToAppInvitation(
   }
 
   const senderLogoUrl = getConnectionLogoUrl(payload)
+
+  const attachedRequest = await getAttachedRequest(invite)
 
   return {
     senderEndpoint: serviceEntry.serviceEndpoint,
@@ -90,6 +93,7 @@ export function convertAriesOutOfBandInvitationToAppInvitation(
     version: '1.0',
     original: JSON.stringify(invite),
     originalObject: invite,
+    attachedRequest,
   }
 }
 

@@ -170,7 +170,7 @@ import { retrySaga } from '../api/api-utils'
 import { CLOUD_AGENT_UNAVAILABLE } from '../bridge/react-native-cxs/error-cxs'
 import { updateVerifierState } from '../verifier/verifier-store'
 import { presentationProposalSchema } from '../proof-request/proof-request-qr-code-reader'
-import { deleteOneTimeConnection } from './connections-store'
+import { deleteOneTimeConnection, deleteOneTimeConnectionOccurredSaga } from './connections-store'
 
 /**
  * this file contains configuration which is changed only from user action
@@ -1384,8 +1384,7 @@ function* handleAriesMessage(message: DownloadedMessage): Generator<*, *, *> {
           schemaValidator.validate(presentationProposalSchema, data) &&
           data['@id'] === proofRequest['thread_id']
         ) {
-          yield put(deleteOneTimeConnection(forDID))
-
+          yield fork(deleteOneTimeConnectionOccurredSaga, deleteOneTimeConnection(forDID))
           additionalData.ephemeralProofRequest = proofRequest['~service']
             ? message
             : undefined
@@ -1401,8 +1400,7 @@ function* handleAriesMessage(message: DownloadedMessage): Generator<*, *, *> {
     }
 
     if (payloadType.name === 'handshake-reuse-accepted') {
-      yield call(processAttachedRequest, forDID)
-
+      yield call(processAttachedRequest, connection)
       yield fork(updateMessageStatus, [{ pairwiseDID: forDID, uids: [uid] }])
     }
 

@@ -163,7 +163,7 @@ export const deleteConnectionAction = (
 
 export const connectionAttachRequest = (
   identifier: string,
-  request: GenericObject
+  request: GenericObject,
 ): ConnectionAttachRequestAction => ({
   type: CONNECTION_ATTACH_REQUEST,
   identifier,

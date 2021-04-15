@@ -39,7 +39,7 @@ export type QRCodeScannerScreenProps = {
   ) => void,
   claimOfferReceived: typeof claimOfferReceived,
   proofRequestReceived: typeof proofRequestReceived,
-  presentationProposalReceived: typeof proofProposalReceived,
+  proofProposalReceived: typeof proofProposalReceived,
 } & ReactNavigation
 
 export type OutOfBandNavigation = {
@@ -47,7 +47,6 @@ export type OutOfBandNavigation = {
   backRedirectRoute: string,
   uid: string,
   invitationPayload: InvitationPayload,
-  attachedRequest: any,
   senderName: string,
 }
 

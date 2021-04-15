@@ -259,7 +259,6 @@ class ModalContentProof extends Component<
       // if properties contains invitation it means we accepted out-of-band presentation request
       this.props.acceptOutOfBandInvitation(
         this.props.invitationPayload,
-        this.props.attachedRequest
       )
       this.props.applyAttributesForPresentationRequest(
         this.props.uid,

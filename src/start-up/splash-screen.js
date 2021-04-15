@@ -20,6 +20,7 @@ import {
   claimOfferRoute,
   proofRequestRoute,
   restoreRoute,
+  proofProposalRoute,
 } from '../common/route-constants'
 import { Container, Loader } from '../components'
 import { TOKEN_EXPIRED_CODE } from '../api/api-constants'
@@ -62,10 +63,7 @@ import {
   getExistingConnection,
   prepareParamsForExistingConnectionRedirect,
 } from '../invitation/invitation-helpers'
-import {
-  getAttachedRequest,
-  invitationReceived,
-} from '../invitation/invitation-store'
+import { invitationReceived } from '../invitation/invitation-store'
 import { ID, TYPE } from '../common/type-common'
 import type {
   ClaimOfferPayload,
@@ -79,11 +77,17 @@ import type {
   ProofRequestPayload,
 } from '../proof-request/type-proof-request'
 import { PROOF_REQUEST_STATUS } from '../proof-request/type-proof-request'
-import { validateOutofbandProofRequestQrCode } from '../proof-request/proof-request-qr-code-reader'
+import {
+  presentationProposalSchema,
+  validateOutofbandProofRequestQrCode,
+} from '../proof-request/proof-request-qr-code-reader'
 import { claimOfferReceived } from '../claim-offer/claim-offer-store'
 import { proofRequestReceived } from '../proof-request/proof-request-store'
 import { usePushNotifications } from '../external-imports'
 import { isLocalBackupsEnabled } from '../settings/settings-utils'
+import { schemaValidator } from '../services/schema-validator'
+import type { VerifierData } from '../verifier/type-verifier'
+import { proofProposalReceived } from '../verifier/verifier-store'
 
 const isReceived = ({ payload, status }) => {
   return (
@@ -222,7 +226,7 @@ export class SplashScreenView extends PureComponent<
 
           const ariesV1OutOfBandInvite = isAriesOutOfBandInvitation(payload)
           if (ariesV1OutOfBandInvite) {
-            invitation = convertAriesOutOfBandInvitationToAppInvitation(
+            invitation = await convertAriesOutOfBandInvitationToAppInvitation(
               ariesV1OutOfBandInvite
             )
             redirectData = await this.handleAriesOutOfBandInvitationAndPrepareRedirectData(
@@ -410,8 +414,8 @@ export class SplashScreenView extends PureComponent<
       //  2. Rut protocol connected to attached action
       // UI: Show view related to attached action
 
-      const req = await getAttachedRequest(invite)
-      if (!req || !req[TYPE]) {
+      const req = invitation.attachedRequest
+      if (!req || !req[ID] || !req[TYPE]) {
         Alert.alert(
           'Invalid Out-of-Band Invitation',
           'QR code contains invalid formatted Aries Out-of-Band invitation.'
@@ -419,7 +423,10 @@ export class SplashScreenView extends PureComponent<
         return options
       }
 
-      if (req[TYPE].endsWith('offer-credential')) {
+      const uid = req[ID]
+      const type_ = req[TYPE]
+
+      if (type_.endsWith('offer-credential')) {
         const credentialOffer = (req: CredentialOffer)
         const claimOffer = convertAriesCredentialOfferToCxsClaimOffer(
           credentialOffer
@@ -470,7 +477,7 @@ export class SplashScreenView extends PureComponent<
           senderName: invitation.senderName,
           backRedirectRoute: homeRoute,
         })
-      } else if (req[TYPE].endsWith('request-presentation')) {
+      } else if (type_.endsWith('request-presentation')) {
         const presentationRequest = (req: AriesPresentationRequest)
         const uid = presentationRequest[ID]
 
@@ -506,6 +513,41 @@ export class SplashScreenView extends PureComponent<
         })
 
         return this.prepareOoBRedirectionParams(proofRequestRoute, {
+          uid,
+          invitationPayload: invitation,
+          attachedRequest: req,
+          senderName: invitation.senderName,
+          backRedirectRoute: homeRoute,
+        })
+      } else if (type_.endsWith('propose-presentation')) {
+        if (!schemaValidator.validate(presentationProposalSchema, req)) {
+          Alert.alert('Invalid invitation', "Invalid formatted Presentation Proposal")
+          return options
+        }
+
+        const existingVerifier: VerifierData = this.props.verifier[uid]
+
+        if (existingVerifier) {
+          // we already have accepted that presentation proposal
+          Alert.alert(
+            'Out-of-Band Invitation processed',
+            'The presentation proposal has already been accepted.'
+          )
+          return options
+        }
+
+        this.props.proofProposalReceived(
+          req,
+          {
+            uid,
+            senderLogoUrl: invitation.senderLogoUrl,
+            senderName: invitation.senderName,
+            remotePairwiseDID: invitation.senderDID,
+            hidden: true,
+          }
+        )
+
+        await this.prepareOoBRedirectionParams(proofProposalRoute, {
           uid,
           invitationPayload: invitation,
           attachedRequest: req,
@@ -617,6 +659,7 @@ const mapStateToProps = ({
   connections,
   claimOffer,
   proofRequest,
+  verifier,
 }: Store) => ({
   isInitialized: config.isInitialized,
   // DeepLink should be it's own component that will handle only deep link logic
@@ -631,6 +674,7 @@ const mapStateToProps = ({
   allPublicDid: getAllPublicDid(connections),
   claimOffers: claimOffer,
   proofRequests: proofRequest,
+  verifier,
 })
 
 const mapDispatchToProps = (dispatch) =>
@@ -643,6 +687,7 @@ const mapDispatchToProps = (dispatch) =>
       invitationReceived,
       claimOfferReceived,
       proofRequestReceived,
+      proofProposalReceived,
     },
     dispatch
   )
