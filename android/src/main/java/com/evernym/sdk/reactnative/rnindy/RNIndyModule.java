@@ -2098,4 +2098,21 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
             promise.reject(String.valueOf(e.getSdkErrorCode()), e.getSdkMessage());
         }
     }
+
+    @ReactMethod
+    public void createPairwiseAgent(Promise promise) {
+        try {
+            UtilsApi.vcxCreatePairwiseAgent().exceptionally((t) -> {
+                VcxException ex = (VcxException) t;
+                ex.printStackTrace();
+                Log.e(TAG, "createPairwiseAgent - Error: ", ex);
+                promise.reject(String.valueOf(ex.getSdkErrorCode()), ex.getSdkMessage());
+                return null;
+            }).thenAccept(result -> BridgeUtils.resolveIfValid(promise, result));
+        } catch (VcxException e) {
+            e.printStackTrace();
+            Log.e(TAG, "createPairwiseAgent - Error: ", e);
+            promise.reject(String.valueOf(e.getSdkErrorCode()), e.getSdkMessage());
+        }
+    }
 }

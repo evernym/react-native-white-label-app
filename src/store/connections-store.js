@@ -7,6 +7,7 @@ import {
   getAllConnections,
   getConnection as getConnectionBySenderDid,
   getConnection,
+  getConnectionPairwiseAgentInfo,
   getThemes,
 } from './store-selector'
 import { color } from '../common/styles/constant'
@@ -20,12 +21,16 @@ import type {
   Connections,
   ConnectionStore,
   ConnectionThemes,
+  ResetPairwiseAgentAction,
   DeleteConnectionEventAction,
   DeleteConnectionFailureEventAction,
   DeleteConnectionSuccessEventAction,
   DeleteOneTimeConnectionAction,
   DeleteOneTimeConnectionSuccessAction,
   DeletePendingConnectionEventAction,
+  HydratePairwiseAgentAction,
+  PairwiseAgent,
+  PairwiseAgentCreatedAction,
   SendConnectionRedirectAction,
   SendConnectionReuseAction,
   UpdateConnectionSerializedStateAction,
@@ -35,6 +40,7 @@ import {
   CONNECTION_DELETE_ATTACHED_REQUEST,
   CONNECTION_FAIL,
   CONNECTION_REQUEST_SENT,
+  RESET_PAIRWISE_AGENT,
   DELETE_CONNECTION,
   DELETE_CONNECTION_FAILURE,
   DELETE_CONNECTION_SUCCESS,
@@ -43,14 +49,17 @@ import {
   DELETE_PENDING_CONNECTION,
   HYDRATE_CONNECTION_THEMES,
   HYDRATE_CONNECTIONS,
+  HYDRATE_PAIRWISE_AGENT,
   NEW_CONNECTION,
   NEW_CONNECTION_SUCCESS,
   NEW_ONE_TIME_CONNECTION,
   NEW_PENDING_CONNECTION,
+  PAIRWISE_AGENT_CREATED,
   SEND_CONNECTION_REDIRECT,
   SEND_CONNECTION_REUSE,
   SEND_REDIRECT_SUCCESS,
   SEND_REUSE_SUCCESS,
+  STORAGE_KEY_PAIRWISE_AGENT,
   STORAGE_KEY_THEMES,
   UPDATE_CONNECTION,
   UPDATE_CONNECTION_SERIALIZED_STATE,
@@ -64,6 +73,7 @@ import {
   createConnectionWithInvite,
   deleteConnection,
   getHandleBySerializedConnection,
+  createPairwiseAgent,
 } from '../bridge/react-native-cxs/RNCxs'
 import { promptBackupBanner } from '../backup/backup-store'
 import { HYDRATED } from './type-config-store'
@@ -71,6 +81,8 @@ import { captureError } from '../services/error/error-handler'
 import { customLogger } from '../store/custom-logger'
 import { ensureVcxInitSuccess } from './route-store'
 import moment from 'moment'
+import { retrySaga } from '../api/api-utils'
+import { CLOUD_AGENT_UNAVAILABLE } from '../bridge/react-native-cxs/error-cxs'
 
 const initialState: ConnectionStore = {
   data: {},
@@ -535,6 +547,63 @@ export function* getConnectionHandle(
   )
 }
 
+export const hydratePairwiseAgent = (pairwiseAgent: PairwiseAgent): HydratePairwiseAgentAction => ({
+  type: HYDRATE_PAIRWISE_AGENT,
+  pairwiseAgent,
+})
+
+export const resetPairwiseAgent = (): ResetPairwiseAgentAction => ({
+  type: RESET_PAIRWISE_AGENT,
+})
+
+export const pairwiseAgentCreated = (pairwiseAgent: PairwiseAgent): PairwiseAgentCreatedAction => ({
+  type: PAIRWISE_AGENT_CREATED,
+  pairwiseAgent,
+})
+
+export function* createPairwiseAgentSaga(): Generator<*, *, *> {
+  yield put(resetPairwiseAgent())
+  try {
+    const agentInfo = yield* retrySaga(
+      call(createPairwiseAgent),
+      CLOUD_AGENT_UNAVAILABLE
+    )
+    yield put(pairwiseAgentCreated(agentInfo))
+  } catch (e) {
+    customLogger.error(`createPairwiseAgentSaga: ${e}`)
+  }
+}
+
+export function* persistPairwiseAgentSaga(): Generator<*, *, *> {
+  const pairwiseAgent = yield select(getConnectionPairwiseAgentInfo)
+  try {
+    yield call(secureSet, STORAGE_KEY_PAIRWISE_AGENT, JSON.stringify(pairwiseAgent))
+  } catch (e) {
+    customLogger.error(`persistPairwiseAgent: ${e}`)
+  }
+}
+
+export function* hydratePairwiseAgentSaga(): Generator<*, *, *> {
+  try {
+    const pairwiseAgent = yield call(getHydrationItem, STORAGE_KEY_PAIRWISE_AGENT)
+    if (pairwiseAgent) {
+      yield put(hydratePairwiseAgent(JSON.parse(pairwiseAgent)))
+    }
+  } catch (e) {
+    customLogger.error(`hydratePairwiseAgentSage: ${e}`)
+  }
+}
+
+export function* watchPersistPairwiseAgent(): any {
+  yield takeEvery(
+    [
+      RESET_PAIRWISE_AGENT,
+      PAIRWISE_AGENT_CREATED,
+    ],
+    persistPairwiseAgentSaga
+  )
+}
+
 export function* watchSendConnectionRedirect(): any {
   yield takeEvery(SEND_CONNECTION_REDIRECT, sendConnectionRedirectSaga)
 }
@@ -555,6 +624,7 @@ export function* watchConnection(): any {
     watchUpdateConnectionTheme(),
     watchSendConnectionRedirect(),
     watchSendConnectionReuse(),
+    watchPersistPairwiseAgent(),
   ])
 }
 
@@ -769,6 +839,21 @@ export default function connections(
         return state
       }
     }
+    case RESET_PAIRWISE_AGENT:
+      return {
+        ...state,
+        pairwiseAgent: null
+      }
+    case PAIRWISE_AGENT_CREATED:
+      return {
+        ...state,
+        pairwiseAgent: action.pairwiseAgent
+      }
+    case HYDRATE_PAIRWISE_AGENT:
+      return {
+        ...state,
+        pairwiseAgent: action.pairwiseAgent,
+      }
     case RESET:
       return initialState
     default:

@@ -761,3 +761,8 @@ export const getVerifierSenderLogo = (state: Store, uid: string) =>
 
 export const getVerifierSenderName = (state: Store, uid: string) =>
   state.verifier[uid]?.senderName
+
+/*
+* Connection Pairwise Agent
+* */
+export const getConnectionPairwiseAgentInfo = (state: Store) => state.connections.pairwiseAgent

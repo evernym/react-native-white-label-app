@@ -1,5 +1,5 @@
 // @flow
-import { call, put, all } from 'redux-saga/effects'
+import { call, put, all, select, spawn } from 'redux-saga/effects'
 import {
   safeGet,
   safeSet,
@@ -12,6 +12,8 @@ import { hydrateEulaAccept } from '../eula/eula-store'
 import {
   hydrateThemes,
   hydrateConnectionSaga,
+  hydratePairwiseAgentSaga,
+  createPairwiseAgentSaga,
 } from '../store/connections-store'
 import { hydrateClaimMapSaga } from '../claim/claim-store'
 import {
@@ -32,7 +34,7 @@ import {
 } from '../common'
 import { STORAGE_KEY_USER_ONE_TIME_INFO } from '../store/user/type-user-store'
 import { CLAIM_OFFERS } from '../claim-offer/type-claim-offer'
-import { STORAGE_KEY_THEMES } from '../store/type-connection-store'
+import { STORAGE_KEY_PAIRWISE_AGENT, STORAGE_KEY_THEMES } from '../store/type-connection-store'
 import { HISTORY_EVENT_STORAGE_KEY } from '../connection-history/type-connection-history'
 import {
   TOUCH_ID_STORAGE_KEY,
@@ -94,6 +96,7 @@ import {
 import { hydrateInvitationsSaga } from '../invitation/invitation-store'
 import { hydrateInviteActionSaga } from '../invite-action/invite-action-store'
 import { hydrateVerifierSaga } from '../verifier/verifier-store'
+import { getConnectionPairwiseAgentInfo } from './store-selector'
 
 export function* deleteDeviceSpecificData(): Generator<*, *, *> {
   try {
@@ -138,6 +141,7 @@ function* deleteSecureStorageData(): Generator<*, *, *> {
       AUTO_CLOUD_BACKUP_ENABLED,
       HAS_VERIFIED_RECOVERY_PHRASE,
       VERIFIERS,
+      STORAGE_KEY_PAIRWISE_AGENT,
     ]
     const deleteOperations = []
     for (let index = 0; index < secureKeysToDelete.length; index++) {
@@ -289,6 +293,7 @@ export function* hydrate(): any {
       yield* hydrateQuestionSaga()
       yield* hydrateInviteActionSaga()
       yield* hydrateVerifierSaga()
+      yield* hydratePairwiseAgentSaga()
       // find and try to retry actions which was interrupted by closing the app
       yield* retryInterruptedActionsSaga()
 
@@ -306,6 +311,13 @@ export function* hydrate(): any {
       yield put(safeToDownloadSmsInvitation())
 
       yield* ensureVcxInitSuccess()
+
+      // create pairwise agent to use for next connection establishing if it is empty
+      const pairwiseAgent = yield select(getConnectionPairwiseAgentInfo)
+      if (!pairwiseAgent) {
+        yield spawn(createPairwiseAgentSaga)
+      }
+
       // NOTE: This will be changed when the TAA flow changes.
       // yield* hydrateTxnAuthorAgreementSaga()
     } catch (e) {

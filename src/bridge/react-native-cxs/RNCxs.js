@@ -61,18 +61,17 @@ import {
 } from '../../sovrin-token/sovrin-token-converter'
 import { uuid } from "../../services/uuid";
 import type { GenericObject } from '../../common/type-common'
+import type { PairwiseAgent } from '../../store/type-connection-store'
 
 const { RNIndy } = NativeModules
 
 export async function acceptInvitationVcx(
-  connectionHandle: number
+  connectionHandle: number,
+  agentInfo: PairwiseAgent | null,
 ): Promise<GenericObject> {
-  await RNIndy.vcxAcceptInvitation(connectionHandle, '{}')
+  const connectionOption = agentInfo ? { pairwise_agent_info: agentInfo } : {}
 
-  // TODO:KS Remove below API call once sdk team returns pairwise info in above api
-  // above call does not return pairwise did information, but we need pairwise info
-  // to store that information and have those details available while making a connection
-  // we have to make an extra call to get pairwise info
+  const invitation = await RNIndy.vcxAcceptInvitation(connectionHandle, JSON.stringify(connectionOption))
   const serializedConnection: string = await serializeConnection(connectionHandle)
 
   const {
@@ -91,7 +90,8 @@ export async function acceptInvitationVcx(
 
   return {
     connection: convertVcxConnectionToCxsConnection(data),
-    serializedConnection
+    serializedConnection,
+    invitation
   }
 }
 
@@ -935,6 +935,7 @@ export async function createOutOfBandConnectionInvitation(
   goal: string,
   handshake?: boolean,
   attachment?: string | null,
+  agentInfo: PairwiseAgent | null,
 ): Promise<GenericObject> {
   const connectionHandle = await RNIndy.createOutOfBandConnection(
     uuid(),
@@ -947,19 +948,14 @@ export async function createOutOfBandConnectionInvitation(
   let {
     connection: pairwiseInfo,
     serializedConnection: vcxSerializedConnection,
-  } =  await acceptInvitationVcx(connectionHandle)
-
-  const invitation = await getConnectionInvite(connectionHandle)
+    invitation,
+  } =  await acceptInvitationVcx(connectionHandle, agentInfo)
 
   return {
     pairwiseInfo,
     vcxSerializedConnection,
     invitation,
   }
-}
-
-export async function getConnectionInvite(connectionHandle: number): Promise<string> {
-  return RNIndy.getConnectionInvite(connectionHandle)
 }
 
 export async function createProofVerifierWithProposal(presentationProposal: string, name: string): Promise<string> {
@@ -992,4 +988,9 @@ export async function proofVerifierGetProofMessage(handle: number): Promise<any>
 
 export async function proofVerifierGetProofRequest(handle: number): Promise<string> {
   return RNIndy.proofVerifierGetPresentationRequest(handle,)
+}
+
+export async function createPairwiseAgent(): Promise<string> {
+  const agentInfo = await RNIndy.createPairwiseAgent()
+  return JSON.parse(agentInfo)
 }

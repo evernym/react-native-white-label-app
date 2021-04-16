@@ -31,12 +31,14 @@ import {
   getConnection,
   getConnectionByUserDid,
   getConnectionExists,
+  getConnectionPairwiseAgentInfo,
   getInvitationPayload,
 } from '../store/store-selector'
 import {
   connectionAttachRequest,
   connectionDeleteAttachedRequest,
   connectionRequestSent,
+  createPairwiseAgentSaga,
   deletePendingConnection,
   saveNewPendingConnection,
   sendConnectionReuse,
@@ -205,6 +207,28 @@ export function* savePendingConnection(
   }
 }
 
+export function* makeConnection(
+  connectionHandle: number
+): Generator<*, *, *> {
+  const agentInfo = yield select(getConnectionPairwiseAgentInfo)
+
+  const {
+    connection,
+    serializedConnection,
+  } = yield* retrySaga(
+    call(acceptInvitationVcx, connectionHandle, agentInfo),
+    CLOUD_AGENT_UNAVAILABLE
+  )
+
+  // create new pairwise agent
+  yield spawn(createPairwiseAgentSaga)
+
+  return {
+    pairwiseInfo: connection,
+    vcxSerializedConnection: serializedConnection,
+  }
+}
+
 export function* sendResponseOnProprietaryConnectionInvitation(
   payload: InvitationPayload
 ): Generator<*, *, *> {
@@ -214,13 +238,10 @@ export function* sendResponseOnProprietaryConnectionInvitation(
       payload
     )
 
-    let {
-      connection: pairwiseInfo,
-      serializedConnection: vcxSerializedConnection,
-    } = yield* retrySaga(
-      call(acceptInvitationVcx, connectionHandle),
-      CLOUD_AGENT_UNAVAILABLE
-    )
+    const {
+      pairwiseInfo,
+      vcxSerializedConnection
+    } = yield* retrySaga(call(makeConnection, connectionHandle))
 
     const connection = {
       identifier: pairwiseInfo.myPairwiseDid,
@@ -256,13 +277,10 @@ export function* sendResponseOnAriesConnectionInvitation(
       payload
     )
 
-    let {
-      connection: pairwiseInfo,
-      serializedConnection: vcxSerializedConnection,
-    } = yield* retrySaga(
-      call(acceptInvitationVcx, connectionHandle),
-      CLOUD_AGENT_UNAVAILABLE
-    )
+    const {
+      pairwiseInfo,
+      vcxSerializedConnection
+    } = yield* retrySaga(call(makeConnection, connectionHandle))
 
     const connection = {
       identifier: pairwiseInfo.myPairwiseDid,
@@ -335,13 +353,10 @@ export function* sendResponseOnAriesOutOfBandInvitationWithHandshake(
       payload
     )
 
-    let {
-      connection: pairwiseInfo,
-      serializedConnection: vcxSerializedConnection,
-    } = yield* retrySaga(
-      call(acceptInvitationVcx, connectionHandle),
-      CLOUD_AGENT_UNAVAILABLE
-    )
+    const {
+      pairwiseInfo,
+      vcxSerializedConnection
+    } = yield* retrySaga(call(makeConnection, connectionHandle))
 
     const connection = {
       identifier: pairwiseInfo.myPairwiseDid,
@@ -369,9 +384,6 @@ export function* sendResponseOnAriesOutOfBandInvitationWithoutHandshake(
   payload: InvitationPayload
 ): Generator<*, *, *> {
   try {
-    const attachedRequest = yield call(
-      getAttachedRequest,
-
     const connectionHandle: number = yield call(
       createConnectionWithAriesOutOfBandInvite,
       payload
@@ -385,12 +397,9 @@ export function* sendResponseOnAriesOutOfBandInvitationWithoutHandshake(
     if (attachedRequest &&
       (attachedRequest[TYPE].endsWith('offer-credential') || attachedRequest[TYPE].endsWith('propose-presentation'))) {
       // for these message we need to create pairwise agent to use service decorator
-      const data = yield* retrySaga(
-        call(acceptInvitationVcx, connectionHandle),
-        CLOUD_AGENT_UNAVAILABLE
-      )
-      pairwiseInfo = data.connection
-      vcxSerializedConnection = data.serializedConnection
+      const data = yield* retrySaga(call(makeConnection, connectionHandle))
+      pairwiseInfo = data.pairwiseInfo
+      vcxSerializedConnection = data.vcxSerializedConnection
     } else {
       vcxSerializedConnection = yield call(
         serializeConnection,
@@ -631,7 +640,6 @@ export async function getAttachedRequest(
 }
 
 export function* processAttachedRequest(connection: GenericObject): Generator<*, *, *> {
-  const connection = yield select(getConnectionByUserDid, did)
   const attachedRequest = connection.attachedRequest
   if (!attachedRequest) {
     return

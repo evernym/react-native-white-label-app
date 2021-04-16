@@ -1,10 +1,10 @@
 // @flow
-import { all, call, put, takeEvery } from 'redux-saga/effects'
+import { all, call, put, select, spawn, takeEvery } from 'redux-saga/effects'
 import {
   createOutOfBandConnectionInvitation,
   credentialGetPresentationProposal,
 } from '../bridge/react-native-cxs/RNCxs'
-import { saveNewOneTimeConnection } from '../store/connections-store'
+import { createPairwiseAgentSaga, saveNewOneTimeConnection } from '../store/connections-store'
 import { customLogger } from '../store/custom-logger'
 import { getClaim } from '../claim/claim-store'
 import type {
@@ -25,6 +25,7 @@ import {
   ShowCredentialStoreInitialState,
 } from './type-show-credential'
 import { ensureVcxInitSuccess } from '../store/route-store'
+import { getConnectionPairwiseAgentInfo } from '../store/store-selector'
 
 export const showCredential = (
   claimOfferUuid: string
@@ -85,11 +86,13 @@ export function* preparePresentationProposalSaga(
       throw new Error('Cannot prepare Presentation Proposal')
     }
 
+    const agentInfo = yield select(getConnectionPairwiseAgentInfo)
     const { invitation, pairwiseInfo, vcxSerializedConnection } = yield call(
       createOutOfBandConnectionInvitation,
       `Show \"${claim.claim.name}\" Credential`,
       false,
-      presentationProposal
+      presentationProposal,
+      agentInfo
     )
 
     const attachedRequest = invitation
@@ -107,6 +110,9 @@ export function* preparePresentationProposalSaga(
       showCredentialReady(invitation, claim.claimUuid, connection.identifier)
     )
     yield put(saveNewOneTimeConnection(connection))
+
+    // create new pairwise agent
+    yield spawn(createPairwiseAgentSaga)
   } catch (error) {
     customLogger.log(`preparePresentationProposalSaga: error: ${error}`)
     yield put(showCredentialFail(error.message))

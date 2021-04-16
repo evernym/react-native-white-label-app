@@ -1869,5 +1869,20 @@ RCT_EXPORT_METHOD(proofVerifierGetPresentationRequest:(NSInteger)proofHandle
   }];
 }
 
+RCT_EXPORT_METHOD(createPairwiseAgent: (RCTPromiseResolveBlock) resolve
+                             rejecter: (RCTPromiseRejectBlock) reject)
+{
+  [[[ConnectMeVcx alloc] init] createPairwiseAgent:^(NSError *error, NSString *agentInfo)
+  {
+    if (error != nil && error.code != 0)
+    {
+      NSString *indyErrorCode = [NSString stringWithFormat:@"%ld", (long)error.code];
+      reject(indyErrorCode, @"Error occurred while creating pairwise agent", error);
+    } else {
+      resolve(agentInfo);
+    }
+  }];
+}
+
 
 @end
