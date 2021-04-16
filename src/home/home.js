@@ -54,7 +54,7 @@ import {
 } from '../external-imports'
 import { SHOW_UNREAD_MESSAGES_BADGE_NEAR_WITH_TITLE } from '../components/header/type-header'
 
-const headline = homeHeadline || 'Home'
+export const headlineForHomeRoute = homeHeadline || 'Home'
 const showHistoryEvents =
   typeof homeShowHistoryEvents === 'boolean' ? homeShowHistoryEvents : true
 const showCameraButton =

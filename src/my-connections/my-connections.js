@@ -10,7 +10,10 @@ import { newConnectionSeen } from '../connection-history/connection-history-stor
 import { CameraButton } from '../components'
 import { ConnectionCard } from './connection-card/connection-card'
 import { qrCodeScannerTabRoute } from '../common'
-import { getConnections, deleteConnectionAction } from '../store/connections-store'
+import {
+  getConnections,
+  deleteConnectionAction,
+} from '../store/connections-store'
 import { connectionHistRoute } from '../common'
 import {
   getAllConnection,
@@ -40,7 +43,8 @@ import { SHOW_UNREAD_MESSAGES_BADGE_NEAR_WITH_MENU } from '../components/header/
 import { ResponseType } from '../components/request/type-request'
 import { sendInvitationResponse } from '../invitation/invitation-store'
 
-const headline = connectionsHeadline || 'My Connections'
+export const headlineForConnectionRoute =
+  connectionsHeadline || 'My Connections'
 const showCameraButton =
   typeof connectionsShowCameraButton === 'boolean'
     ? connectionsShowCameraButton
@@ -201,10 +205,11 @@ const MyConnections = ({
             },
             {
               text: 'Retry',
-              onPress: () => sendInvitationResponse({
-                response: ResponseType.accepted,
-                senderDID,
-              }),
+              onPress: () =>
+                sendInvitationResponse({
+                  response: ResponseType.accepted,
+                  senderDID,
+                }),
             },
           ]
         )
@@ -267,7 +272,7 @@ const mapDispatchToProps = (dispatch) =>
       onNewConnectionSeen: newConnectionSeen,
       getUnacknowledgedMessages,
       sendInvitationResponse,
-      deleteConnectionAction
+      deleteConnectionAction,
     },
     dispatch
   )

@@ -95,7 +95,7 @@ import {
 } from '../external-imports'
 import { SHOW_UNREAD_MESSAGES_BADGE_NEAR_WITH_MENU } from '../components/header/type-header'
 
-const headline = settingsHeadline || 'Settings'
+export const headlineForSettingRoute = settingsHeadline || 'Settings'
 const showCameraButton =
   typeof settingsShowCameraButton === 'boolean'
     ? settingsShowCameraButton

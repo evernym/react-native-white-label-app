@@ -3,13 +3,10 @@ import * as React from 'react'
 import { Dimensions, Image, Text, View, Platform } from 'react-native'
 import {
   createStackNavigator,
-  TransitionPresets
+  TransitionPresets,
 } from '@react-navigation/stack'
 import { createNativeStackNavigator } from 'react-native-screens/native-stack'
-import {
-  createDrawerNavigator,
-  DrawerItemList,
-} from '@react-navigation/drawer'
+import { createDrawerNavigator, DrawerItemList } from '@react-navigation/drawer'
 import { enableScreens } from 'react-native-screens'
 import VersionNumber from 'react-native-version-number'
 
@@ -20,11 +17,17 @@ import {
 } from './navigation-header-config'
 
 import { aboutAppScreen } from '../about-app/about-app'
-import { homeScreen } from '../home/home'
-import { myCredentialsScreen } from '../my-credentials/my-credentials'
-import { MyConnectionsScreen } from '../my-connections/my-connections'
+import { homeScreen, headlineForHomeRoute } from '../home/home'
+import {
+  myCredentialsScreen,
+  headlineForCredentialRoute,
+} from '../my-credentials/my-credentials'
+import {
+  MyConnectionsScreen,
+  headlineForConnectionRoute,
+} from '../my-connections/my-connections'
 import { splashScreenScreen } from '../start-up/splash-screen'
-import { SettingsScreen } from '../settings/settings'
+import { SettingsScreen, headlineForSettingRoute } from '../settings/settings'
 import { expiredTokenScreen } from '../expired-token/expired-token'
 import { qrCodeScannerScreen } from '../qr-code/qr-code'
 import { lockSelectionScreen } from '../lock/lock-selection'
@@ -62,7 +65,10 @@ import { openIdConnectScreen } from '../open-id-connect/open-id-connect-screen'
 import { designStyleGuideScreen } from '../design-styleguide/design-styleguide'
 import { onfidoScreen } from '../onfido/onfido'
 import { restorePassphraseScreen } from '../restore/restore-passphrase'
-import { privacyTNCScreen } from '../privacy-tnc/privacy-tnc-screen'
+import {
+  privacyTNCScreen,
+  TitlePrivacyTNC,
+} from '../privacy-tnc/privacy-tnc-screen'
 import { connectionHistoryScreen } from '../connection-details/connection-details'
 import { credentialDetailsScreen } from '../credential-details/credential-details'
 import { pushNotificationPermissionScreen } from '../push-notification/components/push-notification-permission-screen'
@@ -115,8 +121,6 @@ import {
   usePushNotifications,
 } from '../external-imports'
 import { inviteActionScreen } from '../invite-action/invite-action-screen'
-
-import { PrivacyPolicyTitle, TermsAndConditionsTitle } from '../common/privacyTNC-constants'
 
 enableScreens()
 
@@ -233,18 +237,21 @@ const defaultDrawerItemOptions = {
     component: MyConnectionsScreen,
     icon: drawerEvaIcon(CONNECTIONS_ICON),
     label: CONNECTIONS_LABEL,
+    headline: headlineForConnectionRoute,
   },
   [CREDENTIALS]: {
     route: credentialsDrawerRoute,
     component: myCredentialsScreen.screen,
     icon: drawerSvgIcon('Credentials'),
     label: CREDENTIALS_LABEL,
+    headline: headlineForCredentialRoute,
   },
   [SETTINGS]: {
     route: settingsDrawerRoute,
     component: SettingsScreen,
     icon: drawerEvaIcon(SETTINGS_ICON),
     label: SETTINGS_LABEL,
+    headline: headlineForSettingRoute,
   },
 }
 
@@ -270,7 +277,7 @@ function AppDrawer(navigation) {
           drawerLabel: drawerItemLabel(option.label || defaultOption.label),
           ...headerOptionForDrawerStack({
             navigation,
-            headline: option.route || defaultOption.route,
+            headline: defaultOption.headline,
           }),
         }}
       />
@@ -289,7 +296,10 @@ function AppDrawer(navigation) {
         component={homeScreen.screen}
         options={{
           ...homeDrawerItemOptions,
-          ...headerOptionForDrawerStack({ navigation, headline: 'Home' }),
+          ...headerOptionForDrawerStack({
+            navigation,
+            headline: headlineForHomeRoute,
+          }),
         }}
       />
       {tabs}
@@ -332,7 +342,7 @@ function CardStackScreen(navigation) {
         component={privacyTNCScreen.screen}
         options={headerDefaultOptions({
           navigation,
-          headline: TermsAndConditionsTitle,
+          headline: TitlePrivacyTNC,
           headerHideShadow: true,
           transparent: false,
         })}
@@ -541,7 +551,11 @@ const modalStackOptions = {
 
 export function MSDKAppNavigator() {
   return (
-    <ModalStack.Navigator mode="modal" screenOptions={modalStackOptions} detachInactiveScreens={Platform.OS === 'android'}>
+    <ModalStack.Navigator
+      mode="modal"
+      screenOptions={modalStackOptions}
+      detachInactiveScreens={false}
+    >
       <ModalStack.Screen name="CardStack" component={CardStackScreen} />
       <ModalStack.Screen
         name={claimOfferScreen.routeName}

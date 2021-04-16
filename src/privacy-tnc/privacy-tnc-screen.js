@@ -17,6 +17,8 @@ import { OrangeLoader } from '../components/loader-gif/loader-gif'
 import { localEulaSource } from '../eula/type-eula'
 import { privacyTNCRoute } from '../common'
 
+export let TitlePrivacyTNC = undefined
+
 export class PrivacyTNC extends PureComponent<
   PrivacyTNCProps,
   PrivacyTNCState
@@ -38,6 +40,7 @@ export class PrivacyTNC extends PureComponent<
     const { url, title } = this.props.route.params
     let webViewUri = url ?? PrivacyTNC.INFO_TYPE.PRIVACY.url
     const isTNC = webViewUri === PrivacyTNC.INFO_TYPE.TNC.url
+    TitlePrivacyTNC = isTNC ? TermsAndConditionsTitle : privacyTNCRoute
 
     if (this.state.error) {
       webViewUri = isTNC ? localEulaSource : localPrivacyPolicySource
