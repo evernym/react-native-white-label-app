@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { StyleSheet } from 'react-native'
 import { moderateScale } from 'react-native-size-matters'
 import CredentialCard from './card-item/credential-card-item'
+import { useFocusEffect } from '@react-navigation/native'
 
 import type { CredentialsCardsProps } from '../type-my-credentials'
 import { colors, fontFamily } from '../../common/styles'
@@ -15,7 +16,11 @@ export const CredentialsCards = (props: CredentialsCardsProps) => {
   const [activeStack, setActiveStack] = useState(null)
   const scrollViewRef = useRef<any>(null)
 
-  useEffect(() => setActiveStack(null), [credentials])
+  useFocusEffect(
+    React.useCallback(() => {
+      return () => {setActiveStack(null)}
+    }, [credentials])
+  )
 
   const updateActiveStack = (stackName) => {
     setActiveStack(stackName)
