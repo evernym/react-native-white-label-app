@@ -19,28 +19,31 @@ type HeaderWithDeletionProps = {
   onDeleteButtonTitle: string,
   showImage?: boolean,
   image?: any,
+  onViewedAction?: any,
 }
 
 const iOS = Platform.OS === 'ios'
 
 export const HeaderWithDeletion = ({
-                                     headline,
-                                     showImage,
-                                     image,
-                                     onDelete,
-                                     navigation,
-                                     onDeleteButtonTitle,
-                                   }: HeaderWithDeletionProps) => {
+  headline,
+  showImage,
+  image,
+  onDelete,
+  onViewedAction,
+  navigation,
+  onDeleteButtonTitle,
+}: HeaderWithDeletionProps) => {
   const goBack = () => {
+    if (onViewedAction) {
+      onViewedAction()
+    }
     navigation.goBack(null)
   }
 
   const openDialog = useCallback(() => {
-    ActionSheet.showActionSheetWithOptions({
-        options: [
-          onDeleteButtonTitle || 'Delete',
-          'Cancel',
-        ],
+    ActionSheet.showActionSheetWithOptions(
+      {
+        options: [onDeleteButtonTitle, 'Cancel'],
         destructiveButtonIndex: 0,
         cancelButtonIndex: 1,
         tintColor: 'blue',
@@ -49,7 +52,8 @@ export const HeaderWithDeletion = ({
         if (buttonIndex === 0) {
           onDelete()
         }
-      })
+      }
+    )
   })
 
   return (
@@ -76,32 +80,36 @@ export const HeaderWithDeletion = ({
             accessible={true}
             accessibilityLabel="logo"
           >
-            {
-              showImage ?
-                typeof image === 'string' ? (
-                  <View style={styles.headerImageWrapper}>
-                    <Image
-                      style={styles.headerIcon}
-                      source={{ uri: image }}
-                      resizeMode={'cover'}
-                    />
-                  </View>
-                ) : (
-                  <DefaultLogo
-                    text={headline[0]}
-                    size={moderateScale(32)}
-                    fontSize={17}
+            {showImage ? (
+              typeof image === 'string' ? (
+                <View style={styles.headerImageWrapper}>
+                  <Image
+                    style={styles.headerIcon}
+                    source={{ uri: image }}
+                    resizeMode={'cover'}
                   />
-                ) :
-                <></>
-            }
+                </View>
+              ) : (
+                <DefaultLogo
+                  text={headline[0]}
+                  size={moderateScale(32)}
+                  fontSize={17}
+                />
+              )
+            ) : (
+              <></>
+            )}
           </View>
           <View
             style={styles.labelWithIconSection}
             accessible={true}
             accessibilityLabel={headline}
           >
-            <Text style={[styles.label, { paddingRight: moderateScale(20) }]} numberOfLines={1} ellipsizeMode="tail">
+            <Text
+              style={[styles.label, { paddingRight: moderateScale(20) }]}
+              numberOfLines={1}
+              ellipsizeMode="tail"
+            >
               {headline}
             </Text>
           </View>

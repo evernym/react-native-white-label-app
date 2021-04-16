@@ -1,13 +1,6 @@
 // @flow
 import React, { useCallback, useState } from 'react'
-import {
-  View,
-  Text,
-  TouchableHighlight,
-  StyleSheet,
-  TouchableOpacity,
-  Alert,
-} from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native'
 import { colors, fontFamily, fontSizes } from '../../../common/styles/constant'
 import { Avatar } from '../../../components/avatar/avatar'
 import { DefaultLogo } from '../../../components/default-logo/default-logo'
@@ -31,7 +24,11 @@ import Animated, {
   set,
   useCode,
 } from 'react-native-reanimated'
-import { PanGestureHandler, State } from 'react-native-gesture-handler'
+import {
+  PanGestureHandler,
+  State,
+  TouchableWithoutFeedback,
+} from 'react-native-gesture-handler'
 import {
   min,
   mix,
@@ -58,11 +55,11 @@ const textColor = colors.white
 
 const CredentialCard = ({
   item,
-                          isExpanded,
-                          setActiveStack,
-                          isHidden,
-                          elevation,
-                        }: CredentialCardProps) => {
+  isExpanded,
+  setActiveStack,
+  isHidden,
+  elevation,
+}: CredentialCardProps) => {
   const {
     logoUrl,
     date,
@@ -202,12 +199,9 @@ const CredentialCard = ({
         activeOffsetY={500}
       >
         <Animated.View style={{ transform: [{ translateX }] }}>
-          <TouchableHighlight
+          <TouchableWithoutFeedback
             style={[styles.container, { elevation: elevation }]}
             onPress={onPress}
-            activeOpacity={0.9}
-            underlayColor={colorTheme}
-            accessible={false}
           >
             <View
               style={[
@@ -258,7 +252,7 @@ const CredentialCard = ({
                 </View>
               </View>
             </View>
-          </TouchableHighlight>
+          </TouchableWithoutFeedback>
         </Animated.View>
       </PanGestureHandler>
     </Animated.View>
