@@ -13,8 +13,6 @@ import { isNewConnection } from '../../store/store-utils'
 import { CONNECTION_FAIL } from '../../store/type-connection-store'
 import { INVITATION_ACCEPTED } from '../../invitation/type-invitation'
 
-const errorImage = require('../../images/error_outline.png')
-
 const ConnectionCard = (props: ConnectionCardProps) => {
   const onButtonPress = useCallback(() => {
     {
@@ -49,7 +47,7 @@ const ConnectionCard = (props: ConnectionCardProps) => {
       {/*{*/}
       {/*  renderUnreadMessagesBadge()*/}
       {/*}*/}
-      {props.status === CONNECTION_FAIL && 
+      {props.status === CONNECTION_FAIL &&
         <View style={styles.errorImage}>
           <EvaIcon
             name={ERROR_ICON}

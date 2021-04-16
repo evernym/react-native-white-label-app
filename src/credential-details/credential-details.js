@@ -1,5 +1,5 @@
 //@flow
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useMemo, useEffect, useState } from 'react'
 import { Text, View, ScrollView, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import { verticalScale, moderateScale } from 'react-native-size-matters'
@@ -9,10 +9,11 @@ import type { CredentialDetailsProps } from './type-credential-details'
 import { Avatar } from '../components/avatar/avatar'
 import { DefaultLogo } from '../components/default-logo/default-logo'
 import { CredentialList } from './credential-list/credential-list'
-import { HeaderWithDeletion } from '../components'
+import { HeaderWithDeletion, Loader } from '../components'
 import { ExpandableText } from '../components/expandable-text/expandable-text'
-import { bindActionCreators } from "redux"
+import { bindActionCreators } from 'redux'
 import { deleteClaim } from '../claim/claim-store'
+import { InteractionManager } from 'react-native'
 import { ViewPushLeft } from '../connection-details/utils/modal-animation'
 import { CustomCredentialDetailsScreen } from '../external-imports'
 import ToggleFields from '../components/toggle-fields/toggle-fields'
@@ -34,6 +35,8 @@ const CredentialDetails = (props: CredentialDetailsProps) => {
     claimOfferUuid,
   } = props.route.params
 
+  const [loading, setLoading] = useState(true)
+
   const { data, hasEmpty, allEmpty } = useMemo(() => {
     const data = attributes.map((attribute) => ({
       label: attribute.label,
@@ -52,47 +55,53 @@ const CredentialDetails = (props: CredentialDetailsProps) => {
   const [isMissingFieldsShowing, toggleMissingFields] = useState(showMissingField(hasEmpty, allEmpty))
   const isToggleMenuShowing = showToggleMenu(hasEmpty, allEmpty)
 
-  const onDelete = useCallback(() => {
+  const onDelete = () => {
     props.deleteClaim(claimOfferUuid)
     props.navigation.goBack(null)
-  }, [claimOfferUuid])
+  }
+
+  useEffect(() => {
+    InteractionManager.runAfterInteractions(() => {
+      setLoading(false)
+    })
+  }, [])
 
   return (
     <View style={styles.container}>
       <HeaderWithDeletion
-        headline='Credential Details'
+        headline="Credential Details"
         navigation={props.navigation}
         onDeleteButtonTitle={'Delete Credential'}
         onDelete={onDelete}
       />
-      <ScrollView>
-        <View style={styles.headerWrapper}>
-          <Text style={styles.headerSubText}>
-            {date ? 'Issued by' : 'Offered by'}
-          </Text>
-          <ExpandableText
-            style={styles.headerText}
-            text={issuerName}
-          />
-          <View style={styles.avatarSection}>
-            {typeof logoUrl === 'string' ? (
-              <Avatar
-                radius={48}
-                src={{ uri: logoUrl }}
-                testID={`sender-avatar`}
+      {loading ? (
+        <Loader />
+      ) : (
+        <ScrollView>
+          <View style={styles.headerWrapper}>
+            <Text style={styles.headerSubText}>
+              {date ? 'Issued by' : 'Offered by'}
+            </Text>
+            <ExpandableText style={styles.headerText} text={issuerName} />
+            <View style={styles.avatarSection}>
+              {typeof logoUrl === 'string' ? (
+                <Avatar
+                  radius={48}
+                  src={{ uri: logoUrl }}
+                  testID={`sender-avatar`}
+                />
+              ) : (
+                <DefaultLogo text={issuerName} size={96} fontSize={48} />
+              )}
+            </View>
+            <View style={styles.contentWrapper}>
+              <ExpandableText
+                style={styles.contentText}
+                text={credentialName}
               />
-            ) : (
-              <DefaultLogo text={issuerName} size={96} fontSize={48} />
-            )}
+            </View>
           </View>
-          <View style={styles.contentWrapper}>
-            <ExpandableText
-              style={styles.contentText}
-              text={credentialName}
-            />
-          </View>
-        </View>
-        {toggleMissingFields && showToggleMenu && (
+          {toggleMissingFields && showToggleMenu && (
           <ToggleFields
             actionInfoText={[
               'Empty fields are hidden by default.',
@@ -102,16 +111,17 @@ const CredentialDetails = (props: CredentialDetailsProps) => {
             useToggle={[isMissingFieldsShowing, toggleMissingFields]}
             showToggleMenu={isToggleMenuShowing}
           />
+          )}
+          <View style={styles.listContainer}>
+            <CredentialList
+              content={data}
+              uid={uid}
+              remotePairwiseDID={remoteDid}
+              isMissingFieldsShowing={isMissingFieldsShowing}
+            />
+          </View>
+        </ScrollView>
         )}
-        <View style={styles.listContainer}>
-          <CredentialList
-            content={data}
-            uid={uid}
-            remotePairwiseDID={remoteDid}
-            isMissingFieldsShowing={isMissingFieldsShowing}
-          />
-        </View>
-      </ScrollView>
     </View>
   )
 }
