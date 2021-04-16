@@ -9,7 +9,6 @@ import { createNativeStackNavigator } from 'react-native-screens/native-stack'
 import {
   createDrawerNavigator,
   DrawerItemList,
-  DrawerItem,
 } from '@react-navigation/drawer'
 import { enableScreens } from 'react-native-screens'
 import VersionNumber from 'react-native-version-number'
@@ -117,7 +116,7 @@ import {
 } from '../external-imports'
 import { inviteActionScreen } from '../invite-action/invite-action-screen'
 
-import { TermsAndConditionsTitle } from '../common/privacyTNC-constants'
+import { PrivacyPolicyTitle, TermsAndConditionsTitle } from '../common/privacyTNC-constants'
 
 enableScreens()
 
@@ -180,7 +179,7 @@ const drawerContentOptions = {
   inactiveTintColor: colors.gray2,
 }
 const drawerStyle = {
-  width: verticalScale(0.75 * width),
+  width: 0.75 * width,
   backgroundColor: 'transparent',
 }
 
@@ -542,7 +541,7 @@ const modalStackOptions = {
 
 export function MSDKAppNavigator() {
   return (
-    <ModalStack.Navigator mode="modal" screenOptions={modalStackOptions}>
+    <ModalStack.Navigator mode="modal" screenOptions={modalStackOptions} detachInactiveScreens={Platform.OS === 'android'}>
       <ModalStack.Screen name="CardStack" component={CardStackScreen} />
       <ModalStack.Screen
         name={claimOfferScreen.routeName}

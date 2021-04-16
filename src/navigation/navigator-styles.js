@@ -41,6 +41,7 @@ export const styles = StyleSheet.create({
   labelContainer: {
     flexDirection: 'row',
     width: '100%',
+    alignItems: 'center',
     justifyContent: 'space-between',
   },
   labelText: {
@@ -54,7 +55,6 @@ export const styles = StyleSheet.create({
   },
   customGreenBadgeContainer: {
     ...unreadMessageContainerCommonStyle,
-    marginRight: '30%',
   },
   companyIconImage: {
     width: verticalScale(26),
