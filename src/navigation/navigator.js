@@ -1,6 +1,6 @@
 // @flow
 import * as React from 'react'
-import { Dimensions, Image, Text, View, Platform } from 'react-native'
+import { Dimensions, Image, Text, View } from 'react-native'
 import {
   createStackNavigator,
   TransitionPresets,

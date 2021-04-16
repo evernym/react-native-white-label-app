@@ -12,7 +12,7 @@ import {
   backupCompleteRoute,
   backupErrorRoute,
 } from '../common'
-import { colors, isBiggerThanVeryShortDevice } from '../common/styles'
+import { isBiggerThanVeryShortDevice } from '../common/styles'
 import { color } from '../common/styles/constant'
 import type { ExportBackupFileProps } from './type-backup'
 import styles from './styles'

@@ -1,8 +1,7 @@
 // @flow
 import React from 'react'
 import { connect } from 'react-redux'
-import { AppState, StyleSheet, View, Dimensions } from 'react-native'
-import SplashScreen from 'react-native-splash-screen'
+import { AppState, StyleSheet, View } from 'react-native'
 import { BlurView } from '@react-native-community/blur'
 
 import { getUnacknowledgedMessages } from './../store/config-store'
@@ -45,14 +44,17 @@ export class AppStatusComponent extends React.Component<
   }
 
   render() {
-    if (this.state.appState && this.state.appState.match(/inactive|background/)) {
+    if (
+      this.state.appState &&
+      this.state.appState.match(/inactive|background/)
+    ) {
       return (
         <View style={styles.container}>
-          <BlurView 
+          <BlurView
             style={styles.blurView}
             // $FlowFixMe
             reducedTransparencyFallbackColor={String('gray')}
-            blurType='light'
+            blurType="light"
             blurAmount={20}
           />
         </View>
@@ -65,20 +67,20 @@ export class AppStatusComponent extends React.Component<
 
 const styles = StyleSheet.create({
   container: {
-    zIndex:1,
-    position: "absolute",
+    zIndex: 1,
+    position: 'absolute',
     top: 0,
     left: 0,
     bottom: 0,
-    right: 0
+    right: 0,
   },
-  blurView:{
-    position: "absolute",
+  blurView: {
+    position: 'absolute',
     top: 0,
     left: 0,
     bottom: 0,
-    right: 0
-  }
+    right: 0,
+  },
 })
 
 const mapStateToProps = (state: Store): ConnectProps => {

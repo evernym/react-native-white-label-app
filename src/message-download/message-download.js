@@ -21,9 +21,6 @@ import { selectPushPermissionAndToken } from '../push-notification/push-notifica
 import {
   GET_MESSAGES_SUCCESS,
   GET_MESSAGES_FAIL,
-  VCX_INIT_SUCCESS,
-  SHOW_SNACK_ERROR,
-  CLEAR_SNACK_ERROR,
 } from '../store/type-config-store'
 import { PROOF_REQUEST_RECEIVED } from '../proof-request/type-proof-request'
 import { QUESTION_RECEIVED } from '../question/type-question'
@@ -32,7 +29,6 @@ import {
   SEND_REDIRECT_SUCCESS,
   SEND_REUSE_SUCCESS,
 } from '../store/type-connection-store'
-import { getConnectionsCount } from '../store/store-selector'
 
 export function* watchMessageDownload(): any {
   yield all([watchManualDownloadTrigger(), watchInfiniteDownloader()])

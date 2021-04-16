@@ -28,6 +28,14 @@ export class PrivacyTNC extends PureComponent<
     TNC: { url: TermsAndConditionUrl, title: TermsAndConditionsTitle },
   }
 
+  componentDidMount() {
+    TitlePrivacyTNC = this.props.route.params.title
+  }
+
+  componentWillUnmount() {
+    TitlePrivacyTNC = undefined
+  }
+
   state = {
     error: null,
   }
@@ -37,10 +45,9 @@ export class PrivacyTNC extends PureComponent<
   }
 
   render() {
-    const { url, title } = this.props.route.params
+    const { url } = this.props.route.params
     let webViewUri = url ?? PrivacyTNC.INFO_TYPE.PRIVACY.url
     const isTNC = webViewUri === PrivacyTNC.INFO_TYPE.TNC.url
-    TitlePrivacyTNC = isTNC ? TermsAndConditionsTitle : privacyTNCRoute
 
     if (this.state.error) {
       webViewUri = isTNC ? localEulaSource : localPrivacyPolicySource

@@ -18,7 +18,6 @@ import { colors } from '../common/styles/constant'
 import { UNLOCKING_APP_WAIT_MESSAGE } from '../common/message-constants'
 import { unlockApp } from './lock-store'
 import { View, Keyboard, Platform, StyleSheet } from 'react-native'
-import { Header } from '../components'
 
 export class LockEnterPin extends PureComponent<
   LockEnterPinProps,

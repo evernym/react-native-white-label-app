@@ -17,8 +17,12 @@ import moment from 'moment'
 import { bindActionCreators } from 'redux'
 import { QuestionCard } from '../components/connection-details/question-card'
 import { QuestionViewCard } from '../components/connection-details/question-view-card'
-import type { ConnectionHistoryProps, } from './type-connection-details'
-import { getAllConnection, getConnectionTheme, getHistory } from '../store/store-selector'
+import type { ConnectionHistoryProps } from './type-connection-details'
+import {
+  getAllConnection,
+  getConnectionTheme,
+  getHistory,
+} from '../store/store-selector'
 import { colors } from '../common/styles/constant'
 import {
   DENY_PROOF_REQUEST_SUCCESS,
@@ -37,42 +41,45 @@ import {
   DENY_CLAIM_OFFER_SUCCESS,
 } from '../claim-offer/type-claim-offer'
 import { UPDATE_ATTRIBUTE_CLAIM, ERROR_SEND_PROOF } from '../proof/type-proof'
-import { INVITATION_ACCEPTED } from '../invitation/type-invitation'
-import { deleteConnectionAction, getConnections } from '../store/connections-store'
+import {
+  deleteConnectionAction,
+  getConnections,
+} from '../store/connections-store'
 import type { ConnectionHistoryEvent } from '../connection-history/type-connection-history'
 import { CustomConnectionDetailsScreen } from '../external-imports'
 
 const keyExtractor = (item: Object) => item.timestamp
 
 const ConnectionDetails = ({
-                             route,
-                             navigation,
-                             deleteConnectionAction,
-                             newConnectionSeen,
-                           }: ConnectionHistoryProps) => {
+  route,
+  navigation,
+  deleteConnectionAction,
+  newConnectionSeen,
+}: ConnectionHistoryProps) => {
   const flatList = React.createRef<FlatList<any>>()
 
   const allConnections = useSelector(getAllConnection)
   const history = useSelector(getHistory)
-  const themeForLogo = useSelector((store) => getConnectionTheme(store, route ? route.params.image : ''))
+  const themeForLogo = useSelector((store) =>
+    getConnectionTheme(store, route ? route.params.image : '')
+  )
 
   const connectionHistory = useMemo(() => {
-    const connection: any =
-      getConnections(allConnections).find(
-        (connection: any) => connection.senderDID === route.params.senderDID,
-      )
+    const connection: any = getConnections(allConnections).find(
+      (connection: any) => connection.senderDID === route.params.senderDID
+    )
 
     let connectionHistory: ConnectionHistoryEvent[] =
-      history && history.connections && route ?
-        history.connections[route.params.senderDID].data
+      history && history.connections && route
+        ? history.connections[route.params.senderDID].data
         : []
 
     const timestamp = connection ? connection.timestamp : null
 
     connectionHistory = timestamp
       ? connectionHistory.filter(
-        (event) => new Date(event.timestamp) >= new Date(timestamp),
-      )
+          (event) => new Date(event.timestamp) >= new Date(timestamp)
+        )
       : connectionHistory.slice()
 
     return connectionHistory
@@ -80,13 +87,16 @@ const ConnectionDetails = ({
 
   const newBadge = useMemo(() => {
     route &&
-    history &&
-    history.connections &&
-    history.connections[route.params.senderDID] &&
-    history.connections[route.params.senderDID].newBadge
+      history &&
+      history.connections &&
+      history.connections[route.params.senderDID] &&
+      history.connections[route.params.senderDID].newBadge
   }, [history])
 
-  const onViewedAction = useCallback(() => newConnectionSeen(route.params.senderDID), [route])
+  const onViewedAction = useCallback(
+    () => newConnectionSeen(route.params.senderDID),
+    [route]
+  )
 
   useEffect(() => {
     if (newBadge) {
@@ -101,8 +111,7 @@ const ConnectionDetails = ({
 
   const scrollToEnd = useCallback(() => {
     setTimeout(() => {
-      flatList.current &&
-      flatList.current.scrollToEnd({ animated: true })
+      flatList.current && flatList.current.scrollToEnd({ animated: true })
     }, 300)
   }, [flatList])
 
@@ -162,16 +171,16 @@ const ConnectionDetails = ({
       )
     } else if (item.action === 'PROOF RECEIVED') {
       if (item.showBadge === false) {
-        return <View/>
+        return <View />
       }
       let attributesText = ''
       item.data.map((dataItem, attrIndex) => {
-        const label = dataItem.type === ATTRIBUTE_TYPE.FILLED_PREDICATE ?
-          `${dataItem.label} ${dataItem.p_type} ${dataItem.p_value}` :
-          dataItem.label
+        const label =
+          dataItem.type === ATTRIBUTE_TYPE.FILLED_PREDICATE
+            ? `${dataItem.label} ${dataItem.p_type} ${dataItem.p_value}`
+            : dataItem.label
 
-        attributesText +=
-          label + (attrIndex < item.data.length - 1 ? ', ' : '')
+        attributesText += label + (attrIndex < item.data.length - 1 ? ', ' : '')
       })
       return (
         <CredentialCard
@@ -273,7 +282,7 @@ const ConnectionDetails = ({
       )
     } else if (item.action === 'CLAIM OFFER RECEIVED') {
       if (item.showBadge === false) {
-        return <View/>
+        return <View />
       }
       return (
         <CredentialCard
@@ -390,7 +399,7 @@ const mapDispatchToProps = (dispatch) =>
       sendConnectionReuse,
       deleteConnectionAction,
     },
-    dispatch,
+    dispatch
   )
 
 const screen = CustomConnectionDetailsScreen || ConnectionDetails

@@ -1,19 +1,10 @@
 // @flow
 
 import React from 'react'
-import {
-  StyleSheet,
-  View,
-  FlatList,
-  Text,
-  TouchableOpacity,
-  Platform,
-} from 'react-native'
+import { Text, TouchableOpacity, Platform } from 'react-native'
 import { moderateScale } from 'react-native-size-matters'
-import { DrawerActions } from '@react-navigation/native'
 import {
   EvaIcon,
-  HOME_MENU_ICON,
   ANDROID_BACK_ARROW_ICON,
   IOS_BACK_ARROW_ICON,
 } from '../common/icons'
@@ -23,13 +14,11 @@ import {
   headerTitleStyle,
 } from '../components/header-title/header-title'
 import {
-  SHOW_UNREAD_MESSAGES_BADGE_NEAR_WITH_MENU,
   SHOW_UNREAD_MESSAGES_BADGE_NEAR_WITH_TITLE,
   styles,
 } from '../components/header/type-header'
-import { HeaderWithMenu, Header } from '../components'
+import { HeaderWithMenu } from '../components'
 import type { ReactNavigation } from '../common/type-common'
-import { historyTabRoute } from '../common'
 
 // TODO: DA check if this code is still required after headers update
 export const headerNavigationOptions = ({

@@ -39,7 +39,6 @@ import {
   CustomMyConnectionsScreen,
   usePushNotifications,
 } from '../external-imports'
-import { SHOW_UNREAD_MESSAGES_BADGE_NEAR_WITH_MENU } from '../components/header/type-header'
 import { ResponseType } from '../components/request/type-request'
 import { sendInvitationResponse } from '../invitation/invitation-store'
 

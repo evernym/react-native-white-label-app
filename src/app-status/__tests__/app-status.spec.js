@@ -1,7 +1,6 @@
 // @flow
 import React from 'react'
 import 'react-native'
-import { Text } from 'react-native'
 import renderer from 'react-test-renderer'
 
 import { AppStatusComponent } from '../app-status'
@@ -15,7 +14,7 @@ const getProps = () => {
 
 const setup = () => {
   const props = getProps()
-  const component = renderer.create(<AppStatusComponent {...props}/>)
+  const component = renderer.create(<AppStatusComponent {...props} />)
   const instance = component.root.instance
 
   return { component, instance }
