@@ -22,6 +22,7 @@ import {
   showToggleMenu,
 } from '../connection-details/utils/checkForEmptyAttributes'
 import { Button } from '../components/buttons/button'
+import { GRID_ICON } from "../common/icons";
 
 const CredentialDetails = (props: CredentialDetailsProps) => {
   const {
@@ -125,7 +126,7 @@ const CredentialDetails = (props: CredentialDetailsProps) => {
       <Button
         onPress={show}
         label="Show"
-        svgIcon="Send"
+        evaIcon={GRID_ICON}
       />
       }
     </View>

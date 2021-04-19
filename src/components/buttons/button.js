@@ -1,6 +1,6 @@
 // @flow
 import React from 'react'
-import { StyleSheet, TouchableOpacity, Text } from 'react-native'
+import { StyleSheet, TouchableOpacity, Text, View } from 'react-native'
 import { colors, fontFamily, fontSizes } from '../../common/styles'
 import { verticalScale, moderateScale } from 'react-native-size-matters'
 import SvgCustomIcon from '../svg-custom-icon'
@@ -36,7 +36,7 @@ export const Button = ({
     >
       <Text style={labelStyle || styles.label}>{label}</Text>
       {svgIcon && <SvgCustomIcon style={styles.icon} name={svgIcon}/>}
-      {evaIcon && <EvaIcon style={styles.icon} name={evaIcon}/>}
+      {evaIcon && <View style={styles.icon}><EvaIcon color={colors.white} name={evaIcon}/></View>}
     </TouchableOpacity>
   )
 }
