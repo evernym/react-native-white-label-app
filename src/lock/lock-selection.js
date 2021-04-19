@@ -49,6 +49,7 @@ import {
 import { safeToDownloadSmsInvitation } from '../sms-pending-invitation/sms-pending-invitation-store'
 import { SERVER_ENVIRONMENT } from '../store/type-config-store'
 import { LockHeader } from '../external-imports'
+import { headerDefaultOptions } from '../navigation/navigation-header-config'
 
 const { width, height } = Dimensions.get('screen')
 
@@ -246,6 +247,11 @@ const mapDispatchToProps = (dispatch) =>
 export const lockSelectionScreen = {
   routeName: lockSelectionRoute,
   screen: connect(mapStateToProps, mapDispatchToProps)(LockSelection),
+  options: headerDefaultOptions({
+    headline: undefined,
+    headerHideShadow: true,
+    transparent: false,
+  })
 }
 
 const marginHorizontalHandler = (curWidth) => {

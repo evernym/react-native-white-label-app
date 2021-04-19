@@ -12,8 +12,6 @@ import VersionNumber from 'react-native-version-number'
 
 import {
   headerOptionForDrawerStack,
-  headerDefaultOptions,
-  emptyHeaderOptions,
 } from './navigation-header-config'
 
 import { aboutAppScreen } from '../about-app/about-app'
@@ -67,7 +65,7 @@ import { onfidoScreen } from '../onfido/onfido'
 import { restorePassphraseScreen } from '../restore/restore-passphrase'
 import {
   privacyTNCScreen,
-  TitlePrivacyTNC,
+  options as privacyTNCScreenOptions
 } from '../privacy-tnc/privacy-tnc-screen'
 import { connectionHistoryScreen } from '../connection-details/connection-details'
 import { credentialDetailsScreen } from '../credential-details/credential-details'
@@ -89,7 +87,7 @@ import {
   HOME_ICON,
   SETTINGS_ICON,
 } from '../common/icons'
-import { colors, gamboge } from '../common/styles/constant'
+import { colors } from '../common/styles/constant'
 import { UnreadMessagesBadge } from '../components'
 import { moderateScale, verticalScale } from 'react-native-size-matters'
 import { startUpScreen } from '../start-up/start-up-screen'
@@ -340,12 +338,7 @@ function CardStackScreen(navigation) {
       <CardStack.Screen
         name={privacyTNCScreen.routeName}
         component={privacyTNCScreen.screen}
-        options={headerDefaultOptions({
-          navigation,
-          headline: TitlePrivacyTNC,
-          headerHideShadow: true,
-          transparent: false,
-        })}
+        options={privacyTNCScreenOptions}
       />
       <CardStack.Screen
         name={designStyleGuideScreen.routeName}
@@ -375,12 +368,7 @@ function CardStackScreen(navigation) {
       <CardStack.Screen
         name={lockAuthorizationScreen.routeName}
         component={lockAuthorizationScreen.screen}
-        options={headerDefaultOptions({
-          navigation,
-          headline: undefined,
-          headerHideShadow: true,
-          transparent: false,
-        })}
+        options={lockAuthorizationScreen.options}
       />
       <CardStack.Screen
         name={lockSetupSuccessScreen.routeName}
@@ -397,17 +385,11 @@ function CardStackScreen(navigation) {
       <CardStack.Screen
         name={lockSelectionScreen.routeName}
         component={lockSelectionScreen.screen}
-        options={headerDefaultOptions({
-          navigation,
-          headline: undefined,
-          headerHideShadow: true,
-          transparent: false,
-        })}
+        options={lockSelectionScreen.options}
       />
       <CardStack.Screen
         name={startUpScreen.routeName}
         component={startUpScreen.screen}
-        options={startUpScreen.options}
       />
       <CardStack.Screen
         name={expiredTokenScreen.routeName}
@@ -424,32 +406,17 @@ function CardStackScreen(navigation) {
       <CardStack.Screen
         name={lockPinSetupScreen.routeName}
         component={lockPinSetupScreen.screen}
-        options={headerDefaultOptions({
-          navigation,
-          headline: undefined,
-          headerHideShadow: true,
-          transparent: false,
-        })}
+        options={lockPinSetupScreen.options}
       />
       <CardStack.Screen
         name={aboutAppScreen.routeName}
         component={aboutAppScreen.screen}
-        options={headerDefaultOptions({
-          navigation,
-          headline: 'About this App',
-          headerHideShadow: true,
-          transparent: false,
-        })}
+        options={aboutAppScreen.options}
       />
       <CardStack.Screen
         name={onfidoScreen.routeName}
         component={onfidoScreen.screen}
-        options={headerDefaultOptions({
-          navigation,
-          headline: undefined,
-          headerHideShadow: true,
-          transparent: false,
-        })}
+        options={onfidoScreen.options}
       />
       <CardStack.Screen
         name={backupCompleteScreen.routeName}
@@ -462,20 +429,12 @@ function CardStackScreen(navigation) {
       <CardStack.Screen
         name={exportBackupFileScreen.routeName}
         component={exportBackupFileScreen.screen}
-        options={headerDefaultOptions({
-          navigation,
-          headline: undefined,
-          headerHideShadow: true,
-          transparent: true,
-          headerStyles: {
-            backgroundColor: gamboge,
-          },
-          arrowColor: colors.white,
-        })}
+        options={exportBackupFileScreen.options}
       />
       <CardStack.Screen
         name={generateRecoveryPhraseScreen.routeName}
         component={generateRecoveryPhraseScreen.screen}
+        options={generateRecoveryPhraseScreen.options}
       />
       <CardStack.Screen
         name={selectRecoveryMethodScreen.routeName}
@@ -501,7 +460,7 @@ function CardStackScreen(navigation) {
       <CardStack.Screen
         name={lockEnterPinScreen.routeName}
         component={lockEnterPinScreen.screen}
-        options={emptyHeaderOptions()}
+        options={lockEnterPinScreen.options}
       />
       <CardStack.Screen
         name={restorePassphraseScreen.routeName}
@@ -510,12 +469,7 @@ function CardStackScreen(navigation) {
       <CardStack.Screen
         name={selectRestoreMethodScreen.routeName}
         component={selectRestoreMethodScreen.screen}
-        options={headerDefaultOptions({
-          navigation,
-          headline: undefined,
-          headerHideShadow: true,
-          transparent: true,
-        })}
+        options={selectRestoreMethodScreen.options}
       />
       <CardStack.Screen
         name={sendLogsScreen.routeName}

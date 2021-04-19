@@ -45,6 +45,7 @@ export type NavigationParams = {
 export type NavigationRoute = _NavigationRoute
 export type NavigationState = _NavigationState
 export type NavigationLeafRoute = _NavigationLeafRoute
+export type Navigation =  NavigationStackProp<NavigationRoute>
 
 export type ReactNavigation = {
   navigation: NavigationStackProp<NavigationRoute>,

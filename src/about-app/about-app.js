@@ -5,6 +5,7 @@ import { connect, useSelector } from 'react-redux'
 import VersionNumber from 'react-native-version-number'
 import { ListItem } from 'react-native-elements'
 
+import { headerDefaultOptions } from '../navigation/navigation-header-config'
 import {
   TermsAndConditionsTitle,
   PrivacyPolicyTitle,
@@ -161,6 +162,11 @@ const AboutAppScreen = connect()(
 export const aboutAppScreen = {
   routeName: aboutAppRoute,
   screen: AboutAppScreen,
+  options: headerDefaultOptions({
+    headline: 'About this App',
+    headerHideShadow: false,
+    transparent: false,
+  })
 }
 
 const styles = StyleSheet.create({

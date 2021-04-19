@@ -9,6 +9,7 @@ import { View, StyleSheet } from 'react-native'
 
 import type { LockAuthorizationProps } from './type-lock'
 
+import { headerDefaultOptions } from '../navigation/navigation-header-config'
 import LockEnter from './lock-enter'
 import { lockAuthorizationHomeRoute } from '../common'
 import { colors } from '../common/styles/constant'
@@ -40,4 +41,9 @@ const styles = StyleSheet.create({
 export const lockAuthorizationScreen = {
   routeName: lockAuthorizationHomeRoute,
   screen: LockAuthorization,
+  options: headerDefaultOptions({
+    headline: undefined,
+    headerHideShadow: true,
+    transparent: false,
+  })
 }

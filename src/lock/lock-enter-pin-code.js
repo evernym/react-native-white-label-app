@@ -7,6 +7,7 @@ import type { ReactNavigation } from '../common/type-common'
 import type { Store } from '../store/type-store'
 import type { LockEnterPinProps, LockEnterPinState } from './type-lock'
 
+import { emptyHeaderOptions } from '../navigation/navigation-header-config'
 import LockEnter from './lock-enter'
 import { lockEnterPinRoute, lockPinSetupRoute, homeRoute } from '../common'
 import { clearPendingRedirect } from './lock-store'
@@ -208,4 +209,5 @@ const mapDispatchToProps = (dispatch) =>
 export const lockEnterPinScreen = {
   routeName: lockEnterPinRoute,
   screen: connect(mapStateToProps, mapDispatchToProps)(LockEnterPin),
+  options: emptyHeaderOptions
 }

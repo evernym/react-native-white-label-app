@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import { Container, CustomView, CustomText, Loader } from '../components'
+import { headerDefaultOptions } from '../navigation/navigation-header-config'
 
 import {
   exportBackupFileRoute,
@@ -14,6 +15,7 @@ import {
 } from '../common'
 import { isBiggerThanVeryShortDevice } from '../common/styles'
 import { color } from '../common/styles/constant'
+import { colors, gamboge } from '../common/styles/constant'
 import type { ExportBackupFileProps } from './type-backup'
 import styles from './styles'
 import { exportBackup } from './backup-store'
@@ -188,4 +190,13 @@ export const exportBackupFileScreen = {
   screen: withStatusBar({ color: color.bg.thirteenth.color })(
     connect(mapStateToProps, mapDispatchToProps)(ExportBackupFile)
   ),
+  options: headerDefaultOptions({
+    headline: undefined,
+    headerHideShadow: true,
+    transparent: true,
+    headerStyles: {
+      backgroundColor: gamboge,
+    },
+    arrowColor: colors.white,
+  })
 }

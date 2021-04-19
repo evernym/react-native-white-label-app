@@ -40,6 +40,7 @@ import {
 } from './type-onfido'
 import { onfidoRoute, connectionsDrawerRoute } from '../common'
 import { withStatusBar } from '../components/status-bar/status-bar'
+import { headerDefaultOptions } from '../navigation/navigation-header-config'
 
 export class Onfido extends Component<OnfidoProps, void> {
   onAction = () => {
@@ -335,4 +336,9 @@ const mapDispatchToProps = (dispatch) =>
 export const onfidoScreen = {
   routeName: onfidoRoute,
   screen: withStatusBar()(connect(mapStateToProps, mapDispatchToProps)(Onfido)),
+  options: headerDefaultOptions({
+    headline: undefined,
+    headerHideShadow: true,
+    transparent: false,
+  })
 }

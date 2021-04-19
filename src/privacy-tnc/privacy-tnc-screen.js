@@ -6,6 +6,7 @@ import WebView from 'react-native-webview'
 import type { PrivacyTNCProps, PrivacyTNCState } from './type-privacy-tnc'
 import type { CustomError } from '../common/type-common'
 
+import { headerDefaultOptions } from '../navigation/navigation-header-config'
 import {
   TermsAndConditionsTitle,
   TermsAndConditionUrl,
@@ -17,7 +18,7 @@ import { OrangeLoader } from '../components/loader-gif/loader-gif'
 import { localEulaSource } from '../eula/type-eula'
 import { privacyTNCRoute } from '../common'
 
-export let TitlePrivacyTNC = undefined
+export let options = undefined
 
 export class PrivacyTNC extends PureComponent<
   PrivacyTNCProps,
@@ -29,11 +30,15 @@ export class PrivacyTNC extends PureComponent<
   }
 
   componentDidMount() {
-    TitlePrivacyTNC = this.props.route.params.title
+    options = headerDefaultOptions({
+      headline: this.props.route.params.title,
+      headerHideShadow: true,
+      transparent: false,
+    })
   }
 
   componentWillUnmount() {
-    TitlePrivacyTNC = undefined
+    options = undefined
   }
 
   state = {
