@@ -454,6 +454,11 @@ export default function lockReducer(
         checkPinStatus: CHECK_PIN_SUCCESS,
         lastUnlockSuccessTime: moment().format(),
       }
+    case CHECK_PIN:
+      return {
+        ...state,
+        checkPinStatus: CHECK_PIN_IDLE,
+      }
     case CHECK_PIN_FAIL:
       return {
         ...state,

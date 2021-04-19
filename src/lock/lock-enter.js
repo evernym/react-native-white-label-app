@@ -28,7 +28,7 @@ import {
 import { switchErrorAlerts } from '../store/config-store'
 import type { Store } from '../store/type-store'
 import { ENTER_YOUR_PASS_CODE_MESSAGE } from '../common/message-constants'
-import { isBiggerThanShortDevice, } from '../common/styles/constant'
+import { isBiggerThanShortDevice } from '../common/styles/constant'
 import { verticalScale } from 'react-native-size-matters'
 import { appName, LockHeader } from '../external-imports'
 
@@ -86,6 +86,8 @@ export class LockEnter extends Component<LockEnterProps, LockEnterState> {
       if (this.props.checkPinStatus === CHECK_PIN_SUCCESS) {
         this.pinCodeBox && this.pinCodeBox.hideKeyboard()
         this.props.onSuccess()
+
+        this.pinCodeBox && this.pinCodeBox.clear && this.pinCodeBox.clear()
       } else if (this.props.checkPinStatus === CHECK_PIN_FAIL) {
         this.pinCodeBox && this.pinCodeBox.clear && this.pinCodeBox.clear()
         // set status back to idle so we can come to this else again
@@ -152,7 +154,7 @@ export class LockEnter extends Component<LockEnterProps, LockEnterState> {
         {this.props.fromRecovery ? (
           <Container safeArea fifth>
             <CustomView center>
-              {LockHeader ? <LockHeader/> : <View/> }
+              {LockHeader ? <LockHeader /> : <View />}
             </CustomView>
             <Image
               source={backgroundImg}
@@ -204,7 +206,7 @@ export class LockEnter extends Component<LockEnterProps, LockEnterState> {
         ) : (
           <Container tertiary>
             <CustomView center>
-              {LockHeader ? <LockHeader/> : <View/> }
+              {LockHeader ? <LockHeader /> : <View />}
             </CustomView>
             <CustomView
               style={[styles.text]}
