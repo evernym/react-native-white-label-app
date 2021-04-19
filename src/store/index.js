@@ -74,8 +74,8 @@ import inviteAction, {
   watchInviteAction,
 } from '../invite-action/invite-action-store'
 import showCredential, { watchShowCredentialStore } from '../show-credential/show-credential-store'
-import verifier, { watchVerifier } from "../verifier/verifier-store";
-import logToApptentiveMiddleware from '../log-to-apptentive/log-to-apptentive-middleware'
+import verifier, { watchVerifier } from "../verifier/verifier-store"
+import logToApptentiveMiddleware, { isLogToApptentive } from '../feedback/log-to-apptentive'
 
 const sagaMiddleware = createSagaMiddleware()
 
@@ -112,6 +112,10 @@ const appReducer = combineReducers({
 })
 
 let middlewares = [historyRecorder]
+
+if (isLogToApptentive) {
+  middlewares.push(logToApptentiveMiddleware)
+}
 
 // "Error", "Warning", "Info", "Debug", "Trace"
 const logLevel = 'debug'

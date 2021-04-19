@@ -450,6 +450,7 @@ const ConnectionDetails = ({
         image={route.params.image}
         onDeleteButtonTitle={'Delete Connection'}
         onDelete={onDelete}
+        route={route}
       />
       <FlatList
         ref={flatList}

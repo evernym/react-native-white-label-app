@@ -20,6 +20,11 @@ import { LockHeader } from '../external-imports'
 import { getIsInRecovery } from '../store/store-selector'
 import { headerDefaultOptions } from '../navigation/navigation-header-config'
 
+import {
+  CHANGE_PASSCODE_BUTTON_IN_SETTINGS,
+  BACK_ARROW_IN_THE_CHANGE_PASSCODE_VIEW
+} from '../feedback/log-to-apptentive'
+
 let keyboardDidHideListener
 let keyboardDidShowListener
 
@@ -132,6 +137,7 @@ export function LockPinSetup(props: ReactNavigation) {
         navigation.navigate(lockSetupSuccessRoute, {
           changePin: true,
         })
+        dispatch(CHANGE_PASSCODE_BUTTON_IN_SETTINGS)
       } else if (inRecovery === 'true') {
         navigation.navigate(homeRoute)
       } else {
@@ -140,8 +146,18 @@ export function LockPinSetup(props: ReactNavigation) {
     }
   }, [keyboardHidden, pinSetupState])
 
+  const additionalActionOnBackPress = () => dispatch(BACK_ARROW_IN_THE_CHANGE_PASSCODE_VIEW)
+
   return (
     <Container tertiary>
+      {/* <Header
+        navigation={props.navigation}
+        route={props.route}
+        transparent={true}
+        additionalActionOnBackPress={
+          existingPin ? additionalActionOnBackPress : undefined
+        }
+      /> */}
       <CustomView center>{LockHeader ? <LockHeader /> : <View />}</CustomView>
       <CustomText center h4 bg="tertiary" style={[styles.title]} tertiary thick>
         {`${enteredPin ? 'Re-enter passcode' : enterPasscodeText}`}

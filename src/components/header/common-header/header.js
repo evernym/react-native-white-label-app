@@ -14,7 +14,18 @@ import { moderateScale } from 'react-native-size-matters'
 
 export const Header = (props: HeaderProps) => {
   const iOS = Platform.OS === 'ios'
-  const { transparent, hideBackButton, headline } = props
+  const {
+    transparent,
+    hideBackButton,
+    headline,
+    additionalActionOnBackPress,
+  } = props
+
+  const onPress = () => {
+    goBack(props)
+    additionalActionOnBackPress && additionalActionOnBackPress()
+  }
+
   return (
     <View style={transparent ? styles.containerTransparent : styles.container}>
       <View
@@ -23,12 +34,7 @@ export const Header = (props: HeaderProps) => {
         style={styles.iconSection}
       >
         {!hideBackButton && (
-          <TouchableOpacity
-            testID="left-icon"
-            onPress={() => {
-              goBack(props)
-            }}
-          >
+          <TouchableOpacity testID="left-icon" onPress={onPress}>
             <EvaIcon
               name={iOS ? IOS_BACK_ARROW_ICON : ANDROID_BACK_ARROW_ICON}
               width={moderateScale(32)}

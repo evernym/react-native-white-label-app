@@ -1,6 +1,8 @@
 // @flow
 import React from 'react'
 import { TouchableOpacity, StyleSheet, Text, Platform } from 'react-native'
+import { useDispatch } from 'react-redux' 
+
 import { colors, fontFamily } from '../../common/styles/constant'
 import { moderateScale } from 'react-native-size-matters'
 
@@ -8,9 +10,18 @@ import { EvaIcon, CAMERA_ICON } from '../../common/icons'
 
 import type { CameraButtonProps } from './type-camera-button'
 
+import { SCAN_QR_BUTTON } from '../../feedback/log-to-apptentive/'
+
 export const CameraButton = (props: CameraButtonProps) => {
+  const dispatch = useDispatch()
+
+  const onPress = () => {
+    props.onPress()
+    dispatch(SCAN_QR_BUTTON)
+  }
+
   return (
-    <TouchableOpacity style={styles.buttonContainer} onPress={props.onPress}>
+    <TouchableOpacity style={styles.buttonContainer} onPress={onPress}>
       <EvaIcon name={CAMERA_ICON} />
       <Text style={styles.text}>Scan</Text>
     </TouchableOpacity>

@@ -93,6 +93,13 @@ import {
   settingsHeadline,
 } from '../external-imports'
 
+import {
+  BIOMETRICS_SWITCH_ON,
+  BIOMETRICS_SWITCH_OFF,
+  ABOUT_BUTTON_IN_SETTINGS,
+  GIVE_APP_FEEDBACK_BUTTON_IN_SETTINGS,
+} from '../feedback/log-to-apptentive'
+
 export const headlineForSettingRoute = settingsHeadline || 'Settings'
 const showCameraButton =
   typeof settingsShowCameraButton === 'boolean'
@@ -126,6 +133,12 @@ export class Settings extends Component<SettingsProps, SettingsState> {
     // solution: the if condition will check for the current state of the switch and compares with the actual state of the switch
     // this confirms to make the onChangeTouchId function to invoke only once at all the times
     if (this.props.touchIdActive !== switchState && navigation.isFocused()) {
+      if (switchState) {
+        this.props.biometricsSwitchOn()
+      } else {
+        this.props.biometricsSwitchOff()
+      }
+
       navigation.push &&
         navigation.push(lockTouchIdSetupRoute, {
           fromSettings: true,
@@ -180,6 +193,7 @@ export class Settings extends Component<SettingsProps, SettingsState> {
 
   openAboutApp = () => {
     if (this.props.navigation.isFocused()) {
+      this.props.aboutButtonInSetting()
       this.props.navigation.navigate(aboutAppRoute, {})
     }
   }
@@ -222,6 +236,7 @@ export class Settings extends Component<SettingsProps, SettingsState> {
   openFeedback = () => {
     try {
       Apptentive.presentMessageCenter()
+      this.props.giveAppFeedbackButtonInSetting()
     } catch (e) {
       customLogger.log(e)
     }
@@ -693,6 +708,10 @@ const mapDispatchToProps = (dispatch) =>
       generateRecoveryPhrase,
       viewedWalletError,
       cloudBackupStart,
+      biometricsSwitchOn: () => BIOMETRICS_SWITCH_ON,
+      biometricsSwitchOff: () => BIOMETRICS_SWITCH_OFF,
+      aboutButtonInSetting: () => ABOUT_BUTTON_IN_SETTINGS,
+      giveAppFeedbackButtonInSetting: () => GIVE_APP_FEEDBACK_BUTTON_IN_SETTINGS,
     },
     dispatch
   )

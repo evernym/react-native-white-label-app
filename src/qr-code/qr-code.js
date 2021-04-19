@@ -36,6 +36,8 @@ import { convertAriesOutOfBandInvitationToAppInvitation } from '../invitation/ki
 import { convertAriesInvitationToAppInvitation } from '../invitation/kinds/aries-connection-invitation'
 import { proofRequestReceived } from '../proof-request/proof-request-store'
 
+import { SCAN_QR_CLOSE_X_BUTTON } from '../feedback/log-to-apptentive'
+
 export class QRCodeScannerScreen extends Component<
   QRCodeScannerScreenProps,
   QRCodeScannerScreenState
@@ -85,6 +87,7 @@ export class QRCodeScannerScreen extends Component<
 
   onClose = () => {
     this.props.navigation.goBack(null)
+    this.props.scanQrClose()
   }
 
   componentDidMount() {
@@ -206,6 +209,7 @@ const mapDispatchToProps = (dispatch) =>
       openIdConnectUpdateStatus,
       handleInvitation,
       proofRequestReceived,
+      scanQrClose: () => SCAN_QR_CLOSE_X_BUTTON
     },
     dispatch
   )

@@ -27,6 +27,8 @@ import Offline from './offline/offline'
 import { usePushNotifications } from './external-imports'
 import { SnackError } from './components/snack-error'
 
+import { setupApptentiveWithCredentials } from './feedback/log-to-apptentive'
+
 if (Platform.Version < 29) {
   // enable react-native-screens
   // TODO:KS Investigate why enableScreens break modals on Android
@@ -53,10 +55,10 @@ export class MSDKMeApp extends Component<AppProps, void> {
   navigatorRef = React.createRef<NavigationContainer>()
   currentRouteParams:
     | {
-    onAvoid?: () => void,
-    existingPin?: boolean,
-    [key: string]: mixed,
-  }
+        onAvoid?: () => void,
+        existingPin?: boolean,
+        [key: string]: mixed,
+      }
     | null
     | typeof undefined = null
   exitTimeout: number = 0
@@ -67,6 +69,8 @@ export class MSDKMeApp extends Component<AppProps, void> {
         this.navigateToRoute(sendLogsRoute)
       }
     })
+
+    setupApptentiveWithCredentials()
   }
 
   componentWillUnmount() {
@@ -115,14 +119,10 @@ export class MSDKMeApp extends Component<AppProps, void> {
       <Provider store={store}>
         <SafeAreaProvider>
           <Container>
-            <StatusBar
-              backgroundColor={colors.white}
-              barStyle="dark-content"
-            />
-            {
-              usePushNotifications &&
+            <StatusBar backgroundColor={colors.white} barStyle="dark-content" />
+            {usePushNotifications && (
               <PushNotification navigateToRoute={this.navigateToRoute} />
-            }
+            )}
             <ScreenNavigator navigateToRoute={this.navigateToRoute} />
             <DeepLink navigateToRoute={this.navigateToRoute}/>
             <AppStatus />

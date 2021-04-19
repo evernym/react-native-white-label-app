@@ -1,6 +1,9 @@
 // @flow
-import React, { useCallback } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { Text, View, Image, TouchableOpacity, Platform } from 'react-native'
+import ActionSheet from 'react-native-action-sheet'
+import { useDispatch } from 'react-redux'
+
 import {
   EvaIcon,
   ANDROID_BACK_ARROW_ICON,
@@ -10,11 +13,17 @@ import {
 import { moderateScale } from 'react-native-size-matters'
 import { DefaultLogo } from '../../../components/default-logo/default-logo'
 import { styles } from '../type-header'
-import ActionSheet from 'react-native-action-sheet'
+
+import {
+  TAPPING_ON_THE_BACK_ARROW,
+  TAPPING_ON_THE_3_DOTS,
+  DELETE_BUTTON
+} from '../../../feedback/log-to-apptentive'
 
 type HeaderWithDeletionProps = {
   headline: string,
   navigation: any,
+  route: any,
   onDelete: any,
   onDeleteButtonTitle: string,
   showImage?: boolean,
@@ -32,12 +41,16 @@ export const HeaderWithDeletion = ({
   onViewedAction,
   navigation,
   onDeleteButtonTitle,
+  route,
 }: HeaderWithDeletionProps) => {
+  const dispatch = useDispatch()
+
   const goBack = () => {
     if (onViewedAction) {
       onViewedAction()
     }
     navigation.goBack(null)
+    dispatch(TAPPING_ON_THE_BACK_ARROW(route.name))
   }
 
   const openDialog = useCallback(() => {
@@ -51,9 +64,11 @@ export const HeaderWithDeletion = ({
       (buttonIndex) => {
         if (buttonIndex === 0) {
           onDelete()
+          dispatch(DELETE_BUTTON(route.name))
         }
       }
     )
+    dispatch(TAPPING_ON_THE_3_DOTS(route.name))
   })
 
   return (

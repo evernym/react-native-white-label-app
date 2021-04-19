@@ -54,7 +54,9 @@ const CredentialDetails = (props: CredentialDetailsProps) => {
     }
   }, [attributes])
 
-  const [isMissingFieldsShowing, toggleMissingFields] = useState(showMissingField(hasEmpty, allEmpty))
+  const [isMissingFieldsShowing, toggleMissingFields] = useState(
+    showMissingField(hasEmpty, allEmpty)
+  )
   const isToggleMenuShowing = showToggleMenu(hasEmpty, allEmpty)
 
   const onDelete = () => {
@@ -83,6 +85,7 @@ const CredentialDetails = (props: CredentialDetailsProps) => {
         navigation={props.navigation}
         onDeleteButtonTitle={'Delete Credential'}
         onDelete={onDelete}
+        route={props.route}
       />
       {loading ? (
         <Loader/>

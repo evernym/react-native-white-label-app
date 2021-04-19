@@ -10,6 +10,7 @@ export type HeaderProps = {
   transparent?: boolean,
   showUnreadMessagesBadge?: string,
   color?: string,
+  additionalActionOnBackPress?: () => void,
 }
 
 export const SHOW_UNREAD_MESSAGES_BADGE_NEAR_WITH_MENU = 'menu'

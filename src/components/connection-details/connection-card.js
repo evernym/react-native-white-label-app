@@ -8,7 +8,7 @@ import {
   Platform,
   LayoutAnimation,
 } from 'react-native'
-import { connect } from 'react-redux'
+import { connect, useDispatch } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
 import SvgCustomIcon from '../../components/svg-custom-icon'
@@ -34,6 +34,11 @@ import { colors, fontSizes, fontFamily } from '../../common/styles/constant'
 import { ExpandableText } from '../expandable-text/expandable-text'
 import type { ReactNavigation } from '../../common/type-common'
 import { PROOF_VERIFIED } from '../../verifier/type-verifier'
+
+import {
+  VIEW_CREDENTIAL_BUTTON,
+  VIEW_REQUEST_DETAILS_BUTTON
+} from '../../feedback/log-to-apptentive'
 
 type ConnectionCardProps = {
   messageDate: string,
@@ -79,19 +84,18 @@ const ConnectionCardComponent = ({
                                    deleteHistoryEvent,
                                    denyProofRequest,
                                  }: ConnectionCardProps) => {
+  const dispatch = useDispatch()
+
   const updateAndShowModal = useCallback(() => {
     if (
       type === SEND_CLAIM_REQUEST_FAIL ||
       type === PAID_CREDENTIAL_REQUEST_FAIL
     ) {
-      acceptClaimOffer(
-        data.originalPayload.uid,
-        data.originalPayload.remoteDid,
-      )
+      acceptClaimOffer(data.originalPayload.uid, data.originalPayload.remoteDid)
     } else if (type === ERROR_SEND_PROOF) {
       reTrySendProof(
         data.originalPayload.selfAttestedAttributes,
-        data.originalPayload,
+        data.originalPayload
       )
     } else if (type === DENY_PROOF_REQUEST_FAIL) {
       denyProofRequest(data.originalPayload.uid)
@@ -100,6 +104,7 @@ const ConnectionCardComponent = ({
         data,
         colorBackground,
       })
+      dispatch(VIEW_REQUEST_DETAILS_BUTTON)
     } else if (type === 'RECEIVED') {
       navigation.navigate(modalScreenRoute, {
         data,
@@ -108,6 +113,7 @@ const ConnectionCardComponent = ({
         colorBackground,
         secondColorBackground,
       })
+      dispatch(VIEW_CREDENTIAL_BUTTON)
     } else if (type === PROOF_VERIFIED) {
       navigation.navigate(receivedProofRoute, {
         data,
@@ -130,18 +136,12 @@ const ConnectionCardComponent = ({
       <Text style={styles.messageDate}>{messageDate}</Text>
       <View style={styles.innerWrapper}>
         {payTokenValue && (
-          <CredentialPriceInfo
-            isPaid={true}
-            price={payTokenValue}
-          />
+          <CredentialPriceInfo isPaid={true} price={payTokenValue} />
         )}
         <View style={styles.innerWrapperPadding}>
           <View style={styles.top}>
             <View
-              style={[
-                styles.badge,
-                { display: showBadge ? 'flex' : 'none' },
-              ]}
+              style={[styles.badge, { display: showBadge ? 'flex' : 'none' }]}
             >
               <View style={styles.iconWrapper}>
                 <SvgCustomIcon
@@ -170,31 +170,21 @@ const ConnectionCardComponent = ({
           <View style={styles.bottom}>
             {!!noOfAttributes && (
               <View style={styles.attributesWrapper}>
-                <Text style={styles.attributesText}>
-                  {noOfAttributes}
-                </Text>
+                <Text style={styles.attributesText}>{noOfAttributes}</Text>
                 <Text style={styles.attributesText}> Attributes</Text>
               </View>
             )}
             <View style={styles.button}>
               {(!!noOfAttributes || repeatable) && (
                 <TouchableOpacity onPress={updateAndShowModal}>
-                  <Text
-                    style={[
-                      styles.buttonText,
-                      { color: colorBackground },
-                    ]}
-                  >
+                  <Text style={[styles.buttonText, { color: colorBackground }]}>
                     {buttonText}
                   </Text>
                 </TouchableOpacity>
               )}
               {canDelete && (
                 <Text
-                  style={[
-                    styles.buttonText,
-                    { color: colorBackground },
-                  ]}
+                  style={[styles.buttonText, { color: colorBackground }]}
                   onPress={onDelete}
                 >
                   DELETE
@@ -204,7 +194,7 @@ const ConnectionCardComponent = ({
           </View>
         </View>
       </View>
-      <View style={styles.helperView}/>
+      <View style={styles.helperView} />
     </View>
   )
 }
@@ -217,12 +207,12 @@ const mapDispatchToProps = (dispatch) =>
       deleteHistoryEvent,
       denyProofRequest,
     },
-    dispatch,
+    dispatch
   )
 
 export const ConnectionCard = connect(
   null,
-  mapDispatchToProps,
+  mapDispatchToProps
 )(ConnectionCardComponent)
 
 const styles = StyleSheet.create({
