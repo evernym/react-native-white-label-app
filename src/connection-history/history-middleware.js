@@ -41,6 +41,14 @@ import {
   CONNECTION_REQUEST_SENT,
   NEW_CONNECTION_SUCCESS,
 } from '../store/type-connection-store'
+import {
+  OUTOFBAND_PROOF_PROPOSAL_ACCEPTED,
+  PROOF_PROPOSAL_ACCEPTED,
+  PROOF_PROPOSAL_RECEIVED,
+  PROOF_REQUEST_SENT,
+  PROOF_VERIFICATION_FAILED,
+  PROOF_VERIFIED,
+} from '../verifier/type-verifier'
 
 const actionToRecord = [
   // removing invitation received from record array
@@ -79,6 +87,12 @@ const actionToRecord = [
   INVITE_ACTION_RECEIVED,
   INVITE_ACTION_REJECTED,
   INVITE_ACTION_ACCEPTED,
+  PROOF_PROPOSAL_RECEIVED,
+  OUTOFBAND_PROOF_PROPOSAL_ACCEPTED,
+  PROOF_PROPOSAL_ACCEPTED,
+  PROOF_REQUEST_SENT,
+  PROOF_VERIFIED,
+  PROOF_VERIFICATION_FAILED,
 ]
 
 // TODO:KS Fix any type using `redux` provided Generic Types

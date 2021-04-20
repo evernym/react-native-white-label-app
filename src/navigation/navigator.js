@@ -105,6 +105,9 @@ import {
   usePushNotifications,
 } from '../external-imports'
 import { inviteActionScreen } from '../invite-action/invite-action-screen'
+import { ShowCredentialScreen } from "../show-credential/show-credential-modal";
+import { ProofProposalModal } from "../verifier/proof-proposal-modal";
+import { ReceivedProofScreen } from '../verifier/received-proof-modal'
 
 if (Platform.OS !== 'android') {
   enableScreens()
@@ -548,6 +551,22 @@ export function MSDKAppNavigator() {
         component={inviteActionScreen.screen}
         options={inviteActionScreen.screen.navigationOptions}
       />
+      <CardStack.Screen
+        name={ShowCredentialScreen.routeName}
+        component={ShowCredentialScreen.screen}
+        options={ShowCredentialScreen.screen.navigationOptions}
+      />
+      <CardStack.Screen
+        name={ProofProposalModal.routeName}
+        component={ProofProposalModal.screen}
+        options={ProofProposalModal.screen.navigationOptions}
+      />
+      <CardStack.Screen
+        name={ReceivedProofScreen.routeName}
+        component={ReceivedProofScreen.screen}
+        options={ReceivedProofScreen.screen.navigationOptions}
+      />
+
       {usePushNotifications && (
         <ModalStack.Screen
           name={pushNotificationPermissionScreen.routeName}

@@ -14,9 +14,9 @@ import { bindActionCreators } from 'redux'
 import SvgCustomIcon from '../../components/svg-custom-icon'
 import CredentialPriceInfo from '../../components/labels/credential-price-info'
 import {
-  connectionsDrawerRoute,
   modalContentProofShared,
   modalScreenRoute,
+  receivedProofRoute,
 } from '../../common'
 import {
   SEND_CLAIM_REQUEST_FAIL,
@@ -31,9 +31,9 @@ import { DENY_PROOF_REQUEST_FAIL } from '../../proof-request/type-proof-request'
 import { denyProofRequest } from '../../proof-request/proof-request-store'
 import { moderateScale } from 'react-native-size-matters'
 import { colors, fontSizes, fontFamily } from '../../common/styles/constant'
-import { ResponseType } from '../request/type-request'
 import { ExpandableText } from '../expandable-text/expandable-text'
 import type { ReactNavigation } from '../../common/type-common'
+import { PROOF_VERIFIED } from '../../verifier/type-verifier'
 
 type ConnectionCardProps = {
   messageDate: string,
@@ -107,6 +107,11 @@ const ConnectionCardComponent = ({
         institutionalName,
         colorBackground,
         secondColorBackground,
+      })
+    } else if (type === PROOF_VERIFIED) {
+      navigation.navigate(receivedProofRoute, {
+        data,
+        colorBackground,
       })
     } else {
       return null

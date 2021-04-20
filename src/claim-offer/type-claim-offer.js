@@ -317,6 +317,7 @@ export type ClaimProofNavigation = {
       invitationPayload?: InvitationPayload | null,
       attachedRequest?: GenericObject,
       senderName?: string,
+      hidden?: boolean,
     |},
   },
 }

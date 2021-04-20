@@ -1,9 +1,5 @@
 // @flow
-import type {
-  AriesAttachedRequest,
-  AriesOutOfBandInvite,
-  InvitationPayload,
-} from '../invitation/type-invitation'
+import type { AriesAttachedRequest, AriesOutOfBandInvite, InvitationPayload } from '../invitation/type-invitation'
 import type { CustomError, GenericObject } from '../common/type-common'
 
 export const UPDATE_CONNECTION_THEME = 'UPDATE_CONNECTION_THEME'
@@ -52,11 +48,19 @@ export type DeleteConnectionEventAction = {
 
 export type Connections = { [identifier: string]: Connection }
 
+export type PairwiseAgent = {
+  pw_did: string,
+  pw_vk: string,
+  agent_did: string,
+  agent_vk: string,
+}
+
 export type ConnectionStore = {
   // TODO:PS Add specific keys in connection store
   [string]: any,
   data: ?Connections,
   oneTimeConnections?: ?Connections,
+  pairwiseAgent?: PairwiseAgent | null,
 }
 
 export const DELETE_CONNECTION_SUCCESS = 'DELETE_CONNECTION_SUCCESS'
@@ -180,3 +184,38 @@ export const connectionSuccess = (identifier: string, senderDid: string) => ({
   identifier,
   senderDid,
 })
+
+export const DELETE_ONE_TIME_CONNECTION = 'DELETE_ONE_TIME_CONNECTION'
+export type DeleteOneTimeConnectionAction = {
+  type: typeof DELETE_ONE_TIME_CONNECTION,
+  identifier: string,
+}
+
+export const DELETE_ONE_TIME_CONNECTION_SUCCESS = 'DELETE_ONE_TIME_CONNECTION_SUCCESS'
+export type DeleteOneTimeConnectionSuccessAction = {
+  type: typeof DELETE_ONE_TIME_CONNECTION_SUCCESS,
+  identifier: string,
+}
+
+/*
+* Pairwise Agent
+* */
+
+export const STORAGE_KEY_PAIRWISE_AGENT = 'STORAGE_KEY_PAIRWISE_AGENT'
+
+export const HYDRATE_PAIRWISE_AGENT = 'HYDRATE_PAIRWISE_AGENT'
+export type HydratePairwiseAgentAction = {
+  type: typeof HYDRATE_PAIRWISE_AGENT,
+  pairwiseAgent: PairwiseAgent,
+}
+
+export const RESET_PAIRWISE_AGENT = 'RESET_PAIRWISE_AGENT'
+export type ResetPairwiseAgentAction = {
+  type: typeof RESET_PAIRWISE_AGENT,
+}
+
+export const PAIRWISE_AGENT_CREATED = 'PAIRWISE_AGENT_CREATED'
+export type PairwiseAgentCreatedAction = {
+  type: typeof PAIRWISE_AGENT_CREATED,
+  pairwiseAgent: PairwiseAgent,
+}

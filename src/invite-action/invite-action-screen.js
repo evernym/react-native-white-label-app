@@ -38,14 +38,14 @@ import {
   inviteActionHeadline,
 } from '../external-imports'
 import { modalOptions } from '../connection-details/utils/modalOptions'
-import {ModalButtons} from "../components/buttons/modal-buttons";
+import { ModalButtons } from '../components/buttons/modal-buttons'
 
 export const InviteActionComponent = ({
-                                        inviteAction,
-                                        senderLogoUrl,
-                                        initiateFinalizedAction,
-                                        navigation,
-                                      }: InviteActionScreenProps) => {
+  inviteAction,
+  senderLogoUrl,
+  initiateFinalizedAction,
+  navigation,
+}: InviteActionScreenProps) => {
   const handleInviteAction = (args: string) => {
     initiateFinalizedAction(inviteAction.payload.uid, args)
     navigation.navigate(homeDrawerRoute)
@@ -129,11 +129,11 @@ const mapDispatchToProps = (dispatch) =>
   )
 
 const screen =
-  CustomInviteActionModal && CustomInviteActionModal.screen ||
+  (CustomInviteActionModal && CustomInviteActionModal.screen) ||
   InviteActionComponent
 
 const navigationOptions =
-  CustomInviteActionModal && CustomInviteActionModal.navigationOptions ||
+  (CustomInviteActionModal && CustomInviteActionModal.navigationOptions) ||
   modalOptions(inviteActionHeadline, 'CloseIcon')
 
 export const inviteActionScreen = {

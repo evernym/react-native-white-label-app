@@ -77,6 +77,7 @@ import {
   LAST_SUCCESSFUL_CLOUD_BACKUP,
   homeRoute,
   inviteActionRoute,
+  proofProposalRoute,
 } from '../common'
 import type { NavigationParams, GenericObject } from '../common/type-common'
 
@@ -634,6 +635,7 @@ export function* updatePayloadToRelevantStoreSaga(
               uid,
               senderLogoUrl,
               remotePairwiseDID,
+              ...additionalData.additionalPayloadInfo,
             }
           )
         )
@@ -696,6 +698,12 @@ function* redirectToRelevantScreen(notification: RedirectToRelevantScreen) {
       case MESSAGE_TYPE.INVITE_ACTION:
       case MESSAGE_TYPE.INVITE_ACTION.toLowerCase():
         routeToDirect = inviteActionRoute
+        notificationText = `${additionalData.messageTitle}`
+        break
+
+      case MESSAGE_TYPE.PRESENTATION_PROPOSAL:
+      case MESSAGE_TYPE.PRESENTATION_PROPOSAL.toLowerCase():
+        routeToDirect = proofProposalRoute
         notificationText = `${additionalData.messageTitle}`
         break
     }

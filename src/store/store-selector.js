@@ -85,6 +85,11 @@ export const getConnectionHydrationState = (state: Store) =>
 export const getAllOneTimeConnection = (state: Store) =>
   state.connections.oneTimeConnections
 
+export const getAllConnections = (state: Store) => ({
+  ...state.connections.data,
+  ...state.connections.oneTimeConnections,
+})
+
 export const getConnectionTheme = (state: Store, logoUrl: string) =>
   state.connections.connectionThemes[logoUrl] ||
   state.connections.connectionThemes['default']
@@ -143,7 +148,13 @@ export const getConnectionByProp = (
   valueToMatch: any
 ): Array<Connection> => {
   const connections = getAllConnection(state)
-  if (connections) {
+  const oneTimeConnections = getAllOneTimeConnection(state)
+  const allConnections = {
+    ...connections,
+    ...oneTimeConnections,
+  }
+
+  if (allConnections) {
     // Had to use `any` type here even though we know `Array<Connection>`
     // will be returned, as of now Flow returns mixed type for
     // all Object.{map,keys,values} operations and we can't do
@@ -151,7 +162,7 @@ export const getConnectionByProp = (
     // in this case, because for $Exact type, we should know each
     // key in advance which is not the case here because we don't know DIDs
     // with which we will make connections
-    const savedConnections: Array<any> = Object.values(connections)
+    const savedConnections: Array<any> = Object.values(allConnections)
     return savedConnections.filter(
       (connection) => connection[property] === valueToMatch
     )
@@ -193,7 +204,7 @@ export const getConnection = (
   state: Store,
   senderDID: string
 ): Array<Connection> => {
-  const connections = getAllConnection(state)
+  const connections = getAllConnections(state)
   let foundConnections: Array<Connection> = []
 
   if (connections) {
@@ -214,22 +225,6 @@ export const getConnection = (
     return foundConnections
   }
 
-  // else try to find one-time connection
-  const oneTimeConnections = getAllOneTimeConnection(state)
-  if (oneTimeConnections) {
-    // Had to use `any` type here even though we know `Array<Connection>`
-    // will be returned, as of now Flow returns mixed type for
-    // all Object.{map,keys,values} operations and we can't do
-    // anything unless we specify $Exact type, which we can't define
-    // in this case, because for $Exact type, we should know each
-    // key in advance which is not the case here because we don't know DIDs
-    // with which we will make connections
-    const savedConnections: Array<any> = Object.values(oneTimeConnections)
-    return savedConnections.filter(
-      (connection: Connection) => connection.senderDID === senderDID
-    )
-  }
-
   return []
 }
 
@@ -242,39 +237,28 @@ export const getConnectionLogoUrl = (
 }
 
 export const getConnectionByUserDid = (state: Store, userDID: string) => {
-  const connections = getAllConnection(state)
-
-  if (connections) {
-    const connection = connections[userDID]
-    if (connection) {
-      return connection
-    }
-  }
-
-  const oneTimeConnections = getAllOneTimeConnection(state)
-
-  if (oneTimeConnections) {
-    const connection = oneTimeConnections[userDID]
-    if (connection) {
-      return connection
-    }
-  }
-
-  return null
+  const connections = getAllConnections(state) || {}
+  return connections[userDID]
 }
 
 export const getAllConnectionsPairwiseDid = (state: Store) => {
   const connections = getAllConnection(state)
+  const oneTimeConnections = getAllOneTimeConnection(state)
+  const allConnections = {
+    ...connections,
+    ...oneTimeConnections,
+  }
 
   let myPairwiseDIDs = []
 
-  if (connections) {
-    Object.keys(connections).forEach((userDID) => {
-      if (connections[userDID] && connections[userDID].myPairwiseDid) {
+  if (allConnections) {
+    Object.keys(allConnections).forEach((userDID) => {
+      if (allConnections[userDID] && allConnections[userDID].myPairwiseDid) {
         myPairwiseDIDs.push(userDID)
       }
     })
   }
+
   return myPairwiseDIDs
 }
 
@@ -338,6 +322,8 @@ export const getUserIsFetching = (state: Store) => state.user.isFetching
 /*
  * Selectors related to Lock Store
  * */
+export const getLockStore = (state: Store) => state.lock
+
 export const getIsAppLocked = (state: Store) => state.lock.isAppLocked
 
 export const getPendingRedirection = (state: Store) =>
@@ -455,13 +441,22 @@ export const getAllInvitations = (state: Store) => state.invitation
  * */
 export const getClaimMap = (state: Store) => state.claim.claimMap
 
-export const getClaimForOffer = (state: Store, offer: ClaimOfferPayload) =>
-  Object.values(state.claim.claimMap).find(
-    (claim: any) =>
+export const getClaimForOffer = (state: Store, offer: ClaimOfferPayload) => {
+  for (const claimUuid of Object.keys(state.claim.claimMap)) {
+    let claim = state.claim.claimMap[claimUuid]
+    if (
       claim.senderDID === offer.remotePairwiseDID &&
       claim.name === offer.data.name &&
       claim.issueDate === offer.issueDate
-  )
+    ){
+      return {
+        claimUuid,
+        claim,
+      }
+    }
+  }
+  return {}
+}
 
 /*
  * Selectors related to Proof Store
@@ -729,3 +724,45 @@ export const getOpenIdConnectVersion = (state: Store) =>
  * */
 export const getInAppNotification = (state: Store) =>
   state.inAppNotification.notification
+
+export const getSelectedCredentials = (state: Store, uid: string) => state.proofRequest[uid].data.requestedAttributes
+
+/*
+ * Selectors related to Show Credential Store
+ * */
+export const getShowCredentialData = (state: Store) => state.showCredential.data
+
+export const getShowCredentialConnectionIdentifier = (state: Store) => state.showCredential.connectionIdentifier
+
+export const getShowCredentialUuid = (state: Store) => state.showCredential.credentialUuid
+
+export const getShowCredentialError = (state: Store) => state.showCredential.error
+
+export const getIsCredentialSent = (state: Store) => state.showCredential.isSent
+
+/*
+ * Selectors related to Verifier Store
+ * */
+export const getVerifiers = (state: Store) => state.verifier
+
+export const getVerifier = (state: Store, uid: string) => state.verifier[uid]
+
+export const getVerifierPresentationProposal = (state: Store, uid: string) =>
+  state.verifier[uid]?.presentationProposal
+
+export const getVerifierProofRequest = (state: Store, uid: string) =>
+  state.verifier[uid]?.proofRequest
+
+export const getVerifierRequestedProof = (state: Store, uid: string) =>
+  state.verifier[uid]?.requestedProof
+
+export const getVerifierSenderLogo = (state: Store, uid: string) =>
+  state.verifier[uid]?.senderLogoUrl
+
+export const getVerifierSenderName = (state: Store, uid: string) =>
+  state.verifier[uid]?.senderName
+
+/*
+* Connection Pairwise Agent
+* */
+export const getConnectionPairwiseAgentInfo = (state: Store) => state.connections.pairwiseAgent

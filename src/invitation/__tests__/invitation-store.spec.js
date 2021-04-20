@@ -157,7 +157,10 @@ describe('Invitation Store', () => {
           ],
           [
             matchers.call.fn(acceptInvitationVcx, connectionHandle),
-            myPairWiseConnectionDetails,
+            {
+              connection: myPairWiseConnectionDetails,
+              serializedConnection: vcxSerializedConnection
+            },
           ],
           [
             matchers.call.fn(serializeConnection, connectionHandle),

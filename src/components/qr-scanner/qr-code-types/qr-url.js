@@ -16,7 +16,7 @@ import type { GenericObject } from '../../../common/type-common'
 import { flatFetch } from '../../../common/flat-fetch'
 import { flatJsonParse } from '../../../common/flat-json-parse'
 import { isValidOIDCQrCode } from './qr-code-oidc'
-import {getRequestRedirectionUrl, toUtf8FromBase64} from '../../../bridge/react-native-cxs/RNCxs'
+import {getRequestRedirectionUrl} from '../../../bridge/react-native-cxs/RNCxs'
 import { flattenAsync } from '../../../common/flatten-async'
 import {isEncodedAriesConnectionInvitation} from "../../../invitation/kinds/aries-connection-invitation";
 import {isEncodedAriesOutOfBandInvitation} from "../../../invitation/kinds/aries-out-of-band-invitation";

@@ -289,6 +289,7 @@ export type DownloadedMessage = {
   refMsgId?: ?string,
   deliveryDetails: Array<any>,
   decryptedPayload?: string,
+  pairwiseDID?: string,
 }
 export type DownloadedConnectionMessages = {
   pairwiseDID: string,

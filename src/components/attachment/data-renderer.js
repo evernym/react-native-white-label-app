@@ -14,7 +14,6 @@ import {
   PhotoAttachment,
   checkObjectTypes,
   getIcon,
-  getFileExtensionName,
 } from './helpers'
 import { attachMimeTypes } from './type-attachment'
 import { styles } from './styles'

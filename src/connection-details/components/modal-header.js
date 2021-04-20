@@ -13,6 +13,7 @@ import { DefaultLogo } from '../../components/default-logo/default-logo'
 import { Avatar } from '../../components/avatar/avatar'
 import { ExpandableText } from '../../components/expandable-text/expandable-text'
 import ToggleFields from '../../components/toggle-fields/toggle-fields'
+import { renderUserAvatar } from "../../components/user-avatar/user-avatar";
 
 type ModalHeaderProps = {
   institutionalName: string,
@@ -42,7 +43,7 @@ export const ModalHeader = ({
           <View style={styles.issuerAndInfoSection}>
             <Text style={styles.infoText}>{credentialText}</Text>
             <ExpandableText
-              text={institutionalName}
+              text={institutionalName || 'Unknown'}
               style={styles.issuerNameText}
             />
           </View>
@@ -54,13 +55,15 @@ export const ModalHeader = ({
               src={source}
               testID={`sender-avatar`}
             />
-          ) : (
-            <DefaultLogo
-              text={institutionalName[0]}
-              size={moderateScale(80)}
-              fontSize={48}
-            />
-          )}
+          ) :
+            institutionalName ?
+              <DefaultLogo
+                text={institutionalName[0]}
+                size={moderateScale(80)}
+                fontSize={48}
+              /> :
+              renderUserAvatar()
+          }
         </View>
 
         <View style={styles.bottomSection}>

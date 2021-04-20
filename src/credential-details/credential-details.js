@@ -1,10 +1,10 @@
 //@flow
-import React, { useCallback, useMemo, useEffect, useState } from 'react'
+import React, { useMemo, useEffect, useState } from 'react'
 import { Text, View, ScrollView, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import { verticalScale, moderateScale } from 'react-native-size-matters'
 import { colors, fontFamily, fontSizes } from '../common/styles/constant'
-import { credentialDetailsRoute } from '../common/route-constants'
+import { credentialDetailsRoute, showCredentialRoute } from '../common/route-constants'
 import type { CredentialDetailsProps } from './type-credential-details'
 import { Avatar } from '../components/avatar/avatar'
 import { DefaultLogo } from '../components/default-logo/default-logo'
@@ -15,13 +15,15 @@ import { bindActionCreators } from 'redux'
 import { deleteClaim } from '../claim/claim-store'
 import { InteractionManager } from 'react-native'
 import { ViewPushLeft } from '../connection-details/utils/modal-animation'
-import { CustomCredentialDetailsScreen } from '../external-imports'
+import { CustomCredentialDetailsScreen, showCredential } from '../external-imports'
 import ToggleFields from '../components/toggle-fields/toggle-fields'
 import {
   checkCredentialForEmptyFields,
   showMissingField,
   showToggleMenu,
 } from '../connection-details/utils/checkForEmptyAttributes'
+import { Button } from '../components/buttons/button'
+import { GRID_ICON } from '../common/icons'
 
 const CredentialDetails = (props: CredentialDetailsProps) => {
   const {
@@ -48,7 +50,7 @@ const CredentialDetails = (props: CredentialDetailsProps) => {
     return {
       data,
       hasEmpty,
-      allEmpty
+      allEmpty,
     }
   }, [attributes])
 
@@ -66,6 +68,14 @@ const CredentialDetails = (props: CredentialDetailsProps) => {
     })
   }, [])
 
+  const show = async () => {
+    props.navigation.navigate(showCredentialRoute, {
+      credentialName,
+      attributes: data,
+      claimOfferUuid: claimOfferUuid,
+    })
+  }
+
   return (
     <View style={styles.container}>
       <HeaderWithDeletion
@@ -75,53 +85,62 @@ const CredentialDetails = (props: CredentialDetailsProps) => {
         onDelete={onDelete}
       />
       {loading ? (
-        <Loader />
+        <Loader/>
       ) : (
-        <ScrollView>
-          <View style={styles.headerWrapper}>
-            <Text style={styles.headerSubText}>
-              {date ? 'Issued by' : 'Offered by'}
-            </Text>
-            <ExpandableText style={styles.headerText} text={issuerName} />
-            <View style={styles.avatarSection}>
-              {typeof logoUrl === 'string' ? (
-                <Avatar
-                  radius={48}
-                  src={{ uri: logoUrl }}
-                  testID={`sender-avatar`}
+        <>
+          <ScrollView>
+            <View style={styles.headerWrapper}>
+              <Text style={styles.headerSubText}>
+                {date ? 'Issued by' : 'Offered by'}
+              </Text>
+              <ExpandableText style={styles.headerText} text={issuerName}/>
+              <View style={styles.avatarSection}>
+                {typeof logoUrl === 'string' ? (
+                  <Avatar
+                    radius={48}
+                    src={{ uri: logoUrl }}
+                    testID={`sender-avatar`}
+                  />
+                ) : (
+                  <DefaultLogo text={issuerName} size={96} fontSize={48}/>
+                )}
+              </View>
+              <View style={styles.contentWrapper}>
+                <ExpandableText
+                  style={styles.contentText}
+                  text={credentialName}
                 />
-              ) : (
-                <DefaultLogo text={issuerName} size={96} fontSize={48} />
-              )}
+              </View>
             </View>
-            <View style={styles.contentWrapper}>
-              <ExpandableText
-                style={styles.contentText}
-                text={credentialName}
+            {toggleMissingFields && showToggleMenu && (
+              <ToggleFields
+                actionInfoText={[
+                  'Empty fields are hidden by default.',
+                  'Empty fields are being displayed.',
+                ]}
+                actionText={['Show', 'Hide']}
+                useToggle={[isMissingFieldsShowing, toggleMissingFields]}
+                showToggleMenu={isToggleMenuShowing}
+              />
+            )}
+            <View style={styles.listContainer}>
+              <CredentialList
+                content={data}
+                uid={uid}
+                remotePairwiseDID={remoteDid}
+                isMissingFieldsShowing={isMissingFieldsShowing}
               />
             </View>
-          </View>
-          {toggleMissingFields && showToggleMenu && (
-          <ToggleFields
-            actionInfoText={[
-              'Empty fields are hidden by default.',
-              'Empty fields are being displayed.',
-            ]}
-            actionText={['Show', 'Hide']}
-            useToggle={[isMissingFieldsShowing, toggleMissingFields]}
-            showToggleMenu={isToggleMenuShowing}
+          </ScrollView>
+          {showCredential &&
+          <Button
+            onPress={show}
+            label="Show"
+            evaIcon={GRID_ICON}
           />
-          )}
-          <View style={styles.listContainer}>
-            <CredentialList
-              content={data}
-              uid={uid}
-              remotePairwiseDID={remoteDid}
-              isMissingFieldsShowing={isMissingFieldsShowing}
-            />
-          </View>
-        </ScrollView>
-        )}
+          }
+        </>
+      )}
     </View>
   )
 }

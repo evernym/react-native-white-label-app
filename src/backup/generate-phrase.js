@@ -5,7 +5,13 @@ import { Image } from 'react-native'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import type { Store } from '../store/type-store'
-import { Container, CustomView, CustomText, Loader, Header } from '../components'
+import {
+  Container,
+  CustomView,
+  CustomText,
+  Loader,
+  Header,
+} from '../components'
 import { colors, fontSizes } from '../common/styles'
 import {
   genRecoveryPhraseRoute,

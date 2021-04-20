@@ -82,7 +82,7 @@ export async function convertCxsInitToVcxInit(
     sdk_to_remote_verkey: init.myOneTimeVerificationKey,
     // TODO: These should be removed after we sdk team fix these as optional
     institution_name: deviceName || appName,
-    institution_logo_url: 'https://robothash.com/logo.png',
+    institution_logo_url: 'https://try.connect.me/img/CMicon@3x.png',
     institution_did: init.oneTimeAgencyDid,
     institution_verkey: init.oneTimeAgencyVerificationKey,
     payment_method: init.paymentMethod,

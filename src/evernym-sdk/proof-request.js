@@ -16,9 +16,6 @@ export const DENY_BUTTON_TEXT = null
 // custom component to use for Proof Request dialog rendering (instead of predefined one)
 export const CustomProofRequestModal = null
 
-// custom component to use for shared Proof dialog rendering (instead of predefined one)
-export const CustomSharedProofModal = null
-
 // custom component to use for selecting a Credential for Proof requested attribute dialog rendering (instead of predefined one)
 export const CustomSelectAttributeValueModal = null
 

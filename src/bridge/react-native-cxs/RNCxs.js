@@ -39,7 +39,6 @@ import type {
   AgencyPoolConfig,
   MessagePaymentDetails,
 } from '../../store/type-config-store'
-import type { MyPairwiseInfo } from '../../store/type-connection-store'
 import type {
   ClaimPushPayload,
   GetClaimVcxResult,
@@ -60,30 +59,20 @@ import {
   convertSovrinAtomsToSovrinTokens,
   convertVcxLedgerFeesToLedgerFees,
 } from '../../sovrin-token/sovrin-token-converter'
+import { uuid } from "../../services/uuid";
+import type { GenericObject } from '../../common/type-common'
+import type { PairwiseAgent } from '../../store/type-connection-store'
 
 const { RNIndy } = NativeModules
 
 export async function acceptInvitationVcx(
-  connectionHandle: number
-): Promise<MyPairwiseInfo> {
-  // hard coding connection options to QR type for now, because vcx needs connection options
-  // API for vcx assumes that it is running on enterprise side and not from consumer side
-  // hence it tries to create connection with connection type.
-  // However, our need is not to create a connection but to create a connection instance
-  // with existing invitation. So, for now for any invitation type QR or SMS
-  // we are hard coding connection option to QR
-  const connectionOptions = { connection_type: 'QR', phone: '' }
-  await RNIndy.vcxAcceptInvitation(
-    connectionHandle,
-    JSON.stringify(connectionOptions)
-  )
-  // TODO:KS Remove below API call once sdk team returns pairwise info in above api
-  // above call does not return pairwise did information, but we need pairwise info
-  // to store that information and have those details available while making a connection
-  // we have to make an extra call to get pairwise info
-  const serializedConnection: string = await serializeConnection(
-    connectionHandle
-  )
+  connectionHandle: number,
+  agentInfo: PairwiseAgent | null,
+): Promise<GenericObject> {
+  const connectionOption = agentInfo ? { pairwise_agent_info: agentInfo } : {}
+
+  const invitation = await RNIndy.vcxAcceptInvitation(connectionHandle, JSON.stringify(connectionOption))
+  const serializedConnection: string = await serializeConnection(connectionHandle)
 
   const {
     data,
@@ -99,7 +88,11 @@ export async function acceptInvitationVcx(
   // } else if (data.pw_did) {
   // }
 
-  return convertVcxConnectionToCxsConnection(data)
+  return {
+    connection: convertVcxConnectionToCxsConnection(data),
+    serializedConnection,
+    invitation
+  }
 }
 
 export async function updatePushTokenVcx(pushTokenConfig: CxsPushTokenConfig) {
@@ -930,4 +923,74 @@ export async function getRequestRedirectionUrl(
   url: string
 ): Promise<string> {
   return RNIndy.getRequestRedirectionUrl(url)
+}
+
+export async function credentialGetPresentationProposal(
+  credentialHandle: number
+): Promise<string> {
+  return RNIndy.credentialGetPresentationProposal(credentialHandle)
+}
+
+export async function createOutOfBandConnectionInvitation(
+  goal: string,
+  handshake?: boolean,
+  attachment?: string | null,
+  agentInfo: PairwiseAgent | null,
+): Promise<GenericObject> {
+  const connectionHandle = await RNIndy.createOutOfBandConnection(
+    uuid(),
+    null,
+    goal,
+    handshake,
+    attachment
+  )
+
+  let {
+    connection: pairwiseInfo,
+    serializedConnection: vcxSerializedConnection,
+    invitation,
+  } =  await acceptInvitationVcx(connectionHandle, agentInfo)
+
+  return {
+    pairwiseInfo,
+    vcxSerializedConnection,
+    invitation,
+  }
+}
+
+export async function createProofVerifierWithProposal(presentationProposal: string, name: string): Promise<string> {
+  return RNIndy.createProofVerifierWithProposal(
+    uuid(),
+    presentationProposal,
+    name,
+  )
+}
+
+export async function proofVerifierSendRequest(handle: number, connectionHandle: number): Promise<null> {
+  return RNIndy.proofVerifierSendRequest(handle, connectionHandle)
+}
+
+export async function proofVerifierSerialize(handle: number): Promise<string> {
+  return RNIndy.proofVerifierSerialize(handle)
+}
+
+export async function proofVerifierDeserialize(serialized: number): Promise<number> {
+  return RNIndy.proofVerifierDeserialize(serialized,)
+}
+
+export async function proofVerifierUpdateStateWithMessage(handle: number, message: number): Promise<number> {
+  return RNIndy.proofVerifierUpdateStateWithMessage(handle, message)
+}
+
+export async function proofVerifierGetProofMessage(handle: number): Promise<any> {
+  return RNIndy.proofVerifierGetProofMessage(handle)
+}
+
+export async function proofVerifierGetProofRequest(handle: number): Promise<string> {
+  return RNIndy.proofVerifierGetPresentationRequest(handle,)
+}
+
+export async function createPairwiseAgent(): Promise<string> {
+  const agentInfo = await RNIndy.createPairwiseAgent()
+  return JSON.parse(agentInfo)
 }

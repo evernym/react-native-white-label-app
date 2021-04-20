@@ -1605,6 +1605,83 @@ RCT_EXPORT_METHOD(credentialReject:(NSInteger)credential_handle
    }];
 }
 
+RCT_EXPORT_METHOD(credentialGetPresentationProposal:(NSInteger)credential_handle
+                                           resolver: (RCTPromiseResolveBlock) resolve
+                                           rejecter: (RCTPromiseRejectBlock) reject)
+{
+  [[[ConnectMeVcx alloc] init] credentialGetPresentationProposal:credential_handle
+                                                      completion:^(NSError *error, NSString *presentationProposal)
+  {
+    if (error != nil && error.code != 0)
+    {
+      NSString *indyErrorCode = [NSString stringWithFormat:@"%ld", (long)error.code];
+      reject(indyErrorCode, @"Error occurred while getting Presentation Proposal", error);
+    } else {
+      resolve(presentationProposal);
+    }
+  }];
+}
+
+RCT_EXPORT_METHOD(createConnection:(NSString *)sourceId
+                             resolver: (RCTPromiseResolveBlock) resolve
+                             rejecter: (RCTPromiseRejectBlock) reject)
+{
+  [[[ConnectMeVcx alloc] init] connectionCreateInvite:sourceId
+                                           completion:^(NSError *error, NSInteger connectionHandle)
+  {
+    if (error != nil && error.code != 0)
+    {
+      NSString *indyErrorCode = [NSString stringWithFormat:@"%ld", (long)error.code];
+      reject(indyErrorCode, @"Error occurred while creating connection", error);
+    } else {
+      resolve(@(connectionHandle));
+    }
+  }];
+}
+
+RCT_EXPORT_METHOD(createOutOfBandConnection:(NSString *)sourceId
+                                   goalCode:(NSString *)goalCode
+                                       goal:(NSString *)goal
+                                  handshake:(BOOL *)handshake
+                              requestAttach:(NSString *)requestAttach
+                                   resolver: (RCTPromiseResolveBlock) resolve
+                                   rejecter: (RCTPromiseRejectBlock) reject)
+{
+  [[[ConnectMeVcx alloc] init] connectionCreateOutofband:sourceId
+                                                goalCode:goalCode
+                                                    goal:goal
+                                               handshake:handshake
+                                           requestAttach:requestAttach
+                                              completion:^(NSError *error, NSInteger connectionHandle)
+  {
+    if (error != nil && error.code != 0)
+    {
+      NSString *indyErrorCode = [NSString stringWithFormat:@"%ld", (long)error.code];
+      reject(indyErrorCode, @"Error occurred while creating connection", error);
+    } else {
+      resolve(@(connectionHandle));
+    }
+  }];
+}
+
+RCT_EXPORT_METHOD(getConnectionInvite:(NSInteger)connection_handle
+                             resolver: (RCTPromiseResolveBlock) resolve
+                             rejecter: (RCTPromiseRejectBlock) reject)
+{
+  [[[ConnectMeVcx alloc] init] getConnectionInviteDetails:connection_handle
+                                              abbreviated:FALSE
+                                               withCompletion:^(NSError *error, NSString *invitation)
+  {
+    if (error != nil && error.code != 0)
+    {
+      NSString *indyErrorCode = [NSString stringWithFormat:@"%ld", (long)error.code];
+      reject(indyErrorCode, @"Error occurred while getting connection invitation", error);
+    } else {
+      resolve(invitation);
+    }
+  }];
+}
+
 RCT_EXPORT_METHOD(getRequestRedirectionUrl:(NSString *)url
                   resolver: (RCTPromiseResolveBlock) resolve
                   rejecter: (RCTPromiseRejectBlock) reject)
@@ -1637,5 +1714,182 @@ RCT_EXPORT_METHOD(getRequestRedirectionUrl:(NSString *)url
   }];
   [dataTask resume];
 }
+
+  /*
+   * Proof Verifier API
+   */
+RCT_EXPORT_METHOD(createProofVerifierWithProposal:(NSString *)sourceId
+                              presentationProposal:(NSString *)presentationProposal
+                                              name:(NSString *)name
+                                          resolver: (RCTPromiseResolveBlock) resolve
+                                          rejecter: (RCTPromiseRejectBlock) reject)
+{
+    [[[ConnectMeVcx alloc] init] createProofVerifierWithProposal:sourceId
+                                            presentationProposal:presentationProposal
+                                                            name:name
+                                                      completion:^(NSError *error, NSInteger handle) {
+      if (error != nil && error.code != 0)
+      {
+        NSString *indyErrorCode = [NSString stringWithFormat:@"%ld", (long)error.code];
+        reject(indyErrorCode, @"Error occurred while creating proof verifier with proposal", error);
+      } else {
+        resolve(@(handle));
+      }
+    }];
+}
+
+RCT_EXPORT_METHOD(proofVerifierUpdateState: (NSInteger) proofHandle
+                                  resolver: (RCTPromiseResolveBlock) resolve
+                                  rejecter: (RCTPromiseRejectBlock) reject)
+{
+  [[[ConnectMeVcx alloc] init] proofVerifierUpdateState:proofHandle
+                                             completion:^(NSError *error, NSInteger state)
+  {
+    if (error != nil && error.code != 0) {
+      NSString *indyErrorCode = [NSString stringWithFormat:@"%ld", (long)error.code];
+      reject(indyErrorCode, @"Error occurred while updating proof verifier state", error);
+    } else {
+      resolve(@(state));
+    }
+  }];
+}
+
+RCT_EXPORT_METHOD(proofVerifierUpdateStateWithMessage: (NSInteger) proofHandle
+                                              message:(NSString *)message
+                                             resolver: (RCTPromiseResolveBlock) resolve
+                                             rejecter: (RCTPromiseRejectBlock) reject)
+{
+  [[[ConnectMeVcx alloc] init] proofVerifierUpdateStateWithMessage:proofHandle
+                                                           message:message
+                                                        completion:^(NSError *error, NSInteger state)
+  {
+    if (error != nil && error.code != 0) {
+      NSString *indyErrorCode = [NSString stringWithFormat:@"%ld", (long)error.code];
+      reject(indyErrorCode, @"Error occurred while updating proof verifier state", error);
+    } else {
+      resolve(@(state));
+    }
+  }];
+}
+
+RCT_EXPORT_METHOD(proofVerifierGetState: (NSInteger) proofHandle
+                               resolver: (RCTPromiseResolveBlock) resolve
+                               rejecter: (RCTPromiseRejectBlock) reject)
+{
+  [[[ConnectMeVcx alloc] init] proofVerifierGetState:proofHandle
+                                          completion:^(NSError *error, NSInteger state)
+  {
+    if (error != nil && error.code != 0) {
+      NSString *indyErrorCode = [NSString stringWithFormat:@"%ld", (long)error.code];
+      reject(indyErrorCode, @"Error occurred while getting proof verifier state", error);
+    } else {
+      resolve(@(state));
+    }
+  }];
+}
+
+RCT_EXPORT_METHOD(proofVerifierSendRequest: (NSInteger) proofHandle
+                          connectionHandle: (NSInteger) connectionHandle
+                                  resolver: (RCTPromiseResolveBlock) resolve
+                                  rejecter: (RCTPromiseRejectBlock) reject)
+{
+  [[[ConnectMeVcx alloc] init] proofVerifierSendRequest:proofHandle
+                                       connectionHandle:connectionHandle
+                                             completion:^(NSError *error) {
+    if (error != nil && error.code != 0)
+    {
+      NSString *indyErrorCode = [NSString stringWithFormat:@"%ld", (long)error.code];
+      reject(indyErrorCode, @"Error occurred while sending proof request", error);
+    }
+    else {
+      resolve(@{});
+    }
+  }];
+}
+
+RCT_EXPORT_METHOD(proofVerifierSerialize: (NSInteger)proofHandle
+                                resolver: (RCTPromiseResolveBlock) resolve
+                                rejecter: (RCTPromiseRejectBlock) reject)
+{
+  [[[ConnectMeVcx alloc] init] proofVerifierSerialize:proofHandle
+                                           completion:^(NSError *error, NSString *serialized) {
+    if (error != nil && error.code != 0)
+    {
+      NSString *indyErrorCode = [NSString stringWithFormat:@"%ld", (long)error.code];
+      reject(indyErrorCode, @"Error occurred while serializing proof verifier", error);
+    }else{
+      resolve(serialized);
+    }
+  }];
+}
+
+RCT_EXPORT_METHOD(proofVerifierDeserialize: (NSString *)serialized
+                                  resolver: (RCTPromiseResolveBlock) resolve
+                                  rejecter: (RCTPromiseRejectBlock) reject)
+{
+  [[[ConnectMeVcx alloc] init] proofVerifierDeserialize:serialized
+                                             completion:^(NSError *error, NSInteger proofHandle) {
+    if (error != nil && error.code != 0) {
+      NSString *indyErrorCode = [NSString stringWithFormat:@"%ld", (long)error.code];
+      reject(indyErrorCode, @"Error occurred while deserializing proof verifier", error);
+    }
+    else {
+      resolve(@(proofHandle));
+    }
+  }];
+}
+
+RCT_EXPORT_METHOD(proofVerifierGetProofMessage:(NSInteger) proofHandle
+                                      resolver: (RCTPromiseResolveBlock) resolve
+                                      rejecter: (RCTPromiseRejectBlock) reject)
+{
+  [[[ConnectMeVcx alloc] init] proofVerifierGetProofMessage:proofHandle
+                                                 completion:^(NSError *error, NSInteger proofState, NSString *message)
+  {
+    if (error != nil && error.code != 0) {
+      NSString *indyErrorCode = [NSString stringWithFormat:@"%ld", (long)error.code];
+      reject(indyErrorCode, @"Error occurred while getting proof", error);
+    }
+    else {
+      resolve(@{
+        @"proofState": @(proofState),
+        @"message": message
+      });
+    }
+  }];
+}
+
+RCT_EXPORT_METHOD(proofVerifierGetPresentationRequest:(NSInteger)proofHandle
+                             resolver: (RCTPromiseResolveBlock) resolve
+                             rejecter: (RCTPromiseRejectBlock) reject)
+{
+  [[[ConnectMeVcx alloc] init] proofVerifierGetProofRequestMessage:proofHandle
+                                                        completion:^(NSError *error, NSString *message)
+  {
+    if (error != nil && error.code != 0)
+    {
+      NSString *indyErrorCode = [NSString stringWithFormat:@"%ld", (long)error.code];
+      reject(indyErrorCode, @"Error occurred while getting proof request message", error);
+    } else {
+      resolve(message);
+    }
+  }];
+}
+
+RCT_EXPORT_METHOD(createPairwiseAgent: (RCTPromiseResolveBlock) resolve
+                             rejecter: (RCTPromiseRejectBlock) reject)
+{
+  [[[ConnectMeVcx alloc] init] createPairwiseAgent:^(NSError *error, NSString *agentInfo)
+  {
+    if (error != nil && error.code != 0)
+    {
+      NSString *indyErrorCode = [NSString stringWithFormat:@"%ld", (long)error.code];
+      reject(indyErrorCode, @"Error occurred while creating pairwise agent", error);
+    } else {
+      resolve(agentInfo);
+    }
+  }];
+}
+
 
 @end

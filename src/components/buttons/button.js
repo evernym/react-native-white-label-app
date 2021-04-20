@@ -1,29 +1,32 @@
 // @flow
 import React from 'react'
-import { StyleSheet, TouchableOpacity, Text } from 'react-native'
+import { StyleSheet, TouchableOpacity, Text, View } from 'react-native'
 import { colors, fontFamily, fontSizes } from '../../common/styles'
 import { verticalScale, moderateScale } from 'react-native-size-matters'
 import SvgCustomIcon from '../svg-custom-icon'
+import { EvaIcon } from '../../common/icons'
 
 type ButtonProps = {
   onPress: () => any,
   label: string,
-  svgIcon?: string,
   buttonStyle?: any,
   labelStyle?: any,
   disabled?: boolean,
   testID?: string,
+  svgIcon?: string,
+  evaIcon?: string,
 }
 
 export const Button = ({
-  onPress,
-  label,
-  svgIcon,
-  buttonStyle,
-  labelStyle,
-  disabled,
-  testID,
-}: ButtonProps) => {
+                         onPress,
+                         label,
+                         svgIcon,
+                         evaIcon,
+                         buttonStyle,
+                         labelStyle,
+                         disabled,
+                         testID,
+                       }: ButtonProps) => {
   return (
     <TouchableOpacity
       disabled={disabled}
@@ -32,7 +35,8 @@ export const Button = ({
       testID={testID}
     >
       <Text style={labelStyle || styles.label}>{label}</Text>
-      {svgIcon && <SvgCustomIcon style={styles.icon} name={svgIcon} />}
+      {svgIcon && <SvgCustomIcon style={styles.icon} name={svgIcon}/>}
+      {evaIcon && <View style={styles.icon}><EvaIcon color={colors.white} name={evaIcon}/></View>}
     </TouchableOpacity>
   )
 }

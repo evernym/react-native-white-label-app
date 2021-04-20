@@ -26,7 +26,7 @@ import { SMSPendingInvitationStatus } from '../sms-pending-invitation/type-sms-p
 import { Request } from '../components/request/request'
 import { Platform } from 'react-native'
 import { allowPushNotifications } from '../push-notification/push-notification-store'
-import { usePushNotifications } from "../external-imports";
+import { usePushNotifications } from '../external-imports'
 
 export class Invitation extends Component<InvitationProps, void> {
   render() {
@@ -287,7 +287,7 @@ const mapStateToProps = (
     smsToken &&
     state.smsPendingInvitation[smsToken] &&
     state.smsPendingInvitation[smsToken].status !==
-    SMSPendingInvitationStatus.SEEN
+      SMSPendingInvitationStatus.SEEN
 
   return {
     invitation: state.invitation[senderDID],

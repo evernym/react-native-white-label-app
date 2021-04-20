@@ -16,7 +16,7 @@ import type {
   NotificationPayloadInfo,
   SelectedAttribute,
 } from '../push-notification/type-push-notification'
-import type { ClaimMap } from '../claim/type-claim'
+import type { ClaimMap} from '../claim/type-claim'
 import { updateAttributeClaim } from '../proof/proof-store'
 import type { LockStore } from '../lock/type-lock'
 import { applyAttributesForPresentationRequest } from './proof-request-store'
@@ -157,6 +157,8 @@ export type ProofRequestPayload = AdditionalProofDataPayload & {
   dissatisfiedAttributes?: DissatisfiedAttribute[],
   requestedAttrsJson?: RequestedAttrsJson,
   selfAttestedAttributes?: any,
+  hidden?: boolean,
+  autoAccept?: boolean,
 }
 
 export type ProofRequestProps = {
@@ -498,4 +500,30 @@ export const ATTRIBUTE_TYPE = {
   DISSATISFIED_ATTRIBUTE: 'DISSATISFIED_ATTRIBUTE',
   FILLED_PREDICATE: 'FILLED_PREDICATE',
   DISSATISFIED_PREDICATE: 'DISSATISFIED_PREDICATE',
+}
+
+export type AriesPresentationPreviewAttribute = {
+  name: string,
+  value?: string | null,
+  cred_def_id?: string | null,
+}
+
+export type AriesPresentationPreviewPredicate = {
+  name: string,
+  predicate?: string | null,
+  threshold?: string | null,
+  cred_def_id?: string | null,
+}
+
+export type AriesPresentationPreview = {
+  '@type': string,
+  attributes?: Array<AriesPresentationPreviewAttribute>,
+  predicates?: Array<AriesPresentationPreviewPredicate>,
+}
+
+export type AriesPresentationProposal = {
+  '@id': string,
+  '@type': string,
+  comment: string,
+  presentation_proposal: AriesPresentationPreview,
 }

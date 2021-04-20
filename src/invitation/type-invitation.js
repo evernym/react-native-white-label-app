@@ -107,6 +107,7 @@ export type InvitationPayload = {
   version?: string,
   original?: string,
   originalObject?: AriesConnectionInvite | AriesOutOfBandInvite,
+  attachedRequest?: GenericObject,
 }
 
 export type Invitation = {
@@ -199,7 +200,6 @@ export const OUT_OF_BAND_INVITATION_ACCEPTED = 'OUT_OF_BAND_INVITATION_ACCEPTED'
 export type OutOfBandInvitationAcceptedAction = {
   type: typeof OUT_OF_BAND_INVITATION_ACCEPTED,
   invitationPayload: InvitationPayload,
-  attachedRequest: GenericObject,
 }
 
 export type InvitationNavigation = {

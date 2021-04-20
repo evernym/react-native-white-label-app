@@ -73,6 +73,7 @@ export type PushNotificationAction =
 
 export type DownloadedNotification = {
   additionalData: GenericObject,
+  additionalPayloadInfo?: GenericObject,
   type: string,
   uid: string,
   senderLogoUrl?: ?string,
@@ -179,9 +180,12 @@ export type ClaimOfferMessagePayload = {
 
 export type NotificationPayloadInfo = {
   uid: string,
+  senderName?: string,
   senderLogoUrl: ?string,
   remotePairwiseDID: string,
   hidden?: boolean,
+  autoAccept?: boolean,
+  identifier?: string,
 }
 
 export type ClaimPushPayload = {
