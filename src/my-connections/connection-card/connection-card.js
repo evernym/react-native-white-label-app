@@ -1,6 +1,12 @@
 // @flow
 import React, { useCallback } from 'react'
-import { View, Text, TouchableOpacity, Image, ActivityIndicator } from 'react-native'
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  ActivityIndicator,
+} from 'react-native'
 import { moderateScale } from 'react-native-size-matters'
 
 import { colors } from '../../common/styles/constant'
@@ -43,11 +49,15 @@ const ConnectionCard = (props: ConnectionCardProps) => {
   }
 
   return (
-    <TouchableOpacity style={styles.itemContainer} onPress={onButtonPress} accessible={false}>
+    <TouchableOpacity
+      style={styles.itemContainer}
+      onPress={onButtonPress}
+      accessible={false}
+    >
       {/*{*/}
       {/*  renderUnreadMessagesBadge()*/}
       {/*}*/}
-      {props.status === CONNECTION_FAIL &&
+      {props.status === CONNECTION_FAIL && (
         <View style={styles.errorImage}>
           <EvaIcon
             name={ERROR_ICON}
@@ -56,14 +66,14 @@ const ConnectionCard = (props: ConnectionCardProps) => {
             color={colors.red}
           />
         </View>
-      }
+      )}
 
       <View style={styles.avatarSection}>
-        {props.status === INVITATION_ACCEPTED &&
+        {props.status === INVITATION_ACCEPTED && (
           <View style={styles.loader}>
             <ActivityIndicator type="dark" size="large" />
           </View>
-        }
+        )}
         {typeof props.image === 'string' ? (
           <Image
             source={{ uri: props.image }}

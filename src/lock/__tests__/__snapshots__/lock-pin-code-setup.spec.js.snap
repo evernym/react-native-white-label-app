@@ -22,12 +22,9 @@ exports[`<LockPinCodeSetup /> should render pin code box 1`] = `
     <View
       pointerEvents="box-none"
       style={
-        Array [
-          Object {
-            "zIndex": 1,
-          },
-          false,
-        ]
+        Object {
+          "zIndex": 1,
+        }
       }
     >
       <View
@@ -110,6 +107,7 @@ exports[`<LockPinCodeSetup /> should render pin code box 1`] = `
             >
               <Text
                 accessibilityRole="header"
+                aria-level="1"
                 numberOfLines={1}
                 onLayout={[Function]}
                 style={
@@ -148,6 +146,14 @@ exports[`<LockPinCodeSetup /> should render pin code box 1`] = `
         }
       >
         <View
+          collapsable={false}
+          style={
+            Object {
+              "opacity": 1,
+            }
+          }
+        />
+        <View
           accessibilityElementsHidden={false}
           closing={false}
           gestureVelocityImpact={0.3}
@@ -155,6 +161,7 @@ exports[`<LockPinCodeSetup /> should render pin code box 1`] = `
           onClose={[Function]}
           onGestureBegin={[Function]}
           onGestureCanceled={[Function]}
+          onGestureEnd={[Function]}
           onOpen={[Function]}
           onTransitionStart={[Function]}
           pointerEvents="box-none"
@@ -195,11 +202,11 @@ exports[`<LockPinCodeSetup /> should render pin code box 1`] = `
           }
         >
           <View
+            needsOffscreenAlphaCompositing={false}
             pointerEvents="box-none"
             style={
               Object {
                 "flex": 1,
-                "opacity": 1,
               }
             }
           >
@@ -289,146 +296,6 @@ exports[`<LockPinCodeSetup /> should render pin code box 1`] = `
                         }
                         tertiary={true}
                       >
-                        <View
-                          style={
-                            Object {
-                              "flexDirection": "row",
-                              "height": 63.52941176470588,
-                              "paddingTop": 19.058823529411764,
-                              "width": "100%",
-                            }
-                          }
-                        >
-                          <View
-                            accessibilityLabel="left-icon"
-                            accessible={true}
-                            style={
-                              Object {
-                                "alignItems": "center",
-                                "flexDirection": "row",
-                                "width": "15%",
-                              }
-                            }
-                          >
-                            <View
-                              accessible={true}
-                              focusable={true}
-                              isTVSelectable={true}
-                              onClick={[Function]}
-                              onResponderGrant={[Function]}
-                              onResponderMove={[Function]}
-                              onResponderRelease={[Function]}
-                              onResponderTerminate={[Function]}
-                              onResponderTerminationRequest={[Function]}
-                              onStartShouldSetResponder={[Function]}
-                              style={
-                                Object {
-                                  "opacity": 1,
-                                }
-                              }
-                              testID="left-icon"
-                            >
-                              <View
-                                style={
-                                  Object {
-                                    "transform": Array [
-                                      Object {
-                                        "scale": 1,
-                                      },
-                                    ],
-                                  }
-                                }
-                              >
-                                <RNSVGSvgView
-                                  align="xMidYMid"
-                                  bbHeight={30.628571428571426}
-                                  bbWidth={30.628571428571426}
-                                  fill="#777777"
-                                  focusable={false}
-                                  height={30.628571428571426}
-                                  meetOrSlice={0}
-                                  minX={0}
-                                  minY={0}
-                                  style={
-                                    Array [
-                                      Object {
-                                        "backgroundColor": "transparent",
-                                        "borderWidth": 0,
-                                      },
-                                      Object {
-                                        "marginBottom": 1.9142857142857141,
-                                        "marginLeft": 14.357142857142858,
-                                      },
-                                      Object {
-                                        "flex": 0,
-                                        "height": 30,
-                                        "width": 30,
-                                      },
-                                    ]
-                                  }
-                                  vbHeight={24}
-                                  vbWidth={24}
-                                  width={30.628571428571426}
-                                >
-                                  <RNSVGGroup
-                                    fill={4286019447}
-                                    propList={
-                                      Array [
-                                        "fill",
-                                      ]
-                                    }
-                                  >
-                                    <RNSVGGroup>
-                                      <RNSVGGroup>
-                                        <RNSVGRect
-                                          height="24"
-                                          matrix={
-                                            Array [
-                                              6.123233995736766e-17,
-                                              1,
-                                              -1,
-                                              6.123233995736766e-17,
-                                              24,
-                                              0,
-                                            ]
-                                          }
-                                          opacity={0}
-                                          width="24"
-                                          x={0}
-                                          y={0}
-                                        />
-                                        <RNSVGPath
-                                          d="M13.83 19a1 1 0 0 1-.78-.37l-4.83-6a1 1 0 0 1 0-1.27l5-6a1 1 0 0 1 1.54 1.28L10.29 12l4.32 5.36a1 1 0 0 1-.78 1.64z"
-                                        />
-                                      </RNSVGGroup>
-                                    </RNSVGGroup>
-                                  </RNSVGGroup>
-                                </RNSVGSvgView>
-                              </View>
-                            </View>
-                          </View>
-                          <View
-                            style={
-                              Object {
-                                "alignItems": "center",
-                                "flexDirection": "row",
-                                "justifyContent": "center",
-                                "width": "85%",
-                              }
-                            }
-                          >
-                            <Text
-                              style={
-                                Object {
-                                  "color": "#777777",
-                                  "fontFamily": "System",
-                                  "fontSize": 21.057142857142857,
-                                  "marginLeft": -47.85714285714286,
-                                }
-                              }
-                            />
-                          </View>
-                        </View>
                         <View
                           center={true}
                           style={
@@ -882,12 +749,9 @@ exports[`<LockPinCodeSetup /> should set pinSetupState and pinReEnterSuccessPin 
     <View
       pointerEvents="box-none"
       style={
-        Array [
-          Object {
-            "zIndex": 1,
-          },
-          false,
-        ]
+        Object {
+          "zIndex": 1,
+        }
       }
     >
       <View
@@ -970,6 +834,7 @@ exports[`<LockPinCodeSetup /> should set pinSetupState and pinReEnterSuccessPin 
             >
               <Text
                 accessibilityRole="header"
+                aria-level="1"
                 numberOfLines={1}
                 onLayout={[Function]}
                 style={
@@ -1008,6 +873,14 @@ exports[`<LockPinCodeSetup /> should set pinSetupState and pinReEnterSuccessPin 
         }
       >
         <View
+          collapsable={false}
+          style={
+            Object {
+              "opacity": 1,
+            }
+          }
+        />
+        <View
           accessibilityElementsHidden={false}
           closing={false}
           gestureVelocityImpact={0.3}
@@ -1015,6 +888,7 @@ exports[`<LockPinCodeSetup /> should set pinSetupState and pinReEnterSuccessPin 
           onClose={[Function]}
           onGestureBegin={[Function]}
           onGestureCanceled={[Function]}
+          onGestureEnd={[Function]}
           onOpen={[Function]}
           onTransitionStart={[Function]}
           pointerEvents="box-none"
@@ -1055,11 +929,11 @@ exports[`<LockPinCodeSetup /> should set pinSetupState and pinReEnterSuccessPin 
           }
         >
           <View
+            needsOffscreenAlphaCompositing={false}
             pointerEvents="box-none"
             style={
               Object {
                 "flex": 1,
-                "opacity": 1,
               }
             }
           >
@@ -1149,146 +1023,6 @@ exports[`<LockPinCodeSetup /> should set pinSetupState and pinReEnterSuccessPin 
                         }
                         tertiary={true}
                       >
-                        <View
-                          style={
-                            Object {
-                              "flexDirection": "row",
-                              "height": 63.52941176470588,
-                              "paddingTop": 19.058823529411764,
-                              "width": "100%",
-                            }
-                          }
-                        >
-                          <View
-                            accessibilityLabel="left-icon"
-                            accessible={true}
-                            style={
-                              Object {
-                                "alignItems": "center",
-                                "flexDirection": "row",
-                                "width": "15%",
-                              }
-                            }
-                          >
-                            <View
-                              accessible={true}
-                              focusable={true}
-                              isTVSelectable={true}
-                              onClick={[Function]}
-                              onResponderGrant={[Function]}
-                              onResponderMove={[Function]}
-                              onResponderRelease={[Function]}
-                              onResponderTerminate={[Function]}
-                              onResponderTerminationRequest={[Function]}
-                              onStartShouldSetResponder={[Function]}
-                              style={
-                                Object {
-                                  "opacity": 1,
-                                }
-                              }
-                              testID="left-icon"
-                            >
-                              <View
-                                style={
-                                  Object {
-                                    "transform": Array [
-                                      Object {
-                                        "scale": 1,
-                                      },
-                                    ],
-                                  }
-                                }
-                              >
-                                <RNSVGSvgView
-                                  align="xMidYMid"
-                                  bbHeight={30.628571428571426}
-                                  bbWidth={30.628571428571426}
-                                  fill="#777777"
-                                  focusable={false}
-                                  height={30.628571428571426}
-                                  meetOrSlice={0}
-                                  minX={0}
-                                  minY={0}
-                                  style={
-                                    Array [
-                                      Object {
-                                        "backgroundColor": "transparent",
-                                        "borderWidth": 0,
-                                      },
-                                      Object {
-                                        "marginBottom": 1.9142857142857141,
-                                        "marginLeft": 14.357142857142858,
-                                      },
-                                      Object {
-                                        "flex": 0,
-                                        "height": 30,
-                                        "width": 30,
-                                      },
-                                    ]
-                                  }
-                                  vbHeight={24}
-                                  vbWidth={24}
-                                  width={30.628571428571426}
-                                >
-                                  <RNSVGGroup
-                                    fill={4286019447}
-                                    propList={
-                                      Array [
-                                        "fill",
-                                      ]
-                                    }
-                                  >
-                                    <RNSVGGroup>
-                                      <RNSVGGroup>
-                                        <RNSVGRect
-                                          height="24"
-                                          matrix={
-                                            Array [
-                                              6.123233995736766e-17,
-                                              1,
-                                              -1,
-                                              6.123233995736766e-17,
-                                              24,
-                                              0,
-                                            ]
-                                          }
-                                          opacity={0}
-                                          width="24"
-                                          x={0}
-                                          y={0}
-                                        />
-                                        <RNSVGPath
-                                          d="M13.83 19a1 1 0 0 1-.78-.37l-4.83-6a1 1 0 0 1 0-1.27l5-6a1 1 0 0 1 1.54 1.28L10.29 12l4.32 5.36a1 1 0 0 1-.78 1.64z"
-                                        />
-                                      </RNSVGGroup>
-                                    </RNSVGGroup>
-                                  </RNSVGGroup>
-                                </RNSVGSvgView>
-                              </View>
-                            </View>
-                          </View>
-                          <View
-                            style={
-                              Object {
-                                "alignItems": "center",
-                                "flexDirection": "row",
-                                "justifyContent": "center",
-                                "width": "85%",
-                              }
-                            }
-                          >
-                            <Text
-                              style={
-                                Object {
-                                  "color": "#777777",
-                                  "fontFamily": "System",
-                                  "fontSize": 21.057142857142857,
-                                  "marginLeft": -47.85714285714286,
-                                }
-                              }
-                            />
-                          </View>
-                        </View>
                         <View
                           center={true}
                           style={
@@ -1742,12 +1476,9 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
     <View
       pointerEvents="box-none"
       style={
-        Array [
-          Object {
-            "zIndex": 1,
-          },
-          false,
-        ]
+        Object {
+          "zIndex": 1,
+        }
       }
     >
       <View
@@ -1830,6 +1561,7 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
             >
               <Text
                 accessibilityRole="header"
+                aria-level="1"
                 numberOfLines={1}
                 onLayout={[Function]}
                 style={
@@ -1868,6 +1600,14 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
         }
       >
         <View
+          collapsable={false}
+          style={
+            Object {
+              "opacity": 1,
+            }
+          }
+        />
+        <View
           accessibilityElementsHidden={false}
           closing={false}
           gestureVelocityImpact={0.3}
@@ -1875,6 +1615,7 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
           onClose={[Function]}
           onGestureBegin={[Function]}
           onGestureCanceled={[Function]}
+          onGestureEnd={[Function]}
           onOpen={[Function]}
           onTransitionStart={[Function]}
           pointerEvents="box-none"
@@ -1915,11 +1656,11 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
           }
         >
           <View
+            needsOffscreenAlphaCompositing={false}
             pointerEvents="box-none"
             style={
               Object {
                 "flex": 1,
-                "opacity": 1,
               }
             }
           >
@@ -2009,146 +1750,6 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
                         }
                         tertiary={true}
                       >
-                        <View
-                          style={
-                            Object {
-                              "flexDirection": "row",
-                              "height": 63.52941176470588,
-                              "paddingTop": 19.058823529411764,
-                              "width": "100%",
-                            }
-                          }
-                        >
-                          <View
-                            accessibilityLabel="left-icon"
-                            accessible={true}
-                            style={
-                              Object {
-                                "alignItems": "center",
-                                "flexDirection": "row",
-                                "width": "15%",
-                              }
-                            }
-                          >
-                            <View
-                              accessible={true}
-                              focusable={true}
-                              isTVSelectable={true}
-                              onClick={[Function]}
-                              onResponderGrant={[Function]}
-                              onResponderMove={[Function]}
-                              onResponderRelease={[Function]}
-                              onResponderTerminate={[Function]}
-                              onResponderTerminationRequest={[Function]}
-                              onStartShouldSetResponder={[Function]}
-                              style={
-                                Object {
-                                  "opacity": 1,
-                                }
-                              }
-                              testID="left-icon"
-                            >
-                              <View
-                                style={
-                                  Object {
-                                    "transform": Array [
-                                      Object {
-                                        "scale": 1,
-                                      },
-                                    ],
-                                  }
-                                }
-                              >
-                                <RNSVGSvgView
-                                  align="xMidYMid"
-                                  bbHeight={30.628571428571426}
-                                  bbWidth={30.628571428571426}
-                                  fill="#777777"
-                                  focusable={false}
-                                  height={30.628571428571426}
-                                  meetOrSlice={0}
-                                  minX={0}
-                                  minY={0}
-                                  style={
-                                    Array [
-                                      Object {
-                                        "backgroundColor": "transparent",
-                                        "borderWidth": 0,
-                                      },
-                                      Object {
-                                        "marginBottom": 1.9142857142857141,
-                                        "marginLeft": 14.357142857142858,
-                                      },
-                                      Object {
-                                        "flex": 0,
-                                        "height": 30,
-                                        "width": 30,
-                                      },
-                                    ]
-                                  }
-                                  vbHeight={24}
-                                  vbWidth={24}
-                                  width={30.628571428571426}
-                                >
-                                  <RNSVGGroup
-                                    fill={4286019447}
-                                    propList={
-                                      Array [
-                                        "fill",
-                                      ]
-                                    }
-                                  >
-                                    <RNSVGGroup>
-                                      <RNSVGGroup>
-                                        <RNSVGRect
-                                          height="24"
-                                          matrix={
-                                            Array [
-                                              6.123233995736766e-17,
-                                              1,
-                                              -1,
-                                              6.123233995736766e-17,
-                                              24,
-                                              0,
-                                            ]
-                                          }
-                                          opacity={0}
-                                          width="24"
-                                          x={0}
-                                          y={0}
-                                        />
-                                        <RNSVGPath
-                                          d="M13.83 19a1 1 0 0 1-.78-.37l-4.83-6a1 1 0 0 1 0-1.27l5-6a1 1 0 0 1 1.54 1.28L10.29 12l4.32 5.36a1 1 0 0 1-.78 1.64z"
-                                        />
-                                      </RNSVGGroup>
-                                    </RNSVGGroup>
-                                  </RNSVGGroup>
-                                </RNSVGSvgView>
-                              </View>
-                            </View>
-                          </View>
-                          <View
-                            style={
-                              Object {
-                                "alignItems": "center",
-                                "flexDirection": "row",
-                                "justifyContent": "center",
-                                "width": "85%",
-                              }
-                            }
-                          >
-                            <Text
-                              style={
-                                Object {
-                                  "color": "#777777",
-                                  "fontFamily": "System",
-                                  "fontSize": 21.057142857142857,
-                                  "marginLeft": -47.85714285714286,
-                                }
-                              }
-                            />
-                          </View>
-                        </View>
                         <View
                           center={true}
                           style={
@@ -2604,12 +2205,9 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
     <View
       pointerEvents="box-none"
       style={
-        Array [
-          Object {
-            "zIndex": 1,
-          },
-          false,
-        ]
+        Object {
+          "zIndex": 1,
+        }
       }
     >
       <View
@@ -2692,6 +2290,7 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
             >
               <Text
                 accessibilityRole="header"
+                aria-level="1"
                 numberOfLines={1}
                 onLayout={[Function]}
                 style={
@@ -2730,6 +2329,14 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
         }
       >
         <View
+          collapsable={false}
+          style={
+            Object {
+              "opacity": 1,
+            }
+          }
+        />
+        <View
           accessibilityElementsHidden={false}
           closing={false}
           gestureVelocityImpact={0.3}
@@ -2737,6 +2344,7 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
           onClose={[Function]}
           onGestureBegin={[Function]}
           onGestureCanceled={[Function]}
+          onGestureEnd={[Function]}
           onOpen={[Function]}
           onTransitionStart={[Function]}
           pointerEvents="box-none"
@@ -2777,11 +2385,11 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
           }
         >
           <View
+            needsOffscreenAlphaCompositing={false}
             pointerEvents="box-none"
             style={
               Object {
                 "flex": 1,
-                "opacity": 1,
               }
             }
           >
@@ -2871,146 +2479,6 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
                         }
                         tertiary={true}
                       >
-                        <View
-                          style={
-                            Object {
-                              "flexDirection": "row",
-                              "height": 63.52941176470588,
-                              "paddingTop": 19.058823529411764,
-                              "width": "100%",
-                            }
-                          }
-                        >
-                          <View
-                            accessibilityLabel="left-icon"
-                            accessible={true}
-                            style={
-                              Object {
-                                "alignItems": "center",
-                                "flexDirection": "row",
-                                "width": "15%",
-                              }
-                            }
-                          >
-                            <View
-                              accessible={true}
-                              focusable={true}
-                              isTVSelectable={true}
-                              onClick={[Function]}
-                              onResponderGrant={[Function]}
-                              onResponderMove={[Function]}
-                              onResponderRelease={[Function]}
-                              onResponderTerminate={[Function]}
-                              onResponderTerminationRequest={[Function]}
-                              onStartShouldSetResponder={[Function]}
-                              style={
-                                Object {
-                                  "opacity": 1,
-                                }
-                              }
-                              testID="left-icon"
-                            >
-                              <View
-                                style={
-                                  Object {
-                                    "transform": Array [
-                                      Object {
-                                        "scale": 1,
-                                      },
-                                    ],
-                                  }
-                                }
-                              >
-                                <RNSVGSvgView
-                                  align="xMidYMid"
-                                  bbHeight={30.628571428571426}
-                                  bbWidth={30.628571428571426}
-                                  fill="#777777"
-                                  focusable={false}
-                                  height={30.628571428571426}
-                                  meetOrSlice={0}
-                                  minX={0}
-                                  minY={0}
-                                  style={
-                                    Array [
-                                      Object {
-                                        "backgroundColor": "transparent",
-                                        "borderWidth": 0,
-                                      },
-                                      Object {
-                                        "marginBottom": 1.9142857142857141,
-                                        "marginLeft": 14.357142857142858,
-                                      },
-                                      Object {
-                                        "flex": 0,
-                                        "height": 30,
-                                        "width": 30,
-                                      },
-                                    ]
-                                  }
-                                  vbHeight={24}
-                                  vbWidth={24}
-                                  width={30.628571428571426}
-                                >
-                                  <RNSVGGroup
-                                    fill={4286019447}
-                                    propList={
-                                      Array [
-                                        "fill",
-                                      ]
-                                    }
-                                  >
-                                    <RNSVGGroup>
-                                      <RNSVGGroup>
-                                        <RNSVGRect
-                                          height="24"
-                                          matrix={
-                                            Array [
-                                              6.123233995736766e-17,
-                                              1,
-                                              -1,
-                                              6.123233995736766e-17,
-                                              24,
-                                              0,
-                                            ]
-                                          }
-                                          opacity={0}
-                                          width="24"
-                                          x={0}
-                                          y={0}
-                                        />
-                                        <RNSVGPath
-                                          d="M13.83 19a1 1 0 0 1-.78-.37l-4.83-6a1 1 0 0 1 0-1.27l5-6a1 1 0 0 1 1.54 1.28L10.29 12l4.32 5.36a1 1 0 0 1-.78 1.64z"
-                                        />
-                                      </RNSVGGroup>
-                                    </RNSVGGroup>
-                                  </RNSVGGroup>
-                                </RNSVGSvgView>
-                              </View>
-                            </View>
-                          </View>
-                          <View
-                            style={
-                              Object {
-                                "alignItems": "center",
-                                "flexDirection": "row",
-                                "justifyContent": "center",
-                                "width": "85%",
-                              }
-                            }
-                          >
-                            <Text
-                              style={
-                                Object {
-                                  "color": "#777777",
-                                  "fontFamily": "System",
-                                  "fontSize": 21.057142857142857,
-                                  "marginLeft": -47.85714285714286,
-                                }
-                              }
-                            />
-                          </View>
-                        </View>
                         <View
                           center={true}
                           style={
@@ -3464,12 +2932,9 @@ exports[`<LockPinCodeSetup /> should show re enter pass code after first entry 1
     <View
       pointerEvents="box-none"
       style={
-        Array [
-          Object {
-            "zIndex": 1,
-          },
-          false,
-        ]
+        Object {
+          "zIndex": 1,
+        }
       }
     >
       <View
@@ -3552,6 +3017,7 @@ exports[`<LockPinCodeSetup /> should show re enter pass code after first entry 1
             >
               <Text
                 accessibilityRole="header"
+                aria-level="1"
                 numberOfLines={1}
                 onLayout={[Function]}
                 style={
@@ -3590,6 +3056,14 @@ exports[`<LockPinCodeSetup /> should show re enter pass code after first entry 1
         }
       >
         <View
+          collapsable={false}
+          style={
+            Object {
+              "opacity": 1,
+            }
+          }
+        />
+        <View
           accessibilityElementsHidden={false}
           closing={false}
           gestureVelocityImpact={0.3}
@@ -3597,6 +3071,7 @@ exports[`<LockPinCodeSetup /> should show re enter pass code after first entry 1
           onClose={[Function]}
           onGestureBegin={[Function]}
           onGestureCanceled={[Function]}
+          onGestureEnd={[Function]}
           onOpen={[Function]}
           onTransitionStart={[Function]}
           pointerEvents="box-none"
@@ -3637,11 +3112,11 @@ exports[`<LockPinCodeSetup /> should show re enter pass code after first entry 1
           }
         >
           <View
+            needsOffscreenAlphaCompositing={false}
             pointerEvents="box-none"
             style={
               Object {
                 "flex": 1,
-                "opacity": 1,
               }
             }
           >
@@ -3731,146 +3206,6 @@ exports[`<LockPinCodeSetup /> should show re enter pass code after first entry 1
                         }
                         tertiary={true}
                       >
-                        <View
-                          style={
-                            Object {
-                              "flexDirection": "row",
-                              "height": 63.52941176470588,
-                              "paddingTop": 19.058823529411764,
-                              "width": "100%",
-                            }
-                          }
-                        >
-                          <View
-                            accessibilityLabel="left-icon"
-                            accessible={true}
-                            style={
-                              Object {
-                                "alignItems": "center",
-                                "flexDirection": "row",
-                                "width": "15%",
-                              }
-                            }
-                          >
-                            <View
-                              accessible={true}
-                              focusable={true}
-                              isTVSelectable={true}
-                              onClick={[Function]}
-                              onResponderGrant={[Function]}
-                              onResponderMove={[Function]}
-                              onResponderRelease={[Function]}
-                              onResponderTerminate={[Function]}
-                              onResponderTerminationRequest={[Function]}
-                              onStartShouldSetResponder={[Function]}
-                              style={
-                                Object {
-                                  "opacity": 1,
-                                }
-                              }
-                              testID="left-icon"
-                            >
-                              <View
-                                style={
-                                  Object {
-                                    "transform": Array [
-                                      Object {
-                                        "scale": 1,
-                                      },
-                                    ],
-                                  }
-                                }
-                              >
-                                <RNSVGSvgView
-                                  align="xMidYMid"
-                                  bbHeight={30.628571428571426}
-                                  bbWidth={30.628571428571426}
-                                  fill="#777777"
-                                  focusable={false}
-                                  height={30.628571428571426}
-                                  meetOrSlice={0}
-                                  minX={0}
-                                  minY={0}
-                                  style={
-                                    Array [
-                                      Object {
-                                        "backgroundColor": "transparent",
-                                        "borderWidth": 0,
-                                      },
-                                      Object {
-                                        "marginBottom": 1.9142857142857141,
-                                        "marginLeft": 14.357142857142858,
-                                      },
-                                      Object {
-                                        "flex": 0,
-                                        "height": 30,
-                                        "width": 30,
-                                      },
-                                    ]
-                                  }
-                                  vbHeight={24}
-                                  vbWidth={24}
-                                  width={30.628571428571426}
-                                >
-                                  <RNSVGGroup
-                                    fill={4286019447}
-                                    propList={
-                                      Array [
-                                        "fill",
-                                      ]
-                                    }
-                                  >
-                                    <RNSVGGroup>
-                                      <RNSVGGroup>
-                                        <RNSVGRect
-                                          height="24"
-                                          matrix={
-                                            Array [
-                                              6.123233995736766e-17,
-                                              1,
-                                              -1,
-                                              6.123233995736766e-17,
-                                              24,
-                                              0,
-                                            ]
-                                          }
-                                          opacity={0}
-                                          width="24"
-                                          x={0}
-                                          y={0}
-                                        />
-                                        <RNSVGPath
-                                          d="M13.83 19a1 1 0 0 1-.78-.37l-4.83-6a1 1 0 0 1 0-1.27l5-6a1 1 0 0 1 1.54 1.28L10.29 12l4.32 5.36a1 1 0 0 1-.78 1.64z"
-                                        />
-                                      </RNSVGGroup>
-                                    </RNSVGGroup>
-                                  </RNSVGGroup>
-                                </RNSVGSvgView>
-                              </View>
-                            </View>
-                          </View>
-                          <View
-                            style={
-                              Object {
-                                "alignItems": "center",
-                                "flexDirection": "row",
-                                "justifyContent": "center",
-                                "width": "85%",
-                              }
-                            }
-                          >
-                            <Text
-                              style={
-                                Object {
-                                  "color": "#777777",
-                                  "fontFamily": "System",
-                                  "fontSize": 21.057142857142857,
-                                  "marginLeft": -47.85714285714286,
-                                }
-                              }
-                            />
-                          </View>
-                        </View>
                         <View
                           center={true}
                           style={

@@ -7,6 +7,7 @@ import type { ReactNavigation } from '../common/type-common'
 import type { Store } from '../store/type-store'
 import type { LockEnterPinProps, LockEnterPinState } from './type-lock'
 
+import { emptyHeaderOptions } from '../navigation/navigation-header-config'
 import LockEnter from './lock-enter'
 import { lockEnterPinRoute, lockPinSetupRoute, homeRoute } from '../common'
 import { clearPendingRedirect } from './lock-store'
@@ -18,7 +19,6 @@ import { colors } from '../common/styles/constant'
 import { UNLOCKING_APP_WAIT_MESSAGE } from '../common/message-constants'
 import { unlockApp } from './lock-store'
 import { View, Keyboard, Platform, StyleSheet } from 'react-native'
-import { Header } from '../components'
 
 export class LockEnterPin extends PureComponent<
   LockEnterPinProps,
@@ -164,12 +164,6 @@ export class LockEnterPin extends PureComponent<
 
     return (
       <View style={styles.container}>
-        <Header
-          hideBackButton={true}
-          transparent={true}
-          navigation={this.props.navigation}
-          route={this.props.route}
-        />
         <LockEnter
           fromRecovery={this.props.inRecovery}
           onSuccess={this.onSuccess}
@@ -215,4 +209,5 @@ const mapDispatchToProps = (dispatch) =>
 export const lockEnterPinScreen = {
   routeName: lockEnterPinRoute,
   screen: connect(mapStateToProps, mapDispatchToProps)(LockEnterPin),
+  options: emptyHeaderOptions
 }

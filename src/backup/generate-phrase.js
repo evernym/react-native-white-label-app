@@ -4,14 +4,10 @@ import React, { Component } from 'react'
 import { Image } from 'react-native'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+
+import { headerDefaultOptions } from '../navigation/navigation-header-config'
 import type { Store } from '../store/type-store'
-import {
-  Container,
-  CustomView,
-  CustomText,
-  Loader,
-  Header,
-} from '../components'
+import { Container, CustomView, CustomText, Loader } from '../components'
 import { colors, fontSizes } from '../common/styles'
 import {
   genRecoveryPhraseRoute,
@@ -182,11 +178,6 @@ export class GenerateRecoveryPhrase extends Component<
     return (
       <Container style={[styles.genRecovery]} safeArea>
         <Image source={transparentBands} style={[styles.backgroundImage]} />
-        <Header
-          transparent={true}
-          navigation={this.props.navigation}
-          color={colors.white}
-        />
         <Container>
           <CustomView>
             <CustomText
@@ -295,4 +286,13 @@ export const generateRecoveryPhraseScreen = {
   screen: withStatusBar({ color: color.bg.eleventh.color })(
     connect(mapStateToProps, mapDispatchToProps)(GenerateRecoveryPhrase)
   ),
+  options: headerDefaultOptions({
+    headline: undefined,
+    headerHideShadow: true,
+    transparent: true,
+    headerStyles: {
+      backgroundColor: color.bg.eleventh.color
+    },
+    arrowColor: colors.white,
+  })
 }

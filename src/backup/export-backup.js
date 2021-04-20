@@ -5,21 +5,17 @@ import { Image } from 'react-native'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import {
-  Container,
-  CustomView,
-  CustomText,
-  Loader,
-  Header,
-} from '../components'
+import { Container, CustomView, CustomText, Loader } from '../components'
+import { headerDefaultOptions } from '../navigation/navigation-header-config'
 
 import {
   exportBackupFileRoute,
   backupCompleteRoute,
   backupErrorRoute,
 } from '../common'
-import { colors, isBiggerThanVeryShortDevice } from '../common/styles'
+import { isBiggerThanVeryShortDevice } from '../common/styles'
 import { color } from '../common/styles/constant'
+import { colors, gamboge } from '../common/styles/constant'
 import type { ExportBackupFileProps } from './type-backup'
 import styles from './styles'
 import { exportBackup } from './backup-store'
@@ -115,12 +111,6 @@ export class ExportBackupFile extends Component<ExportBackupFileProps, void> {
     return (
       <Container style={[styles.exportBackup]} safeArea>
         <Image source={transparentBands} style={[styles.backgroundImage]} />
-        <Header
-          transparent={true}
-          navigation={this.props.navigation}
-          route={this.props.route}
-          color={colors.white}
-        />
         <Container style={[styles.wrapper]}>
           <CustomView center>
             <CustomText transparentBg center style={[styles.exportBackupTitle]}>
@@ -200,4 +190,13 @@ export const exportBackupFileScreen = {
   screen: withStatusBar({ color: color.bg.thirteenth.color })(
     connect(mapStateToProps, mapDispatchToProps)(ExportBackupFile)
   ),
+  options: headerDefaultOptions({
+    headline: undefined,
+    headerHideShadow: true,
+    transparent: true,
+    headerStyles: {
+      backgroundColor: gamboge,
+    },
+    arrowColor: colors.white,
+  })
 }

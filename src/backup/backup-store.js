@@ -319,7 +319,7 @@ export function* prepareBackupSaga(
     const secureStorage = yield call(secureGetAll)
     // for Android secureGetAll returns an object
     // while for ios it returns an array of array
-    if (Platform.OS === 'android') {
+    if (!secureStorage?.length) {
       if (secureStorage) {
         yield all(
           Object.keys(secureStorage).map((key) => {

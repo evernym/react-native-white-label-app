@@ -10,11 +10,7 @@ import { BLANK_ATTRIBUTE_DATA_TEXT } from '../../connection-details/type-connect
 import { flattenAsync } from '../../common/flatten-async'
 import { ExpandableText } from '../../components/expandable-text/expandable-text'
 
-import {
-  PhotoAttachment,
-  checkObjectTypes,
-  getIcon,
-} from './helpers'
+import { PhotoAttachment, checkObjectTypes, getIcon } from './helpers'
 import { attachMimeTypes } from './type-attachment'
 import { styles } from './styles'
 

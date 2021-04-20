@@ -26,7 +26,12 @@ type CredentialReceivedProps = {
 } & ReduxConnect
 
 const CredentialModal = (props: CredentialReceivedProps) => {
-  const { data, institutionalName, imageUrl, colorBackground } = props.route.params
+  const {
+    data,
+    institutionalName,
+    imageUrl,
+    colorBackground,
+  } = props.route.params
   const navigation = useNavigation()
   const hideModal = useCallback(() => {
     navigation.goBack(null)
@@ -45,20 +50,16 @@ const CredentialModal = (props: CredentialReceivedProps) => {
         credentialText="Accepted Credential"
         colorBackground={colorBackground}
       />
-      <ModalButton
-        onClose={hideModal}
-        colorBackground={colorBackground}
-      />
+      <ModalButton onClose={hideModal} colorBackground={colorBackground} />
     </View>
   )
 }
 
 const headline = 'My Credential'
 const screen = CustomCredentialModal || CredentialModal
-const navigationOptions =
-  CustomCredentialModal ?
-    null :
-    modalOptions(headline, 'Arrow')
+const navigationOptions = CustomCredentialModal
+  ? null
+  : modalOptions(headline, 'Arrow')
 
 export const fulfilledMessageScreen = {
   routeName: modalScreenRoute,

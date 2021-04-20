@@ -1,20 +1,31 @@
 // @flow
 import * as React from 'react'
-import { Dimensions, Image, Text, View, Platform } from 'react-native'
+import { Dimensions, Image, Text, View } from 'react-native'
 import {
   createStackNavigator,
   TransitionPresets,
 } from '@react-navigation/stack'
+import { createNativeStackNavigator } from 'react-native-screens/native-stack'
 import { createDrawerNavigator, DrawerItemList } from '@react-navigation/drawer'
 import { enableScreens } from 'react-native-screens'
 import VersionNumber from 'react-native-version-number'
 
+import {
+  headerOptionForDrawerStack,
+} from './navigation-header-config'
+
 import { aboutAppScreen } from '../about-app/about-app'
-import { homeScreen } from '../home/home'
-import { myCredentialsScreen } from '../my-credentials/my-credentials'
-import { MyConnectionsScreen } from '../my-connections/my-connections'
+import { homeScreen, headlineForHomeRoute } from '../home/home'
+import {
+  myCredentialsScreen,
+  headlineForCredentialRoute,
+} from '../my-credentials/my-credentials'
+import {
+  MyConnectionsScreen,
+  headlineForConnectionRoute,
+} from '../my-connections/my-connections'
 import { splashScreenScreen } from '../start-up/splash-screen'
-import { SettingsScreen } from '../settings/settings'
+import { SettingsScreen, headlineForSettingRoute } from '../settings/settings'
 import { expiredTokenScreen } from '../expired-token/expired-token'
 import { qrCodeScannerScreen } from '../qr-code/qr-code'
 import { lockSelectionScreen } from '../lock/lock-selection'
@@ -52,7 +63,10 @@ import { openIdConnectScreen } from '../open-id-connect/open-id-connect-screen'
 import { designStyleGuideScreen } from '../design-styleguide/design-styleguide'
 import { onfidoScreen } from '../onfido/onfido'
 import { restorePassphraseScreen } from '../restore/restore-passphrase'
-import { privacyTNCScreen } from '../privacy-tnc/privacy-tnc-screen'
+import {
+  privacyTNCScreen,
+  options as privacyTNCScreenOptions
+} from '../privacy-tnc/privacy-tnc-screen'
 import { connectionHistoryScreen } from '../connection-details/connection-details'
 import { credentialDetailsScreen } from '../credential-details/credential-details'
 import { pushNotificationPermissionScreen } from '../push-notification/components/push-notification-permission-screen'
@@ -109,9 +123,7 @@ import { ShowCredentialScreen } from "../show-credential/show-credential-modal";
 import { ProofProposalModal } from "../verifier/proof-proposal-modal";
 import { ReceivedProofScreen } from '../verifier/received-proof-modal'
 
-if (Platform.OS !== 'android') {
-  enableScreens()
-}
+enableScreens()
 
 const { width } = Dimensions.get('screen')
 
@@ -127,7 +139,7 @@ const drawerComponent = (props: Object) => (
   >
     <View style={styles.drawerHeader}>
       {CustomDrawerHeaderContent ? (
-        <CustomDrawerHeaderContent/>
+        <CustomDrawerHeaderContent />
       ) : (
         <Image
           source={require('../images/powered_by_logo.png')}
@@ -172,7 +184,7 @@ const drawerContentOptions = {
   inactiveTintColor: colors.gray2,
 }
 const drawerStyle = {
-  width: verticalScale(0.75 * width),
+  width: 0.75 * width,
   backgroundColor: 'transparent',
 }
 
@@ -226,18 +238,21 @@ const defaultDrawerItemOptions = {
     component: MyConnectionsScreen,
     icon: drawerEvaIcon(CONNECTIONS_ICON),
     label: CONNECTIONS_LABEL,
+    headline: headlineForConnectionRoute,
   },
   [CREDENTIALS]: {
     route: credentialsDrawerRoute,
     component: myCredentialsScreen.screen,
     icon: drawerSvgIcon('Credentials'),
     label: CREDENTIALS_LABEL,
+    headline: headlineForCredentialRoute,
   },
   [SETTINGS]: {
     route: settingsDrawerRoute,
     component: SettingsScreen,
     icon: drawerEvaIcon(SETTINGS_ICON),
     label: SETTINGS_LABEL,
+    headline: headlineForSettingRoute,
   },
 }
 
@@ -249,7 +264,7 @@ const menuNavigationOptions = customMenuNavigationOptions || [
 const extraScreens = customExtraScreens || []
 const extraModals = customExtraModals || []
 
-function AppDrawer() {
+function AppDrawer(navigation) {
   const tabs = menuNavigationOptions.map((option) => {
     const defaultOption = defaultDrawerItemOptions[option.name] || {}
 
@@ -261,6 +276,10 @@ function AppDrawer() {
         options={{
           drawerIcon: drawerIcon(option.icon || defaultOption.icon),
           drawerLabel: drawerItemLabel(option.label || defaultOption.label),
+          ...headerOptionForDrawerStack({
+            navigation,
+            headline: defaultOption.headline,
+          }),
         }}
       />
     )
@@ -276,14 +295,20 @@ function AppDrawer() {
       <Drawer.Screen
         name={homeDrawerRoute}
         component={homeScreen.screen}
-        options={homeDrawerItemOptions}
+        options={{
+          ...homeDrawerItemOptions,
+          ...headerOptionForDrawerStack({
+            navigation,
+            headline: headlineForHomeRoute,
+          }),
+        }}
       />
       {tabs}
     </Drawer.Navigator>
   )
 }
 
-const CardStack = createStackNavigator()
+const CardStack = createNativeStackNavigator()
 const cardStackOptions = {
   // we are using headerShown property instead of headerMode: 'none'
   // to hide header from screen
@@ -316,6 +341,7 @@ function CardStackScreen() {
       <CardStack.Screen
         name={privacyTNCScreen.routeName}
         component={privacyTNCScreen.screen}
+        options={privacyTNCScreenOptions}
       />
       <CardStack.Screen
         name={designStyleGuideScreen.routeName}
@@ -345,6 +371,7 @@ function CardStackScreen() {
       <CardStack.Screen
         name={lockAuthorizationScreen.routeName}
         component={lockAuthorizationScreen.screen}
+        options={lockAuthorizationScreen.options}
       />
       <CardStack.Screen
         name={lockSetupSuccessScreen.routeName}
@@ -361,11 +388,11 @@ function CardStackScreen() {
       <CardStack.Screen
         name={lockSelectionScreen.routeName}
         component={lockSelectionScreen.screen}
+        options={lockSelectionScreen.options}
       />
       <CardStack.Screen
         name={startUpScreen.routeName}
         component={startUpScreen.screen}
-        options={startUpScreen.options}
       />
       <CardStack.Screen
         name={expiredTokenScreen.routeName}
@@ -382,14 +409,17 @@ function CardStackScreen() {
       <CardStack.Screen
         name={lockPinSetupScreen.routeName}
         component={lockPinSetupScreen.screen}
+        options={lockPinSetupScreen.options}
       />
       <CardStack.Screen
         name={aboutAppScreen.routeName}
         component={aboutAppScreen.screen}
+        options={aboutAppScreen.options}
       />
       <CardStack.Screen
         name={onfidoScreen.routeName}
         component={onfidoScreen.screen}
+        options={onfidoScreen.options}
       />
       <CardStack.Screen
         name={backupCompleteScreen.routeName}
@@ -402,10 +432,12 @@ function CardStackScreen() {
       <CardStack.Screen
         name={exportBackupFileScreen.routeName}
         component={exportBackupFileScreen.screen}
+        options={exportBackupFileScreen.options}
       />
       <CardStack.Screen
         name={generateRecoveryPhraseScreen.routeName}
         component={generateRecoveryPhraseScreen.screen}
+        options={generateRecoveryPhraseScreen.options}
       />
       <CardStack.Screen
         name={selectRecoveryMethodScreen.routeName}
@@ -431,6 +463,7 @@ function CardStackScreen() {
       <CardStack.Screen
         name={lockEnterPinScreen.routeName}
         component={lockEnterPinScreen.screen}
+        options={lockEnterPinScreen.options}
       />
       <CardStack.Screen
         name={restorePassphraseScreen.routeName}
@@ -439,6 +472,7 @@ function CardStackScreen() {
       <CardStack.Screen
         name={selectRestoreMethodScreen.routeName}
         component={selectRestoreMethodScreen.screen}
+        options={selectRestoreMethodScreen.options}
       />
       <CardStack.Screen
         name={sendLogsScreen.routeName}
@@ -474,7 +508,11 @@ const modalStackOptions = {
 
 export function MSDKAppNavigator() {
   return (
-    <ModalStack.Navigator mode="modal" screenOptions={modalStackOptions}>
+    <ModalStack.Navigator
+      mode="modal"
+      screenOptions={modalStackOptions}
+      detachInactiveScreens={false}
+    >
       <ModalStack.Screen name="CardStack" component={CardStackScreen} />
       <ModalStack.Screen
         name={claimOfferScreen.routeName}

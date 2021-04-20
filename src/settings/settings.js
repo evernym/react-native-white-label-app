@@ -13,7 +13,7 @@ import moment from 'moment'
 import { ListItem } from 'react-native-elements'
 import get from 'lodash.get'
 
-import { CameraButton, CustomText, HeaderWithMenu } from '../components'
+import { CameraButton, CustomText } from '../components'
 import { Container, CustomView } from '../components/layout'
 import {
   aboutAppRoute,
@@ -93,9 +93,8 @@ import {
   settingsShowCameraButton,
   settingsHeadline,
 } from '../external-imports'
-import { SHOW_UNREAD_MESSAGES_BADGE_NEAR_WITH_MENU } from '../components/header/type-header'
 
-const headline = settingsHeadline || 'Settings'
+export const headlineForSettingRoute = settingsHeadline || 'Settings'
 const showCameraButton =
   typeof settingsShowCameraButton === 'boolean'
     ? settingsShowCameraButton
@@ -608,12 +607,6 @@ export class Settings extends Component<SettingsProps, SettingsState> {
           accessible={false}
           accessibilityLabel="settings-container"
         >
-          <HeaderWithMenu
-            headline={headline}
-            navigation={this.props.navigation}
-            route={this.props.route}
-            showUnreadMessagesBadge={SHOW_UNREAD_MESSAGES_BADGE_NEAR_WITH_MENU}
-          />
           <ScrollView>
             <CustomView style={[style.secondaryContainer, style.listContainer]}>
               {options.map((item) => {

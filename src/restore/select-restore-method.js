@@ -3,6 +3,9 @@
 import React, { Component } from 'react'
 import { Image, ImageBackground, View } from 'react-native'
 import { Platform } from 'react-native'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import DocumentPicker from 'react-native-document-picker'
 
 import {
   selectRestoreMethodRoute,
@@ -14,16 +17,15 @@ import { withStatusBar } from '../components/status-bar/status-bar'
 import { updateStatusBarTheme } from '../store/connections-store'
 import type { Store } from '../store/type-store'
 import { saveFileToAppDirectory } from './restore-store'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
 
-import { Container, CustomView, CustomText, Icon, Header } from '../components'
-import DocumentPicker from 'react-native-document-picker'
+import { headerDefaultOptions } from '../navigation/navigation-header-config'
+import { Container, CustomView, CustomText, Icon } from '../components'
 import styles from '../backup/styles'
 import { customLogger } from '../store/custom-logger'
 import { RestoreStatus } from './type-restore'
 import type { RestoreProps } from './type-restore'
 import { appName, startupBackgroundImage } from '../external-imports'
+
 const download = require('../images/download3x.png')
 const restoreBackground =
   startupBackgroundImage || require('../images/home_background.png')
@@ -78,13 +80,7 @@ export class SelectRestoreMethod extends Component<RestoreProps, void> {
         resizeMode={restoreBackgroundMode}
       >
         <View style={styles.wrapper}>
-          <View style={styles.header}>
-            <Header
-              transparent={true}
-              navigation={this.props.navigation}
-              route={this.props.route}
-            />
-          </View>
+          <View style={styles.header}></View>
           <CustomView center>
             <CustomText transparentBg center style={[styles.backuptitle]}>
               Where is your backup?
@@ -180,4 +176,9 @@ export const selectRestoreMethodScreen = {
   screen: withStatusBar({ color: colors.white })(
     connect(mapStateToProps, mapDispatchToProps)(SelectRestoreMethod)
   ),
+  options: headerDefaultOptions({
+    headline: undefined,
+    headerHideShadow: true,
+    transparent: true,
+  })
 }

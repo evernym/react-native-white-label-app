@@ -18,7 +18,6 @@ import {
   CustomView,
   CustomButton,
   Loader,
-  Header,
 } from '../components'
 import { launchOnfidoSDK, resetOnfidoStatues } from './onfido-store'
 import { colors, toryBlue } from '../common/styles'
@@ -41,6 +40,7 @@ import {
 } from './type-onfido'
 import { onfidoRoute, connectionsDrawerRoute } from '../common'
 import { withStatusBar } from '../components/status-bar/status-bar'
+import { headerDefaultOptions } from '../navigation/navigation-header-config'
 
 export class Onfido extends Component<OnfidoProps, void> {
   onAction = () => {
@@ -90,11 +90,6 @@ export class Onfido extends Component<OnfidoProps, void> {
 
     return (
       <Container tertiary>
-        <Header
-          headline=""
-          navigation={this.props.navigation}
-          route={this.props.route}
-        />
         <Container center horizontalSpace>
           {hasError(status, connectionStatus) ? (
             <OnfidoError status={status} connectionStatus={connectionStatus} />
@@ -341,4 +336,9 @@ const mapDispatchToProps = (dispatch) =>
 export const onfidoScreen = {
   routeName: onfidoRoute,
   screen: withStatusBar()(connect(mapStateToProps, mapDispatchToProps)(Onfido)),
+  options: headerDefaultOptions({
+    headline: undefined,
+    headerHideShadow: true,
+    transparent: false,
+  })
 }

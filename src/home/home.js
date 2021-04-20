@@ -14,7 +14,7 @@ import {
   CONNECTION_ALREADY_EXIST,
   HISTORY_EVENT_STATUS,
 } from '../connection-history/type-connection-history'
-import { HeaderWithMenu, CameraButton } from '../components'
+import { CameraButton } from '../components'
 import {
   homeDrawerRoute,
   qrCodeScannerTabRoute,
@@ -53,9 +53,8 @@ import {
   homeShowHistoryEvents,
   HomeViewEmptyState,
 } from '../external-imports'
-import { SHOW_UNREAD_MESSAGES_BADGE_NEAR_WITH_TITLE } from '../components/header/type-header'
 
-const headline = homeHeadline || 'Home'
+export const headlineForHomeRoute = homeHeadline || 'Home'
 const showHistoryEvents =
   typeof homeShowHistoryEvents === 'boolean' ? homeShowHistoryEvents : true
 const showCameraButton =
@@ -318,12 +317,6 @@ export class HomeScreen extends Component<HomeProps, void> {
   render() {
     return (
       <View style={styles.outerContainer}>
-        <HeaderWithMenu
-          headline={headline}
-          navigation={this.props.navigation}
-          route={this.props.route}
-          showUnreadMessagesBadge={SHOW_UNREAD_MESSAGES_BADGE_NEAR_WITH_TITLE}
-        />
         <View
           style={styles.container}
           testID="home-container"

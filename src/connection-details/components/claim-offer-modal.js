@@ -3,7 +3,11 @@ import React, { Component } from 'react'
 import { View, StyleSheet, StatusBar } from 'react-native'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { claimOfferRoute, homeDrawerRoute, homeRoute } from '../../common/route-constants'
+import {
+  claimOfferRoute,
+  homeDrawerRoute,
+  homeRoute,
+} from '../../common/route-constants'
 import { BigNumber } from 'bignumber.js'
 
 import type { Store } from '../../store/type-store'
@@ -91,7 +95,8 @@ export class ClaimOfferModal extends Component<any, *> {
       credentialOfferAcceptButtonText ||
       (payTokenValue ? 'Accept & Pay' : 'Accept Credential')
     let denyButtonText =
-      credentialOfferDenyButtonText || (this.props.canBeIgnored ? 'Cancel' : 'Reject')
+      credentialOfferDenyButtonText ||
+      (this.props.canBeIgnored ? 'Cancel' : 'Reject')
 
     // NOTE: Just to be safe, we changed the hasNotAcceptedTAA to hardcoded false, so we can be sure 0 tokens doesn't affect the flow.
     const hasNotAcceptedTAA = false
@@ -100,10 +105,7 @@ export class ClaimOfferModal extends Component<any, *> {
 
     return (
       <View style={styles.modalWrapper}>
-        <StatusBar
-          backgroundColor={colors.black}
-          barStyle={'light-content'}
-        />
+        <StatusBar backgroundColor={colors.black} barStyle={'light-content'} />
         {
           // if we don't show ledger txn fees, then show credential data
           // i.e. user has not taken any action on credential modal
@@ -439,11 +441,12 @@ const mapDispatchToProps = (dispatch) =>
   )
 
 const screen =
-  CustomCredentialOfferModal && CustomCredentialOfferModal.screen ||
+  (CustomCredentialOfferModal && CustomCredentialOfferModal.screen) ||
   ClaimOfferModal
 
 const navigationOptions =
-  CustomCredentialOfferModal && CustomCredentialOfferModal.navigationOptions ||
+  (CustomCredentialOfferModal &&
+    CustomCredentialOfferModal.navigationOptions) ||
   modalOptions(credentialOfferHeadline, 'CloseIcon')
 
 export const claimOfferScreen = {

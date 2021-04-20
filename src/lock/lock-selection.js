@@ -8,7 +8,8 @@ import {
   Switch,
   Dimensions,
   TouchableOpacity,
-  ScrollView, View,
+  ScrollView,
+  View,
 } from 'react-native'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -47,8 +48,8 @@ import {
 } from './lock-store'
 import { safeToDownloadSmsInvitation } from '../sms-pending-invitation/sms-pending-invitation-store'
 import { SERVER_ENVIRONMENT } from '../store/type-config-store'
-import { Header } from '../components'
 import { LockHeader } from '../external-imports'
+import { headerDefaultOptions } from '../navigation/navigation-header-config'
 
 const { width, height } = Dimensions.get('screen')
 
@@ -108,14 +109,9 @@ export class LockSelection extends Component<LockSelectionProps, *> {
     return (
       <Container tertiary>
         <ScrollView>
-          <Header
-            navigation={this.props.navigation}
-            route={this.props.route}
-            transparent={true}
-          />
           <Container tertiary style={[style.pinSelectionContainer]}>
             <CustomView center>
-              {LockHeader ? <LockHeader/> : <View/> }
+              {LockHeader ? <LockHeader /> : <View />}
             </CustomView>
             <CustomText
               center
@@ -251,6 +247,11 @@ const mapDispatchToProps = (dispatch) =>
 export const lockSelectionScreen = {
   routeName: lockSelectionRoute,
   screen: connect(mapStateToProps, mapDispatchToProps)(LockSelection),
+  options: headerDefaultOptions({
+    headline: undefined,
+    headerHideShadow: true,
+    transparent: false,
+  })
 }
 
 const marginHorizontalHandler = (curWidth) => {

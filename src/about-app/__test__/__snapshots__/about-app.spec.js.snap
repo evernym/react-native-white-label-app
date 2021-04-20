@@ -22,12 +22,9 @@ exports[`user about app screen should render properly and snapshot should match 
     <View
       pointerEvents="box-none"
       style={
-        Array [
-          Object {
-            "zIndex": 1,
-          },
-          false,
-        ]
+        Object {
+          "zIndex": 1,
+        }
       }
     >
       <View
@@ -110,6 +107,7 @@ exports[`user about app screen should render properly and snapshot should match 
             >
               <Text
                 accessibilityRole="header"
+                aria-level="1"
                 numberOfLines={1}
                 onLayout={[Function]}
                 style={
@@ -148,6 +146,14 @@ exports[`user about app screen should render properly and snapshot should match 
         }
       >
         <View
+          collapsable={false}
+          style={
+            Object {
+              "opacity": 1,
+            }
+          }
+        />
+        <View
           accessibilityElementsHidden={false}
           closing={false}
           gestureVelocityImpact={0.3}
@@ -155,6 +161,7 @@ exports[`user about app screen should render properly and snapshot should match 
           onClose={[Function]}
           onGestureBegin={[Function]}
           onGestureCanceled={[Function]}
+          onGestureEnd={[Function]}
           onOpen={[Function]}
           onTransitionStart={[Function]}
           pointerEvents="box-none"
@@ -195,11 +202,11 @@ exports[`user about app screen should render properly and snapshot should match 
           }
         >
           <View
+            needsOffscreenAlphaCompositing={false}
             pointerEvents="box-none"
             style={
               Object {
                 "flex": 1,
-                "opacity": 1,
               }
             }
           >
@@ -289,158 +296,6 @@ exports[`user about app screen should render properly and snapshot should match 
                         }
                         tertiary={true}
                       >
-                        <View
-                          style={
-                            Object {
-                              "backgroundColor": "#FFFFFF",
-                              "elevation": 0,
-                              "flexDirection": "row",
-                              "height": 63.52941176470588,
-                              "paddingTop": 19.058823529411764,
-                              "shadowColor": "#000000",
-                              "shadowOffset": Object {
-                                "height": 2,
-                                "width": 0,
-                              },
-                              "shadowOpacity": 0.2,
-                              "shadowRadius": 10,
-                              "width": "100%",
-                              "zIndex": 1,
-                            }
-                          }
-                        >
-                          <View
-                            accessibilityLabel="left-icon"
-                            accessible={true}
-                            style={
-                              Object {
-                                "alignItems": "center",
-                                "flexDirection": "row",
-                                "width": "15%",
-                              }
-                            }
-                          >
-                            <View
-                              accessible={true}
-                              focusable={true}
-                              isTVSelectable={true}
-                              onClick={[Function]}
-                              onResponderGrant={[Function]}
-                              onResponderMove={[Function]}
-                              onResponderRelease={[Function]}
-                              onResponderTerminate={[Function]}
-                              onResponderTerminationRequest={[Function]}
-                              onStartShouldSetResponder={[Function]}
-                              style={
-                                Object {
-                                  "opacity": 1,
-                                }
-                              }
-                              testID="left-icon"
-                            >
-                              <View
-                                style={
-                                  Object {
-                                    "transform": Array [
-                                      Object {
-                                        "scale": 1,
-                                      },
-                                    ],
-                                  }
-                                }
-                              >
-                                <RNSVGSvgView
-                                  align="xMidYMid"
-                                  bbHeight={30.628571428571426}
-                                  bbWidth={30.628571428571426}
-                                  fill="#777777"
-                                  focusable={false}
-                                  height={30.628571428571426}
-                                  meetOrSlice={0}
-                                  minX={0}
-                                  minY={0}
-                                  style={
-                                    Array [
-                                      Object {
-                                        "backgroundColor": "transparent",
-                                        "borderWidth": 0,
-                                      },
-                                      Object {
-                                        "marginBottom": 1.9142857142857141,
-                                        "marginLeft": 14.357142857142858,
-                                      },
-                                      Object {
-                                        "flex": 0,
-                                        "height": 30,
-                                        "width": 30,
-                                      },
-                                    ]
-                                  }
-                                  vbHeight={24}
-                                  vbWidth={24}
-                                  width={30.628571428571426}
-                                >
-                                  <RNSVGGroup
-                                    fill={4286019447}
-                                    propList={
-                                      Array [
-                                        "fill",
-                                      ]
-                                    }
-                                  >
-                                    <RNSVGGroup>
-                                      <RNSVGGroup>
-                                        <RNSVGRect
-                                          height="24"
-                                          matrix={
-                                            Array [
-                                              6.123233995736766e-17,
-                                              1,
-                                              -1,
-                                              6.123233995736766e-17,
-                                              24,
-                                              0,
-                                            ]
-                                          }
-                                          opacity={0}
-                                          width="24"
-                                          x={0}
-                                          y={0}
-                                        />
-                                        <RNSVGPath
-                                          d="M13.83 19a1 1 0 0 1-.78-.37l-4.83-6a1 1 0 0 1 0-1.27l5-6a1 1 0 0 1 1.54 1.28L10.29 12l4.32 5.36a1 1 0 0 1-.78 1.64z"
-                                        />
-                                      </RNSVGGroup>
-                                    </RNSVGGroup>
-                                  </RNSVGGroup>
-                                </RNSVGSvgView>
-                              </View>
-                            </View>
-                          </View>
-                          <View
-                            style={
-                              Object {
-                                "alignItems": "center",
-                                "flexDirection": "row",
-                                "justifyContent": "center",
-                                "width": "85%",
-                              }
-                            }
-                          >
-                            <Text
-                              style={
-                                Object {
-                                  "color": "#777777",
-                                  "fontFamily": "System",
-                                  "fontSize": 21.057142857142857,
-                                  "marginLeft": -47.85714285714286,
-                                }
-                              }
-                            >
-                              About this App
-                            </Text>
-                          </View>
-                        </View>
                         <View
                           center={true}
                           doubleVerticalSpace={true}

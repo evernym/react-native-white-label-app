@@ -1,11 +1,6 @@
 // @flow
 import React, { useMemo, useState, useEffect } from 'react'
-import {
-  View,
-  ScrollView,
-  StyleSheet,
-  InteractionManager,
-} from 'react-native'
+import { View, ScrollView, StyleSheet, InteractionManager } from 'react-native'
 
 import { RenderAttachmentIcon } from '../../components/attachment/attachment'
 import { Avatar } from '../../components/avatar/avatar'

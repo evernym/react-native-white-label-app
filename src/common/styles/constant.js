@@ -82,7 +82,7 @@ export const yellowSea = '#EB9B2D'
 export const cornFlowerBlue = '#4A90E2'
 export const atlantis = '#86B93B'
 export const atlantisOpacity = 'rgba(134, 185, 59, 0.15)'
-const gamboge = '#DD9012'
+export const gamboge = '#DD9012'
 const blueViolet = '#8D13FE'
 const seaBuckthorn = '#f79347'
 const pumpkin = '#F68127'
@@ -247,7 +247,7 @@ export const color = {
       font: {
         primary: white,
       },
-    }
+    },
   },
 
   border: {

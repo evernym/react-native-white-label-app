@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Image, Keyboard, StyleSheet, TextInput, Platform } from 'react-native'
-import { Container, CustomView, CustomText, Header } from '../index'
+import { Container, CustomView, CustomText } from '../index'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { color, colors } from '../../common/styles/constant'
 import {
@@ -73,11 +73,6 @@ export class BackupRestorePassphrase extends Component<
           extraScrollHeight={100}
         >
           <Container testID={`${testID}-inputbox`}>
-            <Header
-              transparent={true}
-              navigation={this.props.navigation}
-              color={colors.white}
-            />
             <CustomView center>
               {filename || isCloudRestoreAttempt ? (
                 <CustomView center>

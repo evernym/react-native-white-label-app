@@ -8,6 +8,7 @@ import type { SendLogsProps } from './type-send-logs'
 import type { Store } from '../store/type-store'
 import type { ReactNavigation } from '../common/type-common'
 
+import { headerDefaultOptions } from '../navigation/navigation-header-config'
 import { Container, CustomView, CustomText, CustomButton } from '../components'
 import { sendLogsRoute } from '../common/route-constants'
 import Mailer from 'react-native-mail'
@@ -19,8 +20,6 @@ import {
   ENCRYPT_LOG_FILE,
 } from '../send-logs/type-send-logs'
 import store from '../store'
-import { BackButton } from '../components/back-button/back-button'
-import { headerNavigationOptions } from '../navigation/navigation-header-config'
 import { colors } from '../common/styles/constant'
 import { appName, sendLogsEmail } from '../external-imports'
 
@@ -215,15 +214,9 @@ const buttonColor = {
 export const sendLogsScreen = {
   routeName: sendLogsRoute,
   screen: connect(mapStateToProps)(SendLogs),
-  options() {
-    return headerNavigationOptions({
-      title: 'Send logs',
-      headerLeft: () => {
-        return <BackButton onPress={SendLogs.goBack} />
-      },
-      headerStyle: {
-        borderBottomWidth: 0,
-      },
-    })
-  },
+  options: headerDefaultOptions({
+    headline: 'Send logs',
+    headerHideShadow: true,
+    transparent: false,
+  })
 }

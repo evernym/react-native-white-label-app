@@ -15,13 +15,13 @@ import type { ReactNavigation } from '../../common/type-common'
 import { colors, fontFamily, fontSizes } from '../../common/styles/constant'
 import { ExpandableText } from '../../components/expandable-text/expandable-text'
 import { modalOptions } from '../utils/modalOptions'
-import {CustomEnterAttributeValueModal} from '../../external-imports'
-import {ModalPushLeft} from "../utils/modal-animation";
+import { CustomEnterAttributeValueModal } from '../../external-imports'
+import { ModalPushLeft } from '../utils/modal-animation'
 
 const CustomValues = ({
-                        navigation: { goBack },
-                        route: { params },
-                      }: ReactNavigation) => {
+  navigation: { goBack },
+  route: { params },
+}: ReactNavigation) => {
   const [value, setValue] = useState(params?.labelValue || '')
 
   const onDone = useCallback(() => {
@@ -38,7 +38,10 @@ const CustomValues = ({
           Please provide values for the following attributes
         </Text>
       </View>
-      <ExpandableText style={styles.labelText} text={params?.label || 'Attribute'} />
+      <ExpandableText
+        style={styles.labelText}
+        text={params?.label || 'Attribute'}
+      />
       <View style={styles.customValuesWrapper}>
         <TextInput
           onChangeText={setValue}
@@ -62,11 +65,12 @@ const CustomValues = ({
 }
 
 const screen =
-  CustomEnterAttributeValueModal && CustomEnterAttributeValueModal.screen ||
+  (CustomEnterAttributeValueModal && CustomEnterAttributeValueModal.screen) ||
   CustomValues
 
 const navigationOptions =
-  CustomEnterAttributeValueModal && CustomEnterAttributeValueModal.navigationOptions ||
+  (CustomEnterAttributeValueModal &&
+    CustomEnterAttributeValueModal.navigationOptions) ||
   modalOptions('Custom Values', 'CloseIcon', ModalPushLeft)
 
 export const CustomValuesScreen = {

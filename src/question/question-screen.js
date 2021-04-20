@@ -24,7 +24,11 @@ import type { ComponentStatus, CustomError } from '../common/type-common'
 import type { Connection } from '../store/type-connection-store'
 
 import { CustomView } from '../components'
-import { homeDrawerRoute, homeRoute, questionRoute } from '../common/route-constants'
+import {
+  homeDrawerRoute,
+  homeRoute,
+  questionRoute,
+} from '../common/route-constants'
 import { QUESTION_STATUS } from './type-question'
 import {
   updateQuestionStatus,
@@ -46,7 +50,7 @@ const headline = questionHeadline || 'Question'
 export class Question extends Component<
   QuestionScreenProps,
   QuestionScreenState
-  > {
+> {
   state = {
     response: null,
   }
@@ -312,12 +316,10 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   )
 
-const screen =
-  CustomQuestionModal && CustomQuestionModal.screen ||
-  Question
+const screen = (CustomQuestionModal && CustomQuestionModal.screen) || Question
 
 const navigationOptions =
-  CustomQuestionModal && CustomQuestionModal.navigationOptions ||
+  (CustomQuestionModal && CustomQuestionModal.navigationOptions) ||
   modalOptions(headline, 'CloseIcon')
 
 export const questionScreen = {

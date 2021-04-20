@@ -6,10 +6,7 @@ import type { AttachmentPropType } from './type-attachment'
 
 import SvgCustomIcon from '../svg-custom-icon'
 import { ExpandableText } from '../expandable-text/expandable-text'
-import {
-  checkObjectTypes,
-  getFileExtensionName,
-} from './helpers'
+import { checkObjectTypes, getFileExtensionName } from './helpers'
 import { attachMimeTypes } from './type-attachment'
 import { DataRenderer } from './data-renderer'
 import { styles } from './styles'
