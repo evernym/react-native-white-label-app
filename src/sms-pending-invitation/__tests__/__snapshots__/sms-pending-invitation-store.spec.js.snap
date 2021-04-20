@@ -54,12 +54,18 @@ Object {
     "error": null,
     "isFetching": false,
     "payload": Object {
-      "connReqId": "requestId1",
+      "requestId": undefined,
       "senderAgencyDetail": Object {
         "DID": "senderDID1",
         "endpoint": "endpoint",
         "verKey": "senderVerificationKey1",
       },
+      "senderAgentKeyDelegationProof": Object {
+        "agentDID": "senderAgentDID1",
+        "agentDelegatedKey": "agentDelegatedKey",
+        "signature": "signature",
+      },
+      "senderDID": "senderDID1",
       "senderDetail": Object {
         "DID": "senderDID1",
         "agentKeyDlgProof": Object {
@@ -71,9 +77,12 @@ Object {
         "name": "sender1",
         "verKey": "senderVerificationKey1",
       },
-      "statusCode": "MS-102",
-      "statusMsg": "message sent",
+      "senderEndpoint": "endpoint",
+      "senderLogoUrl": "http://testissuer.com/logoUrl.png",
+      "senderName": "sender1",
+      "senderVerificationKey": "senderVerificationKey1",
       "targetName": "target name",
+      "version": undefined,
     },
     "status": "RECEIVED",
   },

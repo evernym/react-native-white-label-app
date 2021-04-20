@@ -685,7 +685,7 @@ export function* hydrateClaimOffersSaga(): Generator<*, *, *> {
     }
   } catch (e) {
     captureError(e)
-    customLogger.error(`hydrateClaimOffersSaga: ${e}`)
+    customLogger.log(`hydrateClaimOffersSaga: ${e}`)
     yield put({
       type: HYDRATE_CLAIM_OFFERS_FAIL,
       error: ERROR_HYDRATE_CLAIM_OFFERS(e.message),

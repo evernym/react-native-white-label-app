@@ -352,7 +352,7 @@ export function* persistThemes(): Generator<*, *, *> {
   } catch (e) {
     // capture error for secure set
     captureError(e)
-    customLogger.error(`persistThemes: ${e}`)
+    customLogger.log(`persistThemes: ${e}`)
   }
 }
 
@@ -365,7 +365,7 @@ export function* hydrateThemes(): Generator<*, *, *> {
   } catch (e) {
     // capture error for secure get
     captureError(e)
-    customLogger.error(`hydrateThemes: ${e}`)
+    customLogger.log(`hydrateThemes: ${e}`)
   }
 }
 
@@ -375,7 +375,7 @@ export function* removePersistedThemes(): Generator<*, *, *> {
   } catch (e) {
     // capture error for secure delete
     captureError(e)
-    customLogger.error(`removePersistedThemes: ${e}`)
+    customLogger.log(`removePersistedThemes: ${e}`)
   }
 }
 
@@ -478,7 +478,7 @@ function* sendConnectionRedirectSaga(
   } catch (e) {
     // catch error
     captureError(e)
-    customLogger.error(`connectionRedirect: ${e}`)
+    customLogger.log(`connectionRedirect: ${e}`)
   }
 }
 
@@ -530,7 +530,7 @@ function* sendConnectionReuseSaga(
   } catch (e) {
     // catch error
     captureError(e)
-    customLogger.error(`connectionReuse: ${e}`)
+    customLogger.log(`connectionReuse: ${e}`)
   }
 }
 
@@ -570,7 +570,7 @@ export function* createPairwiseAgentSaga(): Generator<*, *, *> {
     )
     yield put(pairwiseAgentCreated(agentInfo))
   } catch (e) {
-    customLogger.error(`createPairwiseAgentSaga: ${e}`)
+    customLogger.log(`createPairwiseAgentSaga: ${e}`)
   }
 }
 
@@ -579,7 +579,7 @@ export function* persistPairwiseAgentSaga(): Generator<*, *, *> {
   try {
     yield call(secureSet, STORAGE_KEY_PAIRWISE_AGENT, JSON.stringify(pairwiseAgent))
   } catch (e) {
-    customLogger.error(`persistPairwiseAgent: ${e}`)
+    customLogger.log(`persistPairwiseAgent: ${e}`)
   }
 }
 
@@ -590,7 +590,7 @@ export function* hydratePairwiseAgentSaga(): Generator<*, *, *> {
       yield put(hydratePairwiseAgent(JSON.parse(pairwiseAgent)))
     }
   } catch (e) {
-    customLogger.error(`hydratePairwiseAgentSage: ${e}`)
+    customLogger.log(`hydratePairwiseAgentSage: ${e}`)
   }
 }
 

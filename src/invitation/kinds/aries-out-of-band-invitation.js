@@ -1,12 +1,11 @@
 import type {Url} from "url-parse";
 import type {AriesOutOfBandInvite, AriesServiceEntry, InvitationPayload} from "../type-invitation";
 import {CONNECTION_INVITE_TYPES} from "../type-invitation";
-import {getBase64DecodedInvitation, getConnectionLogoUrl} from "../invitation-helpers";
+import { getAttachedRequest, getBase64DecodedInvitation, getConnectionLogoUrl } from '../invitation-helpers'
 import isUrl from "validator/lib/isURL";
 import type {GenericObject} from "../../common/type-common";
 import {ID, TYPE} from "../../common/type-common";
 import {schemaValidator} from "../../services/schema-validator";
-import { getAttachedRequest } from '../invitation-store'
 
 export function isAriesOutOfBandInvitation(
   invite: GenericObject

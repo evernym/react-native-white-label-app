@@ -333,7 +333,7 @@ export function* loadHistorySaga(): Generator<*, *, *> {
     }
   } catch (e) {
     captureError(e)
-    customLogger.error(`loadHistorySaga: ${e}`)
+    customLogger.log(`loadHistorySaga: ${e}`)
     yield put(
       loadHistoryFail({
         ...ERROR_LOADING_HISTORY,
@@ -2063,7 +2063,7 @@ export function* persistHistory(action: RecordHistoryEventAction): any {
     } catch (e) {
       // Need to figure out what happens if storage fails
       captureError(e)
-      customLogger.error(`persistHistory: ${e}`)
+      customLogger.log(`persistHistory: ${e}`)
     }
   }
 }

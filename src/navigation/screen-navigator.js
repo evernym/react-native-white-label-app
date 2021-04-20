@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux'
 import { useEffect } from 'react'
 import { connect, useSelector } from 'react-redux'
 
-import { clearNavigateToRoutePN } from './push-notification-store'
+import { clearNavigateToRoutePN } from '../push-notification/push-notification-store'
 import { getNavigateToRoute } from '../store/store-selector'
 import type { NavigationParams } from '../common/type-common'
 

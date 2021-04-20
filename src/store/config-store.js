@@ -139,13 +139,12 @@ import {
 } from './store-selector'
 import { captureError } from '../services/error/error-handler'
 import { customLogger } from '../store/custom-logger'
-import { ensureVcxInitAndPoolConnectSuccess } from './route-store'
+import { ensureVcxInitSuccess } from './route-store'
 import {
   registerCloudAgentWithToken,
   registerCloudAgentWithoutToken,
 } from './user/cloud-agent'
 import {
-  getAttachedRequestData,
   processAttachedRequest,
   updateAriesConnectionState,
 } from '../invitation/invitation-store'
@@ -171,6 +170,7 @@ import { CLOUD_AGENT_UNAVAILABLE } from '../bridge/react-native-cxs/error-cxs'
 import { updateVerifierState } from '../verifier/verifier-store'
 import { presentationProposalSchema } from '../proof-request/proof-request-qr-code-reader'
 import { deleteOneTimeConnection, deleteOneTimeConnectionOccurredSaga } from './connections-store'
+import { getAttachedRequestData } from '../invitation/invitation-helpers'
 
 /**
  * this file contains configuration which is changed only from user action
@@ -831,7 +831,7 @@ export function* getMessagesSaga(
 ): Generator<*, *, *> {
   try {
     //make sure vcx is initialized
-    const vcxResult = yield* ensureVcxInitAndPoolConnectSuccess()
+    const vcxResult = yield* ensureVcxInitSuccess()
     if (vcxResult && vcxResult.fail) {
       yield take(VCX_INIT_SUCCESS)
     }

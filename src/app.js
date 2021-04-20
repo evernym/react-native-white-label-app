@@ -123,7 +123,7 @@ export class MSDKMeApp extends Component<AppProps, void> {
               <PushNotification navigateToRoute={this.navigateToRoute} />
             }
             <ScreenNavigator navigateToRoute={this.navigateToRoute} />
-            <DeepLink />
+            <DeepLink navigateToRoute={this.navigateToRoute}/>
             <AppStatus />
             <NavigationContainer
               ref={this.navigatorRef}

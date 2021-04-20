@@ -6,7 +6,7 @@ import { PushNotification } from '../push-notification'
 import { getStore } from '../../../__mocks__/static-data'
 
 // mock connected component
-jest.mock('../screen-navigator', () => 'ScreenNavigator')
+jest.mock('../../navigation/screen-navigator', () => 'ScreenNavigator')
 
 describe('<PushNotification />', () => {
   const store = getStore()

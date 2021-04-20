@@ -5,7 +5,7 @@
  * either by asking for TouchId or asking user to enter pin code
  */
 import React, { useCallback } from 'react'
-import { View, StyleSheet, Platform } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 
 import type { LockAuthorizationProps } from './type-lock'
 

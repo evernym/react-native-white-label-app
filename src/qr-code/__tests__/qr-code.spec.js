@@ -16,24 +16,15 @@ import { convertShortProprietaryInvitationToAppInvitation } from '../../invitati
 describe('<QRScannerScreen />', () => {
   function getProps() {
     return {
-      historyData: {},
       navigation: getNavigation(),
       route: {},
-      invitationReceived: jest.fn(),
+      handleInvitation: jest.fn(),
       currentScreen: qrCodeScannerTabRoute,
       changeEnvironmentUrl: jest.fn(),
       enableCamera: jest.fn(),
       isCameraEnabled: true,
-      allPublicDid: {},
-      allDid: {},
-      claimOffers: {},
-      proofRequests: {},
-      verifiers: {},
       openIdConnectUpdateStatus: jest.fn(),
-      claimOfferReceived: jest.fn(),
       proofRequestReceived: jest.fn(),
-      proofProposalReceived: jest.fn(),
-      getPushNotificationAuthorizationStatus: jest.fn(),
     }
   }
 
@@ -100,14 +91,12 @@ describe('<QRScannerScreen />', () => {
   it('should redirect user to invitation screen on success read', () => {
     const {
       instance,
-      props: { invitationReceived },
+      props: { handleInvitation },
     } = setup()
 
     instance.onShortProprietaryInvitationRead(qrData)
-    expect(invitationReceived).toHaveBeenCalledWith(
-      expect.objectContaining({
-        payload: convertShortProprietaryInvitationToAppInvitation(qrData),
-      })
+    expect(handleInvitation).toHaveBeenCalledWith(
+      convertShortProprietaryInvitationToAppInvitation(qrData)
     )
   })
 
