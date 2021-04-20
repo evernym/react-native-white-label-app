@@ -500,7 +500,7 @@ export function* handleConnectionError(
   senderDID: string
 ): Generator<*, *, *> {
   captureError(new Error(e.message))
-  customLogger.error(`handleConnectionError: ${e.message}`)
+  console.log(`handleConnectionError: ${e.message}`)
   let message
   if (e.code === CONNECTION_ALREADY_EXISTS) {
     yield put(

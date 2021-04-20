@@ -16,10 +16,11 @@ import type { GenericObject } from '../../../common/type-common'
 import { flatFetch } from '../../../common/flat-fetch'
 import { flatJsonParse } from '../../../common/flat-json-parse'
 import { isValidOIDCQrCode } from './qr-code-oidc'
-import {getRequestRedirectionUrl, toUtf8FromBase64} from '../../../bridge/react-native-cxs/RNCxs'
+import {getRequestRedirectionUrl} from '../../../bridge/react-native-cxs/RNCxs'
 import { flattenAsync } from '../../../common/flatten-async'
 import {isEncodedAriesConnectionInvitation} from "../../../invitation/kinds/aries-connection-invitation";
 import {isEncodedAriesOutOfBandInvitation} from "../../../invitation/kinds/aries-out-of-band-invitation";
+import { getBase64DecodedInvitation } from "../../../invitation/invitation-helpers";
 
 export function isValidUrl(urlQrCode: string): Url | false {
   const parsedUrl = urlParse(urlQrCode, {}, true)
@@ -87,7 +88,7 @@ export async function getUrlData(
     const parts = redirectionUrl.split('?m=')
     if (parts.length > 1) {
       const encodedMessage = parts[1]
-      const [, data] = await flattenAsync(toUtf8FromBase64)(encodedMessage)
+      const data = await getBase64DecodedInvitation(encodedMessage)
       if (data) {
         return [null, { type: QR_CODE_TYPES.EPHEMERAL_PROOF_REQUEST_V1, data: data }]
       }

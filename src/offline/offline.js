@@ -58,8 +58,18 @@ export const Offline = ({
     return ''
   }, [isOffline, isVcxError, isPoolError, isGetMessagesError])
 
+  const [ignoreNetInfo, setIgnoreNetInfo] = useState(true)
+
   useEffect(() => {
-    offline(!netInfo.isInternetReachable)
+    // FIXME: netInfo always return false as the first event even if devices are connected to internet
+    // Workaround: ignore null and ignore false only the first time
+    if (typeof netInfo.isInternetReachable === 'boolean') {
+      if (ignoreNetInfo) {
+        setIgnoreNetInfo(false)
+      } else {
+        offline(!netInfo.isInternetReachable)
+      }
+    }
   }, [netInfo])
 
   const internetReconnect = () => {

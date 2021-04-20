@@ -14,7 +14,6 @@ import { bindActionCreators } from 'redux'
 import SvgCustomIcon from '../../components/svg-custom-icon'
 import CredentialPriceInfo from '../../components/labels/credential-price-info'
 import {
-  connectionsDrawerRoute,
   modalContentProofShared,
   modalScreenRoute,
   receivedProofRoute,
@@ -32,10 +31,6 @@ import { DENY_PROOF_REQUEST_FAIL } from '../../proof-request/type-proof-request'
 import { denyProofRequest } from '../../proof-request/proof-request-store'
 import { moderateScale } from 'react-native-size-matters'
 import { colors, fontSizes, fontFamily } from '../../common/styles/constant'
-import { CONNECTION_FAIL } from '../../store/type-connection-store'
-import { ResponseType } from '../request/type-request'
-import { sendInvitationResponse } from '../../invitation/invitation-store'
-import { deleteConnectionAction } from '../../store/connections-store'
 import { ExpandableText } from '../expandable-text/expandable-text'
 import type { ReactNavigation } from '../../common/type-common'
 import { PROOF_VERIFIED } from '../../verifier/type-verifier'
@@ -60,8 +55,6 @@ type ConnectionCardProps = {
   reTrySendProof: typeof reTrySendProof,
   deleteHistoryEvent: typeof deleteHistoryEvent,
   denyProofRequest: typeof denyProofRequest,
-  sendInvitationResponse: typeof sendInvitationResponse,
-  deleteConnectionAction: typeof deleteConnectionAction,
 } & ReactNavigation
 
 const ConnectionCardComponent = ({
@@ -85,8 +78,6 @@ const ConnectionCardComponent = ({
                                    reTrySendProof,
                                    deleteHistoryEvent,
                                    denyProofRequest,
-                                   sendInvitationResponse,
-                                   deleteConnectionAction,
                                  }: ConnectionCardProps) => {
   const updateAndShowModal = useCallback(() => {
     if (
@@ -104,11 +95,6 @@ const ConnectionCardComponent = ({
       )
     } else if (type === DENY_PROOF_REQUEST_FAIL) {
       denyProofRequest(data.originalPayload.uid)
-    } else if (type === CONNECTION_FAIL) {
-      sendInvitationResponse({
-        response: ResponseType.accepted,
-        senderDID: data.remoteDid,
-      })
     } else if (type === 'SHARED') {
       navigation.navigate(modalContentProofShared, {
         data,
@@ -133,12 +119,6 @@ const ConnectionCardComponent = ({
   }, [data, type])
 
   const onDelete = useCallback(() => {
-    if (type === CONNECTION_FAIL) {
-      deleteConnectionAction(data.remoteDid)
-      navigation.navigate(connectionsDrawerRoute)
-      return
-    }
-
     LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
     deleteHistoryEvent(data)
   }, [data, type])
@@ -236,8 +216,6 @@ const mapDispatchToProps = (dispatch) =>
       reTrySendProof,
       deleteHistoryEvent,
       denyProofRequest,
-      sendInvitationResponse,
-      deleteConnectionAction,
     },
     dispatch,
   )

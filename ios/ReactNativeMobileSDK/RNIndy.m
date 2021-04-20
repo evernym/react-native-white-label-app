@@ -450,6 +450,10 @@ NSString* makeUrlSafe(NSString* base64Encoded) {
   return [[base64Encoded stringByReplacingOccurrencesOfString:@"/" withString:@"_"] stringByReplacingOccurrencesOfString:@"+" withString:@"-"];
 }
 
+NSString* makeUrlSafeToNoWrap(NSString* base64Encoded) {
+  return [[base64Encoded stringByReplacingOccurrencesOfString:@"_" withString:@"/"] stringByReplacingOccurrencesOfString:@"-" withString:@"+"];
+}
+
 RCT_EXPORT_METHOD(connectionSignData: (NSInteger) connectionHandle
                   withData: (NSString *) data
                   withBase64EncodingOption: (NSString *) base64EncodingOption
@@ -537,17 +541,20 @@ RCT_EXPORT_METHOD(toUtf8FromBase64: (NSString *)data
                   resolver: (RCTPromiseResolveBlock) resolve
                   rejecter: (RCTPromiseRejectBlock) reject)
 {
-  NSData* base64DecodedData = [[NSData alloc] initWithBase64EncodedString:data options:0];
+  NSString* text = data;
+  if ([[base64EncodingOption uppercaseString] isEqualToString:@"URL_SAFE"]) {
+    text = makeUrlSafeToNoWrap(data);
+  }
+
+  NSData* base64DecodedData = [[NSData alloc] initWithBase64EncodedString:text options:NSDataBase64DecodingIgnoreUnknownCharacters];
   NSString* utf8Encoded = [[NSString alloc] initWithData:base64DecodedData encoding:NSUTF8StringEncoding];
   if (utf8Encoded == nil) {
     reject(@"10002", @"Error occurred while converting to utf8 encoded string", nil);
   } else {
-    if ([[base64EncodingOption uppercaseString] isEqualToString:@"URL_SAFE"]) {
-      utf8Encoded = makeUrlSafe(utf8Encoded);
-    }
     resolve(utf8Encoded);
   }
 }
+
 
 RCT_EXPORT_METHOD(generateThumbprint: (NSString *)data
                   withBase64EncodingOption: (NSString *) base64EncodingOption
