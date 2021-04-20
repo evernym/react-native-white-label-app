@@ -25,7 +25,6 @@ import {
 import { PROOF_REQUEST_RECEIVED } from '../proof-request/type-proof-request'
 import { QUESTION_RECEIVED } from '../question/type-question'
 import {
-  NEW_CONNECTION_SUCCESS,
   SEND_REDIRECT_SUCCESS,
   SEND_REUSE_SUCCESS,
 } from '../store/type-connection-store'
@@ -37,7 +36,6 @@ export function* watchMessageDownload(): any {
 function* watchManualDownloadTrigger(): any {
   yield takeLeading(
     [
-      NEW_CONNECTION_SUCCESS,
       SEND_CLAIM_REQUEST_SUCCESS,
       SEND_PAID_CREDENTIAL_REQUEST,
       SEND_REDIRECT_SUCCESS,

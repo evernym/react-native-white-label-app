@@ -1,80 +1,88 @@
 // @flow
-import {
-  put,
-  takeLatest,
-  takeEvery,
-  call,
-  select,
-  all,
-} from 'redux-saga/effects'
-import { secureSet, secureDelete, getHydrationItem } from '../services/storage'
+import { all, call, put, select, takeEvery, takeLatest } from 'redux-saga/effects'
+import { getHydrationItem, secureDelete, secureSet } from '../services/storage'
 import { CONNECTIONS } from '../common'
 import {
   getAllConnection,
-  getThemes,
+  getAllConnections,
   getConnection as getConnectionBySenderDid,
+  getConnection,
+  getConnectionPairwiseAgentInfo,
+  getThemes,
 } from './store-selector'
 import { color } from '../common/styles/constant'
 import { bubbleSize } from '../common/styles'
 import type { CustomError, GenericObject } from '../common/type-common'
+import { RESET } from '../common/type-common'
 import type {
-  ConnectionStore,
   Connection,
-  Connections,
-  ConnectionThemes,
   ConnectionAttachRequestAction,
   ConnectionDeleteAttachedRequestAction,
-  DeleteConnectionSuccessEventAction,
-  DeleteConnectionFailureEventAction,
+  Connections,
+  ConnectionStore,
+  ConnectionThemes,
+  ResetPairwiseAgentAction,
   DeleteConnectionEventAction,
+  DeleteConnectionFailureEventAction,
+  DeleteConnectionSuccessEventAction,
+  DeleteOneTimeConnectionAction,
+  DeleteOneTimeConnectionSuccessAction,
+  DeletePendingConnectionEventAction,
+  HydratePairwiseAgentAction,
+  PairwiseAgent,
+  PairwiseAgentCreatedAction,
   SendConnectionRedirectAction,
   SendConnectionReuseAction,
   UpdateConnectionSerializedStateAction,
-  DeletePendingConnectionEventAction,
 } from './type-connection-store'
-import type {
-  AriesOutOfBandInvite,
-  InvitationPayload,
-} from '../invitation/type-invitation'
 import {
   CONNECTION_ATTACH_REQUEST,
   CONNECTION_DELETE_ATTACHED_REQUEST,
-  NEW_CONNECTION,
-  DELETE_CONNECTION_SUCCESS,
-  DELETE_CONNECTION_FAILURE,
+  CONNECTION_FAIL,
+  CONNECTION_REQUEST_SENT,
+  RESET_PAIRWISE_AGENT,
   DELETE_CONNECTION,
-  STORAGE_KEY_THEMES,
+  DELETE_CONNECTION_FAILURE,
+  DELETE_CONNECTION_SUCCESS,
+  DELETE_ONE_TIME_CONNECTION,
+  DELETE_ONE_TIME_CONNECTION_SUCCESS,
+  DELETE_PENDING_CONNECTION,
   HYDRATE_CONNECTION_THEMES,
-  UPDATE_CONNECTION_THEME,
-  UPDATE_STATUS_BAR_THEME,
   HYDRATE_CONNECTIONS,
+  HYDRATE_PAIRWISE_AGENT,
+  NEW_CONNECTION,
+  NEW_CONNECTION_SUCCESS,
+  NEW_ONE_TIME_CONNECTION,
+  NEW_PENDING_CONNECTION,
+  PAIRWISE_AGENT_CREATED,
   SEND_CONNECTION_REDIRECT,
   SEND_CONNECTION_REUSE,
-  UPDATE_CONNECTION_SERIALIZED_STATE,
   SEND_REDIRECT_SUCCESS,
   SEND_REUSE_SUCCESS,
-  CONNECTION_FAIL,
-  NEW_ONE_TIME_CONNECTION,
-  NEW_CONNECTION_SUCCESS,
-  NEW_PENDING_CONNECTION,
+  STORAGE_KEY_PAIRWISE_AGENT,
+  STORAGE_KEY_THEMES,
   UPDATE_CONNECTION,
-  DELETE_PENDING_CONNECTION,
-  CONNECTION_REQUEST_SENT,
+  UPDATE_CONNECTION_SERIALIZED_STATE,
+  UPDATE_CONNECTION_THEME,
+  UPDATE_STATUS_BAR_THEME,
 } from './type-connection-store'
+import type { AriesOutOfBandInvite, InvitationPayload } from '../invitation/type-invitation'
 import {
-  deleteConnection,
-  getHandleBySerializedConnection,
-  createConnectionWithInvite,
   connectionRedirect,
   connectionReuse,
+  createConnectionWithInvite,
+  deleteConnection,
+  getHandleBySerializedConnection,
+  createPairwiseAgent,
 } from '../bridge/react-native-cxs/RNCxs'
-import { RESET } from '../common/type-common'
 import { promptBackupBanner } from '../backup/backup-store'
 import { HYDRATED } from './type-config-store'
 import { captureError } from '../services/error/error-handler'
 import { customLogger } from '../store/custom-logger'
 import { ensureVcxInitSuccess } from './route-store'
 import moment from 'moment'
+import { retrySaga } from '../api/api-utils'
+import { CLOUD_AGENT_UNAVAILABLE } from '../bridge/react-native-cxs/error-cxs'
 
 const initialState: ConnectionStore = {
   data: {},
@@ -167,7 +175,7 @@ export const deleteConnectionAction = (
 
 export const connectionAttachRequest = (
   identifier: string,
-  request: GenericObject
+  request: GenericObject,
 ): ConnectionAttachRequestAction => ({
   type: CONNECTION_ATTACH_REQUEST,
   identifier,
@@ -191,13 +199,17 @@ export function* deleteConnectionOccurredSaga(
     action.senderDID
   )
 
+  if (!connection) {
+    return
+  }
+
   const { [connection.identifier]: deleted, ...rest } = connections
 
   try {
     yield call(secureSet, CONNECTIONS, JSON.stringify(rest))
     yield put(deleteConnectionSuccess(rest, action.senderDID))
 
-    if (connection.vcxSerializedConnection) {
+    if (connection.vcxSerializedConnection && connection.myPairwiseAgentDid) {
       const connectionHandle = yield call(
         getHandleBySerializedConnection,
         connection.vcxSerializedConnection
@@ -212,6 +224,40 @@ export function* deleteConnectionOccurredSaga(
 
 export function* watchDeleteConnectionOccurred(): any {
   yield takeLatest(DELETE_CONNECTION, deleteConnectionOccurredSaga)
+}
+
+export const deleteOneTimeConnection = (identifier: string): DeleteOneTimeConnectionAction => ({
+  type: DELETE_ONE_TIME_CONNECTION,
+  identifier,
+})
+
+export const deleteOneTimeConnectionSuccess = (identifier: string): DeleteOneTimeConnectionSuccessAction => ({
+  type: DELETE_ONE_TIME_CONNECTION_SUCCESS,
+  identifier,
+})
+
+export function* deleteOneTimeConnectionOccurredSaga(
+  action: DeleteOneTimeConnectionAction
+): Generator<*, *, *> {
+  const connections = yield select(getAllConnections)
+  const connection = connections[action.identifier]
+  try {
+    if (connection && connection.vcxSerializedConnection) {
+      const connectionHandle = yield call(
+        getHandleBySerializedConnection,
+        connection.vcxSerializedConnection
+      )
+      yield call(deleteConnection, connectionHandle)
+      yield put(deleteOneTimeConnectionSuccess(connection.identifier))
+    }
+  } catch (e) {
+    captureError(e)
+    yield put(deleteConnectionFailure(connection, e))
+  }
+}
+
+export function* watchDeleteOneTimeConnectionOccurred(): any {
+  yield takeEvery(DELETE_ONE_TIME_CONNECTION, deleteOneTimeConnectionOccurredSaga)
 }
 
 export function* loadNewConnectionSaga(): Generator<*, *, *> {
@@ -488,6 +534,76 @@ function* sendConnectionReuseSaga(
   }
 }
 
+export function* getConnectionHandle(
+  senderDID: string,
+): Generator<*, *, *> {
+  const [connection]: [Connection] = yield select(getConnection, senderDID)
+  if (!connection || !connection.vcxSerializedConnection) {
+    return
+  }
+  return yield call(
+    getHandleBySerializedConnection,
+    connection.vcxSerializedConnection,
+  )
+}
+
+export const hydratePairwiseAgent = (pairwiseAgent: PairwiseAgent): HydratePairwiseAgentAction => ({
+  type: HYDRATE_PAIRWISE_AGENT,
+  pairwiseAgent,
+})
+
+export const resetPairwiseAgent = (): ResetPairwiseAgentAction => ({
+  type: RESET_PAIRWISE_AGENT,
+})
+
+export const pairwiseAgentCreated = (pairwiseAgent: PairwiseAgent): PairwiseAgentCreatedAction => ({
+  type: PAIRWISE_AGENT_CREATED,
+  pairwiseAgent,
+})
+
+export function* createPairwiseAgentSaga(): Generator<*, *, *> {
+  yield put(resetPairwiseAgent())
+  try {
+    const agentInfo = yield* retrySaga(
+      call(createPairwiseAgent),
+      CLOUD_AGENT_UNAVAILABLE
+    )
+    yield put(pairwiseAgentCreated(agentInfo))
+  } catch (e) {
+    customLogger.error(`createPairwiseAgentSaga: ${e}`)
+  }
+}
+
+export function* persistPairwiseAgentSaga(): Generator<*, *, *> {
+  const pairwiseAgent = yield select(getConnectionPairwiseAgentInfo)
+  try {
+    yield call(secureSet, STORAGE_KEY_PAIRWISE_AGENT, JSON.stringify(pairwiseAgent))
+  } catch (e) {
+    customLogger.error(`persistPairwiseAgent: ${e}`)
+  }
+}
+
+export function* hydratePairwiseAgentSaga(): Generator<*, *, *> {
+  try {
+    const pairwiseAgent = yield call(getHydrationItem, STORAGE_KEY_PAIRWISE_AGENT)
+    if (pairwiseAgent) {
+      yield put(hydratePairwiseAgent(JSON.parse(pairwiseAgent)))
+    }
+  } catch (e) {
+    customLogger.error(`hydratePairwiseAgentSage: ${e}`)
+  }
+}
+
+export function* watchPersistPairwiseAgent(): any {
+  yield takeEvery(
+    [
+      RESET_PAIRWISE_AGENT,
+      PAIRWISE_AGENT_CREATED,
+    ],
+    persistPairwiseAgentSaga
+  )
+}
+
 export function* watchSendConnectionRedirect(): any {
   yield takeEvery(SEND_CONNECTION_REDIRECT, sendConnectionRedirectSaga)
 }
@@ -503,10 +619,12 @@ export function* watchUpdateConnectionTheme(): any {
 export function* watchConnection(): any {
   yield all([
     watchDeleteConnectionOccurred(),
+    watchDeleteOneTimeConnectionOccurred(),
     watchConnectionsChanged(),
     watchUpdateConnectionTheme(),
     watchSendConnectionRedirect(),
     watchSendConnectionReuse(),
+    watchPersistPairwiseAgent(),
   ])
 }
 
@@ -591,6 +709,16 @@ export default function connections(
           },
         },
       }
+    case DELETE_ONE_TIME_CONNECTION_SUCCESS: {
+      const {
+        [action.identifier] : connection,
+        ...oneTimeConnections
+      } = state.oneTimeConnections || {}
+      return {
+        ...state,
+        oneTimeConnections,
+      }
+    }
     case NEW_CONNECTION_SUCCESS:
       const { identifier } = action
       return {
@@ -695,10 +823,37 @@ export default function connections(
             [action.identifier]: connection,
           },
         }
+      } else if (state.oneTimeConnections && state.oneTimeConnections[action.identifier]) {
+        // eslint-disable-next-line no-unused-vars
+        const { attachedRequest, ...connection } =
+        state.oneTimeConnections?.[action.identifier] ?? {}
+
+        return {
+          ...state,
+          oneTimeConnections: {
+            ...state.oneTimeConnections,
+            [action.identifier]: connection,
+          },
+        }
       } else {
         return state
       }
     }
+    case RESET_PAIRWISE_AGENT:
+      return {
+        ...state,
+        pairwiseAgent: null
+      }
+    case PAIRWISE_AGENT_CREATED:
+      return {
+        ...state,
+        pairwiseAgent: action.pairwiseAgent
+      }
+    case HYDRATE_PAIRWISE_AGENT:
+      return {
+        ...state,
+        pairwiseAgent: action.pairwiseAgent,
+      }
     case RESET:
       return initialState
     default:

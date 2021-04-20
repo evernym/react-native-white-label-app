@@ -26,11 +26,10 @@ import type {
   SelfAttestedAttributes,
 } from './type-proof-request'
 import {
-  getUserPairwiseDid,
   getProofRequestPairwiseDid,
-  getRemotePairwiseDidAndName,
   getProofRequest,
-  getConnection,
+  getSelectedCredentials,
+  getShowCredentialUuid,
 } from '../store/store-selector'
 import {
   PROOF_REQUESTS,
@@ -66,12 +65,10 @@ import type {
 } from '../push-notification/type-push-notification'
 import {
   sendProof as sendProofApi,
-  getHandleBySerializedConnection,
   proofSerialize,
   proofReject,
   proofDeserialize,
 } from '../bridge/react-native-cxs/RNCxs'
-import type { Connection } from '../store/type-connection-store'
 import { RESET } from '../common/type-common'
 import { getProofRequests } from '../store/store-selector'
 import { captureError } from '../services/error/error-handler'
@@ -80,11 +77,19 @@ import {
   resetTempProofData,
   errorSendProofFail,
   updateAttributeClaim,
+  generateProofSaga,
+  getProof,
+  updateAttributeClaimAndSendProof,
 } from '../proof/proof-store'
 import { secureSet, getHydrationItem } from '../services/storage'
 import { retrySaga } from '../api/api-utils'
-import { ensureVcxInitAndPoolConnectSuccess, ensureVcxInitSuccess } from '../store/route-store'
+import {
+  ensureVcxInitAndPoolConnectSuccess,
+  ensureVcxInitSuccess,
+} from '../store/route-store'
 import { PROOF_FAIL } from '../proof/type-proof'
+import { getConnectionHandle } from '../store/connections-store'
+import { credentialPresentationSent } from '../show-credential/show-credential-store'
 
 const proofRequestInitialState = {}
 
@@ -163,6 +168,23 @@ export function convertMissingAttributeListToObject(
   )
 }
 
+export const convertSelectedCredentialsToVCXFormat = (
+  selectedCredentials: Array<Attribute>,
+  credentialUuid?: string
+) => {
+  return selectedCredentials.reduce((acc, item) => {
+    const items = { ...acc }
+    if (Array.isArray(item) && item.length > 0) {
+      const cred =
+        (credentialUuid &&
+          item.find((credential) => credential.claimUuid === credentialUuid)) ||
+        item[0]
+      items[cred.key] = [cred.claimUuid, true, cred.cred_info]
+    }
+    return items
+  }, {})
+}
+
 export const missingAttributesFound = (
   missingAttributeList: MissingAttribute[],
   uid: string
@@ -226,7 +248,7 @@ export function* proofAccepted(
   let connectionHandle = 0
   if (!ephemeralProofRequest) {
     // if this proof request is not ephemeral, then we expects a pairwise connection
-    connectionHandle = yield* getConnectionHandle(remotePairwiseDID, uid)
+    connectionHandle = yield* getConnectionHandle(remotePairwiseDID)
   }
 
   if (typeof connectionHandle === 'undefined') {
@@ -254,34 +276,6 @@ export function* proofAccepted(
     yield put(
       errorSendProofFail(uid, remotePairwiseDID, ERROR_SEND_PROOF(e.message))
     )
-  }
-}
-
-function* getConnectionHandle(
-  remoteDid: string,
-  uid: string
-): Generator<*, *, *> {
-  try {
-    const [connection]: [Connection] = yield select(getConnection, remoteDid)
-
-    if (!connection.vcxSerializedConnection) {
-      captureError(new Error('OCS-002 No pairwise connection found'))
-      yield put(
-        errorSendProofFail(uid, remoteDid, {
-          code: 'OCS-002',
-          message: 'No pairwise connection found',
-        })
-      )
-      return
-    }
-
-    const connectionHandle: number = yield call(
-      getHandleBySerializedConnection,
-      connection.vcxSerializedConnection
-    )
-    return connectionHandle
-  } catch (e) {
-    return
   }
 }
 
@@ -320,7 +314,31 @@ export const proofSerialized = (serializedProof: string, uid: string) => ({
   uid,
 })
 
-export function* serializeProofRequestSaga(
+export function* autoAcceptProofRequest(
+  action: ProofRequestReceivedAction
+): Generator<*, *, *> {
+  yield call(generateProofSaga, getProof(action.payloadInfo.uid))
+  const selectedCredentials = yield select((store) =>
+    getSelectedCredentials(store, action.payloadInfo.uid)
+  )
+  const credentialUuid = yield select(getShowCredentialUuid)
+  const attributesFilledFromCredential = convertSelectedCredentialsToVCXFormat(
+    selectedCredentials,
+    credentialUuid
+  )
+  yield call(
+    updateAttributeClaimAndSendProof,
+    updateAttributeClaim(
+      action.payloadInfo.uid,
+      action.payloadInfo.remotePairwiseDID,
+      attributesFilledFromCredential,
+      {}
+    )
+  )
+  yield put(credentialPresentationSent())
+}
+
+export function* proofRequestReceivedSaga(
   action: ProofRequestReceivedAction
 ): Generator<*, *, *> {
   try {
@@ -329,16 +347,18 @@ export function* serializeProofRequestSaga(
       const serializedProof: string = yield call(proofSerialize, proofHandle)
       yield put(proofSerialized(serializedProof, action.payloadInfo.uid))
     }
+
+    if (action.payloadInfo.autoAccept) {
+      yield call(autoAcceptProofRequest, action)
+    }
   } catch (e) {
+    customLogger.log(`proofRequestReceivedSaga ${e}`)
     captureError(e)
-    // TODO:KS Add action for serialization failure
-    // need to figure out what happens if serialization fails
-    customLogger.log('failed to serialize proof')
   }
 }
 
 export function* watchProofRequestReceived(): any {
-  yield takeEvery(PROOF_REQUEST_RECEIVED, serializeProofRequestSaga)
+  yield takeEvery(PROOF_REQUEST_RECEIVED, proofRequestReceivedSaga)
 }
 
 function* denyProofRequestSaga(
@@ -347,18 +367,6 @@ function* denyProofRequestSaga(
   try {
     const { uid } = action
     const remoteDid: string = yield select(getProofRequestPairwiseDid, uid)
-    const userPairwiseDid: string | null = yield select(
-      getUserPairwiseDid,
-      remoteDid
-    )
-
-    if (!userPairwiseDid) {
-      customLogger.log(
-        'Connection not found while trying to deny proof request.'
-      )
-
-      return
-    }
 
     const vcxResult = yield* ensureVcxInitSuccess()
     if (vcxResult && vcxResult.fail) {
@@ -373,23 +381,15 @@ function* denyProofRequestSaga(
       getProofRequest,
       uid
     )
-    const { proofHandle } = proofRequestPayload
-    const connection: {
-      remotePairwiseDID: string,
-      remoteName: string,
-    } & Connection = yield select(getRemotePairwiseDidAndName, userPairwiseDid)
-    if (!connection.vcxSerializedConnection) {
-      customLogger.log(
-        'Serialized connection not found while trying to deny proof request.'
-      )
-      return
-    }
+    const { proofHandle, ephemeralProofRequest } = proofRequestPayload
 
     try {
-      const connectionHandle: number = yield call(
-        getHandleBySerializedConnection,
-        connection.vcxSerializedConnection
-      )
+      let connectionHandle = 0
+      if (!ephemeralProofRequest) {
+        // if this proof request is not ephemeral, then we expects a pairwise connection
+        connectionHandle = yield call(getConnectionHandle, remoteDid)
+      }
+
       try {
         try {
           yield call(proofReject, proofHandle, connectionHandle)

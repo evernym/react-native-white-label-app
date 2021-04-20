@@ -12,29 +12,20 @@ import { moderateScale } from 'react-native-size-matters'
 import { colors } from '../../common/styles/constant'
 import type { ReactNavigation } from '../../common/type-common'
 import { modalOptions } from '../utils/modalOptions'
-import {
-  CustomSharedProofModal,
-  proofRequestHeadline,
-} from '../../external-imports'
-import {
-  checkProofForEmptyFields,
-  showMissingField,
-  showToggleMenu,
-} from '../utils/checkForEmptyAttributes'
+import { CustomSharedProofModal, sharedProofHeadline } from '../../external-imports'
+import { checkProofForEmptyFields, showMissingField, showToggleMenu } from '../utils/checkForEmptyAttributes'
 
 type ProofRequestModalProps = {} & ReactNavigation
 
-const ProofRequestModal = ({ navigation, route }: ProofRequestModalProps) => {
+const ProofRequestModal = ({
+                             navigation,
+                             route,
+                           }: ProofRequestModalProps) => {
   const { data, colorBackground } = route.params
 
   const claimMap = useSelector(getClaimMap)
-  const { hasEmpty, allEmpty } = useMemo(
-    () => checkProofForEmptyFields(data.data),
-    [data]
-  )
-  const [isMissingFieldsShowing, toggleMissingFields] = useState(
-    showMissingField(hasEmpty, allEmpty)
-  )
+  const { hasEmpty, allEmpty } = useMemo(() => checkProofForEmptyFields(data.data), [data])
+  const [isMissingFieldsShowing, toggleMissingFields] = useState(showMissingField(hasEmpty, allEmpty))
   const isToggleMenuShowing = showToggleMenu(hasEmpty, allEmpty)
 
   const hideModal = useCallback(() => {
@@ -44,7 +35,7 @@ const ProofRequestModal = ({ navigation, route }: ProofRequestModalProps) => {
   return (
     <View style={styles.modalWrapper}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <StatusBar backgroundColor={colors.black} barStyle={'light-content'} />
+        <StatusBar backgroundColor={colors.black} barStyle={'light-content'}/>
         <ModalHeader
           institutionalName={data.senderName}
           credentialName={data.name}
@@ -67,17 +58,21 @@ const ProofRequestModal = ({ navigation, route }: ProofRequestModalProps) => {
           </View>
         </View>
       </ScrollView>
-      <ModalButton onClose={hideModal} colorBackground={colorBackground} />
+      <ModalButton
+        onClose={hideModal}
+        colorBackground={colorBackground}
+      />
     </View>
   )
 }
 
 const screen =
-  (CustomSharedProofModal && CustomSharedProofModal.screen) || ProofRequestModal
+  CustomSharedProofModal && CustomSharedProofModal.screen ||
+  ProofRequestModal
 
 const navigationOptions =
-  (CustomSharedProofModal && CustomSharedProofModal.navigationOptions) ||
-  modalOptions(proofRequestHeadline, 'CloseIcon')
+  CustomSharedProofModal && CustomSharedProofModal.navigationOptions ||
+  modalOptions(sharedProofHeadline, 'CloseIcon')
 
 export const proofScreen = {
   routeName: modalContentProofShared,

@@ -90,7 +90,7 @@ import type {
   GetMessagesFailAction,
   AcknowledgeMessagesFailAction,
 } from './type-config-store'
-import type { CustomError } from '../common/type-common'
+import type { CustomError, GenericObject } from '../common/type-common'
 import { downloadEnvironmentDetails } from '../api/api'
 import { schemaValidator } from '../services/schema-validator'
 import type { EnvironmentDetailUrlDownloaded } from '../api/type-api'
@@ -104,6 +104,7 @@ import {
   createCredentialWithAriesOffer,
   proofCreateWithRequest,
   initPool,
+  toBase64FromUtf8,
 } from '../bridge/react-native-cxs/RNCxs'
 import { RESET } from '../common/type-common'
 import type { Connection } from './type-connection-store'
@@ -112,6 +113,7 @@ import {
   fetchAdditionalDataError,
   setFetchAdditionalDataPendingKeys,
   updatePayloadToRelevantStoreAndRedirect,
+  updatePayloadToRelevantStoreSaga,
 } from '../push-notification/push-notification-store'
 import type { CxsPoolConfig } from '../bridge/react-native-cxs/type-cxs'
 import type { UserOneTimeInfo } from './user/type-user-store'
@@ -131,7 +133,10 @@ import type {
 } from './../question/type-question'
 import { MESSAGE_TYPE } from '../api/api-constants'
 import { saveSerializedClaimOffer } from './../claim-offer/claim-offer-store'
-import { getPendingFetchAdditionalDataKey } from './store-selector'
+import {
+  getAllConnections,
+  getPendingFetchAdditionalDataKey,
+} from './store-selector'
 import { captureError } from '../services/error/error-handler'
 import { customLogger } from '../store/custom-logger'
 import { ensureVcxInitAndPoolConnectSuccess } from './route-store'
@@ -140,6 +145,7 @@ import {
   registerCloudAgentWithoutToken,
 } from './user/cloud-agent'
 import {
+  getAttachedRequestData,
   processAttachedRequest,
   updateAriesConnectionState,
 } from '../invitation/invitation-store'
@@ -149,6 +155,7 @@ import {
   QUESTIONANSWER_PROTOCOL,
 } from '../question/type-question'
 import {
+  autoAcceptCredentialPresentationRequest,
   defaultServerEnvironment,
   serverEnvironments,
   usePushNotifications,
@@ -161,6 +168,9 @@ import type {
 import { INVITE_ACTION_PROTOCOL } from '../invite-action/type-invite-action'
 import { retrySaga } from '../api/api-utils'
 import { CLOUD_AGENT_UNAVAILABLE } from '../bridge/react-native-cxs/error-cxs'
+import { updateVerifierState } from '../verifier/verifier-store'
+import { presentationProposalSchema } from '../proof-request/proof-request-qr-code-reader'
+import { deleteOneTimeConnection, deleteOneTimeConnectionOccurredSaga } from './connections-store'
 
 /**
  * this file contains configuration which is changed only from user action
@@ -883,7 +893,7 @@ export const traverseAndGetAllMessages = (
         connection &&
         connection.msgs &&
         connection.msgs.map((message) => {
-          messages.push(message)
+          messages.push({ ...message, pairwiseDID: connection.pairwiseDID })
         })
     )
   } else {
@@ -964,6 +974,25 @@ export function* processMessages(
     }
   }
 }
+
+export const convertToAriesProofRequest = async (message: GenericObject) =>
+  JSON.stringify({
+    '@type': 'https://didcomm.org/present-proof/1.0/request-presentation',
+    '@id': message['thread_id'],
+    comment: 'Proof Request',
+    'request_presentations~attach': [
+      {
+        '@id': 'libindy-request-presentation-0',
+        'mime-type': 'application/json',
+        data: {
+          base64: await toBase64FromUtf8(
+            JSON.stringify(message['proof_request_data'])
+          ),
+        },
+      },
+    ],
+    '~service': message['~service'],
+  })
 
 export const convertDecryptedPayloadToQuestion = (
   connectionHandle: number,
@@ -1228,15 +1257,23 @@ function* handleProprietaryMessage(
 }
 
 function* handleAriesMessage(message: DownloadedMessage): Generator<*, *, *> {
-  let { senderDID, uid, type, decryptedPayload } = message
+  let { senderDID, uid, type, decryptedPayload, pairwiseDID } = message
   const remotePairwiseDID = senderDID
-  const connection: Connection[] = yield select(getConnection, senderDID)
+  const connections = yield select(getAllConnections)
+
+  const connection = connections[pairwiseDID]
+  if (!connection) {
+    return
+  }
+
   const {
     identifier: forDID,
     vcxSerializedConnection,
     logoUrl: senderLogoUrl,
     senderName,
-  }: Connection = connection[0]
+    attachedRequest,
+  }: Connection = connection
+
   const connectionHandle = yield call(
     getHandleBySerializedConnection,
     vcxSerializedConnection
@@ -1257,6 +1294,7 @@ function* handleAriesMessage(message: DownloadedMessage): Generator<*, *, *> {
       | null = null
 
     let messageType = null
+    let redirectToScreen = true
 
     // if we don't find any matching type, then our type can be expected from aries
     // now we can try to look inside decryptedpayload
@@ -1318,23 +1356,51 @@ function* handleAriesMessage(message: DownloadedMessage): Generator<*, *, *> {
         payloadType.name.toLowerCase()
       )
     ) {
-      const message = payload['@msg']
-
       messageType = MESSAGE_TYPE.PROOF_REQUEST
+
+      let message = payload['@msg']
+      let proofRequest = JSON.parse(message)
+
+      if (proofRequest['~service']) {
+        // Aries Proof Request
+        message = yield call(convertToAriesProofRequest, proofRequest)
+      }
 
       const proofHandle = yield call(proofCreateWithRequest, uid, message)
 
       yield fork(updateMessageStatus, [{ pairwiseDID: forDID, uids: [uid] }])
 
       additionalData = {
-        ...JSON.parse(message),
+        ...proofRequest,
         proofHandle,
+        identifier: forDID,
+      }
+
+      if (proofRequest['thread_id'] && attachedRequest) {
+        const data = yield call(getAttachedRequestData, attachedRequest.data)
+
+        if (
+          data &&
+          schemaValidator.validate(presentationProposalSchema, data) &&
+          data['@id'] === proofRequest['thread_id']
+        ) {
+          yield fork(deleteOneTimeConnectionOccurredSaga, deleteOneTimeConnection(forDID))
+          additionalData.ephemeralProofRequest = proofRequest['~service']
+            ? message
+            : undefined
+          if (autoAcceptCredentialPresentationRequest) {
+            additionalData.additionalPayloadInfo = {
+              hidden: true,
+              autoAccept: true,
+            }
+            redirectToScreen = false
+          }
+        }
       }
     }
 
     if (payloadType.name === 'handshake-reuse-accepted') {
-      yield call(processAttachedRequest, forDID)
-
+      yield call(processAttachedRequest, connection)
       yield fork(updateMessageStatus, [{ pairwiseDID: forDID, uids: [uid] }])
     }
 
@@ -1381,6 +1447,20 @@ function* handleAriesMessage(message: DownloadedMessage): Generator<*, *, *> {
       messageType = MESSAGE_TYPE.INVITE_ACTION
 
       yield fork(updateMessageStatus, [{ pairwiseDID: forDID, uids: [uid] }])
+    }
+
+    if (payloadType.name === 'presentation') {
+      yield call(updateVerifierState, payload['@msg'])
+
+      yield fork(updateMessageStatus, [{ pairwiseDID: forDID, uids: [uid] }])
+    }
+
+    if (payloadType.name === 'problem-report') {
+      const payloadMessageType = JSON.parse(payload['@msg'])['@type']
+      if (payloadMessageType && payloadMessageType.includes('present-proof')) {
+        yield call(updateVerifierState, payload['@msg'])
+        yield fork(updateMessageStatus, [{ pairwiseDID: forDID, uids: [uid] }])
+      }
     }
 
     if (payloadType && payloadType.name === 'aries' && payload['@msg']) {
@@ -1434,7 +1514,11 @@ function* handleAriesMessage(message: DownloadedMessage): Generator<*, *, *> {
       },
     }
 
-    yield put(updatePayloadToRelevantStoreAndRedirect(message))
+    if (redirectToScreen) {
+      yield put(updatePayloadToRelevantStoreAndRedirect(message))
+    } else {
+      yield* updatePayloadToRelevantStoreSaga(message)
+    }
   } catch (e) {
     captureError(e)
     yield put(

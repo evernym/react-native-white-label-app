@@ -22,6 +22,7 @@ import {
   claimOfferRoute,
   questionRoute,
   inviteActionRoute,
+  proofProposalRoute,
 } from '../common'
 import {
   sendConnectionRedirect,
@@ -115,6 +116,10 @@ export class HomeScreen extends Component<HomeProps, void> {
 
         case MESSAGE_TYPE.INVITE_ACTION:
           this.props.navigation.navigate(inviteActionRoute, { uid })
+          break
+
+        case MESSAGE_TYPE.PRESENTATION_PROPOSAL:
+          this.props.navigation.navigate(proofProposalRoute, { uid })
           break
       }
     }
@@ -281,6 +286,16 @@ export class HomeScreen extends Component<HomeProps, void> {
       statusMessage = 'You rejected action'
     else if (status === HISTORY_EVENT_STATUS.INVITE_ACTION_ACCEPTED)
       statusMessage = 'You accepted action'
+    else if (
+      status === HISTORY_EVENT_STATUS.PROOF_PROPOSAL_ACCEPTED ||
+      status === HISTORY_EVENT_STATUS.PROOF_REQUEST_SENT
+    )
+      statusMessage = `Requesting "${action}" proof from "${issuerName}".`
+    else if (status === HISTORY_EVENT_STATUS.PROOF_VERIFIED) {
+      statusMessage = `"${action}" proof verification passed`
+    } else if (status === HISTORY_EVENT_STATUS.PROOF_VERIFICATION_FAILED) {
+      statusMessage = `"${action}" proof verification failed`
+    }
     else {
       return <View />
     }

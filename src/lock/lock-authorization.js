@@ -5,25 +5,29 @@
  * either by asking for TouchId or asking user to enter pin code
  */
 import React, { useCallback } from 'react'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, Platform } from 'react-native'
 
 import type { LockAuthorizationProps } from './type-lock'
 
-import { headerDefaultOptions } from '../navigation/navigation-header-config'
 import LockEnter from './lock-enter'
 import { lockAuthorizationHomeRoute } from '../common'
+import { useInteractionDone } from '../hooks/use-interactions-done'
+import { LoaderGif } from '../components/loader-gif/loader-gif'
 import { colors } from '../common/styles/constant'
+import { headerDefaultOptions } from '../navigation/navigation-header-config'
 
 export const LockAuthorization = ({
-  navigation,
-  route,
-}: LockAuthorizationProps) => {
+                                    route,
+                                  }: LockAuthorizationProps) => {
+  const [interactionDone] = useInteractionDone()
   const onSuccess = useCallback(() => {
     const { params } = route
     params && params.onSuccess && params.onSuccess()
   }, [])
 
-  return (
+  return !interactionDone ? (
+    LoaderGif
+  ) : (
     <View style={styles.container}>
       <LockEnter onSuccess={onSuccess} />
     </View>

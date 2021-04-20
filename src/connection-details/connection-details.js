@@ -41,12 +41,17 @@ import {
   DENY_CLAIM_OFFER_SUCCESS,
 } from '../claim-offer/type-claim-offer'
 import { UPDATE_ATTRIBUTE_CLAIM, ERROR_SEND_PROOF } from '../proof/type-proof'
-import {
-  deleteConnectionAction,
-  getConnections,
-} from '../store/connections-store'
+import { deleteConnectionAction, getConnections } from '../store/connections-store'
 import type { ConnectionHistoryEvent } from '../connection-history/type-connection-history'
 import { CustomConnectionDetailsScreen } from '../external-imports'
+import {
+  OUTOFBAND_PROOF_PROPOSAL_ACCEPTED,
+  PROOF_PROPOSAL_ACCEPTED,
+  PROOF_PROPOSAL_RECEIVED,
+  PROOF_REQUEST_SENT,
+  PROOF_VERIFICATION_FAILED,
+  PROOF_VERIFIED,
+} from '../verifier/type-verifier'
 
 const keyExtractor = (item: Object) => item.timestamp
 
@@ -360,6 +365,75 @@ const ConnectionDetails = ({
           messageTitle={'Deleted Credential'}
           messageContent={'You deleted the credential "' + item.name + '"'}
           showButtons={false}
+          type={item.action}
+        />
+      )
+    } else if (item.action === PROOF_PROPOSAL_RECEIVED) {
+      if (item.showBadge === false) {
+        return <View/>
+      }
+
+      return (
+        <CredentialCard
+          messageDate={formattedTime}
+          messageTitle={'New Presentation Proposal'}
+          messageContent={item.name}
+          showButtons={true}
+          uid={item.originalPayload.payloadInfo.uid}
+          navigation={navigation}
+          colorBackground={themeForLogo.primary}
+          type={item.action}
+        />
+      )
+    } else if (
+      item.action === OUTOFBAND_PROOF_PROPOSAL_ACCEPTED ||
+      item.action === PROOF_PROPOSAL_ACCEPTED ||
+      item.action === PROOF_REQUEST_SENT
+    ) {
+      return (
+        <ConnectionPending
+          date={formattedTime}
+          title={item.name}
+          content={'WAITING FOR PROOF'}
+        />
+      )
+    } else if (item.action === PROOF_VERIFIED) {
+      const noOfAttributes = Object.keys({
+        ...item.data.revealed_attrs,
+        ...item.data.revealed_attr_groups,
+        ...item.data.unrevealed_attrs,
+        ...item.data.predicates,
+      }).length
+      return (
+        <ConnectionCard
+          messageDate={formattedTime}
+          headerText={item.name}
+          infoType={'VERIFIED PROOF'}
+          infoDate={formattedDate}
+          noOfAttributes={noOfAttributes}
+          buttonText={'VIEW PROOF DATA'}
+          showBadge={true}
+          colorBackground={themeForLogo.primary}
+          navigation={navigation}
+          received={true}
+          data={item}
+          imageUrl={route.params.image}
+          institutionalName={route.params.senderName}
+          secondColorBackground={themeForLogo.secondary}
+          type={item.action}
+        />
+      )
+    } else if (item.action === PROOF_VERIFICATION_FAILED) {
+      return (
+        <ConnectionCard
+          messageDate={formattedTime}
+          headerText={item.name}
+          infoType={'FAILED TO VERIFY PROOF'}
+          infoDate={formattedDate}
+          showBadge={false}
+          colorBackground={colors.red}
+          data={item}
+          navigation={navigation}
           type={item.action}
         />
       )

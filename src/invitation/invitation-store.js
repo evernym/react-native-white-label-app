@@ -31,14 +31,15 @@ import {
   getConnection,
   getConnectionByUserDid,
   getConnectionExists,
+  getConnectionPairwiseAgentInfo,
   getInvitationPayload,
 } from '../store/store-selector'
 import {
   connectionAttachRequest,
   connectionDeleteAttachedRequest,
   connectionRequestSent,
+  createPairwiseAgentSaga,
   deletePendingConnection,
-  saveNewOneTimeConnection,
   saveNewPendingConnection,
   sendConnectionReuse,
   updateConnection,
@@ -60,7 +61,7 @@ import type { CustomError, GenericObject } from '../common/type-common'
 import { ID, RESET, TYPE } from '../common/type-common'
 import { captureError } from '../services/error/error-handler'
 import { ensureVcxInitSuccess } from '../store/route-store'
-import type { Connection, MyPairwiseInfo } from '../store/type-connection-store'
+import type { Connection } from '../store/type-connection-store'
 import { connectionFail, connectionSuccess, ERROR_CONNECTION } from '../store/type-connection-store'
 import { flattenAsync } from '../common/flatten-async'
 import { flatJsonParse } from '../common/flat-json-parse'
@@ -86,6 +87,7 @@ import { customLogger } from '../store/custom-logger'
 import { retrySaga } from '../api/api-utils'
 import { checkProtocolStatus } from '../store/protocol-status'
 import { isConnectionCompleted } from '../store/store-utils'
+import { outofbandProofProposalAccepted, proofProposalAccepted } from '../verifier/verifier-store'
 
 export const invitationInitialState = {}
 
@@ -126,11 +128,9 @@ export const invitationRejected = (senderDID: string) => ({
 
 export const acceptOutOfBandInvitation = (
   invitationPayload: InvitationPayload,
-  attachedRequest: GenericObject
 ): OutOfBandInvitationAcceptedAction => ({
   type: OUT_OF_BAND_INVITATION_ACCEPTED,
   invitationPayload,
-  attachedRequest,
 })
 
 export const hydrateInvitations = (invitations: { +[string]: Invitation }) => ({
@@ -156,6 +156,13 @@ export function* sendResponse(
   if (connection && connection.length > 0 && !connection[0].isCompleted) {
     yield put(deletePendingConnection(connection[0].identifier))
   }
+
+  const vcxResult = yield* ensureVcxInitSuccess()
+  if (vcxResult && vcxResult.fail) {
+    throw new Error({ message: vcxResult.fail.message })
+  }
+
+  yield call(savePendingConnection, payload)
 
   try {
     // aries connection
@@ -200,35 +207,41 @@ export function* savePendingConnection(
   }
 }
 
+export function* makeConnection(
+  connectionHandle: number
+): Generator<*, *, *> {
+  const agentInfo = yield select(getConnectionPairwiseAgentInfo)
+
+  const {
+    connection,
+    serializedConnection,
+  } = yield* retrySaga(
+    call(acceptInvitationVcx, connectionHandle, agentInfo),
+    CLOUD_AGENT_UNAVAILABLE
+  )
+
+  // create new pairwise agent
+  yield spawn(createPairwiseAgentSaga)
+
+  return {
+    pairwiseInfo: connection,
+    vcxSerializedConnection: serializedConnection,
+  }
+}
+
 export function* sendResponseOnProprietaryConnectionInvitation(
   payload: InvitationPayload
 ): Generator<*, *, *> {
   try {
-    yield call(savePendingConnection, payload)
-
-    const vcxResult = yield* ensureVcxInitSuccess()
-    if (vcxResult && vcxResult.fail) {
-      throw new Error({ message: vcxResult.fail.message })
-    }
-
     const connectionHandle: number = yield call(
       createConnectionWithInvite,
       payload
     )
 
-    let pairwiseInfo: MyPairwiseInfo = yield* retrySaga(
-      call(acceptInvitationVcx, connectionHandle),
-      CLOUD_AGENT_UNAVAILABLE
-    )
-
-    // once the connection is successful, we need to save serialized connection
-    // in secure storage as well, because libIndy does not handle persistence
-    // once we have persisted serialized state, we can hydrate vcx
-    // if we need anything from that connection
-    const vcxSerializedConnection: string = yield call(
-      serializeConnection,
-      connectionHandle
-    )
+    const {
+      pairwiseInfo,
+      vcxSerializedConnection
+    } = yield* retrySaga(call(makeConnection, connectionHandle))
 
     const connection = {
       identifier: pairwiseInfo.myPairwiseDid,
@@ -259,31 +272,15 @@ export function* sendResponseOnAriesConnectionInvitation(
   payload: InvitationPayload
 ): Generator<*, *, *> {
   try {
-    yield call(savePendingConnection, payload)
-
-    const vcxResult = yield* ensureVcxInitSuccess()
-    if (vcxResult && vcxResult.fail) {
-      throw new Error({ message: vcxResult.fail.message })
-    }
-
     const connectionHandle: number = yield call(
       createConnectionWithAriesInvite,
       payload
     )
 
-    let pairwiseInfo: MyPairwiseInfo = yield* retrySaga(
-      call(acceptInvitationVcx, connectionHandle),
-      CLOUD_AGENT_UNAVAILABLE
-    )
-
-    // once the connection is successful, we need to save serialized connection
-    // in secure storage as well, because libIndy does not handle persistence
-    // once we have persisted serialized state, we can hydrate vcx
-    // if we need anything from that connection
-    const vcxSerializedConnection: string = yield call(
-      serializeConnection,
-      connectionHandle
-    )
+    const {
+      pairwiseInfo,
+      vcxSerializedConnection
+    } = yield* retrySaga(call(makeConnection, connectionHandle))
 
     const connection = {
       identifier: pairwiseInfo.myPairwiseDid,
@@ -351,37 +348,15 @@ export function* sendResponseOnAriesOutOfBandInvitationWithHandshake(
   payload: InvitationPayload
 ): Generator<*, *, *> {
   try {
-    yield call(savePendingConnection, payload)
-
-    const vcxResult = yield* ensureVcxInitSuccess()
-    if (vcxResult && vcxResult.fail) {
-      throw new Error({ message: vcxResult.fail.message })
-    }
-
-    const attachedRequest = yield call(
-      getAttachedRequest,
-      ((payload.originalObject: any): AriesOutOfBandInvite)
-    )
-
     const connectionHandle: number = yield call(
       createConnectionWithAriesOutOfBandInvite,
       payload
     )
 
-    // we need to setup regular connection
-    let pairwiseInfo: MyPairwiseInfo = yield* retrySaga(
-      call(acceptInvitationVcx, connectionHandle),
-      CLOUD_AGENT_UNAVAILABLE
-    )
-
-    //  we need to save serialized connection
-    // in secure storage as well, because VCX does not handle persistence
-    // once we have persisted serialized state, we can hydrate vcx
-    // if we need anything from that connection
-    const vcxSerializedConnection: string = yield call(
-      serializeConnection,
-      connectionHandle
-    )
+    const {
+      pairwiseInfo,
+      vcxSerializedConnection
+    } = yield* retrySaga(call(makeConnection, connectionHandle))
 
     const connection = {
       identifier: pairwiseInfo.myPairwiseDid,
@@ -393,7 +368,7 @@ export function* sendResponseOnAriesOutOfBandInvitationWithHandshake(
       myPairwisePeerVerKey: pairwiseInfo.myPairwisePeerVerKey,
       vcxSerializedConnection,
       publicDID: payload.senderDetail.publicDID,
-      attachedRequest,
+      attachedRequest: payload.attachedRequest,
       isCompleted: false,
       ...payload,
     }
@@ -409,31 +384,33 @@ export function* sendResponseOnAriesOutOfBandInvitationWithoutHandshake(
   payload: InvitationPayload
 ): Generator<*, *, *> {
   try {
-    const attachedRequest = yield call(
-      getAttachedRequest,
-      ((payload.originalObject: any): AriesOutOfBandInvite)
-    )
-
-    const vcxResult = yield* ensureVcxInitSuccess()
-    if (vcxResult && vcxResult.fail) {
-      throw new Error({ message: vcxResult.fail.message })
-    }
-
     const connectionHandle: number = yield call(
       createConnectionWithAriesOutOfBandInvite,
       payload
     )
 
-    yield put(invitationSuccess(payload.senderDID))
+    let pairwiseInfo = {}
+    let vcxSerializedConnection
 
-    // we received an invitation reflecting one-time channel
-    const vcxSerializedConnection: string = yield call(
-      serializeConnection,
-      connectionHandle
-    )
+    const attachedRequest = payload.attachedRequest
+
+    if (attachedRequest &&
+      (attachedRequest[TYPE].endsWith('offer-credential') || attachedRequest[TYPE].endsWith('propose-presentation'))) {
+      // for these message we need to create pairwise agent to use service decorator
+      const data = yield* retrySaga(call(makeConnection, connectionHandle))
+      pairwiseInfo = data.pairwiseInfo
+      vcxSerializedConnection = data.vcxSerializedConnection
+    } else {
+      vcxSerializedConnection = yield call(
+        serializeConnection,
+        connectionHandle
+      )
+    }
+
+    const identifier = pairwiseInfo.myPairwiseDid || payload.senderDID
 
     const connection = {
-      identifier: payload.senderDID,
+      identifier,
       logoUrl: payload.senderLogoUrl,
       senderDID: payload.senderDID,
       senderEndpoint: payload.senderEndpoint,
@@ -441,15 +418,18 @@ export function* sendResponseOnAriesOutOfBandInvitationWithoutHandshake(
       publicDID: payload.senderDetail.publicDID,
       vcxSerializedConnection,
       attachedRequest,
-      myPairwiseDid: '',
-      myPairwiseVerKey: '',
-      myPairwiseAgentDid: '',
-      myPairwiseAgentVerKey: '',
-      myPairwisePeerVerKey: '',
+      myPairwiseDid: pairwiseInfo.myPairwiseDid,
+      myPairwiseVerKey: pairwiseInfo.myPairwiseVerKey,
+      myPairwiseAgentDid: pairwiseInfo.myPairwiseAgentDid,
+      myPairwiseAgentVerKey: pairwiseInfo.myPairwiseAgentVerKey,
+      myPairwisePeerVerKey: pairwiseInfo.myPairwisePeerVerKey,
     }
 
-    yield put(saveNewOneTimeConnection(connection))
-    yield* processAttachedRequest(payload.senderDID)
+    yield put(updateConnection(connection))
+    yield put(invitationSuccess(connection.senderDID))
+    yield put(connectionSuccess(identifier, connection.senderDID))
+
+    yield* processAttachedRequest(connection)
   } catch (e) {
     yield call(handleConnectionError, e, payload.senderDID)
   }
@@ -508,7 +488,7 @@ export function* updateAriesConnectionState(
 
     if (isCompleted) {
       yield put(connectionSuccess(connection.identifier, connection.senderDID))
-      yield* processAttachedRequest(identifier)
+      yield* processAttachedRequest(connection)
     }
   } catch (e) {
     yield call(handleConnectionError, e, connection.senderDID)
@@ -543,7 +523,7 @@ export function* handleConnectionError(
 function* outOfBandInvitationAccepted(
   action: OutOfBandInvitationAcceptedAction
 ): Generator<*, *, *> {
-  const { invitationPayload, attachedRequest } = action
+  const { invitationPayload } = action
 
   const connectionExists = yield select(
     getConnectionExists,
@@ -568,7 +548,9 @@ function* outOfBandInvitationAccepted(
       action.invitationPayload.senderDID
     )
 
-    yield put(connectionAttachRequest(connection.identifier, attachedRequest))
+    if (invitationPayload.attachedRequest) {
+      yield put(connectionAttachRequest(connection.identifier, invitationPayload.attachedRequest))
+    }
 
     if (!invitationPayload.originalObject) {
       return
@@ -581,36 +563,41 @@ function* outOfBandInvitationAccepted(
         senderDID: action.invitationPayload.senderDID,
       })
     )
-  }
 
-  if (attachedRequest[TYPE].endsWith('offer-credential')) {
-    yield put(
-      acceptOutofbandClaimOffer(
-        action.attachedRequest[ID],
-        action.invitationPayload.senderDID,
-        connectionExists
+    if (!invitationPayload.attachedRequest){
+      return
+    }
+
+    const type_ = invitationPayload.attachedRequest[TYPE]
+    const id = invitationPayload.attachedRequest[ID]
+
+    if (type_.endsWith('offer-credential')) {
+      yield put(
+        acceptOutofbandClaimOffer(
+          id,
+          action.invitationPayload.senderDID,
+          connectionExists
+        )
       )
-    )
-  } else if (attachedRequest[TYPE].endsWith('request-presentation')) {
-    yield put(
-      acceptOutofbandPresentationRequest(
-        action.attachedRequest[ID],
-        action.invitationPayload.senderDID,
-        connectionExists
+    } else if (type_.endsWith('request-presentation')) {
+      yield put(
+        acceptOutofbandPresentationRequest(
+          id,
+          action.invitationPayload.senderDID,
+          connectionExists
+        )
       )
-    )
+    } else if (type_.endsWith('propose-presentation')) {
+      yield put(
+        outofbandProofProposalAccepted(id)
+      )
+    }
   }
 }
 
-export async function getAttachedRequest(
-  invite: AriesOutOfBandInvite
+export async function getAttachedRequestData(
+  req: GenericObject
 ): GenericObject {
-  const requests = invite['request~attach']
-  if (!requests || !requests.length) {
-    return null
-  }
-
-  const req = requests[0].data
   if (!req) {
     return null
   }
@@ -641,18 +628,26 @@ export async function getAttachedRequest(
   return null
 }
 
-export function* processAttachedRequest(did: string): Generator<*, *, *> {
-  const connection = yield select(getConnectionByUserDid, did)
+export async function getAttachedRequest(
+  invite: AriesOutOfBandInvite
+): GenericObject {
+  const requests = invite['request~attach']
+  if (!requests || !requests.length) {
+    return null
+  }
+
+  return getAttachedRequestData(requests[0].data)
+}
+
+export function* processAttachedRequest(connection: GenericObject): Generator<*, *, *> {
   const attachedRequest = connection.attachedRequest
   if (!attachedRequest) {
     return
   }
-
-  yield put(connectionDeleteAttachedRequest(connection.identifier))
-
   const uid = attachedRequest[ID]
+  const type_ = attachedRequest[TYPE]
 
-  if (attachedRequest[TYPE].endsWith('offer-credential')) {
+  if (type_.endsWith('offer-credential')) {
     const { claimHandle } = yield call(
       createCredentialWithAriesOfferObject,
       uid,
@@ -666,9 +661,13 @@ export function* processAttachedRequest(did: string): Generator<*, *, *> {
       uid
     )
     yield put(acceptClaimOffer(uid, connection.senderDID))
-  } else if (attachedRequest[TYPE].endsWith('request-presentation')) {
+  } else if (type_.endsWith('request-presentation')) {
     yield put(outOfBandConnectionForPresentationEstablished(uid))
+  } else if (type_.endsWith('propose-presentation')) {
+    yield put(proofProposalAccepted(uid))
   }
+
+  yield put(connectionDeleteAttachedRequest(connection.identifier))
 }
 
 export function* persistInvitations(): Generator<*, *, *> {

@@ -35,6 +35,7 @@ export const MESSAGE_TYPE = {
   WALLET_BACKUP_ACK: 'WALLET_BACKUP_ACK',
   ARIES: 'aries',
   INVITE_ACTION: 'inviteAction',
+  PRESENTATION_PROPOSAL: 'presentationProposal',
 }
 
 export const ERROR_PENDING_INVITATION_RESPONSE_PARSE_CODE = 'RN-101'

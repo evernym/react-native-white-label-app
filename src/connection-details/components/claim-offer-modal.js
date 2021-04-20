@@ -359,12 +359,12 @@ export class ClaimOfferModal extends Component<any, *> {
   }
 
   onConfirmAndPay = (shouldHideModal: boolean = false) => {
-    const { invitationPayload, attachedRequest } = this.props.route.params
+    const { invitationPayload } = this.props.route.params
     if (invitationPayload) {
       // accept invite
       // then we have real info for new claim offer
       // anyway send action out of band accepted
-      this.props.acceptOutOfBandInvitation(invitationPayload, attachedRequest)
+      this.props.acceptOutOfBandInvitation(invitationPayload)
     } else {
       this.props.acceptClaimOffer(
         this.props.uid,
@@ -408,7 +408,7 @@ const mapStateToProps = (
       ? claimOfferData.payTokenValue
       : '0'
 
-  const canBeIgnored = params.invitationPayload
+  const canBeIgnored = params.hidden
 
   return {
     thereIsANewAgreement: getThereIsANewAgreement(state),

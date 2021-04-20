@@ -24,7 +24,9 @@ For example `home.js` contains options for `Home` screen.
 * [Collecting log information](#collecting-log-information)
 * [Credential Offer](#credential-offer)
 * [Proof Request](#proof-request)
-* [Question dialog](#question-dialog)
+* [Proof Proposal](#proof-proposal)
+* [Proof](#proof)
+* [Question dialog](#question)
 * [Settings](#settings)
 * [Feedback](#feedback)
 * [Application information](#application-information)
@@ -601,7 +603,7 @@ You can configure application `Credentials` screen inside the `credentials.js` m
         export const CustomMyCredentialsScreen = () => <Text>Custom Credentials</Text>
         ``` 
 
-* `CustomMyCredentialsScreen` - (React Component) custom component for Credential Details screen rendering (instead of predefined one).
+* `CustomCredentialDetailsScreen` - (React Component) custom component for Credential Details screen rendering (instead of predefined one).
     * to use default
         ```javascript
         export const CustomCredentialDetailsScreen = null
@@ -610,6 +612,50 @@ You can configure application `Credentials` screen inside the `credentials.js` m
         ```javascript
         export const CustomCredentialDetailsScreen = () => <Text>Custom Credential Details</Text>
         ``` 
+You can also configure application `Show Credentail` modal dialog or disable this feature.
+
+* `SHOW_CREDENTIAL` - (boolean, Optional) whether you want to use the feature of presenting a credential (it reveals credential data to Verifier scanning QR code).
+  * to use default - `true`
+      ```javascript
+      export const SHOW_CREDENTIAL = null
+      ```
+  * to use custom
+      ```javascript
+      export const SHOW_CREDENTIAL = false
+    
+* `AUTO_ACCEPT_CREDENTIAL_PRESENTATION_REQUEST` - (boolean, Optional) whether you want to automatically accept following `presentation request` and generate proof or show it to user for manually accepting.
+  
+  **NOTE**: acceptably if `SHOW_CREDENTIAL` feature is enable
+  * to use default - `false`
+      ```javascript
+      export const AUTO_ACCEPT_CREDENTIAL_PRESENTATION_REQUEST = null
+      ```
+  * to use custom
+      ```javascript
+      export const AUTO_ACCEPT_CREDENTIAL_PRESENTATION_REQUEST = true
+
+* `SHOW_CREDENTIAL_HEADLINE` - (string, Optional) the text which will be used for the header.
+  * to use default - `show`
+      ```javascript
+      export const SHOW_CREDENTIAL_HEADLINE = null
+      ```
+  * to use custom
+      ```javascript
+      export const SHOW_CREDENTIAL_HEADLINE = 'Custom Show Credential'
+      ```
+
+* `CustomShowCredentialModal` - (React Component) custom component for Show Credential modal window rendering (instead of predefined one).
+  * to use default
+      ```javascript
+      export const CustomShowCredentialModal = null
+      ```    
+  * to use custom
+      ```javascript
+      export const CustomShowCredentialModal = {
+          screen: () => <Text>Custom Proof CustomShowCredentialModal</Text>, // Optional, React Component
+          navigationOptions: {}, // Optional, ModalStack.Screen Options - https://reactnavigation.org/docs/screen-options
+      } 
+      ``` 
 
 #### Navigation Menu
 
@@ -871,20 +917,7 @@ You can customize `Proof Request` dialog in the `proof-request.js` module.
             navigationOptions: {}, // Optional, ModalStack.Screen Options - https://reactnavigation.org/docs/screen-options
         } 
         ``` 
-
-* `CustomSharedProofModal` - (React Component) custom component for shared Proof dialog rendering (instead of predefined one).
-    * to use default
-        ```javascript
-        export const CustomSharedProofModal = null
-        ```    
-    * to use custom 
-        ```javascript
-        export const CustomSharedProofModal = {
-            screen: () => <Text>Custom Proof Dialog</Text>, // Optional, React Component
-            navigationOptions: {}, // Optional, ModalStack.Screen Options - https://reactnavigation.org/docs/screen-options
-        } 
-        ``` 
-
+  
 * `CustomSelectAttributeValueModal` - (React Component) custom component for selecting a credential for filling a requested attribute in Proof (instead of predefined one).
     * to use default
         ```javascript
@@ -922,6 +955,103 @@ You can customize `Proof Request` dialog in the `proof-request.js` module.
             screen: () => <Text>Custom Dialog</Text>, // Optional, React Component
             navigationOptions: {}, // Optional, ModalStack.Screen Options - https://reactnavigation.org/docs/screen-options
         }         
+      ``` 
+
+#### Proof Proposal
+
+You can customize `Proof Proposal` dialog in the `proof-proposal.js` module.
+
+* `HEADLINE` - (string) the text which will be used for the header.
+  * to use default - `Proof Proposal`
+      ```javascript
+      export const HEADLINE = null
+      ```
+  * to use custom
+      ```javascript
+      export const HEADLINE = 'Custom Proposal'
+      ```
+
+* `ACCEPT_BUTTON_TEXT` - (string) the text which will be used for top (accept) button.
+  * to use default - `Accept`
+      ```javascript
+      export const ACCEPT_BUTTON_TEXT = null
+      ```
+  * to use custom
+      ```javascript
+      export const ACCEPT_BUTTON_TEXT = 'Ok'
+      ```
+
+* `DENY_BUTTON_TEXT` - (string) the text which will be used for bottom (deny) button.
+  * to use default - `Cancel`
+      ```javascript
+      export const DENY_BUTTON_TEXT = null
+      ```
+  * to use custom
+      ```javascript
+      export const DENY_BUTTON_TEXT = 'Deny'
+      ```
+
+* `CustomProofProposalModal` - (React Component) custom component for received Proof Proposal dialog rendering (instead of predefined one).
+  * to use default
+      ```javascript
+      export const CustomProofProposalModal = null
+      ```    
+  * to use custom
+      ```javascript
+      export const CustomProofProposalModal = {
+          screen: () => <Text>Custom Proof Proposal Dialog</Text>, // Optional, React Component
+          navigationOptions: {}, // Optional, ModalStack.Screen Options - https://reactnavigation.org/docs/screen-options
+      } 
+      ``` 
+
+#### Proof
+
+You can customize `Shared Proof` and `Received Proof` dialogs in the `proof.js` module.
+
+* `SHARED_PROOF_HEADLINE` - (string) the text which will be used for the header of `Shared Proof` dialog.
+  * to use default - `Proof`
+      ```javascript
+      export const SHARED_PROOF_HEADLINE = null
+      ```
+  * to use custom
+      ```javascript
+      export const SHARED_PROOF_HEADLINE = 'Custom Header'
+      ```
+
+* `CustomSharedProofModal` - (React Component) custom component for received Shared Proof dialog rendering (instead of predefined one).
+  * to use default
+      ```javascript
+      export const CustomSharedProofModal = null
+      ```    
+  * to use custom
+      ```javascript
+      export const CustomSharedProofModal = {
+          screen: () => <Text>Custom Proof Dialog</Text>, // Optional, React Component
+          navigationOptions: {}, // Optional, ModalStack.Screen Options - https://reactnavigation.org/docs/screen-options
+      } 
+      ``` 
+
+* `RECEIVED_PROOF_HEADLINE` - (string) the text which will be used for the header of `Received Proof` dialog.
+  * to use default - `Proof`
+      ```javascript
+      export const RECEIVED_PROOF_HEADLINE = null
+      ```
+  * to use custom
+      ```javascript
+      export const RECEIVED_PROOF_HEADLINE = 'Custom Header'
+      ```
+
+* `CustomProofProposalModal` - (React Component) custom component for received Proof dialog rendering (instead of predefined one).
+  * to use default
+      ```javascript
+      export const CustomProofProposalModal = null
+      ```    
+  * to use custom
+      ```javascript
+      export const CustomReceivedProofModal = {
+          screen: () => <Text>Custom Proof Dialog</Text>, // Optional, React Component
+          navigationOptions: {}, // Optional, ModalStack.Screen Options - https://reactnavigation.org/docs/screen-options
+      } 
       ``` 
 
 #### Question 

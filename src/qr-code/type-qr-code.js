@@ -12,6 +12,8 @@ import { proofRequestReceived } from '../proof-request/proof-request-store'
 import type { ClaimOfferPayload } from '../claim-offer/type-claim-offer'
 import type { InvitationPayload } from '../invitation/type-invitation'
 import type { ProofRequestPayload } from '../proof-request/type-proof-request'
+import { proofProposalReceived } from '../verifier/verifier-store'
+import type { VerifierData } from '../verifier/type-verifier'
 
 export type QRCodeScannerScreenState = {
   isCameraEnabled: boolean,
@@ -26,6 +28,7 @@ export type QRCodeScannerScreenProps = {
   allPublicDid: { [publicDID: string]: Connection },
   claimOffers: { [uid: string]: ClaimOfferPayload },
   proofRequests: { [uid: string]: ProofRequestPayload },
+  verifiers: { [uid: string]: VerifierData },
   invitationReceived: (
     data: InvitationReceivedActionData
   ) => InvitationReceivedAction,
@@ -36,6 +39,7 @@ export type QRCodeScannerScreenProps = {
   ) => void,
   claimOfferReceived: typeof claimOfferReceived,
   proofRequestReceived: typeof proofRequestReceived,
+  proofProposalReceived: typeof proofProposalReceived,
 } & ReactNavigation
 
 export type OutOfBandNavigation = {
@@ -43,7 +47,6 @@ export type OutOfBandNavigation = {
   backRedirectRoute: string,
   uid: string,
   invitationPayload: InvitationPayload,
-  attachedRequest: any,
   senderName: string,
 }
 

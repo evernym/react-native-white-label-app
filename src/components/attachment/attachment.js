@@ -16,8 +16,8 @@ const { photoMimeTypes } = attachMimeTypes
 export const RenderAttachmentIcon = (
   label: string,
   data: any,
-  remotePairwiseDID: string,
-  uid: string,
+  remotePairwiseDID?: string,
+  uid?: string,
   titleStyles?: any,
   contentStyles?: any
 ) => {

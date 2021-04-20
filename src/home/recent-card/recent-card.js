@@ -47,23 +47,29 @@ import { sendInvitationResponse } from '../../invitation/invitation-store'
 import { ResponseType } from '../../components/request/type-request'
 import { deleteConnectionAction } from '../../store/connections-store'
 import { LOADING_ACTIONS } from '../../connection-history/type-connection-history'
+import { PROOF_VERIFICATION_FAILED } from '../../verifier/type-verifier'
+import { renderUserAvatar } from "../../components/user-avatar/user-avatar";
 
 class RecentCardComponent extends React.Component<RecentCardProps, void> {
   render() {
     const props = this.props
     const isRetryCard = getRetryStatus(props.item)
     const isLoading = getLoadingStatus(props.status)
+    const isFailed = getFailedStatus(props.status)
 
     const cardContent = (
       <View style={styles.container}>
         <View style={styles.iconSection}>
-          {renderImageOrText(props.logoUrl, props.issuerName)}
+          { props.issuerName ?
+            renderImageOrText(props.logoUrl, props.issuerName) :
+            renderUserAvatar({ size: 'superSmall' })
+          }
         </View>
         <View style={styles.textSection}>
           <View style={styles.textMessageSection}>
             <Text
               style={
-                isRetryCard
+                isFailed
                   ? [styles.textMessage, styles.retryText]
                   : styles.textMessage
               }
@@ -76,7 +82,7 @@ class RecentCardComponent extends React.Component<RecentCardProps, void> {
           <View style={styles.textIssuerSection}>
             <Text
               style={
-                isRetryCard
+                isFailed
                   ? [styles.textIssuer, styles.retryText]
                   : styles.textIssuer
               }
@@ -201,12 +207,25 @@ export const reTryActions = [
   // DENY_CLAIM_OFFER_FAIL, --> Uncomment this when we have vcx deny claim offer functions in place.
 ]
 
+export const FAILED_ACTIONS = [
+  CONNECTION_FAIL,
+  SEND_CLAIM_REQUEST_FAIL,
+  PAID_CREDENTIAL_REQUEST_FAIL,
+  ERROR_SEND_PROOF,
+  DENY_PROOF_REQUEST_FAIL,
+  PROOF_VERIFICATION_FAILED,
+]
+
 function getRetryStatus(event: *): boolean {
   return reTryActions.includes(event.action)
 }
 
 function getLoadingStatus(status: string) {
   return LOADING_ACTIONS.includes(status)
+}
+
+function getFailedStatus(status: string) {
+  return FAILED_ACTIONS.includes(status)
 }
 
 // TODO:KS Memoize this function

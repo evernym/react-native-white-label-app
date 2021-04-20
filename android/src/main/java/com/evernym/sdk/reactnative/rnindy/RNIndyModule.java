@@ -31,6 +31,8 @@ import com.evernym.sdk.vcx.credential.GetCredentialCreateMsgidResult;
 import com.evernym.sdk.vcx.proof.CreateProofMsgIdResult;
 import com.evernym.sdk.vcx.proof.DisclosedProofApi;
 import com.evernym.sdk.vcx.proof.ProofApi;
+import com.evernym.sdk.vcx.proof.GetProofResult;
+import com.evernym.sdk.vcx.proof.CreateProofMsgIdResult;
 import com.evernym.sdk.vcx.token.TokenApi;
 import com.evernym.sdk.vcx.utils.UtilsApi;
 import com.evernym.sdk.vcx.vcx.AlreadyInitializedException;
@@ -1797,6 +1799,85 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
         }
     }
 
+    @ReactMethod
+    public void credentialGetPresentationProposal(int credentialHandle, Promise promise) {
+        Log.d(TAG, "credentialGetPresentationProposal()");
+        try {
+            CredentialApi.credentialGetPresentationProposal(credentialHandle).exceptionally((t) -> {
+                VcxException ex = (VcxException) t;
+                ex.printStackTrace();
+                Log.e(TAG, "credentialGetPresentationProposal - Error: ", ex);
+                promise.reject(String.valueOf(ex.getSdkErrorCode()), ex.getSdkMessage());
+                return null;
+            }).thenAccept(result -> BridgeUtils.resolveIfValid(promise, result));
+
+        } catch (VcxException e) {
+            e.printStackTrace();
+            Log.e(TAG, "credentialGetPresentationProposal - Error: ", e);
+            promise.reject(String.valueOf(e.getSdkErrorCode()), e.getSdkMessage());
+        }
+    }
+
+    @ReactMethod
+    public void createConnection(String sourceId, Promise promise) {
+        Log.d(TAG, "vcxConnectionCreate()");
+        try {
+            ConnectionApi.vcxConnectionCreate(sourceId).whenComplete((result, e) -> {
+                if (e != null) {
+                    VcxException ex = (VcxException) e;
+                    ex.printStackTrace();
+                    Log.e(TAG, "vcxConnectionCreate - Error: ", ex);
+                    promise.reject(String.valueOf(ex.getSdkErrorCode()), ex.getSdkMessage());
+                } else {
+                    BridgeUtils.resolveIfValid(promise, result);
+                }
+            });
+        } catch (VcxException e) {
+            e.printStackTrace();
+            Log.e(TAG, "vcxConnectionCreate - Error: ", e);
+            promise.reject(String.valueOf(e.getSdkErrorCode()), e.getSdkMessage());
+        }
+    }
+
+    @ReactMethod
+    public void createOutOfBandConnection(String sourceId, String goalCode, String goal, boolean handshake, String requestAttach, Promise promise) {
+        Log.d(TAG, "connectionCreateOutofband()");
+        try {
+            ConnectionApi.vcxConnectionCreateOutofband(sourceId, goalCode, goal, handshake, requestAttach).whenComplete((result, e) -> {
+                if (e != null) {
+                    VcxException ex = (VcxException) e;
+                    ex.printStackTrace();
+                    Log.e(TAG, "connectionCreateOutofband - Error: ", ex);
+                    promise.reject(String.valueOf(ex.getSdkErrorCode()), ex.getSdkMessage());
+                } else {
+                    BridgeUtils.resolveIfValid(promise, result);
+                }
+            });
+        } catch (VcxException e) {
+            e.printStackTrace();
+            Log.e(TAG, "connectionCreateOutofband - Error: ", e);
+            promise.reject(String.valueOf(e.getSdkErrorCode()), e.getSdkMessage());
+        }
+    }
+
+    @ReactMethod
+    public void getConnectionInvite(int connectionHandle, Promise promise) {
+        Log.d(TAG, "connectionInviteDetails()");
+        try {
+            ConnectionApi.connectionInviteDetails(connectionHandle, 0).exceptionally((t) -> {
+                VcxException ex = (VcxException) t;
+                ex.printStackTrace();
+                Log.e(TAG, "connectionInviteDetails - Error: ", ex);
+                promise.reject(String.valueOf(ex.getSdkErrorCode()), ex.getSdkMessage());
+                return null;
+            }).thenAccept(result -> BridgeUtils.resolveIfValid(promise, result));
+        } catch (VcxException e) {
+            e.printStackTrace();
+            Log.e(TAG, "connectionInviteDetails - Error: ", e);
+            promise.reject(String.valueOf(e.getSdkErrorCode()), e.getSdkMessage());
+        }
+    }
+
   @ReactMethod
   public void getRequestRedirectionUrl(String url, Promise promise) {
     try {
@@ -1820,4 +1901,218 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
     }
   }
 
+  /*
+   * Proof Verifier API
+   */
+
+   @ReactMethod
+   public void createProofVerifierWithProposal(String sourceId, String presentationProposal, String name, Promise promise) {
+       Log.d(TAG, "createProofVerifierWithProposal()");
+       try {
+           ProofApi.proofCreateWithProposal(sourceId, presentationProposal, name).exceptionally((t) -> {
+               VcxException ex = (VcxException) t;
+               ex.printStackTrace();
+               Log.e(TAG, "createProofVerifierWithProposal - Error: ", ex);
+               promise.reject(String.valueOf(ex.getSdkErrorCode()), ex.getSdkMessage());
+               return -1;
+           }).thenAccept(result -> {
+               if (result != -1) {
+                   BridgeUtils.resolveIfValid(promise, result);
+               }
+           });
+
+       } catch (VcxException e) {
+           e.printStackTrace();
+           Log.e(TAG, "createProofVerifierWithProposal - Error: ", e);
+           promise.reject(String.valueOf(e.getSdkErrorCode()), e.getSdkMessage());
+       }
+   }
+
+    @ReactMethod
+    public void proofVerifierUpdateState(int proofHandle, Promise promise) {
+       Log.d(TAG, "proofVerifierUpdateState()");
+         try {
+            ProofApi.proofUpdateState(proofHandle).exceptionally((t) -> {
+                VcxException ex = (VcxException) t;
+                ex.printStackTrace();
+                Log.e(TAG, "proofVerifierUpdateState - Error: ", ex);
+                promise.reject(String.valueOf(ex.getSdkErrorCode()), ex.getSdkMessage());
+                return -1;
+            }).thenAccept(result -> {
+                if (result != -1) {
+                    BridgeUtils.resolveIfValid(promise, result);
+                }
+            });
+        } catch(VcxException e) {
+            e.printStackTrace();
+            Log.e(TAG, "proofVerifierUpdateState - Error: ", e);
+            promise.reject(String.valueOf(e.getSdkErrorCode()), e.getSdkMessage());
+        }
+    }
+
+    @ReactMethod
+    public void proofVerifierUpdateStateWithMessage(int proofHandle, String message, Promise promise) {
+       Log.d(TAG, "proofVerifierUpdateStateWithMessage()");
+         try {
+            ProofApi.proofUpdateStateWithMessage(proofHandle, message).exceptionally((t) -> {
+                VcxException ex = (VcxException) t;
+                ex.printStackTrace();
+                Log.e(TAG, "proofVerifierUpdateStateWithMessage - Error: ", ex);
+                promise.reject(String.valueOf(ex.getSdkErrorCode()), ex.getSdkMessage());
+                return -1;
+            }).thenAccept(result -> {
+                if (result != -1) {
+                    BridgeUtils.resolveIfValid(promise, result);
+                }
+            });
+        } catch(VcxException e) {
+            e.printStackTrace();
+            Log.e(TAG, "proofVerifierUpdateStateWithMessage - Error: ", e);
+            promise.reject(String.valueOf(e.getSdkErrorCode()), e.getSdkMessage());
+        }
+    }
+
+    @ReactMethod
+    public void proofVerifierGetState(int proofHandle, Promise promise) {
+       Log.d(TAG, "proofVerifierGetState()");
+         try {
+            ProofApi.proofGetState(proofHandle).exceptionally((t) -> {
+                VcxException ex = (VcxException) t;
+                ex.printStackTrace();
+                Log.e(TAG, "proofVerifierGetState - Error: ", ex);
+                promise.reject(String.valueOf(ex.getSdkErrorCode()), ex.getSdkMessage());
+                return -1;
+            }).thenAccept(result -> {
+                if (result != -1) {
+                    BridgeUtils.resolveIfValid(promise, result);
+                }
+            });
+        } catch(VcxException e) {
+            e.printStackTrace();
+            Log.e(TAG, "proofVerifierGetState - Error: ", e);
+            promise.reject(String.valueOf(e.getSdkErrorCode()), e.getSdkMessage());
+        }
+    }
+
+    @ReactMethod
+    public void proofVerifierSerialize(int proofHandle, Promise promise) {
+       Log.d(TAG, "proofVerifierSerialize()");
+         try {
+            ProofApi.proofSerialize(proofHandle).exceptionally((t) -> {
+                VcxException ex = (VcxException) t;
+                ex.printStackTrace();
+                Log.e(TAG, "proofVerifierSerialize - Error: ", ex);
+                promise.reject(String.valueOf(ex.getSdkErrorCode()), ex.getSdkMessage());
+                return null;
+            }).thenAccept(result -> {
+                if (result != null) {
+                    BridgeUtils.resolveIfValid(promise, result);
+                }
+            });
+        } catch(VcxException e) {
+            e.printStackTrace();
+            Log.e(TAG, "proofVerifierSerialize - Error: ", e);
+            promise.reject(String.valueOf(e.getSdkErrorCode()), e.getSdkMessage());
+        }
+    }
+
+    @ReactMethod
+    public void proofVerifierDeserialize(String serialized, Promise promise) {
+       Log.d(TAG, "proofVerifierDeserialize()");
+         try {
+            ProofApi.proofDeserialize(serialized).exceptionally((t) -> {
+                VcxException ex = (VcxException) t;
+                ex.printStackTrace();
+                Log.e(TAG, "proofVerifierDeserialize - Error: ", ex);
+                promise.reject(String.valueOf(ex.getSdkErrorCode()), ex.getSdkMessage());
+                return -1;
+            }).thenAccept(result -> {
+                if (result != -1) {
+                    BridgeUtils.resolveIfValid(promise, result);
+                }
+            });
+        } catch(VcxException e) {
+            e.printStackTrace();
+            Log.e(TAG, "proofVerifierDeserialize - Error: ", e);
+            promise.reject(String.valueOf(e.getSdkErrorCode()), e.getSdkMessage());
+        }
+    }
+
+    @ReactMethod
+    public void proofVerifierSendRequest(int proofHandle, int connectionHandle, Promise promise) {
+        Log.d(TAG, "proofVerifierSendRequest()");
+        try {
+            ProofApi.proofSendRequest(proofHandle, connectionHandle).whenComplete((result, t) -> {
+                if (t != null) {
+                    Log.e(TAG, "proofVerifierSendRequest - Error: ", t);
+                    promise.reject("VcxException", t.getMessage());
+                } else {
+                    promise.resolve(0);
+                }
+            });
+        } catch(VcxException e) {
+            e.printStackTrace();
+            Log.e(TAG, "proofVerifierSendRequest - Error: ", e);
+            promise.reject(String.valueOf(e.getSdkErrorCode()), e.getSdkMessage());
+        }
+    }
+
+    @ReactMethod
+    public void proofVerifierGetProofMessage(int proofHandle, Promise promise) {
+        try {
+            ProofApi.getProofMsg(proofHandle).exceptionally((t) -> {
+                VcxException ex = (VcxException) t;
+                ex.printStackTrace();
+                Log.e(TAG, "proofVerifierGetProofMessage - Error: ", ex);
+                promise.reject(String.valueOf(ex.getSdkErrorCode()), ex.getSdkMessage());
+                return null;
+            }).thenAccept(result -> {
+                if (result != null) {
+                    GetProofResult typedResult = (GetProofResult) result;
+                    WritableMap obj = Arguments.createMap();
+                    obj.putInt("proofState", typedResult.getProof_state());
+                    obj.putString("message", typedResult.getResponse_data());
+                    BridgeUtils.resolveIfValid(promise, obj);
+                }
+            });
+        } catch(VcxException e) {
+            e.printStackTrace();
+            Log.e(TAG, "proofVerifierGetProofMessage - Error: ", e);
+            promise.reject(String.valueOf(e.getSdkErrorCode()), e.getSdkMessage());
+        }
+    }
+
+    @ReactMethod
+    public void proofVerifierGetPresentationRequest(int proofHandle, Promise promise) {
+        try {
+            ProofApi.proofGetRequestMsg(proofHandle).exceptionally((t) -> {
+                VcxException ex = (VcxException) t;
+                ex.printStackTrace();
+                Log.e(TAG, "proofVerifierGetPresentationRequest - Error: ", ex);
+                promise.reject(String.valueOf(ex.getSdkErrorCode()), ex.getSdkMessage());
+                return null;
+            }).thenAccept(result -> BridgeUtils.resolveIfValid(promise, result));
+        } catch (VcxException e) {
+            e.printStackTrace();
+            Log.e(TAG, "proofVerifierGetPresentationRequest - Error: ", e);
+            promise.reject(String.valueOf(e.getSdkErrorCode()), e.getSdkMessage());
+        }
+    }
+
+    @ReactMethod
+    public void createPairwiseAgent(Promise promise) {
+        try {
+            UtilsApi.vcxCreatePairwiseAgent().exceptionally((t) -> {
+                VcxException ex = (VcxException) t;
+                ex.printStackTrace();
+                Log.e(TAG, "createPairwiseAgent - Error: ", ex);
+                promise.reject(String.valueOf(ex.getSdkErrorCode()), ex.getSdkMessage());
+                return null;
+            }).thenAccept(result -> BridgeUtils.resolveIfValid(promise, result));
+        } catch (VcxException e) {
+            e.printStackTrace();
+            Log.e(TAG, "createPairwiseAgent - Error: ", e);
+            promise.reject(String.valueOf(e.getSdkErrorCode()), e.getSdkMessage());
+        }
+    }
 }

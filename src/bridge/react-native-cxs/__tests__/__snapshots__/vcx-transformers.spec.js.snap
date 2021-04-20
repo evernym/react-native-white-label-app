@@ -20,7 +20,7 @@ Object {
   "agency_endpoint": "https://agency-sandbox.evernym.com",
   "agency_verkey": "VCNhKASjLU5tVWnZpjcyEsoV1QC3adrPVMCCjeKMobn",
   "institution_did": "oneTimeAgencyDid",
-  "institution_logo_url": "https://robothash.com/logo.png",
+  "institution_logo_url": "https://try.connect.me/img/CMicon@3x.png",
   "institution_name": "test-name",
   "institution_verkey": "oneTimeAgencyVerKey",
   "payment_method": "sov",

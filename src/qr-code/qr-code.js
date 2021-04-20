@@ -9,16 +9,14 @@ import { convertClaimOfferPushPayloadToAppClaimOffer } from '../push-notificatio
 
 import { Container, QRScanner } from '../components'
 import { color, colors } from '../common/styles/constant'
-import {
-  getAttachedRequest,
-  invitationReceived,
-} from '../invitation/invitation-store'
+import { invitationReceived } from '../invitation/invitation-store'
 import {
   claimOfferRoute,
   homeDrawerRoute,
   homeRoute,
   invitationRoute,
   openIdConnectRoute,
+  proofProposalRoute,
   proofRequestRoute,
   pushNotificationPermissionRoute,
   qrCodeScannerTabRoute,
@@ -38,15 +36,11 @@ import type {
   QRCodeScannerScreenState,
 } from './type-qr-code'
 import type {
-  AriesPresentationRequest,
   ProofRequestPayload,
   QrCodeEphemeralProofRequest,
 } from '../proof-request/type-proof-request'
 import { PROOF_REQUEST_STATUS } from '../proof-request/type-proof-request'
-import type {
-  ClaimOfferPayload,
-  CredentialOffer,
-} from '../claim-offer/type-claim-offer'
+import type { ClaimOfferPayload, } from '../claim-offer/type-claim-offer'
 import { CLAIM_OFFER_STATUS } from '../claim-offer/type-claim-offer'
 import { changeEnvironmentUrl } from '../store/config-store'
 import {
@@ -54,6 +48,7 @@ import {
   getAllPublicDid,
   getClaimOffers,
   getProofRequests,
+  getVerifiers,
 } from '../store/store-selector'
 import { withStatusBar } from '../components/status-bar/status-bar'
 import {
@@ -63,7 +58,10 @@ import {
 import { ID, TYPE } from '../common/type-common'
 import { proofRequestReceived } from '../proof-request/proof-request-store'
 import { claimOfferReceived } from '../claim-offer/claim-offer-store'
-import { validateOutofbandProofRequestQrCode } from '../proof-request/proof-request-qr-code-reader'
+import {
+  presentationProposalSchema,
+  validateOutofbandProofRequestQrCode
+} from '../proof-request/proof-request-qr-code-reader'
 import { getPushNotificationAuthorizationStatus } from '../push-notification/components/push-notification-permission-screen'
 import Snackbar from 'react-native-snackbar'
 import { convertShortProprietaryInvitationToAppInvitation } from '../invitation/kinds/proprietary-connection-invitation'
@@ -74,6 +72,9 @@ import {
   prepareParamsForExistingConnectionRedirect,
 } from '../invitation/invitation-helpers'
 import { usePushNotifications } from '../external-imports'
+import { schemaValidator } from "../services/schema-validator";
+import { proofProposalReceived } from "../verifier/verifier-store";
+import type { VerifierData } from '../verifier/type-verifier'
 
 export class QRCodeScannerScreen extends Component<
   QRCodeScannerScreenProps,
@@ -288,7 +289,6 @@ export class QRCodeScannerScreen extends Component<
     backRedirectRoute,
     uid,
     invitationPayload,
-    attachedRequest,
     senderName,
   }: OutOfBandNavigation) => {
     const { navigation } = this.props
@@ -304,7 +304,6 @@ export class QRCodeScannerScreen extends Component<
           backRedirectRoute,
           uid,
           invitationPayload,
-          attachedRequest,
           senderName,
         },
       })
@@ -313,14 +312,13 @@ export class QRCodeScannerScreen extends Component<
         backRedirectRoute,
         uid,
         invitationPayload,
-        attachedRequest,
         senderName,
       })
     }
   }
 
   onAriesOutOfBandInviteRead = async (invite: AriesOutOfBandInvite) => {
-    const invitation = convertAriesOutOfBandInvitationToAppInvitation(invite)
+    const invitation = await convertAriesOutOfBandInvitationToAppInvitation(invite)
     if (!invitation) {
       this.props.navigation.goBack(null)
       Alert.alert(
@@ -357,8 +355,8 @@ export class QRCodeScannerScreen extends Component<
       //  2. Rut protocol connected to attached action
       // UI: Show view related to attached action
 
-      const req = await getAttachedRequest(invite)
-      if (!req || !req[TYPE]) {
+
+      if (!invitation.attachedRequest || !invitation.attachedRequest[TYPE]) {
         this.props.navigation.goBack(null)
         Alert.alert(
           'Invalid Out-of-Band Invitation',
@@ -367,16 +365,15 @@ export class QRCodeScannerScreen extends Component<
         return
       }
 
-      if (req[TYPE].endsWith('offer-credential')) {
-        const credentialOffer = (req: CredentialOffer)
-        const claimOffer = convertAriesCredentialOfferToCxsClaimOffer(
-          credentialOffer
-        )
-        const uid = credentialOffer[ID]
+      const uid = invitation.attachedRequest[ID]
+      const type_ = invitation.attachedRequest[TYPE]
 
-        const existingCredential: ClaimOfferPayload = this.props.claimOffers[
-          uid
-        ]
+      if (type_.endsWith('offer-credential')) {
+        const claimOffer = convertAriesCredentialOfferToCxsClaimOffer(
+          invitation.attachedRequest
+        )
+
+        const existingCredential: ClaimOfferPayload = this.props.claimOffers[uid]
 
         if (
           existingCredential &&
@@ -418,17 +415,12 @@ export class QRCodeScannerScreen extends Component<
         await this.handleOutOfBandNavigation({
           mainRoute: claimOfferRoute,
           backRedirectRoute: this.props.route.params?.backRedirectRoute,
-          uid: credentialOffer[ID],
+          uid,
           invitationPayload: invitation,
-          attachedRequest: req,
           senderName: invitation.senderName,
         })
-      } else if (req[TYPE].endsWith('request-presentation')) {
-        const presentationRequest = (req: AriesPresentationRequest)
-        const uid = presentationRequest[ID]
-
-        const existingProofRequest: ProofRequestPayload = this.props
-          .proofRequests[uid]
+      } else if (type_.endsWith('request-presentation')) {
+        const existingProofRequest: ProofRequestPayload = this.props.proofRequests[uid]
 
         if (
           existingProofRequest &&
@@ -450,7 +442,7 @@ export class QRCodeScannerScreen extends Component<
         const [
           outofbandProofError,
           outofbandProofRequest,
-        ] = await validateOutofbandProofRequestQrCode(presentationRequest)
+        ] = await validateOutofbandProofRequestQrCode(invitation.attachedRequest)
 
         if (outofbandProofError || !outofbandProofRequest) {
           Alert.alert('Invalid invitation', outofbandProofError)
@@ -463,17 +455,55 @@ export class QRCodeScannerScreen extends Component<
           remotePairwiseDID: invitation.senderDID,
           hidden: true,
         })
-
         await this.handleOutOfBandNavigation({
           mainRoute: proofRequestRoute,
           backRedirectRoute: this.props.route.params?.backRedirectRoute,
           uid: uid,
           invitationPayload: invitation,
-          attachedRequest: req,
+          senderName: invitation.senderName,
+        })
+      } else if (type_.endsWith('propose-presentation')) {
+        if (!schemaValidator.validate(presentationProposalSchema, invitation.attachedRequest)) {
+          Alert.alert('Invalid invitation', "Invalid formatted Presentation Proposal")
+          return
+        }
+
+        const existingVerifier: VerifierData = this.props.verifiers[uid]
+
+        if (existingVerifier) {
+          this.props.navigation.navigate(homeRoute, {
+            screen: homeDrawerRoute,
+            params: undefined,
+          })
+          // we already have accepted that presentation proposal
+          Snackbar.show({
+            text: 'The presentation proposal has already been accepted.',
+            backgroundColor: colors.red,
+            duration: Snackbar.LENGTH_LONG,
+          })
+          return
+        }
+
+        this.props.proofProposalReceived(
+          invitation.attachedRequest,
+          {
+            uid,
+            senderLogoUrl: invitation.senderLogoUrl,
+            senderName: invitation.senderName,
+            remotePairwiseDID: invitation.senderDID,
+            hidden: true,
+          }
+        )
+
+        await this.handleOutOfBandNavigation({
+          mainRoute: proofProposalRoute,
+          backRedirectRoute: this.props.route.params?.backRedirectRoute,
+          uid: uid,
+          invitationPayload: invitation,
           senderName: invitation.senderName,
         })
       }
-    } else {
+    }  else {
       // Implement this case
       this.props.navigation.goBack(null)
       Alert.alert(
@@ -509,6 +539,7 @@ const mapStateToProps = (state: Store) => ({
   historyData: state.history && state.history.data,
   claimOffers: getClaimOffers(state),
   proofRequests: getProofRequests(state),
+  verifiers: getVerifiers(state),
 })
 
 const mapDispatchToProps = (dispatch) =>
@@ -519,6 +550,7 @@ const mapDispatchToProps = (dispatch) =>
       openIdConnectUpdateStatus,
       claimOfferReceived,
       proofRequestReceived,
+      proofProposalReceived,
     },
     dispatch
   )

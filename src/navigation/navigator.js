@@ -119,6 +119,9 @@ import {
   usePushNotifications,
 } from '../external-imports'
 import { inviteActionScreen } from '../invite-action/invite-action-screen'
+import { ShowCredentialScreen } from "../show-credential/show-credential-modal";
+import { ProofProposalModal } from "../verifier/proof-proposal-modal";
+import { ReceivedProofScreen } from '../verifier/received-proof-modal'
 
 enableScreens()
 
@@ -321,7 +324,7 @@ const cardStackOptions = {
   headerShown: false,
 }
 
-function CardStackScreen(navigation) {
+function CardStackScreen() {
   // Back button press listening needs to be initialized on a screen inside of a navigator.
   // This is highest screen in the stack that we can put this hook in.
   useBackHandler()
@@ -586,6 +589,22 @@ export function MSDKAppNavigator() {
         component={inviteActionScreen.screen}
         options={inviteActionScreen.screen.navigationOptions}
       />
+      <CardStack.Screen
+        name={ShowCredentialScreen.routeName}
+        component={ShowCredentialScreen.screen}
+        options={ShowCredentialScreen.screen.navigationOptions}
+      />
+      <CardStack.Screen
+        name={ProofProposalModal.routeName}
+        component={ProofProposalModal.screen}
+        options={ProofProposalModal.screen.navigationOptions}
+      />
+      <CardStack.Screen
+        name={ReceivedProofScreen.routeName}
+        component={ReceivedProofScreen.screen}
+        options={ReceivedProofScreen.screen.navigationOptions}
+      />
+
       {usePushNotifications && (
         <ModalStack.Screen
           name={pushNotificationPermissionScreen.routeName}

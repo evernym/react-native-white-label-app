@@ -362,6 +362,38 @@ export function* saveClaimUuidMap(): Generator<*, *, *> {
   }
 }
 
+export function* getClaim(claimOfferUuid: string): Generator<*, *, *> {
+  const claimOffers = yield select(getClaimOffers)
+  const claimOffer: ClaimOfferPayload = claimOffers[claimOfferUuid]
+  if (!claimOffer){
+    return
+  }
+
+  const { claimUuid, claim }: GenericObject = yield select(getClaimForOffer, claimOffer)
+  if (!claim || !claimUuid){
+    return
+  }
+
+  const identifier = claim.myPairwiseDID
+  const vcxSerializedClaimOffer: SerializedClaimOffer = yield select(
+    getSerializedClaimOffer,
+    identifier,
+    claimOfferUuid
+  )
+
+  const claimHandle = yield call(
+    getClaimHandleBySerializedClaimOffer,
+    vcxSerializedClaimOffer.serialized
+  )
+
+  return {
+    claim,
+    claimUuid,
+    handle: claimHandle,
+    vcxSerializedClaimOffer
+  }
+}
+
 export const deleteClaim = (uuid: string): DeleteClaimAction => ({
   type: DELETE_CLAIM,
   uuid,
@@ -381,30 +413,17 @@ export function* deleteClaimSaga(
 ): Generator<*, *, *> {
   try {
     const claims: GenericObject = yield select(getClaimMap)
-    const claimOffers = yield select(getClaimOffers)
-    const claimOffer: ClaimOfferPayload = claimOffers[action.uuid]
-    const claim: GenericObject = yield select(getClaimForOffer, claimOffer)
-    if (!claim){
+    const claim = yield call(getClaim, action.uuid)
+    if (!claim) {
       return
     }
 
-    const identifier = claim.myPairwiseDID
-    const vcxSerializedClaimOffer: SerializedClaimOffer = yield select(
-      getSerializedClaimOffer,
-      identifier,
-      action.uuid
-    )
-
-    const claimHandle = yield call(
-      getClaimHandleBySerializedClaimOffer,
-      vcxSerializedClaimOffer.serialized
-    )
-    yield call(deleteCredential, claimHandle)
-    yield put(deleteClaimOffer(action.uuid, identifier))
+    yield call(deleteCredential, claim.handle)
+    yield put(deleteClaimOffer(action.uuid, claim.claim.myPairwiseDID))
 
     // ideally we need to delete Claim from Claim Store as well but we don't have an claimUuid
     // investigate if we can get claimUuid during hydration
-    yield put(deleteClaimSuccess(claims, vcxSerializedClaimOffer.messageId))
+    yield put(deleteClaimSuccess(claims, claim.vcxSerializedClaimOffer.messageId))
   } catch (e) {
     captureError(e)
   }

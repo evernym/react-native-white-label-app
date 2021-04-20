@@ -66,7 +66,7 @@ export const AboutAppListItem = ({
   )
 }
 
-export const AboutApp = ({ navigation, route }: AboutAppProps) => {
+export const AboutApp = ({ navigation }: AboutAppProps) => {
   const environmentName = useSelector(getEnvironmentName)
 
   const openTermsAndConditions = () => {

@@ -59,7 +59,6 @@ const {
 const numColumns = 2
 
 const MyConnections = ({
-  route,
   navigation,
   onNewConnectionSeen,
   getUnacknowledgedMessages,

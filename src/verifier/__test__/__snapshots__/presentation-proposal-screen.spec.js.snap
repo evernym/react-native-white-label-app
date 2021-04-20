@@ -1,0 +1,416 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<PresentationProposalComponent /> should match snapshot 1`] = `
+Array [
+  <View
+    style={
+      Object {
+        "flex": 1,
+        "paddingLeft": "5%",
+        "paddingRight": "5%",
+      }
+    }
+  >
+    <RCTScrollView
+      showsVerticalScrollIndicator={false}
+    >
+      <View>
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "#FFFFFF",
+              "flexDirection": "column",
+            }
+          }
+        >
+          <View
+            style={
+              Object {
+                "flexDirection": "row",
+              }
+            }
+          >
+            <View
+              style={
+                Object {
+                  "flex": 1,
+                  "paddingBottom": 15.314285714285713,
+                  "paddingTop": 14.357142857142858,
+                }
+              }
+            >
+              <Text
+                style={
+                  Object {
+                    "color": "#777777",
+                    "fontFamily": "System",
+                    "fontSize": 11.117647058823529,
+                    "fontWeight": "400",
+                    "paddingBottom": 15.314285714285713,
+                    "textAlign": "center",
+                  }
+                }
+              >
+                Offers you to present data
+              </Text>
+              <Text
+                ellipsizeMode="tail"
+                numberOfLines={2}
+                onTextLayout={[Function]}
+                style={
+                  Object {
+                    "color": "#505050",
+                    "fontFamily": "System",
+                    "fontSize": 11.911764705882351,
+                    "fontWeight": "700",
+                    "textAlign": "center",
+                  }
+                }
+              >
+                Test
+              </Text>
+            </View>
+          </View>
+          <View
+            style={
+              Object {
+                "borderRadius": 45.94285714285714,
+              }
+            }
+          >
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "backgroundColor": "#777777",
+                  "borderRadius": 38.285714285714285,
+                  "height": 76.57142857142857,
+                  "justifyContent": "center",
+                  "width": 76.57142857142857,
+                }
+              }
+            >
+              <Text
+                accessibilityLabel="default-logo"
+                accessible={true}
+                style={
+                  Object {
+                    "color": "#FFFFFF",
+                    "fontFamily": "System",
+                    "fontSize": 48,
+                    "fontWeight": "bold",
+                  }
+                }
+                testID="default-logo"
+              >
+                T
+              </Text>
+            </View>
+          </View>
+          <View
+            style={
+              Object {
+                "borderBottomColor": "#505050",
+                "borderBottomWidth": 0.5,
+                "justifyContent": "center",
+                "marginBottom": 11.485714285714286,
+                "paddingBottom": 11.485714285714286,
+                "paddingTop": 22.97142857142857,
+                "width": "100%",
+              }
+            }
+          >
+            <Text
+              ellipsizeMode="tail"
+              numberOfLines={2}
+              onTextLayout={[Function]}
+              style={
+                Object {
+                  "color": "#505050",
+                  "fontFamily": "System",
+                  "fontSize": 15.088235294117647,
+                  "fontWeight": "400",
+                  "textAlign": "center",
+                }
+              }
+            >
+              some comment
+            </Text>
+          </View>
+        </View>
+        <RCTScrollView
+          data={
+            Array [
+              Object {
+                "name": "First Name",
+              },
+              Object {
+                "name": "Last Name",
+              },
+            ]
+          }
+          disableVirtualization={false}
+          getItem={[Function]}
+          getItemCount={[Function]}
+          horizontal={false}
+          initialNumToRender={10}
+          keyExtractor={[Function]}
+          maxToRenderPerBatch={10}
+          numColumns={1}
+          onContentSizeChange={[Function]}
+          onEndReachedThreshold={2}
+          onLayout={[Function]}
+          onMomentumScrollEnd={[Function]}
+          onScroll={[Function]}
+          onScrollBeginDrag={[Function]}
+          onScrollEndDrag={[Function]}
+          removeClippedSubviews={false}
+          renderItem={[Function]}
+          scrollEventThrottle={50}
+          stickyHeaderIndices={Array []}
+          updateCellsBatchingPeriod={50}
+          viewabilityConfigCallbackPairs={Array []}
+          windowSize={21}
+        >
+          <View>
+            <View
+              onLayout={[Function]}
+              style={null}
+            >
+              <View
+                style={
+                  Object {
+                    "borderBottomColor": "#EAEAEA",
+                    "borderBottomWidth": 0.5,
+                    "paddingBottom": 9.571428571428571,
+                    "paddingTop": 11.485714285714286,
+                  }
+                }
+              >
+                <Text
+                  ellipsizeMode="tail"
+                  numberOfLines={2}
+                  onTextLayout={[Function]}
+                  style={
+                    Object {
+                      "color": "#000000",
+                      "fontFamily": "System",
+                      "fontSize": 11.911764705882351,
+                      "fontWeight": "700",
+                      "marginBottom": 1.9142857142857141,
+                      "textAlign": "left",
+                      "width": "100%",
+                    }
+                  }
+                >
+                  First Name
+                </Text>
+              </View>
+            </View>
+            <View
+              onLayout={[Function]}
+              style={null}
+            >
+              <View
+                style={
+                  Object {
+                    "borderBottomColor": "#EAEAEA",
+                    "borderBottomWidth": 0.5,
+                    "paddingBottom": 9.571428571428571,
+                    "paddingTop": 11.485714285714286,
+                  }
+                }
+              >
+                <Text
+                  ellipsizeMode="tail"
+                  numberOfLines={2}
+                  onTextLayout={[Function]}
+                  style={
+                    Object {
+                      "color": "#000000",
+                      "fontFamily": "System",
+                      "fontSize": 11.911764705882351,
+                      "fontWeight": "700",
+                      "marginBottom": 1.9142857142857141,
+                      "textAlign": "left",
+                      "width": "100%",
+                    }
+                  }
+                >
+                  Last Name
+                </Text>
+              </View>
+            </View>
+          </View>
+        </RCTScrollView>
+      </View>
+    </RCTScrollView>
+  </View>,
+  <View
+    style={
+      Array [
+        Object {
+          "backgroundColor": "#FFFFFF",
+          "flexDirection": "column",
+          "maxWidth": "100%",
+          "padding": 14.357142857142858,
+          "paddingBottom": 0.9571428571428571,
+          "width": "100%",
+        },
+        undefined,
+      ]
+    }
+  >
+    <View
+      accessible={true}
+      focusable={true}
+      isTVSelectable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "alignItems": "center",
+          "backgroundColor": "#86B93B",
+          "borderRadius": 5,
+          "flexDirection": "row",
+          "justifyContent": "center",
+          "marginBottom": 15.314285714285713,
+          "minWidth": "35%",
+          "opacity": 1,
+          "overflow": "hidden",
+          "padding": 16.271428571428572,
+          "paddingLeft": 9.571428571428571,
+          "paddingRight": 9.571428571428571,
+          "width": "100%",
+        }
+      }
+    >
+      <Text
+        allowFontScaling={false}
+        style={
+          Array [
+            Object {
+              "fontSize": 19,
+            },
+            Object {
+              "fontFamily": "System",
+            },
+            Object {
+              "backgroundColor": "#333333",
+              "color": "#ffffff",
+            },
+            Object {
+              "fontWeight": "800",
+            },
+            Object {
+              "textAlign": "center",
+            },
+            Object {
+              "backgroundColor": "transparent",
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        Accept
+      </Text>
+    </View>
+    <View
+      accessible={true}
+      focusable={true}
+      isTVSelectable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "stretch",
+              "borderRadius": 5,
+              "flexDirection": "row",
+              "justifyContent": "center",
+              "overflow": "hidden",
+              "width": "100%",
+            },
+            Object {
+              "alignItems": "center",
+              "borderColor": "#CE0B24",
+              "borderWidth": 1,
+              "justifyContent": "center",
+              "minWidth": "35%",
+              "padding": 16.271428571428572,
+              "paddingLeft": 9.571428571428571,
+              "paddingRight": 9.571428571428571,
+            },
+          ]
+        }
+      >
+        <Text
+          allowFontScaling={false}
+          style={
+            Array [
+              Object {
+                "fontSize": 19,
+              },
+              Object {
+                "fontFamily": "System",
+              },
+              Object {
+                "backgroundColor": "#333333",
+                "color": "#ffffff",
+              },
+              Object {
+                "fontWeight": "600",
+              },
+              null,
+              Object {
+                "backgroundColor": "transparent",
+              },
+              null,
+              Object {
+                "color": "#d0021b",
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+            ]
+          }
+        >
+          Cancel
+        </Text>
+      </View>
+    </View>
+  </View>,
+]
+`;
