@@ -1,5 +1,5 @@
 // @flow
-import React, { useState, useEffect, useRef, useCallback } from 'react'
+import React, { useState, useEffect, useRef, useCallback, useLayoutEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import {
@@ -36,6 +36,8 @@ const defaults = {
   keyboardHidden: false,
   showCustomKeyboard: false,
 }
+
+export let lockPinSetupScreenOptions = undefined
 
 export function LockPinSetup(props: ReactNavigation) {
   const { navigation, route } = props
@@ -110,6 +112,17 @@ export function LockPinSetup(props: ReactNavigation) {
     setFailedPin(false)
   })
 
+  useLayoutEffect(() => {
+    const additionalActionOnBackPress = () => dispatch(BACK_ARROW_IN_THE_CHANGE_PASSCODE_VIEW)
+
+    lockPinSetupScreenOptions = headerDefaultOptions({
+      headline: undefined,
+      headerHideShadow: true,
+      transparent: false,
+      additionalActionOnBackPress,
+    })
+  }, [])
+
   useEffect(() => {
     keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
       handleKeyboardChange(true)
@@ -146,18 +159,8 @@ export function LockPinSetup(props: ReactNavigation) {
     }
   }, [keyboardHidden, pinSetupState])
 
-  const additionalActionOnBackPress = () => dispatch(BACK_ARROW_IN_THE_CHANGE_PASSCODE_VIEW)
-
   return (
     <Container tertiary>
-      {/* <Header
-        navigation={props.navigation}
-        route={props.route}
-        transparent={true}
-        additionalActionOnBackPress={
-          existingPin ? additionalActionOnBackPress : undefined
-        }
-      /> */}
       <CustomView center>{LockHeader ? <LockHeader /> : <View />}</CustomView>
       <CustomText center h4 bg="tertiary" style={[styles.title]} tertiary thick>
         {`${enteredPin ? 'Re-enter passcode' : enterPasscodeText}`}
@@ -205,9 +208,4 @@ const styles = StyleSheet.create({
 export const lockPinSetupScreen = {
   routeName: lockPinSetupRoute,
   screen: LockPinSetup,
-  options: headerDefaultOptions({
-    headline: undefined,
-    headerHideShadow: true,
-    transparent: false,
-  })
 }

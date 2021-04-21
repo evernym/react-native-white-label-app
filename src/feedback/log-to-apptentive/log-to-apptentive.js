@@ -1,5 +1,4 @@
 // @flow
-import { Platform } from 'react-native'
 import { Apptentive } from 'apptentive-react-native'
 
 import { isDevEnvironment } from '../../store/config-store'
@@ -7,7 +6,7 @@ import { customLogger } from '../../store/custom-logger'
 import { setupApptentive } from '../../feedback/'
 import { apptentiveCredentials } from '../../external-imports'
 
-export const isLogToApptentive = isDevEnvironment && apptentiveCredentials
+export const isLogToApptentive = !isDevEnvironment && apptentiveCredentials
 
 export const setupApptentiveWithCredentials = () => {
   if (apptentiveCredentials) {

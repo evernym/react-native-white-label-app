@@ -2,10 +2,6 @@
 import React, { useCallback, useState } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native'
 import { useDispatch } from 'react-redux'
-
-import { colors, fontFamily, fontSizes } from '../../../common/styles/constant'
-import { Avatar } from '../../../components/avatar/avatar'
-import { DefaultLogo } from '../../../components/default-logo/default-logo'
 import { verticalScale, moderateScale } from 'react-native-size-matters'
 import dayjs from 'dayjs'
 import { useNavigation } from '@react-navigation/native'
@@ -35,7 +31,6 @@ import {
 import { colors, fontFamily, fontSizes } from '../../../common/styles/constant'
 import { Avatar } from '../../../components/avatar/avatar'
 import { DefaultLogo } from '../../../components/default-logo/default-logo'
-import { verticalScale, moderateScale } from 'react-native-size-matters'
 import { credentialDetailsRoute } from '../../../common'
 import type {
   CredentialCardProps,

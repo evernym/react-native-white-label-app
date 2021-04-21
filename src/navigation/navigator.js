@@ -13,9 +13,7 @@ import {
 } from '@react-navigation/drawer'
 import { enableScreens } from 'react-native-screens'
 import VersionNumber from 'react-native-version-number'
-import { DrawerActions } from '@react-navigation/native'
-import { State as GestureState } from 'react-native-gesture-handler'
-import { connect, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 import {
   headerOptionForDrawerStack,
@@ -41,7 +39,7 @@ import { questionScreen } from '../question/question-screen'
 import { txnAuthorAgreementScreen } from '../txn-author-agreement/txn-author-agreement-screen'
 import { lockEnterPinScreen } from '../lock/lock-enter-pin-code'
 import { lockTouchIdSetupScreen } from '../lock/lock-fingerprint-setup'
-import { lockPinSetupScreen } from '../lock/lock-pin-code-setup'
+import { lockPinSetupScreen, lockPinSetupScreenOptions } from '../lock/lock-pin-code-setup'
 import { lockSetupSuccessScreen } from '../lock/lock-setup-success'
 import { lockEnterFingerprintScreen, lockEnterFingerprintOptions } from '../lock/lock-enter-fingerprint'
 import { claimOfferScreen } from '../connection-details/components/claim-offer-modal'
@@ -436,7 +434,7 @@ function CardStackScreen() {
       <CardStack.Screen
         name={lockPinSetupScreen.routeName}
         component={lockPinSetupScreen.screen}
-        options={lockPinSetupScreen.options}
+        options={lockPinSetupScreenOptions}
       />
       <CardStack.Screen
         name={aboutAppScreen.routeName}

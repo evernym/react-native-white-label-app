@@ -1,5 +1,5 @@
 // @flow
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback } from 'react'
 import { Text, View, Image, TouchableOpacity, Platform } from 'react-native'
 import ActionSheet from 'react-native-action-sheet'
 import { useDispatch } from 'react-redux'

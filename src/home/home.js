@@ -128,6 +128,7 @@ export const HomeScreen = (props: HomeProps) => {
             </View>
           </>
         )}
+        <SubscribeOnDrawer />
       </View>
       {showCameraButton && (
         <CameraButton
