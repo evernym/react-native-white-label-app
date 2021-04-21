@@ -129,7 +129,8 @@ import {
   MyCredentialsViewEmptyState as iMyCredentialsViewEmptyState,
   CustomMyCredentialsScreen as iCustomMyCredentialsScreen,
   SHOW_CREDENTIAL,
-  SHOW_CREDENTIAL as SHOW_CREDENTIAL_HEADLINE,
+  AUTO_ACCEPT_CREDENTIAL_PRESENTATION_REQUEST,
+  SHOW_CREDENTIAL_HEADLINE,
   CustomShowCredentialModal as iCustomShowCredentialModal,
   // $FlowExpectedError[cannot-resolve-module] external file
 } from '../../../../app/evernym-sdk/credentials'
@@ -283,5 +284,6 @@ export const proofProposalDenyButtonText = PROOF_PROPOSAL_DENY_BUTTON_TEXT
 export const CustomProofProposalModal = iCustomProofProposalModal
 
 export const showCredential = SHOW_CREDENTIAL || true
+export const autoAcceptCredentialPresentationRequest = AUTO_ACCEPT_CREDENTIAL_PRESENTATION_REQUEST || false
 export const showCredentialHeadline = SHOW_CREDENTIAL_HEADLINE || 'Show Credential'
 export const CustomShowCredentialModal = iCustomShowCredentialModal
