@@ -184,6 +184,13 @@ export type HydrateInvitationsAction = {
   invitations: { +[string]: Invitation },
 }
 
+export const HANDLE_INVITATION = 'HANDLE_INVITATION'
+export type HandleInvitationsAction = {
+  type: typeof HANDLE_INVITATION,
+  invitation: InvitationPayload,
+  token?: string,
+}
+
 export type InvitationAction =
   | InvitationReceivedAction
   | InvitationResponseSendAction

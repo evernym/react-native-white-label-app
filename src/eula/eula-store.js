@@ -68,7 +68,7 @@ export function* eulaAcceptanceSaga(action: EulaAccept): Generator<*, *, *> {
     )
   } catch (e) {
     captureError(e)
-    customLogger.error(`eulaAcceptanceSaga: ${e}`)
+    customLogger.log(`eulaAcceptanceSaga: ${e}`)
   }
 }
 

@@ -806,7 +806,7 @@ export function* hydratePushTokenSaga(): Generator<*, *, *> {
   } catch (e) {
     // capture error for safe get
     captureError(e)
-    customLogger.error(`hydratePushTokenSaga: ${e}`)
+    customLogger.log(`hydratePushTokenSaga: ${e}`)
   }
 }
 
@@ -816,7 +816,7 @@ export function* savePushTokenSaga(pushToken: string): Generator<*, *, *> {
     yield put({ type: 'PUSH_TOKEN_SAVED' })
   } catch (e) {
     // Need to figure out what should be done if storage fails
-    customLogger.error(`savePushTokenSaga: ${e}`)
+    customLogger.log(`savePushTokenSaga: ${e}`)
   }
 }
 

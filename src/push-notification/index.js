@@ -5,4 +5,4 @@ export {
 } from './push-notification'
 export {
   default as ScreenNavigator,
-} from './screen-navigator'
+} from '../navigation/screen-navigator'

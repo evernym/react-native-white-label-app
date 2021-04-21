@@ -175,7 +175,7 @@ export function* hydrateClaimMapSaga(): Generator<*, *, *> {
     }
   } catch (e) {
     captureError(e)
-    customLogger.error(`hydrateClaimMapSaga: ${e}`)
+    customLogger.log(`hydrateClaimMapSaga: ${e}`)
     yield put(
       hydrateClaimMapFail({
         code: ERROR_CLAIM_HYDRATE_FAIL.code,
@@ -358,7 +358,7 @@ export function* saveClaimUuidMap(): Generator<*, *, *> {
   } catch (e) {
     // TODO:KS what should we do if storage fails
     captureError(e)
-    customLogger.error(`Failed to store claim uuid map:${e}`)
+    customLogger.log(`Failed to store claim uuid map:${e}`)
   }
 }
 

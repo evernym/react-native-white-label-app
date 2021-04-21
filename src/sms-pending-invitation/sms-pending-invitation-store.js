@@ -15,11 +15,7 @@ import {
   SMS_PENDING_INVITATION_SEEN,
   SMSPendingInvitationStatus,
 } from './type-sms-pending-invitation'
-import type {
-  AriesConnectionInvitePayload,
-  AriesOutOfBandInvite,
-  ProprietaryConnectionInvitation,
-} from '../invitation/type-invitation'
+import type { InvitationPayload } from '../invitation/type-invitation'
 import {getInvitationLink} from '../api/api'
 import {
   ERROR_PENDING_INVITATION_RESPONSE_PARSE,
@@ -31,14 +27,17 @@ import {captureError} from '../services/error/error-handler'
 import {isValidInvitationUrl} from './sms-invitation-validator'
 import {getUrlData, isValidUrl,} from '../components/qr-scanner/qr-code-types/qr-url'
 import {
+  convertProprietaryInvitationToAppInvitation, convertShortProprietaryInvitationToAppInvitation,
   isProprietaryInvitation, isShortProprietaryInvitation,
-} from "../invitation/kinds/proprietary-connection-invitation";
+} from '../invitation/kinds/proprietary-connection-invitation'
 import {
-  isAriesInvitation
-} from "../invitation/kinds/aries-connection-invitation";
+  convertAriesInvitationToAppInvitation,
+  isAriesInvitation,
+} from '../invitation/kinds/aries-connection-invitation'
 import {
-  isAriesOutOfBandInvitation
-} from "../invitation/kinds/aries-out-of-band-invitation";
+  convertAriesOutOfBandInvitationToAppInvitation,
+  isAriesOutOfBandInvitation,
+} from '../invitation/kinds/aries-out-of-band-invitation'
 
 const initialState = {}
 
@@ -49,10 +48,7 @@ export const getSmsPendingInvitation = (smsToken: string) => ({
 
 export const smsPendingInvitationReceived = (
   smsToken: string,
-  data:
-    | ProprietaryConnectionInvitation
-    | AriesConnectionInvitePayload
-    | AriesOutOfBandInvite
+  data: InvitationPayload
 ) => ({
   type: SMS_PENDING_INVITATION_RECEIVED,
   data,
@@ -168,27 +164,27 @@ export function* callSmsPendingInvitationRequest(
 
     const proprietaryInvitation = isProprietaryInvitation(pendingInvitationPayload)
     if (proprietaryInvitation) {
-      yield put(smsPendingInvitationReceived(smsToken, pendingInvitationPayload))
+      yield put(smsPendingInvitationReceived(smsToken, convertProprietaryInvitationToAppInvitation(proprietaryInvitation)))
       return
     }
 
     const proprietaryShortInvitation = isShortProprietaryInvitation(pendingInvitationPayload)
     if (proprietaryShortInvitation) {
-      yield put(smsPendingInvitationReceived(smsToken, pendingInvitationPayload))
+      yield put(smsPendingInvitationReceived(smsToken, convertShortProprietaryInvitationToAppInvitation(proprietaryShortInvitation)))
       return
     }
 
     const ariesInvitationData = pendingInvitationPayload.payload || pendingInvitationPayload
     const ariesV1Invite = isAriesInvitation(ariesInvitationData, JSON.stringify(ariesInvitationData))
     if (ariesV1Invite) {
-      yield put(smsPendingInvitationReceived(smsToken, ariesInvitationData))
+      yield put(smsPendingInvitationReceived(smsToken, convertAriesInvitationToAppInvitation(ariesV1Invite)))
       return
     }
 
     const ariesV1OutOfBandInvite = isAriesOutOfBandInvitation(pendingInvitationPayload)
     if (ariesV1OutOfBandInvite) {
       yield put(
-        smsPendingInvitationReceived(smsToken, pendingInvitationPayload)
+        smsPendingInvitationReceived(smsToken, yield call(convertAriesOutOfBandInvitationToAppInvitation,ariesV1OutOfBandInvite))
       )
       return
     }
@@ -196,6 +192,8 @@ export function* callSmsPendingInvitationRequest(
 
     throw new Error('Invitation payload object format is not as expected')
   } catch (e) {
+    console.log('e')
+    console.log(e)
     let error: CustomError = {
       code: ERROR_PENDING_INVITATION_RESPONSE_PARSE_CODE,
       message: `${ERROR_PENDING_INVITATION_RESPONSE_PARSE}: ${e.message}`,

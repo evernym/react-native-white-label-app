@@ -3,7 +3,7 @@ import 'react-native'
 import React from 'react'
 import renderer from 'react-test-renderer'
 import { Provider } from 'react-redux'
-import { ScreenNavigator } from '../screen-navigator'
+import { ScreenNavigator } from '../../navigation/screen-navigator'
 import {
   convertClaimOfferPushPayloadToAppClaimOffer,
   convertClaimPushPayloadToAppClaim,

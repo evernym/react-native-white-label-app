@@ -3,7 +3,7 @@ import { flattenAsync } from '../common/flatten-async'
 import { toUtf8FromBase64 } from '../bridge/react-native-cxs/RNCxs'
 import { flatJsonParse } from '../common/flat-json-parse'
 import isUrl from 'validator/lib/isURL'
-import type { InvitationPayload } from './type-invitation'
+import type { AriesOutOfBandInvite, InvitationPayload } from './type-invitation'
 import { CONNECTION_INVITE_TYPES } from './type-invitation'
 import { homeRoute } from '../common'
 import type { Connection } from '../store/type-connection-store'
@@ -128,4 +128,48 @@ export const prepareParamsForExistingConnectionRedirect = (
     sendRedirectMessage: sendRedirectMessage,
     notificationOpenOptions: null,
   }
+}
+
+export async function getAttachedRequestData(
+  req: GenericObject,
+): GenericObject {
+  if (!req) {
+    return null
+  }
+
+  if (req.json) {
+    const [error, reqData] = flatJsonParse(req.json)
+    if (error || !reqData) {
+      return null
+    }
+
+    return reqData
+  } else if (req.base64) {
+    const [decodeError, decodedRequest] = await flattenAsync(toUtf8FromBase64)(
+      req.base64,
+    )
+    if (decodeError || decodedRequest === null) {
+      return null
+    }
+
+    const [error, reqData] = flatJsonParse(decodedRequest)
+    if (error || !reqData) {
+      return null
+    }
+
+    return reqData
+  }
+
+  return null
+}
+
+export async function getAttachedRequest(
+  invite: AriesOutOfBandInvite,
+): GenericObject {
+  const requests = invite['request~attach']
+  if (!requests || !requests.length) {
+    return null
+  }
+
+  return getAttachedRequestData(requests[0].data)
 }

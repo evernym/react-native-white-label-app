@@ -46,7 +46,7 @@ export async function pinHash(pin: string, salt: string) {
     return key
   } catch (e) {
     console.log('error')
-    customLogger.error(`pinHash: ${e}`)
+    customLogger.log(`pinHash: ${e}`)
     captureError(new Error(`pinHash: ${e}`))
     return null
   }

@@ -322,7 +322,7 @@ export function* hydrate(): any {
       // yield* hydrateTxnAuthorAgreementSaga()
     } catch (e) {
       captureError(e)
-      customLogger.error(`hydrateSaga: ${e}`)
+      customLogger.log(`hydrateSaga: ${e}`)
       // somehow the secure storage failed, so we need to find someway to store
       // maybe we fallback to file based storage
     }
@@ -330,7 +330,7 @@ export function* hydrate(): any {
     // if we did not find any value in user default storage
     // it means that user uninstalled the app and is now trying again
     // or this is a new installation
-    customLogger.error(`hydrateSaga: ${e}`)
+    customLogger.log(`hydrateSaga: ${e}`)
     yield* alreadyInstalledNotFound()
   }
 }
