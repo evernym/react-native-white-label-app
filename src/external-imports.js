@@ -7,7 +7,7 @@ import {
   DEFAULT_USER_AVATAR,
   USE_PUSH_NOTIFICATION,
   STORAGE_KEY,
-  OIDC_TRUSTED_DOMAINS,
+  DEEP_LINK,
   // $FlowExpectedError[cannot-resolve-module] external file
 } from '../../../../app/evernym-sdk/app'
 
@@ -179,7 +179,7 @@ export const companyName = COMPANY_NAME || 'Your Company'
 export const companyLogo = COMPANY_LOGO
 export const usePushNotifications = !!USE_PUSH_NOTIFICATION || false
 export const storageKey = STORAGE_KEY || '@msdkDefaults'
-export const trustedDomains = OIDC_TRUSTED_DOMAINS || []
+export const deepLinkAddress = DEEP_LINK || null
 
 export const sponsorId = SPONSOR_ID
 export const vcxPushType = VCX_PUSH_TYPE

@@ -92,6 +92,16 @@ The base application settings should be specified in `app.js` file.
         ```javascript
         export const DEFAULT_USER_AVATAR = require('user_avatar.png')
         ```
+ 
+* `DEEP_LINK` - (string, Optional) Branch.io Deep link address.
+  * to omit
+      ```javascript
+      export const DEEP_LINK = null
+      ```
+    * to use custom
+        ```javascript
+        export const DEEP_LINK = 'https://address.com'
+        ```
 
 #### Receiving Message
 

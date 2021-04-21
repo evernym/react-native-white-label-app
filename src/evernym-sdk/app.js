@@ -22,3 +22,6 @@ export const STORAGE_KEY = null
 
 // whether you want to use Firebase Push Notifications
 export const USE_PUSH_NOTIFICATION = null
+
+// Branch.io Deep link address
+export const DEEP_LINK = null
