@@ -7,6 +7,7 @@ import type { DeepLinkProps, DeepLinkBundle } from './type-deep-link'
 import { deepLinkData, deepLinkEmpty, deepLinkError } from './deep-link-store'
 import { waitForInvitationRoute } from '../common'
 import { addPendingRedirection } from '../lock/lock-store'
+import { deepLinkAddress } from '../external-imports'
 
 export const DeepLink = (props: DeepLinkProps) => {
   const redirect = (props: DeepLinkProps, route: string, params?: any) => {
@@ -34,7 +35,7 @@ export const DeepLink = (props: DeepLinkProps) => {
           handleDeepLink(bundle.params?.t)
         } else if (typeof bundle.params['+non_branch_link'] === 'string') {
           const nonBranchLink = bundle.params['+non_branch_link'].toLowerCase()
-          if (nonBranchLink.startsWith('https://link.comect.me/?t=')) {
+          if (nonBranchLink.startsWith(`${deepLinkAddress}?t=`)) {
             const invitationToken = nonBranchLink.split('=').slice(-1)[0]
             props.deepLinkData(invitationToken)
             handleDeepLink(invitationToken)

@@ -203,3 +203,27 @@ By default ios app uses `System` font which is usually `San Francisco` on ios. I
     3. Replace const `fs = require('fs')` to `fs = require('react-native-fs')`
 
     > Note: Unfortunately, if you rebuild node_modules, same steps will be necessary again, just to keep in mind.
+
+* **vcx.framework/vcx' does not contain bitcode** *
+
+  In case you experience issue with vcx or react-native-evernym-sdk pod `vcx.framework/vcx' does not contain bitcode`, this can be resolution:
+
+  1. Open project in XCode and set `Bitcode=NO` for target pods.
+  1. Add following lines to your app Podfile:
+  ```
+  post_install do |installer|
+      installer.pods_project.targets.each do |target|
+          if target.name == "react-native-evernym-sdk"
+              target.build_configurations.each do |config|
+                  config.build_settings['ENABLE_BITCODE'] = 'NO'
+              end
+          end
+          if target.name == "vcx"
+              target.build_configurations.each do |config|
+                  config.build_settings['ENABLE_BITCODE'] = 'NO'
+              end
+          end
+      end
+  end
+  ```
+
