@@ -290,7 +290,7 @@ exports[`<Request /> should match snapshot 1`] = `
         },
         Object {
           "padding": 14.357142857142858,
-          "paddingBottom": 9.571428571428571,
+          "paddingBottom": 28.714285714285715,
         },
       ]
     }
