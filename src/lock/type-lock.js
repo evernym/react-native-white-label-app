@@ -7,6 +7,7 @@ import type {
 
 import { SWITCH_ERROR_ALERTS } from '../store/type-config-store'
 import { appName } from '../external-imports'
+import { lockAppOnStart } from './lock-store'
 
 export const LOCK_TYPE = {
   FINGERPRINT: 'FINGERPRINT',
@@ -75,6 +76,11 @@ export const LOCK_ENABLE = 'LOCK_ENABLE'
 export type LockEnable = {
   type: typeof LOCK_ENABLE,
   isLockEnable: string,
+}
+
+export const LOCK_APP_ON_START = 'LOCK_APP_ON_START'
+export type LockAppOnStartAction = {
+  type: typeof LOCK_APP_ON_START,
 }
 
 export const LOCK_FAIL = 'LOCK_FAIL'
@@ -183,6 +189,7 @@ export type LockActions =
   | CheckPinSuccessAction
   | CheckPinFailAction
   | SwitchErrorAlerts
+  | LockAppOnStartAction
 
 export type LockEnterPinProps = {
   pendingRedirection: ?Array<PendingRedirection>,
@@ -193,6 +200,7 @@ export type LockEnterPinProps = {
   isAppLocked: boolean,
   inRecovery: string,
   currentScreen: string,
+  lockAppOnStart: typeof lockAppOnStart,
 } & ReactNavigation
 
 export type LockEnterFingerProps = {

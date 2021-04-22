@@ -197,6 +197,7 @@ export const questionActionButtonDefaultProps = {
 
 export const disabledStyle = {
   backgroundColor: colors.main,
+  opacity: 0.4,
 }
 
 function getQuestionResponsesHeight(singleResponse: ?boolean) {

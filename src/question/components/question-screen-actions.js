@@ -13,7 +13,7 @@ import {
   disabledStyle,
 } from '../question-screen-style'
 
-import { isSmallWidthDevice } from '../../common/styles'
+import { colors, isSmallWidthDevice } from '../../common/styles'
 
 export const QuestionActions = ({
   question,
@@ -73,7 +73,7 @@ export const QuestionActions = ({
             disabled={isSubmitDisabled}
             testID={`${testID}-submit`}
             onPress={onSubmit}
-            customColor={disabledStyle}
+            customColor={isSubmitDisabled ? disabledStyle : { backgroundColor: colors.main }}
           />
         ) : (
           responseButtons

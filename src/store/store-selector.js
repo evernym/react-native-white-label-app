@@ -781,11 +781,14 @@ export const getVerifierSenderName = (state: Store, uid: string) =>
 * */
 export const getConnectionPairwiseAgentInfo = (state: Store) => state.connections.pairwiseAgent
 
+export const getSmsPendingInvitation = (state: Store, smsToken: string) =>
+  state.smsPendingInvitation[smsToken]
+
 export const getSmsPendingInvitationPayload = (state: Store, smsToken: string) =>
   state.smsPendingInvitation[smsToken]?.payload
 
-export const getSmsPendingInvitationIsFetching = (state: Store, smsToken: string) =>
-  state.smsPendingInvitation[smsToken]?.isFetching
-
 export const getSmsPendingInvitationError = (state: Store, smsToken: string) =>
   state.smsPendingInvitation[smsToken]?.error
+
+export const getDeepLinkStatus = (state: Store, smsToken: string) =>
+  state.deepLink.tokens[smsToken]?.status

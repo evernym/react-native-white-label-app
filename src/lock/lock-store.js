@@ -30,6 +30,7 @@ import {
   SALT,
   NUMBER_OF_FAILED_PIN_ATTEMPTS,
   RECORDED_TIME_OF_PIN_FAILED_ATTEMPT,
+  LOCK_APP_ON_START,
 } from './type-lock'
 import type {
   PendingRedirection,
@@ -53,7 +54,7 @@ import type {
   CheckTouchIdAction,
   EnableTouchIdAction,
   DisableTouchIdAction,
-  PutPinFailDataAction,
+  PutPinFailDataAction, LockAppOnStartAction,
 } from './type-lock'
 import {
   secureSet,
@@ -110,6 +111,10 @@ export const setPinAction = (pin: string): SetPinAction => ({
 export const lockEnable = (isLockEnable: string): LockEnable => ({
   type: LOCK_ENABLE,
   isLockEnable,
+})
+
+export const lockAppOnStart = (): LockAppOnStartAction => ({
+  type: LOCK_APP_ON_START,
 })
 
 export const setInRecovery = (inRecovery: string): InRecovery => ({
@@ -422,6 +427,11 @@ export default function lockReducer(
   action: LockActions
 ): LockStore {
   switch (action.type) {
+    case LOCK_APP_ON_START:
+      return {
+        ...state,
+        isAppLocked: true,
+      }
     case PENDING_REDIRECT:
       return {
         ...state,

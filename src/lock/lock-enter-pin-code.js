@@ -10,7 +10,7 @@ import type { LockEnterPinProps, LockEnterPinState } from './type-lock'
 import { emptyHeaderOptions } from '../navigation/navigation-header-config'
 import LockEnter from './lock-enter'
 import { lockEnterPinRoute, lockPinSetupRoute, homeRoute } from '../common'
-import { clearPendingRedirect } from './lock-store'
+import { clearPendingRedirect, lockAppOnStart } from './lock-store'
 import {
   ENTER_PASS_CODE_MESSAGE,
   ENTER_YOUR_PASS_CODE_MESSAGE,
@@ -34,6 +34,8 @@ export class LockEnterPin extends PureComponent<
   keyboardShowListener = null
 
   componentDidMount() {
+    this.props.lockAppOnStart()
+
     this.keyboardListener = Keyboard.addListener(
       'keyboardDidHide',
       this.keyboardHideState
@@ -202,6 +204,7 @@ const mapDispatchToProps = (dispatch) =>
     {
       clearPendingRedirect,
       unlockApp,
+      lockAppOnStart,
     },
     dispatch
   )
