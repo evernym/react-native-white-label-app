@@ -64,6 +64,17 @@ export class SendLogs extends Component<SendLogsProps, any> {
       PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
     )
       .then((granted) => {
+        if (granted === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
+          Alert.alert(
+            'Write Storage Permission Needed',
+            'Please go into your device settings and enable write storage permissions for Connect.Me.',
+            [
+              {
+                text: 'OK',
+              },
+            ]
+          )
+        }
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
           store.dispatch({
             type: ENCRYPT_LOG_FILE,
