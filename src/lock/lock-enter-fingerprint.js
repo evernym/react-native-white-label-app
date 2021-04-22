@@ -100,14 +100,16 @@ export class LockEnterFingerprint extends Component<
   }
 
   componentDidMount() {
-    lockEnterFingerprintOptions = 
+    if (this.props.onSuccess) {
+      lockEnterFingerprintOptions = 
       headerDefaultOptions({
         headline: undefined,
         headerHideShadow: true,
         transparent: true,
         isGoHomeOnArrowPress: true,
       })
-
+    }
+    
     this.touchIdHandler()
   }
 
