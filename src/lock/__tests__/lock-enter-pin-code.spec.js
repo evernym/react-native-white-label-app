@@ -21,6 +21,7 @@ describe('<LockPinCodeEnter />', () => {
     route: {},
     clearPendingRedirect: jest.fn(),
     unlockApp: jest.fn(),
+    lockAppOnStart: jest.fn(),
     isFetchingInvitation: false,
     isAppLocked: true,
     inRecovery: 'false',

@@ -26,7 +26,7 @@ import {
 } from '../my-connections/my-connections'
 import { splashScreenScreen } from '../start-up/splash-screen'
 import { SettingsScreen, headlineForSettingRoute } from '../settings/settings'
-import { expiredTokenScreen } from '../expired-token/expired-token'
+import { expiredTokenScreen } from '../expired-invitation/expired-invitation'
 import { qrCodeScannerScreen } from '../qr-code/qr-code'
 import { lockSelectionScreen } from '../lock/lock-selection'
 import { sendLogsScreen } from '../send-logs/send-logs'
