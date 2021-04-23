@@ -96,7 +96,6 @@ import {
 import {
   BIOMETRICS_SWITCH_ON,
   BIOMETRICS_SWITCH_OFF,
-  ABOUT_BUTTON_IN_SETTINGS,
   GIVE_APP_FEEDBACK_BUTTON_IN_SETTINGS,
 } from '../feedback/log-to-apptentive'
 
@@ -193,7 +192,6 @@ export class Settings extends Component<SettingsProps, SettingsState> {
 
   openAboutApp = () => {
     if (this.props.navigation.isFocused()) {
-      this.props.aboutButtonInSetting()
       this.props.navigation.navigate(aboutAppRoute, {})
     }
   }
@@ -710,8 +708,8 @@ const mapDispatchToProps = (dispatch) =>
       cloudBackupStart,
       biometricsSwitchOn: () => BIOMETRICS_SWITCH_ON,
       biometricsSwitchOff: () => BIOMETRICS_SWITCH_OFF,
-      aboutButtonInSetting: () => ABOUT_BUTTON_IN_SETTINGS,
-      giveAppFeedbackButtonInSetting: () => GIVE_APP_FEEDBACK_BUTTON_IN_SETTINGS,
+      giveAppFeedbackButtonInSetting: () =>
+        GIVE_APP_FEEDBACK_BUTTON_IN_SETTINGS,
     },
     dispatch
   )

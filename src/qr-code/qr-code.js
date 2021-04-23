@@ -25,7 +25,7 @@ import type {
   QRCodeScannerScreenProps,
   QRCodeScannerScreenState,
 } from './type-qr-code'
-import type { QrCodeEphemeralProofRequest, } from '../proof-request/type-proof-request'
+import type { QrCodeEphemeralProofRequest } from '../proof-request/type-proof-request'
 import { withStatusBar } from '../components/status-bar/status-bar'
 import {
   OPEN_ID_CONNECT_STATE,
@@ -54,7 +54,9 @@ export class QRCodeScannerScreen extends Component<
     qrCode: ShortProprietaryConnectionInvitation
   ) => {
     if (this.props.currentScreen === qrCodeScannerTabRoute) {
-      this.props.handleInvitation(convertShortProprietaryInvitationToAppInvitation(qrCode))
+      this.props.handleInvitation(
+        convertShortProprietaryInvitationToAppInvitation(qrCode)
+      )
     }
   }
 
@@ -143,7 +145,9 @@ export class QRCodeScannerScreen extends Component<
         this.props.navigation.isFocused() &&
         (this.state.permission || Platform.OS === 'ios') ? (
           <QRScanner
-            onShortProprietaryInvitationRead={this.onShortProprietaryInvitationRead}
+            onShortProprietaryInvitationRead={
+              this.onShortProprietaryInvitationRead
+            }
             onProprietaryInvitationRead={this.onProprietaryInvitationRead}
             onOIDCAuthenticationRequest={this.onOIDCAuthenticationRequest}
             onAriesConnectionInviteRead={this.onAriesConnectionInviteRead}
@@ -171,12 +175,16 @@ export class QRCodeScannerScreen extends Component<
   onAriesConnectionInviteRead = async (
     ariesConnectionInvite: AriesConnectionInvite
   ) => {
-    const invitation = convertAriesInvitationToAppInvitation(ariesConnectionInvite)
+    const invitation = convertAriesInvitationToAppInvitation(
+      ariesConnectionInvite
+    )
     this.props.handleInvitation(invitation)
   }
 
   onAriesOutOfBandInviteRead = async (invite: AriesOutOfBandInvite) => {
-    const invitation = await convertAriesOutOfBandInvitationToAppInvitation(invite)
+    const invitation = await convertAriesOutOfBandInvitationToAppInvitation(
+      invite
+    )
     this.props.handleInvitation(invitation)
   }
 
@@ -209,7 +217,7 @@ const mapDispatchToProps = (dispatch) =>
       openIdConnectUpdateStatus,
       handleInvitation,
       proofRequestReceived,
-      scanQrClose: () => SCAN_QR_CLOSE_X_BUTTON
+      scanQrClose: () => SCAN_QR_CLOSE_X_BUTTON,
     },
     dispatch
   )
