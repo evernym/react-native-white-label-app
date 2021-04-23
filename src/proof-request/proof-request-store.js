@@ -24,6 +24,7 @@ import type {
   OutOfBandConnectionForPresentationEstablishedAction,
   ApplyAttributesForPresentationRequestAction,
   SelfAttestedAttributes,
+  DenyProofRequestFailAction,
 } from './type-proof-request'
 import {
   getProofRequestPairwiseDid,
@@ -142,6 +143,14 @@ export const hydrateProofRequests = (proofRequests: ProofRequestStore) => ({
   type: HYDRATE_PROOF_REQUESTS,
   proofRequests,
 })
+
+export const denyProofRequestFail = (
+  uid: string,
+): DenyProofRequestFailAction => ({
+  type: DENY_PROOF_REQUEST_FAIL,
+  uid,
+})
+
 
 export const sendProofFail = (
   uid: string,
@@ -370,10 +379,7 @@ function* denyProofRequestSaga(
 
     const vcxResult = yield* ensureVcxInitSuccess()
     if (vcxResult && vcxResult.fail) {
-      yield put({
-        type: DENY_PROOF_REQUEST_FAIL,
-        uid,
-      })
+      yield put(denyProofRequestFail(uid))
       return
     }
 
@@ -406,28 +412,19 @@ function* denyProofRequestSaga(
         }
         yield put(denyProofRequestSuccess(uid))
       } catch (e) {
-        yield put({
-          type: DENY_PROOF_REQUEST_FAIL,
-          uid,
-        })
+        yield put(denyProofRequestFail(uid))
         customLogger.log(
           'error calling vcx deny API while denying proof request.'
         )
       }
     } catch (e) {
-      yield put({
-        type: DENY_PROOF_REQUEST_FAIL,
-        uid,
-      })
+      yield put(denyProofRequestFail(uid))
       customLogger.log(
         'connection handle not found while denying proof request.'
       )
     }
   } catch (e) {
-    yield put({
-      type: DENY_PROOF_REQUEST_FAIL,
-      uid: action.uid,
-    })
+    yield put(denyProofRequestFail(action.uid))
     customLogger.log('something went wrong trying to deny proof request.')
   }
 }

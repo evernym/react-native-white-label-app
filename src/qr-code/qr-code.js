@@ -34,6 +34,7 @@ import {
 import { convertShortProprietaryInvitationToAppInvitation } from '../invitation/kinds/proprietary-connection-invitation'
 import { convertAriesOutOfBandInvitationToAppInvitation } from '../invitation/kinds/aries-out-of-band-invitation'
 import { convertAriesInvitationToAppInvitation } from '../invitation/kinds/aries-connection-invitation'
+import { proofRequestReceived } from '../proof-request/proof-request-store'
 
 export class QRCodeScannerScreen extends Component<
   QRCodeScannerScreenProps,
@@ -204,6 +205,7 @@ const mapDispatchToProps = (dispatch) =>
     {
       openIdConnectUpdateStatus,
       handleInvitation,
+      proofRequestReceived,
     },
     dispatch
   )

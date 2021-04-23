@@ -8,18 +8,6 @@ import { mockEphemeralProofRequestQrCode } from '../../../__mocks__/data/mock-qr
 import { originalProofRequestData } from '../../../__mocks__/static-data'
 
 describe('ephemeral-proof-request-qr-code-reader', () => {
-  it('should return error code EPR-001, if data is not json', async () => {
-    const decodeSpy = jest.spyOn(vcx, 'toUtf8FromBase64')
-    decodeSpy.mockImplementation(() => Promise.reject('some error'))
-
-    const [error] = await validateEphemeralProofQrCode('no json data')
-
-    expect(error).toBe('EPR-001:: Invalid format.')
-
-    decodeSpy.mockReset()
-    decodeSpy.mockRestore()
-  })
-
   it('should return error code EPR-002', async () => {
     const decodeSpy = jest.spyOn(vcx, 'toUtf8FromBase64')
     decodeSpy.mockImplementation(() =>
@@ -50,7 +38,7 @@ describe('ephemeral-proof-request-qr-code-reader', () => {
       JSON.stringify(mockEphemeralProofRequestQrCode)
     )
 
-    expect(error).toBe('EPR-003::Invalid proof request.')
+    expect(error).toBe('EPR-002::Invalid data.')
 
     decodeSpy.mockReset()
     decodeSpy.mockRestore()
@@ -65,10 +53,10 @@ describe('ephemeral-proof-request-qr-code-reader', () => {
       )
 
     const [error] = await validateEphemeralProofQrCode(
-      JSON.stringify(mockEphemeralProofRequestQrCode)
+      mockEphemeralProofRequestQrCode
     )
 
-    expect(error).toBe('EPR-004::Invalid proof request format.')
+    expect(error).toBe('EPR-003::Invalid proof request.')
 
     decodeSpy.mockReset()
     decodeSpy.mockRestore()
@@ -80,7 +68,7 @@ describe('ephemeral-proof-request-qr-code-reader', () => {
       .mockImplementationOnce(() => Promise.reject('invalid base64 qr code'))
       .mockImplementationOnce(() =>
         Promise.resolve(
-          JSON.stringify({
+         {
             ...originalProofRequestData,
             requested_attributes: {
               name: {
@@ -88,15 +76,15 @@ describe('ephemeral-proof-request-qr-code-reader', () => {
                 restrictions: 'some restrictions',
               },
             },
-          })
+          }
         )
       )
 
     const [error] = await validateEphemeralProofQrCode(
-      JSON.stringify(mockEphemeralProofRequestQrCode)
+      mockEphemeralProofRequestQrCode
     )
 
-    expect(error).toBe('EPR-005::Invalid proof request data.')
+    expect(error).toBe('EPR-003::Invalid proof request.')
 
     decodeSpy.mockReset()
     decodeSpy.mockRestore()
