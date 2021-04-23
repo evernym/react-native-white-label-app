@@ -3,6 +3,7 @@
 import React from 'react'
 import { Text, TouchableOpacity, Platform } from 'react-native'
 import { moderateScale } from 'react-native-size-matters'
+
 import {
   EvaIcon,
   ANDROID_BACK_ARROW_ICON,
@@ -14,6 +15,7 @@ import {
 } from '../components/header/type-header'
 import { HeaderWithMenu } from '../components'
 import type { ReactNavigation, Navigation } from '../common/type-common'
+import { homeRoute } from '../common'
 
 export const headerOptionForDrawerStack = ({
   navigation: { navigation, route },
@@ -84,13 +86,20 @@ export const headerDefaultOptions = ({
   transparent,
   headerStyles = {},
   arrowColor = '',
+  isGoHomeOnArrowPress,
 }: {
   headline?: string,
   headerHideShadow: boolean,
   transparent: boolean,
   headerStyles?: any,
   arrowColor?: any,
+  isGoHomeOnArrowPress?: boolean,
 }) => ({ navigation }: { navigation: Navigation }) => {
+
+  const onPress = () => {
+    isGoHomeOnArrowPress ? navigation.navigate(homeRoute) : navigation.goBack()
+  }
+
   return {
     headerStyle: transparent
       ? { ...styles.headerTransparent, ...headerStyles }
@@ -103,7 +112,7 @@ export const headerDefaultOptions = ({
       </Text>
     ),
     headerLeft: () => (
-      <TouchableOpacity testID="left-icon" onPress={() => navigation.goBack()}>
+      <TouchableOpacity testID="left-icon" onPress={onPress}>
         <EvaIcon
           name={
             Platform.OS === 'ios'

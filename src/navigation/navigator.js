@@ -36,7 +36,7 @@ import { lockEnterPinScreen } from '../lock/lock-enter-pin-code'
 import { lockTouchIdSetupScreen } from '../lock/lock-fingerprint-setup'
 import { lockPinSetupScreen } from '../lock/lock-pin-code-setup'
 import { lockSetupSuccessScreen } from '../lock/lock-setup-success'
-import { lockEnterFingerprintScreen } from '../lock/lock-enter-fingerprint'
+import { lockEnterFingerprintScreen, lockEnterFingerprintOptions } from '../lock/lock-enter-fingerprint'
 import { claimOfferScreen } from '../connection-details/components/claim-offer-modal'
 import { proofRequestScreen } from '../connection-details/components/proof-request-modal'
 import { fulfilledMessageScreen } from '../connection-details/components/modal'
@@ -367,6 +367,7 @@ function CardStackScreen() {
       <CardStack.Screen
         name={lockEnterFingerprintScreen.routeName}
         component={lockEnterFingerprintScreen.screen}
+        options={lockEnterFingerprintOptions}
       />
       <CardStack.Screen
         name={lockAuthorizationScreen.routeName}

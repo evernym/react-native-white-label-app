@@ -1,5 +1,6 @@
 // @flow
 import React, { useCallback, useEffect, useState } from 'react'
+import { Platform } from 'react-native'
 
 import type { RequestProps } from './type-request'
 
@@ -72,6 +73,6 @@ export const Request = ({
 const styles = StyleSheet.create({
   container: {
     padding: moderateScale(15),
-    paddingBottom: moderateScale(10),
+    paddingBottom: Platform.OS === 'ios' ? moderateScale(30) : moderateScale(10),
   },
 })

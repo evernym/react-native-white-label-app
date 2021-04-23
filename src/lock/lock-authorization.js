@@ -16,9 +16,7 @@ import { LoaderGif } from '../components/loader-gif/loader-gif'
 import { colors } from '../common/styles/constant'
 import { headerDefaultOptions } from '../navigation/navigation-header-config'
 
-export const LockAuthorization = ({
-                                    route,
-                                  }: LockAuthorizationProps) => {
+export const LockAuthorization = ({ route }: LockAuthorizationProps) => {
   const [interactionDone] = useInteractionDone()
   const onSuccess = useCallback(() => {
     const { params } = route
@@ -49,5 +47,5 @@ export const lockAuthorizationScreen = {
     headline: undefined,
     headerHideShadow: true,
     transparent: false,
-  })
+  }),
 }

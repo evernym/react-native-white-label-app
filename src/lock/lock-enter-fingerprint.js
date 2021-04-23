@@ -20,6 +20,9 @@ import type {
   PendingRedirection,
 } from './type-lock'
 import { AllowedFallbackToucheIDErrors } from './type-lock'
+import { headerDefaultOptions } from '../navigation/navigation-header-config'
+
+export let lockEnterFingerprintOptions = null
 
 export class LockEnterFingerprint extends Component<
   LockEnterFingerProps,
@@ -97,6 +100,16 @@ export class LockEnterFingerprint extends Component<
   }
 
   componentDidMount() {
+    if (this.props.onSuccess) {
+      lockEnterFingerprintOptions = 
+      headerDefaultOptions({
+        headline: undefined,
+        headerHideShadow: true,
+        transparent: true,
+        isGoHomeOnArrowPress: true,
+      })
+    }
+    
     this.touchIdHandler()
   }
 
@@ -129,22 +142,6 @@ export class LockEnterFingerprint extends Component<
         ? UNLOCKING_APP_WAIT_MESSAGE
         : ''
 
-    if (errorMessage !== null) {
-      return (
-        <Container center>
-          <CustomText bg="tertiary" h5 tertiary demiBold center transparentBg>
-            {errorMessage}
-          </CustomText>
-          <CustomButton
-            primary
-            style={[style.tryAgainButton]}
-            title={'Try again'}
-            onPress={this.retryAuth}
-          />
-        </Container>
-      )
-    }
-
     if (isFetchingInvitation) {
       return (
         <Container center>
@@ -155,7 +152,19 @@ export class LockEnterFingerprint extends Component<
       )
     }
 
-    return <Container />
+    return (
+      <Container center>
+        <CustomText bg="tertiary" h5 tertiary demiBold center transparentBg>
+          {errorMessage}
+        </CustomText>
+        <CustomButton
+          primary
+          style={[style.tryAgainButton]}
+          title={'Try again'}
+          onPress={this.retryAuth}
+        />
+      </Container>
+    )
   }
 }
 
