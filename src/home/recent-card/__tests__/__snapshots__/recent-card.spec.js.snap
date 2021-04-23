@@ -112,7 +112,7 @@ exports[`<RecentCard /> should render RecentCard component and match snapshot 1`
         }
       }
     >
-      2020-03-15T15:57:54+01:00
+      Just now
     </Text>
   </View>
 </View>

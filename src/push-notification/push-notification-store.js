@@ -115,7 +115,6 @@ import {
 } from '../backup/backup-actions'
 import { connectionHistoryBackedUp } from '../connection-history/connection-history-store'
 import RNFetchBlob from 'rn-fetch-blob'
-import { showInAppNotification } from '../in-app-notification/in-app-notification-actions'
 import { ATTRIBUTE_TYPE } from '../proof-request/type-proof-request'
 import { flattenAsync } from '../common/flatten-async'
 import { Platform } from 'react-native'
@@ -133,6 +132,7 @@ const blackListedRoute = {
   [lockAuthorizationHomeRoute]: lockAuthorizationHomeRoute,
   [invitationRoute]: invitationRoute,
   [questionRoute]: questionRoute,
+  [inviteActionRoute]: inviteActionRoute,
 }
 
 const initialState = {
@@ -664,36 +664,30 @@ function* redirectToRelevantScreen(notification: RedirectToRelevantScreen) {
   } = notification
   if (uiType || type) {
     let routeToDirect = null
-    let notificationText = ''
     switch (uiType || type) {
       case 'CLAIM_OFFER_RECEIVED':
       case MESSAGE_TYPE.CLAIM_OFFER:
         routeToDirect = claimOfferRoute
-        notificationText = `Offering ${additionalData.claim_name}`
         break
 
       case MESSAGE_TYPE.PROOF_REQUEST:
       case 'PROOF_REQUEST_RECEIVED':
         routeToDirect = proofRequestRoute
-        notificationText = `${additionalData.remoteName} wants you to share information`
         break
 
       case MESSAGE_TYPE.QUESTION:
       case MESSAGE_TYPE.QUESTION.toLowerCase():
         routeToDirect = questionRoute
-        notificationText = `${additionalData.messageTitle}`
         break
 
       case MESSAGE_TYPE.INVITE_ACTION:
       case MESSAGE_TYPE.INVITE_ACTION.toLowerCase():
         routeToDirect = inviteActionRoute
-        notificationText = `${additionalData.messageTitle}`
         break
 
       case MESSAGE_TYPE.PRESENTATION_PROPOSAL:
       case MESSAGE_TYPE.PRESENTATION_PROPOSAL.toLowerCase():
         routeToDirect = proofProposalRoute
-        notificationText = `${additionalData.messageTitle}`
         break
     }
 
@@ -708,9 +702,7 @@ function* redirectToRelevantScreen(notification: RedirectToRelevantScreen) {
           senderName: additionalData.remoteName,
           messageType: type,
           identifier: forDID,
-        },
-        notification,
-        notificationText
+        }
       )
     }
   }
@@ -719,8 +711,6 @@ function* redirectToRelevantScreen(notification: RedirectToRelevantScreen) {
 function* handleRedirection(
   routeName: string,
   params: NavigationParams,
-  notification: RedirectToRelevantScreen,
-  notificationText: string
 ): any {
   const isAppLocked: boolean = yield select(getIsAppLocked)
   if (isAppLocked) {
@@ -735,31 +725,14 @@ function* handleRedirection(
 
   const currentScreen: string = yield select(getCurrentScreen)
   if (!blackListedRoute[currentScreen]) {
-    if (
-      params.notificationOpenOptions &&
-      params.notificationOpenOptions.openMessageDirectly
-    ) {
+    if (params.notificationOpenOptions) {
       // if we find that we can open notification directly
       // i.e. we received this notification from user tapping on notification
       // from notification center outside of the app
       // then we want user to go home screnn of particular notification
       // and then inside home screen, we want to show message
       // that belongs to this notification
-      yield put(navigateToRoutePN(homeDrawerRoute, params))
-    } else {
-      // if we find that we did not have indication to open notification directly
-      // that means we need to show in-app notification that we have received a message
-      yield put(
-        showInAppNotification({
-          senderName: params.senderName,
-          senderImage: params.image,
-          senderDID: params.senderDID,
-          text: notificationText,
-          messageType: notification.type,
-          messageId: params.uid,
-          identifier: notification.forDID,
-        })
-      )
+      yield put(navigateToRoutePN(routeName, params))
     }
   }
 }

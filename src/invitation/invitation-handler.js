@@ -17,7 +17,6 @@ import {
   qrCodeScannerTabRoute,
 } from '../common'
 import { deepLinkProcessed } from '../deep-link/deep-link-store'
-import { colors } from '../common/styles'
 import { ID, TYPE } from '../common/type-common'
 import { convertAriesCredentialOfferToCxsClaimOffer } from '../bridge/react-native-cxs/vcx-transformers'
 import { getAllDid, getAllPublicDid, getClaimOffers, getProofRequests, getVerifiers } from '../store/store-selector'
@@ -38,8 +37,14 @@ import type { OutOfBandNavigation } from '../qr-code/type-qr-code'
 import { getPushNotificationAuthorizationStatus } from '../push-notification/components/push-notification-permission-screen'
 import { Platform } from 'react-native'
 import { usePushNotifications } from '../external-imports'
-import { getExistingConnection, prepareParamsForExistingConnectionRedirect } from './invitation-helpers'
+import {
+  getExistingConnection,
+  shouldSendRedirectMessage,
+} from './invitation-helpers'
 import { invitationReceived } from './invitation-store'
+import { showSnackError } from '../store/config-store'
+import { CONNECTION_ALREADY_EXIST } from '../connection-history/type-connection-history'
+import { sendConnectionRedirect, sendConnectionReuse } from '../store/connections-store'
 import Snackbar from 'react-native-snackbar'
 
 function* checkExistingConnectionAndRedirect(invitation: InvitationPayload): Generator<*, *, *> {
@@ -58,11 +63,36 @@ function* checkExistingConnectionAndRedirect(invitation: InvitationPayload): Gen
   if (existingConnection) {
     yield put(navigateToRoutePN(homeRoute, {
       screen: homeDrawerRoute,
-      params: prepareParamsForExistingConnectionRedirect(
-        existingConnection,
-        invitation,
-      ),
+      params: undefined,
     }))
+
+    Snackbar.show({
+      text: CONNECTION_ALREADY_EXIST,
+      duration: Snackbar.LENGTH_LONG,
+    })
+
+    const sendRedirectMessage = shouldSendRedirectMessage(
+      existingConnection,
+      invitation,
+      publicDID,
+      DID
+    )
+
+    if (
+      (invitation.type === CONNECTION_INVITE_TYPES.ARIES_V1_QR || invitation.type === undefined) &&
+      sendRedirectMessage
+    ) {
+      yield put(sendConnectionRedirect(invitation, {
+        senderDID: existingConnection.senderDID,
+        identifier: existingConnection.identifier,
+      }))
+    } else if (
+      invitation.type === CONNECTION_INVITE_TYPES.ARIES_OUT_OF_BAND && sendRedirectMessage
+    ) {
+      yield put(sendConnectionReuse(invitation.originalObject, {
+        senderDID: existingConnection.senderDID
+      }))
+    }
     return
   }
 
@@ -120,11 +150,7 @@ function* onAriesOutOfBandInviteRead(invitation: InvitationPayload): Generator<*
   const invite = invitation.originalObject
   if (!invitation) {
     yield put(navigateToRoutePN(homeRoute, {}))
-    Snackbar.show({
-      text: 'QR code contains invalid formatted Aries Out-of-Band invitation.',
-      backgroundColor: colors.red,
-      duration: Snackbar.LENGTH_LONG,
-    })
+    yield call(showSnackError, 'QR code contains invalid formatted Aries Out-of-Band invitation.')
     return
   }
 
@@ -135,11 +161,7 @@ function* onAriesOutOfBandInviteRead(invitation: InvitationPayload): Generator<*
     // Invite: No `handshake_protocols` and `request~attach`
     // Action: show alert about invalid formatted invitation
     yield put(navigateToRoutePN(homeRoute, {}))
-    Snackbar.show({
-      text: 'QR code contains invalid formatted Aries Out-of-Band invitation.',
-      backgroundColor: colors.red,
-      duration: Snackbar.LENGTH_LONG,
-    })
+    yield call(showSnackError, 'QR code contains invalid formatted Aries Out-of-Band invitation.')
   } else if (
     invite.handshake_protocols?.length &&
     !invite['request~attach']?.length
@@ -158,11 +180,7 @@ function* onAriesOutOfBandInviteRead(invitation: InvitationPayload): Generator<*
 
     if (!invitation.attachedRequest || !invitation.attachedRequest[TYPE]) {
       yield put(navigateToRoutePN(homeRoute, {}))
-      Snackbar.show({
-        text: 'QR code contains invalid formatted Aries Out-of-Band invitation.',
-        backgroundColor: colors.red,
-        duration: Snackbar.LENGTH_LONG,
-      })
+      yield call(showSnackError, 'QR code contains invalid formatted Aries Out-of-Band invitation.')
       return
     }
 
@@ -187,11 +205,7 @@ function* onAriesOutOfBandInviteRead(invitation: InvitationPayload): Generator<*
         }))
 
         // we already have accepted that offer
-        Snackbar.show({
-          text: 'The credential offer has already been accepted.',
-          backgroundColor: colors.red,
-          duration: Snackbar.LENGTH_LONG,
-        })
+        yield call(showSnackError, 'The credential offer has already been accepted.')
         return
       }
 
@@ -235,11 +249,7 @@ function* onAriesOutOfBandInviteRead(invitation: InvitationPayload): Generator<*
           params: undefined,
         }))
         // we already have accepted that proof request
-        Snackbar.show({
-          text: 'The proof request has already been accepted.',
-          backgroundColor: colors.red,
-          duration: Snackbar.LENGTH_LONG,
-        })
+        yield call(showSnackError, 'The proof request has already been accepted.')
         return
       }
 
@@ -249,11 +259,7 @@ function* onAriesOutOfBandInviteRead(invitation: InvitationPayload): Generator<*
       ] = yield call(validateOutofbandProofRequestQrCode, invitation.attachedRequest)
 
       if (outofbandProofError || !outofbandProofRequest) {
-        Snackbar.show({
-          text: 'QR code contains invalid formatted Aries Out-of-Band invitation.',
-          backgroundColor: colors.red,
-          duration: Snackbar.LENGTH_LONG,
-        })
+        yield call(showSnackError, 'QR code contains invalid formatted Aries Out-of-Band invitation.')
         return
       }
 
@@ -272,11 +278,7 @@ function* onAriesOutOfBandInviteRead(invitation: InvitationPayload): Generator<*
       })
     } else if (type_.endsWith('propose-presentation')) {
       if (!schemaValidator.validate(presentationProposalSchema, invitation.attachedRequest)) {
-        Snackbar.show({
-          text: 'Invalid formatted Presentation Proposal.',
-          backgroundColor: colors.red,
-          duration: Snackbar.LENGTH_LONG,
-        })
+        yield call(showSnackError, 'Invalid formatted Presentation Proposal.')
         return
       }
 
@@ -289,11 +291,7 @@ function* onAriesOutOfBandInviteRead(invitation: InvitationPayload): Generator<*
           params: undefined,
         }))
         // we already have accepted that presentation proposal
-        Snackbar.show({
-          text: 'The presentation proposal has already been accepted.',
-          backgroundColor: colors.red,
-          duration: Snackbar.LENGTH_LONG,
-        })
+        yield call(showSnackError, 'The presentation proposal has already been accepted.')
         return
       }
 
@@ -321,11 +319,7 @@ function* onAriesOutOfBandInviteRead(invitation: InvitationPayload): Generator<*
       screen: homeDrawerRoute,
       params: undefined,
     }))
-    Snackbar.show({
-      text: 'QR code contains invalid formatted Aries Out-of-Band invitation.',
-      backgroundColor: colors.red,
-      duration: Snackbar.LENGTH_LONG,
-    })
+    yield call(showSnackError, 'QR code contains invalid formatted Aries Out-of-Band invitation.')
   }
 }
 

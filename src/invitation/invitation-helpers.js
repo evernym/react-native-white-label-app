@@ -5,7 +5,6 @@ import { flatJsonParse } from '../common/flat-json-parse'
 import isUrl from 'validator/lib/isURL'
 import type { AriesOutOfBandInvite, InvitationPayload } from './type-invitation'
 import { CONNECTION_INVITE_TYPES } from './type-invitation'
-import { homeRoute } from '../common'
 import type { Connection } from '../store/type-connection-store'
 
 export async function getBase64DecodedInvitation(
@@ -95,39 +94,6 @@ export function shouldSendRedirectMessage(
     return existingConnection.publicDID === publicDID && existingConnection.senderDID !== DID
   }
   return false
-}
-
-export const prepareParamsForExistingConnectionRedirect = (
-  existingConnection: Connection,
-  invitation: InvitationPayload,
-) => {
-  const { publicDID, DID } = invitation.senderDetail
-  const {
-    senderName,
-    identifier,
-    logoUrl: image,
-    senderDID,
-  } = existingConnection
-
-  const sendRedirectMessage = shouldSendRedirectMessage(
-    existingConnection,
-    invitation,
-    publicDID,
-    DID
-  )
-
-  return {
-    senderDID,
-    senderName,
-    identifier,
-    image,
-    backRedirectRoute: homeRoute,
-    showExistingConnectionSnack: true,
-    qrCodeInvitationPayload: invitation,
-    // do not send redirect message if we scanned the same invitation twice
-    sendRedirectMessage: sendRedirectMessage,
-    notificationOpenOptions: null,
-  }
 }
 
 export async function getAttachedRequestData(

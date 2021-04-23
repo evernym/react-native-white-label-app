@@ -749,7 +749,6 @@ function* handleProprietaryMessage(
       forDID,
       notificationOpenOptions: {
         uid,
-        openMessageDirectly: true,
       },
     }
 
@@ -981,7 +980,6 @@ function* handleAriesMessage(downloadMessage: DownloadedMessage): Generator<*, *
       forDID,
       notificationOpenOptions: {
         uid,
-        openMessageDirectly: true,
       },
     }
 

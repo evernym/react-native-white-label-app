@@ -101,7 +101,6 @@ import {
   SEND_TOKENS,
   REFRESH_WALLET_BALANCE,
 } from '../wallet/type-wallet'
-import { SHOW_IN_APP_NOTIFICATION } from '../in-app-notification/in-app-notification-type'
 import { RESTORE_SUBMIT_PASSPHRASE } from '../restore/type-restore'
 import { RESTORE_CLOUD_SUBMIT_PASSPHRASE } from '../cloud-restore/cloud-restore-type'
 import {
@@ -467,11 +466,6 @@ export function PiiHiddenTransformer(state: Store) {
         tokenAmount: hiddenInfoReplacement,
       },
     },
-    inAppNotification: {
-      notification: state.inAppNotification.notification
-        ? hiddenInfoReplacement
-        : null,
-    },
     restore: {
       ...state.restore,
       passphrase: state.restore.passphrase ? hiddenInfoReplacement : null,
@@ -608,8 +602,6 @@ export function PiiHiddenActionTransformer(action: any) {
     [GET_WALLET_ENCRYPTION_KEY]: ['data'],
 
     [SEND_TOKENS]: ['tokenAmount', 'recipientWalletAddress'],
-
-    [SHOW_IN_APP_NOTIFICATION]: ['notification'],
 
     [RESTORE_CLOUD_SUBMIT_PASSPHRASE]: ['passphrase'],
 

@@ -499,7 +499,17 @@ You can configure application `Home` screen inside the `home.js` module.
         ```javascript
         export const SHOW_EVENTS_HISTORY = true
         ```
-
+      
+* `CustomMyConnectionsScreen` - (React Component) custom component for Connections screen rendering (instead of predefined one).
+  * to use default
+      ```javascript
+      export const CustomHomeScreen = null
+      ```    
+  * to use custom
+      ```javascript
+      export const CustomHomeScreen = () => <Text>Custom Home</Text>
+      ``` 
+    
 #### Connections
 
 You can configure application `Connections` screen inside the `connections.js` module.

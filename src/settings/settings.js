@@ -61,7 +61,6 @@ import { safeSet, walletSet } from '../services/storage'
 import { addPendingRedirection } from '../lock/lock-store'
 import { setupApptentive } from '../feedback'
 import { customLogger } from '../store/custom-logger'
-import { NotificationCard } from '../in-app-notification/in-app-notification-card'
 import {
   ARROW_RIGHT_ICON,
   CHAT_ICON,
@@ -600,7 +599,6 @@ export class Settings extends Component<SettingsProps, SettingsState> {
 
     return (
       <Container>
-        <NotificationCard />
         <View
           style={[style.secondaryContainer]}
           testID="settings-container"

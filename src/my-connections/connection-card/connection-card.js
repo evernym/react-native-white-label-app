@@ -15,7 +15,7 @@ import type { ConnectionCardProps } from './type-connection-card'
 import { styles } from './styles'
 import { DefaultLogo } from '../../components/default-logo/default-logo'
 import { UnreadMessagesBadge } from '../../components'
-import { isNewConnection } from '../../store/store-utils'
+import { isNewEvent } from '../../store/store-utils'
 import { CONNECTION_FAIL } from '../../store/type-connection-store'
 import { INVITATION_ACCEPTED } from '../../invitation/type-invitation'
 
@@ -31,7 +31,7 @@ const ConnectionCard = (props: ConnectionCardProps) => {
   const renderUnreadMessagesBadge = () => {
     let numberOfNewMessages = 0
     props.events.forEach((message) => {
-      if (isNewConnection(message.status, message.showBadge)) {
+      if (isNewEvent(message.status, message.showBadge)) {
         numberOfNewMessages++
       }
     })

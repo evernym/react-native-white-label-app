@@ -25,7 +25,6 @@ import type { CloudRestoreStore } from '../cloud-restore/type-cloud-restore'
 import type { PushNotificationStore } from '../push-notification/type-push-notification'
 import type { TxnAuthorAgreementStore } from '../txn-author-agreement/type-txn-author-agreement'
 import type { OpenIdConnectStore } from '../open-id-connect/open-id-connect-actions'
-import type { InAppNotificationStore } from '../in-app-notification/in-app-notification-type'
 import type { InviteActionStore } from '../invite-action/type-invite-action'
 import type { ShowCredentialStore } from '../show-credential/type-show-credential'
 import type { VerifierStore } from "../verifier/type-verifier";
@@ -62,7 +61,6 @@ export type Store = {
   txnAuthorAgreement: TxnAuthorAgreementStore,
   cloudRestore: CloudRestoreStore,
   openIdConnect: OpenIdConnectStore,
-  inAppNotification: InAppNotificationStore,
   inviteAction: InviteActionStore,
   showCredential: ShowCredentialStore,
   verifier: VerifierStore,

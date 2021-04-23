@@ -277,7 +277,7 @@ exports[`<NewBannerCard /> should render NewBannerCard component and match snaps
                 }
               }
             >
-              2020-03-15T15:57:54+01:00
+              Just now
             </Text>
           </View>
         </View>

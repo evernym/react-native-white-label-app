@@ -49,10 +49,12 @@ import { deleteConnectionAction } from '../../store/connections-store'
 import { LOADING_ACTIONS } from '../../connection-history/type-connection-history'
 import { PROOF_VERIFICATION_FAILED } from '../../verifier/type-verifier'
 import { renderUserAvatar } from "../../components/user-avatar/user-avatar";
+import { formatTimestamp } from '../../utils/datetime'
 
 class RecentCardComponent extends React.Component<RecentCardProps, void> {
   render() {
     const props = this.props
+
     const isRetryCard = getRetryStatus(props.item)
     const isLoading = getLoadingStatus(props.status)
     const isFailed = getFailedStatus(props.status)
@@ -101,7 +103,7 @@ class RecentCardComponent extends React.Component<RecentCardProps, void> {
           ) : isLoading ? (
             <ActivityIndicator size="small" />
           ) : (
-            <Text style={styles.textDate}>{props.timestamp}</Text>
+            <Text style={styles.textDate}>{formatTimestamp(props.timestamp)}</Text>
           )}
         </View>
       </View>

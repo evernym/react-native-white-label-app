@@ -68,10 +68,6 @@ import {
   watchOpenIdConnectStore,
   openIdConnectReducer,
 } from '../open-id-connect/open-id-connect-store'
-import {
-  watchInAppNotificationActions,
-  inAppNotificationReducer,
-} from '../in-app-notification/in-app-notification-store'
 import { watchMessageDownload } from '../message-download/message-download'
 import { watchLongPollingHome } from '../home/long-polling-home'
 import inviteAction, {
@@ -109,7 +105,6 @@ const appReducer = combineReducers({
   question,
   txnAuthorAgreement,
   openIdConnect: openIdConnectReducer,
-  inAppNotification: inAppNotificationReducer,
   inviteAction,
   showCredential,
   verifier,
@@ -182,7 +177,6 @@ sagaMiddleware.run(function* (): Generator<*, *, *> {
     watchTxnAuthorAgreement(),
     watchOpenIdConnectStore(),
     watchProofRequestDeny(),
-    watchInAppNotificationActions(),
     watchMessageDownload(),
     watchOutOfBandConnectionForPresentationEstablished(),
     watchLongPollingHome(),

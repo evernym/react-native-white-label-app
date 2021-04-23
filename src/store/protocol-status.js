@@ -3,10 +3,8 @@ import type { CustomError } from '../common/type-common'
 import { ensureVcxInitSuccess } from './route-store'
 import { call, put, select, take } from 'redux-saga/effects'
 import delay from '@redux-saga/delay-p'
-import { getUnacknowledgedMessages } from './config-store'
+import { getUnacknowledgedMessages, showSnackError } from './config-store'
 import { GET_MESSAGES_SUCCESS } from './type-config-store'
-import Snackbar from 'react-native-snackbar'
-import { venetianRed } from '../common/styles'
 
 /*
 * Helper to track the completion of active protocols.
@@ -72,10 +70,6 @@ export function* checkProtocolStatus({
   // if action has not been completed - raise failed action
   if (!isCompletedFunc(object)) {
     yield put(onErrorEvent)
-    Snackbar.show({
-      text: error.message,
-      duration: Snackbar.LENGTH_LONG,
-      backgroundColor: venetianRed,
-    })
+    yield call(showSnackError, error.message)
   }
 }

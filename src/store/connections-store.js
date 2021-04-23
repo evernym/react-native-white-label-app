@@ -423,62 +423,42 @@ function* sendConnectionRedirectSaga(
       throw new Error(vcxResult.fail.message)
     }
 
-    try {
-      // get redirect connection handle
-      const [connection]: Array<Connection> = yield select(
-        getConnectionBySenderDid,
-        action.existingConnectionDetails.senderDID
-      )
+    // get redirect connection handle
+    const [connection]: Array<Connection> = yield select(
+      getConnectionBySenderDid,
+      action.existingConnectionDetails.senderDID
+    )
 
-      if (!connection || !connection.vcxSerializedConnection) {
-        return
-      }
-
-      const redirectConnectionHandle = yield call(
-        getHandleBySerializedConnection,
-        connection.vcxSerializedConnection
-      )
-      try {
-        // get (new) connection handle
-        const connectionHandle = yield call(
-          createConnectionWithInvite,
-          action.qrCodeInvitationPayload
-        )
-        try {
-          // call API for connectionRedirect
-          yield call(
-            connectionRedirect,
-            redirectConnectionHandle,
-            connectionHandle
-          )
-          yield put({
-            type: SEND_REDIRECT_SUCCESS,
-          })
-        } catch (e) {
-          // catch error if connectionRedirect API fails
-          yield put({
-            type: 'ERROR_SENDING_REDIRECT',
-            e,
-          })
-        }
-      } catch (e) {
-        // catch error if handle creation API fails
-        yield put({
-          type: 'ERROR_CONNECTION_HANDLE_NEW_CONNECTION_REDIRECT',
-          e,
-        })
-      }
-    } catch (e) {
-      // catch error if existing handle is not found
-      yield put({
-        type: 'ERROR_CONNECTION_HANDLE_REDIRECT',
-        e,
-      })
+    if (!connection || !connection.vcxSerializedConnection) {
+      return
     }
+
+    const redirectConnectionHandle = yield call(
+      getHandleBySerializedConnection,
+      connection.vcxSerializedConnection
+    )
+
+    // get (new) connection handle
+    const connectionHandle = yield call(
+      createConnectionWithInvite,
+      action.qrCodeInvitationPayload
+    )
+    // call API for connectionRedirect
+    yield call(
+      connectionRedirect,
+      redirectConnectionHandle,
+      connectionHandle
+    )
+    yield put({
+      type: SEND_REDIRECT_SUCCESS,
+    })
   } catch (e) {
-    // catch error
-    captureError(e)
     customLogger.log(`connectionRedirect: ${e}`)
+    // catch error if connectionRedirect API fails
+    yield put({
+      type: 'ERROR_SENDING_REDIRECT',
+      e,
+    })
   }
 }
 
