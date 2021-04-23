@@ -3,9 +3,7 @@ import React, { useCallback, useEffect, useMemo } from 'react'
 import { Platform, View, FlatList, Alert } from 'react-native'
 import { connect, useSelector } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import Snackbar from 'react-native-snackbar'
 import PushNotificationIOS from '@react-native-community/push-notification-ios'
-
 import { newConnectionSeen } from '../connection-history/connection-history-store'
 import { CameraButton } from '../components'
 import { ConnectionCard } from './connection-card/connection-card'
@@ -20,14 +18,12 @@ import {
   getConnectionHydrationState,
   getHistory,
   getMessageDownloadStatus,
-  getSnackError,
   getUnseenMessages,
 } from '../store/store-selector'
 import { externalStyles } from './styles'
 import { getUnacknowledgedMessages } from '../store/config-store'
 import { GET_MESSAGES_LOADING } from '../store/type-config-store'
 import { withStatusBar } from '../components/status-bar/status-bar'
-import { colors } from '../common/styles'
 import type { MyConnectionsProps } from './type-my-connections'
 import { CONNECTION_FAIL } from '../store/type-connection-store'
 
@@ -67,7 +63,6 @@ const MyConnections = ({
   const history = useSelector(getHistory)
   const hydrated = useSelector(getConnectionHydrationState)
   const messageDownloadStatus = useSelector(getMessageDownloadStatus)
-  const snackError = useSelector(getSnackError)
   const unseenMessages = useSelector(getUnseenMessages)
 
   const connections = useMemo(() => {
@@ -136,17 +131,6 @@ const MyConnections = ({
   const hasNoConnection = useMemo(() => {
     return hydrated ? connections.length === 0 : false
   }, [connections, hydrated])
-
-  useEffect(() => {
-    if (snackError) {
-      Snackbar.dismiss()
-      Snackbar.show({
-        text: snackError,
-        backgroundColor: colors.red,
-        duration: Snackbar.LENGTH_LONG,
-      })
-    }
-  }, [snackError])
 
   useEffect(() => {
     if (!Object.keys(unseenMessages).length) {

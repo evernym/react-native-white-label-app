@@ -8,8 +8,8 @@ import renderer, { act } from 'react-test-renderer'
 import { MyCredentials } from '../my-credentials'
 import { Provider } from 'react-redux'
 import { MockedNavigator } from '../../../__mocks__/mock-navigator'
-import { defaultEnvironment } from '../../store/config-store'
 import { SHOW_UNREAD_MESSAGES_BADGE_NEAR_WITH_MENU } from '../../components/header/type-header'
+import { defaultEnvironment } from '../../environment'
 
 describe('my credentials screen', () => {
   jest.useFakeTimers()

@@ -15,3 +15,6 @@ export const SHOW_EVENTS_HISTORY = true
 
 // flag indicating whether you want to show camera button.
 export const SHOW_CAMERA_BUTTON = true
+
+// custom component to use for Home screen rendering (instead of predefined one)
+export const CustomHomeScreen = null

@@ -273,6 +273,5 @@ export type GetClaimVcxResult = {
 }
 
 export type NotificationOpenOptions = {
-  openMessageDirectly: boolean,
   uid: string,
 }

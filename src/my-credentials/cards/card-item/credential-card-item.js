@@ -202,6 +202,7 @@ const CredentialCard = ({
           <TouchableWithoutFeedback
             style={[styles.container, { elevation: elevation }]}
             onPress={onPress}
+            accessible={false}
           >
             <View
               style={[

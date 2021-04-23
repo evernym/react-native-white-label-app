@@ -77,9 +77,8 @@ import {
   ATTRIBUTE_TYPE, NO_CRED_NO_SELF_ATTEST, DISSATISFIED_ATTRIBUTE_TYPE,
 } from '../proof-request/type-proof-request'
 import { ensureVcxInitAndPoolConnectSuccess } from '../store/route-store'
-import Snackbar from 'react-native-snackbar'
-import { colors, venetianRed } from '../common/styles/constant'
 import { customLogger } from '../store/custom-logger'
+import { showSnackError } from '../store/config-store'
 
 export const updateAttributeClaim = (
   uid: string,
@@ -671,12 +670,7 @@ export function* updateAttributeClaimAndSendProof(
   } catch (e) {
     customLogger.log(`updateAttributeClaimAndSendProof: {:?}`, e)
     yield put(errorSendProofFail(action.uid, action.remoteDid, e))
-    Snackbar.show({
-      text: 'Error generating proof. Please try again.',
-      duration: Snackbar.LENGTH_LONG,
-      backgroundColor: venetianRed,
-      textColor: colors.white,
-    })
+    yield call(showSnackError, 'Error generating proof. Please try again.')
   }
 }
 

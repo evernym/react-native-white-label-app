@@ -5,9 +5,9 @@ import type {
   NavigationLeafRoute,
 } from '@react-navigation/native'
 
-import { SWITCH_ERROR_ALERTS } from '../store/type-config-store'
 import { appName } from '../external-imports'
 import { lockAppOnStart } from './lock-store'
+import { SWITCH_ERROR_ALERTS } from '../switch-environment/type-switch-environment'
 
 export const LOCK_TYPE = {
   FINGERPRINT: 'FINGERPRINT',
@@ -167,7 +167,6 @@ export type LockSelectionProps = {
   disableDevMode: () => DisableDevMode,
   longPressedInLockSelectionScreen: () => void,
   pressedOnOrInLockSelectionScreen: () => void,
-  switchErrorAlerts: () => void,
   safeToDownloadSmsInvitation: () => void,
   changeEnvironment: (
     agencyUrl: string,

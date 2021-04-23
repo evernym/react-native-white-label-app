@@ -74,7 +74,6 @@ export class PushNotification extends Component<PushNotificationProps, void> {
       (notification: NotificationOpen) => {
         const payload = remoteMessageParser(notification)
         this.onPushNotificationReceived(payload, {
-          openMessageDirectly: true,
           uid: payload.uid,
         })
       }
@@ -83,7 +82,6 @@ export class PushNotification extends Component<PushNotificationProps, void> {
     this.messageListener = messaging().onMessage((message: RemoteMessage) => {
       const payload = remoteMessageParser(message)
       this.onPushNotificationReceived(payload, {
-        openMessageDirectly: true,
         uid: payload.uid,
       })
     })
@@ -95,7 +93,6 @@ export class PushNotification extends Component<PushNotificationProps, void> {
       if (notification) {
         const payload = remoteMessageParser(notification)
         this.onPushNotificationReceived(payload, {
-          openMessageDirectly: true,
           uid: payload.uid,
         })
       }

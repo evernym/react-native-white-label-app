@@ -36,20 +36,16 @@ import {
   fontFamily,
 } from '../common/styles/constant'
 import {
-  switchErrorAlerts,
-  changeEnvironment,
-  baseUrls,
-  defaultEnvironment,
-} from '../store/config-store'
-import {
   disableDevMode,
   longPressedInLockSelectionScreen,
   pressedOnOrInLockSelectionScreen,
 } from './lock-store'
 import { safeToDownloadSmsInvitation } from '../sms-pending-invitation/sms-pending-invitation-store'
-import { SERVER_ENVIRONMENT } from '../store/type-config-store'
 import { LockHeader } from '../external-imports'
 import { headerDefaultOptions } from '../navigation/navigation-header-config'
+import { baseUrls, defaultEnvironment } from '../environment'
+import { changeEnvironment } from '../switch-environment/switсh-environment-store'
+import { SERVER_ENVIRONMENT } from '../switch-environment/type-switch-environment'
 
 const { width, height } = Dimensions.get('screen')
 
@@ -234,7 +230,6 @@ const mapStateToProps = ({ lock }: Store) => {
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      switchErrorAlerts,
       longPressedInLockSelectionScreen,
       pressedOnOrInLockSelectionScreen,
       disableDevMode,

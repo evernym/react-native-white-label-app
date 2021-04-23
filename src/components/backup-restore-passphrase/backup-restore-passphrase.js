@@ -13,8 +13,9 @@ import {
 } from '../../common/styles/constant'
 import type { BackupRestorePassphraseProps } from './type-backup-restore-passphrase'
 import ErrorBanner from '../banner/banner-danger'
-import { baseUrls, changeEnvironment } from '../../store/config-store'
 import { verticalScale } from 'react-native-size-matters'
+import { baseUrls} from '../../environment'
+import { changeEnvironment } from '../../switch-environment/switсh-environment-store'
 
 export class BackupRestorePassphrase extends Component<
   BackupRestorePassphraseProps,

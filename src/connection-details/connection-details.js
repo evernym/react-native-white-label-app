@@ -9,7 +9,6 @@ import { ConnectionPending } from '../components/connection-details/connection-p
 import {
   updateStatusBarTheme,
   sendConnectionRedirect,
-  sendConnectionReuse,
 } from '../../src/store/connections-store'
 import { newConnectionSeen } from '../../src/connection-history/connection-history-store'
 import { connect, useSelector } from 'react-redux'
@@ -470,7 +469,6 @@ const mapDispatchToProps = (dispatch) =>
       updateStatusBarTheme,
       newConnectionSeen,
       sendConnectionRedirect,
-      sendConnectionReuse,
       deleteConnectionAction,
     },
     dispatch

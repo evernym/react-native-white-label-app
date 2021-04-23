@@ -77,8 +77,6 @@ import {
   acceptOutofbandPresentationRequest,
   outOfBandConnectionForPresentationEstablished,
 } from '../proof-request/proof-request-store'
-import Snackbar from 'react-native-snackbar'
-import { colors, venetianRed } from '../common/styles'
 import { getHydrationItem, secureSet } from '../services/storage'
 import { INVITATIONS } from '../common'
 import { customLogger } from '../store/custom-logger'
@@ -87,6 +85,7 @@ import { checkProtocolStatus } from '../store/protocol-status'
 import { isConnectionCompleted } from '../store/store-utils'
 import { outofbandProofProposalAccepted, proofProposalAccepted } from '../verifier/verifier-store'
 import { watchHandleInvitation } from './invitation-handler'
+import { showSnackError } from '../store/config-store'
 
 export const invitationInitialState = {}
 
@@ -516,12 +515,7 @@ export function* handleConnectionError(
     message = ERROR_INVITATION_RESPONSE_FAILED
   }
   yield put(connectionFail(e, senderDID))
-  Snackbar.show({
-    text: message,
-    duration: Snackbar.LENGTH_LONG,
-    backgroundColor: venetianRed,
-    textColor: colors.white,
-  })
+  yield call(showSnackError, message)
 }
 
 function* outOfBandInvitationAccepted(

@@ -9,14 +9,14 @@ import type { Connection } from './type-connection-store'
 import type { ConnectionHistoryEvent } from '../connection-history/type-connection-history'
 import { HISTORY_EVENT_TYPE } from '../connection-history/type-connection-history'
 import { getConnections } from './connections-store'
-import { baseUrls } from './config-store'
 import findKey from 'lodash.findkey'
-import { addUidsWithStatusToConnections, isNewConnection } from './store-utils'
+import { addUidsWithStatusToConnections, isNewEvent } from './store-utils'
 import type { ProofRequestPayload } from '../proof-request/type-proof-request'
 import { PROOF_REQUEST_STATUS } from '../proof-request/type-proof-request'
 import type { QuestionStoreMessage } from '../question/type-question'
 import { QUESTION_STATUS } from '../question/type-question'
 import { DEEP_LINK_STATUS } from "../deep-link/type-deep-link";
+import { baseUrls } from '../environment'
 
 /*
  * Selectors related to Config Store
@@ -195,7 +195,7 @@ export const getNewMessagesCount = (state: Store) => {
 
   let numberOfNewMessages = 0
   flattenPlaceholderArray.map((message) => {
-    if (isNewConnection(message.status, message.showBadge)) {
+    if (isNewEvent(message.status, message.showBadge)) {
       numberOfNewMessages++
     }
   })
@@ -416,17 +416,7 @@ export const getSerializedClaimOffers = (state: Store, userDID: string) => {
 export const getProofRequest = (state: Store, proofRequestId: string) =>
   state.proofRequest[proofRequestId]
 
-export const getProofRequesterName = (state: Store, proofRequestId: string) => {
-  if (
-    state.proofRequest[proofRequestId] &&
-    state.proofRequest[proofRequestId].requester &&
-    state.proofRequest[proofRequestId].requester.name
-  ) {
-    return state.proofRequest[proofRequestId].requester.name
-  }
-
-  return 'requester'
-}
+export const getSelectedCredentials = (state: Store, uid: string) => state.proofRequest[uid].data.requestedAttributes
 
 export const getOriginalProofRequestData = (
   state: Store,
@@ -732,14 +722,6 @@ export const getOpenIdConnectData = (state: Store) => state.openIdConnect.data
 
 export const getOpenIdConnectVersion = (state: Store) =>
   state.openIdConnect.version
-
-/*
- * Selectors related to InApp Notification  Store
- * */
-export const getInAppNotification = (state: Store) =>
-  state.inAppNotification.notification
-
-export const getSelectedCredentials = (state: Store, uid: string) => state.proofRequest[uid].data.requestedAttributes
 
 /*
  * Selectors related to Show Credential Store

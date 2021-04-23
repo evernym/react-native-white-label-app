@@ -102,14 +102,14 @@ import {
   SCHEMA_NOT_FOUND,
   SCHEMA_NOT_FOUND_MESSAGE,
 } from '../bridge/react-native-cxs/error-cxs'
-import Snackbar from 'react-native-snackbar'
-import { colors, venetianRed } from '../common/styles/constant'
+import { colors } from '../common/styles'
 import { checkProtocolStatus } from '../store/protocol-status'
 import { isIssuanceCompleted } from '../store/store-utils'
 import { customLogger } from '../store/custom-logger'
 import { Platform } from 'react-native'
 import ImageColors from 'react-native-image-colors'
 import { pickAndroidColor, pickIosColor } from '../my-credentials/cards/utils'
+import { showSnackError } from '../store/config-store'
 
 const claimOfferInitialState = {
   vcxSerializedClaimOffers: {},
@@ -310,12 +310,7 @@ export function* denyClaimOfferSaga(
     } else {
       // else fail
       yield put(denyClaimOfferFail(uid))
-      Snackbar.show({
-        text: 'Failed to reject Credential Offer.',
-        duration: Snackbar.LENGTH_LONG,
-        backgroundColor: venetianRed,
-        textColor: colors.white,
-      })
+      yield call(showSnackError, 'Failed to reject Credential Offer.')
     }
   }
 }
@@ -366,6 +361,7 @@ export function* claimOfferAccepted(
   }
 
   try {
+
     if (isPaidCredential) {
       yield put(sendPaidCredentialRequest(messageId, claimOfferPayload))
 
@@ -417,21 +413,14 @@ export function* claimOfferAccepted(
         call(sendClaimRequestApi, claimHandle, connectionHandle, paymentHandle)
       )
     } catch (e) {
-      const showSnackError = (text) => {
-        Snackbar.show({
-          text: text,
-          duration: Snackbar.LENGTH_LONG,
-          backgroundColor: venetianRed,
-          textColor: colors.white,
-        })
-      }
-
       if (e.code === CREDENTIAL_DEFINITION_NOT_FOUND) {
-        showSnackError(CREDENTIAL_DEFINITION_NOT_FOUND_MESSAGE)
+        yield call(showSnackError, CREDENTIAL_DEFINITION_NOT_FOUND_MESSAGE)
       } else if (e.code === SCHEMA_NOT_FOUND) {
-        showSnackError(SCHEMA_NOT_FOUND_MESSAGE)
+        yield call(showSnackError, SCHEMA_NOT_FOUND_MESSAGE)
       } else if (e.code === INVALID_CREDENTIAL_OFFER) {
-        showSnackError(INVALID_CREDENTIAL_OFFER_MESSAGE)
+        yield call(showSnackError, INVALID_CREDENTIAL_OFFER_MESSAGE)
+      } else {
+        yield call(showSnackError, e.message)
       }
 
       captureError(e)

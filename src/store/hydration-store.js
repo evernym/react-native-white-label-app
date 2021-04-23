@@ -66,7 +66,6 @@ import { IS_ALREADY_INSTALLED } from '../common'
 import {
   alreadyInstalledAction,
   hydrated,
-  hydrateSwitchedEnvironmentDetails,
   initialized,
 } from './config-store'
 import { ensureVcxInitSuccess } from './route-store'
@@ -97,6 +96,7 @@ import { hydrateInvitationsSaga } from '../invitation/invitation-store'
 import { hydrateInviteActionSaga } from '../invite-action/invite-action-store'
 import { hydrateVerifierSaga } from '../verifier/verifier-store'
 import { getConnectionPairwiseAgentInfo } from './store-selector'
+import { hydrateSwitchedEnvironmentDetails } from '../switch-environment/switсh-environment-store'
 
 export function* deleteDeviceSpecificData(): Generator<*, *, *> {
   try {

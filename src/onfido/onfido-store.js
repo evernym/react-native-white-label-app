@@ -52,16 +52,17 @@ import {
 } from '../invitation/invitation-store'
 import { ResponseType } from '../components/request/type-request'
 import { QR_CODE_SENDER_DETAIL, QR_CODE_SENDER_DID } from '../api/api-constants'
-import { ensureAppHydrated, getEnvironmentName } from '../store/config-store'
+import { ensureAppHydrated} from '../store/config-store'
 import { getUserPairwiseDid } from '../store/store-selector'
 import { INVITATION_RESPONSE_FAIL } from '../invitation/type-invitation'
-import { SERVER_ENVIRONMENT } from '../store/type-config-store'
 import { NEW_CONNECTION_SUCCESS } from '../store/type-connection-store'
 import {
   convertShortProprietaryInvitationToAppInvitation,
   isShortProprietaryInvitation
 } from "../invitation/kinds/proprietary-connection-invitation";
 import type {ShortProprietaryConnectionInvitation} from "../invitation/type-invitation";
+import { getEnvironmentName } from '../switch-environment/switсh-environment-store'
+import { SERVER_ENVIRONMENT } from '../switch-environment/type-switch-environment'
 
 const initialState = {
   status: onfidoProcessStatus.IDLE,
