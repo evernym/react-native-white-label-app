@@ -21,6 +21,8 @@ import { flattenAsync } from '../../../common/flatten-async'
 import {isEncodedAriesConnectionInvitation} from "../../../invitation/kinds/aries-connection-invitation";
 import {isEncodedAriesOutOfBandInvitation} from "../../../invitation/kinds/aries-out-of-band-invitation";
 import { getBase64DecodedInvitation } from "../../../invitation/invitation-helpers";
+import { schemaValidator } from '../../../services/schema-validator'
+import { ephemeralProofRequestSchema } from '../../../proof-request/proof-request-qr-code-reader'
 
 export function isValidUrl(urlQrCode: string): Url | false {
   const parsedUrl = urlParse(urlQrCode, {}, true)
@@ -89,7 +91,9 @@ export async function getUrlData(
     if (parts.length > 1) {
       const encodedMessage = parts[1]
       const data = await getBase64DecodedInvitation(encodedMessage)
-      if (data) {
+
+      // is ephemeral proof request
+      if (schemaValidator.validate(ephemeralProofRequestSchema, data)) {
         return [null, { type: QR_CODE_TYPES.EPHEMERAL_PROOF_REQUEST_V1, data: data }]
       }
     }

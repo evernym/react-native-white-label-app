@@ -118,7 +118,16 @@ Object {
     "isLoading": true,
   },
   "inAppNotification": Object {
-    "notification": "****",
+    "notification": Object {
+      "identifier": "receiverPairwiseDID1",
+      "messageId": "messageId1",
+      "messageType": "proofReq",
+      "senderDID": "senderDID1",
+      "senderImage": "https://localhost/image.png",
+      "senderName": "Anonymous",
+      "text": "Test wants you to share Address",
+      "title": "You received a PROOF REQUEST",
+    },
   },
   "invitation": "****",
   "ledger": Object {

@@ -362,7 +362,7 @@ const mapStateToProps = (state: Store, mergeProps) => {
   const { name } = requester
   const proofGenerationError = state.proof[uid] ? state.proof[uid].error : null
 
-  const canBeIgnored = mergeProps.hidden
+  const canBeIgnored = proofRequestData.hidden
 
   return {
     data,

@@ -14,7 +14,7 @@ import { convertProofRequestPushPayloadToAppProofRequest } from '../push-notific
 import { flatJsonParse } from '../common/flat-json-parse'
 
 export async function validateEphemeralProofQrCode(
-  qrCode: string
+  qrCode: Object
 ): Promise<
   [
     null | string,
@@ -32,33 +32,12 @@ export async function validateEphemeralProofQrCode(
   // if qr code is not url, then qr code is simply passed to this function
   // So, we need to check if qr code is either base64 encoded, or json formatted
 
-  // check if response is properly encode in base64
-  const [, decodedResponse] = await flattenAsync(toUtf8FromBase64)(qrCode)
-  // we are ignoring error in decoding
-  // because we might get json data right from start, and hence decode might fail
-  // if decode fails, then we just try json parsing
-
   // we need to keep track of original message as well, that we can pass to vcx
-  let originalMessage = qrCode
+  let originalMessage = JSON.stringify(qrCode)
 
   // check whether the response is valid json
   // first try parsing decodedResponse
-  let [responseJsonError, ephemeralProofRequest] = flatJsonParse(
-    decodedResponse || qrCode
-  )
-  if (!responseJsonError && decodedResponse) {
-    // if decoded response parse successfully, then we take original message as decodedResponse
-    originalMessage = decodedResponse
-  }
-  if (responseJsonError || ephemeralProofRequest === null) {
-    // if parsing decoded response fails, then we try parsing qrCode
-    ;[responseJsonError, ephemeralProofRequest] = flatJsonParse(qrCode)
-    // if parsing only qrCode also results in error, then return error
-    if (responseJsonError || ephemeralProofRequest === null) {
-      return ['EPR-001:: Invalid format.', null]
-    }
-  }
-
+  const ephemeralProofRequest = qrCode
   // check if json has correct data
   if (
     !schemaValidator.validate(
@@ -154,7 +133,7 @@ export async function validateOutofbandProofRequestQrCode(
   ]
 }
 
-const ephemeralProofRequestSchema = {
+export const ephemeralProofRequestSchema = {
   type: 'object',
   properties: {
     '@id': { type: 'string', minLength: 4, maxLength: 1024 },
