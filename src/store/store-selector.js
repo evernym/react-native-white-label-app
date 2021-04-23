@@ -9,7 +9,6 @@ import type { Connection } from './type-connection-store'
 import type { ConnectionHistoryEvent } from '../connection-history/type-connection-history'
 import { HISTORY_EVENT_TYPE } from '../connection-history/type-connection-history'
 import { getConnections } from './connections-store'
-import { baseUrls } from './config-store'
 import findKey from 'lodash.findkey'
 import { addUidsWithStatusToConnections, isNewConnection } from './store-utils'
 import type { ProofRequestPayload } from '../proof-request/type-proof-request'
@@ -17,6 +16,7 @@ import { PROOF_REQUEST_STATUS } from '../proof-request/type-proof-request'
 import type { QuestionStoreMessage } from '../question/type-question'
 import { QUESTION_STATUS } from '../question/type-question'
 import { DEEP_LINK_STATUS } from "../deep-link/type-deep-link";
+import { baseUrls } from '../environment'
 
 /*
  * Selectors related to Config Store

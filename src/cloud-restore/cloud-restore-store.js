@@ -21,12 +21,11 @@ import { enablePushNotificationsSaga } from '../push-notification/push-notificat
 import { customLogger } from '../store/custom-logger'
 import { restoreStatus } from '../restore/restore-store'
 import {
-  baseUrls,
-  changeEnvironment,
-  cloudBackupEnvironments,
   initVcx,
 } from '../store/config-store'
 import type { ConfigStore } from '../store/type-config-store'
+import { baseUrls, cloudBackupEnvironments } from '../environment'
+import { changeEnvironment } from '../switch-environment/switсh-environment-store'
 
 export const errorRestore = (error: string) => ({
   type: ERROR_RESTORE,

@@ -7,29 +7,17 @@ import * as matchers from 'redux-saga-test-plan/matchers'
 import { throwError } from 'redux-saga-test-plan/providers'
 import configReducer, {
   watchSwitchErrorAlerts,
-  changeServerEnvironment,
   toggleErrorAlerts,
-  baseUrls,
-  onEnvironmentSwitch,
-  hydrateSwitchedEnvironmentDetails,
-  changeEnvironment,
-  onChangeEnvironmentUrl,
-  changeEnvironmentUrl,
   vcxInitReset,
   vcxInitSuccess,
   vcxInitFail,
   initVcx,
-  getEnvironmentName,
   resetStore,
   reset,
   getMessagesSaga,
   getMessagesLoading,
   getMessagesSuccess,
   getMessagesFail,
-  watchChangeEnvironmentUrl,
-  watchSwitchEnvironment,
-  saveSwitchedEnvironmentDetailFail,
-  hydrateSwitchedEnvironmentDetailFail,
   processMessages,
   acknowledgeServer,
   acknowledgeMessagesFail,
@@ -43,8 +31,6 @@ import {
   vcxInitPoolStart,
 } from '../route-store'
 import {
-  SERVER_ENVIRONMENT,
-  SWITCH_ERROR_ALERTS,
   STORAGE_KEY_SWITCHED_ENVIRONMENT_DETAIL,
   ERROR_VCX_INIT_FAIL,
   HYDRATED,
@@ -98,6 +84,23 @@ import { claimReceivedVcx } from './../../claim/claim-store'
 import { NativeModules } from 'react-native'
 import { FETCH_ADDITIONAL_DATA, PUSH_NOTIFICATION_PERMISSION } from '../../push-notification/type-push-notification'
 import AlertAsync from 'react-native-alert-async'
+import {
+  baseUrls,
+
+
+
+
+} from '../../environment'
+import {
+  changeEnvironment, changeEnvironmentUrl,
+  changeServerEnvironment, getEnvironmentName,
+  hydrateSwitchedEnvironmentDetailFail,
+  hydrateSwitchedEnvironmentDetails, onChangeEnvironmentUrl,
+  onEnvironmentSwitch,
+  saveSwitchedEnvironmentDetailFail, watchChangeEnvironmentUrl,
+  watchSwitchEnvironment,
+} from '../../switch-environment/switсh-environment-store'
+import { SERVER_ENVIRONMENT, SWITCH_ERROR_ALERTS } from '../../switch-environment/type-switch-environment'
 
 const getConfigStoreInitialState = () =>
   configReducer(undefined, { type: 'INITIAL_TEST_ACTION' })

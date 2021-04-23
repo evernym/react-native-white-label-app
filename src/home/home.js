@@ -29,7 +29,6 @@ import {
   sendConnectionReuse,
 } from '../store/connections-store'
 import {
-  getEnvironmentName,
   getUnacknowledgedMessages,
 } from '../store/config-store'
 import { GET_MESSAGES_LOADING } from '../store/type-config-store'
@@ -447,7 +446,6 @@ const mapStateToProps = (state: Store) => {
     : false
 
   return {
-    environmentName: getEnvironmentName(state.config),
     hasNoConnection,
     newBannerConnections,
     recentConnections,

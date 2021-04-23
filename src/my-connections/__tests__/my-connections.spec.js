@@ -6,13 +6,13 @@ import { Provider } from 'react-redux'
 
 import { MyConnectionsScreen } from '../my-connections'
 import {
-  SERVER_ENVIRONMENT,
   GET_MESSAGES_SUCCESS,
 } from '../../store/type-config-store'
 
 import { getNavigation, getStore } from '../../../__mocks__/static-data'
 import { MockedNavigator } from '../../../__mocks__/mock-navigator'
 import { SHOW_UNREAD_MESSAGES_BADGE_NEAR_WITH_MENU } from '../../components/header/type-header'
+import { SERVER_ENVIRONMENT } from '../../switch-environment/type-switch-environment'
 
 describe('<MyConnectionsScreen />', () => {
   const store = getStore()

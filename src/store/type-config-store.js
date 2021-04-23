@@ -1,32 +1,23 @@
 // @flow
 import type { CustomError } from '../common/type-common'
 import {
-  splashScreenRoute,
-  lockSelectionRoute,
-  switchEnvironmentRoute,
-  restoreRoute,
   lockPinSetupRoute,
+  lockSelectionRoute,
+  restoreRoute,
+  splashScreenRoute,
   startUpRoute,
+  switchEnvironmentRoute,
 } from '../common/route-constants'
-
-export const SERVER_ENVIRONMENT = {
-  DEMO: 'DEMO',
-  SANDBOX: 'SANDBOX',
-  STAGING: 'STAGING',
-  DEVELOPMENT: 'DEVELOPMENT',
-  QATEST1: 'QATEST1',
-  QA: 'QA',
-  DEVRC: 'DEVRC',
-  DEVTEAM1: 'DEVTEAM1',
-  DEVTEAM2: 'DEVTEAM2',
-  DEVTEAM3: 'DEVTEAM3',
-  PROD: 'PROD',
-  BCOVRIN_TEST: 'BCOVRIN_TEST',
-}
+import type {
+  ChangeEnvironmentUrlAction,
+  HydrateSwitchEnvironmentDetailFailAction,
+  SaveSwitchEnvironmentDetailFailAction,
+  ServerEnvironmentChangedAction,
+  SwitchEnvironmentAction,
+  SwitchErrorAlertsAction,
+} from '../switch-environment/type-switch-environment'
 
 export const __uniqueId = '__uniqueId'
-
-export type ServerEnvironment = $Keys<typeof SERVER_ENVIRONMENT>
 
 export const APP_INSTALLED = 'APP_INSTALLED'
 export type AppInstalledSuccessAction = {
@@ -48,55 +39,10 @@ export type AlreadyInstalledAction = {
   isAlreadyInstalled: boolean,
 }
 
-export const SERVER_ENVIRONMENT_CHANGED = 'SERVER_ENVIRONMENT_CHANGED'
-export type ServerEnvironmentChangedAction = {
-  type: typeof SERVER_ENVIRONMENT_CHANGED,
-  serverEnvironment: ServerEnvironment,
-}
-
-export const SWITCH_ENVIRONMENT = 'SWITCH_ENVIRONMENT'
-export type ChangeEnvironment = {
-  agencyUrl: string,
-  poolConfig: string,
-  agencyDID: string,
-  agencyVerificationKey: string,
-  paymentMethod: string,
-}
-
-export type SwitchEnvironmentAction = {
-  type: typeof SWITCH_ENVIRONMENT,
-} & ChangeEnvironment
-
-export const SWITCH_ERROR_ALERTS = 'SWITCH_ERROR_ALERTS'
-export type SwitchErrorAlertsAction = {
-  type: typeof SWITCH_ERROR_ALERTS,
-}
-
 export const TOGGLE_ERROR_ALERTS = 'TOGGLE_ERROR_ALERTS'
 export type ToggleErrorAlertsAction = {
   type: typeof TOGGLE_ERROR_ALERTS,
   isShowErrorAlert: boolean,
-}
-
-export const SAVE_SWITCH_ENVIRONMENT_DETAIL_FAIL =
-  'SAVE_SWITCH_ENVIRONMENT_DETAIL_FAIL'
-export type SaveSwitchEnvironmentDetailFailAction = {
-  type: typeof SAVE_SWITCH_ENVIRONMENT_DETAIL_FAIL,
-  error: CustomError,
-}
-
-export const HYDRATE_SWITCH_ENVIRONMENT_DETAIL_FAIL =
-  'HYDRATE_SWITCH_ENVIRONMENT_DETAIL_FAIL'
-
-export type HydrateSwitchEnvironmentDetailFailAction = {
-  type: typeof HYDRATE_SWITCH_ENVIRONMENT_DETAIL_FAIL,
-  error: CustomError,
-}
-
-export const CHANGE_ENVIRONMENT_VIA_URL = 'CHANGE_ENVIRONMENT_VIA_URL'
-export type ChangeEnvironmentUrlAction = {
-  type: typeof CHANGE_ENVIRONMENT_VIA_URL,
-  url: string,
 }
 
 export const VCX_INIT_NOT_STARTED = 'VCX_INIT_NOT_STARTED'

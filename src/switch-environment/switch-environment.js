@@ -8,16 +8,16 @@ import type { Store } from '../store/type-store'
 import { FooterActions } from '../components'
 import { OFFSET_1X, OFFSET_2X } from '../common/styles'
 import { selectRestoreMethodRoute, switchEnvironmentRoute } from '../common'
-import { changeEnvironment } from '../store/config-store'
 import { disableDevMode } from '../lock/lock-store'
 import type {
   SwitchEnvironmentState,
   SwitchEnvironmentProps,
 } from './type-switch-environment'
-import { baseUrls } from '../store/config-store'
-import { SERVER_ENVIRONMENT } from '../store/type-config-store'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { withStatusBar } from '../components/status-bar/status-bar'
+import { baseUrls} from '../environment'
+import { changeEnvironment } from './switсh-environment-store'
+import { SERVER_ENVIRONMENT } from './type-switch-environment'
 
 const styles = StyleSheet.create({
   TextInput: {

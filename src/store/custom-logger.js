@@ -131,11 +131,8 @@ import {
   SMS_PENDING_INVITATION_REQUEST,
   SMS_PENDING_INVITATION_SEEN,
 } from '../sms-pending-invitation/type-sms-pending-invitation'
-import {
-  SERVER_ENVIRONMENT_CHANGED,
-  SWITCH_ENVIRONMENT,
-} from './type-config-store'
 import { appName, CustomLogUtils } from '../external-imports'
+import { SERVER_ENVIRONMENT_CHANGED, SWITCH_ENVIRONMENT } from '../switch-environment/type-switch-environment'
 
 const { RNIndy } = NativeModules
 

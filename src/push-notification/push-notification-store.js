@@ -84,10 +84,7 @@ import type { NavigationParams, GenericObject } from '../common/type-common'
 import { addPendingRedirection } from '../lock/lock-store'
 import { claimOfferReceived } from '../claim-offer/claim-offer-store'
 import { proofRequestReceived } from '../proof-request/proof-request-store'
-import {
-  updateMessageStatus,
-  getUnacknowledgedMessages,
-} from '../store/config-store'
+import { getUnacknowledgedMessages } from '../store/config-store'
 import {
   claimOfferRoute,
   invitationRoute,
@@ -584,14 +581,6 @@ function* watchUpdateRelevantPushPayloadStoreAndRedirect(): any {
   }: updatePayloadToRelevantStoreAndRedirectAction) {
     yield* updatePayloadToRelevantStoreSaga(notification)
     yield* redirectToRelevantScreen({ ...notification, uiType: null })
-    const { forDID: pairwiseDID, uid } = notification
-    const directStatusUpdateMessageTypes = [
-      MESSAGE_TYPE.QUESTION,
-      MESSAGE_TYPE.QUESTION.toLowerCase(),
-    ]
-    if (directStatusUpdateMessageTypes.indexOf(notification.type) > -1) {
-      yield* updateMessageStatus([{ pairwiseDID, uids: [uid] }])
-    }
   })
 }
 
