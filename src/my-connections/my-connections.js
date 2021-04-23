@@ -62,6 +62,8 @@ const MyConnections = ({
   navigation,
   onNewConnectionSeen,
   getUnacknowledgedMessages,
+  sendInvitationResponse,
+  deleteConnectionAction,
 }: MyConnectionsProps) => {
   const allConnections = useSelector(getAllConnection)
   const history = useSelector(getHistory)
