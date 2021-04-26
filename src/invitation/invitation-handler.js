@@ -184,7 +184,7 @@ function* onAriesOutOfBandInviteRead(invitation: InvitationPayload): Generator<*
       return
     }
 
-    const uid = invitation.attachedRequest[ID]
+    const uid = invitation.attachedRequest['~thread'].thid ?? invitation.attachedRequest[ID]
     const type_ = invitation.attachedRequest[TYPE]
 
     if (type_.endsWith('offer-credential')) {

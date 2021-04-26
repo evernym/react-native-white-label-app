@@ -567,7 +567,7 @@ function* outOfBandInvitationAccepted(
     }
 
     const type_ = invitationPayload.attachedRequest[TYPE]
-    const id = invitationPayload.attachedRequest[ID]
+    const id = invitationPayload.attachedRequest['~thread'].thid ?? invitationPayload.attachedRequest[ID]
 
     if (type_.endsWith('offer-credential')) {
       yield put(
@@ -598,10 +598,8 @@ export function* processAttachedRequest(connection: GenericObject): Generator<*,
   if (!attachedRequest) {
     return
   }
-
-  const uid = attachedRequest['~thread'].thid ?? attachedRequest['@id']
+  const uid = attachedRequest['~thread'].thid ?? attachedRequest[ID]
   const type_ = attachedRequest[TYPE]
-
   if (type_.endsWith('offer-credential')) {
     const { claimHandle } = yield call(
       createCredentialWithAriesOfferObject,
