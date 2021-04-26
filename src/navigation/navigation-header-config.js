@@ -62,7 +62,7 @@ export const headerDefaultOptionsOld = ({
       </Text>
     ),
     headerLeft: () => (
-      <TouchableOpacity testID="left-icon" onPress={() => navigation.goBack()}>
+      <TouchableOpacity testID="left-icon" accessible={true} accessibilityLabel="left-icon" onPress={() => navigation.goBack()}>
         <EvaIcon
           name={
             Platform.OS === 'ios'
@@ -112,7 +112,7 @@ export const headerDefaultOptions = ({
       </Text>
     ),
     headerLeft: () => (
-      <TouchableOpacity testID="left-icon" onPress={onPress}>
+      <TouchableOpacity testID="left-icon" accessible={true} accessibilityLabel="left-icon" onPress={() => navigation.goBack()}>
         <EvaIcon
           name={
             Platform.OS === 'ios'
