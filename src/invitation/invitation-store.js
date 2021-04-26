@@ -598,7 +598,8 @@ export function* processAttachedRequest(connection: GenericObject): Generator<*,
   if (!attachedRequest) {
     return
   }
-  const uid = attachedRequest[ID]
+
+  const uid = attachedRequest['~thread'].thid ?? attachedRequest['@id']
   const type_ = attachedRequest[TYPE]
 
   if (type_.endsWith('offer-credential')) {
