@@ -4,7 +4,7 @@ import { toUtf8FromBase64 } from '../bridge/react-native-cxs/RNCxs'
 import { flatJsonParse } from '../common/flat-json-parse'
 import isUrl from 'validator/lib/isURL'
 import type { AriesOutOfBandInvite, InvitationPayload } from './type-invitation'
-import { CONNECTION_INVITE_TYPES } from './type-invitation'
+import { CONNECTION_INVITE_TYPES, AttachedRequestType } from './type-invitation'
 import type { Connection } from '../store/type-connection-store'
 
 export async function getBase64DecodedInvitation(
@@ -139,3 +139,6 @@ export async function getAttachedRequest(
 
   return getAttachedRequestData(requests[0].data)
 }
+
+export const getAttachedRequestId = (attachedRequest: AttachedRequestType) =>
+  attachedRequest['~thread'].thid ?? attachedRequest[ID]

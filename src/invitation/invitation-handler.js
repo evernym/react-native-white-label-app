@@ -40,6 +40,7 @@ import { usePushNotifications } from '../external-imports'
 import {
   getExistingConnection,
   shouldSendRedirectMessage,
+  getAttachedRequestId,
 } from './invitation-helpers'
 import { invitationReceived } from './invitation-store'
 import { showSnackError } from '../store/config-store'
@@ -184,7 +185,7 @@ function* onAriesOutOfBandInviteRead(invitation: InvitationPayload): Generator<*
       return
     }
 
-    const uid = invitation.attachedRequest['~thread'].thid ?? invitation.attachedRequest[ID]
+    const uid = getAttachedRequestId(invitation.attachedRequest)
     const type_ = invitation.attachedRequest[TYPE]
 
     if (type_.endsWith('offer-credential')) {

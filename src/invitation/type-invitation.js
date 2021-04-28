@@ -266,3 +266,10 @@ export type ShortProprietaryConnectionInvitation = {
   t: string,
   version?: string,
 }
+
+export type AttachedRequestType = {
+  [string],
+  "~thread": {
+    "thid": string
+  }
+} | GenericObject
