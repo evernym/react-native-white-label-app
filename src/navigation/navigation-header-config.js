@@ -15,7 +15,6 @@ import {
 } from '../components/header/type-header'
 import { HeaderWithMenu } from '../components'
 import type { ReactNavigation, Navigation } from '../common/type-common'
-import { homeRoute } from '../common'
 
 export const headerOptionForDrawerStack = ({
   navigation: { navigation, route },
@@ -86,19 +85,21 @@ export const headerDefaultOptions = ({
   transparent,
   headerStyles = {},
   arrowColor = '',
-  isGoHomeOnArrowPress,
+  additionalActionOnBackPress,
 }: {
   headline?: string,
   headerHideShadow: boolean,
   transparent: boolean,
   headerStyles?: any,
   arrowColor?: any,
-  isGoHomeOnArrowPress?: boolean,
+  additionalActionOnBackPress?: () => void,
 }) => ({ navigation }: { navigation: Navigation }) => {
 
-  const onPress = () => {
-    isGoHomeOnArrowPress ? navigation.navigate(homeRoute) : navigation.goBack()
+  const onBackPress = () => {
+    navigation.goBack()
+    additionalActionOnBackPress && additionalActionOnBackPress()
   }
+
 
   return {
     headerStyle: transparent
@@ -112,7 +113,7 @@ export const headerDefaultOptions = ({
       </Text>
     ),
     headerLeft: () => (
-      <TouchableOpacity testID="left-icon" accessible={true} accessibilityLabel="left-icon" onPress={() => navigation.goBack()}>
+      <TouchableOpacity testID="left-icon" accessible={true} accessibilityLabel="left-icon" onPress={onBackPress}>
         <EvaIcon
           name={
             Platform.OS === 'ios'

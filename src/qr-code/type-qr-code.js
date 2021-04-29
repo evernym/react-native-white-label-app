@@ -18,6 +18,7 @@ export type QRCodeScannerScreenProps = {
   changeEnvironmentUrl: typeof changeEnvironmentUrl,
   handleInvitation: typeof handleInvitation,
   proofRequestReceived: typeof proofRequestReceived,
+  scanQrClose: () => void
 } & ReactNavigation
 
 export type OutOfBandNavigation = {

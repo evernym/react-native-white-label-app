@@ -119,6 +119,7 @@ import {
   HEADLINE as HOME_HEADLINE,
   SHOW_EVENTS_HISTORY,
   SHOW_CAMERA_BUTTON as HOME_SHOW_CAMERA_BUTTON,
+  CustomHomeScreen as iCustomHomeScreen,
   HomeViewEmptyState as iHomeViewEmptyState,
   // $FlowExpectedError[cannot-resolve-module] external file
 } from '../../../../app/evernym-sdk/home'
@@ -259,6 +260,7 @@ export const homeHeadline = HOME_HEADLINE
 export const homeShowHistoryEvents = SHOW_EVENTS_HISTORY
 export const homeShowCameraButton = HOME_SHOW_CAMERA_BUTTON
 export const HomeViewEmptyState = iHomeViewEmptyState
+export const CustomHomeScreen = iCustomHomeScreen
 
 export const credentialsHeadline = CREDENTIALS_HEADLINE
 export const credentialsShowCameraButton = CREDENTIALS_SHOW_CAMERA_BUTTON

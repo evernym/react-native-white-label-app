@@ -6,9 +6,14 @@ import {
   TransitionPresets,
 } from '@react-navigation/stack'
 import { createNativeStackNavigator } from 'react-native-screens/native-stack'
-import { createDrawerNavigator, DrawerItemList } from '@react-navigation/drawer'
+import {
+  createDrawerNavigator,
+  DrawerItemList,
+  DrawerItem,
+} from '@react-navigation/drawer'
 import { enableScreens } from 'react-native-screens'
 import VersionNumber from 'react-native-version-number'
+import { useDispatch } from 'react-redux'
 
 import {
   headerOptionForDrawerStack,
@@ -34,7 +39,7 @@ import { questionScreen } from '../question/question-screen'
 import { txnAuthorAgreementScreen } from '../txn-author-agreement/txn-author-agreement-screen'
 import { lockEnterPinScreen } from '../lock/lock-enter-pin-code'
 import { lockTouchIdSetupScreen } from '../lock/lock-fingerprint-setup'
-import { lockPinSetupScreen } from '../lock/lock-pin-code-setup'
+import { lockPinSetupScreen, lockPinSetupScreenOptions } from '../lock/lock-pin-code-setup'
 import { lockSetupSuccessScreen } from '../lock/lock-setup-success'
 import { lockEnterFingerprintScreen, lockEnterFingerprintOptions } from '../lock/lock-enter-fingerprint'
 import { claimOfferScreen } from '../connection-details/components/claim-offer-modal'
@@ -122,6 +127,7 @@ import { inviteActionScreen } from '../invite-action/invite-action-screen'
 import { ShowCredentialScreen } from "../show-credential/show-credential-modal";
 import { ProofProposalModal } from "../verifier/proof-proposal-modal";
 import { ReceivedProofScreen } from '../verifier/received-proof-modal'
+import { SETTINGS_MENU_BUTTON } from '../feedback/log-to-apptentive'
 
 enableScreens()
 
@@ -130,53 +136,69 @@ const { width } = Dimensions.get('screen')
 const footerIcon = appIcon
 const builtBy = companyName
 
-const drawerComponent = (props: Object) => (
-  <SafeAreaView
-    style={styles.drawerOuterContainer}
-    testID="menu-container"
-    accessible={false}
-    accessibilityLabel="menu-container"
-  >
-    <View style={styles.drawerHeader}>
-      {CustomDrawerHeaderContent ? (
-        <CustomDrawerHeaderContent />
-      ) : (
-        <Image
-          source={require('../images/powered_by_logo.png')}
-          resizeMode="contain"
-        />
-      )}
-      {renderUserAvatar({
-        size: 'medium',
-        userCanChange: true,
-        testID: 'user-avatar',
-      })}
-    </View>
-    <DrawerItemList {...props} />
-    <View style={styles.drawerFooterContainer}>
-      <View style={styles.drawerFooter}>
-        {CustomDrawerFooterContent ? (
-          <CustomDrawerFooterContent />
+const drawerComponent = (props: Object, dispatch) => {
+  const { state, ...rest } = props
+  const newState = { ...state }
+  newState.routes = newState.routes.filter((item) => item.name !== SETTINGS)
+
+  const withLogOnSettingPress = () => {
+    dispatch(SETTINGS_MENU_BUTTON)
+    props.navigation.navigate(settingsDrawerRoute)
+  }
+
+  return (
+    <SafeAreaView
+      style={styles.drawerOuterContainer}
+      testID="menu-container"
+      accessible={false}
+      accessibilityLabel="menu-container"
+    >
+      <View style={styles.drawerHeader}>
+        {CustomDrawerHeaderContent ? (
+          <CustomDrawerHeaderContent />
         ) : (
-          <>
-            <Image source={footerIcon} style={styles.companyIconImage} />
-            <View style={styles.companyIconTextContainer}>
-              <View style={styles.companyIconLogoText}>
-                <Text style={styles.text}>built by {builtBy}</Text>
-              </View>
-              <View style={styles.companyIconBuildText}>
-                <Text style={styles.text}>
-                  Version {VersionNumber.appVersion}.
-                  {VersionNumber.buildVersion}
-                </Text>
-              </View>
-            </View>
-          </>
+          <Image
+            source={require('../images/powered_by_logo.png')}
+            resizeMode="contain"
+          />
         )}
+        {renderUserAvatar({
+          size: 'medium',
+          userCanChange: true,
+          testID: 'user-avatar',
+        })}
       </View>
-    </View>
-  </SafeAreaView>
-)
+      <DrawerItemList state={newState} {...rest} />
+      <DrawerItem
+        label={drawerItemLabel(defaultDrawerItemOptions[SETTINGS].label)}
+        icon={drawerIcon(defaultDrawerItemOptions[SETTINGS].icon)}
+        onPress={withLogOnSettingPress}
+      />
+      <View style={styles.drawerFooterContainer}>
+        <View style={styles.drawerFooter}>
+          {CustomDrawerFooterContent ? (
+            <CustomDrawerFooterContent />
+          ) : (
+            <>
+              <Image source={footerIcon} style={styles.companyIconImage} />
+              <View style={styles.companyIconTextContainer}>
+                <View style={styles.companyIconLogoText}>
+                  <Text style={styles.text}>built by {builtBy}</Text>
+                </View>
+                <View style={styles.companyIconBuildText}>
+                  <Text style={styles.text}>
+                    Version {VersionNumber.appVersion}.
+                    {VersionNumber.buildVersion}
+                  </Text>
+                </View>
+              </View>
+            </>
+          )}
+        </View>
+      </View>
+    </SafeAreaView>
+  )
+}
 
 const Drawer = createDrawerNavigator()
 const drawerContentOptions = {
@@ -265,6 +287,8 @@ const extraScreens = customExtraScreens || []
 const extraModals = customExtraModals || []
 
 function AppDrawer(navigation) {
+  const dispatch = useDispatch()
+
   const tabs = menuNavigationOptions.map((option) => {
     const defaultOption = defaultDrawerItemOptions[option.name] || {}
 
@@ -287,7 +311,7 @@ function AppDrawer(navigation) {
 
   return (
     <Drawer.Navigator
-      drawerContent={drawerComponent}
+      drawerContent={(props) => drawerComponent(props, dispatch)}
       drawerContentOptions={drawerContentOptions}
       drawerStyle={drawerStyle}
       initialRouteName={homeDrawerRoute}
@@ -410,7 +434,7 @@ function CardStackScreen() {
       <CardStack.Screen
         name={lockPinSetupScreen.routeName}
         component={lockPinSetupScreen.screen}
-        options={lockPinSetupScreen.options}
+        options={lockPinSetupScreenOptions}
       />
       <CardStack.Screen
         name={aboutAppScreen.routeName}

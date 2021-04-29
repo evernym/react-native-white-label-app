@@ -1,5 +1,5 @@
 // @flow
-import React, { useState, useEffect, useRef, useCallback } from 'react'
+import React, { useState, useEffect, useRef, useCallback, useLayoutEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import {
@@ -20,6 +20,11 @@ import { LockHeader } from '../external-imports'
 import { getIsInRecovery } from '../store/store-selector'
 import { headerDefaultOptions } from '../navigation/navigation-header-config'
 
+import {
+  CHANGE_PASSCODE_BUTTON_IN_SETTINGS,
+  BACK_ARROW_IN_THE_CHANGE_PASSCODE_VIEW
+} from '../feedback/log-to-apptentive'
+
 let keyboardDidHideListener
 let keyboardDidShowListener
 
@@ -31,6 +36,8 @@ const defaults = {
   keyboardHidden: false,
   showCustomKeyboard: false,
 }
+
+export let lockPinSetupScreenOptions = undefined
 
 export function LockPinSetup(props: ReactNavigation) {
   const { navigation, route } = props
@@ -105,6 +112,17 @@ export function LockPinSetup(props: ReactNavigation) {
     setFailedPin(false)
   })
 
+  useLayoutEffect(() => {
+    const additionalActionOnBackPress = () => dispatch(BACK_ARROW_IN_THE_CHANGE_PASSCODE_VIEW)
+
+    lockPinSetupScreenOptions = headerDefaultOptions({
+      headline: undefined,
+      headerHideShadow: true,
+      transparent: false,
+      additionalActionOnBackPress,
+    })
+  }, [])
+
   useEffect(() => {
     keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
       handleKeyboardChange(true)
@@ -132,6 +150,7 @@ export function LockPinSetup(props: ReactNavigation) {
         navigation.navigate(lockSetupSuccessRoute, {
           changePin: true,
         })
+        dispatch(CHANGE_PASSCODE_BUTTON_IN_SETTINGS)
       } else if (inRecovery === 'true') {
         navigation.navigate(homeRoute)
       } else {
@@ -189,9 +208,4 @@ const styles = StyleSheet.create({
 export const lockPinSetupScreen = {
   routeName: lockPinSetupRoute,
   screen: LockPinSetup,
-  options: headerDefaultOptions({
-    headline: undefined,
-    headerHideShadow: true,
-    transparent: false,
-  })
 }

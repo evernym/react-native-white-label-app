@@ -58,7 +58,7 @@ import {
   serializeConnection,
 } from '../bridge/react-native-cxs/RNCxs'
 import type { CustomError, GenericObject } from '../common/type-common'
-import { ID, RESET, TYPE } from '../common/type-common'
+import { RESET, TYPE } from '../common/type-common'
 import { captureError } from '../services/error/error-handler'
 import { ensureVcxInitSuccess } from '../store/route-store'
 import type { Connection } from '../store/type-connection-store'

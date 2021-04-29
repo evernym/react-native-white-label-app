@@ -1,5 +1,5 @@
 // @flow
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { StyleSheet, View, FlatList } from 'react-native'
 import { bindActionCreators } from 'redux'
 import { moderateScale } from 'react-native-size-matters'
@@ -30,6 +30,9 @@ import {
 } from '../external-imports'
 import { isNewEvent } from '../store/store-utils'
 import { getEventMessage, getEventRedirectionRoute } from './home-utils'
+import { useIsDrawerOpen } from '@react-navigation/drawer'
+import { useDispatch } from 'react-redux'
+import { CLOSING_THE_SIDE_MENU, OPENING_THE_SIDE_MENU } from '../feedback/log-to-apptentive'
 
 export const headlineForHomeRoute = homeHeadline || 'Home'
 const showHistoryEvents =
@@ -42,6 +45,17 @@ const keyExtractor = (item: Object) => item.id
 const renderEmptyListPlaceholder = () => <EmptyViewPlaceholder/>
 
 export const HomeScreen = (props: HomeProps) => {
+  const dispatch = useDispatch()
+  const isDrawerOpen = useIsDrawerOpen()
+
+  useEffect(() => {
+    if (isDrawerOpen) {
+      dispatch(OPENING_THE_SIDE_MENU)
+    } else {
+      dispatch(CLOSING_THE_SIDE_MENU)
+    }
+  }, [isDrawerOpen])
+
   const onCameraButton = () => {
     props.navigation.navigate(qrCodeScannerTabRoute, {
       backRedirectRoute: homeDrawerRoute,

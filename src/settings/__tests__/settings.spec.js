@@ -54,7 +54,11 @@ describe('user settings screen', () => {
       cloudBackupStart: jest.fn(),
       viewedWalletError: jest.fn(),
       route: {},
-      showUnreadMessagesBadge: {SHOW_UNREAD_MESSAGES_BADGE_NEAR_WITH_MENU}
+      showUnreadMessagesBadge: {SHOW_UNREAD_MESSAGES_BADGE_NEAR_WITH_MENU},
+      biometricsSwitchOn: jest.fn(),
+      biometricsSwitchOff: jest.fn(),
+      aboutButtonInSetting: jest.fn(),
+      giveAppFeedbackButtonInSetting: jest.fn(),
     }
   }
 

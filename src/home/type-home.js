@@ -9,4 +9,6 @@ export type HomeProps = {
   mappedDidToLogoAndName: Object,
   getUnacknowledgedMessages: () => void,
   messageDownloadStatus: MessageDownloadStatus,
+  openingSideMenu: () => void,
+  closingSideMenu: () => void,
 } & ReactNavigation

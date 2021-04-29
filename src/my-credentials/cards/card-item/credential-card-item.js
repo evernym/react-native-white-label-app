@@ -1,21 +1,10 @@
 // @flow
 import React, { useCallback, useState } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native'
-import { colors, fontFamily, fontSizes } from '../../../common/styles/constant'
-import { Avatar } from '../../../components/avatar/avatar'
-import { DefaultLogo } from '../../../components/default-logo/default-logo'
+import { useDispatch } from 'react-redux'
 import { verticalScale, moderateScale } from 'react-native-size-matters'
 import dayjs from 'dayjs'
 import { useNavigation } from '@react-navigation/native'
-import { credentialDetailsRoute } from '../../../common'
-import type {
-  CredentialCardProps,
-  CredentialItem,
-} from '../../type-my-credentials'
-import {
-  MESSAGE_DELETE_CLAIM_DESCRIPTION,
-  MESSAGE_DELETE_CLAIM_TITLE,
-} from '../../type-my-credentials'
 import Animated, {
   add,
   call,
@@ -38,8 +27,20 @@ import {
   useTransition,
   useValue,
 } from 'react-native-redash/lib/module/v1'
+
+import { colors, fontFamily, fontSizes } from '../../../common/styles/constant'
+import { Avatar } from '../../../components/avatar/avatar'
+import { DefaultLogo } from '../../../components/default-logo/default-logo'
+import { credentialDetailsRoute } from '../../../common'
+import type {
+  CredentialCardProps,
+  CredentialItem,
+} from '../../type-my-credentials'
+import {
+  MESSAGE_DELETE_CLAIM_DESCRIPTION,
+  MESSAGE_DELETE_CLAIM_TITLE,
+} from '../../type-my-credentials'
 import { DELETE_ICON, EvaIcon } from '../../../common/icons'
-import { useDispatch } from 'react-redux'
 import { deleteClaim } from '../../../claim/claim-store'
 import {
   CARD_HEIGHT,
@@ -50,6 +51,8 @@ import {
   WHITE_TEXT_BRIGHTNESS_LIMIT,
 } from '../credentials-constants'
 import { brightnessByColor } from '../utils'
+
+import { TAPPING_ON_A_CREDENTIAL } from '../../../feedback/log-to-apptentive'
 
 const textColor = colors.white
 
@@ -139,6 +142,8 @@ const CredentialCard = ({
           logoUrl,
           claimOfferUuid,
         })
+
+        dispatch(TAPPING_ON_A_CREDENTIAL)
       }
     } else {
       if (setActiveStack !== undefined) {

@@ -9,7 +9,7 @@ import { SERVER_ENVIRONMENT } from './switch-environment/type-switch-environment
 
 // making defaults sane so that developers don't need to remember
 // what settings should be in dev environment
-const isDevEnvironment = __DEV__ && process.env.NODE_ENV !== 'test'
+export const isDevEnvironment = __DEV__ && process.env.NODE_ENV !== 'test'
 export const defaultEnvironment = defaultServerEnvironment
   ? SERVER_ENVIRONMENT[defaultServerEnvironment]
   : isDevEnvironment

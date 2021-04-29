@@ -1,7 +1,7 @@
 // @flow
 import React, { useCallback } from 'react'
 import { StyleSheet, Image, View, Text } from 'react-native'
-import { connect, useSelector } from 'react-redux'
+import { connect, useSelector, useDispatch } from 'react-redux'
 import VersionNumber from 'react-native-version-number'
 import { ListItem } from 'react-native-elements'
 
@@ -35,6 +35,7 @@ import {
   companyName,
   CustomAboutAppScreen,
 } from '../external-imports'
+import { ABOUT_BUTTON_IN_SETTINGS } from '../feedback/log-to-apptentive'
 
 const info = aboutAppInfo || {
   appLogo: true,
@@ -68,6 +69,11 @@ export const AboutAppListItem = ({
 
 export const AboutApp = ({ navigation }: AboutAppProps) => {
   const environmentName = useSelector(getEnvironmentName)
+  const dispatch = useDispatch()
+
+  React.useEffect(() => {
+    dispatch(ABOUT_BUTTON_IN_SETTINGS)
+  }, [])
 
   const openTermsAndConditions = () => {
     navigation.navigate(privacyTNCRoute, PrivacyTNC.INFO_TYPE.TNC)
@@ -166,7 +172,7 @@ export const aboutAppScreen = {
     headline: 'About this App',
     headerHideShadow: false,
     transparent: false,
-  })
+  }),
 }
 
 const styles = StyleSheet.create({

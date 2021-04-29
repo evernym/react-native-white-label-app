@@ -17,7 +17,7 @@ import {
   qrCodeScannerTabRoute,
 } from '../common'
 import { deepLinkProcessed } from '../deep-link/deep-link-store'
-import { ID, TYPE } from '../common/type-common'
+import { TYPE } from '../common/type-common'
 import { convertAriesCredentialOfferToCxsClaimOffer } from '../bridge/react-native-cxs/vcx-transformers'
 import { getAllDid, getAllPublicDid, getClaimOffers, getProofRequests, getVerifiers } from '../store/store-selector'
 import type { ClaimOfferPayload } from '../claim-offer/type-claim-offer'

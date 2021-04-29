@@ -31,6 +31,10 @@ export type SettingsProps = {
   cloudBackupFailure: (error: string | null) => void,
   cloudBackupStart: () => void,
   viewedWalletError: (error: boolean) => void,
+  biometricsSwitchOn: () => void,
+  biometricsSwitchOff: () => void,
+  aboutButtonInSetting: () => void,
+  giveAppFeedbackButtonInSetting: () => void,
 } & ReactNavigation
 
 export type SettingsState = {

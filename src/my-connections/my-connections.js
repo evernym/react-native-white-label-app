@@ -1,7 +1,7 @@
 // @flow
 import React, { useCallback, useEffect, useMemo } from 'react'
 import { Platform, View, FlatList, Alert } from 'react-native'
-import { connect, useSelector } from 'react-redux'
+import { connect, useSelector, useDispatch } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import PushNotificationIOS from '@react-native-community/push-notification-ios'
 import { newConnectionSeen } from '../connection-history/connection-history-store'
@@ -37,6 +37,7 @@ import {
 } from '../external-imports'
 import { ResponseType } from '../components/request/type-request'
 import { sendInvitationResponse } from '../invitation/invitation-store'
+import { TAKE_TO_CONNECTION_DETAILS } from '../feedback/log-to-apptentive'
 
 export const headlineForConnectionRoute =
   connectionsHeadline || 'My Connections'
@@ -66,6 +67,7 @@ const MyConnections = ({
   const hydrated = useSelector(getConnectionHydrationState)
   const messageDownloadStatus = useSelector(getMessageDownloadStatus)
   const unseenMessages = useSelector(getUnseenMessages)
+  const dispatch = useDispatch()
 
   const connections = useMemo(() => {
     return getConnections(allConnections)
@@ -155,6 +157,7 @@ const MyConnections = ({
       senderDID,
       identifier,
     })
+    dispatch(TAKE_TO_CONNECTION_DETAILS)
   }
 
   const keyExtractor = (item: Object) => item.index.toString()
