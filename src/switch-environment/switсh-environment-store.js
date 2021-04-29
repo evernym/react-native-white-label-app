@@ -1,9 +1,4 @@
-import type {
-  ConfigStore,
-
-
-
-} from '../store/type-config-store'
+import type { ConfigStore } from '../store/type-config-store'
 import {
   ERROR_HYDRATE_SWITCH_ENVIRONMENT,
   ERROR_SAVE_SWITCH_ENVIRONMENT,
@@ -41,7 +36,10 @@ import type {
 import {
   CHANGE_ENVIRONMENT_VIA_URL,
   HYDRATE_SWITCH_ENVIRONMENT_DETAIL_FAIL,
-  SAVE_SWITCH_ENVIRONMENT_DETAIL_FAIL, SERVER_ENVIRONMENT, SERVER_ENVIRONMENT_CHANGED, SWITCH_ENVIRONMENT,
+  SAVE_SWITCH_ENVIRONMENT_DETAIL_FAIL,
+  SERVER_ENVIRONMENT,
+  SERVER_ENVIRONMENT_CHANGED,
+  SWITCH_ENVIRONMENT,
 } from './type-switch-environment'
 
 /*
