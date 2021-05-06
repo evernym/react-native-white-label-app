@@ -1,4 +1,7 @@
-import type { HandleInvitationsAction, InvitationPayload } from './type-invitation'
+import type {
+  HandleInvitationsAction,
+  InvitationPayload,
+} from './type-invitation'
 import { CONNECTION_INVITE_TYPES, HANDLE_INVITATION } from './type-invitation'
 import { ensureVcxInitSuccess } from '../store/route-store'
 import { call, put, select, takeLatest } from 'redux-saga/effects'
@@ -19,7 +22,13 @@ import {
 import { deepLinkProcessed } from '../deep-link/deep-link-store'
 import { TYPE } from '../common/type-common'
 import { convertAriesCredentialOfferToCxsClaimOffer } from '../bridge/react-native-cxs/vcx-transformers'
-import { getAllDid, getAllPublicDid, getClaimOffers, getProofRequests, getVerifiers } from '../store/store-selector'
+import {
+  getAllDid,
+  getAllPublicDid,
+  getClaimOffers,
+  getProofRequests,
+  getVerifiers,
+} from '../store/store-selector'
 import type { ClaimOfferPayload } from '../claim-offer/type-claim-offer'
 import { CLAIM_OFFER_STATUS } from '../claim-offer/type-claim-offer'
 import { claimOfferReceived } from '../claim-offer/claim-offer-store'
@@ -45,10 +54,15 @@ import {
 import { invitationReceived } from './invitation-store'
 import { showSnackError } from '../store/config-store'
 import { CONNECTION_ALREADY_EXIST } from '../connection-history/type-connection-history'
-import { sendConnectionRedirect, sendConnectionReuse } from '../store/connections-store'
+import {
+  sendConnectionRedirect,
+  sendConnectionReuse,
+} from '../store/connections-store'
 import Snackbar from 'react-native-snackbar'
 
-function* checkExistingConnectionAndRedirect(invitation: InvitationPayload): Generator<*, *, *> {
+function* checkExistingConnectionAndRedirect(
+  invitation: InvitationPayload
+): Generator<*, *, *> {
   const { publicDID, DID } = invitation.senderDetail
 
   const allPublicDid = yield select(getAllPublicDid)
@@ -58,14 +72,16 @@ function* checkExistingConnectionAndRedirect(invitation: InvitationPayload): Gen
     allPublicDid,
     allDid,
     publicDID,
-    DID,
+    DID
   )
 
   if (existingConnection) {
-    yield put(navigateToRoutePN(homeRoute, {
-      screen: homeDrawerRoute,
-      params: undefined,
-    }))
+    yield put(
+      navigateToRoutePN(homeRoute, {
+        screen: homeDrawerRoute,
+        params: undefined,
+      })
+    )
 
     Snackbar.show({
       text: CONNECTION_ALREADY_EXIST,
@@ -80,19 +96,25 @@ function* checkExistingConnectionAndRedirect(invitation: InvitationPayload): Gen
     )
 
     if (
-      (invitation.type === CONNECTION_INVITE_TYPES.ARIES_V1_QR || invitation.type === undefined) &&
+      (invitation.type === CONNECTION_INVITE_TYPES.ARIES_V1_QR ||
+        invitation.type === undefined) &&
       sendRedirectMessage
     ) {
-      yield put(sendConnectionRedirect(invitation, {
-        senderDID: existingConnection.senderDID,
-        identifier: existingConnection.identifier,
-      }))
+      yield put(
+        sendConnectionRedirect(invitation, {
+          senderDID: existingConnection.senderDID,
+          identifier: existingConnection.identifier,
+        })
+      )
     } else if (
-      invitation.type === CONNECTION_INVITE_TYPES.ARIES_OUT_OF_BAND && sendRedirectMessage
+      invitation.type === CONNECTION_INVITE_TYPES.ARIES_OUT_OF_BAND &&
+      sendRedirectMessage
     ) {
-      yield put(sendConnectionReuse(invitation.originalObject, {
-        senderDID: existingConnection.senderDID
-      }))
+      yield put(
+        sendConnectionReuse(invitation.originalObject, {
+          senderDID: existingConnection.senderDID,
+        })
+      )
     }
     return
   }
@@ -102,56 +124,69 @@ function* checkExistingConnectionAndRedirect(invitation: InvitationPayload): Gen
   const isAuthorized = yield call(getPushNotificationAuthorizationStatus)
 
   if (Platform.OS === 'ios' && usePushNotifications && !isAuthorized) {
-    yield put(navigateToRoutePN(pushNotificationPermissionRoute, {
-      senderDID: invitation.senderDID,
-      navigatedFrom: homeRoute,
-    }))
+    yield put(
+      navigateToRoutePN(pushNotificationPermissionRoute, {
+        senderDID: invitation.senderDID,
+        navigatedFrom: homeRoute,
+      })
+    )
   } else {
-    yield put(navigateToRoutePN(invitationRoute, {
-      senderDID: invitation.senderDID,
-      backRedirectRoute: homeRoute,
-    }))
+    yield put(
+      navigateToRoutePN(invitationRoute, {
+        senderDID: invitation.senderDID,
+        backRedirectRoute: homeRoute,
+      })
+    )
   }
 }
 
 function* handleOutOfBandNavigation({
-                                      mainRoute,
-                                      backRedirectRoute,
-                                      uid,
-                                      invitationPayload,
-                                      senderName,
-                                    }: OutOfBandNavigation): Generator<*, *, *> {
+  mainRoute,
+  backRedirectRoute,
+  uid,
+  invitationPayload,
+  senderName,
+}: OutOfBandNavigation): Generator<*, *, *> {
   const isAuthorized = yield call(getPushNotificationAuthorizationStatus)
 
   if (Platform.OS === 'ios' && usePushNotifications && !isAuthorized) {
-    yield put(navigateToRoutePN(pushNotificationPermissionRoute, {
-      senderDID: invitationPayload.senderDID,
-      navigatedFrom: qrCodeScannerTabRoute,
-      intendedRoute: mainRoute,
-      intendedPayload: {
+    yield put(
+      navigateToRoutePN(pushNotificationPermissionRoute, {
+        senderDID: invitationPayload.senderDID,
+        navigatedFrom: qrCodeScannerTabRoute,
+        intendedRoute: mainRoute,
+        intendedPayload: {
+          backRedirectRoute,
+          uid,
+          invitationPayload,
+          senderName,
+          hidden: true,
+        },
+      })
+    )
+  } else {
+    yield put(
+      navigateToRoutePN(mainRoute, {
         backRedirectRoute,
         uid,
         invitationPayload,
         senderName,
-        hidden: true
-      },
-    }))
-  } else {
-    yield put(navigateToRoutePN(mainRoute, {
-      backRedirectRoute,
-      uid,
-      invitationPayload,
-      senderName,
-      hidden: true
-    }))
+        hidden: true,
+      })
+    )
   }
 }
 
-function* onAriesOutOfBandInviteRead(invitation: InvitationPayload): Generator<*, *, *> {
+function* onAriesOutOfBandInviteRead(
+  invitation: InvitationPayload
+): Generator<*, *, *> {
   const invite = invitation.originalObject
   if (!invitation) {
     yield put(navigateToRoutePN(homeRoute, {}))
-    yield call(showSnackError, 'QR code contains invalid formatted Aries Out-of-Band invitation.')
+    yield call(
+      showSnackError,
+      'QR code contains invalid formatted Aries Out-of-Band invitation.'
+    )
     return
   }
 
@@ -162,7 +197,10 @@ function* onAriesOutOfBandInviteRead(invitation: InvitationPayload): Generator<*
     // Invite: No `handshake_protocols` and `request~attach`
     // Action: show alert about invalid formatted invitation
     yield put(navigateToRoutePN(homeRoute, {}))
-    yield call(showSnackError, 'QR code contains invalid formatted Aries Out-of-Band invitation.')
+    yield call(
+      showSnackError,
+      'QR code contains invalid formatted Aries Out-of-Band invitation.'
+    )
   } else if (
     invite.handshake_protocols?.length &&
     !invite['request~attach']?.length
@@ -178,10 +216,12 @@ function* onAriesOutOfBandInviteRead(invitation: InvitationPayload): Generator<*
     //  2. Rut protocol connected to attached action
     // UI: Show view related to attached action
 
-
     if (!invitation.attachedRequest || !invitation.attachedRequest[TYPE]) {
       yield put(navigateToRoutePN(homeRoute, {}))
-      yield call(showSnackError, 'QR code contains invalid formatted Aries Out-of-Band invitation.')
+      yield call(
+        showSnackError,
+        'QR code contains invalid formatted Aries Out-of-Band invitation.'
+      )
       return
     }
 
@@ -190,7 +230,7 @@ function* onAriesOutOfBandInviteRead(invitation: InvitationPayload): Generator<*
 
     if (type_.endsWith('offer-credential')) {
       const claimOffer = convertAriesCredentialOfferToCxsClaimOffer(
-        invitation.attachedRequest,
+        invitation.attachedRequest
       )
 
       const claimOffers = yield select(getClaimOffers)
@@ -200,36 +240,43 @@ function* onAriesOutOfBandInviteRead(invitation: InvitationPayload): Generator<*
         existingCredential &&
         existingCredential.status === CLAIM_OFFER_STATUS.ACCEPTED
       ) {
-        yield put(navigateToRoutePN(homeRoute, {
-          screen: homeDrawerRoute,
-          params: undefined,
-        }))
+        yield put(
+          navigateToRoutePN(homeRoute, {
+            screen: homeDrawerRoute,
+            params: undefined,
+          })
+        )
 
         // we already have accepted that offer
-        yield call(showSnackError, 'The credential offer has already been accepted.')
+        yield call(
+          showSnackError,
+          'The credential offer has already been accepted.'
+        )
         return
       }
 
-      yield put(claimOfferReceived(
-        convertClaimOfferPushPayloadToAppClaimOffer(
+      yield put(
+        claimOfferReceived(
+          convertClaimOfferPushPayloadToAppClaimOffer(
+            {
+              ...claimOffer,
+              remoteName: invitation.senderName,
+              issuer_did: invitation.senderDID,
+              from_did: invitation.senderDID,
+              to_did: '',
+            },
+            {
+              remotePairwiseDID: invitation.senderDID,
+            }
+          ),
           {
-            ...claimOffer,
-            remoteName: invitation.senderName,
-            issuer_did: invitation.senderDID,
-            from_did: invitation.senderDID,
-            to_did: '',
-          },
-          {
+            uid,
+            senderLogoUrl: invitation.senderLogoUrl,
             remotePairwiseDID: invitation.senderDID,
-          },
-        ),
-        {
-          uid,
-          senderLogoUrl: invitation.senderLogoUrl,
-          remotePairwiseDID: invitation.senderDID,
-          hidden: true,
-        },
-      ))
+            hidden: true,
+          }
+        )
+      )
       yield call(handleOutOfBandNavigation, {
         mainRoute: claimOfferRoute,
         backRedirectRoute: homeRoute,
@@ -245,31 +292,42 @@ function* onAriesOutOfBandInviteRead(invitation: InvitationPayload): Generator<*
         existingProofRequest &&
         existingProofRequest.status === PROOF_REQUEST_STATUS.ACCEPTED
       ) {
-        yield put(navigateToRoutePN(homeRoute, {
-          screen: homeDrawerRoute,
-          params: undefined,
-        }))
+        yield put(
+          navigateToRoutePN(homeRoute, {
+            screen: homeDrawerRoute,
+            params: undefined,
+          })
+        )
         // we already have accepted that proof request
-        yield call(showSnackError, 'The proof request has already been accepted.')
+        yield call(
+          showSnackError,
+          'The proof request has already been accepted.'
+        )
         return
       }
 
-      const [
-        outofbandProofError,
-        outofbandProofRequest,
-      ] = yield call(validateOutofbandProofRequestQrCode, invitation.attachedRequest)
+      const [outofbandProofError, outofbandProofRequest] = yield call(
+        validateOutofbandProofRequestQrCode,
+        invitation.attachedRequest,
+        invitation.senderName
+      )
 
       if (outofbandProofError || !outofbandProofRequest) {
-        yield call(showSnackError, 'QR code contains invalid formatted Aries Out-of-Band invitation.')
+        yield call(
+          showSnackError,
+          'QR code contains invalid formatted Aries Out-of-Band invitation.'
+        )
         return
       }
 
-      yield put(proofRequestReceived(outofbandProofRequest, {
-        uid,
-        senderLogoUrl: invitation.senderLogoUrl,
-        remotePairwiseDID: invitation.senderDID,
-        hidden: true,
-      }))
+      yield put(
+        proofRequestReceived(outofbandProofRequest, {
+          uid,
+          senderLogoUrl: invitation.senderLogoUrl,
+          remotePairwiseDID: invitation.senderDID,
+          hidden: true,
+        })
+      )
       yield call(handleOutOfBandNavigation, {
         mainRoute: proofRequestRoute,
         backRedirectRoute: homeRoute,
@@ -278,7 +336,12 @@ function* onAriesOutOfBandInviteRead(invitation: InvitationPayload): Generator<*
         senderName: invitation.senderName,
       })
     } else if (type_.endsWith('propose-presentation')) {
-      if (!schemaValidator.validate(presentationProposalSchema, invitation.attachedRequest)) {
+      if (
+        !schemaValidator.validate(
+          presentationProposalSchema,
+          invitation.attachedRequest
+        )
+      ) {
         yield call(showSnackError, 'Invalid formatted Presentation Proposal.')
         return
       }
@@ -287,25 +350,29 @@ function* onAriesOutOfBandInviteRead(invitation: InvitationPayload): Generator<*
       const existingVerifier: VerifierData = verifiers[uid]
 
       if (existingVerifier) {
-        yield put(navigateToRoutePN(homeRoute, {
-          screen: homeDrawerRoute,
-          params: undefined,
-        }))
+        yield put(
+          navigateToRoutePN(homeRoute, {
+            screen: homeDrawerRoute,
+            params: undefined,
+          })
+        )
         // we already have accepted that presentation proposal
-        yield call(showSnackError, 'The presentation proposal has already been accepted.')
+        yield call(
+          showSnackError,
+          'The presentation proposal has already been accepted.'
+        )
         return
       }
 
-      yield put(proofProposalReceived(
-        invitation.attachedRequest,
-        {
+      yield put(
+        proofProposalReceived(invitation.attachedRequest, {
           uid,
           senderLogoUrl: invitation.senderLogoUrl,
           senderName: invitation.senderName,
           remotePairwiseDID: invitation.senderDID,
           hidden: true,
-        },
-      ))
+        })
+      )
 
       yield call(handleOutOfBandNavigation, {
         mainRoute: proofProposalRoute,
@@ -316,16 +383,21 @@ function* onAriesOutOfBandInviteRead(invitation: InvitationPayload): Generator<*
       })
     }
   } else {
-    yield put(navigateToRoutePN(homeRoute, {
-      screen: homeDrawerRoute,
-      params: undefined,
-    }))
-    yield call(showSnackError, 'QR code contains invalid formatted Aries Out-of-Band invitation.')
+    yield put(
+      navigateToRoutePN(homeRoute, {
+        screen: homeDrawerRoute,
+        params: undefined,
+      })
+    )
+    yield call(
+      showSnackError,
+      'QR code contains invalid formatted Aries Out-of-Band invitation.'
+    )
   }
 }
 
 function* handleInvitationSaga(
-  action: HandleInvitationsAction,
+  action: HandleInvitationsAction
 ): Generator<*, *, *> {
   const vcxResult = yield* ensureVcxInitSuccess()
   if (vcxResult && vcxResult.fail) {
@@ -333,10 +405,12 @@ function* handleInvitationSaga(
   }
   const invitation = action.invitation
   if (!invitation) {
-    yield put(navigateToRoutePN(homeRoute, {
-      screen: homeDrawerRoute,
-      params: undefined,
-    }))
+    yield put(
+      navigateToRoutePN(homeRoute, {
+        screen: homeDrawerRoute,
+        params: undefined,
+      })
+    )
   }
 
   // aries connection
