@@ -7,6 +7,9 @@ import { VerifyRecoveryPhrase } from '../verify-phrase'
 import { getStore } from '../../../__mocks__/static-data'
 import { settingsRoute } from '../../common'
 
+jest.mock('react-native-keyboard-aware-scroll-view')
+
+
 describe('<VerifyRecoveryPhrase />', () => {
   const recoveryPassphrase = 'hello some passphrase'
 
