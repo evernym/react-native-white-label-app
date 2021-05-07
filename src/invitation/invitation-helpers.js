@@ -142,4 +142,6 @@ export async function getAttachedRequest(
 }
 
 export const getAttachedRequestId = (attachedRequest: AttachedRequestType) =>
-  attachedRequest['~thread'].thid ?? attachedRequest[ID]
+  attachedRequest['~thread'] && attachedRequest['~thread'].thid ?
+    attachedRequest['~thread'].thid :
+    attachedRequest[ID]
