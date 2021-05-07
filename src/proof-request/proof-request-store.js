@@ -84,10 +84,7 @@ import {
 } from '../proof/proof-store'
 import { secureSet, getHydrationItem } from '../services/storage'
 import { retrySaga } from '../api/api-utils'
-import {
-  ensureVcxInitAndPoolConnectSuccess,
-  ensureVcxInitSuccess,
-} from '../store/route-store'
+import { ensureVcxInitSuccess } from '../store/route-store'
 import { PROOF_FAIL } from '../proof/type-proof'
 import { getConnectionHandle } from '../store/connections-store'
 import { credentialPresentationSent } from '../show-credential/show-credential-store'
@@ -266,7 +263,7 @@ export function* proofAccepted(
     return
   }
 
-  const vcxResult = yield* ensureVcxInitAndPoolConnectSuccess()
+  const vcxResult = yield* ensureVcxInitSuccess()
   if (vcxResult && vcxResult.fail) {
     errorSendProofFail(
       uid,

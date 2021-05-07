@@ -1,6 +1,6 @@
 // @flow
 import { Platform } from 'react-native'
-import { all, call, fork, put, race, select, spawn, take, takeLeading } from 'redux-saga/effects'
+import { all, call, fork, put, race, select, take, takeLeading } from 'redux-saga/effects'
 import delay from '@redux-saga/delay-p'
 import PushNotificationIOS from '@react-native-community/push-notification-ios'
 import {
@@ -352,9 +352,6 @@ export function* initVcx(findingWallet?: any): Generator<*, *, *> {
       return
     }
   }
-
-  // start connecting to pool ledger process
-  yield spawn(connectToPool)
 }
 
 export function* connectToPool(): Generator<*, *, *> {

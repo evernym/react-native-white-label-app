@@ -5,6 +5,7 @@ export const SCHEMA_NOT_FOUND = '1040'
 export const INVALID_CREDENTIAL_OFFER = '1043'
 export const ACTION_IS_NOT_SUPPORTED = '1103'
 export const CLOUD_AGENT_UNAVAILABLE = '1010'
+export const CREDENTIAL_SCHEMA_NOT_FOUND = '1031'
 
 export const CONNECTION_ALREADY_EXISTS_MESSAGE =
   'The connection invitation has already been accepted. ' +

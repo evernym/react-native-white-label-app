@@ -76,9 +76,10 @@ import {
   PROOF_REQUEST_AUTO_FILL,
   ATTRIBUTE_TYPE, NO_CRED_NO_SELF_ATTEST, DISSATISFIED_ATTRIBUTE_TYPE,
 } from '../proof-request/type-proof-request'
-import { ensureVcxInitAndPoolConnectSuccess } from '../store/route-store'
+import { ensureVcxInitAndPoolConnectSuccess, ensureVcxInitSuccess } from '../store/route-store'
 import { customLogger } from '../store/custom-logger'
 import { showSnackError } from '../store/config-store'
+import { CREDENTIAL_DEFINITION_NOT_FOUND, CREDENTIAL_SCHEMA_NOT_FOUND } from '../bridge/react-native-cxs/error-cxs'
 
 export const updateAttributeClaim = (
   uid: string,
@@ -601,7 +602,7 @@ export function* updateAttributeClaimAndSendProof(
   action: UpdateAttributeClaimAction
 ): Generator<*, *, *> {
   try {
-    const vcxResult = yield* ensureVcxInitAndPoolConnectSuccess()
+    const vcxResult = yield* ensureVcxInitSuccess()
     if (vcxResult && vcxResult.fail) {
       yield put(errorSendProofFail(action.uid, action.remoteDid, vcxResult.fail))
       return
@@ -631,12 +632,31 @@ export function* updateAttributeClaimAndSendProof(
       requestedAttrsJson,
     )
 
-    yield call(
-      generateProof,
-      proofHandle,
-      JSON.stringify(selectedCredentials),
-      JSON.stringify(selfAttestedAttributes),
-    )
+    try {
+      yield call(
+        generateProof,
+        proofHandle,
+        JSON.stringify(selectedCredentials),
+        JSON.stringify(selfAttestedAttributes),
+      )
+    } catch (e){
+      // if schema or cred_def not found in the cache -> connect to pool ledger and retry
+      if (e.code === CREDENTIAL_SCHEMA_NOT_FOUND || e.code === CREDENTIAL_DEFINITION_NOT_FOUND){
+        const vcxResult = yield* ensureVcxInitAndPoolConnectSuccess()
+        if (vcxResult && vcxResult.fail) {
+          yield put(errorSendProofFail(action.uid, action.remoteDid, vcxResult.fail))
+          return
+        }
+
+        yield call(
+          generateProof,
+          proofHandle,
+          JSON.stringify(selectedCredentials),
+          JSON.stringify(selfAttestedAttributes),
+        )
+      }
+    }
+
     yield put(acceptProofRequest(action.uid))
     const proofRequestPayload: ProofRequestPayload = yield select(
       getProofRequest,
