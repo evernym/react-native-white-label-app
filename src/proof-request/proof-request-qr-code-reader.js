@@ -94,7 +94,8 @@ export async function validateEphemeralProofQrCode(
 }
 
 export async function validateOutofbandProofRequestQrCode(
-  presentationRequest: AriesPresentationRequest
+  presentationRequest: AriesPresentationRequest,
+  senderName?: string
 ): Promise<[null | string, null | AdditionalProofDataPayload]> {
   // we still need to get data from base64
   const [decodeProofRequestError, decodedProofRequest] = await flattenAsync(
@@ -126,7 +127,7 @@ export async function validateOutofbandProofRequestQrCode(
       },
       '@topic': { mid: 0, tid: 0 },
       '@type': { name: 'proof_request', version: '0.1' },
-      remoteName: presentationRequest.comment || 'Unknown',
+      remoteName: senderName || presentationRequest.comment || 'Unknown',
       proofHandle: 0,
       outofbandProofRequest: JSON.stringify(presentationRequest),
     }),

@@ -6,12 +6,14 @@ import { Provider } from 'react-redux'
 import { RestorePassphrase } from '../restore-passphrase'
 import { getNavigation, getStore } from '../../../__mocks__/static-data'
 
+jest.mock('react-native-keyboard-aware-scroll-view')
+
 describe('Restore Passphrase screen', () => {
   function getProps() {
     return {
       navigation: getNavigation(),
       submitPassphrase: jest.fn(),
-      restore: getStore().getState().restore,
+      restore: mockStoreData.getState().restore,
       route: {},
     }
   }
