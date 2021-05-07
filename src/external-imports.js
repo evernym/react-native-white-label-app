@@ -9,7 +9,7 @@ import {
   STORAGE_KEY,
   DEEP_LINK,
   // $FlowExpectedError[cannot-resolve-module] external file
-} from '../../memberpass/app/evernym-sdk/app'
+} from '../../../../app/evernym-sdk/app'
 
 import {
   SPONSOR_ID,
@@ -18,7 +18,7 @@ import {
   SERVER_ENVIRONMENTS,
   DEFAULT_SERVER_ENVIRONMENT,
   // $FlowExpectedError[cannot-resolve-module] external file
-} from '../../memberpass/app/evernym-sdk/provision'
+} from '../../../../app/evernym-sdk/provision'
 
 import {
   HEADLINE as CREDENTIAL_OFFER_HEADLINE,
@@ -27,7 +27,7 @@ import {
   CustomCredentialOfferModal as iCustomCredentialOfferModal,
   CustomCredentialModal as iCustomCredentialModal,
   // $FlowExpectedError[cannot-resolve-module] external file
-} from '../../memberpass/app/evernym-sdk/credential-offer'
+} from '../../../../app/evernym-sdk/credential-offer'
 
 import {
   HEADLINE as PROOF_REQUEST_HEADLINE,
@@ -38,13 +38,13 @@ import {
   CustomSelectAttributesValuesModal as iCustomSelectAttributesValuesModal,
   CustomProofRequestModal as iCustomProofRequestModal,
   // $FlowExpectedError[cannot-resolve-module] external file
-} from '../../memberpass/app/evernym-sdk/proof-request'
+} from '../../../../app/evernym-sdk/proof-request'
 
 // $FlowExpectedError[cannot-resolve-module] external file
-import { COLORS } from '../../memberpass/app/evernym-sdk/colors'
+import { COLORS } from '../../../../app/evernym-sdk/colors'
 
 // $FlowExpectedError[cannot-resolve-module] external file
-import { FONT_FAMILY, FONT_SIZES } from '../../memberpass/app/evernym-sdk/font'
+import { FONT_FAMILY, FONT_SIZES } from '../../../../app/evernym-sdk/font'
 
 import {
   PRIVACY_POLICY_URL,
@@ -58,19 +58,19 @@ import {
   IOS_EULA_URL,
   CustomEulaScreen as iCustomEulaScreen,
   // $FlowExpectedError[cannot-resolve-module] external file
-} from '../../memberpass/app/evernym-sdk/eula'
+} from '../../../../app/evernym-sdk/eula'
 
 import {
   SEND_LOGS_EMAIL,
   CUSTOM_LOG_UTILS,
   // $FlowExpectedError[cannot-resolve-module] external file
-} from '../../memberpass/app/evernym-sdk/logs'
+} from '../../../../app/evernym-sdk/logs'
 
 import {
   BACKGROUND_IMAGE,
   CustomStartUpScreen as iCustomStartUpScreen,
   // $FlowExpectedError[cannot-resolve-module] external file
-} from '../../memberpass/app/evernym-sdk/startup'
+} from '../../../../app/evernym-sdk/startup'
 
 import {
   CustomSettingsScreen as iCustomSettingsScreen,
@@ -78,17 +78,17 @@ import {
   SETTINGS_OPTIONS,
   SHOW_CAMERA_BUTTON as SETTINGS_SHOW_CAMERA_BUTTON,
   // $FlowExpectedError[cannot-resolve-module] external file
-} from '../../memberpass/app/evernym-sdk/settings'
+} from '../../../../app/evernym-sdk/settings'
 
 import {
   INFO,
   AdditionalInfo as iAdditionalInfo,
   CustomAboutAppScreen as iCustomAboutAppScreen,
   // $FlowExpectedError[cannot-resolve-module] external file
-} from '../../memberpass/app/evernym-sdk/about'
+} from '../../../../app/evernym-sdk/about'
 
 // $FlowExpectedError[cannot-resolve-module] external file
-import { APPTENTIVE_CREDENTIALS } from '../../memberpass/app/evernym-sdk/feedback'
+import { APPTENTIVE_CREDENTIALS } from '../../../../app/evernym-sdk/feedback'
 
 import {
   HEADLINE as CONNECTIONS_HEADLINE,
@@ -96,7 +96,7 @@ import {
   MyConnectionsViewEmptyState as iMyConnectionsViewEmptyState,
   CustomMyConnectionsScreen as iCustomMyConnectionsScreen,
   // $FlowExpectedError[cannot-resolve-module] external file
-} from '../../memberpass/app/evernym-sdk/connections'
+} from '../../../../app/evernym-sdk/connections'
 
 import {
   DrawerFooterContent as iDrawerFooterContent,
@@ -105,15 +105,15 @@ import {
   EXTRA_SCREENS,
   MENU_NAVIGATION_OPTIONS,
   // $FlowExpectedError[cannot-resolve-module] external file
-} from '../../memberpass/app/evernym-sdk/navigator'
+} from '../../../../app/evernym-sdk/navigator'
 
 import {
   CustomConnectionDetailsScreen as iCustomConnectionDetailsScreen,
   // $FlowExpectedError[cannot-resolve-module] external file
-} from '../../memberpass/app/evernym-sdk/connections'
+} from '../../../../app/evernym-sdk/connections'
 
 // $FlowExpectedError[cannot-resolve-module] external file
-import { LockHeader as iLockHeader } from '../../memberpass/app/evernym-sdk/lock'
+import { LockHeader as iLockHeader } from '../../../../app/evernym-sdk/lock'
 
 import {
   HEADLINE as HOME_HEADLINE,
@@ -122,7 +122,7 @@ import {
   CustomHomeScreen as iCustomHomeScreen,
   HomeViewEmptyState as iHomeViewEmptyState,
   // $FlowExpectedError[cannot-resolve-module] external file
-} from '../../memberpass/app/evernym-sdk/home'
+} from '../../../../app/evernym-sdk/home'
 
 import {
   HEADLINE as CREDENTIALS_HEADLINE,
@@ -134,18 +134,18 @@ import {
   SHOW_CREDENTIAL_HEADLINE,
   CustomShowCredentialModal as iCustomShowCredentialModal,
   // $FlowExpectedError[cannot-resolve-module] external file
-} from '../../memberpass/app/evernym-sdk/credentials'
+} from '../../../../app/evernym-sdk/credentials'
 
 import {
   HEADLINE as QUESTION_HEADLINE,
   CustomQuestionModal as iCustomQuestionModal,
   // $FlowExpectedError[cannot-resolve-module] external file
-} from '../../memberpass/app/evernym-sdk/question-dialog'
+} from '../../../../app/evernym-sdk/question-dialog'
 
 import {
   CustomCredentialDetailsScreen as iCustomCredentialDetailsScreen,
   // $FlowExpectedError[cannot-resolve-module] external file
-} from '../../memberpass/app/evernym-sdk/credentials'
+} from '../../../../app/evernym-sdk/credentials'
 
 import {
   HEADLINE as INVITE_ACTION_HEADLINE,
@@ -153,7 +153,7 @@ import {
   DENY_BUTTON_TEXT as INVITE_ACTION_DENY_BUTTON_TEXT,
   CustomInviteActionModal as iCustomInviteActionModal,
   // $FlowExpectedError[cannot-resolve-module] external file
-} from '../../memberpass/app/evernym-sdk/invite-action'
+} from '../../../../app/evernym-sdk/invite-action'
 
 import {
   RECEIVED_PROOF_HEADLINE,
@@ -161,7 +161,7 @@ import {
   SHARED_PROOF_HEADLINE,
   CustomSharedProofModal as iCustomSharedProofModal,
   // $FlowExpectedError[cannot-resolve-module] external file
-} from '../../memberpass/app/evernym-sdk/proof'
+} from '../../../../app/evernym-sdk/proof'
 
 import {
   HEADLINE as PROOF_PROPOSAL_HEADLINE,
@@ -169,7 +169,7 @@ import {
   DENY_BUTTON_TEXT as PROOF_PROPOSAL_DENY_BUTTON_TEXT,
   CustomProofProposalModal as iCustomProofProposalModal,
   // $FlowExpectedError[cannot-resolve-module] external file
-} from '../../memberpass/app/evernym-sdk/proof-proposal'
+} from '../../../../app/evernym-sdk/proof-proposal'
 
 export const appName = APP_NAME || 'appName'
 export const appLogo = APP_LOGO
@@ -205,9 +205,9 @@ export const proofRequestHeadline = PROOF_REQUEST_HEADLINE || 'Proof Request'
 export const proofRequestAcceptButtonText = PROOF_REQUEST_ACCEPT_BUTTON_TEXT
 export const proofRequestDenyButtonText = PROOF_REQUEST_DENY_BUTTON_TEXT
 
-export { COLORS as customColors } from '../../memberpass/app/evernym-sdk/colors'
-export { FONT_FAMILY as customFontFamily } from '../../memberpass/app/evernym-sdk/font'
-export { FONT_SIZES as customFontSizes } from '../../memberpass/app/evernym-sdk/font'
+export { COLORS as customColors } from '../../../../app/evernym-sdk/colors'
+export { FONT_FAMILY as customFontFamily } from '../../../../app/evernym-sdk/font'
+export { FONT_SIZES as customFontSizes } from '../../../../app/evernym-sdk/font'
 
 export const androidEulaLocal = ANDROID_EULA_LOCAL
 export const androidEulaUrl =
