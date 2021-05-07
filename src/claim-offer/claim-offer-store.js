@@ -53,6 +53,7 @@ import type {
   ClaimOfferDeletedAction,
   DeleteClaimOfferAction,
   SerializedClaimOffers,
+  ClaimOfferReceivedAction,
 } from './type-claim-offer'
 import type {
   AdditionalDataPayload,
@@ -730,6 +731,17 @@ export function* watchDeleteClaimOffer(): any {
   yield takeEvery(DELETE_CLAIM_OFFER, deleteClaimOfferSaga)
 }
 
+function* claimOfferReceivedSaga(
+  action: ClaimOfferReceivedAction
+): Generator<*, *, *> {
+  // accepting of credential offer requires pool ledger connectivity.
+  yield* ensureVcxInitAndPoolConnectSuccess()
+}
+
+export function* watchClaimOfferReceived(): any {
+  yield takeEvery(CLAIM_OFFER_RECEIVED, claimOfferReceivedSaga)
+}
+
 export function* watchClaimOffer(): any {
   yield all([
     watchClaimOfferAccepted(),
@@ -737,6 +749,7 @@ export function* watchClaimOffer(): any {
     watchClaimStorageSuccess(),
     watchClaimStorageFail(),
     watchDeleteClaimOffer(),
+    watchClaimOfferReceived(),
   ])
 }
 
