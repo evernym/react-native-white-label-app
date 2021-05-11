@@ -123,9 +123,11 @@ const screen =
   CustomProofProposalModal && CustomProofProposalModal.screen ||
   ProofProposalComponent
 
+const headline = proofProposalHeadline || 'Proof Proposal'
+
 const navigationOptions =
   CustomProofProposalModal && CustomProofProposalModal.navigationOptions ||
-  modalOptions(proofProposalHeadline, 'CloseIcon')
+  modalOptions(headline, 'CloseIcon')
 
 export const ProofProposalModal = {
   routeName: proofProposalRoute,

@@ -70,9 +70,11 @@ const screen =
   CustomSharedProofModal && CustomSharedProofModal.screen ||
   ProofRequestModal
 
+const headline = sharedProofHeadline || 'Proof'
+
 const navigationOptions =
   CustomSharedProofModal && CustomSharedProofModal.navigationOptions ||
-  modalOptions(sharedProofHeadline, 'CloseIcon')
+  modalOptions(headline, 'CloseIcon')
 
 export const proofScreen = {
   routeName: modalContentProofShared,

@@ -444,10 +444,12 @@ const screen =
   (CustomCredentialOfferModal && CustomCredentialOfferModal.screen) ||
   ClaimOfferModal
 
+const headline = credentialOfferHeadline || 'Credential Offer'
+
 const navigationOptions =
   (CustomCredentialOfferModal &&
     CustomCredentialOfferModal.navigationOptions) ||
-  modalOptions(credentialOfferHeadline, 'CloseIcon')
+  modalOptions(headline, 'CloseIcon')
 
 export const claimOfferScreen = {
   routeName: claimOfferRoute,

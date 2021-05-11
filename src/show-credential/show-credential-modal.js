@@ -92,9 +92,11 @@ const screen =
   (CustomShowCredentialModal && CustomShowCredentialModal.screen) ||
   ShowCredentialModal
 
+const headline = showCredentialHeadline || 'Show Credential'
+
 const navigationOptions =
   (CustomShowCredentialModal && CustomShowCredentialModal.navigationOptions) ||
-  modalOptions(showCredentialHeadline, 'CloseIcon')
+  modalOptions(headline, 'CloseIcon')
 
 export const ShowCredentialScreen = {
   routeName: showCredentialRoute,
