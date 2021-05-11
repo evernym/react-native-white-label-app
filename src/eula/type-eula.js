@@ -5,7 +5,9 @@ import { androidEulaLocal, androidEulaUrl, iosEulaLocal, iosEulaUrl } from '../e
 const isAndroid = Platform.OS === 'android'
 export const EULA_ACCEPT = 'EULA_ACCEPT'
 export const SHARE_EULA = 'SHARE_EULA'
-export const EULA_URL = isAndroid ? androidEulaUrl : iosEulaUrl
+export const EULA_URL = isAndroid ?
+  androidEulaUrl || 'https://www.connect.me/google.html' :
+  iosEulaUrl || 'https://www.connect.me/ios_eula.html'
 export const localEulaSource = isAndroid ? androidEulaLocal : iosEulaLocal
 export const STORAGE_KEY_EULA_ACCEPTANCE = 'STORAGE_KEY_EULA_ACCEPTANCE'
 export const HYDRATE_EULA_ACCEPT = 'HYDRATE_EULA_ACCEPT'

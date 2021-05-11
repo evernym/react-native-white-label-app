@@ -79,9 +79,11 @@ const screen =
   CustomReceivedProofModal && CustomReceivedProofModal.screen ||
   ReceivedProofComponent
 
+const headline = receivedProofHeadline || 'Proof'
+
 const navigationOptions =
   CustomReceivedProofModal && CustomReceivedProofModal.navigationOptions ||
-  modalOptions(receivedProofHeadline, 'CloseIcon')
+  modalOptions(headline, 'CloseIcon')
 
 export const ReceivedProofScreen = {
   routeName: receivedProofRoute,

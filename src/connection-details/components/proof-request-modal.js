@@ -102,9 +102,11 @@ const screen =
   (CustomProofRequestModal && CustomProofRequestModal.screen) ||
   ProofRequestModal
 
+const headline = proofRequestHeadline || 'Proof Request'
+
 const navigationOptions =
   (CustomProofRequestModal && CustomProofRequestModal.navigationOptions) ||
-  modalOptions(proofRequestHeadline, 'CloseIcon')
+  modalOptions(headline, 'CloseIcon')
 
 export const proofRequestScreen = {
   routeName: proofRequestRoute,

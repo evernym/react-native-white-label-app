@@ -25,6 +25,11 @@ import {
 import { Button } from '../components/buttons/button'
 import { GRID_ICON } from '../common/icons'
 
+const useShowCredentialFeature =
+  typeof showCredential === 'boolean'
+    ? showCredential
+    : true
+
 const CredentialDetails = (props: CredentialDetailsProps) => {
   const {
     credentialName,
@@ -135,7 +140,7 @@ const CredentialDetails = (props: CredentialDetailsProps) => {
               />
             </View>
           </ScrollView>
-          {showCredential &&
+          {useShowCredentialFeature &&
           <Button
             onPress={show}
             label="Show"

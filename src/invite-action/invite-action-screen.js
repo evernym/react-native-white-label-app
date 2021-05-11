@@ -132,9 +132,11 @@ const screen =
   (CustomInviteActionModal && CustomInviteActionModal.screen) ||
   InviteActionComponent
 
+const headline = inviteActionHeadline || 'New Message'
+
 const navigationOptions =
   (CustomInviteActionModal && CustomInviteActionModal.navigationOptions) ||
-  modalOptions(inviteActionHeadline, 'CloseIcon')
+  modalOptions(headline, 'CloseIcon')
 
 export const inviteActionScreen = {
   routeName: inviteActionRoute,
