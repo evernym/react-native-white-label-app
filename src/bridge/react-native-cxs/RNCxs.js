@@ -867,7 +867,7 @@ export const checkIfAnimationToUse = memoize(function () {
 
 export async function getBiometricError(): Promise<string> {
   if (Platform.OS === 'ios') {
-    return await RNIndy.getBiometricError()
+    return await RNUtils.getBiometricError()
   }
   return ''
 }
