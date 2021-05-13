@@ -133,14 +133,14 @@ import {
 import { appName, CustomLogUtils } from '../external-imports'
 import { SERVER_ENVIRONMENT_CHANGED, SWITCH_ENVIRONMENT } from '../switch-environment/type-switch-environment'
 
-const { RNIndy } = NativeModules
+import { Logger } from 'react-native-vcx-wrapper'
 
 export async function setVcxLogger(
   logLevel: string,
   uniqueId: string,
   MAX_ALLOWED_FILE_BYTES: number
 ): Promise<string> {
-  return await RNIndy.setVcxLogger(logLevel, uniqueId, MAX_ALLOWED_FILE_BYTES)
+  return await Logger.setVcxLogger(logLevel, uniqueId, MAX_ALLOWED_FILE_BYTES)
 }
 
 export async function writeToVcxLog(
@@ -149,7 +149,7 @@ export async function writeToVcxLog(
   logMessage: string,
   logFilePath: string
 ): Promise<void> {
-  return await RNIndy.writeToVcxLog(
+  return await Logger.writeToLog(
     loggerName,
     levelName,
     logMessage,
@@ -161,7 +161,7 @@ export async function encryptVcxLog(
   logFilePath: string,
   encryptionKey: string
 ): Promise<string> {
-  return await RNIndy.encryptVcxLog(logFilePath, encryptionKey)
+  return await Logger.encryptLog(logFilePath, encryptionKey)
 }
 
 export const customLogger = {

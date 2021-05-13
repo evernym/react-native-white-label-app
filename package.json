@@ -35,7 +35,8 @@
   },
   "license": "SEE LICENSE IN LICENSE.txt",
   "readmeFilename": "README.md",
-  "peerDependencies": {
+  "dependencies": {
+    "react-native-vcx-wrapper": "../indy-sdk/vcx/wrappers/react-native",
     "@react-native-community/async-storage": "^1.11.0",
     "@react-native-community/blur": "^3.6.0",
     "@react-native-community/masked-view": "^0.1.10",
