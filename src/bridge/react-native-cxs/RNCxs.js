@@ -65,7 +65,9 @@ import {
 
 const { RNUtils } = NativeModules
 
-// Agent
+/*
+ * Agent API
+ */
 export async function updatePushTokenVcx(pushTokenConfig: CxsPushTokenConfig) {
   return await Agent.updateInfo(
     JSON.stringify(convertCxsPushConfigToVcxPushTokenConfig(pushTokenConfig))
@@ -144,22 +146,6 @@ export async function createOneTimeInfoWithToken(
   }
 }
 
-export async function decryptWalletFile(
-  walletPath: string,
-  decryptionKey: string
-): Promise<number> {
-  const { walletName } = await getWalletPoolName()
-  const wallet_key = await getWalletKey()
-
-  const config = JSON.stringify({
-    wallet_name: walletName,
-    wallet_key,
-    exported_wallet_path: walletPath,
-    backup_key: decryptionKey,
-  })
-  return await Agent.import(config)
-}
-
 export async function downloadMessages(
   messageStatus: string,
   uid_s: ?string,
@@ -187,7 +173,9 @@ export async function createPairwiseAgent(): Promise<string> {
   return JSON.parse(agentInfo)
 }
 
-// Cloud Wallet Backup
+/*
+ * Cloud Wallet Backup API
+ */
 export async function restoreWallet(
   walletPath: string,
   decryptionKey: string
@@ -227,7 +215,9 @@ export async function updateWalletBackupStateWithMessage(
   )
 }
 
-// Connection
+/*
+ * Connection API
+ */
 export async function acceptInvitationVcx(
   connectionHandle: number,
   agentInfo: PairwiseAgent | null,
@@ -452,7 +442,9 @@ export async function createOutOfBandConnectionInvitation(
   }
 }
 
-// Credential
+/*
+ * Credential API
+ */
 export async function credentialCreateWithOffer(
   sourceId: string,
   credentialOffer: string
@@ -599,7 +591,9 @@ export async function createCredentialWithAriesOfferObject(
   }
 }
 
-// Library
+/*
+ * Library API
+ */
 export async function vcxShutdown(deletePool: boolean): Promise<boolean> {
   await Library.shutdown(deletePool)
 
@@ -648,7 +642,9 @@ export async function simpleInit(): Promise<boolean> {
   return await Library.init(JSON.stringify(initConfig))
 }
 
-// Proof
+/*
+ * Proof
+ */
 export async function getMatchingCredentials(
   proofHandle: number
 ): Promise<string> {
@@ -698,7 +694,9 @@ export async function proofReject(
   return Proof.reject(proofHandle, connectionHandle)
 }
 
-// Verifier
+/*
+ * Proof Verifier API
+ */
 export async function createProofVerifierWithProposal(presentationProposal: string, name: string): Promise<string> {
   return Verifier.createWithProposal(
     uuid(),
@@ -731,7 +729,25 @@ export async function proofVerifierGetProofRequest(handle: number): Promise<stri
   return Verifier.getProofRequestMessage(handle,)
 }
 
-// Wallet
+/*
+ * Wallet API
+ */
+export async function decryptWalletFile(
+  walletPath: string,
+  decryptionKey: string
+): Promise<number> {
+  const { walletName } = await getWalletPoolName()
+  const wallet_key = await getWalletKey()
+
+  const config = JSON.stringify({
+    wallet_name: walletName,
+    wallet_key,
+    exported_wallet_path: walletPath,
+    backup_key: decryptionKey,
+  })
+  return await Wallet.import(config)
+}
+
 export async function sendTokenAmount(
   tokenAmount: string,
   recipientWalletAddress: string
@@ -751,13 +767,6 @@ export async function encryptWallet({
     encryptedFileLocation,
     recoveryPassphrase.hash
   )
-}
-
-export async function copyToPath(
-  uri: string,
-  destPath: string
-): Promise<number> {
-  return await RNUtils.copyToPath(uri, destPath)
 }
 
 export async function getWalletTokenInfo(): Promise<WalletTokenInfo> {
@@ -824,7 +833,16 @@ export async function getWalletHistory(): Promise<WalletHistoryEvent[]> {
   return new Promise.resolve(walletHistoryData)
 }
 
-// Utils
+/*
+ * Utils API
+ */
+export async function copyToPath(
+  uri: string,
+  destPath: string
+): Promise<number> {
+  return await RNUtils.copyToPath(uri, destPath)
+}
+
 export async function getColor(imagePath: string): Promise<Array<string>> {
   return RNUtils.getColor(imagePath)
 }
