@@ -147,10 +147,10 @@ public class RNUtils extends ReactContextBaseJavaModule {
         android.os.Process.killProcess(android.os.Process.myPid());
     }
 
-    @Override
+    @ReactMethod
     public @Nullable
     Map<String, Object> totalMemory() {
-    HashMap<String, Object> constants = new HashMap<String, Object>();
+      HashMap<String, Object> constants = new HashMap<String, Object>();
       ActivityManager actManager = (ActivityManager) reactContext.getSystemService(Context.ACTIVITY_SERVICE);
       MemoryInfo memInfo = new ActivityManager.MemoryInfo();
       actManager.getMemoryInfo(memInfo);
