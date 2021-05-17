@@ -148,14 +148,17 @@ public class RNUtils extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public @Nullable
-    Map<String, Object> totalMemory() {
-      HashMap<String, Object> constants = new HashMap<String, Object>();
-      ActivityManager actManager = (ActivityManager) reactContext.getSystemService(Context.ACTIVITY_SERVICE);
-      MemoryInfo memInfo = new ActivityManager.MemoryInfo();
-      actManager.getMemoryInfo(memInfo);
-      constants.put("totalMemory", memInfo.totalMem);
-      return constants;
+    public void totalMemory(Promise promise) {
+      try {
+        HashMap<String, Object> constants = new HashMap<String, Object>();
+        ActivityManager actManager = (ActivityManager) reactContext.getSystemService(Context.ACTIVITY_SERVICE);
+        MemoryInfo memInfo = new ActivityManager.MemoryInfo();
+        actManager.getMemoryInfo(memInfo);
+        constants.put("totalMemory", memInfo.totalMem);
+        promise.resolve(constants);
+      } catch(Exception e) {
+        promise.reject(e);
+      }
     }
 
     @ReactMethod
