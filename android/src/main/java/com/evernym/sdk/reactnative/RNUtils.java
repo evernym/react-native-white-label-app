@@ -22,7 +22,6 @@ import android.content.ContextWrapper;
 import android.net.Uri;
 import android.os.Environment;
 
-import com.evernym.sdk.reactnative.BridgeUtils;
 import com.evernym.sdk.vcx.VcxException;
 import com.evernym.sdk.vcx.wallet.WalletApi;
 import com.evernym.sdk.vcx.connection.ConnectionApi;
@@ -76,8 +75,10 @@ import javax.annotation.Nullable;
 
 public class RNUtils extends ReactContextBaseJavaModule {
     public static final String REACT_CLASS = "RNUtils";
+    private static ReactApplicationContext reactContext = null;
+    private static final int BUFFER = 2048;
 
-    public RNIndyModule(ReactApplicationContext context) {
+    public RNUtils(ReactApplicationContext context) {
         super(context);
 
         reactContext = context;
@@ -148,17 +149,13 @@ public class RNUtils extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void totalMemory(Promise promise) {
-      try {
-        HashMap<String, Object> constants = new HashMap<String, Object>();
-        ActivityManager actManager = (ActivityManager) reactContext.getSystemService(Context.ACTIVITY_SERVICE);
-        MemoryInfo memInfo = new ActivityManager.MemoryInfo();
-        actManager.getMemoryInfo(memInfo);
-        constants.put("totalMemory", memInfo.totalMem);
-        promise.resolve(constants);
-      } catch(Exception e) {
-        promise.reject(e);
-      }
+    public HashMap<String, Object> totalMemory() {
+      HashMap<String, Object> constants = new HashMap<String, Object>();
+      ActivityManager actManager = (ActivityManager) reactContext.getSystemService(Context.ACTIVITY_SERVICE);
+      MemoryInfo memInfo = new ActivityManager.MemoryInfo();
+      actManager.getMemoryInfo(memInfo);
+      constants.put("totalMemory", memInfo.totalMem);
+      return constants;
     }
 
     @ReactMethod
@@ -218,7 +215,6 @@ public class RNUtils extends ReactContextBaseJavaModule {
             promise.reject("Failed to fetch URL", "Failed to fetch URL");
         } catch (Exception e) {
             e.printStackTrace();
-            Log.e(TAG, "getRequestRedirectionUrl - Error: ", e);
             promise.reject(e.toString(), "");
         }
     }
@@ -253,7 +249,6 @@ public class RNUtils extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void getGenesisPathWithConfig(String poolConfig, String fileName, Promise promise) {
-        Log.d(TAG, "getGenesisPathWithConfig()");
         ContextWrapper cw = new ContextWrapper(reactContext);
         File genFile = new File(cw.getFilesDir().toString() + "/genesis_" + fileName + ".txn");
         if (genFile.exists()) {

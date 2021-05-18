@@ -859,11 +859,11 @@ export async function getLedgerFees(): Promise<LedgerFeesData> {
   return convertVcxLedgerFeesToLedgerFees(fees)
 }
 
-export const checkIfAnimationToUse = memoize(function () {
+export function checkIfAnimationToUse() {
   return Platform.OS === 'android'
     ? RNUtils.totalMemory() / smallDeviceMemory < 1
     : false
-})
+}
 
 export async function getBiometricError(): Promise<string> {
   if (Platform.OS === 'ios') {
