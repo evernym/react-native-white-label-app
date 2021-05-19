@@ -140,7 +140,11 @@ export async function setVcxLogger(
   uniqueId: string,
   MAX_ALLOWED_FILE_BYTES: number
 ): Promise<string> {
-  return await Logger.setVcxLogger(logLevel, uniqueId, MAX_ALLOWED_FILE_BYTES)
+  return await Logger.setLogger({
+    logLevel,
+    uniqueIdentifier: uniqueId,
+    maxAllowedFileBytes: MAX_ALLOWED_FILE_BYTES
+  })
 }
 
 export async function writeToVcxLog(
@@ -149,19 +153,22 @@ export async function writeToVcxLog(
   logMessage: string,
   logFilePath: string
 ): Promise<void> {
-  return await Logger.writeToLog(
+  return await Logger.writeToLog({
     loggerName,
-    levelName,
-    logMessage,
+    logLevel: levelName,
+    message: logMessage,
     logFilePath
-  )
+  })
 }
 
-export async function encryptVcxLog(
+export async function encryptLog(
   logFilePath: string,
   encryptionKey: string
 ): Promise<string> {
-  return await Logger.encryptLog(logFilePath, encryptionKey)
+  return await Logger.encryptLog({
+    logFilePath,
+    key
+  })
 }
 
 export const customLogger = {

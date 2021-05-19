@@ -69,23 +69,23 @@ const { RNUtils } = NativeModules
  * Agent API
  */
 export async function updatePushTokenVcx(pushTokenConfig: CxsPushTokenConfig) {
-  return await Agent.updateInfo(
-    JSON.stringify(convertCxsPushConfigToVcxPushTokenConfig(pushTokenConfig))
-  )
+  return await Agent.updateInfo({
+    config: JSON.stringify(convertCxsPushConfigToVcxPushTokenConfig(pushTokenConfig)),
+  })
 }
 
 export async function createOneTimeInfo(
-  agencyConfig: AgencyPoolConfig
+  agencyConfig: AgencyPoolConfig,
 ): Promise<[null | string, null | UserOneTimeInfo]> {
   try {
     const walletPoolName = await getWalletPoolName()
     const vcxProvisionConfig: VcxProvision = await convertAgencyConfigToVcxProvision(
       agencyConfig,
-      walletPoolName
+      walletPoolName,
     )
-    const provisionVcxResult: string = await Agent.provision(
-      JSON.stringify(vcxProvisionConfig)
-    )
+    const provisionVcxResult: string = await Agent.provision({
+      agencyConfig: JSON.stringify(vcxProvisionConfig),
+    })
     const provisionResult: VcxProvisionResult = JSON.parse(provisionVcxResult)
     return [null, convertVcxProvisionResultToUserOneTimeInfo(provisionResult)]
   } catch (e) {
@@ -96,13 +96,13 @@ export async function createOneTimeInfo(
 export async function getProvisionToken(
   agencyConfig: AgencyPoolConfig,
   comMethod: { type: number, id: string, value: string },
-  sponsorId: string
+  sponsorId: string,
 ): Promise<[null | string, null | string]> {
   try {
     const walletPoolName = await getWalletPoolName()
     const vcxConfig: VcxProvision = await convertAgencyConfigToVcxProvision(
       agencyConfig,
-      walletPoolName
+      walletPoolName,
     )
     const vcxProvisionConfig = {
       vcx_config: vcxConfig,
@@ -111,9 +111,9 @@ export async function getProvisionToken(
       sponsee_id: comMethod.id,
       sponsor_id: sponsorId,
     }
-    let provisionToken: string = await Agent.getProvisionToken(
-      JSON.stringify(vcxProvisionConfig)
-    )
+    let provisionToken: string = await Agent.getProvisionToken({
+      agencyConfig: JSON.stringify(vcxProvisionConfig),
+    })
 
     let tempProvisionToken = JSON.parse(provisionToken)
     tempProvisionToken['sponseeId'] = comMethod.id
@@ -127,18 +127,18 @@ export async function getProvisionToken(
 
 export async function createOneTimeInfoWithToken(
   agencyConfig: AgencyPoolConfig,
-  token: string
+  token: string,
 ): Promise<[null | string, null | UserOneTimeInfo]> {
   try {
     const walletPoolName = await getWalletPoolName()
     const vcxProvisionConfig: VcxProvision = await convertAgencyConfigToVcxProvision(
       agencyConfig,
-      walletPoolName
+      walletPoolName,
     )
-    const provisionVcxResult: string = await Agent.provisionWithToken(
-      JSON.stringify(vcxProvisionConfig),
-      token
-    )
+    const provisionVcxResult: string = await Agent.provisionWithToken({
+      agencyConfig: JSON.stringify(vcxProvisionConfig),
+      token,
+    })
     const provisionResult: VcxProvisionResult = JSON.parse(provisionVcxResult)
     return [null, convertVcxProvisionResultToUserOneTimeInfo(provisionResult)]
   } catch (e) {
@@ -149,23 +149,33 @@ export async function createOneTimeInfoWithToken(
 export async function downloadMessages(
   messageStatus: string,
   uid_s: ?string,
-  pwdids: string
+  pwdids: string,
 ): Promise<string> {
-  return await Agent.downloadMessages(messageStatus, uid_s, pwdids)
+  return await Agent.downloadMessages({
+    messageStatus,
+    uids: uid_s,
+    pwdids,
+  })
 }
 
 export async function vcxGetAgentMessages(
   messageStatus: string,
-  uid_s: ?string
+  uid_s: ?string,
 ): Promise<string> {
-  return await Agent.downloadAgentMessages(messageStatus, uid_s)
+  return await Agent.downloadAgentMessages({
+    messageStatus,
+    uids: uid_s,
+  })
 }
 
 export async function updateMessages(
   messageStatus: string,
-  pwdidsJson: string
+  pwdidsJson: string,
 ): Promise<number> {
-  return await Agent.updateMessages(messageStatus, pwdidsJson)
+  return await Agent.updateMessages({
+    messageStatus,
+    pwdids: pwdidsJson,
+  })
 }
 
 export async function createPairwiseAgent(): Promise<string> {
@@ -178,7 +188,7 @@ export async function createPairwiseAgent(): Promise<string> {
  */
 export async function restoreWallet(
   walletPath: string,
-  decryptionKey: string
+  decryptionKey: string,
 ): Promise<number> {
   const { walletName } = await getWalletPoolName()
   const wallet_key = await getWalletKey()
@@ -188,31 +198,38 @@ export async function restoreWallet(
     exported_wallet_path: walletPath,
     backup_key: decryptionKey,
   })
-  return await CloudWalletBackup.restore(config)
+  return await CloudWalletBackup.restore({
+    config,
+  })
 }
 
 export async function createWalletBackup(
   sourceID: string,
-  backupKey: string
+  backupKey: string,
 ): Promise<number> {
-  return await CloudWalletBackup.create(sourceID, backupKey)
+  return await CloudWalletBackup.create({
+    backupKey,
+  })
 }
 
 export async function backupWalletBackup(
   walletBackupHandle: number,
-  path: string
+  path: string,
 ): Promise<number> {
-  return await CloudWalletBackup.send(walletBackupHandle, path)
+  return await CloudWalletBackup.send({
+    handle: walletBackupHandle,
+    path,
+  })
 }
 
 export async function updateWalletBackupStateWithMessage(
-  walletBackupHandle: number,
-  message: string
+  handle: number,
+  message: string,
 ): Promise<number> {
-  return await CloudWalletBackup.updateStateWithMessage(
-    walletBackupHandle,
-    message
-  )
+  return await CloudWalletBackup.updateStateWithMessage({
+    handle,
+    message,
+  })
 }
 
 /*
@@ -224,7 +241,10 @@ export async function acceptInvitationVcx(
 ): Promise<GenericObject> {
   const connectionOption = agentInfo ? { pairwise_agent_info: agentInfo } : {}
 
-  const invitation = await Connection.connect(connectionHandle, JSON.stringify(connectionOption))
+  const invitation = await Connection.connect({
+    handle: connectionHandle,
+    options: JSON.stringify(connectionOption),
+  })
   const serializedConnection: string = await serializeConnection(connectionHandle)
 
   const {
@@ -244,57 +264,56 @@ export async function acceptInvitationVcx(
   return {
     connection: convertVcxConnectionToCxsConnection(data),
     serializedConnection,
-    invitation
+    invitation,
   }
 }
 
 export async function deleteConnection(connectionHandle: number) {
-  return await Connection.delete(connectionHandle)
+  return await Connection.delete({
+    handle: connectionHandle,
+  })
 }
 
 export async function createConnectionWithInvite(
-  invitation: InvitationPayload
+  invitation: InvitationPayload,
 ): Promise<number> {
   const { invite_details } = convertInvitationToVcxConnectionCreate(invitation)
-  return await Connection.createWithInvitation(
-    invitation.requestId,
-    JSON.stringify(invite_details)
-  )
+  return await Connection.createWithInvitation({
+    invitation: JSON.stringify(invite_details),
+  })
 }
 
 export async function createConnectionWithAriesInvite(
-  invitation: InvitationPayload
+  invitation: InvitationPayload,
 ): Promise<number> {
-  return await Connection.createWithInvitation(
-    invitation.requestId,
-    invitation.original
-  )
+  return await Connection.createWithInvitation({
+    invitation: invitation.original,
+  })
 }
 
 export async function createConnectionWithAriesOutOfBandInvite(
-  invitation: InvitationPayload
+  invitation: InvitationPayload,
 ): Promise<number> {
-  return await Connection.createWithOutofbandInvitation(
-    invitation.requestId,
-    invitation.original
-  )
+  return await Connection.createWithOutofbandInvitation({
+    invitation: invitation.original
+  })
 }
 
 export async function serializeConnection(
-  connectionHandle: number
+  handle: number,
 ): Promise<string> {
-  return await Connection.serialize(
-    connectionHandle
-  )
+  return await Connection.serialize({
+    handle,
+  })
 }
 
 // cache Promise of serializedString so that we don't call Bridge method again
-export const getHandleBySerializedConnection = memoize(async function (
-  serializedConnection: string
+export const getHandleBySerializedConnection = memoize(async function(
+  serialized: string,
 ): Promise<number> {
-  return await Connection.deserialize(
-    serializedConnection
-  )
+  return await Connection.deserialize({
+    serialized,
+  })
 })
 
 export async function connectionSendMessage(
@@ -304,7 +323,7 @@ export async function connectionSendMessage(
     messageType: string,
     messageTitle: string,
     refMessageId?: string,
-  }
+  },
 ): Promise<string> {
   const sendMessageOptions = JSON.stringify({
     msg_type: options.messageType,
@@ -314,21 +333,21 @@ export async function connectionSendMessage(
 
   const isAries = JSON.parse(options.message)['~thread']
 
-  const msgId: string = await Connection.sendMessage(
-    connectionHandle,
-    options.message,
-    sendMessageOptions
-  )
+  const msgId: string = await Connection.sendMessage({
+    handle: connectionHandle,
+    message: options.message,
+    options: sendMessageOptions,
+  })
 
   // since we are calling an external API, we need to make sure that
   // the data that we are receiving is the data that we need
   if (isAries && typeof msgId !== 'string') {
     throw new Error(
-      `Invalid data received from wrapper. Excepted msgId, got ${msgId}`
+      `Invalid data received from wrapper. Excepted msgId, got ${msgId}`,
     )
   } else if (!isAries && (typeof msgId !== 'string' || msgId.length === 0)) {
     throw new Error(
-      `Invalid data received from wrapper. Excepted msgId, got ${msgId}`
+      `Invalid data received from wrapper. Excepted msgId, got ${msgId}`,
     )
   }
 
@@ -339,14 +358,14 @@ export async function connectionSignData(
   connectionHandle: number,
   data: string,
   base64EncodingOption: string = 'NO_WRAP',
-  encodeBeforeSigning: boolean = true
+  encodeBeforeSigning: boolean = true,
 ): Promise<SignDataResponse> {
-  const response: SignDataResponse = await Connection.signData(
-    connectionHandle,
+  const response: SignDataResponse = await Connection.signData({
+    handle: connectionHandle,
     data,
     base64EncodingOption,
-    encodeBeforeSigning
-  )
+    encodeBeforeSigning,
+  })
 
   // external API data needs to be validated
   if (!schemaValidator.validate(signDataResponseSchema, response)) {
@@ -359,15 +378,15 @@ export async function connectionSignData(
 }
 
 export async function connectionVerifySignature(
-  connectionHandle: number,
+  handle: number,
   data: string,
-  signature: string
+  signature: string,
 ): Promise<boolean> {
-  const response: boolean = await Connection.verifySignature(
-    connectionHandle,
+  const response: boolean = await Connection.verifySignature({
+    handle,
     data,
-    signature
-  )
+    signature,
+  })
 
   if (typeof response !== 'boolean') {
     throw new Error(`Expected response type was boolean but got ${response}`)
@@ -378,41 +397,58 @@ export async function connectionVerifySignature(
 
 export async function connectionRedirect(
   redirectConnectionHandle: number,
-  connectionHandle: number
+  connectionHandle: number,
 ): Promise<void> {
-  return Connection.redirect(redirectConnectionHandle, connectionHandle)
+  return Connection.redirect({
+    handle: redirectConnectionHandle,
+    existingConnectionHandle: connectionHandle,
+  })
 }
 
 export async function connectionReuse(
   connectionHandle: number,
-  invite: AriesOutOfBandInvite
+  invite: AriesOutOfBandInvite,
 ): Promise<void> {
-  return Connection.reuse(connectionHandle, JSON.stringify(invite))
+  return Connection.reuse({
+    handle: connectionHandle,
+    invitation: JSON.stringify(invite),
+  })
 }
 
 export async function connectionGetState(
-  connectionHandle: number
+  connectionHandle: number,
 ): Promise<number> {
-  return Connection.getState(connectionHandle)
+  return Connection.getState({
+    handle: connectionHandle,
+  })
 }
 
 export async function connectionUpdateState(connectionHandle: number) {
-  return Connection.updateState(connectionHandle)
+  return Connection.updateState({
+    handle: connectionHandle,
+  })
 }
 
 export async function connectionUpdateStateWithMessage(
   connectionHandle: number,
-  message: string
+  message: string,
 ) {
-  return Connection.updateStateWithMessage(connectionHandle, message)
+  return Connection.updateStateWithMessage({
+    handle: connectionHandle,
+    message,
+  })
 }
 
 export async function connectionSendAnswer(
-  connectionHandle: number,
+  handle: number,
   question: string,
-  answer: string
+  answer: string,
 ): Promise<void> {
-  return await Connection.sendAnswer(connectionHandle, question, answer)
+  return await Connection.sendAnswer({
+    handle,
+    question,
+    answer,
+  })
 }
 
 export async function createOutOfBandConnectionInvitation(
@@ -421,19 +457,18 @@ export async function createOutOfBandConnectionInvitation(
   attachment?: string | null,
   agentInfo: PairwiseAgent | null,
 ): Promise<GenericObject> {
-  const connectionHandle = await Connection.createOutOfBandConnectionInvitation(
-    uuid(),
-    null,
+  const connectionHandle = await Connection.createOutOfBandConnectionInvitation({
     goal,
+    goalCode: '',
     handshake,
-    attachment
-  )
+    attachment,
+  })
 
   let {
     connection: pairwiseInfo,
     serializedConnection: vcxSerializedConnection,
     invitation,
-  } =  await acceptInvitationVcx(connectionHandle, agentInfo)
+  } = await acceptInvitationVcx(connectionHandle, agentInfo)
 
   return {
     pairwiseInfo,
@@ -447,61 +482,69 @@ export async function createOutOfBandConnectionInvitation(
  */
 export async function credentialCreateWithOffer(
   sourceId: string,
-  credentialOffer: string
+  offer: string,
 ): Promise<number> {
-  return await Credential.createWithOffer(sourceId, credentialOffer)
+  return await Credential.createWithOffer({
+    offer,
+  })
 }
 
 export async function serializeClaimOffer(
-  claimHandle: number
+  handle: number,
 ): Promise<string> {
-  return await Credential.serialize(
-    claimHandle
-  )
+  return await Credential.serialize({
+    handle,
+  })
 }
 
-export const getClaimHandleBySerializedClaimOffer = memoize(async function (
-  serializedClaimOffer: string
+export const getClaimHandleBySerializedClaimOffer = memoize(async function(
+  serialized: string,
 ): Promise<number> {
-  return await Credential.deserialize(
-    serializedClaimOffer
-  )
+  return await Credential.deserialize({
+    serialized,
+  })
 })
 
 export async function sendClaimRequest(
-  claimHandle: number,
+  handle: number,
   connectionHandle: number,
-  paymentHandle: number
+  paymentHandle: number,
 ): Promise<void> {
-  return await Credential.sendRequest(
-    claimHandle,
+  return await Credential.sendRequest({
+    handle,
     connectionHandle,
-    paymentHandle
-  )
+    paymentHandle,
+  })
 }
 
-export async function updateClaimOfferState(claimHandle: number) {
-  return await Credential.updateState(claimHandle)
+export async function updateClaimOfferState(handle: number) {
+  return await Credential.updateState({
+    handle,
+  })
 }
 
 export async function updateClaimOfferStateWithMessage(
-  claimHandle: number,
-  message: string
+  handle: number,
+  message: string,
 ) {
-  return await Credential.updateStateWithMessage(
-    claimHandle,
-    message
-  )
+  return await Credential.updateStateWithMessage({
+    handle,
+    message,
+  })
 }
 
-export async function getClaimOfferState(claimHandle: number): Promise<number> {
-  return await Credential.getState(claimHandle)
+export async function getClaimOfferState(handle: number): Promise<number> {
+  return await Credential.getState({
+    handle,
+  })
 }
 
 export async function getClaimVcx(
-  claimHandle: number
+  handle: number,
 ): Promise<GetClaimVcxResult> {
-  const vcxClaimResult: string = await Credential.getCredentialMessage(claimHandle)
+  const vcxClaimResult: string = await Credential.getCredentialMessage({
+    handle,
+  })
   const vcxClaim: VcxClaimInfo = JSON.parse(vcxClaimResult)
   const { credential, credential_id } = vcxClaim
 
@@ -516,31 +559,39 @@ export async function getClaimVcx(
   }
 }
 
-export async function deleteCredential(credentialHandle: number) {
-  return await Credential.delete(credentialHandle)
+export async function deleteCredential(handle: number) {
+  return await Credential.delete({
+    handle,
+  })
 }
 
 export async function credentialReject(
-  credentialHandle: number,
+  handle: number,
   connectionHandle: number,
-  comment: string
+  comment: string,
 ): Promise<void> {
-  return Credential.reject(credentialHandle, connectionHandle, comment)
+  return Credential.reject({
+    handle,
+    connectionHandle,
+    comment,
+  })
 }
 
 export async function credentialGetPresentationProposal(
-  credentialHandle: number
+  handle: number,
 ): Promise<string> {
-  return Credential.getPresentationProposalMessage(credentialHandle)
+  return Credential.getPresentationProposalMessage({
+    handle,
+  })
 }
 
 export async function createCredentialWithProprietaryOffer(
   sourceId: string,
-  credentialOffer: string
+  credentialOffer: string,
 ): Promise<CxsCredentialOfferResult> {
   const credential_handle = await credentialCreateWithOffer(
     sourceId,
-    credentialOffer
+    credentialOffer,
   )
 
   const [vcxCredentialOffer, paymentDetails]: [
@@ -561,11 +612,11 @@ export async function createCredentialWithProprietaryOffer(
 
 export async function createCredentialWithAriesOffer(
   sourceId: string,
-  credentialOffer: string
+  credentialOffer: string,
 ): Promise<CxsCredentialOfferResult> {
   const credential_handle = await credentialCreateWithOffer(
     sourceId,
-    credentialOffer
+    credentialOffer,
   )
 
   const [vcxCredentialOffer]: [VcxCredentialOffer] = JSON.parse(credentialOffer)
@@ -578,11 +629,11 @@ export async function createCredentialWithAriesOffer(
 
 export async function createCredentialWithAriesOfferObject(
   sourceId: string,
-  credentialOffer: CredentialOffer
+  credentialOffer: CredentialOffer,
 ): Promise<CxsCredentialOfferResult> {
   const credential_handle = await credentialCreateWithOffer(
     sourceId,
-    JSON.stringify(credentialOffer)
+    JSON.stringify(credentialOffer),
   )
 
   return {
@@ -594,8 +645,10 @@ export async function createCredentialWithAriesOfferObject(
 /*
  * Library API
  */
-export async function vcxShutdown(deletePool: boolean): Promise<boolean> {
-  await Library.shutdown(deletePool)
+export async function vcxShutdown(deleteWallet: boolean): Promise<boolean> {
+  await Library.shutdown({
+    deleteWallet
+  })
 
   return true
 }
@@ -604,18 +657,20 @@ export async function init(config: CxsInitConfig): Promise<boolean> {
   const walletPoolName = await getWalletPoolName()
   const vcxInitConfig: VcxInitConfig = await convertCxsInitToVcxInit(
     config,
-    walletPoolName
+    walletPoolName,
   )
-  return await Library.init(JSON.stringify(vcxInitConfig))
+  return await Library.init({
+    config: JSON.stringify(vcxInitConfig),
+  })
 }
 
 export async function initPool(
   config: CxsPoolConfig,
-  fileName: string
+  fileName: string,
 ): Promise<boolean> {
   const genesis_path: string = await RNUtils.getGenesisPathWithConfig(
     config.poolConfig,
-    fileName
+    fileName,
   )
 
   const initConfig = {
@@ -626,9 +681,11 @@ export async function initPool(
   const walletPoolName = await getWalletPoolName()
   const vcxInitPoolConfig: VcxPoolInitConfig = await convertCxsPoolInitToVcxPoolInit(
     initConfig,
-    walletPoolName
+    walletPoolName,
   )
-  return await Library.initPool(JSON.stringify(vcxInitPoolConfig))
+  return await Library.initPool({
+    config: JSON.stringify(vcxInitPoolConfig)
+  })
 }
 
 // TODO:KS Need to rename this to something like walletInit
@@ -639,94 +696,123 @@ export async function simpleInit(): Promise<boolean> {
     wallet_name: walletPoolName.walletName,
     wallet_key,
   }
-  return await Library.init(JSON.stringify(initConfig))
+  return await Library.init({
+    config: JSON.stringify(initConfig)
+  })
 }
 
 /*
  * Proof
  */
 export async function getMatchingCredentials(
-  proofHandle: number
+  handle: number,
 ): Promise<string> {
-  return await Proof.getCredentialsForProofRequest(proofHandle)
+  return await Proof.getCredentialsForProofRequest({
+    handle
+  })
 }
 
 export async function generateProof(
-  proofHandle: number,
+  handle: number,
   selectedCredentials: string,
-  selfAttestedAttributes: string
+  selfAttestedAttributes: string,
 ): Promise<void> {
-  return await Proof.generateProof(
-    proofHandle,
+  return await Proof.generateProof({
+    handle,
     selectedCredentials,
-    selfAttestedAttributes
-  )
+    selfAttestedAttributes,
+  })
 }
 
 export async function sendProof(
-  proofHandle: number,
-  connectionHandle: number
+  handle: number,
+  connectionHandle: number,
 ): Promise<void> {
-  return await Proof.sendProof(proofHandle, connectionHandle)
+  return await Proof.sendProof({
+    handle,
+    connectionHandle
+  })
 }
 
 export async function proofCreateWithRequest(
   sourceId: string,
-  proofRequest: string
+  proofRequest: string,
 ): Promise<number> {
-  return await Proof.createWithRequest(sourceId, proofRequest)
+  return await Proof.createWithRequest({
+    proofRequest
+  })
 }
 
-export async function proofSerialize(proofHandle: number): Promise<string> {
-  return await Proof.serialize(proofHandle)
+export async function proofSerialize(handle: number): Promise<string> {
+  return await Proof.serialize({
+    handle,
+  })
 }
 
 export async function proofDeserialize(
-  serializedProofRequest: string
+  serialized: string,
 ): Promise<number> {
-  return await Proof.deserialize(serializedProofRequest)
+  return await Proof.deserialize({
+    serialized
+  })
 }
 
 export async function proofReject(
-  proofHandle: number,
-  connectionHandle: number
+  handle: number,
+  connectionHandle: number,
 ): Promise<void> {
-  return Proof.reject(proofHandle, connectionHandle)
+  return Proof.reject({
+    handle,
+    connectionHandle,
+  })
 }
 
 /*
  * Proof Verifier API
  */
 export async function createProofVerifierWithProposal(presentationProposal: string, name: string): Promise<string> {
-  return Verifier.createWithProposal(
-    uuid(),
+  return Verifier.createWithProposal({
     presentationProposal,
     name,
-  )
+  })
 }
 
 export async function proofVerifierSendRequest(handle: number, connectionHandle: number): Promise<null> {
-  return Verifier.sendProofRequest(handle, connectionHandle)
+  return Verifier.sendProofRequest({
+    handle,
+    connectionHandle
+  })
 }
 
 export async function proofVerifierSerialize(handle: number): Promise<string> {
-  return Verifier.serialize(handle)
+  return Verifier.serialize({
+    handle,
+  })
 }
 
 export async function proofVerifierDeserialize(serialized: number): Promise<number> {
-  return Verifier.deserialize(serialized,)
+  return Verifier.deserialize({
+    serialized
+  })
 }
 
 export async function proofVerifierUpdateStateWithMessage(handle: number, message: number): Promise<number> {
-  return Verifier.updateStateWithMessage(handle, message)
+  return Verifier.updateStateWithMessage({
+    handle,
+    message,
+  })
 }
 
 export async function proofVerifierGetProofMessage(handle: number): Promise<any> {
-  return Verifier.getProofMessage(handle)
+  return Verifier.getProofMessage({
+    handle
+  })
 }
 
 export async function proofVerifierGetProofRequest(handle: number): Promise<string> {
-  return Verifier.getProofRequestMessage(handle,)
+  return Verifier.getProofRequestMessage({
+    handle
+  })
 }
 
 /*
@@ -734,7 +820,7 @@ export async function proofVerifierGetProofRequest(handle: number): Promise<stri
  */
 export async function decryptWalletFile(
   walletPath: string,
-  decryptionKey: string
+  decryptionKey: string,
 ): Promise<number> {
   const { walletName } = await getWalletPoolName()
   const wallet_key = await getWalletKey()
@@ -745,41 +831,51 @@ export async function decryptWalletFile(
     exported_wallet_path: walletPath,
     backup_key: decryptionKey,
   })
-  return await Wallet.import(config)
+  return await Wallet.import({
+    config
+  })
 }
 
 export async function sendTokenAmount(
   tokenAmount: string,
-  recipientWalletAddress: string
+  recipientWalletAddress: string,
 ): Promise<boolean> {
   const sovrinAtoms = convertSovrinTokensToSovrinAtoms(tokenAmount)
-  return Wallet.sendTokens(paymentHandle, sovrinAtoms, recipientWalletAddress)
+  return Wallet.sendTokens({
+    paymentHandle,
+    tokens: sovrinAtoms,
+    recipient: recipientWalletAddress,
+  })
 }
 
 export async function encryptWallet({
-  encryptedFileLocation,
-  recoveryPassphrase,
-}: {
+                                      encryptedFileLocation,
+                                      recoveryPassphrase,
+                                    }: {
   encryptedFileLocation: string,
   recoveryPassphrase: Passphrase,
 }): Promise<number> {
-  return await Wallet.export(
-    encryptedFileLocation,
-    recoveryPassphrase.hash
-  )
+  return await Wallet.export({
+    exportPath: encryptedFileLocation,
+    encryptionKey: recoveryPassphrase.hash,
+  })
 }
 
 export async function getWalletTokenInfo(): Promise<WalletTokenInfo> {
   const paymentHandle = 0
-  const tokenInfo: string = await Wallet.getTokenInfo(paymentHandle)
+  const tokenInfo: string = await Wallet.getTokenInfo({
+    paymentHandle
+  })
   return JSON.parse(tokenInfo)
 }
 
 export async function createPaymentAddress(seed: ?string) {
-  return await Wallet.createPaymentAddress(seed)
+  return await Wallet.createPaymentAddress({
+    seed
+  })
 }
 
-export const getWalletPoolName = memoize(async function () {
+export const getWalletPoolName = memoize(async function() {
   const appUniqueId = await uniqueId()
   await secureSet(__uniqueId, appUniqueId)
   const walletName = `${appUniqueId}-cm-wallet`
@@ -838,7 +934,7 @@ export async function getWalletHistory(): Promise<WalletHistoryEvent[]> {
  */
 export async function copyToPath(
   uri: string,
-  destPath: string
+  destPath: string,
 ): Promise<number> {
   return await RNUtils.copyToPath(uri, destPath)
 }
@@ -874,21 +970,21 @@ export async function getBiometricError(): Promise<string> {
 
 export async function toBase64FromUtf8(
   data: string,
-  base64EncodingOption: string = 'NO_WRAP'
+  base64EncodingOption: string = 'NO_WRAP',
 ) {
   return RNUtils.toBase64FromUtf8(data, base64EncodingOption)
 }
 
 export async function toUtf8FromBase64(
   data: string,
-  base64EncodingOption: string = 'NO_WRAP'
+  base64EncodingOption: string = 'NO_WRAP',
 ) {
   return await RNUtils.toUtf8FromBase64(data, base64EncodingOption)
 }
 
 export async function generateThumbprint(
   data: string,
-  base64EncodingOption: string = 'NO_WRAP'
+  base64EncodingOption: string = 'NO_WRAP',
 ) {
   return RNUtils.generateThumbprint(data, base64EncodingOption)
 }
@@ -902,15 +998,15 @@ export async function setActiveTxnAuthorAgreementMeta(
   version: string,
   hash: string | typeof undefined,
   accMechType: string,
-  timeOfAcceptance: number
+  timeOfAcceptance: number,
 ): Promise<string> {
-  return Utils.setActiveTxnAuthorAgreement(
+  return Utils.setActiveTxnAuthorAgreement({
     text,
     version,
-    hash,
-    accMechType,
-    timeOfAcceptance
-  )
+    taaDigest: hash,
+    mechanism: accMechType,
+    timestamp: timeOfAcceptance,
+  })
 }
 
 export async function fetchPublicEntitiesForCredentials(): Promise<void> {
@@ -918,7 +1014,7 @@ export async function fetchPublicEntitiesForCredentials(): Promise<void> {
 }
 
 export async function getRequestRedirectionUrl(
-  url: string
+  url: string,
 ): Promise<string> {
   return RNUtils.getRequestRedirectionUrl(url)
 }
