@@ -163,7 +163,7 @@ export async function writeToVcxLog(
 
 export async function encryptLog(
   logFilePath: string,
-  encryptionKey: string
+  key: string
 ): Promise<string> {
   return await Logger.encryptLog({
     logFilePath,
@@ -384,7 +384,7 @@ export const customLogger = {
 
   encryptLogFile: async function () {
     const rotatingLog = this.getVcxLogFile()
-    this.encryptedLogFile = await encryptVcxLog(
+    this.encryptedLogFile = await encryptLog(
       rotatingLog,
       CustomLogUtils.encryptionKey ?? ''
     )

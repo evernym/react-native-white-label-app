@@ -77,6 +77,7 @@ public class RNUtils extends ReactContextBaseJavaModule {
     public static final String REACT_CLASS = "RNUtils";
     private static ReactApplicationContext reactContext = null;
     private static final int BUFFER = 2048;
+    public static final int REQUEST_WRITE_EXTERNAL_STORAGE = 501;
 
     public RNUtils(ReactApplicationContext context) {
         super(context);
@@ -87,6 +88,31 @@ public class RNUtils extends ReactContextBaseJavaModule {
     @Override
     public String getName() {
         return REACT_CLASS;
+    }
+
+    private static void requestPermission(final Context context) {
+        if(ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            // Provide an additional rationale to the user if the permission was not granted
+            // and the user would benefit from additional context for the use of the permission.
+            // For example if the user has previously denied the permission.
+
+            new AlertDialog.Builder(context)
+                    .setMessage("permission storage")
+                    .setPositiveButton("positive button", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    ActivityCompat.requestPermissions((Activity) context,
+                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                            REQUEST_WRITE_EXTERNAL_STORAGE);
+                }
+            }).show();
+
+        } else {
+            // permission has not been granted yet. Request it directly.
+            ActivityCompat.requestPermissions((Activity)context,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    REQUEST_WRITE_EXTERNAL_STORAGE);
+        }
     }
 
     @ReactMethod

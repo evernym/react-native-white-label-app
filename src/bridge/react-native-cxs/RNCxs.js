@@ -47,7 +47,6 @@ import {
   convertSovrinTokensToSovrinAtoms,
   convertVcxLedgerFeesToLedgerFees,
 } from '../../sovrin-token/sovrin-token-converter'
-import { uuid } from '../../services/uuid'
 import type { GenericObject } from '../../common/type-common'
 import type { PairwiseAgent } from '../../store/type-connection-store'
 
@@ -57,7 +56,7 @@ import {
   Connection,
   Credential,
   Library,
-  Proof,
+  DisclosedProof,
   Utils,
   Verifier,
   Wallet,
@@ -707,7 +706,7 @@ export async function simpleInit(): Promise<boolean> {
 export async function getMatchingCredentials(
   handle: number,
 ): Promise<string> {
-  return await Proof.getCredentialsForProofRequest({
+  return await DisclosedProof.getCredentialsForProofRequest({
     handle
   })
 }
@@ -717,7 +716,7 @@ export async function generateProof(
   selectedCredentials: string,
   selfAttestedAttributes: string,
 ): Promise<void> {
-  return await Proof.generateProof({
+  return await DisclosedProof.generateProof({
     handle,
     selectedCredentials,
     selfAttestedAttributes,
@@ -728,7 +727,7 @@ export async function sendProof(
   handle: number,
   connectionHandle: number,
 ): Promise<void> {
-  return await Proof.sendProof({
+  return await DisclosedProof.sendProof({
     handle,
     connectionHandle
   })
@@ -738,13 +737,13 @@ export async function proofCreateWithRequest(
   sourceId: string,
   proofRequest: string,
 ): Promise<number> {
-  return await Proof.createWithRequest({
+  return await DisclosedProof.createWithRequest({
     proofRequest
   })
 }
 
 export async function proofSerialize(handle: number): Promise<string> {
-  return await Proof.serialize({
+  return await DisclosedProof.serialize({
     handle,
   })
 }
@@ -752,7 +751,7 @@ export async function proofSerialize(handle: number): Promise<string> {
 export async function proofDeserialize(
   serialized: string,
 ): Promise<number> {
-  return await Proof.deserialize({
+  return await DisclosedProof.deserialize({
     serialized
   })
 }
@@ -761,7 +760,7 @@ export async function proofReject(
   handle: number,
   connectionHandle: number,
 ): Promise<void> {
-  return Proof.reject({
+  return DisclosedProof.reject({
     handle,
     connectionHandle,
   })
