@@ -215,7 +215,7 @@ const AttributeValues = ({
           <View style={styles.inputAvatarSection}>
             <EvaIcon name={ALERT_ICON} color={colors.red} />
           </View>
-          <Text style={styles.descriptionTitle}>
+          <Text style={styles.descriptionTitle} numberOfLines={2}>
             Manual input is disabled for this attribute.
           </Text>
         </View>
@@ -288,6 +288,8 @@ const styles = StyleSheet.create({
     paddingVertical: moderateScale(16),
   },
   descriptionTitle: {
+    flex: 1,
+    flexWrap: 'wrap',
     color: colors.gray1,
     fontSize: verticalScale(fontSizes.size6),
     fontWeight: '300',

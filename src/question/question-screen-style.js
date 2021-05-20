@@ -110,7 +110,7 @@ export const getQuestionStylesObject = (
     marginLeft: '3%',
   },
   actionButtonContainer: {
-    marginBottom: 15,
+    marginTop: 15,
     borderRadius: 5,
     borderColor: colors.white,
     borderWidth: 1,
