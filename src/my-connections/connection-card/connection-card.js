@@ -88,7 +88,7 @@ const ConnectionCard = (props: ConnectionCardProps) => {
       </View>
       <Text
         style={styles.companyNameText}
-        numberOfLines={3}
+        numberOfLines={2}
         ellipsizeMode="tail"
         testID={`${props.senderName}-title`}
         accessible={true}
