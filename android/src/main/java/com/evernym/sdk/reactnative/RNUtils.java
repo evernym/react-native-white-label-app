@@ -22,28 +22,12 @@ import android.content.ContextWrapper;
 import android.net.Uri;
 import android.os.Environment;
 
-import com.evernym.sdk.vcx.VcxException;
-import com.evernym.sdk.vcx.wallet.WalletApi;
-import com.evernym.sdk.vcx.connection.ConnectionApi;
-import com.evernym.sdk.vcx.credential.CredentialApi;
-import com.evernym.sdk.vcx.credential.GetCredentialCreateMsgidResult;
-import com.evernym.sdk.vcx.proof.CreateProofMsgIdResult;
-import com.evernym.sdk.vcx.proof.DisclosedProofApi;
-import com.evernym.sdk.vcx.proof.ProofApi;
-import com.evernym.sdk.vcx.proof.GetProofResult;
-import com.evernym.sdk.vcx.proof.CreateProofMsgIdResult;
-import com.evernym.sdk.vcx.token.TokenApi;
-import com.evernym.sdk.vcx.utils.UtilsApi;
-import com.evernym.sdk.vcx.vcx.AlreadyInitializedException;
-import com.evernym.sdk.vcx.vcx.VcxApi;
-import com.evernym.sdk.vcx.indy.IndyApi;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.WritableArray;
-import com.facebook.react.bridge.WritableMap;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
