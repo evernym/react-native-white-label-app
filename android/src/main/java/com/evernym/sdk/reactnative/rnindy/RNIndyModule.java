@@ -1287,6 +1287,27 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void proofGetState(int proofHandle, Promise promise) {
+        try {
+            DisclosedProofApi.proofGetState(proofHandle).exceptionally((t) -> {
+                VcxException ex = (VcxException) t;
+                ex.printStackTrace();
+                Log.e(TAG, "proofGetState - Error: ", ex);
+                promise.reject(String.valueOf(ex.getSdkErrorCode()), ex.getSdkMessage());
+                return -1;
+            }).thenAccept(result -> {
+                if (result != -1) {
+                    BridgeUtils.resolveIfValid(promise, result);
+                }
+            });
+        } catch(VcxException e) {
+            e.printStackTrace();
+            Log.e(TAG, "proofGetState - Error: ", e);
+            promise.reject(String.valueOf(e.getSdkErrorCode()), e.getSdkMessage());
+        }
+    }
+
+    @ReactMethod
     public void shutdownVcx(Boolean deleteWallet, Promise promise) {
         Log.d(TAG, "shutdownVcx()");
         try {

@@ -636,6 +636,12 @@ export async function sendProof(
   return await RNIndy.proofSend(proofHandle, connectionHandle)
 }
 
+export async function proofGetState(
+  proofHandle: number,
+): Promise<void> {
+  return await RNIndy.proofGetState(proofHandle)
+}
+
 export async function proofCreateWithRequest(
   sourceId: string,
   proofRequest: string
