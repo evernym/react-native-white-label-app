@@ -62,6 +62,7 @@ const CredentialCard = ({
   setActiveStack,
   isHidden,
   elevation,
+  enabled,
 }: CredentialCardProps) => {
   const {
     logoUrl,
@@ -200,7 +201,7 @@ const CredentialCard = ({
 
       <PanGestureHandler
         {...gestureHandler}
-        activeOffsetX={[-10, 0]}
+        activeOffsetX={enabled ? [-10, 0] : 1000}
         activeOffsetY={500}
       >
         <Animated.View style={{ transform: [{ translateX }] }}>
@@ -272,7 +273,7 @@ CredentialCard.defaultProps = {
 const styles = StyleSheet.create({
   container: {
     height: CARD_HEIGHT,
-    margin: CARD_MARGIN,
+    margin: CARD_MARGIN * 2,
     borderRadius: moderateScale(16),
     shadowRadius: 6,
     shadowOpacity: 0.2,
@@ -333,7 +334,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'center',
     overflow: 'hidden',
-    margin: CARD_MARGIN,
+    margin: CARD_MARGIN * 2,
   },
   deleteSection: {
     width: moderateScale(100),
