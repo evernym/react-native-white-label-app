@@ -1169,6 +1169,22 @@ RCT_EXPORT_METHOD(proofReject:(NSInteger)proof_handle
    }];
 }
 
+RCT_EXPORT_METHOD(proofGetState: (NSInteger) proofHandle
+                               resolver: (RCTPromiseResolveBlock) resolve
+                               rejecter: (RCTPromiseRejectBlock) reject)
+{
+  [[[ConnectMeVcx alloc] init] proofGetState:proofHandle
+                                  completion:^(NSError *error, NSInteger state)
+  {
+    if (error != nil && error.code != 0) {
+      NSString *indyErrorCode = [NSString stringWithFormat:@"%ld", (long)error.code];
+      reject(indyErrorCode, @"Error occurred while getting proof state", error);
+    } else {
+      resolve(@(state));
+    }
+  }];
+}
+
 RCT_EXPORT_METHOD(connectionRedirect:(NSInteger)redirect_connection_handle
                   withConnectionHandle:(NSInteger)connection_handle
                   resolver: (RCTPromiseResolveBlock) resolve

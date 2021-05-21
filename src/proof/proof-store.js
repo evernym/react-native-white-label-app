@@ -53,6 +53,7 @@ import {
   getMatchingCredentials,
   proofDeserialize,
   proofCreateWithRequest,
+  proofGetState,
 } from '../bridge/react-native-cxs/RNCxs'
 import {
   proofRequestAutoFill,
@@ -64,7 +65,6 @@ import {
 } from '../proof-request/proof-request-store'
 import {
   getProofRequest,
-  getProofData,
   getClaimMap,
 } from '../store/store-selector'
 import type { Attribute } from '../push-notification/type-push-notification'
@@ -74,12 +74,13 @@ import {
   NO_SELF_ATTEST,
   MISSING_ATTRIBUTES_FOUND,
   PROOF_REQUEST_AUTO_FILL,
-  ATTRIBUTE_TYPE, NO_CRED_NO_SELF_ATTEST, DISSATISFIED_ATTRIBUTE_TYPE,
+  ATTRIBUTE_TYPE,
+  NO_CRED_NO_SELF_ATTEST,
+  DISSATISFIED_ATTRIBUTE_TYPE,
 } from '../proof-request/type-proof-request'
-import { ensureVcxInitAndPoolConnectSuccess, ensureVcxInitSuccess } from '../store/route-store'
+import { ensureVcxInitSuccess } from '../store/route-store'
 import { customLogger } from '../store/custom-logger'
 import { showSnackError } from '../store/config-store'
-import { CREDENTIAL_DEFINITION_NOT_FOUND, CREDENTIAL_SCHEMA_NOT_FOUND } from '../bridge/react-native-cxs/error-cxs'
 
 export const updateAttributeClaim = (
   uid: string,
@@ -607,20 +608,18 @@ export function* updateAttributeClaimAndSendProof(
       yield put(errorSendProofFail(action.uid, action.remoteDid, vcxResult.fail))
       return
     }
-    let { proofHandle } = yield select(getProofData, action.uid)
-    if (!proofHandle) {
-      // restore VCX object for proof generation
-      const proofRequestPayload: ProofRequestPayload = yield select(
-        getProofRequest,
-        action.uid
-      )
-      if (proofRequestPayload.vcxSerializedProofRequest) {
-        // it might happen that we won't have serialized proof request
-        // so we guard against it and let fail
-        proofHandle = yield call(proofDeserialize, proofRequestPayload.vcxSerializedProofRequest)
-        yield put(updateProofHandle(proofHandle, action.uid))
-      }
+    // restore VCX object for proof generation
+    const proofRequestPayload: ProofRequestPayload = yield select(
+      getProofRequest,
+      action.uid
+    )
+
+    if (!proofRequestPayload.vcxSerializedProofRequest) {
+      throw new Error('Cannot restore proof object')
     }
+
+    let proofHandle = yield call(proofDeserialize, proofRequestPayload.vcxSerializedProofRequest)
+    yield put(updateProofHandle(proofHandle, action.uid))
 
     yield put(clearSendProofFail(action.uid))
 
@@ -632,36 +631,31 @@ export function* updateAttributeClaimAndSendProof(
       requestedAttrsJson,
     )
 
-    try {
+    yield call(
+      generateProof,
+      proofHandle,
+      JSON.stringify(selectedCredentials),
+      JSON.stringify(selfAttestedAttributes),
+    )
+
+    const proofState: number = yield call(proofGetState, proofHandle)
+    if (proofState === 4) {
+      // if proof generation failed -> connect to pool ledger and retry (fetch fresh schema and cred def)
+      if (!proofRequestPayload.vcxSerializedProofRequest) {
+        throw new Error('Cannot restore proof object')
+      }
+
+      proofHandle = yield call(proofDeserialize, proofRequestPayload.vcxSerializedProofRequest)
       yield call(
         generateProof,
         proofHandle,
         JSON.stringify(selectedCredentials),
         JSON.stringify(selfAttestedAttributes),
       )
-    } catch (e){
-      // if schema or cred_def not found in the cache -> connect to pool ledger and retry
-      if (e.code === CREDENTIAL_SCHEMA_NOT_FOUND || e.code === CREDENTIAL_DEFINITION_NOT_FOUND){
-        const vcxResult = yield* ensureVcxInitAndPoolConnectSuccess()
-        if (vcxResult && vcxResult.fail) {
-          yield put(errorSendProofFail(action.uid, action.remoteDid, vcxResult.fail))
-          return
-        }
-
-        yield call(
-          generateProof,
-          proofHandle,
-          JSON.stringify(selectedCredentials),
-          JSON.stringify(selfAttestedAttributes),
-        )
-      }
+      yield put(updateProofHandle(proofHandle, action.uid))
     }
 
     yield put(acceptProofRequest(action.uid))
-    const proofRequestPayload: ProofRequestPayload = yield select(
-      getProofRequest,
-      action.uid,
-    )
 
     const proofRequest = proofRequestPayload.originalProofRequestData
     const {
