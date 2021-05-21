@@ -59,6 +59,8 @@ describe('user settings screen', () => {
       biometricsSwitchOff: jest.fn(),
       aboutButtonInSetting: jest.fn(),
       giveAppFeedbackButtonInSetting: jest.fn(),
+      disableTouchIdAction: jest.fn(),
+      enableTouchIdAction: jest.fn(),
     }
   }
 
@@ -143,17 +145,6 @@ describe('user settings screen', () => {
     componentInstance.onChangeTouchId(true)
     componentInstance.onChangeTouchId(false)
     expect(navigation.push).not.toBeCalled()
-  })
-
-  it('should navigate to lockTouchIdSetup screen', () => {
-    const { props } = setup()
-    const { navigation } = props
-    const { wrapper } = render(props)
-    const componentInstance = wrapper.root.findByType(Settings).instance
-    componentInstance.onChangeTouchId(true)
-    expect(navigation.push).toHaveBeenCalledWith(lockTouchIdSetupRoute, {
-      fromSettings: true,
-    })
   })
 
   it('should navigate to genRecoveryPhrase screen', () => {
@@ -247,12 +238,9 @@ describe('user settings screen', () => {
     const { props } = setup()
     const { wrapper, componentInstance } = render(props)
 
-    wrapper.update(
-      getMockedNavigator({ ...props, currentScreen: lockTouchIdSetupRoute })
-    )
     expect(
       componentInstance && componentInstance.state.disableTouchIdSwitch
-    ).toBe(true)
+    ).toBe(false)
 
     wrapper.update(
       getMockedNavigator({

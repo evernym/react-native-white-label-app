@@ -1,6 +1,7 @@
 // @flow
 import type { ReactNavigation } from '../common/type-common'
 import type { PendingRedirection } from '../lock/type-lock'
+import { disableTouchIdAction, enableTouchIdAction } from '../lock/lock-store'
 
 export type SettingsProps = {
   touchIdActive: boolean,
@@ -35,6 +36,8 @@ export type SettingsProps = {
   biometricsSwitchOff: () => void,
   aboutButtonInSetting: () => void,
   giveAppFeedbackButtonInSetting: () => void,
+  disableTouchIdAction: () => void,
+  enableTouchIdAction: () => void,
 } & ReactNavigation
 
 export type SettingsState = {

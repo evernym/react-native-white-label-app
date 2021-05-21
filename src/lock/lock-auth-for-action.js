@@ -18,9 +18,6 @@ import {
 } from './type-lock'
 import { captureError } from '../services/error/error-handler'
 import { getBiometricError } from '../bridge/react-native-cxs/RNCxs'
-import { disableTouchIdAction, enableTouchIdAction } from './lock-store'
-import { useDispatch, useSelector } from 'react-redux'
-import { FC } from 'react'
 
 type Params = {
   lock: LockStore,
@@ -44,7 +41,7 @@ export function authForAction(params: Params) {
     })
   }
 
-  if (timeSinceLastSuccess > freshnessThreshold) {
+  if (timeSinceLastSuccess < freshnessThreshold) {
     params.onSuccess()
   } else if (params.lock.isTouchIdEnabled) {
     const handleFailedAuth = () => {
@@ -77,6 +74,17 @@ export function authForAction(params: Params) {
   }
 }
 
+interface ISetupTouchId {
+  navigation: NavigationScreenProp<{|
+    ...NavigationLeafRoute,
+  |}>,
+  fromSettings: boolean,
+  fromSetup: boolean,
+  touchIdActive: boolean | string,
+  disableTouchIdAction: () => void,
+  enableTouchIdAction: () => void,
+}
+
 export const setupTouchId = ({
   navigation,
   fromSettings,
@@ -84,7 +92,7 @@ export const setupTouchId = ({
   touchIdActive,
   disableTouchIdAction,
   enableTouchIdAction
-}) => {
+}: ISetupTouchId) => {
   const onSettingsScreen = () => {
     console.log(touchIdActive)
     if (touchIdActive) {
@@ -160,7 +168,7 @@ export const setupTouchId = ({
               if (error.code === LAErrorTouchIDTooManyAttempts) {
                 popUpNativeAlert(touchIDAlerts.biometricsExceedAlert)
               } else {
-                !fromSettings && props.navigation.navigate(lockSelectionRoute)
+                !fromSettings && navigation.navigate(lockSelectionRoute)
               }
             }
           })

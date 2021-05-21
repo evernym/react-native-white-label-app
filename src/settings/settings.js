@@ -97,7 +97,7 @@ import {
   BIOMETRICS_SWITCH_OFF,
   GIVE_APP_FEEDBACK_BUTTON_IN_SETTINGS,
 } from '../feedback/log-to-apptentive'
-import { setupTouchId, useSetup, useSetupTouchId } from '../lock/lock-auth-for-action'
+import { setupTouchId } from '../lock/lock-auth-for-action'
 
 export const headlineForSettingRoute = settingsHeadline || 'Settings'
 const showCameraButton =
@@ -142,7 +142,7 @@ export class Settings extends Component<SettingsProps, SettingsState> {
       } else {
         biometricsSwitchOff()
       }
-      console.log(touchIdActive)
+
       setupTouchId({
         navigation,
         fromSettings: true,
