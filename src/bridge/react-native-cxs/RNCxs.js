@@ -638,7 +638,7 @@ export async function sendProof(
 
 export async function proofGetState(
   proofHandle: number,
-): Promise<void> {
+): Promise<number> {
   return await RNIndy.proofGetState(proofHandle)
 }
 

@@ -614,6 +614,10 @@ export function* updateAttributeClaimAndSendProof(
       action.uid
     )
 
+    if (!proofRequestPayload.vcxSerializedProofRequest) {
+      throw new Error('Cannot restore proof object')
+    }
+
     let proofHandle = yield call(proofDeserialize, proofRequestPayload.vcxSerializedProofRequest)
     yield put(updateProofHandle(proofHandle, action.uid))
 
@@ -634,9 +638,13 @@ export function* updateAttributeClaimAndSendProof(
       JSON.stringify(selfAttestedAttributes),
     )
 
-    const state = yield call(proofGetState, proofHandle)
-    if (state === 4) {
+    const proofState: number = yield call(proofGetState, proofHandle)
+    if (proofState === 4) {
       // if proof generation failed -> connect to pool ledger and retry (fetch fresh schema and cred def)
+      if (!proofRequestPayload.vcxSerializedProofRequest) {
+        throw new Error('Cannot restore proof object')
+      }
+
       proofHandle = yield call(proofDeserialize, proofRequestPayload.vcxSerializedProofRequest)
       yield call(
         generateProof,
@@ -644,6 +652,7 @@ export function* updateAttributeClaimAndSendProof(
         JSON.stringify(selectedCredentials),
         JSON.stringify(selfAttestedAttributes),
       )
+      yield put(updateProofHandle(proofHandle, action.uid))
     }
 
     yield put(acceptProofRequest(action.uid))
