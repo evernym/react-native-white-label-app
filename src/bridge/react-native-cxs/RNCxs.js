@@ -49,6 +49,7 @@ import {
 } from '../../sovrin-token/sovrin-token-converter'
 import type { GenericObject } from '../../common/type-common'
 import type { PairwiseAgent } from '../../store/type-connection-store'
+import { uuid } from "../../services/uuid";
 
 import {
   Agent,
@@ -207,6 +208,7 @@ export async function createWalletBackup(
   backupKey: string,
 ): Promise<number> {
   return await CloudWalletBackup.create({
+    sourceID,
     backupKey,
   })
 }
@@ -278,6 +280,7 @@ export async function createConnectionWithInvite(
 ): Promise<number> {
   const { invite_details } = convertInvitationToVcxConnectionCreate(invitation)
   return await Connection.createWithInvitation({
+    sourceID: invitation.requestId,
     invitation: JSON.stringify(invite_details),
   })
 }
@@ -286,6 +289,7 @@ export async function createConnectionWithAriesInvite(
   invitation: InvitationPayload,
 ): Promise<number> {
   return await Connection.createWithInvitation({
+    sourceID: invitation.requestId,
     invitation: invitation.original,
   })
 }
@@ -294,6 +298,7 @@ export async function createConnectionWithAriesOutOfBandInvite(
   invitation: InvitationPayload,
 ): Promise<number> {
   return await Connection.createWithOutofbandInvitation({
+    sourceID: invitation.requestId,
     invitation: invitation.original
   })
 }
@@ -457,6 +462,7 @@ export async function createOutOfBandConnectionInvitation(
   agentInfo: PairwiseAgent | null,
 ): Promise<GenericObject> {
   const connectionHandle = await Connection.createOutOfBandConnectionInvitation({
+    sourceID: uuid(),
     goal,
     goalCode: '',
     handshake,
@@ -484,6 +490,7 @@ export async function credentialCreateWithOffer(
   offer: string,
 ): Promise<number> {
   return await Credential.createWithOffer({
+    sourceID: sourceId,
     offer,
   })
 }
@@ -738,6 +745,7 @@ export async function proofCreateWithRequest(
   proofRequest: string,
 ): Promise<number> {
   return await DisclosedProof.createWithRequest({
+    sourceID: sourceId,
     proofRequest
   })
 }
@@ -771,6 +779,7 @@ export async function proofReject(
  */
 export async function createProofVerifierWithProposal(presentationProposal: string, name: string): Promise<string> {
   return Verifier.createWithProposal({
+    sourceID: uuid(),
     presentationProposal,
     name,
   })
