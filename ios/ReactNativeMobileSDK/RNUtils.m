@@ -24,7 +24,6 @@
 #import “React/RCTEventDispatcher.h” // Required when used as a Pod in a Swift project
 #endif
 
-#import "vcx/vcx.h"
 #import <CommonCrypto/CommonHMAC.h>
 #import "URLSessionWithoutRedirection.h"
 
@@ -96,6 +95,14 @@ RCT_EXPORT_METHOD(getBiometricError: (RCTPromiseResolveBlock) resolve
       }
       reject(errorReason, @"TouchIDBiometricsLockOut", nil);
   }
+}
+
+NSString* makeUrlSafe(NSString* base64Encoded) {
+  return [[base64Encoded stringByReplacingOccurrencesOfString:@"/" withString:@"_"] stringByReplacingOccurrencesOfString:@"+" withString:@"-"];
+}
+
+NSString* makeUrlSafeToNoWrap(NSString* base64Encoded) {
+  return [[base64Encoded stringByReplacingOccurrencesOfString:@"_" withString:@"/"] stringByReplacingOccurrencesOfString:@"-" withString:@"+"];
 }
 
 RCT_EXPORT_METHOD(toBase64FromUtf8: (NSString *)data
@@ -188,3 +195,5 @@ RCT_EXPORT_METHOD(getRequestRedirectionUrl:(NSString *)url
   }];
   [dataTask resume];
 }
+
+@end
