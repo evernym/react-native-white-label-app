@@ -123,6 +123,7 @@ export const color = {
       },
     },
     font: {
+      main: colors.main,
       primary: white,
       secondary: white,
       tertiary: white,

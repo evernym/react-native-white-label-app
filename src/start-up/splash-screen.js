@@ -6,10 +6,9 @@ import SplashScreen from 'react-native-splash-screen'
 import {
   splashScreenRoute,
   lockSelectionRoute,
-  lockEnterPinRoute,
-  lockEnterFingerprintRoute,
   startUpRoute,
   restoreRoute,
+  homeRoute,
 } from '../common'
 import { Container, Loader } from '../components'
 import { addPendingRedirection } from '../lock/lock-store'
@@ -18,6 +17,7 @@ import { isLocalBackupsEnabled } from '../settings/settings-utils'
 import { useEffect } from 'react'
 import { getIsEulaAccepted, getIsInitialized, getLockStore } from '../store/store-selector'
 import { useSelector } from 'react-redux'
+import { authForAction } from '../lock/lock-auth-for-action'
 
 export const SplashScreenView = (props: SplashScreenProps) => {
   const isInitialized = useSelector(getIsInitialized)
@@ -30,8 +30,15 @@ export const SplashScreenView = (props: SplashScreenProps) => {
     }
   }, [isInitialized])
 
-  const onAppInitialized = () => {
+  const onSuccess = () => {
+    props.navigation.navigate(homeRoute)
     SplashScreen.hide()
+  }
+
+  const onAppInitialized = () => {
+    if (!isEulaAccept) {
+      SplashScreen.hide()
+    }
     // now we can safely check value of isAlreadyInstalled
     // check for need for set up
     if (!lock.isLockEnabled || lock.isLockEnabled === 'false') {
@@ -50,11 +57,12 @@ export const SplashScreenView = (props: SplashScreenProps) => {
       return
     }
     // not the first time user is opening app
-    const initialRoute = lock.isTouchIdEnabled
-      ? lockEnterFingerprintRoute
-      : lockEnterPinRoute
 
-    props.navigation.navigate(initialRoute)
+    authForAction({
+      lock,
+      navigation: props.navigation,
+      onSuccess
+    })
   }
 
   return isInitialized ? null : (

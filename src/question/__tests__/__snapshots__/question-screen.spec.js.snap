@@ -230,7 +230,7 @@ exports[`<QuestionScreen /> should match error snapshot 1`] = `
           "borderColor": "#FFFFFF",
           "borderRadius": 5,
           "borderWidth": 1,
-          "marginBottom": 15,
+          "marginTop": 15,
           "minHeight": 56,
         }
       }
@@ -284,7 +284,7 @@ exports[`<QuestionScreen /> should match error snapshot 1`] = `
                 "borderColor": "#86B93B",
                 "borderRadius": 5,
                 "borderWidth": 0,
-                "color": "#ffffff",
+                "color": "#86B93B",
                 "flexDirection": "row",
                 "height": 56,
                 "justifyContent": "center",
@@ -1018,7 +1018,7 @@ exports[`<QuestionScreen /> should match idle state snapshot 1`] = `
           "borderColor": "#FFFFFF",
           "borderRadius": 5,
           "borderWidth": 1,
-          "marginBottom": 15,
+          "marginTop": 15,
           "minHeight": 56,
         }
       }
@@ -1039,7 +1039,7 @@ exports[`<QuestionScreen /> should match idle state snapshot 1`] = `
           accessibilityState={
             Object {
               "busy": false,
-              "disabled": true,
+              "disabled": false,
             }
           }
           accessible={true}
@@ -1072,7 +1072,7 @@ exports[`<QuestionScreen /> should match idle state snapshot 1`] = `
                 "borderColor": "#86B93B",
                 "borderRadius": 5,
                 "borderWidth": 0,
-                "color": "#ffffff",
+                "color": "#86B93B",
                 "flexDirection": "row",
                 "height": 56,
                 "justifyContent": "center",
@@ -1085,7 +1085,7 @@ exports[`<QuestionScreen /> should match idle state snapshot 1`] = `
             <Text
               style={
                 Object {
-                  "color": "hsl(208, 8%, 63%)",
+                  "color": "white",
                   "fontSize": 18,
                   "paddingBottom": 1,
                   "paddingTop": 2,

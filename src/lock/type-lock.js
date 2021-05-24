@@ -6,7 +6,7 @@ import type {
 } from '@react-navigation/native'
 
 import { appName } from '../external-imports'
-import { lockAppOnStart } from './lock-store'
+import { disableTouchIdAction, enableTouchIdAction, lockAppOnStart } from './lock-store'
 import { SWITCH_ERROR_ALERTS } from '../switch-environment/type-switch-environment'
 
 export const LOCK_TYPE = {
@@ -175,6 +175,9 @@ export type LockSelectionProps = {
     poolConfig: string,
     paymentMethod: string
   ) => void,
+  disableTouchIdAction: () => void,
+  enableTouchIdAction: () => void,
+  touchIdActive: boolean | string,
 } & ReactNavigation
 
 export type LockActions =

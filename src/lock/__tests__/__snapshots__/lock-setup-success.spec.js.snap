@@ -239,7 +239,7 @@ exports[`<LockSetupSuccess /> should display Loading while fetching the invitati
               "borderColor": "#2089dc",
               "borderRadius": 3,
               "borderWidth": 0,
-              "color": "#ffffff",
+              "color": "red",
               "flexDirection": "row",
               "justifyContent": "center",
               "opacity": 0.4,

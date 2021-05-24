@@ -19,7 +19,6 @@ import { verticalScale, moderateScale } from 'react-native-size-matters'
 import type { Store } from '../store/type-store'
 import { Container, CustomText, CustomView } from '../components'
 import {
-  lockTouchIdSetupRoute,
   switchEnvironmentRoute,
   lockSelectionRoute,
   eulaRoute,
@@ -37,6 +36,8 @@ import {
 } from '../common/styles/constant'
 import {
   disableDevMode,
+  disableTouchIdAction,
+  enableTouchIdAction,
   longPressedInLockSelectionScreen,
   pressedOnOrInLockSelectionScreen,
 } from './lock-store'
@@ -46,6 +47,7 @@ import { headerDefaultOptions } from '../navigation/navigation-header-config'
 import { baseUrls, defaultEnvironment } from '../environment'
 import { changeEnvironment } from '../switch-environment/switсh-environment-store'
 import { SERVER_ENVIRONMENT } from '../switch-environment/type-switch-environment'
+import { setupTouchId } from './lock-auth-for-action'
 
 const { width, height } = Dimensions.get('screen')
 
@@ -58,9 +60,21 @@ export class LockSelection extends Component<LockSelectionProps, *> {
   }
 
   goTouchIdSetup = () => {
-    if (this.props.navigation.isFocused()) {
-      this.props.navigation.navigate(lockTouchIdSetupRoute, {
+    const {
+      navigation,
+      disableTouchIdAction,
+      enableTouchIdAction,
+      touchIdActive,
+    } = this.props
+
+    if (navigation.isFocused()) {
+      setupTouchId({
+        navigation,
+        fromSettings: false,
         fromSetup: true,
+        touchIdActive,
+        disableTouchIdAction,
+        enableTouchIdAction,
       })
       this.props.safeToDownloadSmsInvitation()
     }
@@ -223,6 +237,7 @@ export class LockSelection extends Component<LockSelectionProps, *> {
 
 const mapStateToProps = ({ lock }: Store) => {
   return {
+    touchIdActive: lock.isTouchIdEnabled,
     showDevMode: lock.showDevMode,
   }
 }
@@ -235,6 +250,8 @@ const mapDispatchToProps = (dispatch) =>
       disableDevMode,
       safeToDownloadSmsInvitation,
       changeEnvironment,
+      disableTouchIdAction,
+      enableTouchIdAction,
     },
     dispatch
   )
