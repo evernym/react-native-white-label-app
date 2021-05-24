@@ -15,7 +15,7 @@ stages:
     name: gcr.io/kaniko-project/executor:debug
     entrypoint: [""]
   script:
-    - if [ "$CI_COMMIT_REF_SLUG" == 'master' ]; then KANIKO_ARGS="--destination $CI_REGISTRY_IMAGE/${DOCKER_IMAGE_NAME}:latest $KANIKO_ARGS"; fi
+    - if [ "$CI_COMMIT_REF_SLUG" == 'main' ]; then KANIKO_ARGS="--destination $CI_REGISTRY_IMAGE/${DOCKER_IMAGE_NAME}:latest $KANIKO_ARGS"; fi
     - echo "${KANIKO_ARGS}"
     - |
       echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" \
@@ -104,11 +104,11 @@ nodejs-publish:
   script:
     - npm config set //registry.npmjs.org/:_authToken ${NPM_AUTH_TOKEN}
     - VERSION=$(grep '"version"' package.json | cut -d '"' -f 4)
-    - if [ $CI_COMMIT_REF_SLUG == "master" ]; then VERSION="${VERSION}-${CI_PIPELINE_ID}"; fi
+    - if [ $CI_COMMIT_REF_SLUG == "main" ]; then VERSION="${VERSION}-${CI_PIPELINE_ID}"; fi
     - npm version --no-git-tag-version --allow-same-version ${VERSION}
     - npm install
     - npm publish
   only:
     refs:
-      - stable@dev/connectme/react-native-evernym-sdk
-      - master@dev/connectme/react-native-evernym-sdk
+      - stable@evernym/mobile/react-native-evernym-sdk
+      - main@evernym/mobile/react-native-evernym-sdk
