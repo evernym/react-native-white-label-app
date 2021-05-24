@@ -80,6 +80,7 @@ describe('<QuestionScreen />', () => {
     })
     component.getInstance().onResponseSelect(0)
     const submitButton = component.root.findByProps({ title: TEXT_SUBMIT })
+    console.log(submitButton.props)
     submitButton.props.onPress()
     expect(props.sendAnswerToQuestion).toHaveBeenCalledTimes(1)
     expect(props.sendAnswerToQuestion).toHaveBeenCalledWith(
@@ -88,12 +89,12 @@ describe('<QuestionScreen />', () => {
     )
   })
 
-  it('success button should be disabled if no answer is selected', () => {
+  it('success button not should be disabled if no answer is selected', () => {
     const { component } = setup({
       status: QUESTION_STATUS.SEEN,
     })
     const submitButton = component.root.findByProps({ title: TEXT_SUBMIT })
-    expect(submitButton.props.disabled).toBe(true)
+    expect(submitButton.props.disabled).toBe(undefined)
   })
 
   it('should match invalid data', () => {

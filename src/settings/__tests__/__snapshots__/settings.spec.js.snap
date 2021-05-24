@@ -22,9 +22,12 @@ exports[`user settings screen should render properly and snapshot should match i
     <View
       pointerEvents="box-none"
       style={
-        Object {
-          "zIndex": 1,
-        }
+        Array [
+          Object {
+            "zIndex": 1,
+          },
+          false,
+        ]
       }
     >
       <View
@@ -107,7 +110,6 @@ exports[`user settings screen should render properly and snapshot should match i
             >
               <Text
                 accessibilityRole="header"
-                aria-level="1"
                 numberOfLines={1}
                 onLayout={[Function]}
                 style={
@@ -146,14 +148,6 @@ exports[`user settings screen should render properly and snapshot should match i
         }
       >
         <View
-          collapsable={false}
-          style={
-            Object {
-              "opacity": 1,
-            }
-          }
-        />
-        <View
           accessibilityElementsHidden={false}
           closing={false}
           gestureVelocityImpact={0.3}
@@ -161,7 +155,6 @@ exports[`user settings screen should render properly and snapshot should match i
           onClose={[Function]}
           onGestureBegin={[Function]}
           onGestureCanceled={[Function]}
-          onGestureEnd={[Function]}
           onOpen={[Function]}
           onTransitionStart={[Function]}
           pointerEvents="box-none"
@@ -202,11 +195,11 @@ exports[`user settings screen should render properly and snapshot should match i
           }
         >
           <View
-            needsOffscreenAlphaCompositing={false}
             pointerEvents="box-none"
             style={
               Object {
                 "flex": 1,
+                "opacity": 1,
               }
             }
           >

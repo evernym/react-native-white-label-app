@@ -71,7 +71,7 @@ export const QuestionActions = ({
             style={[questionStyles.actionButton, questionStyles.submitButton]}
             title={submitButtonTitle}
             testID={`${testID}-submit`}
-            onPress={isSubmitDisabled ? onSubmit : () => {}}
+            onPress={onSubmit}
             customColor={isSubmitDisabled ? disabledStyle : { backgroundColor: colors.main }}
           />
         ) : (
