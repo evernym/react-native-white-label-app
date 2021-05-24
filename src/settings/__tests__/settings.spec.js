@@ -10,7 +10,6 @@ import { Settings } from '../settings'
 import { getStore, getNavigation } from '../../../__mocks__/static-data'
 import {
   settingsRoute,
-  lockTouchIdSetupRoute,
   genRecoveryPhraseRoute,
   aboutAppRoute,
   onfidoRoute,

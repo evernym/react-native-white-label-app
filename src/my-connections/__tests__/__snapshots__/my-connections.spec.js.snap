@@ -22,12 +22,9 @@ exports[`<MyConnectionsScreen /> should render MyConnections and redirect user t
     <View
       pointerEvents="box-none"
       style={
-        Array [
-          Object {
-            "zIndex": 1,
-          },
-          false,
-        ]
+        Object {
+          "zIndex": 1,
+        }
       }
     >
       <View
@@ -110,6 +107,7 @@ exports[`<MyConnectionsScreen /> should render MyConnections and redirect user t
             >
               <Text
                 accessibilityRole="header"
+                aria-level="1"
                 numberOfLines={1}
                 onLayout={[Function]}
                 style={
@@ -148,6 +146,14 @@ exports[`<MyConnectionsScreen /> should render MyConnections and redirect user t
         }
       >
         <View
+          collapsable={false}
+          style={
+            Object {
+              "opacity": 1,
+            }
+          }
+        />
+        <View
           accessibilityElementsHidden={false}
           closing={false}
           gestureVelocityImpact={0.3}
@@ -155,6 +161,7 @@ exports[`<MyConnectionsScreen /> should render MyConnections and redirect user t
           onClose={[Function]}
           onGestureBegin={[Function]}
           onGestureCanceled={[Function]}
+          onGestureEnd={[Function]}
           onOpen={[Function]}
           onTransitionStart={[Function]}
           pointerEvents="box-none"
@@ -195,11 +202,11 @@ exports[`<MyConnectionsScreen /> should render MyConnections and redirect user t
           }
         >
           <View
+            needsOffscreenAlphaCompositing={false}
             pointerEvents="box-none"
             style={
               Object {
                 "flex": 1,
-                "opacity": 1,
               }
             }
           >
@@ -498,12 +505,9 @@ exports[`<MyConnectionsScreen /> should render MyConnections and show introducto
     <View
       pointerEvents="box-none"
       style={
-        Array [
-          Object {
-            "zIndex": 1,
-          },
-          false,
-        ]
+        Object {
+          "zIndex": 1,
+        }
       }
     >
       <View
@@ -586,6 +590,7 @@ exports[`<MyConnectionsScreen /> should render MyConnections and show introducto
             >
               <Text
                 accessibilityRole="header"
+                aria-level="1"
                 numberOfLines={1}
                 onLayout={[Function]}
                 style={
@@ -624,6 +629,14 @@ exports[`<MyConnectionsScreen /> should render MyConnections and show introducto
         }
       >
         <View
+          collapsable={false}
+          style={
+            Object {
+              "opacity": 1,
+            }
+          }
+        />
+        <View
           accessibilityElementsHidden={false}
           closing={false}
           gestureVelocityImpact={0.3}
@@ -631,6 +644,7 @@ exports[`<MyConnectionsScreen /> should render MyConnections and show introducto
           onClose={[Function]}
           onGestureBegin={[Function]}
           onGestureCanceled={[Function]}
+          onGestureEnd={[Function]}
           onOpen={[Function]}
           onTransitionStart={[Function]}
           pointerEvents="box-none"
@@ -671,11 +685,11 @@ exports[`<MyConnectionsScreen /> should render MyConnections and show introducto
           }
         >
           <View
+            needsOffscreenAlphaCompositing={false}
             pointerEvents="box-none"
             style={
               Object {
                 "flex": 1,
-                "opacity": 1,
               }
             }
           >
