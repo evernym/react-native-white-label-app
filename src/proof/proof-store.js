@@ -44,7 +44,8 @@ import {
   RETRY_SEND_PROOF,
 } from './type-proof'
 import type {
-  CustomError, GenericObject,
+  CustomError,
+  GenericObject,
   RequestedAttrsJson,
 } from '../common/type-common'
 import type { ClaimMap } from '../claim/type-claim'
@@ -63,10 +64,7 @@ import {
   updateProofHandle,
   dissatisfiedAttributesFound,
 } from '../proof-request/proof-request-store'
-import {
-  getProofRequest,
-  getClaimMap,
-} from '../store/store-selector'
+import { getProofRequest, getClaimMap, getProofData } from '../store/store-selector'
 import type { Attribute } from '../push-notification/type-push-notification'
 import { RESET } from '../common/type-common'
 import {
@@ -613,13 +611,13 @@ export function* updateAttributeClaimAndSendProof(
       getProofRequest,
       action.uid
     )
-
-    if (!proofRequestPayload.vcxSerializedProofRequest) {
-      throw new Error('Cannot restore proof object')
+    let { proofHandle } = yield select(getProofData, action.uid)
+    if (!proofHandle && proofRequestPayload.vcxSerializedProofRequest) {
+      // it might happen that we won't have serialized proof request
+      // so we guard against it and let fail
+      proofHandle = yield call(proofDeserialize, proofRequestPayload.vcxSerializedProofRequest)
+      yield put(updateProofHandle(proofHandle, action.uid))
     }
-
-    let proofHandle = yield call(proofDeserialize, proofRequestPayload.vcxSerializedProofRequest)
-    yield put(updateProofHandle(proofHandle, action.uid))
 
     yield put(clearSendProofFail(action.uid))
 
@@ -645,12 +643,15 @@ export function* updateAttributeClaimAndSendProof(
         throw new Error('Cannot restore proof object')
       }
 
-      proofHandle = yield call(proofDeserialize, proofRequestPayload.vcxSerializedProofRequest)
+      proofHandle = yield call(
+        proofDeserialize,
+        proofRequestPayload.vcxSerializedProofRequest
+      )
       yield call(
         generateProof,
         proofHandle,
         JSON.stringify(selectedCredentials),
-        JSON.stringify(selfAttestedAttributes),
+        JSON.stringify(selfAttestedAttributes)
       )
       yield put(updateProofHandle(proofHandle, action.uid))
     }
@@ -664,7 +665,7 @@ export function* updateAttributeClaimAndSendProof(
       revealedPredicates,
     } = convertSelectedCredentialAttributesToIndyProof(
       requestedAttrsJson,
-      proofRequest,
+      proofRequest
     )
     // create a proof object so that history store and others that depend on proof
     // can use this proof object, previously proof object was generated with libIndy
@@ -689,9 +690,11 @@ export function* updateAttributeClaimAndSendProof(
 }
 
 export const reTrySendProof = (
-  selfAttestedAttributes: $PropertyType<RetrySendProofAction,
-    'selfAttestedAttributes'>,
-  updateAttributeClaimAction: UpdateAttributeClaimAction,
+  selfAttestedAttributes: $PropertyType<
+    RetrySendProofAction,
+    'selfAttestedAttributes'
+    >,
+  updateAttributeClaimAction: UpdateAttributeClaimAction
 ) => ({
   type: RETRY_SEND_PROOF,
   selfAttestedAttributes,
