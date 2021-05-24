@@ -69,7 +69,7 @@ const AttributesValues = ({
     )
   )
   const [data] = useState(prepareCredentials(params.items, params.claimMap))
-  console.log(data)
+
   const hideModal = useCallback(() => {
     goBack(null)
   }, [])

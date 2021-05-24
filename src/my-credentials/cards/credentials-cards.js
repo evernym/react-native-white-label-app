@@ -57,7 +57,6 @@ export const CredentialsCards = (props: CredentialsCardsProps) => {
   const _onScrollEndDrag = ({ nativeEvent }) => {
     setIsScrolling(false)
     setYPosition(nativeEvent.contentOffset.y)
-    console.log(nativeEvent.contentOffset)
   }
 
   return (
