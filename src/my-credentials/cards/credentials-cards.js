@@ -4,26 +4,27 @@ import { useEffect, useRef, useState } from 'react'
 import { StyleSheet } from 'react-native'
 import { moderateScale } from 'react-native-size-matters'
 import CredentialCard from './card-item/credential-card-item'
-import { useFocusEffect } from '@react-navigation/native'
 
 import type { CredentialsCardsProps } from '../type-my-credentials'
 import { colors, fontFamily } from '../../common/styles'
 import CardStack from './card-stack'
 import { ScrollView } from 'react-native-gesture-handler'
+import { CARD_HEIGHT } from './credentials-constants'
 
 export const CredentialsCards = (props: CredentialsCardsProps) => {
   const { credentials } = props
   const [activeStack, setActiveStack] = useState(null)
+  const [isScrolling, setIsScrolling] = useState(true)
+  const [yPosition, setYPosition] = useState(0)
   const scrollViewRef = useRef<any>(null)
-
-  useFocusEffect(
-    React.useCallback(() => {
-      return () => {setActiveStack(null)}
-    }, [credentials])
-  )
 
   const updateActiveStack = (stackName) => {
     setActiveStack(stackName)
+    if (stackName === null && scrollViewRef !== null) {
+      const y = yPosition - CARD_HEIGHT / 2
+      scrollViewRef.current.scrollTo({ x: 0, y, animated: true })
+      return
+    }
     if (scrollViewRef !== null) {
       scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true })
     }
@@ -51,8 +52,20 @@ export const CredentialsCards = (props: CredentialsCardsProps) => {
     }
   }, [groupedCredentials, activeStack])
 
+  const _onScrollBeginDrag = () => setIsScrolling(true)
+
+  const _onScrollEndDrag = ({ nativeEvent }) => {
+    setIsScrolling(false)
+    setYPosition(nativeEvent.contentOffset.y)
+  }
+
   return (
-    <ScrollView scrollEnabled ref={scrollViewRef}>
+    <ScrollView
+      scrollEnabled
+      ref={scrollViewRef}
+      onScrollBeginDrag={_onScrollBeginDrag}
+      onScrollEndDrag={_onScrollEndDrag}
+    >
       {credentialsData.length > 0 &&
         credentialsData.map((credentialGroup) => {
           const stackCredentialName = credentialGroup[0].credentialName
@@ -66,6 +79,7 @@ export const CredentialsCards = (props: CredentialsCardsProps) => {
                 key={credentialGroup[0].uid}
                 isExpanded={true}
                 isHidden={isHidden}
+                enabled={!isScrolling}
               />
             )
           } else {

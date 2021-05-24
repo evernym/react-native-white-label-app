@@ -525,40 +525,38 @@ class ProofRequestAttributeList extends Component<
         <View key={index} style={styles.wrapper}>
           <View style={styles.textAvatarWrapper}>
             <View style={styles.textInnerWrapper}>
-              <View>
-                <View style={styles.textAvatarWrapper}>
-                  <View style={styles.textInnerWrapper}>
-                    {RenderAttachmentIcon(
-                      attribute.label,
-                      `${getPredicateTitle(attribute.p_type)} ${
-                        attribute.p_value
-                      }`,
-                      selectedItem.claimUuid || '',
-                      selectedItem.claimUuid || ''
-                    )}
-                  </View>
-                  <View style={styles.avatarWrapper}>
-                    {logoUrl ? (
-                      <Icon
-                        medium
-                        round
-                        resizeMode="cover"
-                        src={logoUrl}
-                        testID="selected-credential-icon"
-                        accessible={true}
-                        accessibilityLabel="selected-credential-icon"
+              <View style={styles.textAvatarWrapper}>
+                <View style={styles.textInnerWrapper}>
+                  {RenderAttachmentIcon(
+                    attribute.label,
+                    `${getPredicateTitle(attribute.p_type)} ${
+                      attribute.p_value
+                    }`,
+                    selectedItem.claimUuid || '',
+                    selectedItem.claimUuid || ''
+                  )}
+                </View>
+                <View style={styles.avatarWrapper}>
+                  {logoUrl ? (
+                    <Icon
+                      medium
+                      round
+                      resizeMode="cover"
+                      src={logoUrl}
+                      testID="selected-credential-icon"
+                      accessible={true}
+                      accessibilityLabel="selected-credential-icon"
+                    />
+                  ) : (
+                    claim &&
+                    claim.senderName && (
+                      <DefaultLogo
+                        text={claim.senderName}
+                        size={30}
+                        fontSize={18}
                       />
-                    ) : (
-                      claim &&
-                      claim.senderName && (
-                        <DefaultLogo
-                          text={claim.senderName}
-                          size={30}
-                          fontSize={18}
-                        />
-                      )
-                    )}
-                  </View>
+                    )
+                  )}
                 </View>
               </View>
             </View>
@@ -765,7 +763,7 @@ const styles = StyleSheet.create({
   },
   keyboardFlatList: {
     paddingLeft: '5%',
-    paddingRight: '5%',
+    paddingRight: 0,
   },
   avatarWrapper: {
     paddingTop: moderateScale(10),

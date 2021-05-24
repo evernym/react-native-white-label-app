@@ -17,7 +17,7 @@ import {
 import { colors } from '../../common/styles/constant'
 
 const CardStack = (props: CardStackProps) => {
-  const { credentials, isExpanded, setActiveStack, isHidden } = props
+  const { credentials, isExpanded, setActiveStack, isHidden, enabledCardGesture } = props
   const credsToDisplay = isExpanded ? credentials : credentials.slice(0, 3)
   const credCount = credsToDisplay.length
   const hasMoreCreds = !isExpanded && credentials.length > credsToDisplay.length
@@ -34,14 +34,14 @@ const CardStack = (props: CardStackProps) => {
 
   const openCredsSize = CARD_TOTAL_HEIGHT * credentials.length
   const expandedStack = openCredsSize + HIDE_ICON_TOTAL_HIGHT
-  const collapsedStack = CARD_HEIGHT + CARD_MARGIN * credCount
+  const collapsedStack = CARD_HEIGHT + CARD_MARGIN * 2 * credCount
 
   const height = mix(expandedTransition, collapsedStack, expandedStack)
   const hiddenHeight = mix(hiddenTransition, height, 0)
   const hiddenOpacity = mix(hiddenTransition, 1, 0)
   const hideBtnOpacity = mix(isExpanded, 0, 1)
   const moreTextOpacity = mix(hasMoreCreds, 0, 1)
-  const extraMargin = mix(moreTextTransition, 0, CARD_MARGIN)
+  const extraMargin = mix(moreTextTransition, 0, CARD_MARGIN * 2)
 
   return (
     <Animated.View
@@ -75,6 +75,7 @@ const CardStack = (props: CardStackProps) => {
                   isExpanded={isExpanded}
                   setActiveStack={setActiveStack}
                   elevation={credCount - index}
+                  enabled={enabledCardGesture}
                 />
               </Animated.View>
             )

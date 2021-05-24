@@ -6,7 +6,6 @@ import {
   View,
   Platform,
   StyleSheet,
-  Text,
   FlatList,
   TouchableOpacity,
 } from 'react-native'
@@ -133,14 +132,9 @@ const AttributesValues = ({
         style={styles.descriptionTitle}
         text={
           params?.sender +
-          ' requires following attributes coming from the same credential:'
+          ' requires these attributes to come from the same credential:'
         }
       />
-      <ExpandableText
-        style={styles.labelText}
-        text={params?.label || 'Attribute'}
-      />
-      <Text style={styles.descriptionTitle}>{params.items.length} sources</Text>
     </View>
   )
 

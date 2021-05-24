@@ -67,10 +67,9 @@ export const QuestionActions = ({
         {shouldRenderSubmitButton ? (
           <CustomButton
             {...questionActionButtonDefaultProps}
-            eleventh
+            main
             style={[questionStyles.actionButton, questionStyles.submitButton]}
             title={submitButtonTitle}
-            disabled={isSubmitDisabled}
             testID={`${testID}-submit`}
             onPress={onSubmit}
             customColor={isSubmitDisabled ? disabledStyle : { backgroundColor: colors.main }}
@@ -150,7 +149,7 @@ const QuestionResponseButton = ({
     >
       <CustomButton
         {...questionActionButtonDefaultProps}
-        eleventh={isPrimaryResponse}
+        main={isPrimaryResponse}
         twelfth={!isPrimaryResponse}
         style={[
           questionStyles.actionButton,

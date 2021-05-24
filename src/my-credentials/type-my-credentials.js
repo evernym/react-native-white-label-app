@@ -21,6 +21,7 @@ export type CredentialCardProps = {
   isHidden: boolean,
   setActiveStack?: (stackName: string | null) => void,
   elevation?: number,
+  enabled?: boolean,
 }
 
 export type CredentialItem = {
@@ -43,6 +44,7 @@ export type CardStackProps = {
   isExpanded: boolean,
   isHidden: boolean,
   setActiveStack: (stackName: string | null) => void,
+  enabledCardGesture?: boolean,
 }
 
 export const MESSAGE_DELETE_CLAIM_TITLE = 'Delete credential?'
