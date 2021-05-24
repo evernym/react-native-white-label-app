@@ -14,6 +14,9 @@ function getLockSelectionProps() {
     disableDevMode: jest.fn(),
     safeToDownloadSmsInvitation: jest.fn(),
     changeEnvironment: jest.fn(),
+    disableTouchIdAction: jest.fn(),
+    enableTouchIdAction: jest.fn(),
+    touchIdActive: 'false',
   }
 }
 

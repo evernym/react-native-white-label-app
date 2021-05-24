@@ -23,7 +23,6 @@ import {
   genRecoveryPhraseRoute,
   lockAuthorizationHomeRoute,
   lockPinSetupRoute,
-  lockTouchIdSetupRoute,
   qrCodeScannerTabRoute,
   settingsRoute,
 } from '../common/route-constants'
@@ -58,7 +57,7 @@ import {
   WALLET_BACKUP_FAILURE,
 } from '../backup/type-backup'
 import { safeSet, walletSet } from '../services/storage'
-import { addPendingRedirection } from '../lock/lock-store'
+import { addPendingRedirection, disableTouchIdAction, enableTouchIdAction } from '../lock/lock-store'
 import { setupApptentive } from '../feedback'
 import { customLogger } from '../store/custom-logger'
 import {
@@ -98,6 +97,7 @@ import {
   BIOMETRICS_SWITCH_OFF,
   GIVE_APP_FEEDBACK_BUTTON_IN_SETTINGS,
 } from '../feedback/log-to-apptentive'
+import { setupTouchId } from '../lock/lock-auth-for-action'
 
 export const headlineForSettingRoute = settingsHeadline || 'Settings'
 const showCameraButton =
@@ -105,6 +105,7 @@ const showCameraButton =
     ? settingsShowCameraButton
     : true
 const settingsOptions = customSettingsOptions || DEFAULT_OPTIONS
+
 
 export class Settings extends Component<SettingsProps, SettingsState> {
   state = {
@@ -126,22 +127,30 @@ export class Settings extends Component<SettingsProps, SettingsState> {
   }
 
   onChangeTouchId = (switchState: boolean) => {
-    const { navigation } = this.props
-    // when the navigation from settings is done by touching the Switch, then the touch id enables with weird behaviour
-    // reason for the behaviour: the onChangeTouchId function is being invoked twice making to navigate twice.
-    // solution: the if condition will check for the current state of the switch and compares with the actual state of the switch
-    // this confirms to make the onChangeTouchId function to invoke only once at all the times
-    if (this.props.touchIdActive !== switchState && navigation.isFocused()) {
+    const {
+      navigation,
+      disableTouchIdAction,
+      enableTouchIdAction,
+      touchIdActive,
+      biometricsSwitchOn,
+      biometricsSwitchOff
+    } = this.props
+
+    if (touchIdActive !== switchState && navigation.isFocused()) {
       if (switchState) {
-        this.props.biometricsSwitchOn()
+        biometricsSwitchOn()
       } else {
-        this.props.biometricsSwitchOff()
+        biometricsSwitchOff()
       }
 
-      navigation.push &&
-        navigation.push(lockTouchIdSetupRoute, {
-          fromSettings: true,
-        })
+      setupTouchId({
+        navigation,
+        fromSettings: true,
+        fromSetup: false,
+        touchIdActive,
+        disableTouchIdAction,
+        enableTouchIdAction,
+      })
     }
   }
   toggleAutoCloudBackupEnabled = (switchState: boolean) => {
@@ -261,12 +270,6 @@ export class Settings extends Component<SettingsProps, SettingsState> {
       this.props.timeStamp !== nextProps.timeStamp
     ) {
       this.setState({ disableTouchIdSwitch: false })
-    } else if (
-      nextProps.currentScreen === lockTouchIdSetupRoute &&
-      this.props.currentScreen === settingsRoute
-    ) {
-      // if user has left settings screen and navigated to lockTouchIdSetup screen
-      this.setState({ disableTouchIdSwitch: true })
     }
     if (
       nextProps.walletBackup.status !== this.props.walletBackup.status &&
@@ -710,6 +713,8 @@ const mapDispatchToProps = (dispatch) =>
       biometricsSwitchOff: () => BIOMETRICS_SWITCH_OFF,
       giveAppFeedbackButtonInSetting: () =>
         GIVE_APP_FEEDBACK_BUTTON_IN_SETTINGS,
+      disableTouchIdAction,
+      enableTouchIdAction,
     },
     dispatch
   )
