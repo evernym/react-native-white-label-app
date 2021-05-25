@@ -22,25 +22,20 @@
 
 1. Add VCX library:
 
-    VCX Cocoapods library is necessary to be added to iOS Podfile too. For instructions how to download and link it with your iOS RN project, please follow instructions from native MobileSDK  documentation.
+    VCX Cocoapods library is necessary to be added to iOS Podfile. 
 
-    In short:
-    * create vcx local folder on your machine
-    * download vcx `vcx.libvcxall_` library from [MobileSDK Releases](https://github.com/evernym/mobile-sdk/releases) section, extract and drag `vcx.framework` to vcx folder
-    * download and copy `vcx.podspec` file (from [MobileSDK](https://github.com/evernym/mobile-sdk/blob/master/vcx.podspec)) and copy to `iOS` folder inside your project directory
-    * update `vcx.podspec` as instructed in [MobileSDK documentation](https://github.com/evernym/mobile-sdk/blob/master/1.ProjectSetup.md#2-add-dependency-libraries)
-    * in `iOS/Podfile` add this line:
-
-        ```ruby
-          pod 'vcx', :path => 'path_to_extracted_vcx_folder/vcx.podspec'
+    * Add the next source to the top of your Podfile:
+    
+      ```ruby
+        ...
+        source 'git@gitlab.com:evernym/mobile/mobile-sdk.git'
+      ```
+    
+    * Add VCX dependency into your Podfile inside target <ProjectName>:
+      ```ruby
+        pod 'vcx', 0.0.205
         ```
-
-    * Run in terminal:
-
-        ```shell
-        yarn install 
-        cd ios && pod install --repo-update
-        ```
+    * Run `pod install`
 
 1. Configure App permissions by adding following lines to `ios/<project-name>/info.plist` file
 
