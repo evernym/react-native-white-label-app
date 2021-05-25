@@ -38,7 +38,7 @@ export const SplashScreenView = (props: SplashScreenProps) => {
   }
 
   const onAppInitialized = () => {
-    if (!isEulaAccept) {
+    if (!isEulaAccept || !lock.isTouchIdEnabled) {
       SplashScreen.hide()
     }
     // now we can safely check value of isAlreadyInstalled
