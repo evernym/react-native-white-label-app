@@ -6,41 +6,29 @@ import SplashScreen from 'react-native-splash-screen'
 import {
   splashScreenRoute,
   lockSelectionRoute,
+  lockEnterPinRoute,
+  lockEnterFingerprintRoute,
   startUpRoute,
   restoreRoute,
-  homeRoute,
 } from '../common'
 import { Container, Loader } from '../components'
-import { addPendingRedirection, unlockApp } from '../lock/lock-store'
+import { addPendingRedirection } from '../lock/lock-store'
 import type { SplashScreenProps } from './type-splash-screen'
 import { isLocalBackupsEnabled } from '../settings/settings-utils'
 import { useEffect } from 'react'
 import { getIsEulaAccepted, getIsInitialized, getLockStore } from '../store/store-selector'
-import { useSelector, useDispatch } from 'react-redux'
-import { authForAction } from '../lock/lock-auth-for-action'
-
+import { useSelector } from 'react-redux'
 export const SplashScreenView = (props: SplashScreenProps) => {
   const isInitialized = useSelector(getIsInitialized)
   const isEulaAccept = useSelector(getIsEulaAccepted)
   const lock = useSelector(getLockStore)
-  const dispatch = useDispatch()
-
   useEffect(() => {
     if (isInitialized) {
       onAppInitialized()
     }
   }, [isInitialized])
-
-  const onSuccess = () => {
-    props.navigation.navigate(homeRoute)
-    SplashScreen.hide()
-    dispatch(unlockApp())
-  }
-
   const onAppInitialized = () => {
-    if (!isEulaAccept || !lock.isTouchIdEnabled) {
-      SplashScreen.hide()
-    }
+    SplashScreen.hide()
     // now we can safely check value of isAlreadyInstalled
     // check for need for set up
     if (!lock.isLockEnabled || lock.isLockEnabled === 'false') {
@@ -59,22 +47,25 @@ export const SplashScreenView = (props: SplashScreenProps) => {
       return
     }
     // not the first time user is opening app
-
-    authForAction({
-      lock,
-      navigation: props.navigation,
-      onSuccess
-    })
+    const initialRoute = lock.isTouchIdEnabled
+      ? lockEnterFingerprintRoute
+      : lockEnterPinRoute
+    props.navigation.navigate(initialRoute)
   }
-
   return isInitialized ? null : (
     <Container center>
       <Loader/>
     </Container>
   )
 }
-
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      addPendingRedirection,
+    },
+    dispatch,
+  )
 export const splashScreenScreen = {
   routeName: splashScreenRoute,
-  screen: SplashScreenView,
+  screen: connect(null, mapDispatchToProps)(SplashScreenView),
 }

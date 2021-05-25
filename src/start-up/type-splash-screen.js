@@ -1,5 +1,6 @@
 // @flow
 import type { ReactNavigation } from '../common/type-common'
-import { addPendingRedirection, unlockApp } from '../lock/lock-store'
-
-export type SplashScreenProps = ReactNavigation
+import { addPendingRedirection } from '../lock/lock-store'
+export type SplashScreenProps = {
+  addPendingRedirection: typeof addPendingRedirection,
+} & ReactNavigation

@@ -24,7 +24,8 @@ type Params = {
   navigation: NavigationScreenProp<{|
     ...NavigationLeafRoute,
   |}>,
-  onSuccess: () => void
+  onSuccess: () => void,
+  unlockApp: () => void,
 }
 
 export const freshnessThreshold = 30
@@ -40,7 +41,7 @@ export function authForAction(params: Params) {
       onSuccess: params.onSuccess,
     })
   }
-  if (timeSinceLastSuccess < freshnessThreshold && !params.lock.isAppLocked) {
+  if (timeSinceLastSuccess < freshnessThreshold) {
     params.onSuccess()
   } else if (params.lock.isTouchIdEnabled) {
     const handleFailedAuth = () => {
@@ -61,6 +62,7 @@ export function authForAction(params: Params) {
             .then(() => {
               TouchId.release()
               params.onSuccess()
+              params.unlockApp()
             })
             .catch(() => handleFailedAuth())
         })

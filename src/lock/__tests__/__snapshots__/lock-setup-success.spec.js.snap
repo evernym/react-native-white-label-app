@@ -185,7 +185,7 @@ exports[`<LockSetupSuccess /> should display Loading while fetching the invitati
         ]
       }
     >
-       
+
     </Text>
   </View>
   <View
@@ -239,7 +239,7 @@ exports[`<LockSetupSuccess /> should display Loading while fetching the invitati
               "borderColor": "#2089dc",
               "borderRadius": 3,
               "borderWidth": 0,
-              "color": "red",
+              "color": "#ffffff",
               "flexDirection": "row",
               "justifyContent": "center",
               "opacity": 0.4,
@@ -454,7 +454,7 @@ exports[`<LockSetupSuccess /> should render Lock setup success Screen 1`] = `
         ]
       }
     >
-       
+
     </Text>
   </View>
   <View

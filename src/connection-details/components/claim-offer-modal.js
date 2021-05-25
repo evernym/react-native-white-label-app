@@ -282,6 +282,7 @@ export class ClaimOfferModal extends Component<any, *> {
         lock: this.props.lock,
         navigation: this.props.navigation,
         onSuccess: this.onDenyAuthSuccess,
+        unlockApp: this.props.unlockApp,
       })
     }
   }
@@ -289,7 +290,6 @@ export class ClaimOfferModal extends Component<any, *> {
   onDenyAuthSuccess = () => {
     this.props.denyClaimOffer(this.props.uid)
     this.navigateOnSuccess()
-    this.props.unlockApp()
   }
 
   onClose = () => {

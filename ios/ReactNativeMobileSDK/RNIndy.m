@@ -704,8 +704,17 @@ RCT_EXPORT_METHOD(createOneTimeInfoWithToken: (NSString *)config
                                         resolver: (RCTPromiseResolveBlock) resolve
                                         rejecter: (RCTPromiseRejectBlock) reject)
 {
-  resolve([NSString stringWithUTF8String:[[[ConnectMeVcx alloc] init] agentProvisionWithToken:config
-                                        token: token]]);
+  [[[ConnectMeVcx alloc] init] agentProvisionWithTokenAsync:config
+                                                      token:token
+                                                 completion:^(NSError *error, NSString *result) {
+    if (error != nil && error.code != 0)
+    {
+      NSString *indyErrorCode = [NSString stringWithFormat:@"%ld", (long)error.code];
+      reject(indyErrorCode, @"Error occurred while registering with token", error);
+    } else {
+      resolve(result);
+    }
+  }];
 }
 
 RCT_EXPORT_METHOD(createConnectionWithInvite: (NSString *)invitationId

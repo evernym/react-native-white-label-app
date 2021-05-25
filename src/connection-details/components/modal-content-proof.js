@@ -236,6 +236,7 @@ class ModalContentProof extends Component<
         lock: this.props.lock,
         navigation: this.props.navigation,
         onSuccess: this.onDenyAuthSuccess,
+        unlockApp: this.props.unlockApp,
       })
     }
   }
@@ -243,7 +244,6 @@ class ModalContentProof extends Component<
   onDenyAuthSuccess = () => {
     this.props.denyProofRequest(this.props.uid)
     this.navigateOnSuccess()
-    this.props.unlockApp()
   }
 
   onSend = () => {

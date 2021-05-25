@@ -62,7 +62,6 @@ export const ProofProposalComponent = ({
       screen: homeDrawerRoute,
       params: undefined,
     })
-    dispatch(unlockApp())
   }, [uid, invitationPayload])
 
   const onAccept = useCallback(() => {
@@ -70,6 +69,7 @@ export const ProofProposalComponent = ({
       lock,
       navigation,
       onSuccess: onAcceptAuthSuccess,
+      unlockApp: () => dispatch(unlockApp())
     })
   }, [onAcceptAuthSuccess])
 
