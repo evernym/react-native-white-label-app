@@ -8,6 +8,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Alert,
 } from 'react-native'
 import { KeyboardAwareFlatList } from 'react-native-keyboard-aware-scroll-view'
 import { moderateScale, verticalScale } from 'react-native-size-matters'
@@ -16,7 +17,11 @@ import type {
   ProofRequestAttributeListAndHeaderProps,
   ProofRequestAttributeListState,
 } from '../../proof-request/type-proof-request'
-import { ATTRIBUTE_TYPE } from '../../proof-request/type-proof-request'
+import {
+  ATTRIBUTE_TYPE,
+  MESSAGE_ATTRIBUTE_DESCRIPTION,
+  MESSAGE_ATTRIBUTE_TITLE,
+} from '../../proof-request/type-proof-request'
 import type { Attribute } from '../../push-notification/type-push-notification'
 import type {
   ReactNavigation,
@@ -117,6 +122,18 @@ class ProofRequestAttributeList extends Component<
   }
 
   keyExtractor = (_: Attribute, index: number) => index
+
+  showMissingAttributeModal = (attribute: string) => {
+    Alert.alert(
+      MESSAGE_ATTRIBUTE_TITLE,
+      MESSAGE_ATTRIBUTE_DESCRIPTION(this.props.institutionalName, attribute),
+      [
+        {
+          text: 'OK',
+        },
+      ]
+    )
+  }
 
   handleCustomValuesNavigation = (
     label: string,
@@ -465,7 +482,10 @@ class ProofRequestAttributeList extends Component<
             </View>
           </View>
           {keyIndex === 0 && (
-            <View style={styles.iconWrapper}>
+            <TouchableOpacity
+              style={[styles.iconWrapper, styles.alertIconWrapper]}
+              onPress={() => this.showMissingAttributeModal(label)}
+            >
               <EvaIcon
                 name={ALERT_ICON}
                 color={colors.red}
@@ -473,7 +493,7 @@ class ProofRequestAttributeList extends Component<
                 accessible={true}
                 accessibilityLabel="alert-icon"
               />
-            </View>
+            </TouchableOpacity>
           )}
         </View>
       )
@@ -721,6 +741,9 @@ const styles = StyleSheet.create({
     marginTop: moderateScale(16),
     flex: 1,
     alignItems: 'flex-end',
+  },
+  alertIconWrapper: {
+    marginRight: moderateScale(8),
   },
   title: {
     fontSize: verticalScale(fontSizes.size6),
