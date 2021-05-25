@@ -56,6 +56,7 @@ import { hasMissingAttributes } from '../utils'
 import { authForAction } from '../../lock/lock-auth-for-action.js'
 import { homeDrawerRoute, homeRoute } from '../../common'
 import { proofRequestAcceptButtonText, proofRequestDenyButtonText } from '../../external-imports'
+import { unlockApp } from '../../lock/lock-store'
 
 class ModalContentProof extends Component<
   ProofRequestAndHeaderProps,
@@ -242,6 +243,7 @@ class ModalContentProof extends Component<
   onDenyAuthSuccess = () => {
     this.props.denyProofRequest(this.props.uid)
     this.navigateOnSuccess()
+    this.props.unlockApp()
   }
 
   onSend = () => {
@@ -275,6 +277,7 @@ class ModalContentProof extends Component<
     }
 
     this.navigateOnSuccess()
+    this.props.unlockApp()
   }
 
   render() {
@@ -393,6 +396,7 @@ const mapDispatchToProps = (dispatch) =>
       proofRequestShowStart,
       newConnectionSeen,
       denyProofRequest,
+      unlockApp,
     },
     dispatch
   )

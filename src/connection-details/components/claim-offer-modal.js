@@ -55,6 +55,7 @@ import {
   credentialOfferHeadline,
   CustomCredentialOfferModal,
 } from '../../external-imports'
+import { unlockApp } from '../../lock/lock-store'
 
 export class ClaimOfferModal extends Component<any, *> {
   constructor(props: any) {
@@ -288,6 +289,7 @@ export class ClaimOfferModal extends Component<any, *> {
   onDenyAuthSuccess = () => {
     this.props.denyClaimOffer(this.props.uid)
     this.navigateOnSuccess()
+    this.props.unlockApp()
   }
 
   onClose = () => {
@@ -309,6 +311,7 @@ export class ClaimOfferModal extends Component<any, *> {
   }
 
   onAcceptAuthSuccess = () => {
+    this.props.unlockApp()
     // if not a paid cred, then just accept claim offer, and close modal
     const { payTokenValue }: ClaimOfferPayload = this.props.claimOfferData
     if (!payTokenValue) {
@@ -436,6 +439,7 @@ const mapDispatchToProps = (dispatch) =>
       newConnectionSeen,
       denyClaimOffer,
       deleteOutOfBandClaimOffer,
+      unlockApp,
     },
     dispatch
   )

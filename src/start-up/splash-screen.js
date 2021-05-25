@@ -11,7 +11,7 @@ import {
   homeRoute,
 } from '../common'
 import { Container, Loader } from '../components'
-import { addPendingRedirection } from '../lock/lock-store'
+import { addPendingRedirection, unlockApp } from '../lock/lock-store'
 import type { SplashScreenProps } from './type-splash-screen'
 import { isLocalBackupsEnabled } from '../settings/settings-utils'
 import { useEffect } from 'react'
@@ -33,6 +33,7 @@ export const SplashScreenView = (props: SplashScreenProps) => {
   const onSuccess = () => {
     props.navigation.navigate(homeRoute)
     SplashScreen.hide()
+    props.unlockApp()
   }
 
   const onAppInitialized = () => {
@@ -76,11 +77,12 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       addPendingRedirection,
+      unlockApp,
     },
     dispatch,
   )
 
 export const splashScreenScreen = {
   routeName: splashScreenRoute,
-  screen: connect(null, mapDispatchToProps)(SplashScreenView),
+  screen: connect(mapDispatchToProps)(SplashScreenView),
 }

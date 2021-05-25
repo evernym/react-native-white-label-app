@@ -40,8 +40,8 @@ export function authForAction(params: Params) {
       onSuccess: params.onSuccess,
     })
   }
-
-  if (timeSinceLastSuccess < freshnessThreshold) {
+  console.log(timeSinceLastSuccess, freshnessThreshold, params.lock)
+  if (timeSinceLastSuccess < freshnessThreshold && !params.lock.isAppLocked) {
     params.onSuccess()
   } else if (params.lock.isTouchIdEnabled) {
     const handleFailedAuth = () => {
@@ -94,7 +94,6 @@ export const setupTouchId = ({
   enableTouchIdAction
 }: ISetupTouchId) => {
   const onSettingsScreen = () => {
-    console.log(touchIdActive)
     if (touchIdActive) {
       Alert.alert(
         null,
