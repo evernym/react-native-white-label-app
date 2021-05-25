@@ -149,11 +149,20 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
         BridgeUtils.writeCACert(this.getReactApplicationContext());
 
         try {
-            String result = UtilsApi.vcxAgentProvisionWithToken(agencyConfig, token);
-            BridgeUtils.resolveIfValid(promise, result);
+            UtilsApi.vcxAgentProvisionWithTokenAsync(agencyConfig, token)
+              .exceptionally((t) -> {
+                VcxException ex = (VcxException) t;
+                ex.printStackTrace();
+                Log.e(TAG, "createOneTimeInfoWithToken - Error: ", ex);
+                promise.reject(String.valueOf(ex.getSdkErrorCode()), ex.getSdkMessage());
+                return null;
+              }).thenAccept(result -> {
+                Log.d(TAG, "createOneTimeInfoWithToken: Success");
+                BridgeUtils.resolveIfValid(promise, result);
+              });
         } catch (VcxException e) {
             e.printStackTrace();
-            Log.e(TAG, "vcxAgentProvisionWithToken - Error: ", e);
+            Log.e(TAG, "createOneTimeInfoWithToken - Error: ", e);
             promise.reject(String.valueOf(e.getSdkErrorCode()), e.getSdkMessage());
         }
     }
