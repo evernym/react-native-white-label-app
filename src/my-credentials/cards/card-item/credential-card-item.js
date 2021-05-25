@@ -63,6 +63,7 @@ const CredentialCard = ({
   isHidden,
   elevation,
   enabled,
+  isNeedMargin,
 }: CredentialCardProps) => {
   const {
     logoUrl,
@@ -183,6 +184,7 @@ const CredentialCard = ({
         height: hiddenHight,
         overflow: 'hidden',
         opacity: hiddenOpacity,
+        marginTop: isNeedMargin ? -CARD_MARGIN : 0
       }}
     >
       <View style={styles.background}>
@@ -273,7 +275,7 @@ CredentialCard.defaultProps = {
 const styles = StyleSheet.create({
   container: {
     height: CARD_HEIGHT,
-    margin: CARD_MARGIN * 2,
+    margin: CARD_MARGIN,
     borderRadius: moderateScale(16),
     shadowRadius: 6,
     shadowOpacity: 0.2,
@@ -334,7 +336,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'center',
     overflow: 'hidden',
-    margin: CARD_MARGIN * 2,
+    margin: CARD_MARGIN,
   },
   deleteSection: {
     width: moderateScale(100),

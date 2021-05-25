@@ -16,13 +16,14 @@ import type { SplashScreenProps } from './type-splash-screen'
 import { isLocalBackupsEnabled } from '../settings/settings-utils'
 import { useEffect } from 'react'
 import { getIsEulaAccepted, getIsInitialized, getLockStore } from '../store/store-selector'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { authForAction } from '../lock/lock-auth-for-action'
 
 export const SplashScreenView = (props: SplashScreenProps) => {
   const isInitialized = useSelector(getIsInitialized)
   const isEulaAccept = useSelector(getIsEulaAccepted)
   const lock = useSelector(getLockStore)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     if (isInitialized) {
@@ -33,7 +34,7 @@ export const SplashScreenView = (props: SplashScreenProps) => {
   const onSuccess = () => {
     props.navigation.navigate(homeRoute)
     SplashScreen.hide()
-    props.unlockApp()
+    dispatch(unlockApp())
   }
 
   const onAppInitialized = () => {
@@ -73,16 +74,7 @@ export const SplashScreenView = (props: SplashScreenProps) => {
   )
 }
 
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
-    {
-      addPendingRedirection,
-      unlockApp,
-    },
-    dispatch,
-  )
-
 export const splashScreenScreen = {
   routeName: splashScreenRoute,
-  screen: connect(mapDispatchToProps)(SplashScreenView),
+  screen: SplashScreenView,
 }

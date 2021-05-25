@@ -40,7 +40,6 @@ export function authForAction(params: Params) {
       onSuccess: params.onSuccess,
     })
   }
-  console.log(timeSinceLastSuccess, freshnessThreshold, params.lock)
   if (timeSinceLastSuccess < freshnessThreshold && !params.lock.isAppLocked) {
     params.onSuccess()
   } else if (params.lock.isTouchIdEnabled) {
