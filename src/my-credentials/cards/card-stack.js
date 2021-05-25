@@ -34,14 +34,14 @@ const CardStack = (props: CardStackProps) => {
 
   const openCredsSize = CARD_TOTAL_HEIGHT * credentials.length
   const expandedStack = openCredsSize + HIDE_ICON_TOTAL_HIGHT
-  const collapsedStack = CARD_HEIGHT + CARD_MARGIN * 2 * credCount
+  const collapsedStack = CARD_HEIGHT + CARD_MARGIN * credCount
 
   const height = mix(expandedTransition, collapsedStack, expandedStack)
   const hiddenHeight = mix(hiddenTransition, height, 0)
   const hiddenOpacity = mix(hiddenTransition, 1, 0)
   const hideBtnOpacity = mix(isExpanded, 0, 1)
   const moreTextOpacity = mix(hasMoreCreds, 0, 1)
-  const extraMargin = mix(moreTextTransition, 0, CARD_MARGIN * 2)
+  const extraMargin = mix(moreTextTransition, 0, CARD_MARGIN)
 
   return (
     <Animated.View
@@ -60,7 +60,13 @@ const CardStack = (props: CardStackProps) => {
               -(CARD_HEIGHT + margin) * index,
               0
             )
-            const scaleX = mix(expandedTransition, 1 * 0.9 ** index, 1)
+            const scaleX = mix(expandedTransition, 0.9 ** index, 1)
+
+            if (!isExpanded && index > 2) {
+              return null
+            }
+
+            const marginTopDefault = index === 0 ? -CARD_MARGIN : 0
 
             return (
               <Animated.View
@@ -68,6 +74,8 @@ const CardStack = (props: CardStackProps) => {
                 style={{
                   zIndex: credCount - index,
                   transform: [{ scaleX }, { translateY }],
+                  marginTop: isExpanded ? CARD_MARGIN : marginTopDefault,
+                  marginBottom: isExpanded ? -CARD_MARGIN : undefined
                 }}
               >
                 <CredentialCard
@@ -76,6 +84,7 @@ const CardStack = (props: CardStackProps) => {
                   setActiveStack={setActiveStack}
                   elevation={credCount - index}
                   enabled={enabledCardGesture}
+                  isNeedMargin={isExpanded && index !== 0}
                 />
               </Animated.View>
             )
@@ -121,6 +130,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginVertical: CARD_MARGIN * 2,
   },
+
   hideBtn: {
     shadowColor: '#000',
     shadowOffset: {
@@ -137,6 +147,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: HIDE_ICON_HIGHT / 2,
   },
-  moreTextRow: { alignItems: 'center' },
+  moreTextRow: { alignItems: 'center', marginTop: -CARD_MARGIN },
   moreText: { fontSize: verticalScale(14), color: colors.gray2 },
 })

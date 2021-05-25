@@ -102,6 +102,5 @@ const styles = StyleSheet.create({
   },
   disabled: {
     opacity: 0.4,
-    color: 'red'
   },
 })

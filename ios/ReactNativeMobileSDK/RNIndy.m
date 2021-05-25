@@ -706,13 +706,13 @@ RCT_EXPORT_METHOD(createOneTimeInfoWithToken: (NSString *)config
 {
   [[[ConnectMeVcx alloc] init] agentProvisionWithTokenAsync:config
                                                       token:token
-                                                 completion:^(NSError *error, NSString *token) {
+                                                 completion:^(NSError *error, NSString *result) {
     if (error != nil && error.code != 0)
     {
       NSString *indyErrorCode = [NSString stringWithFormat:@"%ld", (long)error.code];
-      reject(indyErrorCode, @"Error occurred while creating agent with token", error);
+      reject(indyErrorCode, @"Error occurred while registering with token", error);
     } else {
-      resolve(token);
+      resolve(result);
     }
   }];
 }

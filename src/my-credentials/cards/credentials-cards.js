@@ -67,7 +67,7 @@ export const CredentialsCards = (props: CredentialsCardsProps) => {
       onScrollEndDrag={_onScrollEndDrag}
     >
       {credentialsData.length > 0 &&
-        credentialsData.map((credentialGroup) => {
+        credentialsData.map((credentialGroup, index) => {
           const stackCredentialName = credentialGroup[0].credentialName
           const isHidden =
             stackCredentialName !== activeStack && activeStack !== null
@@ -80,6 +80,7 @@ export const CredentialsCards = (props: CredentialsCardsProps) => {
                 isExpanded={true}
                 isHidden={isHidden}
                 enabled={!isScrolling}
+                isNeedMargin={index !== 0}
               />
             )
           } else {

@@ -195,6 +195,7 @@ export type ProofRequestProps = {
   attachedRequest?: any,
   lock: LockStore,
   canBeIgnored?: boolean,
+  unlockApp: () => void,
 } & ReactNavigation
 
 export type ProofRequestState = {

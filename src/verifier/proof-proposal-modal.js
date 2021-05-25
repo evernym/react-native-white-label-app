@@ -30,6 +30,7 @@ import {
   proofProposalAcceptButtonText,
   proofProposalDenyButtonText,
 } from '../external-imports'
+import { unlockApp } from '../lock/lock-store'
 
 export type ProofProposalProps = {
   backRedirectRoute?: string | null,
@@ -68,6 +69,7 @@ export const ProofProposalComponent = ({
       lock,
       navigation,
       onSuccess: onAcceptAuthSuccess,
+      unlockApp: () => dispatch(unlockApp())
     })
   }, [onAcceptAuthSuccess])
 
