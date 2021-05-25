@@ -22,6 +22,7 @@ export type CredentialCardProps = {
   setActiveStack?: (stackName: string | null) => void,
   elevation?: number,
   enabled?: boolean,
+  isNeedMargin?: boolean,
 }
 
 export type CredentialItem = {
