@@ -251,6 +251,7 @@ class ModalContentProof extends Component<
       lock: this.props.lock,
       navigation: this.props.navigation,
       onSuccess: this.onSendAuthSuccess,
+      unlockApp: this.props.unlockApp,
     })
   }
 
@@ -277,7 +278,6 @@ class ModalContentProof extends Component<
     }
 
     this.navigateOnSuccess()
-    this.props.unlockApp()
   }
 
   render() {

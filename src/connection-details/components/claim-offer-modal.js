@@ -307,11 +307,11 @@ export class ClaimOfferModal extends Component<any, *> {
       lock: this.props.lock,
       navigation: this.props.navigation,
       onSuccess: this.onAcceptAuthSuccess,
+      unlockApp: this.props.unlockApp,
     })
   }
 
   onAcceptAuthSuccess = () => {
-    this.props.unlockApp()
     // if not a paid cred, then just accept claim offer, and close modal
     const { payTokenValue }: ClaimOfferPayload = this.props.claimOfferData
     if (!payTokenValue) {

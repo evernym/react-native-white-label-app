@@ -61,8 +61,8 @@ export function authForAction(params: Params) {
           )
             .then(() => {
               TouchId.release()
-              params.onSuccess()
               params.unlockApp()
+              params.onSuccess()
             })
             .catch(() => handleFailedAuth())
         })
