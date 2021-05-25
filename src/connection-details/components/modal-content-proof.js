@@ -21,8 +21,7 @@ import type {
 import {
   MESSAGE_ERROR_PROOF_GENERATION_TITLE,
   MESSAGE_ERROR_PROOF_GENERATION_DESCRIPTION,
-  MESSAGE_ERROR_DISSATISFIED_ATTRIBUTES_TITLE,
-  MESSAGE_ERROR_DISSATISFIED_ATTRIBUTES_DESCRIPTION, PRIMARY_ACTION_SEND,
+  PRIMARY_ACTION_SEND,
 } from '../../proof-request/type-proof-request'
 import type { SelectedAttribute } from '../../push-notification/type-push-notification'
 
@@ -80,26 +79,6 @@ class ModalContentProof extends Component<
   }
 
   componentDidUpdate(prevProps: ProofRequestAndHeaderProps) {
-    if (
-      prevProps.dissatisfiedAttributes !== this.props.dissatisfiedAttributes &&
-      this.props.dissatisfiedAttributes.length > 0
-    ) {
-      Alert.alert(
-        MESSAGE_ERROR_DISSATISFIED_ATTRIBUTES_TITLE,
-        MESSAGE_ERROR_DISSATISFIED_ATTRIBUTES_DESCRIPTION(
-          this.props.dissatisfiedAttributes,
-          this.props.name
-        ),
-        [
-          {
-            text: 'OK',
-            onPress: this.onIgnore,
-          },
-        ]
-      )
-      return
-    }
-
     if (
       this.props.dissatisfiedAttributes.length === 0 &&
       this.props.missingAttributes !== prevProps.missingAttributes &&
