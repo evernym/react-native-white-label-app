@@ -6,7 +6,7 @@ import { View, Text, TouchableWithoutFeedback, StyleSheet } from 'react-native'
 import { verticalScale } from 'react-native-size-matters'
 
 // styles
-import { colors, fontSizes } from '../../common/styles/constant'
+import { colors } from '../../common/styles/constant'
 
 export type ToggleFieldsTypes = {
   actionInfoText: [string, string],
@@ -25,35 +25,44 @@ const ToggleFields = ({
   const [showInfoText, hideInfoText] = actionInfoText
   const [isToggled, setToggled] = useToggle
   const { container, infoTextStyles, actionTextStyles } = styles
-  return (
-    <>
-      {showToggleMenu && (
-        <View style={container}>
-          <Text style={infoTextStyles}>
-            {isToggled ? hideInfoText : showInfoText}{' '}
-            <TouchableWithoutFeedback onPress={() => setToggled(!isToggled)}>
-              <Text style={actionTextStyles}>{isToggled ? hide : show}</Text>
-            </TouchableWithoutFeedback>
-          </Text>
+  return showToggleMenu ? (
+    <View style={container}>
+      <Text style={infoTextStyles}>
+        {isToggled ? hideInfoText : showInfoText}{' '}
+      </Text>
+      <TouchableWithoutFeedback hitSlop={hitSlop} onPress={() => setToggled(!isToggled)}>
+        <View style={styles.actionTextStylesButton}>
+          <Text style={actionTextStyles}>{isToggled ? hide : show}</Text>
         </View>
-      )}
-    </>
-  )
+      </TouchableWithoutFeedback>
+    </View>
+  ) : null
 }
+
+const hitSlop = {top: 20, left: 20, bottom: 20, right: 20}
 
 const styles = StyleSheet.create({
   container: {
     marginTop: verticalScale(2),
     marginBottom: verticalScale(2),
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   infoTextStyles: {
     textAlign: 'center',
-    color: colors.secondary,
-    fontSize: verticalScale(fontSizes.size9),
+    color: colors.gray3,
+    fontSize: verticalScale(12),
   },
   actionTextStyles: {
     color: colors.main,
     fontWeight: '700',
+    fontSize: verticalScale(12),
+  },
+  actionTextStylesButton: {
+    padding: 8,
+    paddingLeft: 0,
   },
 })
 
