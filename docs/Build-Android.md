@@ -13,12 +13,12 @@ In order to configure the building of your application for an Android platform, 
 
 **Note**: Automatic configuration works only for Unix like OS.
 
-1. Add the following command to your `scripts` section of your app `package.json`:
+1. Add the following command to your `scripts` section of your app `package.json` (use `configure-android-mac.sh` script if you are on MacOS):
 
     ```json
       "scripts": {
         ...
-        "evernym-sdk:configure-android": "./node_modules/@dev/react-native-evernym-sdk/configure-android.sh"
+        "evernym-sdk:configure-android": "./node_modules/@dev/react-native-evernym-sdk/files/android/configure-android.sh"
       },
     ```
 
@@ -91,6 +91,8 @@ In order to configure the building of your application for an Android platform, 
 1. Replace your `android/app/src/main/AndroidManifest.xml` with [AndroidManifest.xml](files/android/AndroidManifest.xml) and  change placeholders (`react-native-evernym-sdk-placeholder`) in copied `AndroidManifest.xml`:
     * `package` - your original android package name
    
+1. Create `android/app/src/main/res/xml/` folder and copy [file_viewer_provider_paths.xml](files/android/file_viewer_provider_paths.xml) file there.
+
 1. Update your `MainActivity` by adding the following code (it's needed to configure your app storage): 
     ```
     import android.content.ContextWrapper;
