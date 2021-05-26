@@ -32,10 +32,18 @@
       ```
     
     * Add VCX dependency into your Podfile inside target <ProjectName>:
-      ```ruby
-        pod 'vcx', 0.0.205
-        ```
-    * Run `pod install`
+      * release build for devices only (`arm64`):
+          ```ruby
+          pod 'vcx', 0.0.207
+          ```
+      * debug build dor devices and simulators (`arm64` and `x86_64`)
+          ```ruby
+          pod 'vcx', 0.0.208
+          ```
+        
+    * **Note** that currently recommended VCX versions are `207/208`.
+
+   * Run `pod install`
 
 1. Configure App permissions by adding following lines to `ios/<project-name>/info.plist` file
 
