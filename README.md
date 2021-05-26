@@ -49,7 +49,7 @@ Replace dependencies section leaving only `@dev/react-native-evernym-sdk` depend
 
     ```json
     "dependencies": {
-        "@dev/react-native-evernym-sdk": "git+ssh://git@gitlab.corp.evernym.com/dev/connectme/react-native-evernym-sdk.git",
+        "@dev/react-native-evernym-sdk": "git@gitlab.com:evernym/mobile/react-native-evernym-sdk.git",
       },
     ```
    

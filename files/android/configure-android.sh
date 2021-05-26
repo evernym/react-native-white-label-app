@@ -9,7 +9,7 @@ echo 'org.gradle.jvmargs=-Xmx4608m -XX:MaxPermSize=512m -XX:+HeapDumpOnOutOfMemo
 
 echo "2. Updating minimum supported SDK version to ${minVersion} "
 minVersion=23
-sed -riE "s|minSdkVersion = [0-9]*|minSdkVersion = ${minVersion}|" android/build.gradle
+sed -ri "s|minSdkVersion = [0-9]*|minSdkVersion = ${minVersion}|" android/build.gradle
 
 echo "3. Adding the source repository for VCX library"
 repository="
@@ -63,16 +63,23 @@ packageName=$(grep -Eo 'package="(.*)"' ${currentManifestPath}  | cut -f2 -d '"'
 placeholderName=$(grep -Eo 'package="(.*)"' ${targetManifestPath}  | cut -f2 -d '"')
 
 cp -R ${targetManifestPath} ${currentManifestPath}
-sed -iE "s/${placeholderName}/${packageName}/g" ${currentManifestPath}
+sed -i "s/${placeholderName}/${packageName}/g" ${currentManifestPath}
 
-echo "7. Updating MainActivity to specify storage directory"
+echo "7. Copy required files"
+currentManifestPath="android/app/src/main/res/xml/"
+targetManifestPath="${templatesPath}/android/file_viewer_provider_paths.xml"
+
+mkdir ${currentManifestPath}
+cp -R ${targetManifestPath} ${currentManifestPath}
+
+echo "8. Updating MainActivity to specify storage directory"
 filepath=$(find android/app/src/main/java  -path \*/MainActivity.java)
 
 imports='\
 import android.content.ContextWrapper;\
 import android.system.Os;\
 '
-sed -iE "/^package/a ${imports}" ${filepath}
+sed -i "/^package/a ${imports}" ${filepath}
 
 method='\
     @Override \
@@ -86,6 +93,6 @@ method='\
         } \
     } \
     '
-sed -iE "/.*MainActivity.*/a ${method}" ${filepath}
+sed -i "/.*MainActivity.*/a ${method}" ${filepath}
 
 echo "Completed!"

@@ -10,7 +10,7 @@
     "src",
     "ios",
     "react-native-evernym-sdk.podspec",
-    "configure-android.sh"
+    "files"
   ],
   "scripts": {
     "test": "jest --detectOpenHandles --forceExit",
