@@ -39,7 +39,7 @@ const ToggleFields = ({
   ) : null
 }
 
-const hitSlop = {top: 20, left: 20, bottom: 20, right: 20}
+const hitSlop = {top: 10, left: 10, bottom: 10, right: 10}
 
 const styles = StyleSheet.create({
   container: {
