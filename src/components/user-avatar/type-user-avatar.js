@@ -10,4 +10,5 @@ export type UserAvatarProps = {
   children?: (avatarSource: ImageSource | number | string, props?: any) => React.Element<*>,
   size?: string,
   round?: boolean,
+  imageStyle?: any,
 }

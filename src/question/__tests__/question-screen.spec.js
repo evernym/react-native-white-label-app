@@ -17,8 +17,10 @@ import {
   mockQuestionReceivedState,
   mockQuestionPayload2,
 } from '../../../__mocks__/data/question-store-mock-data'
-import { QUESTION_STATUS, TEXT_SUBMIT } from '../type-question'
+import { QUESTION_STATUS } from '../type-question'
 import { questionStyles } from '../question-screen-style'
+
+export const testID = 'question-action-submit'
 
 describe('<QuestionScreen />', () => {
   it('should match idle state snapshot', () => {
@@ -79,7 +81,7 @@ describe('<QuestionScreen />', () => {
       status: QUESTION_STATUS.SEEN,
     })
     component.getInstance().onResponseSelect(0)
-    const submitButton = component.root.findByProps({ title: TEXT_SUBMIT })
+    const submitButton = component.root.findByProps({ accessibilityLabel: testID })
     console.log(submitButton.props)
     submitButton.props.onPress()
     expect(props.sendAnswerToQuestion).toHaveBeenCalledTimes(1)
@@ -93,8 +95,8 @@ describe('<QuestionScreen />', () => {
     const { component } = setup({
       status: QUESTION_STATUS.SEEN,
     })
-    const submitButton = component.root.findByProps({ title: TEXT_SUBMIT })
-    expect(submitButton.props.disabled).toBe(undefined)
+    const submitButton = component.root.findByProps({ accessibilityLabel: testID })
+    expect(submitButton.props.disabled).toBe(true)
   })
 
   it('should match invalid data', () => {

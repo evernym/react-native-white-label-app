@@ -29,7 +29,8 @@ export class UserAvatarComponent extends Component<UserAvatarProps, void> {
     const props = {
       [size]: true,
       round: this.props.round || true,
-      resizeMode: "cover"
+      resizeMode: "cover",
+      imageStyle: [this.props.imageStyle || {}]
     }
 
     if (this.props.children) {

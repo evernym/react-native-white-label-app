@@ -13,6 +13,11 @@ exports[`<ConnectedUserAvatar /> should match snapshot when no user image is sel
       "top": 20,
     }
   }
+  imageStyle={
+    Array [
+      Object {},
+    ]
+  }
   onClick={[Function]}
   onResponderGrant={[Function]}
   onResponderMove={[Function]}
@@ -70,6 +75,11 @@ exports[`<ConnectedUserAvatar /> should match snapshot when user image is select
       "right": 20,
       "top": 20,
     }
+  }
+  imageStyle={
+    Array [
+      Object {},
+    ]
   }
   onClick={[Function]}
   onResponderGrant={[Function]}
