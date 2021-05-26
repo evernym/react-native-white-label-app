@@ -219,95 +219,97 @@ exports[`<QuestionScreen /> should match error snapshot 1`] = `
   <View
     style={
       Object {
-        "marginLeft": "3%",
-        "width": "94%",
+        "borderColor": "#FFFFFF",
+        "borderRadius": 5,
+        "borderWidth": 1,
+        "marginTop": 15,
+        "minHeight": 56,
       }
     }
   >
     <View
       style={
-        Object {
-          "borderColor": "#FFFFFF",
-          "borderRadius": 5,
-          "borderWidth": 1,
-          "marginTop": 15,
-          "minHeight": 56,
-        }
+        Array [
+          Object {
+            "backgroundColor": "#FFFFFF",
+            "flexDirection": "column",
+            "maxWidth": "100%",
+            "padding": 14.357142857142858,
+            "paddingBottom": 2.8714285714285714,
+            "width": "100%",
+          },
+          undefined,
+        ]
       }
     >
       <View
+        accessibilityLabel="question-action-submit"
+        accessible={true}
+        focusable={true}
+        isTVSelectable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         style={
           Object {
-            "borderRadius": 3,
-            "marginLeft": 0,
-            "marginRight": 0,
+            "alignItems": "center",
+            "backgroundColor": "#86B93B",
+            "borderRadius": 5,
+            "flexDirection": "row",
+            "justifyContent": "center",
+            "marginBottom": 15.314285714285713,
+            "minWidth": "35%",
+            "opacity": 1,
             "overflow": "hidden",
+            "padding": 16.271428571428572,
+            "paddingLeft": 9.571428571428571,
+            "paddingRight": 9.571428571428571,
+            "width": "100%",
           }
         }
       >
-        <View
-          accessibilityLabel="question-action-submit"
-          accessibilityRole="button"
-          accessibilityState={
-            Object {
-              "busy": false,
-              "disabled": false,
-            }
-          }
-          accessible={true}
-          focusable={true}
-          isTVSelectable={true}
-          onClick={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
+        <Text
+          allowFontScaling={false}
           style={
-            Object {
-              "backgroundColor": "#86B93B",
-              "borderColor": "#86B93B",
-              "borderRadius": 5,
-              "borderWidth": 0,
-              "height": 56,
-              "opacity": 1,
-            }
-          }
-          testID="question-action-submit"
-        >
-          <View
-            style={
+            Array [
               Object {
-                "alignItems": "center",
-                "backgroundColor": "#86B93B",
-                "borderColor": "#86B93B",
-                "borderRadius": 5,
-                "borderWidth": 0,
-                "color": "#86B93B",
-                "flexDirection": "row",
-                "height": 56,
-                "justifyContent": "center",
-                "padding": 8,
+                "fontSize": 19,
+              },
+              Object {
+                "fontFamily": "System",
+              },
+              Object {
+                "backgroundColor": "#333333",
+                "color": "#ffffff",
+              },
+              Object {
+                "fontWeight": "800",
+              },
+              Object {
                 "textAlign": "center",
-              }
-            }
-          >
-            <Text
-              style={
-                Object {
-                  "color": "white",
-                  "fontSize": 18,
-                  "paddingBottom": 1,
-                  "paddingTop": 2,
-                  "textAlign": "center",
-                }
-              }
-            >
-              Try Again
-            </Text>
-          </View>
-        </View>
+              },
+              Object {
+                "backgroundColor": "transparent",
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+            ]
+          }
+        >
+          Try Again
+        </Text>
       </View>
     </View>
   </View>
@@ -1007,96 +1009,97 @@ exports[`<QuestionScreen /> should match idle state snapshot 1`] = `
   <View
     style={
       Object {
-        "marginLeft": "3%",
-        "width": "94%",
+        "borderColor": "#FFFFFF",
+        "borderRadius": 5,
+        "borderWidth": 1,
+        "marginTop": 15,
+        "minHeight": 56,
       }
     }
   >
     <View
       style={
-        Object {
-          "borderColor": "#FFFFFF",
-          "borderRadius": 5,
-          "borderWidth": 1,
-          "marginTop": 15,
-          "minHeight": 56,
-        }
+        Array [
+          Object {
+            "backgroundColor": "#FFFFFF",
+            "flexDirection": "column",
+            "maxWidth": "100%",
+            "padding": 14.357142857142858,
+            "paddingBottom": 2.8714285714285714,
+            "width": "100%",
+          },
+          undefined,
+        ]
       }
     >
       <View
+        accessibilityLabel="question-action-submit"
+        accessible={true}
+        focusable={true}
+        isTVSelectable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         style={
           Object {
-            "borderRadius": 3,
-            "marginLeft": 0,
-            "marginRight": 0,
+            "alignItems": "center",
+            "backgroundColor": "#86B93B",
+            "borderRadius": 5,
+            "flexDirection": "row",
+            "justifyContent": "center",
+            "marginBottom": 15.314285714285713,
+            "minWidth": "35%",
+            "opacity": 0.4,
             "overflow": "hidden",
+            "padding": 16.271428571428572,
+            "paddingLeft": 9.571428571428571,
+            "paddingRight": 9.571428571428571,
+            "width": "100%",
           }
         }
       >
-        <View
-          accessibilityLabel="question-action-submit"
-          accessibilityRole="button"
-          accessibilityState={
-            Object {
-              "busy": false,
-              "disabled": false,
-            }
-          }
-          accessible={true}
-          focusable={true}
-          isTVSelectable={true}
-          onClick={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
+        <Text
+          allowFontScaling={false}
           style={
-            Object {
-              "backgroundColor": "#86B93B",
-              "borderColor": "#86B93B",
-              "borderRadius": 5,
-              "borderWidth": 0,
-              "height": 56,
-              "opacity": 1,
-            }
-          }
-          testID="question-action-submit"
-        >
-          <View
-            style={
+            Array [
               Object {
-                "alignItems": "center",
-                "backgroundColor": "#86B93B",
-                "borderColor": "#86B93B",
-                "borderRadius": 5,
-                "borderWidth": 0,
-                "color": "#86B93B",
-                "flexDirection": "row",
-                "height": 56,
-                "justifyContent": "center",
-                "opacity": 0.4,
-                "padding": 8,
+                "fontSize": 19,
+              },
+              Object {
+                "fontFamily": "System",
+              },
+              Object {
+                "backgroundColor": "#333333",
+                "color": "#ffffff",
+              },
+              Object {
+                "fontWeight": "800",
+              },
+              Object {
                 "textAlign": "center",
-              }
-            }
-          >
-            <Text
-              style={
-                Object {
-                  "color": "white",
-                  "fontSize": 18,
-                  "paddingBottom": 1,
-                  "paddingTop": 2,
-                  "textAlign": "center",
-                }
-              }
-            >
-              Submit
-            </Text>
-          </View>
-        </View>
+              },
+              Object {
+                "backgroundColor": "transparent",
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+            ]
+          }
+        >
+          Submit
+        </Text>
       </View>
     </View>
   </View>

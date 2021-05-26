@@ -64,7 +64,7 @@ class RecentCardComponent extends React.Component<RecentCardProps, void> {
         <View style={styles.iconSection}>
           { props.issuerName ?
             renderImageOrText(props.logoUrl, props.issuerName) :
-            renderUserAvatar({ size: 'superSmall' })
+            renderUserAvatar({ size: 'superSmall', imageStyle: { opacity: 0.5 } })
           }
         </View>
         <View style={styles.textSection}>
