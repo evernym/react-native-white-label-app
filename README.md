@@ -49,15 +49,9 @@ Replace dependencies section leaving only `@dev/react-native-evernym-sdk` depend
 
     ```json
     "dependencies": {
-        "@dev/react-native-evernym-sdk": "git@gitlab.com:evernym/mobile/react-native-evernym-sdk.git",
+        "@dev/react-native-evernym-sdk": "https://gitlab.com/evernym/mobile/react-native-evernym-sdk.git",
       },
     ```
-   
-    > Note
-      >
-      > For the moment, while our RN package is not yet published, please clone **`react-native-evernym-sdk`** repo to separate folder on your machine 
-      and use a local path for setting **`react-native-evernym-sdk`** dependency.
-    
    
 1. Native dependencies should be put in app dependencies (see [issue](https://github.com/react-native-community/cli/issues/870)). They are listed as peer dependencies in SDK.  
 Add all peer dependencies from `react-native-evernym-sdk` into `dependencies` section of your app `package.json`.
