@@ -39,7 +39,13 @@ const ToggleFields = ({
   ) : null
 }
 
-const hitSlop = {top: 10, left: 10, bottom: 10, right: 10}
+const touchArea = 8
+const hitSlop = {
+  top: touchArea,
+  left: touchArea,
+  bottom: touchArea,
+  right: touchArea
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -61,7 +67,7 @@ const styles = StyleSheet.create({
     fontSize: verticalScale(12),
   },
   actionTextStylesButton: {
-    padding: 8,
+    padding: touchArea,
     paddingLeft: 0,
   },
 })
