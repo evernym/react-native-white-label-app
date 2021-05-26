@@ -1,8 +1,8 @@
 // @flow
 import React, { useCallback, useState } from 'react'
-import { StyleSheet, Text, TouchableWithoutFeedback } from 'react-native'
-import { verticalScale } from 'react-native-size-matters'
-import { colors, fontSizes } from '../../common/styles/constant'
+import { StyleSheet, Text, View, TouchableWithoutFeedback } from 'react-native'
+import { verticalScale, moderateScale } from 'react-native-size-matters'
+import { colors } from '../../common/styles/constant'
 
 export function ExpandableText({ text, style, lines, ...rest }: {
   text: string,
@@ -28,10 +28,12 @@ export function ExpandableText({ text, style, lines, ...rest }: {
   }, [numLines])
 
   const renderExpandMarker = useCallback(() => (
-    <TouchableWithoutFeedback onPress={toggleText}>
-      <Text style={[styles.moreText, {textAlign: style.textAlign, fontFamily: style.fontFamily}]}>
-        {toggleTitle}
-      </Text>
+    <TouchableWithoutFeedback hitSlop={hitSlop} onPress={toggleText}>
+      <View style={styles.moreTextContainer}>
+        <Text style={[styles.moreText, {textAlign: style.textAlign, fontFamily: style.fontFamily}]}>
+          {toggleTitle}
+        </Text>
+      </View>
     </TouchableWithoutFeedback>
   ), [toggleTitle])
 
@@ -49,12 +51,19 @@ export function ExpandableText({ text, style, lines, ...rest }: {
   )
 }
 
+const touchArea = moderateScale(10)
+const hitSlop = { top: touchArea, left: touchArea, bottom: touchArea, right: touchArea }
+
 const styles = StyleSheet.create({
   moreText: {
-    fontSize: verticalScale(fontSizes.size7),
+    fontSize: verticalScale(12),
     fontWeight: '300',
-    color: colors.blue,
+    color: colors.main,
     padding: 0,
     margin: 0,
   },
+  moreTextContainer: {
+    padding: touchArea,
+    margin: -touchArea,
+  }
 })

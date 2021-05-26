@@ -3,7 +3,7 @@
 // packages
 import React from 'react'
 import { View, Text, TouchableWithoutFeedback, StyleSheet } from 'react-native'
-import { verticalScale } from 'react-native-size-matters'
+import { moderateScale, verticalScale } from 'react-native-size-matters'
 
 // styles
 import { colors } from '../../common/styles/constant'
@@ -39,7 +39,7 @@ const ToggleFields = ({
   ) : null
 }
 
-const touchArea = 8
+const touchArea = moderateScale(10)
 const hitSlop = {
   top: touchArea,
   left: touchArea,
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
   },
   actionTextStylesButton: {
     padding: touchArea,
-    paddingLeft: 0,
+    margin: -touchArea,
   },
 })
 
