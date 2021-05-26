@@ -28,7 +28,7 @@
     
       ```ruby
         ...
-        source 'git@gitlab.com:evernym/mobile/mobile-sdk.git'
+        source 'https://gitlab.com/evernym/mobile/mobile-sdk.git'
       ```
     
     * Add VCX dependency into your Podfile inside target <ProjectName>:
