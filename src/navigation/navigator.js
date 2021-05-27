@@ -493,6 +493,7 @@ function CardStackScreen() {
       <CardStack.Screen
         name={restorePassphraseScreen.routeName}
         component={restorePassphraseScreen.screen}
+        options={restorePassphraseScreen.options}
       />
       <CardStack.Screen
         name={selectRestoreMethodScreen.routeName}

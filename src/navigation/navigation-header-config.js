@@ -89,7 +89,7 @@ export const headerDefaultOptions = ({
 }: {
   headline?: string,
   headerHideShadow: boolean,
-  transparent: boolean,
+  transparent?: boolean,
   headerStyles?: any,
   arrowColor?: any,
   additionalActionOnBackPress?: () => void,
