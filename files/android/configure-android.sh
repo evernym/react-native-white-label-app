@@ -5,7 +5,7 @@ echo "Configure MSDK application for Android"
 templatesPath='node_modules/@dev/react-native-evernym-sdk/files'
 
 echo "1. Increasing the available JXN memory"
-echo 'org.gradle.jvmargs=-Xmx4608m -XX:MaxPermSize=512m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8' >> android/gradle.properties
+echo -e 'org.gradle.jvmargs=-Xmx4608m -XX:MaxPermSize=512m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8\n' >> android/gradle.properties
 
 echo "2. Updating minimum supported SDK version to ${minVersion} "
 minVersion=23
