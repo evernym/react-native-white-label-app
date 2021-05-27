@@ -40,6 +40,7 @@ npx react-native init awesomeMsdkProject --version 0.61.4
 ```
 
 **NOTE**: you need to use the same version of `react-native` as specified in `peerDependencies` section of `package.json` file for the evernym react-native-sdk.
+The currently recommended React-Native version is `0.61.4`.
 By using a different version you are taking a risk of having issues with sdk.
 
 #### Base app configuration
