@@ -4,17 +4,15 @@ import React, { useCallback } from 'react'
 
 import type { QuestionResponse, QuestionStoreMessage } from '../type-question'
 
-import { CustomView, CustomButton, CustomText } from '../../components'
+import { CustomView, CustomButton } from '../../components'
 import { TEXT_SUBMIT, TEXT_TRY_AGAIN, TEXT_OK } from '../type-question'
 import { getScreenStatus } from '../question-store'
 import {
   questionActionButtonDefaultProps,
   questionStyles,
-  disabledStyle,
 } from '../question-screen-style'
 
 import { colors, isSmallWidthDevice } from '../../common/styles'
-import SvgCustomIcon from "../../components/svg-custom-icon";
 import { ModalButtons } from "../../components/buttons/modal-buttons";
 
 export const QuestionActions = ({

@@ -179,6 +179,5 @@ export const selectRestoreMethodScreen = {
   options: headerDefaultOptions({
     headline: undefined,
     headerHideShadow: true,
-    transparent: true,
   })
 }
