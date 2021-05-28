@@ -107,7 +107,7 @@ nodejs-publish:
     - if [ $CI_COMMIT_REF_SLUG == "main" ]; then VERSION="${VERSION}-${CI_PIPELINE_ID}"; fi
     - npm version --no-git-tag-version --allow-same-version ${VERSION}
     - npm install
-    - npm publish --access public
+#    - npm publish
   only:
     refs:
       - stable@evernym/mobile/react-native-evernym-sdk

@@ -166,7 +166,7 @@ If you want to add a capability where if user taps on a link in other apps (slac
 
 By default ios app uses `System` font which is usually `San Francisco` on ios. If you want to add a custom font, then use below steps. Below steps are describing how to add `Lato` font. You can add any other font in similar way.
 
-1. Add `Lato` fonts to Xcode project located here: `node_modules/@dev/react-native-evernym-sdk/src/fonts/Lato` and update `info.plist` with configuration related to fonts:
+1. Add `Lato` fonts to Xcode project located here: `node_modules/react-native-evernym-sdk/src/fonts/Lato` and update `info.plist` with configuration related to fonts:
 
     ```plist
         <key>UIAppFonts</key>
