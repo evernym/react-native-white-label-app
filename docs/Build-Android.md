@@ -18,7 +18,7 @@ In order to configure the building of your application for an Android platform, 
     ```json
       "scripts": {
         ...
-        "evernym-sdk:configure-android": "./node_modules/@dev/react-native-evernym-sdk/files/android/configure-android.sh"
+        "evernym-sdk:configure-android": "./node_modules/react-native-evernym-sdk/files/android/configure-android.sh"
       },
     ```
 

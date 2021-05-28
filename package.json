@@ -1,5 +1,5 @@
 {
-  "name": "@dev/react-native-evernym-sdk",
+  "name": "react-native-evernym-sdk",
   "title": "React Native Evernym SDK",
   "version": "0.0.1",
   "description": "The official React Native SDK for Evernym's Mobile SDK",
@@ -10,12 +10,13 @@
     "src",
     "ios",
     "react-native-evernym-sdk.podspec",
+    "docs",
     "files"
   ],
   "scripts": {
     "test": "jest --detectOpenHandles --forceExit",
     "lint": "flow stop && flow && eslint src",
-    "configure": "yarn --cwd ../../.. copyfiles -su 4 \"node_modules/@dev/react-native-evernym-sdk/src/evernym-sdk/*.js\" ./app && echo 'Evernym React Native SDK configured successfully'"
+    "configure": "yarn --cwd ../.. copyfiles -su 3 'node_modules/react-native-evernym-sdk/src/evernym-sdk/*.js' ./app && echo 'Evernym React Native SDK configured successfully'"
   },
   "repository": {
     "type": "git",
