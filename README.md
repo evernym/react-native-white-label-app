@@ -26,8 +26,16 @@ Verifiable Credential (VC) is the new format for interoperable digital credentia
 Issuers create credentials, usually by having JSON docs [digitally signed](https://en.wikipedia.org/wiki/Digital_signature) in a special way. Holders store them, and verifiers ask for proof based upon them. Verifiable presentations that Holders provide to Verifiers are packages of evidence—either credentials, or data derived from one or more credentials—built by holders to satisfy a verifier’s requirements. Verifiers learn with certainty which issuers have attested something by checking digital signatures against a verifiable data registry (typically, a blockchain).
 
 ## React MSDK
-React MSDK is built as an [Aries compatible](https://www.hyperledger.org/projects/aries) React Native package which allows the quick building of customized applications representing a Holder side in the Verifiable Credentials model.
-The application will be able to establish secure connections with institutions, accept and store Verifiable Credentials from Issuers, and provide Zero Knowledge Proofs to Verifiers.
+
+React MSDK is built as an [Aries compatible](https://www.hyperledger.org/projects/aries) React Native package which allows the quick building of customized digital wallets (completely under your control) representing a Holder side in the Verifiable Credentials model.
+
+With React-Native Mobils SDK, your application can:
+- Form private, secure connections with other entities in the Sovrin ecosystem
+- Gather and store digital credentials
+- Present digital proofs of part or all of your credentials, privately and securely
+- Answer secure messages from any connection you have
+
+The identity wallet app enables myriad use cases, including proving you’re over a specific legal age without revealing your exact date of birth, sharing health records privately and securely, and doing away with the username-and-password concept once and for all.
 
 ## Creating a new application with React MSDK
 
