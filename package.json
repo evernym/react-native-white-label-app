@@ -34,7 +34,7 @@
   },
   "license": "SEE LICENSE IN LICENSE.txt",
   "readmeFilename": "README.md",
-  "peerDependencies": {
+  "dependencies": {
     "@react-native-community/async-storage": "^1.11.0",
     "@react-native-community/blur": "^3.6.0",
     "@react-native-community/masked-view": "^0.1.10",
@@ -53,6 +53,7 @@
     "color": "^3.1.2",
     "dayjs": "^1.9.1",
     "hoist-non-react-statics": "3.3.2",
+    "jwt-decode": "3.1.2",
     "lodash.debounce": "^4.0.8",
     "lodash.findkey": "^4.6.0",
     "lodash.flatten": "^4.4.0",
@@ -64,6 +65,8 @@
     "lottie-ios": "3.1.8",
     "lottie-react-native": "3.4.0",
     "moment": "^2.26.0",
+    "patch-package": "6.4.7",
+    "postinstall-postinstall": "2.1.0",
     "query-string": "^6.13.0",
     "react": "16.9.0",
     "react-native": "0.61.4",
@@ -117,6 +120,7 @@
     "rn-fetch-blob": "0.12.0",
     "url-parse": "^1.4.7",
     "use-debounce": "^6.0.1",
+    "use-saga-reducer": "3.0.0",
     "validator": "^13.1.1"
   },
   "devDependencies": {

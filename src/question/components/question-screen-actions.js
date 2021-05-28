@@ -13,7 +13,7 @@ import {
 } from '../question-screen-style'
 
 import { colors, isSmallWidthDevice } from '../../common/styles'
-import { ModalButtons } from "../../components/buttons/modal-buttons";
+import { ModalButtons } from '../../components/buttons/modal-buttons'
 
 export const QuestionActions = ({
   question,

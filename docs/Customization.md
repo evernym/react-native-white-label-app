@@ -1,4 +1,4 @@
-## Configuration
+# Configuration
 
 After running `evernym-sdk:configure` command all required modules and assets will set up with default values. 
 
@@ -10,31 +10,37 @@ For more convenience, we grouped all configuration options by files representing
 For example `home.js` contains options for `Home` screen.
 
 **Content:**
-* [Application](#application)
-* [Color theme](#color-theme)
-* [Font](#font)
-* [Environment](#environment)
-* [End User License Agreement](#end-user-license-agreement)
-* [Start up](#start-up)
-* [Lock](#lock)
-* [Navigation Menu](#navigation-menu)
-* [Home](#home)
-* [Connections](#connections)
-* [Credentials](#credentials)
-* [Collecting log information](#collecting-log-information)
-* [Credential Offer](#credential-offer)
-* [Proof Request](#proof-request)
-* [Proof Proposal](#proof-proposal)
-* [Proof](#proof)
-* [Question dialog](#question)
-* [Settings](#settings)
-* [Feedback](#feedback)
-* [Application information](#application-information)
-* [Splash screen and app icon](#splash-screen-and-app-icon)
-* [Credential attachments](#credential-attachments)
-* [Advanced](#advanced)
+- [Configuration](#configuration)
+  - [Application](#application)
+    - [Receiving Message](#receiving-message)
+    - [Color theme](#color-theme)
+    - [Font](#font)
+    - [Environment](#environment)
+    - [End User License Agreement](#end-user-license-agreement)
+    - [Start up](#start-up)
+    - [Lock](#lock)
+    - [Home](#home)
+    - [Connections](#connections)
+    - [Credentials](#credentials)
+    - [Navigation Menu](#navigation-menu)
+    - [Collecting log information](#collecting-log-information)
+    - [Credential Offer](#credential-offer)
+    - [Proof Request](#proof-request)
+    - [Proof Proposal](#proof-proposal)
+    - [Proof](#proof)
+    - [Question](#question)
+    - [Invite Action](#invite-action)
+    - [Settings](#settings)
+    - [Feedback](#feedback)
+    - [Application information](#application-information)
+    - [Splash screen and app icon](#splash-screen-and-app-icon)
+    - [Credential attachments](#credential-attachments)
+  - [Examples](#examples)
+    - [Credential](#credential)
+    - [Proof request](#proof-request-1)
+  - [Advanced](#advanced)
 
-### Application
+## Application
 
 The base application settings should be specified in `app.js` file.
 
@@ -103,7 +109,7 @@ The base application settings should be specified in `app.js` file.
         export const DEEP_LINK = 'https://address.com'
         ```
 
-#### Receiving Message
+### Receiving Message
 
 There are two strategies regarding receiving messages by an application:
 
@@ -133,7 +139,7 @@ If you wish to use **Push Notifications** strategy you need to set variable `USE
 * [Android](./Build-Android.md#push-notifications-configuration)  
 * [iOS](./Build-iOS.md#push-notifications-configuration)  
       
-#### Color theme
+### Color theme
 
 Application color theme is set by a group of constants provided in `colors.js` configuration module. 
 It is used throughout the whole application.
@@ -173,7 +179,7 @@ It is used throughout the whole application.
         }
          ```
 
-#### Font
+### Font
 
 You can specify the font which will be used in the app inside the `font.js` module.
 
@@ -219,7 +225,7 @@ You can specify the font which will be used in the app inside the `font.js` modu
           ...
         ```
 
-#### Environment
+### Environment
 
 You can configure a server environment used for agent provisioning inside the `provision.js` module.
 
@@ -306,7 +312,7 @@ You can configure a server environment used for agent provisioning inside the `p
           export const SPONSOR_ID = 'sponsorid'
           ```
 
-#### End User License Agreement
+### End User License Agreement
 
 You can configure EULA and privacy terms inside the `eula.js` module.
 
@@ -415,7 +421,7 @@ There are two type variables used for specifying documents location:
 
 Note: By default, MSDK tries to use web versions of documents. Local assets will be used when there are connectivity issues.
 
-#### Start up
+### Start up
 
 You can configure application startup wizard which is shown for the newly installed application inside the `startup.js` module. 
 
@@ -439,7 +445,15 @@ You can configure application startup wizard which is shown for the newly instal
         export const CustomStartUpScreen = () => <Text>Custom Start Up</Text>
         ```  
 
-#### Lock
+* `ANDROID_DEVICE_CHECK_API_KEY` - (Android device verification API key generated from Google cloud console). This SDK also provides option to secure your app such that your app is authorized to run only on non-rooted devices and only on real devices. if you set this key this, SDK will check for device integrity and will show messages as you configure them using below constants. Although the name of variable has Android in it, SDK will run check on both Android and iOS if this key is set. If `null` is passed, then device verification will not be done on both Android and iOS.
+
+* `deviceSecurityCheckFailedMessage` - This message is shown if device is rooted or if release build is running on simulator/emulator.
+
+* `devicePlayServiceUpdateRequiredMessage` - This message is shown only for Android devices. If an Android device has incompatible version or old version of Play Service, then this message will be show to user with an option to update play service.
+
+* `devicePlayServiceRequiredMessage` - This message is shown only for Android devices. If an Android device has play services disabled, then this message will be shown along with an option to enable from `Settings`.
+
+### Lock
 
 You can configure application locking screens (set up / enter / change password) inside the `lock.js` module.
 
@@ -453,7 +467,7 @@ You can configure application locking screens (set up / enter / change password)
         export const LockHeader = () => <Text>Hello</Text>
         ```
 
-#### Home
+### Home
 
 You can configure application `Home` screen inside the `home.js` module.
 
@@ -510,7 +524,7 @@ You can configure application `Home` screen inside the `home.js` module.
       export const CustomHomeScreen = () => <Text>Custom Home</Text>
       ``` 
     
-#### Connections
+### Connections
 
 You can configure application `Connections` screen inside the `connections.js` module.
 
@@ -572,7 +586,7 @@ You can configure application `Connections` screen inside the `connections.js` m
         export const CustomConnectionDetailsScreen = () => <Text>Custom Connection Details</Text>
         ``` 
 
-#### Credentials
+### Credentials
 
 You can configure application `Credentials` screen inside the `credentials.js` module.
 
@@ -678,7 +692,7 @@ You can also configure application `Show Credentail` modal dialog or disable thi
       } 
       ``` 
 
-#### Navigation Menu
+### Navigation Menu
 
 You can configure navigation menu and app navigation inside the `navigator.js` module.
 
@@ -807,7 +821,7 @@ You can configure navigation menu and app navigation inside the `navigator.js` m
         ]
         ```
 
-#### Collecting log information
+### Collecting log information
 
 You can configure data used for logging in the `logs.js` module.
 
@@ -832,7 +846,7 @@ You can receive encrypted log file by email.
     }
     ```
 
-#### Credential Offer
+### Credential Offer
 
 You can customize `Credential Offer` dialog in the `credential-offer.js` module.
 
@@ -892,7 +906,7 @@ You can customize `Credential Offer` dialog in the `credential-offer.js` module.
         }        
        ``` 
 
-#### Proof Request 
+### Proof Request 
 
 You can customize `Proof Request` dialog in the `proof-request.js` module.
 
@@ -978,7 +992,7 @@ You can customize `Proof Request` dialog in the `proof-request.js` module.
         }         
       ``` 
 
-#### Proof Proposal
+### Proof Proposal
 
 You can customize `Proof Proposal` dialog in the `proof-proposal.js` module.
 
@@ -1025,7 +1039,7 @@ You can customize `Proof Proposal` dialog in the `proof-proposal.js` module.
       } 
       ``` 
 
-#### Proof
+### Proof
 
 You can customize `Shared Proof` and `Received Proof` dialogs in the `proof.js` module.
 
@@ -1075,7 +1089,7 @@ You can customize `Shared Proof` and `Received Proof` dialogs in the `proof.js` 
       } 
       ``` 
 
-#### Question 
+### Question 
 
 You can customize `Question` dialog in the `question-dialog.js` module.
 
@@ -1101,7 +1115,7 @@ You can customize `Question` dialog in the `question-dialog.js` module.
             navigationOptions: {}, // Optional, ModalStack.Screen Options - https://reactnavigation.org/docs/screen-options
         }         
       ``` 
-#### Invite Action
+### Invite Action
 
 You can customize `Invite Action` dialog in the `invite-action.js` module.
 
@@ -1148,7 +1162,7 @@ You can customize `Invite Action` dialog in the `invite-action.js` module.
         }        
       ``` 
       
-#### Settings
+### Settings
 
 You can customize `Settings` view in the `settings.js` module.
 
@@ -1243,7 +1257,7 @@ You can customize `Settings` view in the `settings.js` module.
         export const CustomSettingsScreen = () => <Text>Custom Settings</Text>
         ``` 
 
-#### Feedback
+### Feedback
 
 In order to gather application feedback is used `Apptentive`. 
 You can provide credentials to be used for setting up `Apptentive` module in `feedback.js` file.
@@ -1262,7 +1276,7 @@ export const APPTENTIVE_CREDENTIALS = Platform.select({
 })
 ```
 
-#### Application information
+### Application information
 
 The information about the application which will be shown on `About` screen can be configured in `app.js` file.
 
@@ -1309,7 +1323,7 @@ The information about the application which will be shown on `About` screen can 
         export const CustomAboutAppScreen = () => <Text>Custom About</Text>
         ```
 
-#### Splash screen and app icon
+### Splash screen and app icon
 
 These are configured inside your application for specific platforms.
 
@@ -1340,7 +1354,7 @@ These are configured inside your application for specific platforms.
     
 * iOS: TODO
 
-#### Credential attachments
+### Credential attachments
 
 When app gets an attribute with `_link` postfix (example `Photo_link`), it tries to render its value as attachment according to defined mime type.
 
@@ -1383,9 +1397,9 @@ When app gets an attribute with `_link` postfix (example `Photo_link`), it tries
   * `audio/mp3`
   * `video/mp4`
 
-### Examples
+## Examples
 
-#### Credential
+### Credential
 
 Credential containing attachments:
 
@@ -1399,7 +1413,7 @@ Credential containing attachments:
 } 
 ```
 
-#### Proof request
+### Proof request
 
 Proof Request containing attachments:
 
@@ -1416,6 +1430,6 @@ Proof Request containing attachments:
 }
 ```
 
-#### Advanced
+## Advanced
 
 For advanced customizations, you can refer to this [document](./Advanced.md) describing MSDK internals.

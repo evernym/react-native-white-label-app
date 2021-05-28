@@ -54,7 +54,10 @@ import { colors } from '../../common/styles/constant'
 import { hasMissingAttributes } from '../utils'
 import { authForAction } from '../../lock/lock-auth-for-action.js'
 import { homeDrawerRoute, homeRoute } from '../../common'
-import { proofRequestAcceptButtonText, proofRequestDenyButtonText } from '../../external-imports'
+import {
+  proofRequestAcceptButtonText,
+  proofRequestDenyButtonText,
+} from '../../external-imports'
 import { unlockApp } from '../../lock/lock-store'
 
 class ModalContentProof extends Component<
@@ -113,7 +116,9 @@ class ModalContentProof extends Component<
       this.props.data &&
       this.props.data.requestedAttributes !== nextProps.data.requestedAttributes
     ) {
-      const attributesFilledFromCredential = convertSelectedCredentialsToVCXFormat(nextProps.data.requestedAttributes)
+      const attributesFilledFromCredential = convertSelectedCredentialsToVCXFormat(
+        nextProps.data.requestedAttributes
+      )
       this.setState({ attributesFilledFromCredential })
     }
   }
@@ -239,9 +244,7 @@ class ModalContentProof extends Component<
 
     if (this.props.invitationPayload) {
       // if properties contains invitation it means we accepted out-of-band presentation request
-      this.props.acceptOutOfBandInvitation(
-        this.props.invitationPayload,
-      )
+      this.props.acceptOutOfBandInvitation(this.props.invitationPayload)
       this.props.applyAttributesForPresentationRequest(
         this.props.uid,
         this.state.attributesFilledFromCredential,
@@ -284,7 +287,9 @@ class ModalContentProof extends Component<
         this.props.dissatisfiedAttributes.length > 0)
 
     let acceptButtonText = proofRequestAcceptButtonText || PRIMARY_ACTION_SEND
-    let denyButtonText = proofRequestDenyButtonText || (this.props.canBeIgnored ? 'Cancel' : 'Reject')
+    let denyButtonText =
+      proofRequestDenyButtonText ||
+      (this.props.canBeIgnored ? 'Cancel' : 'Reject')
 
     const {
       canEnablePrimaryAction,

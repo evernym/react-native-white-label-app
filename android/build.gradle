@@ -87,6 +87,8 @@ dependencies {
     //noinspection GradleDynamicVersion
     implementation 'com.facebook.react:react-native:+'  // From node_modules
     implementation "androidx.palette:palette:1.0.0"
+    implementation 'androidx.annotation:annotation:1.1.0'
+    implementation 'com.google.android.gms:play-services-safetynet:17.0.0'
     implementation 'net.sourceforge.streamsupport:android-retrofuture:1.6.2'
     implementation 'com.evernym:vcx:0.11.2-b78dc97@aar'
     implementation 'net.java.dev.jna:jna:4.5.0@aar'

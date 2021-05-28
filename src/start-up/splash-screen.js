@@ -16,7 +16,11 @@ import { addPendingRedirection } from '../lock/lock-store'
 import type { SplashScreenProps } from './type-splash-screen'
 import { isLocalBackupsEnabled } from '../settings/settings-utils'
 import { useEffect } from 'react'
-import { getIsEulaAccepted, getIsInitialized, getLockStore } from '../store/store-selector'
+import {
+  getIsEulaAccepted,
+  getIsInitialized,
+  getLockStore,
+} from '../store/store-selector'
 import { useSelector } from 'react-redux'
 export const SplashScreenView = (props: SplashScreenProps) => {
   const isInitialized = useSelector(getIsInitialized)
@@ -54,7 +58,7 @@ export const SplashScreenView = (props: SplashScreenProps) => {
   }
   return isInitialized ? null : (
     <Container center>
-      <Loader/>
+      <Loader />
     </Container>
   )
 }
@@ -63,7 +67,7 @@ const mapDispatchToProps = (dispatch) =>
     {
       addPendingRedirection,
     },
-    dispatch,
+    dispatch
   )
 export const splashScreenScreen = {
   routeName: splashScreenRoute,

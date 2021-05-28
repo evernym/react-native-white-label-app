@@ -22,9 +22,12 @@ import type { CredentialOffer } from '../../claim-offer/type-claim-offer'
 import type { MyPairwiseInfo } from '../../store/type-connection-store'
 import type { ClaimOfferPushPayload } from '../../push-notification/type-push-notification'
 import { getWalletKey } from '../../services/storage'
-import {appName, vcxPushType} from '../../external-imports'
-import DeviceInfo from "react-native-device-info"
+import { appName, vcxPushType } from '../../external-imports'
+import DeviceInfo from 'react-native-device-info'
 import { flattenAsync } from '../../common/flatten-async'
+import { Platform } from 'react-native'
+import { getDeviceAttestation } from '../../start-up/device-check-saga'
+import { flatJsonParse } from '../../common/flat-json-parse'
 
 export const paymentHandle = 0
 const commonConfigParams = {
@@ -48,6 +51,26 @@ export async function convertAgencyConfigToVcxProvision(
     payment_method: config.paymentMethod,
     ...commonConfigParams,
   }
+}
+
+export async function addAttestation(token: string) {
+  const [parseError, parsedToken] = flatJsonParse(token)
+  if (parseError || !parsedToken || !parsedToken.nonce) {
+    return token
+  }
+
+  const [attestationError, attestationSignature] = await flattenAsync(
+    getDeviceAttestation
+  )(parsedToken.nonce)
+  if (attestationError || !attestationSignature) {
+    return token
+  }
+
+  return JSON.stringify({
+    ...parsedToken,
+    attestationAlgorithm: Platform.OS === 'ios' ? 'DeviceCheck' : 'SafetyNet',
+    attestationData: attestationSignature,
+  })
 }
 
 export function convertVcxProvisionResultToUserOneTimeInfo(
