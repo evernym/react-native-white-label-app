@@ -25,6 +25,10 @@ import { schemaValidator } from '../../../services/schema-validator'
 import { ephemeralProofRequestSchema } from '../../../proof-request/proof-request-qr-code-reader'
 
 export function isValidUrl(urlQrCode: string): Url | false {
+  if (!urlQrCode) {
+    return false
+  }
+
   const parsedUrl = urlParse(urlQrCode, {}, true)
 
   if (!validUrlScheme.includes(parsedUrl.protocol)) {
@@ -84,26 +88,26 @@ export async function getUrlData(
   // from the passed url and check if we get data from url
 
   // 4. get URL data. do not follow redirection. just return new url
-  const [, redirectionUrl] = await flattenAsync(getRequestRedirectionUrl)(url)
-  if (redirectionUrl) {
+  let [, redirectionUrl] = await flattenAsync(getRequestRedirectionUrl)(url)
+  const parsedRedirectionUrl = isValidUrl(redirectionUrl || '')
+  if (redirectionUrl && parsedRedirectionUrl) {
     // BCGov links contains message
-    const parts = redirectionUrl.split('?m=')
-    if (parts.length > 1) {
-      const encodedMessage = parts[1]
-      const data = await getBase64DecodedInvitation(encodedMessage)
 
-      // is ephemeral proof request
-      if (schemaValidator.validate(ephemeralProofRequestSchema, data)) {
-        return [null, { type: QR_CODE_TYPES.EPHEMERAL_PROOF_REQUEST_V1, data: data }]
+    if (parsedRedirectionUrl.query){
+      const message = parsedRedirectionUrl.query['m'] || parsedRedirectionUrl.query['d_m']
+      if (message) {
+        const data = await getBase64DecodedInvitation(message)
+
+        // is ephemeral proof request
+        if (schemaValidator.validate(ephemeralProofRequestSchema, data)) {
+          return [null, { type: QR_CODE_TYPES.EPHEMERAL_PROOF_REQUEST_V1, data: data }]
+        }
       }
     }
 
     // else handle link again
-    const urlInvitationData = isValidUrl(redirectionUrl)
-    if (urlInvitationData) {
-      // downloaded data contains url - get its data
-      return await getUrlData(urlInvitationData, redirectionUrl)
-    }
+    // downloaded data contains url - get its data
+    return await getUrlData(parsedRedirectionUrl, redirectionUrl)
   }
 
   // 5. download data and get a valid json object
