@@ -13,6 +13,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import androidx.core.app.ActivityCompat;
 import androidx.palette.graphics.Palette;
+import androidx.annotation.NonNull;
 import android.util.Base64;
 import android.util.Log;
 import android.app.ActivityManager;
@@ -21,6 +22,16 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.net.Uri;
 import android.os.Environment;
+import android.content.pm.ApplicationInfo;
+import android.content.Intent;
+import android.provider.Settings;
+
+import com.google.android.gms.safetynet.SafetyNet;
+import com.google.android.gms.safetynet.SafetyNetApi;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 
 import com.evernym.sdk.reactnative.BridgeUtils;
 import com.evernym.sdk.vcx.VcxException;
@@ -71,6 +82,7 @@ import java.util.Map;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.lang.IllegalArgumentException;
 
 import javax.annotation.Nullable;
 
@@ -82,12 +94,15 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
     // TODO:Remove this class once integration with vcx is done
     private static RNIndyStaticData staticData = new RNIndyStaticData();
 
+    private boolean isGmsEnabled;
+
     public RNIndyModule(ReactApplicationContext context) {
         // Pass in the context to the constructor and save it so you can emit events
         // https://facebook.github.io/react-native/docs/native-modules-android.html#the-toast-module
         super(context);
 
         reactContext = context;
+        this.initializeGMSStatus();
     }
 
     @Override
@@ -125,17 +140,16 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
     public void getProvisionToken(String agencyConfig, Promise promise) {
         Log.d(TAG, "getProvisionToken()");
         try {
-            UtilsApi.vcxGetProvisionToken(agencyConfig)
-              .exceptionally((t) -> {
+            UtilsApi.vcxGetProvisionToken(agencyConfig).exceptionally((t) -> {
                 VcxException ex = (VcxException) t;
                 ex.printStackTrace();
                 Log.e(TAG, "vcxGetProvisionToken - Error: ", ex);
                 promise.reject(String.valueOf(ex.getSdkErrorCode()), ex.getSdkMessage());
                 return null;
-              }).thenAccept(result -> {
+            }).thenAccept(result -> {
                 Log.d(TAG, "vcxGetProvisionToken: Success");
                 BridgeUtils.resolveIfValid(promise, result);
-              });
+            });
         } catch (VcxException e) {
             e.printStackTrace();
             Log.e(TAG, "vcxGetProvisionToken - Error: ", e);
@@ -196,7 +210,7 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
 
         try {
             int retCode = VcxApi.initSovToken();
-            if(retCode != 0) {
+            if (retCode != 0) {
                 promise.reject("Could not init sovtoken", String.valueOf(retCode));
             } else {
                 VcxApi.vcxInitWithConfig(config).exceptionally((t) -> {
@@ -262,8 +276,8 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void createConnectionWithOutOfBandInvite(String invitationId, String inviteDetails, Promise promise) {
-        Log.d(TAG, "createConnectionWithOutOfBandInvite() called with: invitationId = [" + invitationId +
-              "], inviteDetails = [" + inviteDetails + "]," + promise + "]");
+        Log.d(TAG, "createConnectionWithOutOfBandInvite() called with: invitationId = [" + invitationId
+                + "], inviteDetails = [" + inviteDetails + "]," + promise + "]");
         try {
             ConnectionApi.vcxCreateConnectionWithOutofbandInvite(invitationId, inviteDetails).exceptionally((t) -> {
                 Log.e(TAG, "createConnectionWithOutOfBandInvite - Error: ", t);
@@ -318,7 +332,8 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void connectionSendMessage(int connectionHandle, String message, String sendMessageOptions, Promise promise) {
+    public void connectionSendMessage(int connectionHandle, String message, String sendMessageOptions,
+            Promise promise) {
         try {
             ConnectionApi.connectionSendMessage(connectionHandle, message, sendMessageOptions).exceptionally((t) -> {
                 VcxException ex = (VcxException) t;
@@ -329,7 +344,7 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
             }).thenAccept(result -> {
                 BridgeUtils.resolveIfValid(promise, result);
             });
-        } catch(VcxException e) {
+        } catch (VcxException e) {
             e.printStackTrace();
             Log.e(TAG, "connectionSendMessage - Error: ", e);
             promise.reject(String.valueOf(e.getSdkErrorCode()), e.getSdkMessage());
@@ -337,9 +352,11 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void connectionSignData(int connectionHandle, String data, String base64EncodingOption, boolean encode, Promise promise) {
+    public void connectionSignData(int connectionHandle, String data, String base64EncodingOption, boolean encode,
+            Promise promise) {
         try {
-            int base64EncodeOption = base64EncodingOption.equalsIgnoreCase("NO_WRAP") ? Base64.NO_WRAP : Base64.URL_SAFE;
+            int base64EncodeOption = base64EncodingOption.equalsIgnoreCase("NO_WRAP") ? Base64.NO_WRAP
+                    : Base64.URL_SAFE;
             byte[] dataToSign = encode ? Base64.encode(data.getBytes(), base64EncodeOption) : data.getBytes();
             ConnectionApi.connectionSignData(connectionHandle, dataToSign, dataToSign.length).exceptionally((t) -> {
                 VcxException ex = (VcxException) t;
@@ -350,13 +367,17 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
             }).thenAccept(result -> {
                 try {
                     // We would get Byte array from libvcx
-                    // we cannot perform operation on Buffer inside react-native due to react-native limitations for Buffer
-                    // so, we are converting byte[] to Base64 encoded string and then returning that data to react-native
+                    // we cannot perform operation on Buffer inside react-native due to react-native
+                    // limitations for Buffer
+                    // so, we are converting byte[] to Base64 encoded string and then returning that
+                    // data to react-native
                     if (result != null) {
                         // since we took the data from JS layer as simple string and
                         // then converted that string to Base64 encoded byte[]
-                        // we need to pass same Base64 encoded byte[] back to JS layer, so that it can included in full message response
-                        // otherwise we would be doing this calculation again in JS layer which does not handle Buffer
+                        // we need to pass same Base64 encoded byte[] back to JS layer, so that it can
+                        // included in full message response
+                        // otherwise we would be doing this calculation again in JS layer which does not
+                        // handle Buffer
                         WritableMap signResponse = Arguments.createMap();
                         signResponse.putString("data", new String(dataToSign));
                         signResponse.putString("signature", Base64.encodeToString(result, base64EncodeOption));
@@ -364,15 +385,16 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
                     } else {
                         promise.reject("NULL-VALUE", "Null value was received as result from wrapper");
                     }
-                } catch(Exception e) {
+                } catch (Exception e) {
                     // it might happen that we get value of result to not be a byte array
                     // or we might get empty byte array
-                    // in all those case outer try...catch will not work because this inside callback of a Future
+                    // in all those case outer try...catch will not work because this inside
+                    // callback of a Future
                     // so we need to handle the case for Future callback inside that callback
                     promise.reject(e);
                 }
             });
-        } catch(VcxException e) {
+        } catch (VcxException e) {
             e.printStackTrace();
             Log.e(TAG, "connectionSignData - Error: ", e);
             promise.reject(String.valueOf(e.getSdkErrorCode()), e.getSdkMessage());
@@ -381,23 +403,24 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void connectionVerifySignature(int connectionHandle, String data, String signature, Promise promise) {
-        // Base64 decode signature because we encoded signature returned by libvcx to base64 encoded string
-        // Convert data to just byte[], because base64 encoded byte[] was used to generate signature
+        // Base64 decode signature because we encoded signature returned by libvcx to
+        // base64 encoded string
+        // Convert data to just byte[], because base64 encoded byte[] was used to
+        // generate signature
         byte[] dataToVerify = data.getBytes();
         byte[] signatureToVerify = Base64.decode(signature, Base64.NO_WRAP);
         try {
-            ConnectionApi.connectionVerifySignature(
-                    connectionHandle, dataToVerify, dataToVerify.length, signatureToVerify, signatureToVerify.length
-            ).exceptionally((t) -> {
-                VcxException ex = (VcxException) t;
-                ex.printStackTrace();
-                Log.e(TAG, "connectionVerifySignature - Error: ", ex);
-                promise.reject(String.valueOf(ex.getSdkErrorCode()), ex.getSdkMessage());
-                return null;
-            }).thenAccept(result -> {
-                BridgeUtils.resolveIfValid(promise, result);
-            });
-        } catch(VcxException e) {
+            ConnectionApi.connectionVerifySignature(connectionHandle, dataToVerify, dataToVerify.length,
+                    signatureToVerify, signatureToVerify.length).exceptionally((t) -> {
+                        VcxException ex = (VcxException) t;
+                        ex.printStackTrace();
+                        Log.e(TAG, "connectionVerifySignature - Error: ", ex);
+                        promise.reject(String.valueOf(ex.getSdkErrorCode()), ex.getSdkMessage());
+                        return null;
+                    }).thenAccept(result -> {
+                        BridgeUtils.resolveIfValid(promise, result);
+                    });
+        } catch (VcxException e) {
             e.printStackTrace();
             Log.e(TAG, "connectionVerifySignature - Error: ", e);
             promise.reject(String.valueOf(e.getSdkErrorCode()), e.getSdkMessage());
@@ -407,9 +430,10 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void toBase64FromUtf8(String data, String base64EncodingOption, Promise promise) {
         try {
-            int base64EncodeOption = base64EncodingOption.equalsIgnoreCase("NO_WRAP") ? Base64.NO_WRAP : Base64.URL_SAFE;
+            int base64EncodeOption = base64EncodingOption.equalsIgnoreCase("NO_WRAP") ? Base64.NO_WRAP
+                    : Base64.URL_SAFE;
             promise.resolve(Base64.encodeToString(data.getBytes(), base64EncodeOption));
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             promise.reject(e);
         }
@@ -418,10 +442,11 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void toUtf8FromBase64(String data, String base64EncodingOption, Promise promise) {
         try {
-            int base64EncodeOption = base64EncodingOption.equalsIgnoreCase("NO_WRAP") ? Base64.NO_WRAP : Base64.URL_SAFE;
+            int base64EncodeOption = base64EncodingOption.equalsIgnoreCase("NO_WRAP") ? Base64.NO_WRAP
+                    : Base64.URL_SAFE;
             String decodedUtf8 = new String(Base64.decode(data, base64EncodeOption));
             promise.resolve(decodedUtf8);
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             promise.reject(e);
         }
@@ -432,7 +457,8 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
         try {
             MessageDigest hash = MessageDigest.getInstance("SHA-256");
             hash.update(data.getBytes(StandardCharsets.UTF_8));
-            int base64EncodeOption = base64EncodingOption.equalsIgnoreCase("NO_WRAP") ? Base64.NO_WRAP : Base64.URL_SAFE;
+            int base64EncodeOption = base64EncodingOption.equalsIgnoreCase("NO_WRAP") ? Base64.NO_WRAP
+                    : Base64.URL_SAFE;
             byte[] digest = hash.digest();
             String base64EncodedThumbprint = Base64.encodeToString(digest, base64EncodeOption);
             promise.resolve(base64EncodedThumbprint);
@@ -456,7 +482,7 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
                     BridgeUtils.resolveIfValid(promise, result);
                 }
             });
-        } catch(VcxException e) {
+        } catch (VcxException e) {
             e.printStackTrace();
             Log.e(TAG, "connectionGetState - Error: ", e);
             promise.reject(String.valueOf(e.getSdkErrorCode()), e.getSdkMessage());
@@ -477,7 +503,7 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
                     BridgeUtils.resolveIfValid(promise, result);
                 }
             });
-        } catch(VcxException e) {
+        } catch (VcxException e) {
             e.printStackTrace();
             Log.e(TAG, "connectionGetState - Error: ", e);
             promise.reject(String.valueOf(e.getSdkErrorCode()), e.getSdkMessage());
@@ -498,7 +524,7 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
                     BridgeUtils.resolveIfValid(promise, result);
                 }
             });
-        } catch(VcxException e) {
+        } catch (VcxException e) {
             e.printStackTrace();
             Log.e(TAG, "vcxConnectionUpdateStateWithMessage - Error: ", e);
             promise.reject(String.valueOf(e.getSdkErrorCode()), e.getSdkMessage());
@@ -509,17 +535,18 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
     public void generateProof(String proofRequestId, String requestedAttrs, String requestedPredicates,
             String revocationInterval, String proofName, Promise promise) {
         try {
-            ProofApi.proofCreate(proofRequestId, requestedAttrs, requestedPredicates, revocationInterval, proofName).exceptionally((t) -> {
-                VcxException ex = (VcxException) t;
-                ex.printStackTrace();
-                Log.e(TAG, "proofCreate - Error: ", ex);
-                promise.reject(String.valueOf(ex.getSdkErrorCode()), ex.getSdkMessage());
-                return -1;
-            }).thenAccept(result -> {
-                if (result != -1) {
-                    BridgeUtils.resolveIfValid(promise, result);
-                }
-            });
+            ProofApi.proofCreate(proofRequestId, requestedAttrs, requestedPredicates, revocationInterval, proofName)
+                    .exceptionally((t) -> {
+                        VcxException ex = (VcxException) t;
+                        ex.printStackTrace();
+                        Log.e(TAG, "proofCreate - Error: ", ex);
+                        promise.reject(String.valueOf(ex.getSdkErrorCode()), ex.getSdkMessage());
+                        return -1;
+                    }).thenAccept(result -> {
+                        if (result != -1) {
+                            BridgeUtils.resolveIfValid(promise, result);
+                        }
+                    });
         } catch (VcxException e) {
             e.printStackTrace();
             Log.e(TAG, "connectionGetState - Error: ", e);
@@ -649,42 +676,42 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
         }
     }
 
-
     private static void requestPermission(final Context context) {
-        if(ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+        if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             // Provide an additional rationale to the user if the permission was not granted
-            // and the user would benefit from additional context for the use of the permission.
+            // and the user would benefit from additional context for the use of the
+            // permission.
             // For example if the user has previously denied the permission.
 
-            new AlertDialog.Builder(context)
-                    .setMessage("permission storage")
+            new AlertDialog.Builder(context).setMessage("permission storage")
                     .setPositiveButton("positive button", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    ActivityCompat.requestPermissions((Activity) context,
-                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                            RNIndyStaticData.REQUEST_WRITE_EXTERNAL_STORAGE);
-                }
-            }).show();
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            ActivityCompat.requestPermissions((Activity) context,
+                                    new String[] { Manifest.permission.WRITE_EXTERNAL_STORAGE },
+                                    RNIndyStaticData.REQUEST_WRITE_EXTERNAL_STORAGE);
+                        }
+                    }).show();
 
         } else {
             // permission has not been granted yet. Request it directly.
-            ActivityCompat.requestPermissions((Activity)context,
-                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+            ActivityCompat.requestPermissions((Activity) context,
+                    new String[] { Manifest.permission.WRITE_EXTERNAL_STORAGE },
                     RNIndyStaticData.REQUEST_WRITE_EXTERNAL_STORAGE);
         }
     }
 
     private static int getLogLevel(String levelName) {
-        if("Error".equalsIgnoreCase(levelName)) {
+        if ("Error".equalsIgnoreCase(levelName)) {
             return 1;
-        } else if("Warning".equalsIgnoreCase(levelName) || levelName.toLowerCase().contains("warn")) {
+        } else if ("Warning".equalsIgnoreCase(levelName) || levelName.toLowerCase().contains("warn")) {
             return 2;
-        } else if("Info".equalsIgnoreCase(levelName)) {
+        } else if ("Info".equalsIgnoreCase(levelName)) {
             return 3;
-        } else if("Debug".equalsIgnoreCase(levelName)) {
+        } else if ("Debug".equalsIgnoreCase(levelName)) {
             return 4;
-        } else if("Trace".equalsIgnoreCase(levelName)) {
+        } else if ("Trace".equalsIgnoreCase(levelName)) {
             return 5;
         } else {
             return 3;
@@ -696,13 +723,14 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
 
         try {
             RandomAccessFile logFile = new RandomAccessFile(logFilePath, "r");
-            byte[] fileBytes = new byte[(int)logFile.length()];
+            byte[] fileBytes = new byte[(int) logFile.length()];
             logFile.readFully(fileBytes);
             logFile.close();
 
             IndyApi.anonCrypt(key, fileBytes).exceptionally((t) -> {
                 Log.e(TAG, "anonCrypt - Error: ", t);
-                promise.reject("FutureException", "Error occurred while encrypting file: " + logFilePath + " :: " + t.getMessage());
+                promise.reject("FutureException",
+                        "Error occurred while encrypting file: " + logFilePath + " :: " + t.getMessage());
                 return null;
             }).thenAccept(result -> {
                 try {
@@ -710,7 +738,7 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
                     encLogFile.write(result, 0, result.length);
                     encLogFile.close();
                     BridgeUtils.resolveIfValid(promise, RNIndyStaticData.ENCRYPTED_LOG_FILE_PATH);
-                } catch(IOException ex) {
+                } catch (IOException ex) {
                     promise.reject("encryptVcxLog Exception", ex.getMessage());
                     ex.printStackTrace();
                 }
@@ -722,7 +750,7 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public  void writeToVcxLog(String loggerName, String logLevel, String message, String logFilePath, Promise promise) {
+    public void writeToVcxLog(String loggerName, String logLevel, String message, String logFilePath, Promise promise) {
         VcxApi.logMessage(loggerName, getLogLevel(logLevel), message);
         promise.resolve(0);
     }
@@ -732,11 +760,12 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
 
         ContextWrapper cw = new ContextWrapper(reactContext);
         RNIndyStaticData.MAX_ALLOWED_FILE_BYTES = MAX_ALLOWED_FILE_BYTES;
-        RNIndyStaticData.LOG_FILE_PATH = cw.getFilesDir().getAbsolutePath() +
-                "/connectme.rotating." + uniqueIdentifier + ".log";
-        RNIndyStaticData.ENCRYPTED_LOG_FILE_PATH = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() +
-                "/connectme.rotating." + uniqueIdentifier + ".log.enc";
-        //get the documents directory:
+        RNIndyStaticData.LOG_FILE_PATH = cw.getFilesDir().getAbsolutePath() + "/connectme.rotating." + uniqueIdentifier
+                + ".log";
+        RNIndyStaticData.ENCRYPTED_LOG_FILE_PATH = Environment
+                .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath()
+                + "/connectme.rotating." + uniqueIdentifier + ".log.enc";
+        // get the documents directory:
         Log.d(TAG, "Setting vcx logger to: " + RNIndyStaticData.LOG_FILE_PATH);
 
         if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
@@ -784,7 +813,7 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
                     BridgeUtils.resolveIfValid(promise, result);
                 }
             });
-        } catch(VcxException e) {
+        } catch (VcxException e) {
             e.printStackTrace();
             Log.e(TAG, "credentialCreateWithOffer - Error: ", e);
             promise.reject(String.valueOf(e.getSdkErrorCode()), e.getSdkMessage());
@@ -843,16 +872,17 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
         // or reject promise with error code
 
         try {
-            CredentialApi.credentialSendRequest(credentialHandle, connectionHandle, paymentHandle).whenComplete((result, t) -> {
-                if (t != null) {
-                    VcxException ex = (VcxException) t;
-                    ex.printStackTrace();
-                    Log.e(TAG, "credentialSendRequest - Error: ", ex);
-                    promise.reject(String.valueOf(ex.getSdkErrorCode()), ex.getSdkMessage());
-                } else {
-                    promise.resolve(0);
-                }
-            });
+            CredentialApi.credentialSendRequest(credentialHandle, connectionHandle, paymentHandle)
+                    .whenComplete((result, t) -> {
+                        if (t != null) {
+                            VcxException ex = (VcxException) t;
+                            ex.printStackTrace();
+                            Log.e(TAG, "credentialSendRequest - Error: ", ex);
+                            promise.reject(String.valueOf(ex.getSdkErrorCode()), ex.getSdkMessage());
+                        } else {
+                            promise.resolve(0);
+                        }
+                    });
         } catch (VcxException e) {
             e.printStackTrace();
             Log.e(TAG, "credentialSendRequest - Error: ", e);
@@ -953,11 +983,10 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
                 promise.reject(String.valueOf(ex.getSdkErrorCode()), ex.getSdkMessage());
                 return -1;
             }).thenAccept(result -> {
-                if(result != -1){
-                   BridgeUtils.resolveIfValid(promise, result);
+                if (result != -1) {
+                    BridgeUtils.resolveIfValid(promise, result);
                 }
             });
-
 
         } catch (VcxException e) {
             e.printStackTrace();
@@ -1113,7 +1142,6 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
         }
     }
 
-
     @ReactMethod
     public void backupWalletBackup(int walletBackupHandle, String path, Promise promise) {
         try {
@@ -1154,9 +1182,9 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void updateWalletBackupStateWithMessage(int walletBackupHandle, String message, Promise promise ) {
+    public void updateWalletBackupStateWithMessage(int walletBackupHandle, String message, Promise promise) {
         try {
-            WalletApi.updateWalletBackupStateWithMessage(walletBackupHandle, message ).exceptionally((t) -> {
+            WalletApi.updateWalletBackupStateWithMessage(walletBackupHandle, message).exceptionally((t) -> {
                 VcxException ex = (VcxException) t;
                 ex.printStackTrace();
                 Log.e(TAG, "updateWalletBackupStateWithMessage - Error: ", ex);
@@ -1256,18 +1284,19 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void proofGenerate(int proofHandle, String selectedCredentials, String selfAttestedAttributes,
-                              Promise promise) {
+            Promise promise) {
         try {
-            DisclosedProofApi.proofGenerate(proofHandle, selectedCredentials, selfAttestedAttributes).whenComplete((result, t) -> {
-                if (t != null) {
-                    VcxException ex = (VcxException) t;
-                    ex.printStackTrace();
-                    Log.e(TAG, "proofGenerate - Error: ", ex);
-                    promise.reject(String.valueOf(ex.getSdkErrorCode()), ex.getSdkMessage());
-                } else {
-                    promise.resolve(0);
-                }
-            });
+            DisclosedProofApi.proofGenerate(proofHandle, selectedCredentials, selfAttestedAttributes)
+                    .whenComplete((result, t) -> {
+                        if (t != null) {
+                            VcxException ex = (VcxException) t;
+                            ex.printStackTrace();
+                            Log.e(TAG, "proofGenerate - Error: ", ex);
+                            promise.reject(String.valueOf(ex.getSdkErrorCode()), ex.getSdkMessage());
+                        } else {
+                            promise.resolve(0);
+                        }
+                    });
         } catch (VcxException e) {
             e.printStackTrace();
             Log.e(TAG, "proofGenerate - Error: ", e);
@@ -1309,7 +1338,7 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
                     BridgeUtils.resolveIfValid(promise, result);
                 }
             });
-        } catch(VcxException e) {
+        } catch (VcxException e) {
             e.printStackTrace();
             Log.e(TAG, "proofGetState - Error: ", e);
             promise.reject(String.valueOf(e.getSdkErrorCode()), e.getSdkMessage());
@@ -1409,21 +1438,21 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void downloadMessages(String messageStatus, String uid_s, String pwdids, Promise promise) {
-      Log.d(TAG, "downloadMessages()");
-      try {
-        UtilsApi.vcxGetMessages(messageStatus, uid_s, pwdids).exceptionally((t) -> {
-            VcxException ex = (VcxException) t;
-            ex.printStackTrace();
-            Log.e(TAG, "vcxGetMessages - Error: ", ex);
-            promise.reject(String.valueOf(ex.getSdkErrorCode()), ex.getSdkMessage());
-            return null;
-        }).thenAccept(result -> BridgeUtils.resolveIfValid(promise, result));
+        Log.d(TAG, "downloadMessages()");
+        try {
+            UtilsApi.vcxGetMessages(messageStatus, uid_s, pwdids).exceptionally((t) -> {
+                VcxException ex = (VcxException) t;
+                ex.printStackTrace();
+                Log.e(TAG, "vcxGetMessages - Error: ", ex);
+                promise.reject(String.valueOf(ex.getSdkErrorCode()), ex.getSdkMessage());
+                return null;
+            }).thenAccept(result -> BridgeUtils.resolveIfValid(promise, result));
 
-      } catch (VcxException e) {
+        } catch (VcxException e) {
             e.printStackTrace();
             Log.e(TAG, "vcxGetMessages - Error: ", e);
             promise.reject(String.valueOf(e.getSdkErrorCode()), e.getSdkMessage());
-      }
+        }
     }
 
     @ReactMethod
@@ -1447,24 +1476,24 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void updateMessages(String messageStatus, String pwdidsJson, Promise promise) {
-      Log.d(TAG, "updateMessages()");
+        Log.d(TAG, "updateMessages()");
 
-      try {
-          UtilsApi.vcxUpdateMessages(messageStatus, pwdidsJson).whenComplete((result, t) -> {
-              if (t != null) {
-                  VcxException ex = (VcxException) t;
-                  ex.printStackTrace();
-                  Log.e(TAG, "vcxUpdateMessages - Error: ", ex);
-                  promise.reject(String.valueOf(ex.getSdkErrorCode()), ex.getSdkMessage());
-              } else {
-                  promise.resolve(0);
-              }
-          });
-      } catch (VcxException e) {
+        try {
+            UtilsApi.vcxUpdateMessages(messageStatus, pwdidsJson).whenComplete((result, t) -> {
+                if (t != null) {
+                    VcxException ex = (VcxException) t;
+                    ex.printStackTrace();
+                    Log.e(TAG, "vcxUpdateMessages - Error: ", ex);
+                    promise.reject(String.valueOf(ex.getSdkErrorCode()), ex.getSdkMessage());
+                } else {
+                    promise.resolve(0);
+                }
+            });
+        } catch (VcxException e) {
             e.printStackTrace();
             Log.e(TAG, "vcxUpdateMessages - Error: ", e);
             promise.reject(String.valueOf(e.getSdkErrorCode()), e.getSdkMessage());
-      }
+        }
     }
 
     @ReactMethod
@@ -1472,7 +1501,7 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
         Log.d(TAG, "proofCreateWithRequest()");
 
         try {
-            DisclosedProofApi.proofCreateWithRequest(sourceId, proofRequest).exceptionally((t)-> {
+            DisclosedProofApi.proofCreateWithRequest(sourceId, proofRequest).exceptionally((t) -> {
                 VcxException ex = (VcxException) t;
                 ex.printStackTrace();
                 Log.e(TAG, "proofCreateWithRequest - Error: ", ex);
@@ -1483,7 +1512,7 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
                     BridgeUtils.resolveIfValid(promise, result);
                 }
             });
-        } catch(VcxException e) {
+        } catch (VcxException e) {
             e.printStackTrace();
             Log.e(TAG, "proofCreateWithRequest - Error: ", e);
             promise.reject(String.valueOf(e.getSdkErrorCode()), e.getSdkMessage());
@@ -1503,7 +1532,7 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
             }).thenAccept(result -> {
                 BridgeUtils.resolveIfValid(promise, result);
             });
-        } catch(VcxException e) {
+        } catch (VcxException e) {
             e.printStackTrace();
             Log.e(TAG, "proofSerialize - Error: ", e);
             promise.reject(String.valueOf(e.getSdkErrorCode()), e.getSdkMessage());
@@ -1515,7 +1544,7 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
         Log.d(TAG, "proofDeserialize()");
 
         try {
-            DisclosedProofApi.proofDeserialize(serializedProof).exceptionally((e)-> {
+            DisclosedProofApi.proofDeserialize(serializedProof).exceptionally((e) -> {
                 VcxException ex = (VcxException) e;
                 ex.printStackTrace();
                 Log.e(TAG, "proofDeserialize - Error: ", ex);
@@ -1526,7 +1555,7 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
                     BridgeUtils.resolveIfValid(promise, result);
                 }
             });
-        } catch(VcxException e) {
+        } catch (VcxException e) {
             e.printStackTrace();
             Log.e(TAG, "proofDeserialize - Error: ", e);
             promise.reject(String.valueOf(e.getSdkErrorCode()), e.getSdkMessage());
@@ -1559,17 +1588,18 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
         Log.d(TAG, "connectionRedirect()");
 
         try {
-            ConnectionApi.vcxConnectionRedirect(connectionHandle, redirectConnectionHandle).whenComplete((result, t) -> {
-                if (t != null) {
-                    VcxException ex = (VcxException) t;
-                    ex.printStackTrace();
-                    Log.e(TAG, "vcxConnectionRedirect - Error: ", ex);
-                    promise.reject(String.valueOf(ex.getSdkErrorCode()), ex.getSdkMessage());
-                } else {
-                    promise.resolve(0);
-                }
-            });
-        } catch(VcxException e) {
+            ConnectionApi.vcxConnectionRedirect(connectionHandle, redirectConnectionHandle)
+                    .whenComplete((result, t) -> {
+                        if (t != null) {
+                            VcxException ex = (VcxException) t;
+                            ex.printStackTrace();
+                            Log.e(TAG, "vcxConnectionRedirect - Error: ", ex);
+                            promise.reject(String.valueOf(ex.getSdkErrorCode()), ex.getSdkMessage());
+                        } else {
+                            promise.resolve(0);
+                        }
+                    });
+        } catch (VcxException e) {
             e.printStackTrace();
             Log.e(TAG, "vcxConnectionRedirect - Error: ", e);
             promise.reject(String.valueOf(e.getSdkErrorCode()), e.getSdkMessage());
@@ -1610,7 +1640,7 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
                     promise.resolve(0);
                 }
             });
-        } catch(VcxException e) {
+        } catch (VcxException e) {
             promise.reject("VcxException", e.getMessage());
         }
     }
@@ -1622,7 +1652,7 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
             byte bytes[] = new byte[lengthOfKey];
             random.nextBytes(bytes);
             promise.resolve(Base64.encodeToString(bytes, Base64.NO_WRAP));
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             Log.e(TAG, "createWalletKey - Error: ", e);
             promise.reject("Exception", e.getMessage());
@@ -1634,7 +1664,7 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
         Log.d(TAG, "getLedgerFees()");
 
         try {
-            UtilsApi.getLedgerFees().exceptionally((e)-> {
+            UtilsApi.getLedgerFees().exceptionally((e) -> {
                 VcxException ex = (VcxException) e;
                 ex.printStackTrace();
                 Log.e(TAG, "getLedgerFees - Error: ", ex);
@@ -1643,7 +1673,7 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
             }).thenAccept(result -> {
                 BridgeUtils.resolveIfValid(promise, result);
             });
-        } catch(VcxException e) {
+        } catch (VcxException e) {
             e.printStackTrace();
             Log.e(TAG, "getLedgerFees - Error: ", e);
             promise.reject(String.valueOf(e.getSdkErrorCode()), e.getSdkMessage());
@@ -1651,14 +1681,13 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
     }
 
     @Override
-    public @Nullable
-    Map<String, Object> getConstants() {
-    HashMap<String, Object> constants = new HashMap<String, Object>();
-      ActivityManager actManager = (ActivityManager) reactContext.getSystemService(Context.ACTIVITY_SERVICE);
-      MemoryInfo memInfo = new ActivityManager.MemoryInfo();
-      actManager.getMemoryInfo(memInfo);
-      constants.put("totalMemory", memInfo.totalMem);
-      return constants;
+    public @Nullable Map<String, Object> getConstants() {
+        HashMap<String, Object> constants = new HashMap<String, Object>();
+        ActivityManager actManager = (ActivityManager) reactContext.getSystemService(Context.ACTIVITY_SERVICE);
+        MemoryInfo memInfo = new ActivityManager.MemoryInfo();
+        actManager.getMemoryInfo(memInfo);
+        constants.put("totalMemory", memInfo.totalMem);
+        return constants;
     }
 
     @ReactMethod
@@ -1683,7 +1712,7 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void getAcceptanceMechanisms(String submitterDid, int timestamp, String version, Promise promise) {
-        Long longtimestamp= new Long(timestamp);
+        Long longtimestamp = new Long(timestamp);
         try {
             IndyApi.getAcceptanceMechanisms(submitterDid, longtimestamp, version).exceptionally((e) -> {
                 VcxException ex = (VcxException) e;
@@ -1702,8 +1731,9 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void setActiveTxnAuthorAgreementMeta(String text, String version, String taaDigest, String mechanism, int timestamp, Promise promise) {
-         Long longtimestamp= new Long(timestamp);
+    public void setActiveTxnAuthorAgreementMeta(String text, String version, String taaDigest, String mechanism,
+            int timestamp, Promise promise) {
+        Long longtimestamp = new Long(timestamp);
         try {
             UtilsApi.setActiveTxnAuthorAgreementMeta(text, version, taaDigest, mechanism, longtimestamp);
             promise.resolve("");
@@ -1715,18 +1745,20 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void appendTxnAuthorAgreement(String requestJson, String text, String version, String taaDigest, String mechanism, int timestamp, Promise promise) {
-        Long longtimestamp= new Long(timestamp);
+    public void appendTxnAuthorAgreement(String requestJson, String text, String version, String taaDigest,
+            String mechanism, int timestamp, Promise promise) {
+        Long longtimestamp = new Long(timestamp);
         try {
-            IndyApi.appendTxnAuthorAgreement(requestJson, text, version, taaDigest, mechanism, longtimestamp).exceptionally((e) -> {
-                VcxException ex = (VcxException) e;
-                ex.printStackTrace();
-                Log.e(TAG, "appendTxnAuthorAgreement - Error: ", ex);
-                promise.reject(String.valueOf(ex.getSdkErrorCode()), ex.getSdkMessage());
-                return null;
-            }).thenAccept(result -> {
-                BridgeUtils.resolveIfValid(promise, result);
-            });
+            IndyApi.appendTxnAuthorAgreement(requestJson, text, version, taaDigest, mechanism, longtimestamp)
+                    .exceptionally((e) -> {
+                        VcxException ex = (VcxException) e;
+                        ex.printStackTrace();
+                        Log.e(TAG, "appendTxnAuthorAgreement - Error: ", ex);
+                        promise.reject(String.valueOf(ex.getSdkErrorCode()), ex.getSdkMessage());
+                        return null;
+                    }).thenAccept(result -> {
+                        BridgeUtils.resolveIfValid(promise, result);
+                    });
         } catch (VcxException e) {
             e.printStackTrace();
             Log.e(TAG, "appendTxnAuthorAgreement - Error: ", e);
@@ -1740,10 +1772,10 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
         try {
             UtilsApi.vcxFetchPublicEntities().whenComplete((result, e) -> {
                 if (e != null) {
-                VcxException ex = (VcxException) e;
-                ex.printStackTrace();
-                Log.e(TAG, "vcxFetchPublicEntities - Error: ", ex);
-                promise.reject(String.valueOf(ex.getSdkErrorCode()), ex.getSdkMessage());
+                    VcxException ex = (VcxException) e;
+                    ex.printStackTrace();
+                    Log.e(TAG, "vcxFetchPublicEntities - Error: ", ex);
+                    promise.reject(String.valueOf(ex.getSdkErrorCode()), ex.getSdkMessage());
                 } else {
                     promise.resolve(0);
                 }
@@ -1870,19 +1902,21 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void createOutOfBandConnection(String sourceId, String goalCode, String goal, boolean handshake, String requestAttach, Promise promise) {
+    public void createOutOfBandConnection(String sourceId, String goalCode, String goal, boolean handshake,
+            String requestAttach, Promise promise) {
         Log.d(TAG, "connectionCreateOutofband()");
         try {
-            ConnectionApi.vcxConnectionCreateOutofband(sourceId, goalCode, goal, handshake, requestAttach).whenComplete((result, e) -> {
-                if (e != null) {
-                    VcxException ex = (VcxException) e;
-                    ex.printStackTrace();
-                    Log.e(TAG, "connectionCreateOutofband - Error: ", ex);
-                    promise.reject(String.valueOf(ex.getSdkErrorCode()), ex.getSdkMessage());
-                } else {
-                    BridgeUtils.resolveIfValid(promise, result);
-                }
-            });
+            ConnectionApi.vcxConnectionCreateOutofband(sourceId, goalCode, goal, handshake, requestAttach)
+                    .whenComplete((result, e) -> {
+                        if (e != null) {
+                            VcxException ex = (VcxException) e;
+                            ex.printStackTrace();
+                            Log.e(TAG, "connectionCreateOutofband - Error: ", ex);
+                            promise.reject(String.valueOf(ex.getSdkErrorCode()), ex.getSdkMessage());
+                        } else {
+                            BridgeUtils.resolveIfValid(promise, result);
+                        }
+                    });
         } catch (VcxException e) {
             e.printStackTrace();
             Log.e(TAG, "connectionCreateOutofband - Error: ", e);
@@ -1908,60 +1942,61 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
         }
     }
 
-  @ReactMethod
-  public void getRequestRedirectionUrl(String url, Promise promise) {
-    try {
-      URL urlObj = new URL(url);
+    @ReactMethod
+    public void getRequestRedirectionUrl(String url, Promise promise) {
+        try {
+            URL urlObj = new URL(url);
 
-      HttpURLConnection con = (HttpURLConnection) urlObj.openConnection();
-      con.setRequestMethod("GET");
-      con.setInstanceFollowRedirects(false);
+            HttpURLConnection con = (HttpURLConnection) urlObj.openConnection();
+            con.setRequestMethod("GET");
+            con.setInstanceFollowRedirects(false);
 
-      int responseCode = con.getResponseCode();
+            int responseCode = con.getResponseCode();
 
-      if (responseCode == 302) {
-        String location = con.getHeaderField("location");
-        promise.resolve(location);
-      }
-      promise.reject("Failed to fetch URL", "Failed to fetch URL");
-    } catch (Exception e) {
-      e.printStackTrace();
-      Log.e(TAG, "getRequestRedirectionUrl - Error: ", e);
-      promise.reject(e.toString(), "");
+            if (responseCode == 302) {
+                String location = con.getHeaderField("location");
+                promise.resolve(location);
+            }
+            promise.reject("Failed to fetch URL", "Failed to fetch URL");
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(TAG, "getRequestRedirectionUrl - Error: ", e);
+            promise.reject(e.toString(), "");
+        }
     }
-  }
 
-  /*
-   * Proof Verifier API
-   */
+    /*
+     * Proof Verifier API
+     */
 
-   @ReactMethod
-   public void createProofVerifierWithProposal(String sourceId, String presentationProposal, String name, Promise promise) {
-       Log.d(TAG, "createProofVerifierWithProposal()");
-       try {
-           ProofApi.proofCreateWithProposal(sourceId, presentationProposal, name).exceptionally((t) -> {
-               VcxException ex = (VcxException) t;
-               ex.printStackTrace();
-               Log.e(TAG, "createProofVerifierWithProposal - Error: ", ex);
-               promise.reject(String.valueOf(ex.getSdkErrorCode()), ex.getSdkMessage());
-               return -1;
-           }).thenAccept(result -> {
-               if (result != -1) {
-                   BridgeUtils.resolveIfValid(promise, result);
-               }
-           });
+    @ReactMethod
+    public void createProofVerifierWithProposal(String sourceId, String presentationProposal, String name,
+            Promise promise) {
+        Log.d(TAG, "createProofVerifierWithProposal()");
+        try {
+            ProofApi.proofCreateWithProposal(sourceId, presentationProposal, name).exceptionally((t) -> {
+                VcxException ex = (VcxException) t;
+                ex.printStackTrace();
+                Log.e(TAG, "createProofVerifierWithProposal - Error: ", ex);
+                promise.reject(String.valueOf(ex.getSdkErrorCode()), ex.getSdkMessage());
+                return -1;
+            }).thenAccept(result -> {
+                if (result != -1) {
+                    BridgeUtils.resolveIfValid(promise, result);
+                }
+            });
 
-       } catch (VcxException e) {
-           e.printStackTrace();
-           Log.e(TAG, "createProofVerifierWithProposal - Error: ", e);
-           promise.reject(String.valueOf(e.getSdkErrorCode()), e.getSdkMessage());
-       }
-   }
+        } catch (VcxException e) {
+            e.printStackTrace();
+            Log.e(TAG, "createProofVerifierWithProposal - Error: ", e);
+            promise.reject(String.valueOf(e.getSdkErrorCode()), e.getSdkMessage());
+        }
+    }
 
     @ReactMethod
     public void proofVerifierUpdateState(int proofHandle, Promise promise) {
-       Log.d(TAG, "proofVerifierUpdateState()");
-         try {
+        Log.d(TAG, "proofVerifierUpdateState()");
+        try {
             ProofApi.proofUpdateState(proofHandle).exceptionally((t) -> {
                 VcxException ex = (VcxException) t;
                 ex.printStackTrace();
@@ -1973,7 +2008,7 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
                     BridgeUtils.resolveIfValid(promise, result);
                 }
             });
-        } catch(VcxException e) {
+        } catch (VcxException e) {
             e.printStackTrace();
             Log.e(TAG, "proofVerifierUpdateState - Error: ", e);
             promise.reject(String.valueOf(e.getSdkErrorCode()), e.getSdkMessage());
@@ -1982,8 +2017,8 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void proofVerifierUpdateStateWithMessage(int proofHandle, String message, Promise promise) {
-       Log.d(TAG, "proofVerifierUpdateStateWithMessage()");
-         try {
+        Log.d(TAG, "proofVerifierUpdateStateWithMessage()");
+        try {
             ProofApi.proofUpdateStateWithMessage(proofHandle, message).exceptionally((t) -> {
                 VcxException ex = (VcxException) t;
                 ex.printStackTrace();
@@ -1995,7 +2030,7 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
                     BridgeUtils.resolveIfValid(promise, result);
                 }
             });
-        } catch(VcxException e) {
+        } catch (VcxException e) {
             e.printStackTrace();
             Log.e(TAG, "proofVerifierUpdateStateWithMessage - Error: ", e);
             promise.reject(String.valueOf(e.getSdkErrorCode()), e.getSdkMessage());
@@ -2004,8 +2039,8 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void proofVerifierGetState(int proofHandle, Promise promise) {
-       Log.d(TAG, "proofVerifierGetState()");
-         try {
+        Log.d(TAG, "proofVerifierGetState()");
+        try {
             ProofApi.proofGetState(proofHandle).exceptionally((t) -> {
                 VcxException ex = (VcxException) t;
                 ex.printStackTrace();
@@ -2017,7 +2052,7 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
                     BridgeUtils.resolveIfValid(promise, result);
                 }
             });
-        } catch(VcxException e) {
+        } catch (VcxException e) {
             e.printStackTrace();
             Log.e(TAG, "proofVerifierGetState - Error: ", e);
             promise.reject(String.valueOf(e.getSdkErrorCode()), e.getSdkMessage());
@@ -2026,8 +2061,8 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void proofVerifierSerialize(int proofHandle, Promise promise) {
-       Log.d(TAG, "proofVerifierSerialize()");
-         try {
+        Log.d(TAG, "proofVerifierSerialize()");
+        try {
             ProofApi.proofSerialize(proofHandle).exceptionally((t) -> {
                 VcxException ex = (VcxException) t;
                 ex.printStackTrace();
@@ -2039,7 +2074,7 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
                     BridgeUtils.resolveIfValid(promise, result);
                 }
             });
-        } catch(VcxException e) {
+        } catch (VcxException e) {
             e.printStackTrace();
             Log.e(TAG, "proofVerifierSerialize - Error: ", e);
             promise.reject(String.valueOf(e.getSdkErrorCode()), e.getSdkMessage());
@@ -2048,8 +2083,8 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void proofVerifierDeserialize(String serialized, Promise promise) {
-       Log.d(TAG, "proofVerifierDeserialize()");
-         try {
+        Log.d(TAG, "proofVerifierDeserialize()");
+        try {
             ProofApi.proofDeserialize(serialized).exceptionally((t) -> {
                 VcxException ex = (VcxException) t;
                 ex.printStackTrace();
@@ -2061,7 +2096,7 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
                     BridgeUtils.resolveIfValid(promise, result);
                 }
             });
-        } catch(VcxException e) {
+        } catch (VcxException e) {
             e.printStackTrace();
             Log.e(TAG, "proofVerifierDeserialize - Error: ", e);
             promise.reject(String.valueOf(e.getSdkErrorCode()), e.getSdkMessage());
@@ -2080,7 +2115,7 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
                     promise.resolve(0);
                 }
             });
-        } catch(VcxException e) {
+        } catch (VcxException e) {
             e.printStackTrace();
             Log.e(TAG, "proofVerifierSendRequest - Error: ", e);
             promise.reject(String.valueOf(e.getSdkErrorCode()), e.getSdkMessage());
@@ -2105,7 +2140,7 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
                     BridgeUtils.resolveIfValid(promise, obj);
                 }
             });
-        } catch(VcxException e) {
+        } catch (VcxException e) {
             e.printStackTrace();
             Log.e(TAG, "proofVerifierGetProofMessage - Error: ", e);
             promise.reject(String.valueOf(e.getSdkErrorCode()), e.getSdkMessage());
@@ -2144,5 +2179,115 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
             Log.e(TAG, "createPairwiseAgent - Error: ", e);
             promise.reject(String.valueOf(e.getSdkErrorCode()), e.getSdkMessage());
         }
+    }
+
+    private void initializeGMSStatus() {
+        try {
+            ApplicationInfo gmsInfo = reactContext.getPackageManager()
+                    .getApplicationInfo(GoogleApiAvailability.GOOGLE_PLAY_SERVICES_PACKAGE, 0);
+            isGmsEnabled = gmsInfo.enabled;
+        } catch (PackageManager.NameNotFoundException e) {
+            isGmsEnabled = false;
+        }
+    }
+
+    @ReactMethod
+    public void getGooglePlayServicesStatus(final Promise promise) {
+        if (!isGmsEnabled) {
+            promise.resolve(GooglePlayServicesStatus.GMS_DISABLED.getStatus());
+        }
+
+        int result = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(reactContext);
+        if (result != ConnectionResult.SUCCESS) {
+            promise.resolve(GooglePlayServicesStatus.GMS_NEED_UPDATE.getStatus());
+        }
+
+        promise.resolve(GooglePlayServicesStatus.AVAILABLE.getStatus());
+    }
+
+    private void runActivity(Intent intent) {
+        Activity currentActivity = reactContext.getCurrentActivity();
+        if (currentActivity == null) {
+            throw new NullPointerException();
+        }
+        currentActivity.startActivity(intent);
+    }
+
+    @ReactMethod
+    public void goToGooglePlayServicesSetting() {
+        Uri uri = Uri.parse("package:" + GoogleApiAvailability.GOOGLE_PLAY_SERVICES_PACKAGE);
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        intent.setData(uri);
+
+        this.runActivity(intent);
+    }
+
+    @ReactMethod
+    public void goToGooglePlayServicesMarketLink() {
+        Uri uri = Uri.parse(
+                "http://play.google.com/store/apps/details?id=" + GoogleApiAvailability.GOOGLE_PLAY_SERVICES_PACKAGE);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+        this.runActivity(intent);
+    }
+
+    @ReactMethod
+    public void generateNonce(int length, final Promise promise) {
+        this.createWalletKey(length, promise);
+    }
+
+    /**
+     * Send a request to the SafetyNet Attestation API See
+     * https://developer.android.com/training/safetynet/attestation.html#compat-check-request
+     * 
+     * @param nonceString
+     * @param apiKey
+     * @param promise
+     */
+    @ReactMethod
+    public void sendAttestationRequest(String nonceString, String apiKey, final Promise promise) {
+        byte[] nonce;
+        Activity activity;
+        nonce = stringToBytes(nonceString);
+        activity = reactContext.getCurrentActivity();
+        SafetyNet.getClient(this.getReactApplicationContext()).attest(nonce, apiKey)
+                .addOnSuccessListener(activity, new OnSuccessListener<SafetyNetApi.AttestationResponse>() {
+                    @Override
+                    public void onSuccess(SafetyNetApi.AttestationResponse response) {
+                        String result = response.getJwsResult();
+                        promise.resolve(result);
+                    }
+                }).addOnFailureListener(activity, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        promise.reject(e);
+                    }
+                });
+    }
+
+    private byte[] stringToBytes(String string) {
+        byte[] bytes;
+        bytes = null;
+        try {
+            bytes = Base64.decode(string, Base64.DEFAULT);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+        return bytes;
+    }
+}
+
+enum GooglePlayServicesStatus {
+    AVAILABLE(10), GMS_DISABLED(20), GMS_NEED_UPDATE(21), INVALID(30);
+
+    private int status;
+
+    GooglePlayServicesStatus(int i) {
+        this.status = i;
+    }
+
+    public int getStatus() {
+        return this.status;
     }
 }

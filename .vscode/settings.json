@@ -1,5 +1,5 @@
 {
-  "flow.useNPMPackagedFlow": true,
+  "flow.useNPMPackagedFlow": false,
   "javascript.validate.enable": false,
   "cSpell.words": [
     "IPHONEXSMAX",
@@ -11,8 +11,6 @@
     "jwks"
   ],
   "flow.useLSP": false,
-  "flow.pathToFlow": "${workspaceFolder}/node_modules/.bin/flow",
-  "flow.useBundledFlow": false,
   "gitlab.instanceUrl": "https://gitlab.corp.evernym.com",
   "workbench.colorCustomizations": {
     "activityBar.background": "#8a2ca2",

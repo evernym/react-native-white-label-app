@@ -16,7 +16,7 @@ import type {
   NotificationPayloadInfo,
   SelectedAttribute,
 } from '../push-notification/type-push-notification'
-import type { ClaimMap} from '../claim/type-claim'
+import type { ClaimMap } from '../claim/type-claim'
 import { updateAttributeClaim } from '../proof/proof-store'
 import type { LockStore } from '../lock/type-lock'
 import { applyAttributesForPresentationRequest } from './proof-request-store'
@@ -470,7 +470,10 @@ export const ERROR_SEND_PROOF = (message: string) => ({
 })
 
 export const MESSAGE_ATTRIBUTE_TITLE = 'Missing Attribute'
-export const MESSAGE_ATTRIBUTE_DESCRIPTION = (requester: string, attribute: string) => `
+export const MESSAGE_ATTRIBUTE_DESCRIPTION = (
+  requester: string,
+  attribute: string
+) => `
   ${requester} is asking you to share ${attribute}, which is not found in your ${appName} wallet.`
 
 export const ATTRIBUTE_TYPE = {

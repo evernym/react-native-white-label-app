@@ -184,7 +184,7 @@ const CredentialCard = ({
         height: hiddenHight,
         overflow: 'hidden',
         opacity: hiddenOpacity,
-        marginTop: isNeedMargin ? -CARD_MARGIN : 0
+        marginTop: isNeedMargin ? -CARD_MARGIN : 0,
       }}
     >
       <View style={styles.background}>

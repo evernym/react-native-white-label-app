@@ -11,7 +11,7 @@ import type { Store } from '../store/type-store'
 
 import { submitPassphrase } from './restore-store'
 import { withStatusBar } from '../components/status-bar/status-bar'
-import { headerDefaultOptions } from "../navigation/navigation-header-config";
+import { headerDefaultOptions } from '../navigation/navigation-header-config'
 
 export class RestorePassphrase extends Component<RestorePassphraseProps, void> {
   submitPhrase = (passphrase: string) => {
@@ -60,8 +60,8 @@ export const restorePassphraseScreen = {
     headerHideShadow: true,
     transparent: true,
     headerStyles: {
-      backgroundColor: color.bg.twelfth.color
+      backgroundColor: color.bg.twelfth.color,
     },
     arrowColor: colors.white,
-  })
+  }),
 }

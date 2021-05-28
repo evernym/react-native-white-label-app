@@ -17,7 +17,7 @@ import {
   mockQuestionPayload3,
 } from '../../../__mocks__/data/question-store-mock-data'
 import { QUESTION_STATUS } from '../type-question'
-import { testID } from "./question-screen.spec";
+import { testID } from './question-screen.spec'
 
 describe('<QuestionActions />', () => {
   describe('when one response is present', () => {
@@ -120,7 +120,9 @@ describe('<QuestionActions />', () => {
 
     it('call onPress without any response if submit is pressed', () => {
       const { component, props } = setup(overrideProps)
-      const submitButton = component.root.findByProps({ accessibilityLabel: testID })
+      const submitButton = component.root.findByProps({
+        accessibilityLabel: testID,
+      })
       submitButton.props.onPress()
       expect(props.onSubmit).toHaveBeenCalledTimes(1)
       expect(props.onSubmit).toHaveBeenCalledWith(undefined)

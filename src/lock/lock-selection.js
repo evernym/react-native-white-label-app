@@ -233,7 +233,7 @@ export const lockSelectionScreen = {
     headline: undefined,
     headerHideShadow: true,
     transparent: false,
-  })
+  }),
 }
 const marginHorizontalHandler = (curWidth) => {
   if (curWidth >= 411) return OFFSET_3X

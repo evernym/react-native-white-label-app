@@ -16,11 +16,11 @@ export type ToggleFieldsTypes = {
 }
 
 const ToggleFields = ({
-                        actionInfoText,
-                        actionText,
-                        useToggle,
-                        showToggleMenu = true,
-                      }: ToggleFieldsTypes) => {
+  actionInfoText,
+  actionText,
+  useToggle,
+  showToggleMenu = true,
+}: ToggleFieldsTypes) => {
   const [show, hide] = actionText
   const [showInfoText, hideInfoText] = actionInfoText
   const [isToggled, setToggled] = useToggle
@@ -30,7 +30,10 @@ const ToggleFields = ({
       <Text style={infoTextStyles}>
         {isToggled ? hideInfoText : showInfoText}{' '}
       </Text>
-      <TouchableWithoutFeedback hitSlop={hitSlop} onPress={() => setToggled(!isToggled)}>
+      <TouchableWithoutFeedback
+        hitSlop={hitSlop}
+        onPress={() => setToggled(!isToggled)}
+      >
         <View style={styles.actionTextStylesButton}>
           <Text style={actionTextStyles}>{isToggled ? hide : show}</Text>
         </View>
@@ -44,7 +47,7 @@ const hitSlop = {
   top: touchArea,
   left: touchArea,
   bottom: touchArea,
-  right: touchArea
+  right: touchArea,
 }
 
 const styles = StyleSheet.create({

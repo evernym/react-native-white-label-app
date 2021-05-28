@@ -33,6 +33,7 @@ import {
   convertVcxCredentialOfferToCxsClaimOffer,
   paymentHandle,
   convertCxsPoolInitToVcxPoolInit,
+  addAttestation,
 } from './vcx-transformers'
 import type { UserOneTimeInfo } from '../../store/user/type-user-store'
 import type {
@@ -193,9 +194,10 @@ export async function createOneTimeInfoWithToken(
       agencyConfig,
       walletPoolName
     )
+    const tokenWithAttestation = await addAttestation(token)
     const provisionVcxResult: string = await RNIndy.createOneTimeInfoWithToken(
       JSON.stringify(vcxProvisionConfig),
-      token
+      tokenWithAttestation
     )
     const provisionResult: VcxProvisionResult = JSON.parse(provisionVcxResult)
     return [null, convertVcxProvisionResultToUserOneTimeInfo(provisionResult)]

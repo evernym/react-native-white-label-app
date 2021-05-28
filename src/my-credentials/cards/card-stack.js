@@ -17,7 +17,13 @@ import {
 import { colors } from '../../common/styles/constant'
 
 const CardStack = (props: CardStackProps) => {
-  const { credentials, isExpanded, setActiveStack, isHidden, enabledCardGesture } = props
+  const {
+    credentials,
+    isExpanded,
+    setActiveStack,
+    isHidden,
+    enabledCardGesture,
+  } = props
   const credsToDisplay = isExpanded ? credentials : credentials.slice(0, 3)
   const credCount = credsToDisplay.length
   const hasMoreCreds = !isExpanded && credentials.length > credsToDisplay.length
@@ -75,7 +81,7 @@ const CardStack = (props: CardStackProps) => {
                   zIndex: credCount - index,
                   transform: [{ scaleX }, { translateY }],
                   marginTop: isExpanded ? CARD_MARGIN : marginTopDefault,
-                  marginBottom: isExpanded ? -CARD_MARGIN : undefined
+                  marginBottom: isExpanded ? -CARD_MARGIN : undefined,
                 }}
               >
                 <CredentialCard

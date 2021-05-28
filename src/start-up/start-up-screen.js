@@ -1,6 +1,6 @@
 // @flow
-import React, {useEffect, useRef, useCallback} from 'react';
-import {CustomText} from '../components';
+import React, { useEffect, useRef, useCallback } from 'react'
+import { CustomText } from '../components'
 import {
   TouchableOpacity,
   StyleSheet,
@@ -8,89 +8,157 @@ import {
   Dimensions,
   Animated,
   Image,
-  Text, View,
-} from 'react-native';
-import {startUpRoute, lockPinSetupRoute} from '../common';
-import {OFFSET_2X, colors, fontFamily, fontSizes} from '../common/styles';
-import {verticalScale, moderateScale} from 'react-native-size-matters';
+  Text,
+  View,
+  Alert,
+  Platform,
+  NativeModules,
+} from 'react-native'
+import useSagaReducer from 'use-saga-reducer'
+import { verticalScale, moderateScale } from 'react-native-size-matters'
 
-import { startupBackgroundImage, CustomStartUpScreen } from '../external-imports'
+import type { DeviceCheckState } from './device-check-saga'
 
-const {width} = Dimensions.get('screen');
+import { startUpRoute, lockPinSetupRoute } from '../common'
+import { OFFSET_2X, colors, fontFamily, fontSizes } from '../common/styles'
+import {
+  checkDeviceSecuritySaga,
+  deviceCheckReducer,
+  DEVICE_SECURITY_OK,
+  START_DEVICE_SECURITY_CHECK,
+  DEVICE_SECURITY_CHECK_IN_PROGRESS,
+  DEVICE_SECURITY_CHECK_FAILED,
+  PLAY_SERVICE_NOT_AVAILABLE,
+  PLAY_SERVICE_NEED_UPDATE,
+} from './device-check-saga'
+import {
+  startupBackgroundImage,
+  CustomStartUpScreen,
+  deviceSecurityCheckFailedMessage,
+  devicePlayServiceRequiredMessage,
+  devicePlayServiceUpdateRequiredMessage,
+} from '../external-imports'
 
-const defaultBackground = require('../images/home_background.png');
-const powerByLogo = require('../images/powered_by_logo.png');
+const { width } = Dimensions.get('screen')
+
+const defaultBackground = require('../images/home_background.png')
+const powerByLogo = require('../images/powered_by_logo.png')
 
 function StartUpScreen(props: { navigation: Function }) {
-  const {navigation} = props;
-  const animation = useRef(new Animated.Value(width * 2)).current;
+  const { navigation } = props
+  const [state, dispatch] = useSagaReducer(
+    checkDeviceSecuritySaga,
+    deviceCheckReducer
+  )
+  const animation = useRef(new Animated.Value(width * 2)).current
   const handlePress = useCallback(() => {
-    navigation.navigate(lockPinSetupRoute);
-  });
+    dispatch({ type: START_DEVICE_SECURITY_CHECK })
+  })
+
+  useEffect(() => {
+    if (state === DEVICE_SECURITY_OK) {
+      navigation.navigate(lockPinSetupRoute)
+    }
+    if (state === DEVICE_SECURITY_CHECK_FAILED) {
+      Alert.alert('Device not secure', deviceSecurityCheckFailedMessage)
+    }
+
+    if (state === PLAY_SERVICE_NEED_UPDATE) {
+      Alert.alert(
+        'Play Service Update Required',
+        devicePlayServiceUpdateRequiredMessage,
+        [
+          {
+            text: 'Update',
+            onPress: async () => {
+              if (Platform.OS === 'android') {
+                await NativeModules.RNIndy.goToGooglePlayServicesMarketLink()
+              }
+            },
+          },
+        ]
+      )
+    }
+
+    if (state === PLAY_SERVICE_NOT_AVAILABLE) {
+      Alert.alert('Play Service  Required', devicePlayServiceRequiredMessage, [
+        {
+          text: 'Settings',
+          onPress: async () => {
+            if (Platform.OS === 'android') {
+              await NativeModules.RNIndy.goToGooglePlayServicesSetting()
+            }
+          },
+        },
+      ])
+    }
+  }, [state])
 
   useEffect(() => {
     Animated.timing(animation, {
       toValue: 0,
       duration: 300,
       useNativeDriver: true,
-    }).start();
-  }, [animation]);
+    }).start()
+  }, [animation])
 
-  const renderButton = useCallback(() => (
+  const renderButton = () => (
     <TouchableOpacity style={style.button} onPress={handlePress}>
       <CustomText h4 transparentBg thick>
-        Set Up
+        {getSetupButtonText(state)}
       </CustomText>
     </TouchableOpacity>
-  ), [handlePress]);
+  )
 
-  const renderCustomStartUpScreen = useCallback(() => (
-    <View style={style.container}>
-      <ImageBackground
-        source={startupBackgroundImage}
-        style={style.background}
-        resizeMode="cover">
-        <Animated.View
-          style={{
-            ...style.wrapper,
-            transform: [{translateX: animation}],
-          }}
+  const renderCustomStartUpScreen = useCallback(
+    () => (
+      <View style={style.container}>
+        <ImageBackground
+          source={startupBackgroundImage}
+          style={style.background}
+          resizeMode="cover"
         >
-          {renderButton()}
-        </Animated.View>
-      </ImageBackground>
-    </View>
-  ), [startupBackgroundImage]);
+          <Animated.View
+            style={{
+              ...style.wrapper,
+              transform: [{ translateX: animation }],
+            }}
+          >
+            {renderButton()}
+          </Animated.View>
+        </ImageBackground>
+      </View>
+    ),
+    [startupBackgroundImage, state]
+  )
 
-  const renderDefaultStartUpScreen = useCallback(() => (
-    <View style={style.container}>
-      <ImageBackground
-        source={defaultBackground}
-        style={style.background}
-        resizeMode="contain"
-      >
-        <Animated.View
-          style={{
-            ...style.wrapper,
-            transform: [{translateX: animation}],
-          }}
+  const renderDefaultStartUpScreen = useCallback(
+    () => (
+      <View style={style.container}>
+        <ImageBackground
+          source={defaultBackground}
+          style={style.background}
+          resizeMode="contain"
         >
-          <Text style={style.infoText}>
-            You splash screen goes here
-          </Text>
-          {renderButton()}
-          <Image
-            source={powerByLogo}
-            style={style.image}
-          />
-        </Animated.View>
-      </ImageBackground>
-    </View>
-  ), [startupBackgroundImage]);
+          <Animated.View
+            style={{
+              ...style.wrapper,
+              transform: [{ translateX: animation }],
+            }}
+          >
+            <Text style={style.infoText}>You splash screen goes here</Text>
+            {renderButton()}
+            <Image source={powerByLogo} style={style.image} />
+          </Animated.View>
+        </ImageBackground>
+      </View>
+    ),
+    [startupBackgroundImage, state]
+  )
 
-  return startupBackgroundImage ?
-    renderCustomStartUpScreen() :
-    renderDefaultStartUpScreen();
+  return startupBackgroundImage
+    ? renderCustomStartUpScreen()
+    : renderDefaultStartUpScreen()
 }
 
 const screen = CustomStartUpScreen || StartUpScreen
@@ -98,7 +166,16 @@ const screen = CustomStartUpScreen || StartUpScreen
 export const startUpScreen = {
   routeName: startUpRoute,
   screen,
-};
+}
+
+function getSetupButtonText(state: DeviceCheckState) {
+  switch (state) {
+    case DEVICE_SECURITY_CHECK_IN_PROGRESS:
+      return 'Verifying device security...'
+    default:
+      return 'Set Up'
+  }
+}
 
 const style = StyleSheet.create({
   container: {
@@ -144,4 +221,4 @@ const style = StyleSheet.create({
     marginHorizontal: moderateScale(36),
     marginBottom: verticalScale(100),
   },
-});
+})

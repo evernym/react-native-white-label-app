@@ -15,9 +15,7 @@ import { enableScreens } from 'react-native-screens'
 import VersionNumber from 'react-native-version-number'
 import { useDispatch } from 'react-redux'
 
-import {
-  headerOptionForDrawerStack,
-} from './navigation-header-config'
+import { headerOptionForDrawerStack } from './navigation-header-config'
 
 import { aboutAppScreen } from '../about-app/about-app'
 import { homeScreen, headlineForHomeRoute } from '../home/home'
@@ -39,9 +37,15 @@ import { questionScreen } from '../question/question-screen'
 import { txnAuthorAgreementScreen } from '../txn-author-agreement/txn-author-agreement-screen'
 import { lockEnterPinScreen } from '../lock/lock-enter-pin-code'
 import { lockTouchIdSetupScreen } from '../lock/lock-fingerprint-setup'
-import { lockPinSetupScreen, lockPinSetupScreenOptions } from '../lock/lock-pin-code-setup'
+import {
+  lockPinSetupScreen,
+  lockPinSetupScreenOptions,
+} from '../lock/lock-pin-code-setup'
 import { lockSetupSuccessScreen } from '../lock/lock-setup-success'
-import { lockEnterFingerprintScreen, lockEnterFingerprintOptions } from '../lock/lock-enter-fingerprint'
+import {
+  lockEnterFingerprintScreen,
+  lockEnterFingerprintOptions,
+} from '../lock/lock-enter-fingerprint'
 import { claimOfferScreen } from '../connection-details/components/claim-offer-modal'
 import { proofRequestScreen } from '../connection-details/components/proof-request-modal'
 import { fulfilledMessageScreen } from '../connection-details/components/modal'
@@ -70,7 +74,7 @@ import { onfidoScreen } from '../onfido/onfido'
 import { restorePassphraseScreen } from '../restore/restore-passphrase'
 import {
   privacyTNCScreen,
-  options as privacyTNCScreenOptions
+  options as privacyTNCScreenOptions,
 } from '../privacy-tnc/privacy-tnc-screen'
 import { connectionHistoryScreen } from '../connection-details/connection-details'
 import { credentialDetailsScreen } from '../credential-details/credential-details'
@@ -124,8 +128,8 @@ import {
   usePushNotifications,
 } from '../external-imports'
 import { inviteActionScreen } from '../invite-action/invite-action-screen'
-import { ShowCredentialScreen } from "../show-credential/show-credential-modal";
-import { ProofProposalModal } from "../verifier/proof-proposal-modal";
+import { ShowCredentialScreen } from '../show-credential/show-credential-modal'
+import { ProofProposalModal } from '../verifier/proof-proposal-modal'
 import { ReceivedProofScreen } from '../verifier/received-proof-modal'
 import { SETTINGS_MENU_BUTTON } from '../feedback/log-to-apptentive'
 

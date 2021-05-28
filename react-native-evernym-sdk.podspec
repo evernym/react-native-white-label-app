@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
   # brief license entry:
   s.license      =  { :type => 'MIT', :file => 'LICENSE' }
   s.authors      = { "Evernym Inc." => "info@evernym.com" }
-  s.platforms    = { :ios => "10.0" }
+  s.platforms    = { :ios => "11.0" }
   s.source       = { :git => "https://gitlab.com/evernym/mobile/react-native-evernym-sdk.git", :tag => "#{s.version}" }
   s.swift_version = '4.0'
 

@@ -81,7 +81,9 @@ describe('<QuestionScreen />', () => {
       status: QUESTION_STATUS.SEEN,
     })
     component.getInstance().onResponseSelect(0)
-    const submitButton = component.root.findByProps({ accessibilityLabel: testID })
+    const submitButton = component.root.findByProps({
+      accessibilityLabel: testID,
+    })
     console.log(submitButton.props)
     submitButton.props.onPress()
     expect(props.sendAnswerToQuestion).toHaveBeenCalledTimes(1)
@@ -95,7 +97,9 @@ describe('<QuestionScreen />', () => {
     const { component } = setup({
       status: QUESTION_STATUS.SEEN,
     })
-    const submitButton = component.root.findByProps({ accessibilityLabel: testID })
+    const submitButton = component.root.findByProps({
+      accessibilityLabel: testID,
+    })
     expect(submitButton.props.disabled).toBe(true)
   })
 

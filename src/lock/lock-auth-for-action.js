@@ -7,7 +7,10 @@ import {
   lockPinSetupRoute,
   lockSelectionRoute,
 } from '../common'
-import type { NavigationLeafRoute, NavigationScreenProp } from '@react-navigation/native'
+import type {
+  NavigationLeafRoute,
+  NavigationScreenProp,
+} from '@react-navigation/native'
 import { TouchId } from '../components/touch-id/touch-id'
 import { Alert, Platform } from 'react-native'
 import {
@@ -31,10 +34,9 @@ type Params = {
 export const freshnessThreshold = 30
 
 export function authForAction(params: Params) {
-  const timeSinceLastSuccess =
-    moment.duration(
-      moment().diff(moment(params.lock.lastUnlockSuccessTime)),
-    ).asSeconds()
+  const timeSinceLastSuccess = moment
+    .duration(moment().diff(moment(params.lock.lastUnlockSuccessTime)))
+    .asSeconds()
 
   const pinCodeAuth = () => {
     params.navigation.navigate(lockAuthorizationHomeRoute, {
@@ -78,12 +80,12 @@ export function authForAction(params: Params) {
 interface ISetupTouchId {
   navigation: NavigationScreenProp<{|
     ...NavigationLeafRoute,
-  |}>,
-  fromSettings: boolean,
-  fromSetup: boolean,
-  touchIdActive: boolean | string,
-  disableTouchIdAction: () => void,
-  enableTouchIdAction: () => void,
+  |}>;
+  fromSettings: boolean;
+  fromSetup: boolean;
+  touchIdActive: boolean | string;
+  disableTouchIdAction: () => void;
+  enableTouchIdAction: () => void;
 }
 
 export const setupTouchId = ({
@@ -92,7 +94,7 @@ export const setupTouchId = ({
   fromSetup,
   touchIdActive,
   disableTouchIdAction,
-  enableTouchIdAction
+  enableTouchIdAction,
 }: ISetupTouchId) => {
   const onSettingsScreen = () => {
     if (touchIdActive) {
@@ -102,7 +104,7 @@ export const setupTouchId = ({
         [
           {
             text: 'Ok',
-            onPress: () => disableTouchIdAction()
+            onPress: () => disableTouchIdAction(),
           },
         ],
         { cancelable: false }
@@ -124,19 +126,19 @@ export const setupTouchId = ({
 
   const popUpNativeAlert = (message: string) => {
     Alert &&
-    Alert.alert(
-      null,
-      message,
-      [
-        {
-          text: 'Ok',
-          onPress: () => {
-            !fromSettings && navigation.navigate(lockSelectionRoute)
+      Alert.alert(
+        null,
+        message,
+        [
+          {
+            text: 'Ok',
+            onPress: () => {
+              !fromSettings && navigation.navigate(lockSelectionRoute)
+            },
           },
-        },
-      ],
-      { cancelable: false }
-    )
+        ],
+        { cancelable: false }
+      )
   }
 
   const handleTouchID = () => {
@@ -196,8 +198,7 @@ export const setupTouchId = ({
             })
           }
         }
-      }
-    )
+      })
   }
   handleTouchID()
 }
