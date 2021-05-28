@@ -15,7 +15,7 @@
   "scripts": {
     "test": "jest --detectOpenHandles --forceExit",
     "lint": "flow stop && flow && eslint src",
-    "configure": "yarn --cwd ../../.. copyfiles -su 4 'node_modules/@dev/react-native-evernym-sdk/src/evernym-sdk/*.js' ./app && echo 'Evernym React Native SDK configured successfully'"
+    "configure": "yarn --cwd ../../.. copyfiles -su 4 \"node_modules/@dev/react-native-evernym-sdk/src/evernym-sdk/*.js\" ./app && echo 'Evernym React Native SDK configured successfully'"
   },
   "repository": {
     "type": "git",
