@@ -21,6 +21,8 @@ import {
   ATTRIBUTE_TYPE,
   MESSAGE_ATTRIBUTE_DESCRIPTION,
   MESSAGE_ATTRIBUTE_TITLE,
+  MESSAGE_PREDICATE_DESCRIPTION,
+  MESSAGE_PREDICATE_TITLE,
 } from '../../proof-request/type-proof-request'
 import type { Attribute } from '../../push-notification/type-push-notification'
 import type {
@@ -127,6 +129,18 @@ class ProofRequestAttributeList extends Component<
     Alert.alert(
       MESSAGE_ATTRIBUTE_TITLE,
       MESSAGE_ATTRIBUTE_DESCRIPTION(this.props.institutionalName, attribute),
+      [
+        {
+          text: 'OK',
+        },
+      ]
+    )
+  }
+
+  showMissingPredicateModal = (attribute: string) => {
+    Alert.alert(
+      MESSAGE_PREDICATE_TITLE,
+      MESSAGE_PREDICATE_DESCRIPTION(this.props.institutionalName, attribute),
       [
         {
           text: 'OK',
@@ -596,20 +610,24 @@ class ProofRequestAttributeList extends Component<
   }
 
   renderDissatisfiedPredicate = ({ attribute, index }: any) => {
+    const title = `${getPredicateTitle(attribute.p_type)} ${attribute.p_value}`
     return (
       <View key={index} style={styles.wrapper}>
         <View style={styles.textAvatarWrapper}>
           <View style={styles.textInnerWrapper}>
             {RenderAttachmentIcon(
               attribute.label,
-              `${getPredicateTitle(attribute.p_type)} ${attribute.p_value}`,
+              title,
               '',
               '',
               undefined,
               { color: colors.red }
             )}
           </View>
-          <View style={styles.iconWrapper}>
+          <TouchableOpacity
+            style={[styles.iconWrapper, styles.alertIconWrapper]}
+            onPress={() => this.showMissingPredicateModal(`${attribute.label} ${title.toLocaleLowerCase()}`)}
+          >
             <EvaIcon
               name={ALERT_ICON}
               color={colors.red}
@@ -617,7 +635,7 @@ class ProofRequestAttributeList extends Component<
               accessible={true}
               accessibilityLabel="alert-icon"
             />
-          </View>
+          </TouchableOpacity>
         </View>
       </View>
     )

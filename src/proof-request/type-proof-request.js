@@ -476,6 +476,13 @@ export const MESSAGE_ATTRIBUTE_DESCRIPTION = (
 ) => `
   ${requester} is asking you to share ${attribute}, which is not found in your ${appName} wallet.`
 
+export const MESSAGE_PREDICATE_TITLE = 'Unfulfilled Predicate'
+export const MESSAGE_PREDICATE_DESCRIPTION = (
+  requester: string,
+  attribute: string
+) => `
+  ${requester} is asking you to prove that ${attribute}, but credential matching to the condition is not found in your Connect.Me wallet.`
+
 export const ATTRIBUTE_TYPE = {
   FILLED_ATTRIBUTE: 'FILLED_ATTRIBUTE',
   SELF_ATTESTED_ATTRIBUTE: 'SELF_ATTESTED_ATTRIBUTE',

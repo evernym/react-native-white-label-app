@@ -76,9 +76,10 @@ import {
   NO_CRED_NO_SELF_ATTEST,
   DISSATISFIED_ATTRIBUTE_TYPE,
 } from '../proof-request/type-proof-request'
-import { ensureVcxInitSuccess } from '../store/route-store'
+import { ensureVcxInitAndPoolConnectSuccess, ensureVcxInitSuccess } from '../store/route-store'
 import { customLogger } from '../store/custom-logger'
 import { showSnackError } from '../store/config-store'
+import { CREDENTIAL_DEFINITION_NOT_FOUND, CREDENTIAL_SCHEMA_NOT_FOUND } from '../bridge/react-native-cxs/error-cxs'
 
 export const updateAttributeClaim = (
   uid: string,
@@ -597,6 +598,35 @@ export function* generateProofSaga(action: GenerateProofAction): any {
   }
 }
 
+export function* connectToPoolAndRegenerateProof(
+  action: UpdateAttributeClaimAction,
+  proofRequestPayload: ProofRequestPayload,
+  selectedCredentials: VcxSelectedCredentials,
+  selfAttestedAttributes: SelfAttestedAttributes,
+): Generator<*, *, *> {
+  const vcxResult = yield* ensureVcxInitAndPoolConnectSuccess()
+  if (vcxResult && vcxResult.fail) {
+    yield put(errorSendProofFail(action.uid, action.remoteDid, vcxResult.fail))
+    return
+  }
+
+  if (!proofRequestPayload.vcxSerializedProofRequest) {
+    throw new Error('Cannot restore proof object')
+  }
+
+  const proofHandle = yield call(
+    proofDeserialize,
+    proofRequestPayload.vcxSerializedProofRequest
+  )
+  yield call(
+    generateProof,
+    proofHandle,
+    JSON.stringify(selectedCredentials),
+    JSON.stringify(selfAttestedAttributes)
+  )
+  yield put(updateProofHandle(proofHandle, action.uid))
+}
+
 export function* updateAttributeClaimAndSendProof(
   action: UpdateAttributeClaimAction
 ): Generator<*, *, *> {
@@ -629,31 +659,38 @@ export function* updateAttributeClaimAndSendProof(
       requestedAttrsJson,
     )
 
-    yield call(
-      generateProof,
-      proofHandle,
-      JSON.stringify(selectedCredentials),
-      JSON.stringify(selfAttestedAttributes),
-    )
-
-    const proofState: number = yield call(proofGetState, proofHandle)
-    if (proofState === 4) {
-      // if proof generation failed -> connect to pool ledger and retry (fetch fresh schema and cred def)
-      if (!proofRequestPayload.vcxSerializedProofRequest) {
-        throw new Error('Cannot restore proof object')
-      }
-
-      proofHandle = yield call(
-        proofDeserialize,
-        proofRequestPayload.vcxSerializedProofRequest
-      )
+    try {
       yield call(
         generateProof,
         proofHandle,
         JSON.stringify(selectedCredentials),
-        JSON.stringify(selfAttestedAttributes)
+        JSON.stringify(selfAttestedAttributes),
       )
-      yield put(updateProofHandle(proofHandle, action.uid))
+
+      const proofState: number = yield call(proofGetState, proofHandle)
+      if (proofState === 4) {
+        // if proof generation failed -> connect to pool ledger and retry (fetch fresh schema and cred def)
+        yield call(
+          connectToPoolAndRegenerateProof,
+          action,
+          proofRequestPayload,
+          selectedCredentials,
+          selfAttestedAttributes,
+        )
+      }
+    } catch (e) {
+      if (e.code === CREDENTIAL_SCHEMA_NOT_FOUND || e.code === CREDENTIAL_DEFINITION_NOT_FOUND){
+        // if proof generation failed -> connect to pool ledger and retry (fetch fresh schema and cred def)
+        yield call(
+          connectToPoolAndRegenerateProof,
+          action,
+          proofRequestPayload,
+          selectedCredentials,
+          selfAttestedAttributes,
+        )
+      } else {
+        throw e
+      }
     }
 
     yield put(acceptProofRequest(action.uid))
