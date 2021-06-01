@@ -1,7 +1,7 @@
 {
   "name": "react-native-evernym-sdk",
   "title": "React Native Evernym SDK",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "The official React Native SDK for Evernym's Mobile SDK",
   "main": "src/index.js",
   "files": [
