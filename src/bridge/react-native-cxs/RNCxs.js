@@ -63,6 +63,7 @@ import {
 import { uuid } from "../../services/uuid";
 import type { GenericObject } from '../../common/type-common'
 import type { PairwiseAgent } from '../../store/type-connection-store'
+import { WALLET_ITEM_NOT_FOUND } from "./error-cxs";
 
 const { RNIndy } = NativeModules
 
@@ -72,7 +73,19 @@ export async function acceptInvitationVcx(
 ): Promise<GenericObject> {
   const connectionOption = agentInfo ? { pairwise_agent_info: agentInfo } : {}
 
-  const invitation = await RNIndy.vcxAcceptInvitation(connectionHandle, JSON.stringify(connectionOption))
+  let invitation
+
+  try {
+    invitation = await RNIndy.vcxAcceptInvitation(connectionHandle, JSON.stringify(connectionOption))
+  } catch (error) {
+    if (error.code === WALLET_ITEM_NOT_FOUND) {
+      // pairwise agent info not found in the wallet -> try to accept connection again but without predefined agent
+      invitation = await RNIndy.vcxAcceptInvitation(connectionHandle, '{}')
+    }
+    else {
+      throw error
+    }
+  }
   const serializedConnection: string = await serializeConnection(connectionHandle)
 
   const {
