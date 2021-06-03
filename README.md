@@ -10,7 +10,10 @@
   * [Android](#android)
   * [iOS](#ios)
 * [Customization](#customization)
-
+* References
+  * [Mobile SDK](https://gitlab.com/evernym/mobile/mobile-sdk)
+  * [Verity SDK](https://gitlab.com/evernym/verity/verity-sdk)
+  
 ## Introduction
 
 Self Sovereign Identity is a lifetime portable identity for any person, organization, or thing that does not depend on any centralized authority and can never be taken away. Self-sovereign identity is a two-party relationship model, with no third party coming between you and the organization, now considered your “peer”.
