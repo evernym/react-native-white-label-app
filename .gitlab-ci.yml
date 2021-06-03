@@ -110,5 +110,5 @@ nodejs-publish:
 #    - npm publish
   only:
     refs:
-      - stable@evernym/mobile/react-native-evernym-sdk
-      - main@evernym/mobile/react-native-evernym-sdk
+      - stable@evernym/mobile/react-native-white-label-app
+      - main@evernym/mobile/react-native-white-label-app

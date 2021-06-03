@@ -9,7 +9,7 @@ Licensor:             Evernym, Inc.
 Licensed Work:        Mobile SDK
                       and the components thereof, to the extent and only to
                       the extent contained in the code repository set forth at
-                      https://gitlab.com/evernym/mobile/react-native-evernym-sdk
+                      https://gitlab.com/evernym/mobile/react-native-white-label-app
                       ("Code Repository").
                       The Licensed Work is (c) 2020 Evernym, Inc.
 
