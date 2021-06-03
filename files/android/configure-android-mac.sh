@@ -2,7 +2,7 @@
 
 echo "Configure MSDK application for Android"
 
-templatesPath='node_modules/react-native-evernym-sdk/files'
+templatesPath='node_modules/@evernym/react-native-white-label-app/files'
 
 echo "1. Increasing the available JXN memory"
 echo 'org.gradle.jvmargs=-Xmx4608m -XX:MaxPermSize=512m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8' >> android/gradle.properties

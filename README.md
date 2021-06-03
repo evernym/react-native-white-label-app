@@ -55,16 +55,16 @@ By using a different version you are taking a risk of having issues with sdk.
 #### Base app configuration
 
 1. To include SDK in your new application, you need to set up it's dependencies.  
-Replace dependencies section leaving only `react-native-evernym-sdk` dependency to your `package.json`.
+Replace dependencies section leaving only `@evernym/react-native-white-label-app` dependency to your `package.json`.
 
     ```json
     "dependencies": {
-        "react-native-evernym-sdk": "https://gitlab.com/evernym/mobile/react-native-evernym-sdk.git",
+        "@evernym/react-native-white-label-app": "https://gitlab.com/evernym/mobile/react-native-evernym-sdk.git",
       },
     ```
    
 1. Native dependencies should be put in app dependencies (see [issue](https://github.com/react-native-community/cli/issues/870)). They are listed as peer dependencies in SDK.  
-Add all peer dependencies from `react-native-evernym-sdk` into `dependencies` section of your app `package.json`.
+Add all peer dependencies from `@evernym/react-native-white-label-app` into `dependencies` section of your app `package.json`.
 
     ```json
     "dependencies": {
@@ -77,7 +77,7 @@ Add all peer dependencies from `react-native-evernym-sdk` into `dependencies` se
       },
     ```
 
-1. Add all `devDependencies` from `react-native-evernym-sdk` into `devDependencies` section of your app `package.json`.
+1. Add all `devDependencies` from `@evernym/react-native-white-label-app` into `devDependencies` section of your app `package.json`.
 
     ```json
     "devDependencies": {
@@ -91,7 +91,7 @@ Add all peer dependencies from `react-native-evernym-sdk` into `dependencies` se
     ```json
       "scripts": {
         ...
-        "evernym-sdk:configure": "yarn --cwd node_modules/react-native-evernym-sdk run configure"
+        "evernym-sdk:configure": "yarn --cwd node_modules/@evernym/react-native-white-label-app run configure"
       },
     ```
 
@@ -107,7 +107,7 @@ Add all peer dependencies from `react-native-evernym-sdk` into `dependencies` se
 
 * Remove default `App.js` and put the following in `index.js`: 
   ```javascript
-    import * as EvernymSdk from 'react-native-evernym-sdk';
+    import * as EvernymSdk from '@evernym/react-native-white-label-app';
     import {name as appName} from './app.json';
     
     EvernymSdk.createApp(appName);

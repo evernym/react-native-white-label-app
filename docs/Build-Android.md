@@ -18,7 +18,7 @@ In order to configure the building of your application for an Android platform, 
     ```json
       "scripts": {
         ...
-        "evernym-sdk:configure-android": "./node_modules/react-native-evernym-sdk/files/android/configure-android.sh"
+        "evernym-sdk:configure-android": "./node_modules/@evernym/react-native-white-label-app/files/android/configure-android.sh"
       },
     ```
 
@@ -88,7 +88,7 @@ In order to configure the building of your application for an Android platform, 
    }
    ```
    
-1. Replace your `android/app/src/main/AndroidManifest.xml` with [AndroidManifest.xml](files/android/AndroidManifest.xml) and  change placeholders (`react-native-evernym-sdk-placeholder`) in copied `AndroidManifest.xml`:
+1. Replace your `android/app/src/main/AndroidManifest.xml` with [AndroidManifest.xml](files/android/AndroidManifest.xml) and  change placeholders (`react-native-white-label-app-placeholder`) in copied `AndroidManifest.xml`:
     * `package` - your original android package name
    
 1. Create `android/app/src/main/res/xml/` folder and copy [file_viewer_provider_paths.xml](files/android/file_viewer_provider_paths.xml) file there.
@@ -148,7 +148,7 @@ Note that push notifications will not work if you use this file, to get working 
                            BRANCH_TEST_KEY:"key_test_..."]
    ```
 
-* Change placeholders (`react-native-evernym-sdk-placeholder`) for `Branch URI Scheme` and `Branch App Links` in `AndroidManifest.xml`:
+* Change placeholders (`react-native-white-label-app-placeholder`) for `Branch URI Scheme` and `Branch App Links` in `AndroidManifest.xml`:
 
 * Added branch import into your `MainApplication.java`:
     ```
