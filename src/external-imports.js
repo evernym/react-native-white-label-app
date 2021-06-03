@@ -8,7 +8,7 @@ import {
   USE_PUSH_NOTIFICATION,
   STORAGE_KEY,
   DEEP_LINK,
-} from '../../../app/evernym-sdk/app'
+} from '../../../../app/evernym-sdk/app'
 
 export {
   SPONSOR_ID as sponsorId,
@@ -16,7 +16,7 @@ export {
   GET_PROVISION_TOKEN_FUNC as getProvisionTokenFunc,
   SERVER_ENVIRONMENTS as serverEnvironments,
   DEFAULT_SERVER_ENVIRONMENT as defaultServerEnvironment,
-} from '../../../app/evernym-sdk/provision'
+} from '../../../../app/evernym-sdk/provision'
 
 export {
   HEADLINE as credentialOfferHeadline,
@@ -24,7 +24,7 @@ export {
   DENY_BUTTON_TEXT as credentialOfferDenyButtonText,
   CustomCredentialOfferModal,
   CustomCredentialModal,
-} from '../../../app/evernym-sdk/credential-offer'
+} from '../../../../app/evernym-sdk/credential-offer'
 
 export {
   HEADLINE as proofRequestHeadline,
@@ -34,16 +34,16 @@ export {
   CustomSelectAttributeValueModal,
   CustomSelectAttributesValuesModal,
   CustomProofRequestModal,
-} from '../../../app/evernym-sdk/proof-request'
+} from '../../../../app/evernym-sdk/proof-request'
 
 export {
   COLORS as customColors,
-} from '../../../app/evernym-sdk/colors'
+} from '../../../../app/evernym-sdk/colors'
 
 export {
   FONT_FAMILY as customFontFamily,
   FONT_SIZES as customFontSizes,
-} from '../../../app/evernym-sdk/font'
+} from '../../../../app/evernym-sdk/font'
 
 export {
   PRIVACY_POLICY_URL as privacyPolicyUrl,
@@ -56,12 +56,12 @@ export {
   IOS_EULA_LOCAL as iosEulaLocal,
   IOS_EULA_URL as iosEulaUrl,
   CustomEulaScreen,
-} from '../../../app/evernym-sdk/eula'
+} from '../../../../app/evernym-sdk/eula'
 
 export {
   SEND_LOGS_EMAIL as sendLogsEmail,
   CUSTOM_LOG_UTILS as CustomLogUtils,
-} from '../../../app/evernym-sdk/logs'
+} from '../../../../app/evernym-sdk/logs'
 
 export {
   BACKGROUND_IMAGE as startupBackgroundImage,
@@ -71,31 +71,31 @@ export {
   devicePlayServiceUpdateRequiredMessage,
   devicePlayServiceRequiredMessage,
 
-} from '../../../app/evernym-sdk/startup'
+} from '../../../../app/evernym-sdk/startup'
 
 export {
   CustomSettingsScreen,
   HEADLINE as settingsHeadline,
   SETTINGS_OPTIONS as customSettingsOptions,
   SHOW_CAMERA_BUTTON as settingsShowCameraButton,
-} from '../../../app/evernym-sdk/settings'
+} from '../../../../app/evernym-sdk/settings'
 
 export {
   INFO as aboutAppInfo,
   AdditionalInfo,
   CustomAboutAppScreen,
-} from '../../../app/evernym-sdk/about'
+} from '../../../../app/evernym-sdk/about'
 
 export {
   APPTENTIVE_CREDENTIALS as apptentiveCredentials,
-} from '../../../app/evernym-sdk/feedback'
+} from '../../../../app/evernym-sdk/feedback'
 
 export {
   HEADLINE as connectionsHeadline,
   SHOW_CAMERA_BUTTON as connectionsShowCameraButton,
   MyConnectionsViewEmptyState as CustomConnectionEmptyState,
   CustomMyConnectionsScreen,
-} from '../../../app/evernym-sdk/connections'
+} from '../../../../app/evernym-sdk/connections'
 
 export {
   DrawerFooterContent as CustomDrawerFooterContent,
@@ -103,15 +103,15 @@ export {
   EXTRA_MODALS as customExtraModals,
   EXTRA_SCREENS as customExtraScreens,
   MENU_NAVIGATION_OPTIONS as customMenuNavigationOptions,
-} from '../../../app/evernym-sdk/navigator'
+} from '../../../../app/evernym-sdk/navigator'
 
 export {
   CustomConnectionDetailsScreen,
-} from '../../../app/evernym-sdk/connections'
+} from '../../../../app/evernym-sdk/connections'
 
 export {
   LockHeader,
-} from '../../../app/evernym-sdk/lock'
+} from '../../../../app/evernym-sdk/lock'
 
 export {
   HEADLINE as homeHeadline,
@@ -119,7 +119,7 @@ export {
   SHOW_CAMERA_BUTTON as homeShowCameraButton,
   CustomHomeScreen,
   HomeViewEmptyState,
-} from '../../../app/evernym-sdk/home'
+} from '../../../../app/evernym-sdk/home'
 
 export {
   HEADLINE as credentialsHeadline,
@@ -130,37 +130,37 @@ export {
   AUTO_ACCEPT_CREDENTIAL_PRESENTATION_REQUEST as autoAcceptCredentialPresentationRequest,
   SHOW_CREDENTIAL_HEADLINE as showCredentialHeadline,
   CustomShowCredentialModal,
-} from '../../../app/evernym-sdk/credentials'
+} from '../../../../app/evernym-sdk/credentials'
 
 export {
   HEADLINE as questionHeadline,
   CustomQuestionModal,
-} from '../../../app/evernym-sdk/question-dialog'
+} from '../../../../app/evernym-sdk/question-dialog'
 
 export {
   CustomCredentialDetailsScreen,
-} from '../../../app/evernym-sdk/credentials'
+} from '../../../../app/evernym-sdk/credentials'
 
 export {
   HEADLINE as inviteActionHeadline,
   ACCEPT_BUTTON_TEXT as inviteActionAcceptButtonText,
   DENY_BUTTON_TEXT as inviteActionDenyButtonText,
   CustomInviteActionModal,
-} from '../../../app/evernym-sdk/invite-action'
+} from '../../../../app/evernym-sdk/invite-action'
 
 export {
   RECEIVED_PROOF_HEADLINE as receivedProofHeadline,
   CustomReceivedProofModal,
   SHARED_PROOF_HEADLINE as sharedProofHeadline,
   CustomSharedProofModal,
-} from '../../../app/evernym-sdk/proof'
+} from '../../../../app/evernym-sdk/proof'
 
 export {
   HEADLINE as proofProposalHeadline,
   ACCEPT_BUTTON_TEXT as proofProposalAcceptButtonText,
   DENY_BUTTON_TEXT as proofProposalDenyButtonText,
   CustomProofProposalModal,
-} from '../../../app/evernym-sdk/proof-proposal'
+} from '../../../../app/evernym-sdk/proof-proposal'
 
 export const appName = APP_NAME || 'appName'
 export const appLogo = APP_LOGO

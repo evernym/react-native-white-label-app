@@ -3,7 +3,7 @@ require "json"
 package = JSON.parse(File.read(File.join(__dir__, "package.json")))
 
 Pod::Spec.new do |s|
-  s.name         = "react-native-evernym-sdk"
+  s.name         = "react-native-white-label-app"
   s.version      = package["version"]
   s.summary      = "React Native version of Evernym's ConnectMe mobileSDK."
   s.description  = package["description"]

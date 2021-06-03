@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
-          package="react-native-evernym-sdk-placeholder">
+          package="react-native-white-label-app-placeholder">
 
   <uses-permission android:name="android.permission.INTERNET"/>
   <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
@@ -50,7 +50,7 @@
       <!--     Deep Linking configuration -->
       <!--        &lt;!&ndash; Branch URI Scheme, IMPORTANT! The <data> element has to contain android:scheme='name of scheme on branch.io dashboard' otherwise it will not be handled by branch. &ndash;&gt;-->
       <!--        <intent-filter>-->
-      <!--            <data android:scheme="react-native-evernym-sdk-placeholder" android:host="open"/>-->
+      <!--            <data android:scheme="react-native-white-label-app-placeholder" android:host="open"/>-->
       <!--            <action android:name="android.intent.action.VIEW" />-->
       <!--            <category android:name="android.intent.category.DEFAULT" />-->
       <!--            <category android:name="android.intent.category.BROWSABLE" />-->
@@ -60,11 +60,11 @@
       <!--            <action android:name="android.intent.action.VIEW" />-->
       <!--            <category android:name="android.intent.category.DEFAULT" />-->
       <!--            <category android:name="android.intent.category.BROWSABLE" />-->
-      <!--            <data android:scheme="https" android:host="react-native-evernym-sdk-placeholder.app.link" />-->
-      <!--            <data android:scheme="https" android:host="link.react-native-evernym-sdk-placeholder" />-->
+      <!--            <data android:scheme="https" android:host="react-native-white-label-app-placeholder.app.link" />-->
+      <!--            <data android:scheme="https" android:host="link.react-native-white-label-app-placeholder" />-->
       <!--            &lt;!&ndash; We might have to enable on the basis of debugging with above link &ndash;&gt;-->
       <!--            &lt;!&ndash; <data android:scheme="https" android:host="bnc.lt" /> &ndash;&gt;-->
-      <!--            <data android:scheme="react-native-evernym-sdk-placeholder" android:host="app.link" />-->
+      <!--            <data android:scheme="react-native-white-label-app-placeholder" android:host="app.link" />-->
       <!--        </intent-filter>-->
 
     </activity>

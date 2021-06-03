@@ -1,26 +1,26 @@
 {
-  "name": "react-native-evernym-sdk",
-  "title": "React Native Evernym SDK",
+  "name": "@evernym/react-native-white-label-app",
+  "title": "Evernym React Native white label app",
   "version": "1.0.0",
-  "description": "The official React Native SDK for Evernym's Mobile SDK",
+  "description": "The official Evernym white label application which can be easily customized for company branding",
   "main": "src/index.js",
   "files": [
     "README.md",
     "android",
     "src",
     "ios",
-    "react-native-evernym-sdk.podspec",
+    "react-native-white-label-app.podspec",
     "docs",
     "files"
   ],
   "scripts": {
     "test": "jest --detectOpenHandles --forceExit",
     "lint": "flow stop && flow && eslint src",
-    "configure": "yarn --cwd ../.. copyfiles -su 3 'node_modules/react-native-evernym-sdk/src/evernym-sdk/*.js' ./app && echo 'Evernym React Native SDK configured successfully'"
+    "configure": "yarn --cwd ../../.. copyfiles -su 4 'node_modules/@evernym/react-native-white-label-app/src/evernym-sdk/*.js' ./app && echo 'Evernym React Native SDK configured successfully'"
   },
   "repository": {
     "type": "git",
-    "url": "git@gitlab.com:evernym/mobile/react-native-evernym-sdk.git"
+    "url": "git@gitlab.com:evernym/mobile/react-native-white-label-app.git"
   },
   "keywords": [
     "ssi",
