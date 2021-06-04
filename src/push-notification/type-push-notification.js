@@ -138,6 +138,7 @@ export type AdditionalDataPayload = {
   },
   statusMsg?: string,
   price?: ?string,
+  ephemeralClaimOffer?: any,
 }
 
 export type ClaimOfferPushPayload = {
@@ -160,6 +161,7 @@ export type ClaimOfferPushPayload = {
   optional_data?: GenericObject,
   remoteName: string,
   price?: ?string,
+  ephemeralClaimOffer?: any,
 }
 
 export type ClaimOfferMessagePayload = {

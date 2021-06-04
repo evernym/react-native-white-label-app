@@ -229,6 +229,13 @@ export type ClaimOfferDeletedAction = {
   vcxSerializedClaimOffers: SerializedClaimOffers,
 }
 
+export const CLAIM_OFFER_SET_COLOR = 'CLAIM_OFFER_SET_COLOR'
+export type ClaimOfferSetColor = {
+  type: typeof CLAIM_OFFER_SET_COLOR,
+  uid: string,
+  colorTheme: string,
+}
+
 export type ClaimOfferAction =
   | ClaimOfferReceivedAction
   | ClaimOfferFailedAction
@@ -251,6 +258,7 @@ export type ClaimOfferAction =
   | SendClaimRequestSuccessAction
   | SendClaimRequestFailAction
   | ClaimOfferDeletedAction
+  | ClaimOfferSetColor
 
 export type CredentialOffer = {
   '@id': string,
@@ -271,6 +279,10 @@ export type CredentialOffer = {
       base64: string,
     },
   }>,
+  '~alias': ?{
+    imageUrl?: string,
+    label?: string,
+  },
 }
 
 export type ClaimOfferPayload = AdditionalDataPayload & {
@@ -282,6 +294,7 @@ export type ClaimOfferPayload = AdditionalDataPayload & {
   payTokenValue?: string,
   issueDate?: number,
   colorTheme?: string,
+  ephemeralClaimOffer?: any,
 }
 
 export type SerializedClaimOffer = {

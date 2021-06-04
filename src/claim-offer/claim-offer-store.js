@@ -17,8 +17,6 @@ import {
   SAVE_CLAIM_OFFERS_SUCCESS,
   SAVE_CLAIM_OFFERS_FAIL,
   ERROR_SAVE_CLAIM_OFFERS,
-  REMOVE_SERIALIZED_CLAIM_OFFERS_SUCCESS,
-  REMOVE_SERIALIZED_CLAIM_OFFERS_FAIL,
   HYDRATE_CLAIM_OFFERS_SUCCESS,
   HYDRATE_CLAIM_OFFERS_FAIL,
   ERROR_HYDRATE_CLAIM_OFFERS,
@@ -40,6 +38,8 @@ import {
   CLAIM_OFFER_DELETED,
   DELETE_CLAIM_OFFER,
   ERROR_RECEIVE_CLAIM,
+  VCX_CLAIM_OFFER_STATE,
+  CLAIM_OFFER_SET_COLOR,
 } from './type-claim-offer'
 import type {
   ClaimOfferStore,
@@ -54,9 +54,11 @@ import type {
   DeleteClaimOfferAction,
   SerializedClaimOffers,
   ClaimOfferReceivedAction,
+  ClaimOfferSetColor,
 } from './type-claim-offer'
 import type {
   AdditionalDataPayload,
+  GetClaimVcxResult,
   NotificationPayloadInfo,
 } from '../push-notification/type-push-notification'
 import type { CustomError } from '../common/type-common'
@@ -77,12 +79,14 @@ import {
   sendClaimRequest as sendClaimRequestApi,
   getLedgerFees,
   credentialReject,
+  getClaimVcx,
+  createCredentialWithAriesOfferObject,
 } from '../bridge/react-native-cxs/RNCxs'
 import { CLAIM_STORAGE_FAIL, CLAIM_STORAGE_SUCCESS } from '../claim/type-claim'
 import { CLAIM_STORAGE_ERROR } from '../services/error/error-code'
 import type { Connection } from '../store/type-connection-store'
 import { RESET } from '../common/type-common'
-import { secureSet, secureDelete, getHydrationItem } from '../services/storage'
+import { secureSet, getHydrationItem } from '../services/storage'
 import { BigNumber } from 'bignumber.js'
 import { refreshWalletBalance } from '../wallet/wallet-store'
 import type {
@@ -111,6 +115,8 @@ import { Platform } from 'react-native'
 import ImageColors from 'react-native-image-colors'
 import { pickAndroidColor, pickIosColor } from '../my-credentials/cards/utils'
 import { showSnackError } from '../store/config-store'
+import { uuid } from '../services/uuid'
+import { claimStorageSuccess, mapClaimToSender } from '../claim/claim-store'
 
 const claimOfferInitialState = {
   vcxSerializedClaimOffers: {},
@@ -239,6 +245,12 @@ export const deleteOutOfBandClaimOffer = (uid: string) => ({
   uid,
 })
 
+export const claimOfferSetColor = (uid: string, colorTheme: string): ClaimOfferSetColor => ({
+  type: CLAIM_OFFER_SET_COLOR,
+  uid,
+  colorTheme,
+})
+
 export function* getColorTheme(
   senderLogoUrl: any
 ): Generator<*, *, *> {
@@ -316,17 +328,102 @@ export function* denyClaimOfferSaga(
   }
 }
 
-export const ERROR_ACCEPT_CLAIM_OFFER_FAIL =
-  'Unable to accept credential. Check your internet connection or try to restart app.'
+export function* handleClaimErrors(
+  action: ClaimOfferAcceptedAction,
+  e: any
+): Generator<*, *, *> {
+  if (e.code === CREDENTIAL_DEFINITION_NOT_FOUND) {
+    yield call(showSnackError, CREDENTIAL_DEFINITION_NOT_FOUND_MESSAGE)
+  } else if (e.code === SCHEMA_NOT_FOUND) {
+    yield call(showSnackError, SCHEMA_NOT_FOUND_MESSAGE)
+  } else if (e.code === INVALID_CREDENTIAL_OFFER) {
+    yield call(showSnackError, INVALID_CREDENTIAL_OFFER_MESSAGE)
+  } else {
+    yield call(showSnackError, e.message)
+  }
+
+  captureError(e)
+  yield put(sendClaimRequestFail(action.uid, action.remoteDid))
+}
+
+export function* acceptEphemeralClaimOffer(
+  action: ClaimOfferAcceptedAction,
+  claimOfferPayload: ClaimOfferPayload
+): Generator<*, *, *> {
+  try {
+    if (!claimOfferPayload.ephemeralClaimOffer) {
+      return
+    }
+
+    const offer = JSON.parse(claimOfferPayload.ephemeralClaimOffer)
+    const { claimHandle } = yield call(createCredentialWithAriesOfferObject, uuid(), offer)
+
+    yield put(sendClaimRequest(action.uid, claimOfferPayload))
+
+    yield* retrySaga(
+      call(sendClaimRequestApi, claimHandle)
+    )
+
+    yield call(
+      saveSerializedClaimOffer,
+      claimHandle,
+      action.remoteDid,
+      action.uid
+    )
+
+    yield put(sendClaimRequestSuccess(action.uid, claimOfferPayload))
+
+    const state = yield call(getClaimOfferState, claimHandle)
+    if (state === VCX_CLAIM_OFFER_STATE.ACCEPTED) {
+      const vcxClaim: GetClaimVcxResult = yield call(getClaimVcx, claimHandle)
+      const issueDate = moment().unix()
+
+      yield put(
+        mapClaimToSender(
+          vcxClaim.claimUuid,
+          action.remoteDid,
+          action.remoteDid,
+          claimOfferPayload.senderLogoUrl || '',
+          issueDate,
+          claimOfferPayload.data.name,
+          claimOfferPayload.issuer.name
+        )
+      )
+      yield put(claimStorageSuccess(action.uid, issueDate))
+    }
+    if (state === VCX_CLAIM_OFFER_STATE.NONE) {
+      yield call(showSnackError, "Failed to accept credential")
+      yield put(sendClaimRequestFail(action.uid, action.remoteDid))
+    }
+  } catch (error) {
+    yield call(handleClaimErrors, action, error)
+  }
+}
 
 export function* claimOfferAccepted(
   action: ClaimOfferAcceptedAction
 ): Generator<*, *, *> {
+  const vcxResult = yield* ensureVcxInitAndPoolConnectSuccess()
+  if (vcxResult && vcxResult.fail) {
+    yield put(sendClaimRequestFail(action.uid, action.remoteDid))
+    return
+  }
+
   const messageId = action.uid
   const claimOfferPayload: ClaimOfferPayload = yield select(
     getClaimOffer,
     messageId
   )
+
+  if (claimOfferPayload.ephemeralClaimOffer) {
+    yield call(
+      acceptEphemeralClaimOffer,
+      action,
+      claimOfferPayload
+    )
+    return
+  }
+
   const payTokenAmount = new BigNumber(claimOfferPayload.payTokenValue || '0')
   const isPaidCredential = payTokenAmount.isGreaterThan(0)
   const remoteDid = claimOfferPayload.remotePairwiseDID
@@ -352,12 +449,6 @@ export function* claimOfferAccepted(
       claimRequestFail(messageId, ERROR_NO_SERIALIZED_CLAIM_OFFER(messageId))
     )
 
-    return
-  }
-
-  const vcxResult = yield* ensureVcxInitAndPoolConnectSuccess()
-  if (vcxResult && vcxResult.fail) {
-    yield put(sendClaimRequestFail(messageId, remoteDid))
     return
   }
 
@@ -406,30 +497,12 @@ export function* claimOfferAccepted(
       ),
     ])
 
-    // TODO We don't have any payment handle as of now, so hard code to 0
-    const paymentHandle = 0
-
     try {
       yield* retrySaga(
-        call(sendClaimRequestApi, claimHandle, connectionHandle, paymentHandle)
+        call(sendClaimRequestApi, claimHandle, connectionHandle)
       )
-    } catch (e) {
-      if (e.code === CREDENTIAL_DEFINITION_NOT_FOUND) {
-        yield call(showSnackError, CREDENTIAL_DEFINITION_NOT_FOUND_MESSAGE)
-      } else if (e.code === SCHEMA_NOT_FOUND) {
-        yield call(showSnackError, SCHEMA_NOT_FOUND_MESSAGE)
-      } else if (e.code === INVALID_CREDENTIAL_OFFER) {
-        yield call(showSnackError, INVALID_CREDENTIAL_OFFER_MESSAGE)
-      } else {
-        yield call(showSnackError, e.message)
-      }
-
-      captureError(e)
-      if (isPaidCredential) {
-        yield put(paidCredentialRequestFail(messageId, remoteDid))
-      } else {
-        yield put(sendClaimRequestFail(messageId, remoteDid))
-      }
+    } catch (error) {
+      yield call(handleClaimErrors, action, error)
       return
     }
 
@@ -443,16 +516,7 @@ export function* claimOfferAccepted(
       messageId
     )
 
-    const colorTheme = yield call(
-      getColorTheme,
-      claimOfferPayload.senderLogoUrl
-    )
-    const claimOfferPayloadWithFilledColor = {
-      ...claimOfferPayload,
-      colorTheme,
-    }
-
-    yield put(sendClaimRequestSuccess(messageId, claimOfferPayloadWithFilledColor))
+    yield put(sendClaimRequestSuccess(messageId, claimOfferPayload))
     // if we are able to send claim request successfully,
     // then we can raise an action to show that we have sent claim request
     // so that our history middleware can record this event
@@ -503,6 +567,11 @@ function* claimStorageSuccessSaga(
   action: ClaimStorageSuccessAction
 ): Generator<*, *, *> {
   const { messageId, issueDate } = action
+
+  const claimOfferPayload = yield select(getClaimOffer, messageId)
+  const colorTheme = yield call(getColorTheme, claimOfferPayload.senderLogoUrl)
+
+  yield put(claimOfferSetColor(messageId, colorTheme))
   yield put(claimRequestSuccess(messageId, issueDate))
 }
 
@@ -600,25 +669,6 @@ export function* saveClaimOffersSaga(
     yield put({
       type: SAVE_CLAIM_OFFERS_FAIL,
       error: ERROR_SAVE_CLAIM_OFFERS(e.message),
-    })
-  }
-}
-
-export function* removePersistedSerializedClaimOffersSaga(): Generator<
-  *,
-  *,
-  *
-> {
-  try {
-    yield call(secureDelete, CLAIM_OFFERS)
-    yield put({
-      type: REMOVE_SERIALIZED_CLAIM_OFFERS_SUCCESS,
-    })
-  } catch (e) {
-    // capture error for secure delete
-    captureError(e)
-    yield put({
-      type: REMOVE_SERIALIZED_CLAIM_OFFERS_FAIL,
     })
   }
 }
@@ -769,9 +819,6 @@ export default function claimOfferReducer(
 ) {
   switch (action.type) {
     case CLAIM_OFFER_RECEIVED:
-      if (state[action.payloadInfo.uid]) {
-        return state
-      }
       return {
         ...state,
         [action.payloadInfo.uid]: {
@@ -958,6 +1005,14 @@ export default function claimOfferReducer(
           claimRequestStatus: CLAIM_REQUEST_STATUS.DELETED,
         },
         vcxSerializedClaimOffers: action.vcxSerializedClaimOffers,
+      }
+    case CLAIM_OFFER_SET_COLOR:
+      return {
+        ...state,
+        [action.uid]: {
+          ...state[action.uid],
+          colorTheme: action.colorTheme,
+        }
       }
     default:
       return state

@@ -200,7 +200,7 @@ export function convertAriesCredentialOfferToCxsClaimOffer(
     to_did: '',
     from_did: '',
     claim: claim,
-    claim_name: credentialOffer.comment || 'Unknown',
+    claim_name: credentialOffer.comment || credentialOffer['~alias']?.label || 'Unknown',
     schema_seq_no: 0,
     issuer_did: '',
     // should override it when generating claim offer object

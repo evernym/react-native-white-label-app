@@ -39,6 +39,7 @@ import invitation, { watchInvitation } from '../invitation/invitation-store'
 import claim, {
   watchClaim,
   watchDeleteClaim,
+  watchClaimStored,
 } from '../claim/claim-store'
 import question, { watchQuestion } from '../question/question-store'
 import txnAuthorAgreement, {
@@ -157,6 +158,7 @@ sagaMiddleware.run(function* (): Generator<*, *, *> {
     watchInvitation(),
     watchClaim(),
     watchDeleteClaim(),
+    watchClaimStored(),
     watchShowCredentialStore(),
     watchPressEventInLockSelectionScreen(),
     watchEnableTouchId(),

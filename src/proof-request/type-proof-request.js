@@ -425,7 +425,6 @@ export type ProofRequestStore = {
 }
 
 export type QrCodeEphemeralProofRequest = {
-  originalMessage: string,
   ephemeralProofRequest: {
     '@id': string,
     '@type': string,

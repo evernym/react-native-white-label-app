@@ -76,7 +76,6 @@ export async function validateEphemeralProofQrCode(
     {
       type: QR_CODE_TYPES.EPHEMERAL_PROOF_REQUEST_V1,
       proofRequest: {
-        originalMessage,
         ephemeralProofRequest,
         proofRequestPayload: convertProofRequestPushPayloadToAppProofRequest({
           proof_request_data: {

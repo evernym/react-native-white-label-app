@@ -7,6 +7,7 @@ import type {
   ShortProprietaryConnectionInvitation,
 } from '../../invitation/type-invitation'
 import type {QrCodeEphemeralProofRequest} from '../../proof-request/type-proof-request'
+import type { QrCodeEphemeralCredentialOffer } from '../../claim-offer/ephemeral-claim-offer'
 
 export const SCAN_STATUS = {
   SCANNING: 'scanning...',
@@ -63,6 +64,7 @@ export type QrScannerProps = {
   onAriesConnectionInviteRead: (AriesConnectionInvite) => Promise<void>,
   onAriesOutOfBandInviteRead: (AriesOutOfBandInvite) => Promise<void>,
   onEphemeralProofRequest: (QrCodeEphemeralProofRequest) => void,
+  onEphemeralCredentialOffer: (QrCodeEphemeralCredentialOffer) => void,
 }
 
 export type CameraMarkerProps = {
@@ -95,6 +97,7 @@ export const QR_CODE_TYPES = {
   // so that other types of QR handler can handle such type of qr codes
   URL_NON_JSON_RESPONSE: 'URL_NON_JSON_RESPONSE',
   OUTOFBAND_PROOF_REQUEST: 'OUTOFBAND_PROOF_REQUEST',
+  EPHEMERAL_CREDENTIAL_OFFER: 'EPHEMERAL_CREDENTIAL_OFFER',
 }
 export type QrCodeTypes = $Keys<typeof QR_CODE_TYPES>
 

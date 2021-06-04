@@ -420,8 +420,8 @@ export const getClaimHandleBySerializedClaimOffer = memoize(async function (
 
 export async function sendClaimRequest(
   claimHandle: number,
-  connectionHandle: number,
-  paymentHandle: number
+  connectionHandle: number = 0,
+  paymentHandle: number = 0
 ): Promise<void> {
   return await RNIndy.sendClaimRequest(
     claimHandle,
