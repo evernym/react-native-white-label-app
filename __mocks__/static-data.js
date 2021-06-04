@@ -33,10 +33,6 @@ import { userOneTimeInfo } from './data/user-store-mock-data'
 import { STORE_STATUS } from '../src/wallet/type-wallet'
 import { ledgerStoreWithTransferFees } from './data/ledger-store-mock-data'
 import { PREPARE_BACKUP_SUCCESS } from '../src/backup/type-backup'
-import {
-  onfidoProcessStatus,
-  onfidoConnectionStatus,
-} from '../src/onfido/type-onfido'
 import { STORAGE_STATUS } from '../src/common/type-common'
 import {
   PROOF_REQUEST_STATUS,
@@ -958,13 +954,6 @@ export function getStore(store?: Object = {}) {
           },
           sendlogs: {
             encryptLogStatus: false,
-          },
-          onfido: {
-            status: onfidoProcessStatus.IDLE,
-            applicantId: null,
-            error: null,
-            onfidoDid: null,
-            onfidoConnectionStatus: onfidoConnectionStatus.IDLE,
           },
           history: {
             data: {

@@ -56,12 +56,6 @@ import {
   HISTORY_EVENT_OCCURRED,
 } from '../connection-history/type-connection-history'
 import {
-  ONFIDO_CONNECTION_ESTABLISHED,
-  HYDRATE_ONFIDO_APPLICANT_ID_SUCCESS,
-  HYDRATE_ONFIDO_DID_SUCCESS,
-  UPDATE_ONFIDO_APPLICANT_ID,
-} from '../onfido/type-onfido'
-import {
   UPDATE_ATTRIBUTE_CLAIM,
   PROOF_SUCCESS,
   PROOF_REQUEST_SEND_PROOF_HANDLE,
@@ -427,12 +421,6 @@ export function PiiHiddenTransformer(state: Store) {
       ...state.history,
       data: hiddenInfoReplacement,
     },
-    onfido: {
-      ...state.onfido,
-      applicantId:
-        state.onfido.applicantId == null ? null : hiddenInfoReplacement,
-      onfidoDid: state.onfido.onfidoDid == null ? null : hiddenInfoReplacement,
-    },
     proof: hiddenInfoReplacement,
     proofRequest: hiddenInfoReplacement,
     question: {
@@ -561,11 +549,6 @@ export function PiiHiddenActionTransformer(action: any) {
     [RECORD_HISTORY_EVENT]: ['historyEvent'],
     [DELETE_HISTORY_EVENT]: ['historyEvent'],
     [HISTORY_EVENT_OCCURRED]: ['event'],
-
-    [ONFIDO_CONNECTION_ESTABLISHED]: ['onfidoDid'],
-    [HYDRATE_ONFIDO_APPLICANT_ID_SUCCESS]: ['applicantId'],
-    [UPDATE_ONFIDO_APPLICANT_ID]: ['applicantId'],
-    [HYDRATE_ONFIDO_DID_SUCCESS]: ['onfidoDid'],
 
     [UPDATE_ATTRIBUTE_CLAIM]: ['requestedAttrsJson', 'remoteDid'],
     [PROOF_SUCCESS]: ['proof'],

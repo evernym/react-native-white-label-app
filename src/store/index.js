@@ -57,7 +57,6 @@ import cloudRestore, {
 } from '../cloud-restore/cloud-restore-store'
 import backup, { watchBackup } from '../backup/backup-store'
 import sendlogs, { watchSendLogs } from '../send-logs/send-logs-store'
-import onfido, { watchOnfido } from '../onfido/onfido-store'
 import offline, { watchOffline } from '../offline/offline-store'
 import { hydrate } from './hydration-store'
 import {
@@ -102,7 +101,6 @@ const appReducer = combineReducers({
   sendlogs,
   ledger,
   offline,
-  onfido,
   question,
   txnAuthorAgreement,
   openIdConnect: openIdConnectReducer,
@@ -177,7 +175,6 @@ sagaMiddleware.run(function* (): Generator<*, *, *> {
     watchProofRequestReceived(),
     watchLedgerStore(),
     watchOffline(),
-    watchOnfido(),
     watchQuestion(),
     watchTxnAuthorAgreement(),
     watchOpenIdConnectStore(),

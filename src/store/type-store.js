@@ -19,7 +19,6 @@ import type { SendLogsStore } from '../send-logs/type-send-logs'
 import type { RestoreStore } from '../restore/type-restore'
 import type { LedgerStore } from '../ledger/type-ledger-store'
 import type { OfflineStore } from '../offline/type-offline'
-import type { OnfidoStore } from '../onfido/type-onfido'
 import type { QuestionStore } from '../question/type-question'
 import type { CloudRestoreStore } from '../cloud-restore/type-cloud-restore'
 import type { PushNotificationStore } from '../push-notification/type-push-notification'
@@ -56,7 +55,6 @@ export type Store = {
   restore: RestoreStore,
   ledger: LedgerStore,
   offline: OfflineStore,
-  onfido: OnfidoStore,
   question: QuestionStore,
   txnAuthorAgreement: TxnAuthorAgreementStore,
   cloudRestore: CloudRestoreStore,

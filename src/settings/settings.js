@@ -209,33 +209,6 @@ export class Settings extends Component<SettingsProps, SettingsState> {
     this.props.navigation.navigate(sendLogsRoute)
   }
 
-  // openOnfido = () => {
-  //   const locales = RNLocalize.getLocales()
-  //   let showComingSoonAlert = false
-  //
-  //   if (locales.length > 0) {
-  //     const countryCode = locales[0].countryCode
-  //     if (['US', 'GB', 'CA'].includes(countryCode)) {
-  //       this.props.navigation.navigate(onfidoRoute, {})
-  //     } else {
-  //       showComingSoonAlert = true
-  //     }
-  //   } else {
-  //     showComingSoonAlert = true
-  //   }
-  //
-  //   if (showComingSoonAlert) {
-  //     Alert.alert(
-  //       'Coming Soon',
-  //       'The Onfido digital credential feature is not yet available in your region',
-  //       [{ text: 'OK' }],
-  //       {
-  //         cancelable: false,
-  //       }
-  //     )
-  //   }
-  // }
-
   openStyleGuide = () => {
     this.props.navigation.navigate(designStyleGuideRoute, {})
   }
