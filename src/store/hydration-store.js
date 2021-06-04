@@ -82,10 +82,6 @@ import { safeToDownloadSmsInvitation } from '../sms-pending-invitation/sms-pendi
 import { hydrateProofRequestsSaga } from './../proof-request/proof-request-store'
 import RNFetchBlob from 'rn-fetch-blob'
 import { customLogger } from '../store/custom-logger'
-import {
-  removePersistedOnfidoApplicantIdSaga,
-  removePersistedOnfidoDidSaga,
-} from '../onfido/onfido-store'
 import { hydrateQuestionSaga } from '../question/question-store'
 import { QUESTION_STORAGE_KEY } from '../question/type-question'
 import {
@@ -149,8 +145,6 @@ function* deleteSecureStorageData(): Generator<*, *, *> {
       // not waiting for one delete operation to finish
       deleteOperations.push(call(secureDelete, secureKey))
     }
-    deleteOperations.push(call(removePersistedOnfidoApplicantIdSaga))
-    deleteOperations.push(call(removePersistedOnfidoDidSaga))
     // wait till all delete operations are done in parallel
     yield all(deleteOperations)
   } catch (e) {

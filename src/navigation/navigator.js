@@ -70,7 +70,6 @@ import { eulaScreen } from '../eula/eula'
 import { restoreWaitRouteScreen } from '../restore/restore-wait'
 import { openIdConnectScreen } from '../open-id-connect/open-id-connect-screen'
 import { designStyleGuideScreen } from '../design-styleguide/design-styleguide'
-import { onfidoScreen } from '../onfido/onfido'
 import { restorePassphraseScreen } from '../restore/restore-passphrase'
 import {
   privacyTNCScreen,
@@ -444,11 +443,6 @@ function CardStackScreen() {
         name={aboutAppScreen.routeName}
         component={aboutAppScreen.screen}
         options={aboutAppScreen.options}
-      />
-      <CardStack.Screen
-        name={onfidoScreen.routeName}
-        component={onfidoScreen.screen}
-        options={onfidoScreen.options}
       />
       <CardStack.Screen
         name={backupCompleteScreen.routeName}
