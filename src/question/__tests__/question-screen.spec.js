@@ -84,7 +84,6 @@ describe('<QuestionScreen />', () => {
     const submitButton = component.root.findByProps({
       accessibilityLabel: testID,
     })
-    console.log(submitButton.props)
     submitButton.props.onPress()
     expect(props.sendAnswerToQuestion).toHaveBeenCalledTimes(1)
     expect(props.sendAnswerToQuestion).toHaveBeenCalledWith(

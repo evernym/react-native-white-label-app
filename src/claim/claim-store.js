@@ -311,7 +311,6 @@ export function* checkForClaim(
             connection.senderName
           )
         )
-        yield fork(saveClaimUuidMap)
       }
 
       yield put(claimStorageSuccess(serializedClaimOffer.messageId, issueDate))
@@ -331,15 +330,6 @@ export function* checkForClaim(
         userDID,
         serializedClaimOffer.messageId
       )
-
-      // once we stored a new credential into the wallet we can update the cache containing
-      // public entities (like Schemas, Credential Definitions) located on the Ledger.
-      // This allows us to reduce the time taken for Proof generation (for the first credential usage) by
-      // using already cached entities instead of queering the Ledger.
-      // we even can not wait/handle the result of this function.
-      // If querying failed we will query entities again during
-      // proof generation and will get an error there if it fails again.
-      yield spawn(fetchPublicEntitiesForCredentials)
     }
   } catch (e) {
     // we got error while saving claim in wallet, what to do now?
@@ -348,6 +338,19 @@ export function* checkForClaim(
       claimStorageFail(serializedClaimOffer.messageId, CLAIM_STORAGE_ERROR(e))
     )
   }
+}
+
+export function* claimStoredSaga(): Generator<*, *, *> {
+  // once we stored a new credential into the wallet we can update the cache containing
+  // public entities (like Schemas, Credential Definitions) located on the Ledger.
+  // This allows us to reduce the time taken for Proof generation (for the first credential usage) by
+  // using already cached entities instead of queering the Ledger.
+  // we even can not wait/handle the result of this function.
+  // If querying failed we will query entities again during
+  // proof generation and will get an error there if it fails again.
+  yield spawn(fetchPublicEntitiesForCredentials)
+
+  yield fork(saveClaimUuidMap)
 }
 
 export function* saveClaimUuidMap(): Generator<*, *, *> {
@@ -439,6 +442,10 @@ export function* watchClaim(): any {
 
 export function* watchDeleteClaim(): any {
   yield takeEvery(DELETE_CLAIM, deleteClaimSaga)
+}
+
+export function* watchClaimStored(): any {
+  yield takeEvery(CLAIM_STORAGE_SUCCESS, claimStoredSaga)
 }
 
 const initialState = {

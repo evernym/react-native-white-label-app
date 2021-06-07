@@ -51,6 +51,7 @@ import {
 } from '../../invitation/kinds/proprietary-connection-invitation'
 import { isAriesInvitation } from '../../invitation/kinds/aries-connection-invitation'
 import { isAriesOutOfBandInvitation } from '../../invitation/kinds/aries-out-of-band-invitation'
+import { validateEphemeralClaimOffer } from '../../claim-offer/ephemeral-claim-offer'
 
 export default class QRScanner extends PureComponent<
   QrScannerProps,
@@ -226,6 +227,17 @@ export default class QRScanner extends PureComponent<
       return this.props.onEphemeralProofRequest(
         ephemeralProofRequest.proofRequest
       )
+    }
+
+    // check if ephemeral claim offer
+    if (qrData.type === QR_CODE_TYPES.EPHEMERAL_CREDENTIAL_OFFER && qrData.data) {
+      const [, ephemeralCredentialOffer] = await validateEphemeralClaimOffer(qrData.data)
+      if (ephemeralCredentialOffer) {
+        this.setState({ scanStatus: SCAN_STATUS.SCANNING })
+        return this.props.onEphemeralCredentialOffer(
+          ephemeralCredentialOffer.credentialOffer
+        )
+      }
     }
 
     const outOfBandInvite = isAriesOutOfBandInvitation(qrData)

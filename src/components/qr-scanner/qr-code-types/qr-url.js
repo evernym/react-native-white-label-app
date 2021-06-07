@@ -23,6 +23,7 @@ import {isEncodedAriesOutOfBandInvitation} from "../../../invitation/kinds/aries
 import { getBase64DecodedInvitation } from "../../../invitation/invitation-helpers";
 import { schemaValidator } from '../../../services/schema-validator'
 import { ephemeralProofRequestSchema } from '../../../proof-request/proof-request-qr-code-reader'
+import { ephemeralCredentialOfferSchema, } from '../../../claim-offer/ephemeral-claim-offer'
 
 export function isValidUrl(urlQrCode: string): Url | false {
   if (!urlQrCode) {
@@ -54,6 +55,7 @@ export async function getUrlData(
     )
   ]
 > {
+
   // if we get url qr code, then there are three ways as of now that ConnectMe supports
   // to get data from url qr code
 
@@ -101,6 +103,14 @@ export async function getUrlData(
         // is ephemeral proof request
         if (schemaValidator.validate(ephemeralProofRequestSchema, data)) {
           return [null, { type: QR_CODE_TYPES.EPHEMERAL_PROOF_REQUEST_V1, data: data }]
+        }
+
+        // is ephemeral credential offer
+        if (schemaValidator.validate(ephemeralCredentialOfferSchema, data)) {
+          // Ephemeral Credential Offer can be converted into Out-of-Band invitation without handshake
+          // as they have similar meaning / handling flow
+          // so we can easily process it using already implemented functionality
+          return [null, { type: QR_CODE_TYPES.EPHEMERAL_CREDENTIAL_OFFER, data: data }]
         }
       }
     }

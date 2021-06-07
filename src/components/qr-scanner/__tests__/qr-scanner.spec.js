@@ -27,6 +27,7 @@ describe('<QRScanner />', () => {
     onAriesConnectionInviteRead: jest.fn(),
     onAriesOutOfBandInviteRead: jest.fn(),
     onEphemeralProofRequest: jest.fn(),
+    onEphemeralCredentialOffer: jest.fn(),
   })
 
   function setup() {

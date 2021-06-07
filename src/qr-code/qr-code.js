@@ -8,6 +8,7 @@ import { Container, QRScanner } from '../components'
 import { color } from '../common/styles/constant'
 import { handleInvitation } from '../invitation/invitation-store'
 import {
+  claimOfferRoute,
   openIdConnectRoute,
   proofRequestRoute,
   qrCodeScannerTabRoute,
@@ -37,6 +38,8 @@ import { convertAriesInvitationToAppInvitation } from '../invitation/kinds/aries
 import { proofRequestReceived } from '../proof-request/proof-request-store'
 
 import { SCAN_QR_CLOSE_X_BUTTON } from '../feedback/log-to-apptentive'
+import type { QrCodeEphemeralCredentialOffer } from '../claim-offer/ephemeral-claim-offer'
+import { claimOfferReceived } from '../claim-offer/claim-offer-store'
 
 export class QRCodeScannerScreen extends Component<
   QRCodeScannerScreenProps,
@@ -153,6 +156,7 @@ export class QRCodeScannerScreen extends Component<
             onAriesConnectionInviteRead={this.onAriesConnectionInviteRead}
             onAriesOutOfBandInviteRead={this.onAriesOutOfBandInviteRead}
             onEphemeralProofRequest={this.onEphemeralProofRequest}
+            onEphemeralCredentialOffer={this.onEphemeralCredentialOffer}
             onClose={this.onClose}
           />
         ) : null}
@@ -205,6 +209,24 @@ export class QRCodeScannerScreen extends Component<
       backRedirectRoute: this.props.route.params?.backRedirectRoute,
     })
   }
+
+  onEphemeralCredentialOffer = (
+    ephemeralCredentialOffer: QrCodeEphemeralCredentialOffer
+  ) => {
+    const uid = ephemeralCredentialOffer.ephemeralCredentialOffer['@id']
+    this.props.claimOfferReceived(ephemeralCredentialOffer.claimOfferPayload, {
+      uid,
+      remotePairwiseDID:
+        ephemeralCredentialOffer.ephemeralCredentialOffer['~service']
+          .recipientKeys[0],
+      senderLogoUrl: null,
+      hidden: true,
+    })
+    this.props.navigation.navigate(claimOfferRoute, {
+      uid,
+      backRedirectRoute: this.props.route.params?.backRedirectRoute,
+    })
+  }
 }
 
 const mapStateToProps = (state: Store) => ({
@@ -217,6 +239,7 @@ const mapDispatchToProps = (dispatch) =>
       openIdConnectUpdateStatus,
       handleInvitation,
       proofRequestReceived,
+      claimOfferReceived,
       scanQrClose: () => SCAN_QR_CLOSE_X_BUTTON,
     },
     dispatch
