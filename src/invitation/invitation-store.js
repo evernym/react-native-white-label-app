@@ -602,7 +602,7 @@ export function* processAttachedRequest(connection: GenericObject): Generator<*,
   const uid = getAttachedRequestId(attachedRequest)
   const type_ = attachedRequest[TYPE]
   if (type_.endsWith('offer-credential')) {
-    const { claimHandle } = yield call(
+    const claimHandle = yield call(
       createCredentialWithAriesOfferObject,
       uid,
       attachedRequest,

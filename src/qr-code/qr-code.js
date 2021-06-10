@@ -11,6 +11,7 @@ import {
   claimOfferRoute,
   openIdConnectRoute,
   proofRequestRoute,
+  pushNotificationPermissionRoute,
   qrCodeScannerTabRoute,
 } from '../common/'
 
@@ -40,6 +41,8 @@ import { proofRequestReceived } from '../proof-request/proof-request-store'
 import { SCAN_QR_CLOSE_X_BUTTON } from '../feedback/log-to-apptentive'
 import type { QrCodeEphemeralCredentialOffer } from '../claim-offer/ephemeral-claim-offer'
 import { claimOfferReceived } from '../claim-offer/claim-offer-store'
+import { getPushNotificationAuthorizationStatus } from '../push-notification/components/push-notification-permission-screen'
+import { usePushNotifications } from '../external-imports'
 
 export class QRCodeScannerScreen extends Component<
   QRCodeScannerScreenProps,
@@ -210,21 +213,53 @@ export class QRCodeScannerScreen extends Component<
     })
   }
 
-  onEphemeralCredentialOffer = (
+  handleiOSNavigation = async ({
+                                       mainRoute,
+                                       backRedirectRoute,
+                                       uid,
+                                       senderDID,
+                                     }: any) => {
+    const { navigation } = this.props
+    const isAuthorized = await getPushNotificationAuthorizationStatus()
+    const navigationFn = navigation.push || navigation.navigate
+    const intendedPayload = {
+      backRedirectRoute,
+      uid,
+      hidden: true,
+    }
+
+    if (Platform.OS === 'ios' && usePushNotifications && !isAuthorized) {
+      navigationFn(pushNotificationPermissionRoute, {
+        senderDID,
+        navigatedFrom: qrCodeScannerTabRoute,
+        intendedRoute: mainRoute,
+        intendedPayload,
+      })
+    } else {
+      navigationFn(mainRoute, intendedPayload)
+    }
+  }
+
+
+  onEphemeralCredentialOffer = async (
     ephemeralCredentialOffer: QrCodeEphemeralCredentialOffer
   ) => {
     const uid = ephemeralCredentialOffer.ephemeralCredentialOffer['@id']
+    const remotePairwiseDID = ephemeralCredentialOffer.ephemeralCredentialOffer['~service']
+      .recipientKeys[0]
+
     this.props.claimOfferReceived(ephemeralCredentialOffer.claimOfferPayload, {
       uid,
-      remotePairwiseDID:
-        ephemeralCredentialOffer.ephemeralCredentialOffer['~service']
-          .recipientKeys[0],
+      remotePairwiseDID,
       senderLogoUrl: null,
       hidden: true,
     })
-    this.props.navigation.navigate(claimOfferRoute, {
-      uid,
+
+    await this.handleiOSNavigation({
+      mainRoute: claimOfferRoute,
       backRedirectRoute: this.props.route.params?.backRedirectRoute,
+      uid,
+      senderDID: remotePairwiseDID,
     })
   }
 }

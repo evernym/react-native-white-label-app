@@ -102,7 +102,7 @@ const screen =
   (CustomProofRequestModal && CustomProofRequestModal.screen) ||
   ProofRequestModal
 
-const headline = proofRequestHeadline || 'Proof Request'
+const headline = proofRequestHeadline || 'Verification Request'
 
 const navigationOptions =
   (CustomProofRequestModal && CustomProofRequestModal.navigationOptions) ||
