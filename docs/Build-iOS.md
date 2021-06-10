@@ -8,44 +8,54 @@
 
 ## Steps
 
-> Note:
->
-> Current version of Evernym RN MobileSDK is not supported by Xcode 12, last supported version is Xcode 11.7. Also, make sure your **Command line tools** are set to version **Xcode 11.7 (11E801a)**
-
-1. Open iOS project in Xcode and in Build Settings update `iOS deployment target` to 10.0. Also, change version in `Podfile`:
+1. Open iOS project in Xcode and in Build Settings update `iOS deployment target` to 11.0. Also, change version in `Podfile`:
 
     ```ruby
-        platform :ios, '10.0'
+        platform :ios, '11.0'
     ```
 
-1. Create new swift file and add it to your Xcode project. When offered, also accept creating `*-Bridging-Header.h` file too. You can leave the content of both files empty.
+2. Create new swift file and add it to your Xcode project. When offered, also accept creating `*-Bridging-Header.h` file too. You can leave the content of both files empty.
 
-1. Add VCX library:
+3. Add VCX library:
+    VCX Cocoapods library is necessary to be added to iOS Podfile.
 
-   VCX Cocoapods library is necessary to be added to iOS Podfile.
+      * Add the next source to the top of your Podfile:
 
-  * Add the next source to the top of your Podfile:
-
-    ```ruby
-      ...
-      source 'https://gitlab.com/evernym/mobile/mobile-sdk.git'
-    ```
-
-  * Add VCX dependency into your Podfile inside target <ProjectName>:
-    * release build for devices only (`arm64`):
         ```ruby
-        pod 'vcx', 0.0.207
-        ```
-    * debug build dor devices and simulators (`arm64` and `x86_64`)
-        ```ruby
-        pod 'vcx', 0.0.208
+            ...
+            source 'https://cdn.cocoapods.org/'
+            source 'https://gitlab.com/evernym/mobile/mobile-sdk.git'
         ```
 
-  * **Note** that currently recommended VCX versions are `207/208`.
+      * Add VCX dependency into your Podfile inside target <ProjectName>:
+        * release build for devices only (`arm64`):
 
-  * Run `pod install`
+           ```ruby
+            pod 'vcx', '0.0.207'
+           ```
 
-1. Configure App permissions by adding following lines to `ios/<project-name>/info.plist` file
+        * debug build dor devices and simulators (`arm64` and `x86_64`)
+
+           ```ruby
+                pod 'vcx', '0.0.208'
+           ```
+
+      * **Note** that currently recommended VCX versions are `207/208`.
+
+      * Add below lines inside your `target` in Podfile
+  
+        ```ruby
+            use_frameworks!
+            $RNFirebaseAsStaticFramework = true
+        ```
+
+4. Add apptentive. You are not required to use this library. As of now we have a dependency on this library. We will make this optional in future. Add below dependency in `Podfile`
+  
+    `pod 'apptentive-ios', '5.2.2'`
+
+5. Run `pod install`
+
+6. Configure App permissions by adding following lines to `ios/<project-name>/info.plist` file
 
     ```xml
         <key>NSCameraUsageDescription</key>
@@ -62,7 +72,7 @@
 
    > Remember to replace `Connect.Me` with your app name
 
-1. Add below entries in same info.plist file
+7. Add below entries in same info.plist file
 
     ```xml
         <key>UIStatusBarHidden</key>
@@ -74,6 +84,8 @@
         <key>UIViewControllerBasedStatusBarAppearance</key>
         <false/>
     ```
+
+8. Open `awesomeMsdkProject.xcworkspace` in Xcode and set `Always embed swift binaries` to `Yes`
 
 ## Optional
 
@@ -213,19 +225,23 @@ By default ios app uses `System` font which is usually `San Francisco` on ios. I
 
   1. Open project in XCode and set `Bitcode=NO` for target pods.
   1. Add following lines to your app Podfile:
-  ```
-  post_install do |installer|
-      installer.pods_project.targets.each do |target|
-          if target.name == "react-native-white-label-app"
-              target.build_configurations.each do |config|
-                  config.build_settings['ENABLE_BITCODE'] = 'NO'
-              end
-          end
-          if target.name == "vcx"
-              target.build_configurations.each do |config|
-                  config.build_settings['ENABLE_BITCODE'] = 'NO'
-              end
-          end
-      end
-  end
-  ```
+  
+        ```ruby
+            post_install do |installer|
+                installer.pods_project.build_configurations.each do |config|
+                    config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
+                end
+                installer.pods_project.targets.each do |target|
+                    if target.name == "react-native-white-label-app"
+                        target.build_configurations.each do |config|
+                            config.build_settings['ENABLE_BITCODE'] = 'NO'
+                        end
+                    end
+                    if target.name == "vcx"
+                        target.build_configurations.each do |config|
+                            config.build_settings['ENABLE_BITCODE'] = 'NO'
+                        end
+                    end
+                end
+            end
+        ```
