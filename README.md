@@ -1,18 +1,16 @@
 ## Evernym React Native White Label App
 
-* [Introduction](#introduction)
-  * [Decentralized Identifier - DID](#decentralized-identifier---did)
-  * [Verifiable Credentials](#verifiable-credentials)
-* [React MSDK](#react-msdk)
-* [Creating a new application with React MSDK](#creating-a-new-application-with-react-msdk)
-  * [Create base app](#create-base-app)
-  * [Base app configuration](#base-app-configuration)
-  * [Android](#android)
-  * [iOS](#ios)
-* [Customization](#customization)
-* References
-  * [Mobile SDK](https://gitlab.com/evernym/mobile/mobile-sdk)
-  * [Verity SDK](https://gitlab.com/evernym/verity/verity-sdk)
+- [Evernym React Native White Label App](#evernym-react-native-white-label-app)
+- [Introduction](#introduction)
+  - [Decentralized Identifier - DID](#decentralized-identifier---did)
+  - [Verifiable Credentials](#verifiable-credentials)
+- [React MSDK](#react-msdk)
+- [Creating a new application with React MSDK](#creating-a-new-application-with-react-msdk)
+    - [Create base app](#create-base-app)
+    - [Base app configuration](#base-app-configuration)
+    - [Android](#android)
+    - [iOS](#ios)
+- [Customization](#customization)
   
 ## Introduction
 
@@ -127,7 +125,7 @@ In order to configure the building of your application for an Android platform s
 
 **Note**: At this point, you should already have completed [Base app configuration](#base-app-configuration) section.
 
-In order to configure the building of your application for an Android platform see the [document](./docs/Build-iOS.md).
+In order to configure the building of your application for an iOS platform see the [document](./docs/Build-iOS.md).
 
 ## Customization
 
