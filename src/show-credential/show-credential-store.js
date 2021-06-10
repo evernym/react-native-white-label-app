@@ -26,6 +26,7 @@ import {
 } from './type-show-credential'
 import { ensureVcxInitSuccess } from '../store/route-store'
 import { getConnectionPairwiseAgentInfo } from '../store/store-selector'
+import { MAX_QR_SIZE } from '../common/type-common'
 
 export const showCredential = (
   claimOfferUuid: string
@@ -94,6 +95,10 @@ export function* preparePresentationProposalSaga(
       presentationProposal,
       agentInfo
     )
+
+    if (invitation.length > MAX_QR_SIZE) {
+      throw new Error('Sorry.The credential size is too big to be shared.')
+    }
 
     const attachedRequest = invitation
       ? JSON.parse(invitation)['request~attach'][0]

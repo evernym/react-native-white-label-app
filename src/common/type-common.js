@@ -172,3 +172,5 @@ export type ReduxConnect = {
 
 export const ID = '@id'
 export const TYPE = '@type'
+
+export const MAX_QR_SIZE = 1817
