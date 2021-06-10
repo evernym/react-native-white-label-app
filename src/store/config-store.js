@@ -525,7 +525,7 @@ export const convertToAriesProofRequest = async (message: GenericObject) =>
   JSON.stringify({
     '@type': 'https://didcomm.org/present-proof/1.0/request-presentation',
     '@id': message['thread_id'],
-    comment: 'Proof Request',
+    comment: 'Verification Request',
     'request_presentations~attach': [
       {
         '@id': 'libindy-request-presentation-0',

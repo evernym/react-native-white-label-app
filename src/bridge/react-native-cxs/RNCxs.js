@@ -24,7 +24,6 @@ import type {
 import type { CredentialOffer } from '../../claim-offer/type-claim-offer'
 import {
   convertAgencyConfigToVcxProvision,
-  convertAriesCredentialOfferToCxsClaimOffer,
   convertVcxProvisionResultToUserOneTimeInfo,
   convertCxsInitToVcxInit,
   convertCxsPushConfigToVcxPushTokenConfig,
@@ -379,16 +378,11 @@ export async function createCredentialWithAriesOffer(
 export async function createCredentialWithAriesOfferObject(
   sourceId: string,
   credentialOffer: CredentialOffer
-): Promise<CxsCredentialOfferResult> {
-  const credential_handle = await credentialCreateWithOffer(
+): Promise<number> {
+  return await credentialCreateWithOffer(
     sourceId,
     JSON.stringify(credentialOffer)
   )
-
-  return {
-    claimHandle: credential_handle,
-    claimOffer: convertAriesCredentialOfferToCxsClaimOffer(credentialOffer),
-  }
 }
 
 export async function credentialCreateWithOffer(

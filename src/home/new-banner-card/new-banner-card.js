@@ -64,7 +64,7 @@ const NewBannerCardComponent = (props: NewBannerCardProps) => {
                 ellipsizeMode="tail"
                 numberOfLines={1}
               >
-                {props.issuerName || 'Unknown'}
+                {props.issuerName || 'Unnamed Connection'}
               </Text>
             </View>
             <View style={styles.textMessageSection}>

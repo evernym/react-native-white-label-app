@@ -1,8 +1,6 @@
-import { toUtf8FromBase64 } from '../bridge/react-native-cxs/RNCxs'
 import type { AdditionalDataPayload } from '../push-notification/type-push-notification'
 import { schemaValidator } from '../services/schema-validator'
 import { flattenAsync } from '../common/flatten-async'
-import { flatJsonParse } from '../common/flat-json-parse'
 import { convertClaimOfferPushPayloadToAppClaimOffer } from '../push-notification/push-notification-store'
 import { convertAriesCredentialOfferToCxsClaimOffer } from '../bridge/react-native-cxs/vcx-transformers'
 import { QR_CODE_TYPES } from '../components/qr-scanner/type-qr-scanner'
@@ -23,27 +21,18 @@ export async function validateEphemeralClaimOffer(
     return ['ECO-002::credential offer format.', null]
   }
 
-  // check whether data is valid base64 string
   const [decodedCredentialOfferError, decodedCredentialOffer] = await flattenAsync(
-    toUtf8FromBase64,
-  )(qrCode['offers~attach'][0].data.base64)
+    convertAriesCredentialOfferToCxsClaimOffer,
+  )(qrCode)
   if (decodedCredentialOfferError || decodedCredentialOffer === null) {
-    return ['ECO-002::credential offer format.', null]
-  }
-
-  // check whether decoded data is valid json or not
-  const [parseCredentialOfferError, parsedCredentialOffer] = flatJsonParse(
-    decodedCredentialOffer,
-  )
-  if (parseCredentialOfferError || parsedCredentialOffer === null) {
     return ['ECO-002::credential offer format.', null]
   }
 
   // convert claim offer to application format
   const claimOfferPayload = convertClaimOfferPushPayloadToAppClaimOffer(
     {
-      ...convertAriesCredentialOfferToCxsClaimOffer(qrCode),
-      remoteName: qrCode.comment || qrCode['~alias']?.label || 'Unknown',
+      ...decodedCredentialOffer,
+      remoteName: qrCode.comment || qrCode['~alias']?.label || 'Unnamed Connection',
       ephemeralClaimOffer: JSON.stringify(qrCode),
     },
     {

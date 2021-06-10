@@ -356,7 +356,7 @@ export function* acceptEphemeralClaimOffer(
     }
 
     const offer = JSON.parse(claimOfferPayload.ephemeralClaimOffer)
-    const { claimHandle } = yield call(createCredentialWithAriesOfferObject, uuid(), offer)
+    const claimHandle = yield call(createCredentialWithAriesOfferObject, uuid(), offer)
 
     yield put(sendClaimRequest(action.uid, claimOfferPayload))
 

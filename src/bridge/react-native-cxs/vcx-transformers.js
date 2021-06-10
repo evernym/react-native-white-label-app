@@ -28,6 +28,7 @@ import { flattenAsync } from '../../common/flatten-async'
 import { Platform } from 'react-native'
 import { getDeviceAttestation } from '../../start-up/device-check-saga'
 import { flatJsonParse } from '../../common/flat-json-parse'
+import { toUtf8FromBase64 } from './RNCxs'
 
 export const paymentHandle = 0
 const commonConfigParams = {
@@ -176,7 +177,12 @@ export function convertVcxCredentialOfferToCxsClaimOffer(
     to_did: vcxCredentialOffer.to_did,
     from_did: vcxCredentialOffer.from_did,
     claim: vcxCredentialOffer.credential_attrs,
-    claim_name: vcxCredentialOffer.claim_name || 'Unknown',
+    claim_name:
+      vcxCredentialOffer.claim_name ||
+      extractCredentialNameFromSchemaId(
+        extractSchemaIdFromLibinyOffer(vcxCredentialOffer.libindy_offer)
+      ) ||
+      'Credential',
     schema_seq_no: vcxCredentialOffer.schema_seq_no,
     issuer_did: vcxCredentialOffer.from_did,
     // should override it when generating claim offer object
@@ -185,10 +191,26 @@ export function convertVcxCredentialOfferToCxsClaimOffer(
   }
 }
 
-export function convertAriesCredentialOfferToCxsClaimOffer(
-  credentialOffer: CredentialOffer
-): ClaimOfferPushPayload {
+export async function convertAriesCredentialOfferToCxsClaimOffer(
+  credentialOffer: CredentialOffer,
+) {
   let claim: GenericObject = {}
+
+  // check whether data is valid base64 string
+  const [decodedCredentialOfferError, decodedCredentialOffer] = await flattenAsync(
+    toUtf8FromBase64,
+  )(credentialOffer['offers~attach'][0].data.base64)
+  if (decodedCredentialOfferError || decodedCredentialOffer === null) {
+    return null
+  }
+
+  // check whether decoded data is valid json or not
+  const [parseCredentialOfferError, parsedCredentialOffer] = flatJsonParse(
+    decodedCredentialOffer,
+  )
+  if (parseCredentialOfferError || parsedCredentialOffer === null) {
+    return null
+  }
 
   for (const a of credentialOffer.credential_preview.attributes) {
     claim[a.name] = a.value
@@ -200,10 +222,37 @@ export function convertAriesCredentialOfferToCxsClaimOffer(
     to_did: '',
     from_did: '',
     claim: claim,
-    claim_name: credentialOffer.comment || credentialOffer['~alias']?.label || 'Unknown',
+    claim_name:
+      credentialOffer.comment ||
+      extractCredentialNameFromSchemaId(parsedCredentialOffer['schema_id']) ||
+      credentialOffer['~alias']?.label ||
+      'Credential',
     schema_seq_no: 0,
     issuer_did: '',
     // should override it when generating claim offer object
-    remoteName: '',
+    remoteName: credentialOffer.comment || credentialOffer['~alias']?.label || 'Unnamed Connection',
   }
+}
+
+const extractSchemaIdFromLibinyOffer = (offer: string | null) => {
+  try {
+    if (!offer) {
+      return null
+    }
+    const parsed = JSON.parse(offer)
+    return parsed['schema_id']
+  } catch (e) {
+    return null
+  }
+}
+
+export const extractCredentialNameFromSchemaId = (schemaId: string | null): string | null => {
+  if (!schemaId) {
+    return null
+  }
+  const parts = schemaId.split(':')
+  if (parts.length !== 4) {
+    return null
+  }
+  return parts[2]
 }

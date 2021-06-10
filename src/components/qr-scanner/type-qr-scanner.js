@@ -64,7 +64,7 @@ export type QrScannerProps = {
   onAriesConnectionInviteRead: (AriesConnectionInvite) => Promise<void>,
   onAriesOutOfBandInviteRead: (AriesOutOfBandInvite) => Promise<void>,
   onEphemeralProofRequest: (QrCodeEphemeralProofRequest) => void,
-  onEphemeralCredentialOffer: (QrCodeEphemeralCredentialOffer) => void,
+  onEphemeralCredentialOffer: (QrCodeEphemeralCredentialOffer) =>  Promise<void>,
 }
 
 export type CameraMarkerProps = {
