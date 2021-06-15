@@ -132,3 +132,6 @@ In order to configure the building of your application for an Android platform s
 ## Customization
 
 See [documentation](docs/Customization.md) to get an overview of available configuration options.
+
+## Acknowledgements
+This effort is part of a project that has received funding from the European Union’s Horizon 2020 research and innovation program under grant agreement No 871932 delivered through our participation in the eSSIF-Lab, which aims to advance the broad adoption of self-sovereign identity for the benefit of all.
