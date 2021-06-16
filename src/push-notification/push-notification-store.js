@@ -214,6 +214,7 @@ export function convertClaimOfferPushPayloadToAppClaimOffer(
       version: pushPayload.version,
       revealedAttributes,
       claimDefinitionSchemaSequenceNumber: pushPayload.schema_seq_no,
+      claimDefinitionId: pushPayload.claim_def_id,
     },
     payTokenValue: pushPayload.price,
     ephemeralClaimOffer: pushPayload.ephemeralClaimOffer,

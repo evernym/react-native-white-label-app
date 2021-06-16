@@ -73,6 +73,7 @@ const CredentialCard = ({
     attributes,
     claimOfferUuid,
     colorTheme,
+    claimDefinitionId,
   } = item
   const [isOpen, setIsOpen] = useState(false)
   const [shouldRemove, setShouldRemove] = useState(false)
@@ -149,7 +150,7 @@ const CredentialCard = ({
       }
     } else {
       if (setActiveStack !== undefined) {
-        setActiveStack(credentialName)
+        setActiveStack(claimDefinitionId || null)
       }
     }
   }

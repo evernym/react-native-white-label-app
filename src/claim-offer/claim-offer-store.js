@@ -719,6 +719,12 @@ export function* hydrateClaimOffersSaga(): Generator<*, *, *> {
           // set color theme if it's missing
           offer.colorTheme = yield call(getColorTheme, offer.senderLogoUrl)
         }
+
+        if (offer.data && offer.issuer && !offer.data.claimDefinitionId) {
+          // I don't see an easy way to fetch claimDefinitionId
+          // use combination of `issuerDID + credentialName` as workaround
+          offer.data.claimDefinitionId = `${offer.issuer.did}:${offer.data.name}`
+        }
       }
 
       yield put(hydrateClaimOffers(serializedClaimOffers))

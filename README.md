@@ -40,6 +40,11 @@ With React-Native Mobils SDK, your application can:
 
 The identity wallet app enables myriad use cases, including proving you’re over a specific legal age without revealing your exact date of birth, sharing health records privately and securely, and doing away with the username-and-password concept once and for all.
 
+#№ Prerequisites
+
+- Node >12.13 . Preferred way to install node is via [nvm](https://www.sitepoint.com/quick-tip-multiple-versions-node-nvm/)
+- React Native. The currently supported version is 0.61.4
+
 ## Creating a new application with React MSDK
 
 To create a new project, you would need to go through the following steps.

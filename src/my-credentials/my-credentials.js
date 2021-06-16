@@ -50,6 +50,7 @@ const MyCredentialsScreen = ({ route, navigation }: MyCredentialsProps) => {
           logoUrl: offer.senderLogoUrl,
           remoteDid: offer.remotePairwiseDID,
           colorTheme: offer.colorTheme,
+          claimDefinitionId: offer.data.claimDefinitionId,
           uid: uid,
         })
       }

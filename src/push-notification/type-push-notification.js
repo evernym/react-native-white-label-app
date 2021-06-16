@@ -128,6 +128,7 @@ export type AdditionalData = {
   version: string,
   revealedAttributes: Array<Attribute>,
   claimDefinitionSchemaSequenceNumber: number,
+  claimDefinitionId?: ?string,
 }
 
 export type AdditionalDataPayload = {
@@ -161,6 +162,7 @@ export type ClaimOfferPushPayload = {
   optional_data?: GenericObject,
   remoteName: string,
   price?: ?string,
+  claim_def_id?: string | null,
   ephemeralClaimOffer?: any,
 }
 
