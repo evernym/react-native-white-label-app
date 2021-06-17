@@ -25,7 +25,7 @@ import { schemaValidator } from '../../../services/schema-validator'
 import { ephemeralProofRequestSchema } from '../../../proof-request/proof-request-qr-code-reader'
 import { ephemeralCredentialOfferSchema, } from '../../../claim-offer/ephemeral-claim-offer'
 
-export function isValidUrl(urlQrCode: string): Url | false {
+export function isValidUrl(urlQrCode: ?string): Url | false {
   if (!urlQrCode) {
     return false
   }
