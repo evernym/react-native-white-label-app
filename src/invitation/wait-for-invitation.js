@@ -24,19 +24,21 @@ import { DEEP_LINK_STATUS } from '../deep-link/type-deep-link'
 
 const WaitForInvitation = (props: ReactNavigation) => {
   const { navigation, route } = props
+  const identifier = route.params.token || route.params.url
+
   const dispatch = useDispatch()
 
-  const payload = useSelector(state => getSmsPendingInvitationPayload(state, route.params.smsToken))
-  const error = useSelector(state => getSmsPendingInvitationError(state, route.params.smsToken))
-  const status = useSelector(state => getDeepLinkStatus(state, route.params.smsToken))
+  const payload = useSelector(state => getSmsPendingInvitationPayload(state, identifier))
+  const error = useSelector(state => getSmsPendingInvitationError(state, identifier))
+  const status = useSelector(state => getDeepLinkStatus(state, identifier))
 
   useEffect(() => {
-    dispatch(getSmsPendingInvitation(route.params.smsToken))
+    dispatch(getSmsPendingInvitation(identifier))
   }, [route])
 
   useEffect(() => {
     if (error && status !== DEEP_LINK_STATUS.PROCESSED) {
-      dispatch(deepLinkProcessed(route.params.smsToken))
+      dispatch(deepLinkProcessed(identifier))
       if (error.code === TOKEN_EXPIRED_CODE) {
         navigation.navigate(expiredTokenRoute, { reason: TOKEN_EXPIRED })
       } else {
@@ -47,12 +49,12 @@ const WaitForInvitation = (props: ReactNavigation) => {
 
   useEffect(() => {
     if (payload && status !== DEEP_LINK_STATUS.PROCESSED) {
-      dispatch(handleInvitation(payload, route.params.smsToken))
+      dispatch(handleInvitation(payload, identifier))
     }
   })
 
   return (
-    <Container center style={[styles.expiredTokenContainer]}>
+    <Container center style={[styles.container]}>
       <Loader/>
     </Container>
   )
@@ -64,7 +66,7 @@ export const waitForInvitationScreen = {
 }
 
 const styles = StyleSheet.create({
-  expiredTokenContainer: {
+  container: {
     paddingTop: OFFSET_3X,
   },
 })

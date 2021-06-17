@@ -18,33 +18,47 @@ export const DeepLink = (props: DeepLinkProps) => {
     }
   }
 
-  const handleDeepLink = (smsToken?: string) => {
-    if (smsToken){
-      redirect(props, waitForInvitationRoute, { smsToken })
+  const handleDeepLinkToken = (token?: string) => {
+    if (token){
+      redirect(props, waitForInvitationRoute, { token })
+    }
+  }
+
+  const handleDeepLink = (url?: string) => {
+    if (url){
+      redirect(props, waitForInvitationRoute, { url })
     }
   }
 
   const onDeepLinkData = useDebouncedCallback(
-    (bundle: DeepLinkBundle) => {
+    async (bundle: DeepLinkBundle) => {
+      console.log('bundle.params')
+      console.log(bundle)
       if (bundle.error) {
         props.deepLinkError(bundle.error)
       } else if (bundle.params) {
         if (bundle.params['+clicked_branch_link'] === true) {
           // update store with deep link params
           props.deepLinkData(bundle.params.t)
-          handleDeepLink(bundle.params?.t)
+          handleDeepLinkToken(bundle.params?.t)
         } else if (typeof bundle.params['+non_branch_link'] === 'string') {
           const nonBranchLink = bundle.params['+non_branch_link'].toLowerCase()
           if (nonBranchLink.startsWith(`${deepLinkAddress}?t=`)) {
-            const invitationToken = nonBranchLink.split('=').slice(-1)[0]
-            props.deepLinkData(invitationToken)
-            handleDeepLink(invitationToken)
+            const token = nonBranchLink.split('=').slice(-1)[0]
+            props.deepLinkData(token)
+            handleDeepLinkToken(token)
           }
+        } else if (bundle.uri) {
+          props.deepLinkData(bundle.uri)
+          handleDeepLink(bundle.uri)
         } else {
           // update store that deep link was not clicked
           Object.keys(props.tokens).length === 0 &&
           props.deepLinkEmpty()
         }
+      } else if (bundle.uri) {
+        props.deepLinkData(bundle.uri)
+        handleDeepLink(bundle.uri)
       } else {
         Object.keys(props.tokens).length === 0 && props.deepLinkEmpty()
       }

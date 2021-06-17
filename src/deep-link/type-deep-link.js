@@ -60,6 +60,7 @@ export type DeepLinkBundle = {
     t: string,
     '+non_branch_link': string,
   },
+  uri?: ?string,
 }
 
 export type DeepLinkProps = {

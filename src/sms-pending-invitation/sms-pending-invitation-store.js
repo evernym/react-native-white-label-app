@@ -38,6 +38,7 @@ import {
   convertAriesOutOfBandInvitationToAppInvitation,
   isAriesOutOfBandInvitation,
 } from '../invitation/kinds/aries-out-of-band-invitation'
+import type { Url } from "url-parse";
 
 const initialState = {}
 
@@ -75,6 +76,75 @@ export const smsPendingInvitationSeen = (smsToken: string) => ({
 export const safeToDownloadSmsInvitation = () => ({
   type: SAFE_TO_DOWNLOAD_SMS_INVITATION,
 })
+
+export function* handleDeepLinkError(
+  smsToken: string,
+  e: any,
+): any {
+  let error: CustomError = {
+    code: ERROR_PENDING_INVITATION_RESPONSE_PARSE_CODE,
+    message: `${ERROR_PENDING_INVITATION_RESPONSE_PARSE}: ${e.message}`,
+  }
+
+  try {
+    const parsedError = JSON.parse(e.message)
+    error = {
+      code: parsedError.code || parsedError.statusCode || error.code,
+      message: parsedError.message || parsedError.statusMsg || error.message,
+    }
+
+  } catch (e) {}
+  captureError(e)
+  yield put(smsPendingInvitationFail(smsToken, error))
+}
+
+export function* handleDeepLink(
+  smsToken: string,
+  parsedUrl: Url,
+  url: string
+): any {
+  try {
+    const [urlError, pendingInvitationPayload] = yield call(
+      getUrlData,
+      parsedUrl,
+      url
+    )
+    if (urlError) {
+      throw new Error(urlError)
+    }
+
+    const proprietaryInvitation = isProprietaryInvitation(pendingInvitationPayload)
+    if (proprietaryInvitation) {
+      yield put(smsPendingInvitationReceived(smsToken, convertProprietaryInvitationToAppInvitation(proprietaryInvitation)))
+      return
+    }
+
+    const proprietaryShortInvitation = isShortProprietaryInvitation(pendingInvitationPayload)
+    if (proprietaryShortInvitation) {
+      yield put(smsPendingInvitationReceived(smsToken, convertShortProprietaryInvitationToAppInvitation(proprietaryShortInvitation)))
+      return
+    }
+
+    const ariesInvitationData = pendingInvitationPayload.payload || pendingInvitationPayload
+    const ariesV1Invite = isAriesInvitation(ariesInvitationData, JSON.stringify(ariesInvitationData))
+    if (ariesV1Invite) {
+      yield put(smsPendingInvitationReceived(smsToken, convertAriesInvitationToAppInvitation(ariesV1Invite)))
+      return
+    }
+
+    const ariesV1OutOfBandInvite = isAriesOutOfBandInvitation(pendingInvitationPayload)
+    if (ariesV1OutOfBandInvite) {
+      yield put(
+        smsPendingInvitationReceived(smsToken, yield call(convertAriesOutOfBandInvitationToAppInvitation,ariesV1OutOfBandInvite))
+      )
+      return
+    }
+
+    throw new Error('Invitation payload object format is not as expected')
+  } catch (e) {
+    yield call(handleDeepLinkError, smsToken, e)
+  }
+}
 
 export function* callSmsPendingInvitationRequest(
   action: SMSPendingInvitationRequestAction
@@ -117,7 +187,6 @@ export function* callSmsPendingInvitationRequest(
   // then we have got the updated config
   // and now, we can go ahead and start downloading SMS pending invitation
 
-  const agencyUrl: string = yield select(getAgencyUrl)
   const { smsToken } = action
 
   try {
@@ -129,86 +198,51 @@ export function* callSmsPendingInvitationRequest(
       throw new Error('No data in token received')
     }
 
-    let invitationLink = {
-      url: '',
-    }
-    if (smsToken.length < 12) {
-      // we are assuming that if length is less than 12, then we got a token
-      // get invitation link
-      invitationLink = yield call(getInvitationLink, {
-        agencyUrl,
+    const agencyUrl: string = yield select(getAgencyUrl)
+
+    const urlInvitationData = isValidUrl(smsToken)
+    if (urlInvitationData) {
+      // token is already valid link
+      yield call(
+        handleDeepLink,
         smsToken,
-      })
-    } else if (isValidInvitationUrl(smsToken)) {
-      // check if we got the url, then directly assign url
-      invitationLink = {
-        url: smsToken,
-      }
-    } else {
-      throw new Error('Not recognized for any type of token that we know')
-    }
-
-    const urlInvitationData = isValidUrl(invitationLink.url)
-    if (!urlInvitationData) {
-      return
-    }
-
-    const [urlError, pendingInvitationPayload] = yield call(
-      getUrlData,
-      urlInvitationData,
-      invitationLink.url
-    )
-    if (urlError) {
-      throw new Error(urlError)
-    }
-
-    const proprietaryInvitation = isProprietaryInvitation(pendingInvitationPayload)
-    if (proprietaryInvitation) {
-      yield put(smsPendingInvitationReceived(smsToken, convertProprietaryInvitationToAppInvitation(proprietaryInvitation)))
-      return
-    }
-
-    const proprietaryShortInvitation = isShortProprietaryInvitation(pendingInvitationPayload)
-    if (proprietaryShortInvitation) {
-      yield put(smsPendingInvitationReceived(smsToken, convertShortProprietaryInvitationToAppInvitation(proprietaryShortInvitation)))
-      return
-    }
-
-    const ariesInvitationData = pendingInvitationPayload.payload || pendingInvitationPayload
-    const ariesV1Invite = isAriesInvitation(ariesInvitationData, JSON.stringify(ariesInvitationData))
-    if (ariesV1Invite) {
-      yield put(smsPendingInvitationReceived(smsToken, convertAriesInvitationToAppInvitation(ariesV1Invite)))
-      return
-    }
-
-    const ariesV1OutOfBandInvite = isAriesOutOfBandInvitation(pendingInvitationPayload)
-    if (ariesV1OutOfBandInvite) {
-      yield put(
-        smsPendingInvitationReceived(smsToken, yield call(convertAriesOutOfBandInvitationToAppInvitation,ariesV1OutOfBandInvite))
+        urlInvitationData,
+        smsToken,
       )
-      return
-    }
-
-
-    throw new Error('Invitation payload object format is not as expected')
-  } catch (e) {
-    console.log('e')
-    console.log(e)
-    let error: CustomError = {
-      code: ERROR_PENDING_INVITATION_RESPONSE_PARSE_CODE,
-      message: `${ERROR_PENDING_INVITATION_RESPONSE_PARSE}: ${e.message}`,
-    }
-
-    try {
-      const parsedError = JSON.parse(e.message)
-      error = {
-        code: parsedError.code || parsedError.statusCode || error.code,
-        message: parsedError.message || parsedError.statusMsg || error.message,
+    } else {
+      // we need query for received token
+      let invitationLink = {
+        url: '',
+      }
+      if (smsToken.length < 12) {
+        // we are assuming that if length is less than 12, then we got a token
+        // get invitation link
+        invitationLink = yield call(getInvitationLink, {
+          agencyUrl,
+          smsToken,
+        })
+      } else if (isValidInvitationUrl(smsToken)) {
+        // check if we got the url, then directly assign url
+        invitationLink = {
+          url: smsToken,
+        }
+      } else {
+        throw new Error('Not recognized for any type of token that we know')
       }
 
-    } catch (e) {}
-    captureError(e)
-    yield put(smsPendingInvitationFail(smsToken, error))
+      const urlInvitationData = isValidUrl(invitationLink.url)
+      if (!urlInvitationData) {
+        throw new Error('Not recognized for any type of token that we know')
+      }
+      yield call(
+        handleDeepLink,
+        smsToken,
+        urlInvitationData,
+        invitationLink.url,
+      )
+    }
+  } catch (e) {
+    yield call(handleDeepLinkError, smsToken, e)
   }
 }
 

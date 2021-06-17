@@ -63,6 +63,8 @@ export async function getUrlData(
 
   // 1. get aries invitation data using url qr code
   const ariesConnectionInvite = await isEncodedAriesConnectionInvitation(parsedUrl)
+  console.log('ariesConnectionInvite')
+  console.log(ariesConnectionInvite)
   if (ariesConnectionInvite) {
     return [null, ariesConnectionInvite]
   }
@@ -158,4 +160,4 @@ export async function getUrlData(
   return [SCAN_STATUS.INVALID_URL_QR_CODE, null]
 }
 
-export const validUrlScheme = ['https:', 'http:', 'id.streetcred:']
+export const validUrlScheme = ['https:', 'http:', 'id.streetcred:', 'didcomm:']
