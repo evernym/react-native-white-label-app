@@ -8,6 +8,7 @@ import { deepLinkData, deepLinkEmpty, deepLinkError } from './deep-link-store'
 import { waitForInvitationRoute } from '../common'
 import { addPendingRedirection } from '../lock/lock-store'
 import { deepLinkAddress } from '../external-imports'
+import { isValidUrl } from '../components/qr-scanner/qr-code-types/qr-url'
 
 export const DeepLink = (props: DeepLinkProps) => {
   const redirect = (props: DeepLinkProps, route: string, params?: any) => {
@@ -32,8 +33,6 @@ export const DeepLink = (props: DeepLinkProps) => {
 
   const onDeepLinkData = useDebouncedCallback(
     async (bundle: DeepLinkBundle) => {
-      console.log('bundle.params')
-      console.log(bundle)
       if (bundle.error) {
         props.deepLinkError(bundle.error)
       } else if (bundle.params) {
@@ -41,12 +40,16 @@ export const DeepLink = (props: DeepLinkProps) => {
           // update store with deep link params
           props.deepLinkData(bundle.params.t)
           handleDeepLinkToken(bundle.params?.t)
-        } else if (typeof bundle.params['+non_branch_link'] === 'string') {
+        } else if (typeof bundle.params['+non_branch_link'] === 'string' && isValidUrl(bundle.params['+non_branch_link'])) {
           const nonBranchLink = bundle.params['+non_branch_link'].toLowerCase()
           if (nonBranchLink.startsWith(`${deepLinkAddress}?t=`)) {
             const token = nonBranchLink.split('=').slice(-1)[0]
             props.deepLinkData(token)
             handleDeepLinkToken(token)
+          } else {
+            const link = bundle.params['+non_branch_link']
+            props.deepLinkData(link)
+            handleDeepLink(link)
           }
         } else if (bundle.uri) {
           props.deepLinkData(bundle.uri)

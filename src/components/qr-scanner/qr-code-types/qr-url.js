@@ -63,8 +63,6 @@ export async function getUrlData(
 
   // 1. get aries invitation data using url qr code
   const ariesConnectionInvite = await isEncodedAriesConnectionInvitation(parsedUrl)
-  console.log('ariesConnectionInvite')
-  console.log(ariesConnectionInvite)
   if (ariesConnectionInvite) {
     return [null, ariesConnectionInvite]
   }

@@ -24,21 +24,21 @@ import { DEEP_LINK_STATUS } from '../deep-link/type-deep-link'
 
 const WaitForInvitation = (props: ReactNavigation) => {
   const { navigation, route } = props
-  const identifier = route.params.token || route.params.url
+  const smsToken = route.params.token || route.params.url
 
   const dispatch = useDispatch()
 
-  const payload = useSelector(state => getSmsPendingInvitationPayload(state, identifier))
-  const error = useSelector(state => getSmsPendingInvitationError(state, identifier))
-  const status = useSelector(state => getDeepLinkStatus(state, identifier))
+  const payload = useSelector(state => getSmsPendingInvitationPayload(state, smsToken))
+  const error = useSelector(state => getSmsPendingInvitationError(state, smsToken))
+  const status = useSelector(state => getDeepLinkStatus(state, smsToken))
 
   useEffect(() => {
-    dispatch(getSmsPendingInvitation(identifier))
+    dispatch(getSmsPendingInvitation(smsToken))
   }, [route])
 
   useEffect(() => {
     if (error && status !== DEEP_LINK_STATUS.PROCESSED) {
-      dispatch(deepLinkProcessed(identifier))
+      dispatch(deepLinkProcessed(smsToken))
       if (error.code === TOKEN_EXPIRED_CODE) {
         navigation.navigate(expiredTokenRoute, { reason: TOKEN_EXPIRED })
       } else {
@@ -49,7 +49,7 @@ const WaitForInvitation = (props: ReactNavigation) => {
 
   useEffect(() => {
     if (payload && status !== DEEP_LINK_STATUS.PROCESSED) {
-      dispatch(handleInvitation(payload, identifier))
+      dispatch(handleInvitation(payload, smsToken))
     }
   })
 
