@@ -25,7 +25,7 @@ import { schemaValidator } from '../../../services/schema-validator'
 import { ephemeralProofRequestSchema } from '../../../proof-request/proof-request-qr-code-reader'
 import { ephemeralCredentialOfferSchema, } from '../../../claim-offer/ephemeral-claim-offer'
 
-export function isValidUrl(urlQrCode: string): Url | false {
+export function isValidUrl(urlQrCode: ?string): Url | false {
   if (!urlQrCode) {
     return false
   }
@@ -84,6 +84,10 @@ export async function getUrlData(
   const outOfBandInvite = await isEncodedAriesOutOfBandInvitation(parsedUrl)
   if (outOfBandInvite) {
     return [null, outOfBandInvite]
+  }
+
+  if (!validUrlSchemeToRequest.includes(url)){
+    return [SCAN_STATUS.INVALID_URL_QR_CODE, null]
   }
 
   // if there is no data available in url params, then try to download data
@@ -158,4 +162,6 @@ export async function getUrlData(
   return [SCAN_STATUS.INVALID_URL_QR_CODE, null]
 }
 
-export const validUrlScheme = ['https:', 'http:', 'id.streetcred:']
+export const validUrlScheme = ['https:', 'http:', 'id.streetcred:', 'didcomm:']
+
+export const validUrlSchemeToRequest = ['https:', 'http:', 'id.streetcred:']

@@ -7,7 +7,8 @@ import type { DeepLinkProps, DeepLinkBundle } from './type-deep-link'
 import { deepLinkData, deepLinkEmpty, deepLinkError } from './deep-link-store'
 import { waitForInvitationRoute } from '../common'
 import { addPendingRedirection } from '../lock/lock-store'
-import { deepLinkAddress } from '../external-imports'
+import { isValidUrl } from '../components/qr-scanner/qr-code-types/qr-url'
+import { Linking } from "react-native";
 
 export const DeepLink = (props: DeepLinkProps) => {
   const redirect = (props: DeepLinkProps, route: string, params?: any) => {
@@ -18,36 +19,60 @@ export const DeepLink = (props: DeepLinkProps) => {
     }
   }
 
-  const handleDeepLink = (smsToken?: string) => {
-    if (smsToken){
-      redirect(props, waitForInvitationRoute, { smsToken })
+  const handleDeepLinkToken = (token?: ?string) => {
+    if (token){
+      redirect(props, waitForInvitationRoute, { token })
+    }
+  }
+
+  const handleDeepLink = (url?: ?string) => {
+    if (url){
+      redirect(props, waitForInvitationRoute, { url })
     }
   }
 
   const onDeepLinkData = useDebouncedCallback(
-    (bundle: DeepLinkBundle) => {
+    async (bundle: DeepLinkBundle) => {
       if (bundle.error) {
         props.deepLinkError(bundle.error)
-      } else if (bundle.params) {
-        if (bundle.params['+clicked_branch_link'] === true) {
-          // update store with deep link params
-          props.deepLinkData(bundle.params.t)
-          handleDeepLink(bundle.params?.t)
-        } else if (typeof bundle.params['+non_branch_link'] === 'string') {
-          const nonBranchLink = bundle.params['+non_branch_link'].toLowerCase()
-          if (nonBranchLink.startsWith(`${deepLinkAddress}?t=`)) {
-            const invitationToken = nonBranchLink.split('=').slice(-1)[0]
-            props.deepLinkData(invitationToken)
-            handleDeepLink(invitationToken)
-          }
-        } else {
-          // update store that deep link was not clicked
-          Object.keys(props.tokens).length === 0 &&
-          props.deepLinkEmpty()
-        }
-      } else {
-        Object.keys(props.tokens).length === 0 && props.deepLinkEmpty()
+        return
       }
+
+      if (bundle.params && bundle.params['+clicked_branch_link'] === true) {
+        // update store with deep link params
+        props.deepLinkData(bundle.params.t)
+        handleDeepLinkToken(bundle.params?.t)
+        return
+      }
+
+      const link = bundle.params ? bundle.params['+non_branch_link']: ''
+      const nonBranchLink = isValidUrl(link)
+      if (link && nonBranchLink) {
+        if (nonBranchLink.query && nonBranchLink.query.t) {
+          const token = nonBranchLink.query.t.toLocaleLowerCase()
+          props.deepLinkData(token)
+          handleDeepLinkToken(token)
+        } else {
+          props.deepLinkData(link)
+          handleDeepLink(link)
+        }
+        return
+      }
+
+      if (bundle.uri && isValidUrl(bundle.uri)) {
+        props.deepLinkData(bundle.uri)
+        handleDeepLink(bundle.uri)
+        return
+      }
+
+      const url = await Linking.getInitialURL()
+      if (url && isValidUrl(url)) {
+        props.deepLinkData(url)
+        handleDeepLink(url)
+        return
+      }
+
+      Object.keys(props.tokens).length === 0 && props.deepLinkEmpty()
     },
     500
   );
