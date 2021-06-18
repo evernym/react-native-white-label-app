@@ -66,6 +66,13 @@
       <!--            &lt;!&ndash; <data android:scheme="https" android:host="bnc.lt" /> &ndash;&gt;-->
       <!--            <data android:scheme="react-native-white-label-app-placeholder" android:host="app.link" />-->
       <!--        </intent-filter>-->
+      <!--        &lt;!&ndash; App Links of other Aries compatible products &ndash;&gt;-->
+      <!--        <intent-filter>-->
+      <!--          <action android:name="android.intent.action.VIEW" />-->
+      <!--          <category android:name="android.intent.category.DEFAULT" />-->
+      <!--          <category android:name="android.intent.category.BROWSABLE" />-->
+      <!--          <data android:scheme="didcomm" />-->
+      <!--        </intent-filter>-->
 
     </activity>
 
