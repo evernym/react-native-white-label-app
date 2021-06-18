@@ -86,6 +86,10 @@ export async function getUrlData(
     return [null, outOfBandInvite]
   }
 
+  if (!validUrlSchemeToRequest.includes(url)){
+    return [SCAN_STATUS.INVALID_URL_QR_CODE, null]
+  }
+
   // if there is no data available in url params, then try to download data
   // from the passed url and check if we get data from url
 
@@ -159,3 +163,5 @@ export async function getUrlData(
 }
 
 export const validUrlScheme = ['https:', 'http:', 'id.streetcred:', 'didcomm:']
+
+export const validUrlSchemeToRequest = ['https:', 'http:', 'id.streetcred:']
