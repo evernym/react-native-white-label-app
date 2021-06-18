@@ -86,7 +86,8 @@ export async function getUrlData(
     return [null, outOfBandInvite]
   }
 
-  if (!validUrlSchemeToRequest.includes(url)){
+  // didcomm url cannot be requested -> return
+  if (url.startsWith('didcomm:')){
     return [SCAN_STATUS.INVALID_URL_QR_CODE, null]
   }
 
@@ -163,5 +164,3 @@ export async function getUrlData(
 }
 
 export const validUrlScheme = ['https:', 'http:', 'id.streetcred:', 'didcomm:']
-
-export const validUrlSchemeToRequest = ['https:', 'http:', 'id.streetcred:']
