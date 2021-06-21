@@ -183,6 +183,7 @@ export function convertVcxCredentialOfferToCxsClaimOffer(
         extractSchemaIdFromLibinyOffer(vcxCredentialOffer.libindy_offer)
       ) ||
       'Credential',
+    claim_def_id: extractCredDefIdFromLibinyOffer(vcxCredentialOffer.libindy_offer),
     schema_seq_no: vcxCredentialOffer.schema_seq_no,
     issuer_did: vcxCredentialOffer.from_did,
     // should override it when generating claim offer object
@@ -227,6 +228,7 @@ export async function convertAriesCredentialOfferToCxsClaimOffer(
       extractCredentialNameFromSchemaId(parsedCredentialOffer['schema_id']) ||
       credentialOffer['~alias']?.label ||
       'Credential',
+    claim_def_id: parsedCredentialOffer['cred_def_id'],
     schema_seq_no: 0,
     issuer_did: '',
     // should override it when generating claim offer object
@@ -241,6 +243,18 @@ const extractSchemaIdFromLibinyOffer = (offer: string | null) => {
     }
     const parsed = JSON.parse(offer)
     return parsed['schema_id']
+  } catch (e) {
+    return null
+  }
+}
+
+const extractCredDefIdFromLibinyOffer = (offer: string | null) => {
+  try {
+    if (!offer) {
+      return null
+    }
+    const parsed = JSON.parse(offer)
+    return parsed['cred_def_id']
   } catch (e) {
     return null
   }

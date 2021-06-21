@@ -34,6 +34,7 @@ export type CredentialItem = {
   logoUrl?: ?string,
   remoteDid: string,
   colorTheme?: string,
+  claimDefinitionId?: ?string,
 }
 
 export type ClaimOffers = {
