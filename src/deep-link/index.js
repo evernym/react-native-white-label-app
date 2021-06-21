@@ -8,7 +8,6 @@ import { deepLinkData, deepLinkEmpty, deepLinkError } from './deep-link-store'
 import { waitForInvitationRoute } from '../common'
 import { addPendingRedirection } from '../lock/lock-store'
 import { isValidUrl } from '../components/qr-scanner/qr-code-types/qr-url'
-import { Linking } from "react-native";
 
 export const DeepLink = (props: DeepLinkProps) => {
   const redirect = (props: DeepLinkProps, route: string, params?: any) => {
@@ -62,13 +61,6 @@ export const DeepLink = (props: DeepLinkProps) => {
       if (bundle.uri && isValidUrl(bundle.uri)) {
         props.deepLinkData(bundle.uri)
         handleDeepLink(bundle.uri)
-        return
-      }
-
-      const url = await Linking.getInitialURL()
-      if (url && isValidUrl(url)) {
-        props.deepLinkData(url)
-        handleDeepLink(url)
         return
       }
 
