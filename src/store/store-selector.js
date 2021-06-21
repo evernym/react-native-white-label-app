@@ -772,5 +772,8 @@ export const getSmsPendingInvitationPayload = (state: Store, smsToken: string) =
 export const getSmsPendingInvitationError = (state: Store, smsToken: string) =>
   state.smsPendingInvitation[smsToken]?.error
 
+export const getDeepLinks = (state: Store) =>
+  state.deepLink.tokens
+
 export const getDeepLinkStatus = (state: Store, smsToken: string) =>
   state.deepLink.tokens[smsToken]?.status
