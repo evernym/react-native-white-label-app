@@ -74,3 +74,5 @@ export type DeepLinkProps = {
   navigateToRoute: any,
   addPendingRedirection: typeof addPendingRedirection,
 }
+
+export const DEEP_LINK_PROCESSED_ERROR = 'Deep link has already been processed'

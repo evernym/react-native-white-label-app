@@ -1,15 +1,23 @@
 // @flow
 import { bindActionCreators } from 'redux'
+import { useSelector } from 'react-redux'
 import { connect } from 'react-redux'
 import branch from 'react-native-branch'
-import { useDebouncedCallback } from "use-debounce";
+import { useDebouncedCallback } from 'use-debounce'
 import type { DeepLinkProps, DeepLinkBundle } from './type-deep-link'
 import { deepLinkData, deepLinkEmpty, deepLinkError } from './deep-link-store'
 import { waitForInvitationRoute } from '../common'
 import { addPendingRedirection } from '../lock/lock-store'
 import { isValidUrl } from '../components/qr-scanner/qr-code-types/qr-url'
+import { getDeepLinks } from '../store/store-selector'
+import { DEEP_LINK_STATUS } from './type-deep-link'
 
 export const DeepLink = (props: DeepLinkProps) => {
+  const handledLinks = useSelector(state => getDeepLinks(state))
+
+  const linkIsNew = (link: string) =>
+    !handledLinks || !handledLinks[link] || handledLinks[link].status !== DEEP_LINK_STATUS.PROCESSED
+
   const redirect = (props: DeepLinkProps, route: string, params?: any) => {
     if (props.isAppLocked === false) {
       props.navigateToRoute(route, params)
@@ -19,15 +27,17 @@ export const DeepLink = (props: DeepLinkProps) => {
   }
 
   const handleDeepLinkToken = (token?: ?string) => {
-    if (token){
-      redirect(props, waitForInvitationRoute, { token })
+    if (!token || !linkIsNew(token)) {
+      return
     }
+    redirect(props, waitForInvitationRoute, { token })
   }
 
   const handleDeepLink = (url?: ?string) => {
-    if (url){
-      redirect(props, waitForInvitationRoute, { url })
+    if (!url || !linkIsNew(url)) {
+      return
     }
+    redirect(props, waitForInvitationRoute, { url })
   }
 
   const onDeepLinkData = useDebouncedCallback(
@@ -44,7 +54,7 @@ export const DeepLink = (props: DeepLinkProps) => {
         return
       }
 
-      const link = bundle.params ? bundle.params['+non_branch_link']: ''
+      const link = bundle.params ? bundle.params['+non_branch_link'] : ''
       const nonBranchLink = isValidUrl(link)
       if (link && nonBranchLink) {
         if (nonBranchLink.query && nonBranchLink.query.t) {
@@ -66,8 +76,8 @@ export const DeepLink = (props: DeepLinkProps) => {
 
       Object.keys(props.tokens).length === 0 && props.deepLinkEmpty()
     },
-    500
-  );
+    500,
+  )
 
   // Branch only caches a deeplink for 5 seconds by default, if app loads slower it is deleted before used.
   // This causes branch to cache deeplink for 10 seconds instead.
