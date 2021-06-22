@@ -284,9 +284,8 @@ You can configure a server environment used for agent provisioning inside the `p
 * Information used for application provisioning
     * `GET_PROVISION_TOKEN_FUNC` - function to be called to get provisioning token.
        ```
-        GET_PROVISION_TOKEN_FUNC = async () -> [error: string | null, token: string | null] 
         /// example
-        export const GET_PROVISION_TOKEN_FUNC =  () => {
+        export const GET_PROVISION_TOKEN_FUNC = async (): [error: string | null, token: string | null]  => {
           try {
              const response = fetch_api(your_endpoint)
              /// process response
