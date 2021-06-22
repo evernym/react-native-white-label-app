@@ -4,10 +4,10 @@
 
 In order to configure the building of your application for an Android platform, you can either rely on [automatic](#automatic) command which will everything for you, or follow to [manual](#manual) steps.
 
-* [Automatic](#automatic)
-* [Manual](#manual)
-* [Optional](#optional-dependencies)
-* [Issues](#issues)
+- [Android installation steps](#android-installation-steps)
+  - [Automatic](#automatic)
+  - [Manual](#manual)
+  - [Issues](#issues)
 
 ## Automatic
 
@@ -16,16 +16,43 @@ In order to configure the building of your application for an Android platform, 
 1. Add the following command to your `scripts` section of your app `package.json` (use `configure-android-mac.sh` script if you are on MacOS):
 
     ```json
-      "scripts": {
-        ...
-        "evernym-sdk:configure-android": "./node_modules/@evernym/react-native-white-label-app/files/android/configure-android.sh"
-      },
+        "scripts": {
+            ...
+            "evernym-sdk:configure-android": "./node_modules/@evernym/react-native-white-label-app/files/android/configure-android.sh"
+        },
     ```
 
 1. Run the following command in your project directory:
+
     ```shell
-    yarn evernym-sdk:configure-android
+        yarn evernym-sdk:configure-android
     ```
+
+1. Enable MultiDex in build.gradle
+
+    ```groovy
+        android {
+            ...
+            defaultConfig {
+                ...
+                multiDexEnabled true
+            }
+        }
+    ```
+
+1. Add the Jumio Mobile SDK repository
+
+    ```groovy
+        repositories {  
+            maven { url 'https://mobile-sdk.jumio.com' }
+        }
+    ```
+
+1. Use Kotlin version `ext.kotlinVersion = '1.4.21'`
+
+1. Add `android.jetifier.blacklist=bcprov` to gradle.properties file
+
+1. Add `tools:replace="android:label,android:allowBackup"` to your `AndroidManifest.xml` file's `<application ... />` tag
 
 ## Manual
 
@@ -36,6 +63,7 @@ In order to configure the building of your application for an Android platform, 
     ```
 
 1. Set the minimum supported SDK version in your `android/build.gradle`:
+
     ```groovy
     buildscript {
         ext {
@@ -47,6 +75,7 @@ In order to configure the building of your application for an Android platform, 
     ```
 
 1. Add the libvcx android repository in your `android/build.gradle`:
+
     ```groovy
     allprojects {
         repositories {
@@ -59,6 +88,7 @@ In order to configure the building of your application for an Android platform, 
     ```
 
 1. Setup packaging options in your `android/app/build.gradle`:
+
    ```groovy
    android {
        ...
@@ -77,6 +107,7 @@ In order to configure the building of your application for an Android platform, 
    ```
 
 1. Set default configuration for the camera in your `android/app/build.gradle`:
+
    ```groovy
    android {
        ...
@@ -94,11 +125,13 @@ In order to configure the building of your application for an Android platform, 
 1. Create `android/app/src/main/res/xml/` folder and copy [file_viewer_provider_paths.xml](files/android/file_viewer_provider_paths.xml) file there.
 
 1. Update your `MainActivity` by adding the following code (it's needed to configure your app storage):
-    ```
+
+    ```java
     import android.content.ContextWrapper;
     import android.system.Os;
     ```
-    ```
+
+    ```java
     @Override
     protected void onStart() {
         super.onStart();
@@ -126,16 +159,20 @@ If you wish to use **Push Notifications** strategy you need to set variable `USE
    Note that push notifications will not work if you use this file, to get working notifications you need to provide your own account information.
 
 1. Add `google-services` dependencies into your `android/build.gradle` file.
-    ```
+
+    ```groovy
     dependencies {
         ...
         classpath 'com.google.gms:google-services:4.2.0'
     }
     ```
+
 1. Add `google-services` plugin into your `android/app/build.gradle` file.
-    ```
+
+    ```groovy
      apply plugin: 'com.google.gms.google-services'
     ```
+
 1. Uncomment the text located under `Firebase configuration` in `AndroidManifest.xml`:
 
 ### Deep linking configuration
@@ -143,17 +180,19 @@ If you wish to use **Push Notifications** strategy you need to set variable `USE
 * Uncomment the text located under `Deep Linking configuration` in `AndroidManifest.xml`:
 
 * Set Branch keys in your `android/app/build.gradle` file:
+
     ```
-   manifestPlaceholders = [BRANCH_LIVE_KEY: "key_live_....",
+        manifestPlaceholders = [BRANCH_LIVE_KEY: "key_live_....",
                            BRANCH_TEST_KEY:"key_test_..."]
-   ```
+    ```
 
 * Change placeholders (`react-native-white-label-app-placeholder`) for `Branch URI Scheme` and `Branch App Links` in `AndroidManifest.xml`:
 
 * Added branch import into your `MainApplication.java`:
-    ```
-   // branch needs to have a referral in initializing
-   import io.branch.referral.Branch;
+
+    ```java
+    // branch needs to have a referral in initializing
+    import io.branch.referral.Branch;
    ```
 
 ## Issues
