@@ -160,7 +160,7 @@ If you wish to use **Push Notifications** strategy you need to set variable `USE
 
 If you want to add a capability where if user taps on a link in other apps (slack, email, whatsapp, etc.) and that link should open the app. Then you can add a deep linking configuration as described below. Evernym's react-native SDK uses branch.io for deep linking.
 
-* In you `AppDelegate.m` add this line `#import "RNBranch.h"` in import statments
+* In you `AppDelegate.m` add this line `#import "RNBranch.h"` in import statements
 * In `AppDelegate.m` find the method `(BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions`.
   * Inside this method, after `*rootView` is created. Add this line
     * `[RNBranch initSessionWithLaunchOptions:launchOptions isReferrable:YES];`
@@ -173,6 +173,8 @@ If you want to add a capability where if user taps on a link in other apps (slac
     ```
 
 * Other steps that must be done are defined more clearly [here](https://help.branch.io/developers-hub/docs/react-native#configure-app)
+
+* Optionally, you can add general Aries deep link domain to be compatible with other applications: `didcomm`.
 
 ### Add custom font
 

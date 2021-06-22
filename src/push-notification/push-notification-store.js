@@ -118,7 +118,7 @@ import RNFetchBlob from 'rn-fetch-blob'
 import { ATTRIBUTE_TYPE } from '../proof-request/type-proof-request'
 import { flattenAsync } from '../common/flatten-async'
 import { Platform } from 'react-native'
-import {usePushNotifications, vcxPushType} from '../external-imports'
+import { usePushNotifications, vcxPushType } from '../external-imports'
 import { inviteActionReceived } from '../invite-action/invite-action-store'
 
 const blackListedRoute = {
@@ -161,7 +161,7 @@ export function* onPushTokenUpdate(
   action: PushNotificationUpdateTokenAction
 ): Generator<*, *, *> {
   try {
-    const pushToken = vcxPushType === 1 ? `FCM:${action.token}`: action.token
+    const pushToken = vcxPushType === 1 ? `FCM:${action.token}` : action.token
     const id = yield uniqueId()
     const vcxResult = yield* ensureVcxInitSuccess()
     if (vcxResult && vcxResult.fail) {
@@ -214,6 +214,7 @@ export function convertClaimOfferPushPayloadToAppClaimOffer(
       version: pushPayload.version,
       revealedAttributes,
       claimDefinitionSchemaSequenceNumber: pushPayload.schema_seq_no,
+      claimDefinitionId: pushPayload.claim_def_id,
     },
     payTokenValue: pushPayload.price,
     ephemeralClaimOffer: pushPayload.ephemeralClaimOffer,
@@ -693,26 +694,20 @@ function* redirectToRelevantScreen(notification: RedirectToRelevantScreen) {
     }
 
     if (routeToDirect) {
-      yield handleRedirection(
-        routeToDirect,
-        {
-          uid,
-          notificationOpenOptions,
-          senderDID: remotePairwiseDID,
-          image: additionalData.senderLogoUrl,
-          senderName: additionalData.remoteName,
-          messageType: type,
-          identifier: forDID,
-        }
-      )
+      yield handleRedirection(routeToDirect, {
+        uid,
+        notificationOpenOptions,
+        senderDID: remotePairwiseDID,
+        image: additionalData.senderLogoUrl,
+        senderName: additionalData.remoteName,
+        messageType: type,
+        identifier: forDID,
+      })
     }
   }
 }
 
-function* handleRedirection(
-  routeName: string,
-  params: NavigationParams,
-): any {
+function* handleRedirection(routeName: string, params: NavigationParams): any {
   const isAppLocked: boolean = yield select(getIsAppLocked)
   if (isAppLocked) {
     yield put(

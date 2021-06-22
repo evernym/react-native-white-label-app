@@ -183,6 +183,9 @@ export function convertVcxCredentialOfferToCxsClaimOffer(
         extractSchemaIdFromLibinyOffer(vcxCredentialOffer.libindy_offer)
       ) ||
       'Credential',
+    claim_def_id: extractCredDefIdFromLibinyOffer(
+      vcxCredentialOffer.libindy_offer
+    ),
     schema_seq_no: vcxCredentialOffer.schema_seq_no,
     issuer_did: vcxCredentialOffer.from_did,
     // should override it when generating claim offer object
@@ -192,21 +195,24 @@ export function convertVcxCredentialOfferToCxsClaimOffer(
 }
 
 export async function convertAriesCredentialOfferToCxsClaimOffer(
-  credentialOffer: CredentialOffer,
+  credentialOffer: CredentialOffer
 ) {
   let claim: GenericObject = {}
 
   // check whether data is valid base64 string
-  const [decodedCredentialOfferError, decodedCredentialOffer] = await flattenAsync(
-    toUtf8FromBase64,
-  )(credentialOffer['offers~attach'][0].data.base64)
+  const [
+    decodedCredentialOfferError,
+    decodedCredentialOffer,
+  ] = await flattenAsync(toUtf8FromBase64)(
+    credentialOffer['offers~attach'][0].data.base64
+  )
   if (decodedCredentialOfferError || decodedCredentialOffer === null) {
     return null
   }
 
   // check whether decoded data is valid json or not
   const [parseCredentialOfferError, parsedCredentialOffer] = flatJsonParse(
-    decodedCredentialOffer,
+    decodedCredentialOffer
   )
   if (parseCredentialOfferError || parsedCredentialOffer === null) {
     return null
@@ -227,10 +233,14 @@ export async function convertAriesCredentialOfferToCxsClaimOffer(
       extractCredentialNameFromSchemaId(parsedCredentialOffer['schema_id']) ||
       credentialOffer['~alias']?.label ||
       'Credential',
+    claim_def_id: parsedCredentialOffer['cred_def_id'],
     schema_seq_no: 0,
     issuer_did: '',
     // should override it when generating claim offer object
-    remoteName: credentialOffer.comment || credentialOffer['~alias']?.label || 'Unnamed Connection',
+    remoteName:
+      credentialOffer.comment ||
+      credentialOffer['~alias']?.label ||
+      'Unnamed Connection',
   }
 }
 
@@ -246,7 +256,21 @@ const extractSchemaIdFromLibinyOffer = (offer: string | null) => {
   }
 }
 
-export const extractCredentialNameFromSchemaId = (schemaId: string | null): string | null => {
+const extractCredDefIdFromLibinyOffer = (offer: string | null) => {
+  try {
+    if (!offer) {
+      return null
+    }
+    const parsed = JSON.parse(offer)
+    return parsed['cred_def_id']
+  } catch (e) {
+    return null
+  }
+}
+
+export const extractCredentialNameFromSchemaId = (
+  schemaId: string | null
+): string | null => {
   if (!schemaId) {
     return null
   }

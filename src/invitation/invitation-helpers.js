@@ -9,20 +9,31 @@ import type { Connection } from '../store/type-connection-store'
 import { ID } from '../common/type-common'
 
 export async function getBase64DecodedInvitation(
-  encodedData: string | null | undefined,
-) : Promise<false | string> {
+  encodedData: string | null | undefined
+): Promise<false | string> {
   if (!encodedData) {
     return false
   }
 
-  const parsedInviteUrlSafe = await getBase64DecodedData(encodedData, 'NO_WRAP')
+  const parsedInviteUrlSafe = await getBase64DecodedData(
+    encodedData,
+    'URL_SAFE'
+  )
   if (parsedInviteUrlSafe) {
     return parsedInviteUrlSafe
   }
 
-  const parsedInviteNoWrap = await getBase64DecodedData(encodedData, 'URL_SAFE')
+  const parsedInviteNoWrap = await getBase64DecodedData(encodedData, 'NO_WRAP')
   if (parsedInviteNoWrap) {
     return parsedInviteNoWrap
+  }
+
+  const parsedInviteNoWrapWithExtraPadding = await getBase64DecodedData(
+    encodedData + '==',
+    'NO_WRAP'
+  )
+  if (parsedInviteNoWrapWithExtraPadding) {
+    return parsedInviteNoWrapWithExtraPadding
   }
 
   return false
@@ -33,8 +44,8 @@ export async function getBase64DecodedData(
   decodeType: 'URL_SAFE' | 'NO_WRAP'
 ): Promise<false | GenericObject> {
   const [decodeInviteError, decodedInviteJson]: [
-      null | typeof Error,
-      null | string
+    null | typeof Error,
+    null | string
   ] = await flattenAsync(toUtf8FromBase64)(encodedData, decodeType)
   if (decodeInviteError || !decodedInviteJson) {
     return false
@@ -42,8 +53,8 @@ export async function getBase64DecodedData(
 
   // if we get some data back after decoding, now we try to parse it and see if it is valid json or not
   let [parseError, invite]: [
-      null | typeof Error,
-      null | GenericObject
+    null | typeof Error,
+    null | GenericObject
   ] = flatJsonParse(decodedInviteJson)
   if (parseError || !invite) {
     return false
@@ -69,7 +80,7 @@ export const getExistingConnection = (
   allPublicDid: Array,
   allDid: Array,
   publicDID: string | null | undefined,
-  DID: string | null | undefined,
+  DID: string | null | undefined
 ) => {
   // check if connection already exists
   // possible cases:
@@ -84,21 +95,27 @@ export function shouldSendRedirectMessage(
   existingConnection: Connection,
   payload: InvitationPayload,
   publicDID: string | null,
-  DID: string | null,
+  DID: string | null
 ) {
   // for Out-of-Band invitation we should send reuse message even if we scanned the same invitation
   // else send redirect only if we scanned invitation we same publicDID but different senderDID
-  if (existingConnection.isCompleted && payload.type === CONNECTION_INVITE_TYPES.ARIES_OUT_OF_BAND) {
+  if (
+    existingConnection.isCompleted &&
+    payload.type === CONNECTION_INVITE_TYPES.ARIES_OUT_OF_BAND
+  ) {
     return true
   }
   if (publicDID) {
-    return existingConnection.publicDID === publicDID && existingConnection.senderDID !== DID
+    return (
+      existingConnection.publicDID === publicDID &&
+      existingConnection.senderDID !== DID
+    )
   }
   return false
 }
 
 export async function getAttachedRequestData(
-  req: GenericObject,
+  req: GenericObject
 ): GenericObject {
   if (!req) {
     return null
@@ -113,7 +130,7 @@ export async function getAttachedRequestData(
     return reqData
   } else if (req.base64) {
     const [decodeError, decodedRequest] = await flattenAsync(toUtf8FromBase64)(
-      req.base64,
+      req.base64
     )
     if (decodeError || decodedRequest === null) {
       return null
@@ -131,7 +148,7 @@ export async function getAttachedRequestData(
 }
 
 export async function getAttachedRequest(
-  invite: AriesOutOfBandInvite,
+  invite: AriesOutOfBandInvite
 ): GenericObject {
   const requests = invite['request~attach']
   if (!requests || !requests.length) {
@@ -142,6 +159,6 @@ export async function getAttachedRequest(
 }
 
 export const getAttachedRequestId = (attachedRequest: AttachedRequestType) =>
-  attachedRequest['~thread'] && attachedRequest['~thread'].thid ?
-    attachedRequest['~thread'].thid :
-    attachedRequest[ID]
+  attachedRequest['~thread'] && attachedRequest['~thread'].thid
+    ? attachedRequest['~thread'].thid
+    : attachedRequest[ID]

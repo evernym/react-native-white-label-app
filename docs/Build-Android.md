@@ -13,15 +13,22 @@ In order to configure the building of your application for an Android platform, 
 
 **Note**: Automatic configuration works only for Unix like OS.
 
-1. Add the following command to your `scripts` section of your app `package.json` (use `configure-android-mac.sh` script if you are on MacOS):
-
-    ```json
+1. Add the following command to your `scripts` section of your app `package.json`:
+    * Linux, Windows:
+      ```json
         "scripts": {
-            ...
-            "evernym-sdk:configure-android": "./node_modules/@evernym/react-native-white-label-app/files/android/configure-android.sh"
+          ...
+          "evernym-sdk:configure-android": "./node_modules/@evernym/react-native-white-label-app/files/android/configure-android.sh"
         },
-    ```
-
+      ```
+    * MacOs
+      ```json
+        "scripts": {
+          ...
+          "evernym-sdk:configure-android": "./node_modules/@evernym/react-native-white-label-app/files/android/configure-android-mac.sh"
+        },
+      ```
+      
 1. Run the following command in your project directory:
 
     ```shell

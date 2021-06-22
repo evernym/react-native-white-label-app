@@ -108,6 +108,7 @@ Object {
       "Address 2 Address 2 Address 2",
     ],
   },
+  "claim_def_id": undefined,
   "claim_name": "Home Address",
   "from_did": "ha66899sadfjZJGINKN0770",
   "issuer_did": "ha66899sadfjZJGINKN0770",

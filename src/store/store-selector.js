@@ -15,7 +15,7 @@ import type { ProofRequestPayload } from '../proof-request/type-proof-request'
 import { PROOF_REQUEST_STATUS } from '../proof-request/type-proof-request'
 import type { QuestionStoreMessage } from '../question/type-question'
 import { QUESTION_STATUS } from '../question/type-question'
-import { DEEP_LINK_STATUS } from "../deep-link/type-deep-link";
+import { DEEP_LINK_STATUS } from '../deep-link/type-deep-link'
 import { baseUrls } from '../environment'
 
 /*
@@ -73,9 +73,11 @@ export const getHydrationState = (state: Store) => state.config.isHydrated
 export const getIsAlreadyInstalled = (state: Store) =>
   state.config.isAlreadyInstalled
 
-export const getIsInitialized = (state: Store) => state && state.config && state.config.isInitialized
+export const getIsInitialized = (state: Store) =>
+  state && state.config && state.config.isInitialized
 
-export const getIsHydrated = (state: Store) => state && state.config && state.config.isHydrated
+export const getIsHydrated = (state: Store) =>
+  state && state.config && state.config.isHydrated
 
 /*
  * Selectors related to Connections Store
@@ -174,10 +176,7 @@ export const getConnectionByProp = (
   return []
 }
 export const getConnectionExists = (state: Store, did: string) => {
-  return (
-    did in getAllDid(state) ||
-    did in getAllPublicDid(state)
-  )
+  return did in getAllDid(state) || did in getAllPublicDid(state)
 }
 
 export const getNewMessagesCount = (state: Store) => {
@@ -282,9 +281,8 @@ export const getDeepLinkTokens = (state: Store) => state.deepLink?.tokens
 export const getUnhandledDeepLink = (state: Store) => {
   for (let token of Object.keys(state.deepLink?.tokens)) {
     const link = state.deepLink?.tokens[token]
-    if (link && link.status === DEEP_LINK_STATUS.NONE){
+    if (link && link.status === DEEP_LINK_STATUS.NONE) {
       return link
-
     }
   }
   return null
@@ -416,7 +414,8 @@ export const getSerializedClaimOffers = (state: Store, userDID: string) => {
 export const getProofRequest = (state: Store, proofRequestId: string) =>
   state.proofRequest[proofRequestId]
 
-export const getSelectedCredentials = (state: Store, uid: string) => state.proofRequest[uid].data.requestedAttributes
+export const getSelectedCredentials = (state: Store, uid: string) =>
+  state.proofRequest[uid].data.requestedAttributes
 
 export const getOriginalProofRequestData = (
   state: Store,
@@ -452,7 +451,7 @@ export const getClaimForOffer = (state: Store, offer: ClaimOfferPayload) => {
       claim.senderDID === offer.remotePairwiseDID &&
       claim.name === offer.data.name &&
       claim.issueDate === offer.issueDate
-    ){
+    ) {
       return {
         claimUuid,
         claim,
@@ -728,11 +727,14 @@ export const getOpenIdConnectVersion = (state: Store) =>
  * */
 export const getShowCredentialData = (state: Store) => state.showCredential.data
 
-export const getShowCredentialConnectionIdentifier = (state: Store) => state.showCredential.connectionIdentifier
+export const getShowCredentialConnectionIdentifier = (state: Store) =>
+  state.showCredential.connectionIdentifier
 
-export const getShowCredentialUuid = (state: Store) => state.showCredential.credentialUuid
+export const getShowCredentialUuid = (state: Store) =>
+  state.showCredential.credentialUuid
 
-export const getShowCredentialError = (state: Store) => state.showCredential.error
+export const getShowCredentialError = (state: Store) =>
+  state.showCredential.error
 
 export const getIsCredentialSent = (state: Store) => state.showCredential.isSent
 
@@ -759,18 +761,23 @@ export const getVerifierSenderName = (state: Store, uid: string) =>
   state.verifier[uid]?.senderName
 
 /*
-* Connection Pairwise Agent
-* */
-export const getConnectionPairwiseAgentInfo = (state: Store) => state.connections.pairwiseAgent
+ * Connection Pairwise Agent
+ * */
+export const getConnectionPairwiseAgentInfo = (state: Store) =>
+  state.connections.pairwiseAgent
 
 export const getSmsPendingInvitation = (state: Store, smsToken: string) =>
   state.smsPendingInvitation[smsToken]
 
-export const getSmsPendingInvitationPayload = (state: Store, smsToken: string) =>
-  state.smsPendingInvitation[smsToken]?.payload
+export const getSmsPendingInvitationPayload = (
+  state: Store,
+  smsToken: string
+) => state.smsPendingInvitation[smsToken]?.payload
 
 export const getSmsPendingInvitationError = (state: Store, smsToken: string) =>
   state.smsPendingInvitation[smsToken]?.error
+
+export const getDeepLinks = (state: Store) => state.deepLink.tokens
 
 export const getDeepLinkStatus = (state: Store, smsToken: string) =>
   state.deepLink.tokens[smsToken]?.status

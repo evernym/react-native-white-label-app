@@ -1,5 +1,5 @@
 // @flow
-import { call, select, put, take } from 'redux-saga/effects'
+import { call, select, take } from 'redux-saga/effects'
 import {
   getAgencyUrl,
   getCurrentScreen,
@@ -11,13 +11,15 @@ import smsPendingInvitationReducer, {
   smsPendingInvitationReceived,
   getSmsPendingInvitation,
   smsPendingInvitationSeen,
+  handleDeepLinkError,
 } from '../sms-pending-invitation-store'
 import { SAFE_TO_DOWNLOAD_SMS_INVITATION } from '../type-sms-pending-invitation'
 import { getInvitationLink } from '../../api/api'
 import { initialTestAction } from '../../common/type-common'
 import {
   smsDownloadedPayload as payload,
-  getStore, getTestInvitationPayload,
+  getStore,
+  getTestInvitationPayload,
 } from '../../../__mocks__/static-data'
 import { HYDRATED } from '../../store/type-config-store'
 import { lockSelectionRoute } from '../../common/route-constants'
@@ -50,7 +52,12 @@ describe('SMS Connection Request store', () => {
     const invitationPayload = getTestInvitationPayload().next().value
     const nextState = smsPendingInvitationReducer(
       invitationRequestedState,
-      smsPendingInvitationReceived(smsToken, convertProprietaryInvitationToAppInvitation(invitationPayload ? invitationPayload.payload: {}))
+      smsPendingInvitationReceived(
+        smsToken,
+        convertProprietaryInvitationToAppInvitation(
+          invitationPayload ? invitationPayload.payload : {}
+        )
+      )
     )
 
     expect(nextState).toMatchSnapshot()
@@ -73,7 +80,10 @@ describe('SMS Connection Request store', () => {
     const invitationRequestedState = getPendingInvitationState(initialState)
     const afterReceived = smsPendingInvitationReducer(
       invitationRequestedState,
-      smsPendingInvitationReceived(smsToken, convertProprietaryInvitationToAppInvitation(payload))
+      smsPendingInvitationReceived(
+        smsToken,
+        convertProprietaryInvitationToAppInvitation(payload)
+      )
     )
     const nextState = smsPendingInvitationReducer(
       afterReceived,
@@ -182,7 +192,7 @@ describe('SMS Connection Request store', () => {
     )
 
     expect(gen.throw(new Error(JSON.stringify(error))).value).toEqual(
-      put(smsPendingInvitationFail(smsToken, error))
+      call(handleDeepLinkError, smsToken, new Error(JSON.stringify(error)))
     )
 
     expect(gen.next().done).toBe(true)

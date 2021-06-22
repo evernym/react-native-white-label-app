@@ -31,10 +31,10 @@ export const CredentialsCards = (props: CredentialsCardsProps) => {
   }
 
   const groupedCredentials = credentials.reduce((acc: Object, credential) => {
-    if (acc[credential.credentialName]) {
-      acc[credential.credentialName].push(credential)
+    if (acc[credential.claimDefinitionId]) {
+      acc[credential.claimDefinitionId].push(credential)
     } else {
-      acc[credential.credentialName] = [credential]
+      acc[credential.claimDefinitionId] = [credential]
     }
     return acc
   }, {})
@@ -68,9 +68,9 @@ export const CredentialsCards = (props: CredentialsCardsProps) => {
     >
       {credentialsData.length > 0 &&
         credentialsData.map((credentialGroup, index) => {
-          const stackCredentialName = credentialGroup[0].credentialName
+          const stackCredential = credentialGroup[0].claimDefinitionId
           const isHidden =
-            stackCredentialName !== activeStack && activeStack !== null
+            stackCredential !== activeStack && activeStack !== null
 
           if (credentialGroup.length === 1) {
             return (
@@ -84,14 +84,14 @@ export const CredentialsCards = (props: CredentialsCardsProps) => {
               />
             )
           } else {
-            const isExpanded = stackCredentialName === activeStack
+            const isExpanded = stackCredential === activeStack
             return (
               <CardStack
                 credentials={credentialGroup}
                 key={credentialGroup[0].uid}
                 isExpanded={isExpanded}
                 setActiveStack={updateActiveStack}
-                stackCredentialName={stackCredentialName}
+                stackCredentialName={stackCredential}
                 isHidden={isHidden}
               />
             )

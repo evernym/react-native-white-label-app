@@ -69,7 +69,6 @@ import {
   getWalletBalance,
   getConnectionHistory,
   getConnection,
-
 } from '../store/store-selector'
 import {
   getHandleBySerializedConnection,
@@ -97,7 +96,10 @@ import type { LedgerFeesData } from '../ledger/type-ledger-store'
 import moment from 'moment'
 import { captureError } from '../services/error/error-handler'
 import { retrySaga } from '../api/api-utils'
-import { ensureVcxInitAndPoolConnectSuccess, ensureVcxInitSuccess } from '../store/route-store'
+import {
+  ensureVcxInitAndPoolConnectSuccess,
+  ensureVcxInitSuccess,
+} from '../store/route-store'
 import {
   ACTION_IS_NOT_SUPPORTED,
   CREDENTIAL_DEFINITION_NOT_FOUND,
@@ -233,7 +235,11 @@ export const acceptClaimOffer = (uid: string, remoteDid: string) => ({
   remoteDid,
 })
 
-export const acceptOutofbandClaimOffer = (uid: string, remoteDid: string, show: boolean) => ({
+export const acceptOutofbandClaimOffer = (
+  uid: string,
+  remoteDid: string,
+  show: boolean
+) => ({
   type: OUTOFBAND_CLAIM_OFFER_ACCEPTED,
   uid,
   remoteDid,
@@ -245,15 +251,16 @@ export const deleteOutOfBandClaimOffer = (uid: string) => ({
   uid,
 })
 
-export const claimOfferSetColor = (uid: string, colorTheme: string): ClaimOfferSetColor => ({
+export const claimOfferSetColor = (
+  uid: string,
+  colorTheme: string
+): ClaimOfferSetColor => ({
   type: CLAIM_OFFER_SET_COLOR,
   uid,
   colorTheme,
 })
 
-export function* getColorTheme(
-  senderLogoUrl: any
-): Generator<*, *, *> {
+export function* getColorTheme(senderLogoUrl: any): Generator<*, *, *> {
   if (!senderLogoUrl) {
     return colors.main
   }
@@ -356,13 +363,15 @@ export function* acceptEphemeralClaimOffer(
     }
 
     const offer = JSON.parse(claimOfferPayload.ephemeralClaimOffer)
-    const claimHandle = yield call(createCredentialWithAriesOfferObject, uuid(), offer)
+    const claimHandle = yield call(
+      createCredentialWithAriesOfferObject,
+      uuid(),
+      offer
+    )
 
     yield put(sendClaimRequest(action.uid, claimOfferPayload))
 
-    yield* retrySaga(
-      call(sendClaimRequestApi, claimHandle)
-    )
+    yield* retrySaga(call(sendClaimRequestApi, claimHandle))
 
     yield call(
       saveSerializedClaimOffer,
@@ -392,7 +401,7 @@ export function* acceptEphemeralClaimOffer(
       yield put(claimStorageSuccess(action.uid, issueDate))
     }
     if (state === VCX_CLAIM_OFFER_STATE.NONE) {
-      yield call(showSnackError, "Failed to accept credential")
+      yield call(showSnackError, 'Failed to accept credential')
       yield put(sendClaimRequestFail(action.uid, action.remoteDid))
     }
   } catch (error) {
@@ -416,11 +425,7 @@ export function* claimOfferAccepted(
   )
 
   if (claimOfferPayload.ephemeralClaimOffer) {
-    yield call(
-      acceptEphemeralClaimOffer,
-      action,
-      claimOfferPayload
-    )
+    yield call(acceptEphemeralClaimOffer, action, claimOfferPayload)
     return
   }
 
@@ -453,7 +458,6 @@ export function* claimOfferAccepted(
   }
 
   try {
-
     if (isPaidCredential) {
       yield put(sendPaidCredentialRequest(messageId, claimOfferPayload))
 
@@ -498,9 +502,7 @@ export function* claimOfferAccepted(
     ])
 
     try {
-      yield* retrySaga(
-        call(sendClaimRequestApi, claimHandle, connectionHandle)
-      )
+      yield* retrySaga(call(sendClaimRequestApi, claimHandle, connectionHandle))
     } catch (error) {
       yield call(handleClaimErrors, action, error)
       return
@@ -551,16 +553,13 @@ export function* checkCredentialStatus(
   senderName: string,
   remoteDID: string
 ): Generator<*, *, *> {
-  yield spawn(
-    checkProtocolStatus,
-    {
-      identifier: identifier,
-      getObjectFunc: getClaimOffer,
-      isCompletedFunc: isIssuanceCompleted,
-      error: ERROR_RECEIVE_CLAIM(senderName),
-      onErrorEvent: sendClaimRequestFail(identifier, remoteDID),
-    }
-  )
+  yield spawn(checkProtocolStatus, {
+    identifier: identifier,
+    getObjectFunc: getClaimOffer,
+    isCompletedFunc: isIssuanceCompleted,
+    error: ERROR_RECEIVE_CLAIM(senderName),
+    onErrorEvent: sendClaimRequestFail(identifier, remoteDID),
+  })
 }
 
 function* claimStorageSuccessSaga(
@@ -707,7 +706,8 @@ export function* hydrateClaimOffersSaga(): Generator<*, *, *> {
         // 2. set missing data
         if (!offer.issueDate) {
           const historyEvent = storageSuccessHistory.find(
-            (event) => event.originalPayload && event.originalPayload.messageId === uid
+            (event) =>
+              event.originalPayload && event.originalPayload.messageId === uid
           )
           if (historyEvent) {
             offer.issueDate = historyEvent.originalPayload.issueDate
@@ -718,6 +718,12 @@ export function* hydrateClaimOffersSaga(): Generator<*, *, *> {
         if (!offer.colorTheme) {
           // set color theme if it's missing
           offer.colorTheme = yield call(getColorTheme, offer.senderLogoUrl)
+        }
+
+        if (offer.data && offer.issuer && !offer.data.claimDefinitionId) {
+          // I don't see an easy way to fetch claimDefinitionId
+          // use combination of `issuerDID + credentialName` as workaround
+          offer.data.claimDefinitionId = `${offer.issuer.did}:${offer.data.name}`
         }
       }
 
@@ -1012,7 +1018,7 @@ export default function claimOfferReducer(
         [action.uid]: {
           ...state[action.uid],
           colorTheme: action.colorTheme,
-        }
+        },
       }
     default:
       return state
