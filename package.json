@@ -16,7 +16,7 @@
   "scripts": {
     "test": "jest --detectOpenHandles --forceExit",
     "lint": "flow stop && flow && eslint src",
-    "configure": "yarn --cwd ../../.. copyfiles -su 4 \"node_modules/@evernym/react-native-white-label-app/src/evernym-sdk/*.js\" ./app && echo \"Evernym React Native SDK configured successfully\""
+    "configure": "yarn --cwd ../../.. copyfiles -su 4 'node_modules/@evernym/react-native-white-label-app/src/evernym-sdk/*.js' ./app && echo 'Evernym React Native SDK configured successfully'"
   },
   "repository": {
     "type": "git",
@@ -85,6 +85,7 @@
     "react-native-image-colors": "^1.2.4",
     "react-native-image-crop-picker": "^0.32.0",
     "react-native-image-resizer": "1.2.3",
+    "react-native-jumio-mobilesdk": "https://github.com/Jumio/mobile-react.git#v3.9.1",
     "react-native-keyboard-aware-scroll-view": "^0.9.1",
     "react-native-localize": "^1.4.0",
     "react-native-mail": "6.1.0",

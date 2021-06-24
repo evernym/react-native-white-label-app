@@ -100,14 +100,18 @@ The base application settings should be specified in `app.js` file.
         ```
  
 * `DEEP_LINK` - (string, Optional) Branch.io Deep link address.
+
   * to omit
-      ```javascript
-      export const DEEP_LINK = null
-      ```
-    * to use custom
-        ```javascript
-        export const DEEP_LINK = 'https://address.com'
-        ```
+
+    ```javascript
+    export const DEEP_LINK = null
+    ```
+
+  * to use custom
+
+    ```javascript
+    export const DEEP_LINK = 'https://address.com'
+    ```
 
 ### Receiving Message
 
@@ -307,9 +311,9 @@ You can configure a server environment used for agent provisioning inside the `p
         
     * `SPONSOR_ID` - An ID given to you from Evernym's Support Team after the Sponsor onboarding process is complete.
 
-          ```javascript
-          export const SPONSOR_ID = 'sponsorid'
-          ```
+        ```javascript
+        export const SPONSOR_ID = 'sponsorid'
+        ```
 
 ### End User License Agreement
 
