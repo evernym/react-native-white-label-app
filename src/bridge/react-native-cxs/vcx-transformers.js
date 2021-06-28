@@ -178,10 +178,10 @@ export function convertVcxCredentialOfferToCxsClaimOffer(
     from_did: vcxCredentialOffer.from_did,
     claim: vcxCredentialOffer.credential_attrs,
     claim_name:
-      vcxCredentialOffer.claim_name ||
       extractCredentialNameFromSchemaId(
         extractSchemaIdFromLibinyOffer(vcxCredentialOffer.libindy_offer)
       ) ||
+      vcxCredentialOffer.claim_name ||
       'Credential',
     claim_def_id: extractCredDefIdFromLibinyOffer(vcxCredentialOffer.libindy_offer),
     schema_seq_no: vcxCredentialOffer.schema_seq_no,
@@ -224,9 +224,9 @@ export async function convertAriesCredentialOfferToCxsClaimOffer(
     from_did: '',
     claim: claim,
     claim_name:
-      credentialOffer.comment ||
       extractCredentialNameFromSchemaId(parsedCredentialOffer['schema_id']) ||
       credentialOffer['~alias']?.label ||
+      credentialOffer.comment ||
       'Credential',
     claim_def_id: parsedCredentialOffer['cred_def_id'],
     schema_seq_no: 0,
@@ -265,8 +265,17 @@ export const extractCredentialNameFromSchemaId = (schemaId: string | null): stri
     return null
   }
   const parts = schemaId.split(':')
-  if (parts.length !== 4) {
-    return null
+  if (parts.length === 4) {
+    // regular schema id
+    return parts[2]
   }
-  return parts[2]
+  if (parts.length === 6) {
+    // fully-qualified schema id
+    return parts[4]
+  }
+  if (parts.length === 8) {
+    // fully-qualified schema id
+    return parts[6]
+  }
+  return null
 }
