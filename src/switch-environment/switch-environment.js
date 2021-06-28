@@ -194,6 +194,12 @@ class SwitchEnvironment extends Component<
             />
             <CustomButton
               primary
+              title="ID_UNION"
+              testID={`${testID}-id-union`}
+              onPress={() => this.onSwitchTap(SERVER_ENVIRONMENT.ID_UNION)}
+            />
+            <CustomButton
+              primary
               title="Save and Restore"
               testID={`${testID}-SAVEnRESTORE`}
               onPress={() => this.onSaveAndRestore()}
