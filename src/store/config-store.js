@@ -417,6 +417,12 @@ export function* getMessagesSaga(
   params: ?GetUnacknowledgedMessagesAction,
 ): Generator<*, *, *> {
   try {
+    const userOneTimeInfo = yield select(getUserOneTimeInfo)
+    if (!userOneTimeInfo) {
+      // agent has not been provisioned yet
+      return
+    }
+
     //make sure vcx is initialized
     const vcxResult = yield* ensureVcxInitSuccess()
     if (vcxResult && vcxResult.fail) {

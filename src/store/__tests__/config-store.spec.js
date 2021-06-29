@@ -71,7 +71,7 @@ import {
   createOneTimeInfoWithToken,
 } from '../../bridge/react-native-cxs/RNCxs'
 import { updatePushToken } from '../../push-notification/push-notification-store'
-import { getPushToken, getAgencyUrl } from '../../store/store-selector'
+import { getPushToken, getAgencyUrl, getUserOneTimeInfo } from '../../store/store-selector'
 import { connectRegisterCreateAgentDone } from '../user/user-store'
 import {
   splashScreenRoute,
@@ -477,6 +477,16 @@ describe('config-store:saga', () => {
       offline: false,
     },
   }
+  const hydratedHasOneTimeInfoState = {
+    ...notHydratedNoOneTimeInfoState,
+    config: {
+      isHydrated: true,
+      vcxInitializationState: VCX_INIT_SUCCESS,
+    },
+    user: {
+      userOneTimeInfo: userOneTimeInfo
+    }
+  }
   const agencyConfig = {
     agencyUrl,
     agencyDID,
@@ -651,7 +661,7 @@ describe('config-store:saga', () => {
   it('getMessagesSaga when no data', () => {
     return expectSaga(getMessagesSaga)
       .withState({
-        ...notHydratedNoOneTimeInfoState,
+        ...hydratedHasOneTimeInfoState,
         connections: {
           data: {
             userDid1: {
@@ -681,6 +691,7 @@ describe('config-store:saga', () => {
       .dispatch({ type: VCX_INIT_POOL_SUCCESS })
       .dispatch({ type: HYDRATED })
 
+      .select(getUserOneTimeInfo)
       .put(getMessagesLoading())
       .put(getMessagesSuccess())
       .run()
@@ -691,7 +702,7 @@ describe('config-store:saga', () => {
     const failInitError = new Error(errorMessage)
     return expectSaga(getMessagesSaga)
       .withState({
-        ...notHydratedNoOneTimeInfoState,
+        ...hydratedHasOneTimeInfoState,
         connections: {
           data: {
             userDid1: {
@@ -736,7 +747,7 @@ describe('config-store:saga', () => {
     const failInitError = new Error(errorMessage)
     return expectSaga(getMessagesSaga)
       .withState({
-        ...notHydratedNoOneTimeInfoState,
+        ...hydratedHasOneTimeInfoState,
         connections: {
           data: {
             userDid1: {
@@ -775,7 +786,7 @@ describe('config-store:saga', () => {
   it('getMessagesSaga: should call download messages success if we get empty array', () => {
     expectSaga(getMessagesSaga)
       .withState({
-        ...notHydratedNoOneTimeInfoState,
+        ...hydratedHasOneTimeInfoState,
         connections: {
           data: {
             userDid1: { myPairwiseDid: 'myPairwiseDid1' },
@@ -812,7 +823,7 @@ describe('config-store:saga', () => {
     const captureErrorSpy = jest.spyOn(errorHandler, 'captureError')
     expectSaga(getMessagesSaga)
       .withState({
-        ...notHydratedNoOneTimeInfoState,
+        ...hydratedHasOneTimeInfoState,
         connections: {
           data: {
             userDid1: { myPairwiseDid: 'myPairwiseDid1' },
@@ -879,7 +890,7 @@ describe('config-store:saga', () => {
     }
     expectSaga(processMessages, messagesData)
       .withState({
-        ...notHydratedNoOneTimeInfoState,
+        ...hydratedHasOneTimeInfoState,
         connections: {
           data: {
             WJrmbqhrKvNSK62Kxvwise: { ...testConnectionDetails },
@@ -958,7 +969,7 @@ describe('config-store:saga', () => {
     }
     expectSaga(processMessages, messagesData)
       .withState({
-        ...notHydratedNoOneTimeInfoState,
+        ...hydratedHasOneTimeInfoState,
         connections: {
           data: {
             WJrmbqhrKvNSK62Kxvwise: { ...testConnectionDetails },
@@ -1027,7 +1038,7 @@ describe('config-store:saga', () => {
     }
     expectSaga(processMessages, messagesData)
       .withState({
-        ...notHydratedNoOneTimeInfoState,
+        ...hydratedHasOneTimeInfoState,
         connections: {
           data: {
             LnKZwUaST94Bj5YzRRDsVqz: { ...testConnectionDetails },
