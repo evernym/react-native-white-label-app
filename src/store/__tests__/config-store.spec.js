@@ -85,7 +85,7 @@ import { NativeModules } from 'react-native'
 import { FETCH_ADDITIONAL_DATA, PUSH_NOTIFICATION_PERMISSION } from '../../push-notification/type-push-notification'
 import AlertAsync from 'react-native-alert-async'
 import {
-  baseUrls,
+  environments,
 
 
 
@@ -121,14 +121,14 @@ describe('server environment should change', () => {
 
   it('initial app should always point to PROD', () => {
     if (initialConfig) {
-      expect(initialConfig.agencyUrl).toBe(baseUrls.PROD.agencyUrl)
+      expect(initialConfig.agencyUrl).toBe(environments.PROD.agencyUrl)
     }
   })
 
   it('to demo if previously it was set to sandbox', () => {
     const expectedConfig = {
       ...initialConfig,
-      ...baseUrls[SERVER_ENVIRONMENT.DEMO],
+      ...environments[SERVER_ENVIRONMENT.DEMO],
     }
 
     if (initialConfig) {

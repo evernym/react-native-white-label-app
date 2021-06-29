@@ -14,8 +14,7 @@ import type {
   WalletTokenInfo,
   PaymentAddress,
   SignDataResponse,
-  CxsPoolConfig,
-  VcxPoolInitConfig,
+  WalletPoolName,
 } from './type-cxs'
 import type {
   AriesOutOfBandInvite,
@@ -31,13 +30,13 @@ import {
   convertVcxConnectionToCxsConnection,
   convertVcxCredentialOfferToCxsClaimOffer,
   paymentHandle,
-  convertCxsPoolInitToVcxPoolInit,
   addAttestation,
 } from './vcx-transformers'
 import type { UserOneTimeInfo } from '../../store/user/type-user-store'
 import type {
   AgencyPoolConfig,
   MessagePaymentDetails,
+  PoolConfig,
 } from '../../store/type-config-store'
 import type {
   ClaimPushPayload,
@@ -229,25 +228,37 @@ export async function init(config: CxsInitConfig): Promise<boolean> {
   return initResult
 }
 
-export async function initPool(
-  config: CxsPoolConfig,
-  fileName: string
-): Promise<boolean> {
-  const genesis_path: string = await RNIndy.getGenesisPathWithConfig(
-    config.poolConfig,
-    fileName
-  )
+async function preparePoolConfig(config: PoolConfig) {
+  let walletPoolName: WalletPoolName = await getWalletPoolName()
+  const genesisPath: string = await RNIndy.getGenesisPathWithConfig(config.genesis, config.key)
+  return {
+    genesis_path: genesisPath,
+    pool_name: walletPoolName.poolName + config.key,
+  }
+}
 
-  const initConfig = {
-    ...config,
-    genesis_path,
+export async function initPool(
+  poolConfig: string | Array<PoolConfig>,
+): Promise<boolean> {
+  let vcxInitPoolConfig = []
+
+  if (Array.isArray(poolConfig)) {
+    for (const config: PoolConfig of poolConfig) {
+      vcxInitPoolConfig.push(
+        await preparePoolConfig(config)
+      )
+    }
   }
 
-  const walletPoolName = await getWalletPoolName()
-  const vcxInitPoolConfig: VcxPoolInitConfig = await convertCxsPoolInitToVcxPoolInit(
-    initConfig,
-    walletPoolName
-  )
+  if (typeof poolConfig === 'string') {
+    vcxInitPoolConfig.push(
+      await preparePoolConfig({
+        key: '',
+        genesis: poolConfig
+      })
+    )
+  }
+
   return await RNIndy.vcxInitPool(JSON.stringify(vcxInitPoolConfig))
 }
 
