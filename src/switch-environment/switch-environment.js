@@ -15,7 +15,7 @@ import type {
 } from './type-switch-environment'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { withStatusBar } from '../components/status-bar/status-bar'
-import { baseUrls} from '../environment'
+import { environments} from '../environment'
 import { changeEnvironment } from './switсh-environment-store'
 import { SERVER_ENVIRONMENT } from './type-switch-environment'
 
@@ -105,7 +105,7 @@ class SwitchEnvironment extends Component<
   }
 
   onSwitchTap = (environment: string) => {
-    this.setState(baseUrls[environment])
+    this.setState(environments[environment])
   }
 
   render() {
@@ -185,18 +185,6 @@ class SwitchEnvironment extends Component<
               title="Prod"
               testID={`${testID}-prod`}
               onPress={() => this.onSwitchTap(SERVER_ENVIRONMENT.PROD)}
-            />
-            <CustomButton
-              primary
-              title="BCovrin_TEST"
-              testID={`${testID}-bcvorin_test`}
-              onPress={() => this.onSwitchTap(SERVER_ENVIRONMENT.BCOVRIN_TEST)}
-            />
-            <CustomButton
-              primary
-              title="ID_UNION"
-              testID={`${testID}-id-union`}
-              onPress={() => this.onSwitchTap(SERVER_ENVIRONMENT.ID_UNION)}
             />
             <CustomButton
               primary

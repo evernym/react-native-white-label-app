@@ -14,7 +14,7 @@ import {
 import type { BackupRestorePassphraseProps } from './type-backup-restore-passphrase'
 import ErrorBanner from '../banner/banner-danger'
 import { verticalScale } from 'react-native-size-matters'
-import { baseUrls} from '../../environment'
+import { environments} from '../../environment'
 import { changeEnvironment } from '../../switch-environment/switсh-environment-store'
 
 export class BackupRestorePassphrase extends Component<
@@ -39,11 +39,11 @@ export class BackupRestorePassphrase extends Component<
       passphrase = passphraseParts[2]
 
       this.props.changeEnvironment(
-        baseUrls[selectedEnv].agencyUrl,
-        baseUrls[selectedEnv].agencyDID,
-        baseUrls[selectedEnv].agencyVerificationKey,
-        baseUrls[selectedEnv].poolConfig,
-        baseUrls[selectedEnv].paymentMethod
+        environments[selectedEnv].agencyUrl,
+        environments[selectedEnv].agencyDID,
+        environments[selectedEnv].agencyVerificationKey,
+        environments[selectedEnv].poolConfig,
+        environments[selectedEnv].paymentMethod
       )
     }
     this.props.onSubmit(passphrase)

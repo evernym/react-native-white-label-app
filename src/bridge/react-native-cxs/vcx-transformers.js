@@ -13,8 +13,6 @@ import type {
   VcxConnectionConnectResult,
   VcxCredentialOffer,
   WalletPoolName,
-  VcxPoolInitConfig,
-  CxsPoolConfigWithGenesisPath,
 } from './type-cxs'
 import type { UserOneTimeInfo } from '../../store/user/type-user-store'
 import type { InvitationPayload } from '../../invitation/type-invitation'
@@ -111,16 +109,6 @@ export async function convertCxsInitToVcxInit(
     institution_verkey: init.oneTimeAgencyVerificationKey,
     payment_method: init.paymentMethod,
     ...commonConfigParams,
-  }
-}
-
-export async function convertCxsPoolInitToVcxPoolInit(
-  init: CxsPoolConfigWithGenesisPath,
-  walletPoolName: WalletPoolName
-): Promise<VcxPoolInitConfig> {
-  return {
-    genesis_path: init.genesis_path,
-    pool_name: walletPoolName.poolName,
   }
 }
 

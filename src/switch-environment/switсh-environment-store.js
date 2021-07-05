@@ -25,7 +25,7 @@ import { getHydrationItem, secureSet } from '../services/storage'
 import type { CustomError } from '../common/type-common'
 import { customLogger } from '../store/custom-logger'
 import { SAFE_TO_DOWNLOAD_SMS_INVITATION } from '../sms-pending-invitation/type-sms-pending-invitation'
-import { baseUrls } from '../environment'
+import { environments } from '../environment'
 import findKey from 'lodash.findkey'
 import type {
   ChangeEnvironment,
@@ -213,7 +213,7 @@ export function* hydrateSwitchedEnvironmentDetails(): any {
       paymentMethod,
     }: ChangeEnvironment = switchedEnvironmentDetail
       ? JSON.parse(switchedEnvironmentDetail)
-      : baseUrls[SERVER_ENVIRONMENT.DEMO]
+      : environments[SERVER_ENVIRONMENT.DEMO]
     // if environment that is saved is same as what we have as default
     // then there is no need to raise change environment action
     const currentAgencyUrl = yield select(getAgencyUrl)
@@ -270,7 +270,7 @@ export function* persistEnvironmentDetails(): any {
 export const getEnvironmentName = (configStore: ConfigStore) => {
   const { agencyUrl } = configStore
 
-  return findKey(baseUrls, (environment) => environment.agencyUrl === agencyUrl)
+  return findKey(environments, (environment) => environment.agencyUrl === agencyUrl)
 }
 
 export function* watchSwitchEnvironment(): any {

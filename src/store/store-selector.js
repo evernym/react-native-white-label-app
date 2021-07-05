@@ -16,7 +16,7 @@ import { PROOF_REQUEST_STATUS } from '../proof-request/type-proof-request'
 import type { QuestionStoreMessage } from '../question/type-question'
 import { QUESTION_STATUS } from '../question/type-question'
 import { DEEP_LINK_STATUS } from "../deep-link/type-deep-link";
-import { baseUrls } from '../environment'
+import { environments } from '../environment'
 
 /*
  * Selectors related to Config Store
@@ -49,7 +49,7 @@ export const getSnackError = (state: Store) => state.config.snackError
 
 export const getEnvironmentName = (state: Store) =>
   findKey(
-    baseUrls,
+    environments,
     (environment) => environment.agencyUrl === state.config.agencyUrl
   )
 

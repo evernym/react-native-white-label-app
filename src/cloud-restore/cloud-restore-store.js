@@ -24,7 +24,7 @@ import {
   initVcx,
 } from '../store/config-store'
 import type { ConfigStore } from '../store/type-config-store'
-import { baseUrls, cloudBackupEnvironments } from '../environment'
+import { environments, cloudBackupEnvironments } from '../environment'
 import { changeEnvironment } from '../switch-environment/switсh-environment-store'
 
 export const errorRestore = (error: string) => ({
@@ -42,11 +42,11 @@ function* findWalletInCloud(
     yield put(setCloudRestoreMessage('Downloading backup'))
     yield put(
       changeEnvironment(
-        baseUrls[key].agencyUrl,
-        baseUrls[key].agencyDID,
-        baseUrls[key].agencyVerificationKey,
-        baseUrls[key].poolConfig,
-        baseUrls[key].paymentMethod
+        environments[key].agencyUrl,
+        environments[key].agencyDID,
+        environments[key].agencyVerificationKey,
+        environments[key].poolConfig,
+        environments[key].paymentMethod
       )
     )
   }
@@ -99,7 +99,7 @@ export function* cloudRestore(
     // try to find it in the list of backup environments
     if (foundWalletInCloud != 0) {
       for (const key of cloudBackupEnvironments) {
-        if (agencyDID !== baseUrls[key].agencyDID) {
+        if (agencyDID !== environments[key].agencyDID) {
           foundWalletInCloud = yield* findWalletInCloud(
             key,
             walletFilePath,
