@@ -7,7 +7,7 @@ import claimReducer, {
   claimStorageSuccess,
 } from '../claim-store'
 import { CLAIM_STORAGE_ERROR } from '../../services/error/error-code'
-import { claim, claimOfferIssueDate } from '../../../__mocks__/static-data'
+import { claim, claimOfferIssueDate, claimUUID } from '../../../__mocks__/static-data'
 
 describe('Claim Store', () => {
   let initialState = { claimMap: {} }
@@ -33,7 +33,7 @@ describe('Claim Store', () => {
   it('should match snapshot when claim storage is success', () => {
     const nextState = claimReducer(
       afterClaimReceived,
-      claimStorageSuccess(claim.messageId, claimOfferIssueDate)
+      claimStorageSuccess(claim.messageId, claimUUID, claimOfferIssueDate)
     )
     expect(nextState).toMatchSnapshot()
   })

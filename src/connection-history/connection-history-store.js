@@ -80,7 +80,7 @@ import {
   DENY_CLAIM_OFFER_SUCCESS,
   DENY_CLAIM_OFFER_FAIL,
   OUTOFBAND_CLAIM_OFFER_ACCEPTED,
-  DELETE_OUTOFBAND_CLAIM_OFFER,
+  DENY_OUTOFBAND_CLAIM_OFFER,
 } from '../claim-offer/type-claim-offer'
 import { UPDATE_ATTRIBUTE_CLAIM, ERROR_SEND_PROOF } from '../proof/type-proof'
 import type {
@@ -1307,7 +1307,7 @@ export function* historyEventOccurredSaga(
       if (existingEvent) historyEvent = null
     }
 
-    if (event.type === DELETE_OUTOFBAND_CLAIM_OFFER) {
+    if (event.type === DENY_OUTOFBAND_CLAIM_OFFER) {
       const claimOffer = yield select(getClaimOffer, event.uid)
       const claimOfferReceivedEvent = yield select(
         getHistoryEvent,

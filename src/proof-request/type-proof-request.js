@@ -468,12 +468,18 @@ export const ERROR_SEND_PROOF = (message: string) => ({
   message: `Error sending proof: ${message}`,
 })
 
-export const MESSAGE_ATTRIBUTE_TITLE = 'Missing Attribute'
-export const MESSAGE_ATTRIBUTE_DESCRIPTION = (
+export const MESSAGE_MISSING_ATTRIBUTE_TITLE = 'Missing Attribute'
+export const MESSAGE_MISSING_ATTRIBUTE_DESCRIPTION = (
   requester: string,
   attribute: string
 ) => `
   ${requester} is asking you to share ${attribute}, which is not found in your ${appName} wallet.`
+
+export const MESSAGE_ATTRIBUTE_FROM_DIFFERENT_LEDGER_TITLE = 'Network Mismatch'
+export const MESSAGE_ATTRIBUTE_FROM_DIFFERENT_LEDGER_DESCRIPTION = (
+  requester: string,
+) => `
+  While you have matching attribute ${requester} is requesting, it is rooted to a different Ledger. Contact ${requester} for more information.`
 
 export const MESSAGE_PREDICATE_TITLE = 'Unfulfilled Predicate'
 export const MESSAGE_PREDICATE_DESCRIPTION = (
@@ -484,10 +490,12 @@ export const MESSAGE_PREDICATE_DESCRIPTION = (
 
 export const ATTRIBUTE_TYPE = {
   FILLED_ATTRIBUTE: 'FILLED_ATTRIBUTE',
+  FILLED_ATTRIBUTES_GROUP: 'FILLED_ATTRIBUTES_GROUP',
   SELF_ATTESTED_ATTRIBUTE: 'SELF_ATTESTED_ATTRIBUTE',
   DISSATISFIED_ATTRIBUTE: 'DISSATISFIED_ATTRIBUTE',
   FILLED_PREDICATE: 'FILLED_PREDICATE',
   DISSATISFIED_PREDICATE: 'DISSATISFIED_PREDICATE',
+  NETWORK_MISMATCH: 'NETWORK_MISMATCH',
 }
 
 export type AriesPresentationPreviewAttribute = {

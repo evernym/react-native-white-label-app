@@ -64,7 +64,7 @@ import {
   updateProofHandle,
   dissatisfiedAttributesFound,
 } from '../proof-request/proof-request-store'
-import { getProofRequest, getClaimMap, getProofData } from '../store/store-selector'
+import { getProofRequest, getClaimMap, getProofData, getReceivedCredentials } from '../store/store-selector'
 import type { Attribute } from '../push-notification/type-push-notification'
 import { RESET } from '../common/type-common'
 import {
@@ -79,7 +79,13 @@ import {
 import { ensureVcxInitAndPoolConnectSuccess, ensureVcxInitSuccess } from '../store/route-store'
 import { customLogger } from '../store/custom-logger'
 import { showSnackError } from '../store/config-store'
-import { CREDENTIAL_DEFINITION_NOT_FOUND, CREDENTIAL_SCHEMA_NOT_FOUND } from '../bridge/react-native-cxs/error-cxs'
+import {
+  CREDENTIAL_DEFINITION_NOT_FOUND,
+  CREDENTIAL_SCHEMA_NOT_FOUND,
+  NO_POOL_OPEN,
+} from '../bridge/react-native-cxs/error-cxs'
+import type { ClaimOfferPayload } from '../claim-offer/type-claim-offer'
+import { caseInsensitive } from '../claim-offer/claim-offer-store'
 
 export const updateAttributeClaim = (
   uid: string,
@@ -229,7 +235,7 @@ function buildCaseInsensitiveMap(attrs: GenericObject) {
   ).reduce(
     (acc, attributeName) => ({
       ...acc,
-      [attributeName.toLowerCase().replace(/ /g, '')]: attributeName,
+      [caseInsensitive(attributeName)]: attributeName,
     }),
     {},
   )
@@ -237,6 +243,7 @@ function buildCaseInsensitiveMap(attrs: GenericObject) {
 
 export function convertIndyPreparedProofToAttributes(
   preparedProof: IndyPreparedProof,
+  storedCredentials: Array<ClaimOfferPayload>,
   requestedAttributes: ProofRequestedAttributes,
   requestedPredicates: ?ProofRequestedPredicates,
 ): Array<Attribute> {
@@ -250,23 +257,24 @@ export function convertIndyPreparedProofToAttributes(
       labels.push(attribute.name)
     }
     const label = labels.join()
+    const caseInsensitiveLabel: string = caseInsensitive(label)
     const revealedAttributes = preparedProof.attrs[attributeKey]
+
     if (revealedAttributes && revealedAttributes.length > 0) {
-      attributes.push(
+      let matchedCredentialsReferents = []
+
+      const matchedCredentials =
         revealedAttributes.map((revealedAttribute) => {
           // convert attrs props to lowercase
           // maintain a mapping that will map case insensitive name to actual name in `attrs`
           let caseInsensitiveMap = null
           let values = {}
           if (revealedAttribute) {
-            caseInsensitiveMap = buildCaseInsensitiveMap(revealedAttribute.cred_info.attrs,)
+            caseInsensitiveMap = buildCaseInsensitiveMap(revealedAttribute.cred_info.attrs)
 
             values = labels.reduce((acc, attributeLabel) => {
               if (caseInsensitiveMap) {
-                const key =
-                  caseInsensitiveMap[
-                    attributeLabel.toLowerCase().replace(/ /g, '')
-                    ]
+                const key = caseInsensitiveMap[caseInsensitive(attributeLabel)]
                 return {
                   ...acc,
                   [attributeLabel]: revealedAttribute.cred_info.attrs[key],
@@ -274,29 +282,89 @@ export function convertIndyPreparedProofToAttributes(
               }
             }, {})
           }
-
+          matchedCredentialsReferents.push(revealedAttribute?.cred_info?.referent)
           return {
             label,
             key: attributeKey,
             data:
               revealedAttribute &&
               caseInsensitiveMap &&
-              revealedAttribute.cred_info.attrs[
-                caseInsensitiveMap[label.toLowerCase().replace(/ /g, '')]
-                ],
+              revealedAttribute.cred_info.attrs[caseInsensitiveMap[caseInsensitive(label)]],
             values: values,
             claimUuid: revealedAttribute && revealedAttribute.cred_info.referent,
-            // TODO:KS Refactor this logic to not put cred_info here
-            // We are putting cred_info here because we don't want to iterate
-            // later to find whole credential
             cred_info: revealedAttribute ? revealedAttribute : null,
             self_attest_allowed: !isDissatisfiedAttribute(attribute),
             type: ATTRIBUTE_TYPE.FILLED_ATTRIBUTE,
           }
-        }),
+        })
+
+      // find credentials which has requested attribute but cannot be used due to requested restrictions
+      let credentialsFromDifferentNetwork = []
+      for (let credential of storedCredentials) {
+        let credentialAttributes = credential.attributes || {}
+        // group of requested attributes
+        if (attribute.names && !matchedCredentialsReferents.includes(credential.claimId)) {
+          let credentialWithRequestedAttributes = {}
+          for (let label of labels) {
+            let value = credentialAttributes[caseInsensitive(label)]
+            if (value){
+              credentialWithRequestedAttributes[label] = value
+            } else {
+              credentialWithRequestedAttributes = null
+              break
+            }
+          }
+          if (credentialWithRequestedAttributes) {
+            credentialsFromDifferentNetwork.push({
+              label,
+              data: null,
+              values: credentialWithRequestedAttributes,
+              claimUuid: credential.claimId,
+              type: ATTRIBUTE_TYPE.NETWORK_MISMATCH,
+            })
+          }
+        }
+
+        // single requested attribute
+        if (attribute.name && !matchedCredentialsReferents.includes(credential.claimId)) {
+          let value = credentialAttributes[caseInsensitiveLabel]
+          if (value) {
+            credentialsFromDifferentNetwork.push({
+              label,
+              data: value,
+              claimUuid: credential.claimId,
+              type: ATTRIBUTE_TYPE.NETWORK_MISMATCH,
+            })
+          }
+        }
+      }
+
+      attributes.push(
+        matchedCredentials.concat(credentialsFromDifferentNetwork)
       )
     } else {
       const dissatisfied = isDissatisfiedAttribute(attribute)
+
+      // find credentials which has requested attribute but cannot be used due to requested restrictions
+      let hasCredentialsWithRequestedAttribute = false
+      if (dissatisfied) {
+        if (attribute.names) {
+          for (let credential of storedCredentials) {
+            const attributeNames = Object.keys(credential.attributes || {})
+            let hasAllRequestedAttributes = labels.every(label => attributeNames.includes(caseInsensitive(label)))
+            if (hasAllRequestedAttributes){
+              hasCredentialsWithRequestedAttribute = true
+              break
+            }
+          }
+        } else if (attribute.name) {
+          hasCredentialsWithRequestedAttribute = !!storedCredentials.find((credential) =>
+            credential.attributes ?
+              credential.attributes[caseInsensitiveLabel] :
+              undefined
+          )
+        }
+      }
 
       attributes.push([
         {
@@ -310,6 +378,7 @@ export function convertIndyPreparedProofToAttributes(
           type: dissatisfied
             ? ATTRIBUTE_TYPE.DISSATISFIED_ATTRIBUTE
             : ATTRIBUTE_TYPE.SELF_ATTESTED_ATTRIBUTE,
+          hasCredentialsWithRequestedAttribute
         },
       ])
     }
@@ -318,9 +387,12 @@ export function convertIndyPreparedProofToAttributes(
   if (requestedPredicates){
     Object.keys(requestedPredicates).forEach((attributeKey) => {
       let predicate = requestedPredicates[attributeKey]
+      const caseInsensitiveLabel = caseInsensitive(predicate.name)
+
+      let matchedCredentialsReferents = []
       const matchingCredentials = preparedProof.attrs[attributeKey]
       if (matchingCredentials && matchingCredentials.length > 0) {
-        attributes.push(
+        const matchedCredentials =
           matchingCredentials.map((matchingCredential) => {
             // convert attrs props to lowercase
             // maintain a mapping that will map case insensitive name to actual name in `predicates`
@@ -328,7 +400,7 @@ export function convertIndyPreparedProofToAttributes(
             if (matchingCredential) {
               caseInsensitiveMap = buildCaseInsensitiveMap(matchingCredential.cred_info.attrs)
             }
-
+            matchedCredentialsReferents.push(matchingCredential?.cred_info?.referent)
             return {
               label: predicate.name,
               p_type: predicate.p_type,
@@ -338,15 +410,39 @@ export function convertIndyPreparedProofToAttributes(
                 matchingCredential &&
                 caseInsensitiveMap &&
                 matchingCredential.cred_info.attrs[
-                  caseInsensitiveMap[predicate.name.toLowerCase().replace(/ /g, '')]
+                  caseInsensitiveMap[caseInsensitiveLabel]
                   ],
               claimUuid: matchingCredential && matchingCredential.cred_info.referent,
               cred_info: matchingCredential ? matchingCredential : null,
               type: ATTRIBUTE_TYPE.FILLED_PREDICATE,
             }
           })
+
+        const credentialsFromDifferentNetwork = []
+        for (let credential of storedCredentials) {
+          let credentialAttributes = credential.attributes || {}
+          let value = credentialAttributes[caseInsensitiveLabel]
+          if (value && !matchedCredentialsReferents.includes(credential.claimId)) {
+            credentialsFromDifferentNetwork.push({
+              label: predicate.name,
+              data: value,
+              claimUuid: credential.claimId,
+              type: ATTRIBUTE_TYPE.NETWORK_MISMATCH,
+            })
+          }
+        }
+
+        attributes.push(
+          matchedCredentials.concat(credentialsFromDifferentNetwork)
         )
       } else {
+        const hasCredentialsFromDifferentNetwork =
+          !!storedCredentials.find((credential) =>
+            credential.attributes ?
+              credential.attributes[caseInsensitiveLabel] :
+              undefined
+          )
+
         attributes.push(
           [
             {
@@ -356,6 +452,7 @@ export function convertIndyPreparedProofToAttributes(
               key: attributeKey,
               data: undefined,
               type: ATTRIBUTE_TYPE.DISSATISFIED_PREDICATE,
+              hasCredentialsFromDifferentNetwork,
             },
           ]
         )
@@ -575,10 +672,12 @@ export function* generateProofSaga(action: GenerateProofAction): any {
       yield put(dissatisfiedAttributesFound(dissatisfiedAttributes, uid))
     }
 
+    const storedCredentials: Array<ClaimOfferPayload> = yield select(getReceivedCredentials)
     const requestedAttributes = convertIndyPreparedProofToAttributes(
       matchingCredentials,
+      storedCredentials,
       proofRequestData.requested_attributes,
-      proofRequestData.requested_predicates,
+      proofRequestData.requested_predicates
     )
 
     yield put(proofRequestAutoFill(uid, requestedAttributes))
@@ -679,7 +778,7 @@ export function* updateAttributeClaimAndSendProof(
         )
       }
     } catch (e) {
-      if (e.code === CREDENTIAL_SCHEMA_NOT_FOUND || e.code === CREDENTIAL_DEFINITION_NOT_FOUND){
+      if (e.code === NO_POOL_OPEN || e.code === CREDENTIAL_SCHEMA_NOT_FOUND || e.code === CREDENTIAL_DEFINITION_NOT_FOUND){
         // if proof generation failed -> connect to pool ledger and retry (fetch fresh schema and cred def)
         yield call(
           connectToPoolAndRegenerateProof,

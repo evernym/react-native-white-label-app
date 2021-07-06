@@ -4,15 +4,13 @@ import { View, StyleSheet } from 'react-native'
 import { bindActionCreators } from 'redux'
 import { connect, useSelector } from 'react-redux'
 import type { MyCredentialsProps, CredentialItem } from './type-my-credentials'
-import type { ClaimOfferPayload } from '../claim-offer/type-claim-offer'
 
 import { CameraButton } from '../components'
 import { CredentialsCards } from './cards/credentials-cards'
 import { myCredentialsRoute, qrCodeScannerTabRoute } from '../common'
 import { colors } from '../common/styles/constant'
-import { CLAIM_REQUEST_STATUS } from '../claim-offer/type-claim-offer'
 import { deleteClaim } from '../claim/claim-store'
-import { getClaimOffers } from '../store/store-selector'
+import { getReceivedCredentials } from '../store/store-selector'
 import { EmptyState } from '../home/empty-state'
 import {
   credentialsHeadline,
@@ -29,37 +27,26 @@ const showCameraButton =
     : true
 
 const MyCredentialsScreen = ({ route, navigation }: MyCredentialsProps) => {
-  const claimOffer = useSelector(getClaimOffers)
+  const receivedCredentials = useSelector(getReceivedCredentials)
 
   const credentials = useMemo(() => {
-    const { vcxSerializedClaimOffers: serializedOffers, ...offers } = claimOffer
-
-    const credentials: Array<CredentialItem> = []
-
-    Object.keys(offers).forEach((uid) => {
-      const offer: ClaimOfferPayload = offers[uid]
-      if (
-        offer.claimRequestStatus === CLAIM_REQUEST_STATUS.CLAIM_REQUEST_SUCCESS
-      ) {
-        credentials.push({
-          claimOfferUuid: offer.uid,
-          credentialName: offer.data.name,
-          issuerName: offer.issuer.name,
-          date: offer.issueDate,
-          attributes: offer.data.revealedAttributes,
-          logoUrl: offer.senderLogoUrl,
-          remoteDid: offer.remotePairwiseDID,
-          colorTheme: offer.colorTheme,
-          claimDefinitionId: offer.data.claimDefinitionId,
-          uid: uid,
-        })
-      }
-    })
+    const credentials: Array<CredentialItem> =
+      receivedCredentials.map((credential) => ({
+        claimOfferUuid: credential.uid,
+        credentialName: credential.data.name,
+        issuerName: credential.issuer.name,
+        date: credential.issueDate,
+        attributes: credential.data.revealedAttributes,
+        logoUrl: credential.senderLogoUrl,
+        remoteDid: credential.remotePairwiseDID,
+        colorTheme: credential.colorTheme,
+        claimDefinitionId: credential.data.claimDefinitionId,
+      }))
 
     credentials.sort((a, b) => a.credentialName.localeCompare(b.credentialName))
 
     return credentials
-  }, [claimOffer])
+  }, [receivedCredentials])
 
   const hasNoCredentials = useMemo(() => credentials.length === 0, [
     credentials,

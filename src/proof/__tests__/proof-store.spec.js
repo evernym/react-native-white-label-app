@@ -140,12 +140,14 @@ describe('Proof Store', () => {
     expect(
       convertIndyPreparedProofToAttributes(
         homeAddressPreparedProof,
+        [],
         originalProofRequestData.requested_attributes
       )
     ).toMatchSnapshot()
     expect(
       convertIndyPreparedProofToAttributes(
         homeAddressPreparedProof,
+        [],
         originalProofRequestData10Attributes.requested_attributes
       )
     ).toMatchSnapshot()
@@ -153,6 +155,7 @@ describe('Proof Store', () => {
     expect(
       convertIndyPreparedProofToAttributes(
         homeAddressPreparedProof,
+        [],
         originalProofRequestDataWithSpaces.requested_attributes
       )
     ).toMatchSnapshot()
@@ -161,6 +164,7 @@ describe('Proof Store', () => {
     expect(
       convertIndyPreparedProofToAttributes(
         homeAddressAndAgePreparedProof,
+        [],
         originalProofRequestDataWithAttributesAndPredicates.requested_attributes,
         originalProofRequestDataWithAttributesAndPredicates.requested_predicates,
       )
@@ -203,11 +207,13 @@ describe('Proof Store', () => {
           },
         },
       },
+      claimOffer: {}
     }
     const requestedAttributes = convertIndyPreparedProofToAttributes(
       {
         ...homeAddressPreparedProof,
       },
+      [],
       originalProofRequestData.requested_attributes,
       originalProofRequestData.requested_predicates,
     )
@@ -270,11 +276,13 @@ describe('Proof Store', () => {
           },
         },
       },
+      claimOffer: {}
     }
     const requestedAttributes = convertIndyPreparedProofToAttributes(
       {
         ...homeAddressAndAgePreparedProof,
       },
+      [],
       originalProofRequestDataWithAttributesAndPredicates.requested_attributes,
       originalProofRequestDataWithAttributesAndPredicates.requested_predicates,
     )
@@ -332,6 +340,7 @@ describe('Proof Store', () => {
           },
         },
       },
+      claimOffer: {}
     }
     const copyHomeAddressPreparedProofMultipleCreds: typeof homeAddressPreparedProofMultipleCreds = JSON.parse(
       JSON.stringify(homeAddressPreparedProofMultipleCreds)
@@ -343,6 +352,7 @@ describe('Proof Store', () => {
         ...copyHomeAddressPreparedProofMultipleCreds,
         self_attested_attrs: {},
       },
+      [],
       originalProofRequestData.requested_attributes
     )
 
@@ -399,6 +409,7 @@ describe('Proof Store', () => {
         ...homeAddressPreparedProof,
         self_attested_attrs: {},
       },
+      [],
       originalProofRequestData.requested_attributes
     )
 
@@ -454,6 +465,7 @@ describe('Proof Store', () => {
         ...homeAddressPreparedProofWithMissingAttribute,
         self_attested_attrs: { ...selfAttestedAttributes },
       },
+      [],
       originalProofRequestDataMissingAttribute.requested_attributes
     )
 

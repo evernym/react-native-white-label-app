@@ -15,7 +15,7 @@ import {
   proofRequestReceived,
   sendProofSuccess,
 } from '../src/proof-request/proof-request-store'
-import { color } from '../src/common/styles/constant'
+import { color, colors } from '../src/common/styles/constant'
 import {
   qrCodeScannerTabRoute,
   homeRoute,
@@ -190,9 +190,18 @@ export const invitationAcceptedData = firstInvitationPayload
 
 export const claimOfferId = 'usd123'
 export const claimOfferIssueDate = 123456789
-export const claimDefinitionSchemaSequenceNumber = 36
+export const claimUUID = 'claimUUID'
+export const colorTheme = '#86B93B'
+  export const claimDefinitionSchemaSequenceNumber = 36
 const issuerDid = 'issuerDid'
 export const senderLogoUrl = 'http://testissuer.com/logoUrl.png'
+
+export const attributes = [
+  {
+    'address1': 'address1',
+    'address2': 'address2',
+  }
+]
 
 const requestedAttributes = [
   {
@@ -1108,6 +1117,7 @@ export const sendClaimRequestSuccessEvent = sendClaimRequestSuccess(
 
 export const claimReceivedSuccessEvent = claimStorageSuccess(
   uid,
+  claimUUID,
   claimOfferIssueDate
 )
 

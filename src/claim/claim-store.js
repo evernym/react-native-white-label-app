@@ -83,10 +83,12 @@ export const claimReceived = (claim: Claim): ClaimReceivedAction => ({
 
 export const claimStorageSuccess = (
   messageId: string,
+  claimId: string,
   issueDate: number
 ): ClaimStorageSuccessAction => ({
   type: CLAIM_STORAGE_SUCCESS,
   messageId,
+  claimId,
   issueDate,
 })
 
@@ -313,7 +315,7 @@ export function* checkForClaim(
         )
       }
 
-      yield put(claimStorageSuccess(serializedClaimOffer.messageId, issueDate))
+      yield put(claimStorageSuccess(serializedClaimOffer.messageId, vcxClaim.claimUuid, issueDate))
       yield* updateMessageStatus([
         {
           pairwiseDID: userDID,

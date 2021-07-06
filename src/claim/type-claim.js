@@ -46,6 +46,7 @@ export const CLAIM_STORAGE_SUCCESS = 'CLAIM_STORAGE_SUCCESS'
 export type ClaimStorageSuccessAction = {
   type: typeof CLAIM_STORAGE_SUCCESS,
   messageId: string,
+  claimId: string,
   issueDate: number,
 }
 

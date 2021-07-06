@@ -94,9 +94,9 @@ export type ClaimOfferRejectedAction = {
   uid: string,
 }
 
-export const DELETE_OUTOFBAND_CLAIM_OFFER = 'DELETE_OUTOFBAND_CLAIM_OFFER'
-export type DeleteOutofbandClaimOfferAction = {
-  type: typeof DELETE_OUTOFBAND_CLAIM_OFFER,
+export const DENY_OUTOFBAND_CLAIM_OFFER = 'DENY_OUTOFBAND_CLAIM_OFFER'
+export type DenyOutofbandClaimOfferAction = {
+  type: typeof DENY_OUTOFBAND_CLAIM_OFFER,
   uid: string,
 }
 
@@ -143,6 +143,9 @@ export type ClaimRequestSuccessAction = {
   type: typeof CLAIM_REQUEST_SUCCESS,
   uid: string,
   issueDate: number,
+  colorTheme: string,
+  claimId: string,
+  attributes: string,
 }
 
 export const INSUFFICIENT_BALANCE = 'INSUFFICIENT_BALANCE'
@@ -229,13 +232,6 @@ export type ClaimOfferDeletedAction = {
   vcxSerializedClaimOffers: SerializedClaimOffers,
 }
 
-export const CLAIM_OFFER_SET_COLOR = 'CLAIM_OFFER_SET_COLOR'
-export type ClaimOfferSetColor = {
-  type: typeof CLAIM_OFFER_SET_COLOR,
-  uid: string,
-  colorTheme: string,
-}
-
 export type ClaimOfferAction =
   | ClaimOfferReceivedAction
   | ClaimOfferFailedAction
@@ -258,7 +254,6 @@ export type ClaimOfferAction =
   | SendClaimRequestSuccessAction
   | SendClaimRequestFailAction
   | ClaimOfferDeletedAction
-  | ClaimOfferSetColor
 
 export type CredentialOffer = {
   '@id': string,
@@ -295,6 +290,8 @@ export type ClaimOfferPayload = AdditionalDataPayload & {
   issueDate?: number,
   colorTheme?: string,
   ephemeralClaimOffer?: any,
+  claimId?: string,
+  attributes?: GenericObject,
 }
 
 export type SerializedClaimOffer = {

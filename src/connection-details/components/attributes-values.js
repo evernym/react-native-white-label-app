@@ -8,6 +8,7 @@ import {
   StyleSheet,
   FlatList,
   TouchableOpacity,
+  Alert,
 } from 'react-native'
 import { verticalScale, moderateScale } from 'react-native-size-matters'
 
@@ -27,12 +28,17 @@ import type {
 import { colors, fontSizes, fontFamily } from '../../common/styles/constant'
 import { Avatar } from '../../components'
 import { DefaultLogo } from '../../components/default-logo/default-logo'
-import { CHECKMARK_ICON, EvaIcon } from '../../common/icons'
+import { ALERT_ICON, CHECKMARK_ICON, EvaIcon } from '../../common/icons'
 import { RenderAttachmentIcon } from '../../components/attachment/attachment'
 import { ModalPushLeft } from '../utils/modal-animation'
 import { ExpandableText } from '../../components/expandable-text/expandable-text'
 import { modalOptions } from '../utils/modalOptions'
 import { CustomSelectAttributesValuesModal } from '../../external-imports'
+import {
+  ATTRIBUTE_TYPE,
+  MESSAGE_ATTRIBUTE_FROM_DIFFERENT_LEDGER_DESCRIPTION,
+  MESSAGE_ATTRIBUTE_FROM_DIFFERENT_LEDGER_TITLE,
+} from '../../proof-request/type-proof-request'
 
 export const keyExtractor = (item: Object) => item.claimUuid.toString()
 
@@ -54,6 +60,7 @@ export const prepareCredentials = (items: any, claimMap: any) => {
       cred_info: item.cred_info,
       key: item.key,
       self_attest_allowed: item.self_attest_allowed,
+      type: item.type,
     }
   })
 }
@@ -79,13 +86,36 @@ const AttributesValues = ({
     goBack(null)
   }, [selectedValueIndex])
 
+  const showNetworkMismatchModal = () => {
+    Alert.alert(
+      MESSAGE_ATTRIBUTE_FROM_DIFFERENT_LEDGER_TITLE,
+      MESSAGE_ATTRIBUTE_FROM_DIFFERENT_LEDGER_DESCRIPTION(params.sender),
+      [
+        {
+          text: 'OK',
+        },
+      ],
+    )
+  }
+
+  const selectItem = (item: Object, index: number) => {
+    if (item.type !== ATTRIBUTE_TYPE.NETWORK_MISMATCH) {
+      setSelectedValueIndex(index)
+    }
+  }
+
   const renderItem = ({ item, index }: { item: Object, index: number }) => {
     return (
       <TouchableOpacity
-        onPress={() => setSelectedValueIndex(index)}
+        onPress={() => selectItem(item, index)}
         style={styles.itemContainer}
       >
-        <View style={styles.itemInnerContainer}>
+        <View
+          style={[
+            styles.itemInnerContainer,
+            item.type === ATTRIBUTE_TYPE.NETWORK_MISMATCH && { opacity: 0.5 }
+          ]}
+        >
           <View style={styles.itemValuesContainer}>
             <View style={styles.avatarSection}>
               {typeof item.logoUrl === 'string' ? (
@@ -117,6 +147,14 @@ const AttributesValues = ({
             ))}
           </View>
         </View>
+        {item.type === ATTRIBUTE_TYPE.NETWORK_MISMATCH && (
+          <TouchableOpacity
+            style={styles.iconWrapper}
+            onPress={showNetworkMismatchModal}
+          >
+            <EvaIcon name={ALERT_ICON} color={colors.red}/>
+          </TouchableOpacity>
+        )}
         {index === selectedValueIndex && (
           <View style={styles.iconWrapper}>
             <EvaIcon name={CHECKMARK_ICON} color={colors.black} />

@@ -34,12 +34,11 @@ import {
   DENY_CLAIM_OFFER_SUCCESS,
   DENY_CLAIM_OFFER_FAIL,
   OUTOFBAND_CLAIM_OFFER_ACCEPTED,
-  DELETE_OUTOFBAND_CLAIM_OFFER,
+  DENY_OUTOFBAND_CLAIM_OFFER,
   CLAIM_OFFER_DELETED,
   DELETE_CLAIM_OFFER,
   ERROR_RECEIVE_CLAIM,
   VCX_CLAIM_OFFER_STATE,
-  CLAIM_OFFER_SET_COLOR,
 } from './type-claim-offer'
 import type {
   ClaimOfferStore,
@@ -54,14 +53,13 @@ import type {
   DeleteClaimOfferAction,
   SerializedClaimOffers,
   ClaimOfferReceivedAction,
-  ClaimOfferSetColor,
 } from './type-claim-offer'
 import type {
   AdditionalDataPayload,
   GetClaimVcxResult,
   NotificationPayloadInfo,
 } from '../push-notification/type-push-notification'
-import type { CustomError } from '../common/type-common'
+import type { CustomError, GenericObject } from '../common/type-common'
 import {
   getClaimOffer,
   getClaimOffers,
@@ -69,6 +67,7 @@ import {
   getWalletBalance,
   getConnectionHistory,
   getConnection,
+  getClaimForOffer,
 
 } from '../store/store-selector'
 import {
@@ -189,11 +188,17 @@ export const sendClaimRequestFail = (uid: string, remoteDid: string) => ({
 
 export const claimRequestSuccess = (
   uid: string,
-  issueDate: number
+  issueDate: number,
+  colorTheme: string,
+  claimId: string,
+  attributes: any,
 ): ClaimRequestSuccessAction => ({
   type: CLAIM_REQUEST_SUCCESS,
   uid,
   issueDate,
+  colorTheme,
+  claimId,
+  attributes,
 })
 
 export const claimRequestFail = (uid: string, error: CustomError) => ({
@@ -240,15 +245,9 @@ export const acceptOutofbandClaimOffer = (uid: string, remoteDid: string, show: 
   show,
 })
 
-export const deleteOutOfBandClaimOffer = (uid: string) => ({
-  type: DELETE_OUTOFBAND_CLAIM_OFFER,
+export const denyOutOfBandClaimOffer = (uid: string) => ({
+  type: DENY_OUTOFBAND_CLAIM_OFFER,
   uid,
-})
-
-export const claimOfferSetColor = (uid: string, colorTheme: string): ClaimOfferSetColor => ({
-  type: CLAIM_OFFER_SET_COLOR,
-  uid,
-  colorTheme,
 })
 
 export function* getColorTheme(
@@ -389,7 +388,7 @@ export function* acceptEphemeralClaimOffer(
           claimOfferPayload.issuer.name
         )
       )
-      yield put(claimStorageSuccess(action.uid, issueDate))
+      yield put(claimStorageSuccess(action.uid, vcxClaim.claimUuid, issueDate))
     }
     if (state === VCX_CLAIM_OFFER_STATE.NONE) {
       yield call(showSnackError, "Failed to accept credential")
@@ -563,6 +562,18 @@ export function* checkCredentialStatus(
   )
 }
 
+export const caseInsensitive = (attr: string) => attr.toLowerCase().replace(/ /g, '')
+
+const buildClaimAttributes = (claimOfferPayload: ClaimOfferPayload) => {
+  return claimOfferPayload.data.revealedAttributes
+    .reduce(
+      (acc, attribute) => ({
+        ...acc,
+        [caseInsensitive(attribute.label)]: attribute.data
+      }), {})
+
+}
+
 function* claimStorageSuccessSaga(
   action: ClaimStorageSuccessAction
 ): Generator<*, *, *> {
@@ -570,9 +581,9 @@ function* claimStorageSuccessSaga(
 
   const claimOfferPayload = yield select(getClaimOffer, messageId)
   const colorTheme = yield call(getColorTheme, claimOfferPayload.senderLogoUrl)
+  const attributes = buildClaimAttributes(claimOfferPayload)
 
-  yield put(claimOfferSetColor(messageId, colorTheme))
-  yield put(claimRequestSuccess(messageId, issueDate))
+  yield put(claimRequestSuccess(messageId, issueDate, colorTheme, action.claimId, attributes))
 }
 
 export function* watchClaimStorageSuccess(): any {
@@ -720,6 +731,17 @@ export function* hydrateClaimOffersSaga(): Generator<*, *, *> {
           offer.colorTheme = yield call(getColorTheme, offer.senderLogoUrl)
         }
 
+        if (!offer.claimId) {
+          const claim: GenericObject = yield select(getClaimForOffer, offer)
+          if (claim && claim.claimUuid) {
+            offer.claimId = claim.claimUuid
+          }
+        }
+
+        if (!offer.attributes) {
+          offer.attributes = buildClaimAttributes(offer)
+        }
+
         if (offer.data && offer.issuer && !offer.data.claimDefinitionId) {
           // I don't see an easy way to fetch claimDefinitionId
           // use combination of `issuerDID + credentialName` as workaround
@@ -859,7 +881,7 @@ export default function claimOfferReducer(
           status: CLAIM_OFFER_STATUS.ACCEPTED,
         },
       }
-    case DELETE_OUTOFBAND_CLAIM_OFFER:
+    case DENY_OUTOFBAND_CLAIM_OFFER:
       const { [action.uid]: claimOffer, ...newState } = state
       return {
         ...newState,
@@ -896,6 +918,9 @@ export default function claimOfferReducer(
           claimRequestStatus: CLAIM_REQUEST_STATUS.CLAIM_REQUEST_SUCCESS,
           status: CLAIM_OFFER_STATUS.ISSUED,
           issueDate: action.issueDate,
+          colorTheme: action.colorTheme,
+          claimId: action.claimId,
+          attributes: action.attributes,
         },
       }
     case CLAIM_REQUEST_FAIL:
@@ -1011,14 +1036,6 @@ export default function claimOfferReducer(
           claimRequestStatus: CLAIM_REQUEST_STATUS.DELETED,
         },
         vcxSerializedClaimOffers: action.vcxSerializedClaimOffers,
-      }
-    case CLAIM_OFFER_SET_COLOR:
-      return {
-        ...state,
-        [action.uid]: {
-          ...state[action.uid],
-          colorTheme: action.colorTheme,
-        }
       }
     default:
       return state
