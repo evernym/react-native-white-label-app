@@ -11,7 +11,6 @@ import {
   TouchableOpacity,
   StatusBar,
   TextInput,
-  Alert,
 } from 'react-native'
 import { verticalScale, moderateScale } from 'react-native-size-matters'
 
@@ -44,11 +43,8 @@ import { ExpandableText } from '../../components/expandable-text/expandable-text
 import { BLANK_ATTRIBUTE_DATA_TEXT } from '../type-connection-details'
 import { modalOptions } from '../utils/modalOptions'
 import { CustomSelectAttributeValueModal } from '../../external-imports'
-import {
-  ATTRIBUTE_TYPE,
-  MESSAGE_ATTRIBUTE_FROM_DIFFERENT_LEDGER_DESCRIPTION,
-  MESSAGE_ATTRIBUTE_FROM_DIFFERENT_LEDGER_TITLE,
-} from '../../proof-request/type-proof-request'
+import { ATTRIBUTE_TYPE } from '../../proof-request/type-proof-request'
+import { MismatchRestrictionsIcon } from '../../components/mismatch-restrictions-icon'
 
 export const renderAvatarWithSource = (avatarSource: number | ImageSource) => {
   return <Avatar radius={18} src={avatarSource} />
@@ -96,20 +92,8 @@ const AttributeValues = ({
     })
   }
 
-  const showNetworkMismatchModal = () => {
-    Alert.alert(
-      MESSAGE_ATTRIBUTE_FROM_DIFFERENT_LEDGER_TITLE,
-      MESSAGE_ATTRIBUTE_FROM_DIFFERENT_LEDGER_DESCRIPTION(params.sender),
-      [
-        {
-          text: 'OK',
-        },
-      ],
-    )
-  }
-
   const selectItem = (item: Object, index: number) => {
-    if (item.type !== ATTRIBUTE_TYPE.NETWORK_MISMATCH) {
+    if (item.type !== ATTRIBUTE_TYPE.RESTRICTIONS_MISMATCH) {
       setSelectedValueIndex(index)
     }
   }
@@ -125,7 +109,7 @@ const AttributeValues = ({
       >
         <View style={[
           styles.itemInnerContainer,
-          item.type === ATTRIBUTE_TYPE.NETWORK_MISMATCH && { opacity: 0.5 }
+          item.type === ATTRIBUTE_TYPE.RESTRICTIONS_MISMATCH && { opacity: 0.5 }
         ]}>
           <View style={styles.avatarSection}>
             {typeof item.logoUrl === 'string' ? (
@@ -173,13 +157,8 @@ const AttributeValues = ({
             )}
           </View>
         </View>
-        {item.type === ATTRIBUTE_TYPE.NETWORK_MISMATCH && (
-          <TouchableOpacity
-            style={styles.iconWrapper}
-            onPress={showNetworkMismatchModal}
-          >
-            <EvaIcon name={ALERT_ICON} color={colors.red}/>
-          </TouchableOpacity>
+        {item.type === ATTRIBUTE_TYPE.RESTRICTIONS_MISMATCH && (
+          <MismatchRestrictionsIcon sender={params.sender}/>
         )}
         {index === selectedValueIndex && (
           <View style={styles.iconWrapper}>

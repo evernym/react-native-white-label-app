@@ -372,6 +372,11 @@ export const claimOfferPayload = {
   remotePairwiseDID: 'ha66899sadfjZJGINKN0770',
   status: 'RECEIVED',
   claimRequestStatus: 'CLAIM_REQUEST_SUCCESS',
+  claimId: claimUUID,
+  attributes: {
+    'address1': 'Address Address Address',
+    'address2': 'Address 2 Address 2 Address 2',
+  }
 }
 
 export const pendingClaimHistory = {

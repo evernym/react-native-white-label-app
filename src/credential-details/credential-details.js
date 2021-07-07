@@ -12,7 +12,6 @@ import { CredentialList } from './credential-list/credential-list'
 import { HeaderWithDeletion, Loader } from '../components'
 import { ExpandableText } from '../components/expandable-text/expandable-text'
 import { bindActionCreators } from 'redux'
-import { deleteClaim } from '../claim/claim-store'
 import { InteractionManager } from 'react-native'
 import { ViewPushLeft } from '../connection-details/utils/modal-animation'
 import { CustomCredentialDetailsScreen, showCredential } from '../external-imports'
@@ -24,6 +23,7 @@ import {
 } from '../connection-details/utils/checkForEmptyAttributes'
 import { Button } from '../components/buttons/button'
 import { GRID_ICON } from '../common/icons'
+import { deleteClaim } from '../claim-offer/claim-offer-store'
 
 const useShowCredentialFeature =
   typeof showCredential === 'boolean'

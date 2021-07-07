@@ -60,10 +60,10 @@ import type {
   SendClaimRequestFailAction,
   PaidCredentialRequestFailAction,
   OutofbandClaimOfferAcceptedAction,
+  DeleteClaimSuccessAction,
 } from '../claim-offer/type-claim-offer'
 import type {
   ClaimStorageSuccessAction,
-  DeleteClaimSuccessAction,
 } from '../claim/type-claim'
 import type {
   Proof,
@@ -81,6 +81,7 @@ import {
   DENY_CLAIM_OFFER_FAIL,
   OUTOFBAND_CLAIM_OFFER_ACCEPTED,
   DENY_OUTOFBAND_CLAIM_OFFER,
+  DELETE_CLAIM_SUCCESS,
 } from '../claim-offer/type-claim-offer'
 import { UPDATE_ATTRIBUTE_CLAIM, ERROR_SEND_PROOF } from '../proof/type-proof'
 import type {
@@ -126,7 +127,6 @@ import {
 } from '../store/store-selector'
 import {
   CLAIM_STORAGE_SUCCESS,
-  DELETE_CLAIM_SUCCESS,
 } from '../claim/type-claim'
 import { RESET } from '../common/type-common'
 import {

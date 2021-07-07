@@ -1,58 +1,53 @@
 // @flow
-import { put, call, all, select, takeEvery, spawn } from 'redux-saga/effects'
+import { all, call, put, select, spawn, takeEvery } from 'redux-saga/effects'
 import delay from '@redux-saga/delay-p'
-import {
-  CLAIM_OFFER_STATUS,
-  CLAIM_OFFER_RECEIVED,
-  CLAIM_OFFER_SHOWN,
-  CLAIM_OFFER_ACCEPTED,
-  CLAIM_OFFER_REJECTED,
-  SEND_CLAIM_REQUEST,
-  CLAIM_REQUEST_SUCCESS,
-  CLAIM_REQUEST_FAIL,
-  CLAIM_OFFER_IGNORED,
-  CLAIM_REQUEST_STATUS,
-  ADD_SERIALIZED_CLAIM_OFFER,
-  CLAIM_OFFERS,
-  SAVE_CLAIM_OFFERS_SUCCESS,
-  SAVE_CLAIM_OFFERS_FAIL,
-  ERROR_SAVE_CLAIM_OFFERS,
-  HYDRATE_CLAIM_OFFERS_SUCCESS,
-  HYDRATE_CLAIM_OFFERS_FAIL,
-  ERROR_HYDRATE_CLAIM_OFFERS,
-  ERROR_NO_SERIALIZED_CLAIM_OFFER,
-  ERROR_SEND_CLAIM_REQUEST,
-  INSUFFICIENT_BALANCE,
-  SEND_PAID_CREDENTIAL_REQUEST,
-  PAID_CREDENTIAL_REQUEST_SUCCESS,
-  PAID_CREDENTIAL_REQUEST_FAIL,
-  CLAIM_OFFER_SHOW_START,
-  RESET_CLAIM_REQUEST_STATUS,
-  SEND_CLAIM_REQUEST_SUCCESS,
-  SEND_CLAIM_REQUEST_FAIL,
-  DENY_CLAIM_OFFER,
-  DENY_CLAIM_OFFER_SUCCESS,
-  DENY_CLAIM_OFFER_FAIL,
-  OUTOFBAND_CLAIM_OFFER_ACCEPTED,
-  DENY_OUTOFBAND_CLAIM_OFFER,
-  CLAIM_OFFER_DELETED,
-  DELETE_CLAIM_OFFER,
-  ERROR_RECEIVE_CLAIM,
-  VCX_CLAIM_OFFER_STATE,
-} from './type-claim-offer'
 import type {
-  ClaimOfferStore,
+  AddSerializedClaimOfferAction,
+  ClaimOfferAcceptedAction,
   ClaimOfferAction,
   ClaimOfferDenyAction,
-  ClaimOfferAcceptedAction,
   ClaimOfferPayload,
-  AddSerializedClaimOfferAction,
-  SerializedClaimOffer,
-  ClaimRequestSuccessAction,
-  ClaimOfferDeletedAction,
-  DeleteClaimOfferAction,
-  SerializedClaimOffers,
   ClaimOfferReceivedAction,
+  ClaimOfferStore,
+  ClaimRequestSuccessAction, DeleteClaimAction, DeleteClaimSuccessAction, DenyOutofbandClaimOfferAction,
+  SerializedClaimOffer,
+} from './type-claim-offer'
+import {
+  ADD_SERIALIZED_CLAIM_OFFER,
+  CLAIM_OFFER_ACCEPTED,
+  CLAIM_OFFER_IGNORED,
+  CLAIM_OFFER_RECEIVED,
+  CLAIM_OFFER_REJECTED,
+  CLAIM_OFFER_SHOW_START,
+  CLAIM_OFFER_SHOWN,
+  CLAIM_OFFER_STATUS,
+  CLAIM_OFFERS,
+  CLAIM_REQUEST_FAIL,
+  CLAIM_REQUEST_STATUS,
+  CLAIM_REQUEST_SUCCESS, DELETE_CLAIM, DELETE_CLAIM_SUCCESS,
+  DENY_CLAIM_OFFER,
+  DENY_CLAIM_OFFER_FAIL,
+  DENY_CLAIM_OFFER_SUCCESS,
+  DENY_OUTOFBAND_CLAIM_OFFER,
+  ERROR_HYDRATE_CLAIM_OFFERS,
+  ERROR_NO_SERIALIZED_CLAIM_OFFER,
+  ERROR_RECEIVE_CLAIM,
+  ERROR_SAVE_CLAIM_OFFERS,
+  ERROR_SEND_CLAIM_REQUEST,
+  HYDRATE_CLAIM_OFFERS_FAIL,
+  HYDRATE_CLAIM_OFFERS_SUCCESS,
+  INSUFFICIENT_BALANCE,
+  OUTOFBAND_CLAIM_OFFER_ACCEPTED,
+  PAID_CREDENTIAL_REQUEST_FAIL,
+  PAID_CREDENTIAL_REQUEST_SUCCESS,
+  RESET_CLAIM_REQUEST_STATUS,
+  SAVE_CLAIM_OFFERS_FAIL,
+  SAVE_CLAIM_OFFERS_SUCCESS,
+  SEND_CLAIM_REQUEST,
+  SEND_CLAIM_REQUEST_FAIL,
+  SEND_CLAIM_REQUEST_SUCCESS,
+  SEND_PAID_CREDENTIAL_REQUEST,
+  VCX_CLAIM_OFFER_STATE,
 } from './type-claim-offer'
 import type {
   AdditionalDataPayload,
@@ -60,38 +55,38 @@ import type {
   NotificationPayloadInfo,
 } from '../push-notification/type-push-notification'
 import type { CustomError, GenericObject } from '../common/type-common'
+import { RESET } from '../common/type-common'
 import {
+  getClaimForOffer,
   getClaimOffer,
   getClaimOffers,
+  getConnection,
+  getConnectionHistory,
   getSerializedClaimOffer,
   getWalletBalance,
-  getConnectionHistory,
-  getConnection,
-  getClaimForOffer,
-
 } from '../store/store-selector'
 import {
-  getHandleBySerializedConnection,
-  getClaimHandleBySerializedClaimOffer,
-  serializeClaimOffer,
-  getClaimOfferState,
-  sendClaimRequest as sendClaimRequestApi,
-  getLedgerFees,
-  credentialReject,
-  getClaimVcx,
   createCredentialWithAriesOfferObject,
+  credentialReject,
+  deleteCredential,
+  getClaimHandleBySerializedClaimOffer,
+  getClaimOfferState,
+  getClaimVcx,
+  getHandleBySerializedConnection,
+  getLedgerFees,
+  sendClaimRequest as sendClaimRequestApi,
+  serializeClaimOffer,
 } from '../bridge/react-native-cxs/RNCxs'
+import type {
+  ClaimStorageFailAction,
+  ClaimStorageSuccessAction,
+} from '../claim/type-claim'
 import { CLAIM_STORAGE_FAIL, CLAIM_STORAGE_SUCCESS } from '../claim/type-claim'
 import { CLAIM_STORAGE_ERROR } from '../services/error/error-code'
 import type { Connection } from '../store/type-connection-store'
-import { RESET } from '../common/type-common'
-import { secureSet, getHydrationItem } from '../services/storage'
+import { getHydrationItem, secureSet } from '../services/storage'
 import { BigNumber } from 'bignumber.js'
 import { refreshWalletBalance } from '../wallet/wallet-store'
-import type {
-  ClaimStorageSuccessAction,
-  ClaimStorageFailAction,
-} from '../claim/type-claim'
 import type { LedgerFeesData } from '../ledger/type-ledger-store'
 import moment from 'moment'
 import { captureError } from '../services/error/error-handler'
@@ -115,7 +110,7 @@ import ImageColors from 'react-native-image-colors'
 import { pickAndroidColor, pickIosColor } from '../my-credentials/cards/utils'
 import { showSnackError } from '../store/config-store'
 import { uuid } from '../services/uuid'
-import { claimStorageSuccess, mapClaimToSender } from '../claim/claim-store'
+import { claimStorageSuccess, getClaim, mapClaimToSender } from '../claim/claim-store'
 
 const claimOfferInitialState = {
   vcxSerializedClaimOffers: {},
@@ -245,7 +240,7 @@ export const acceptOutofbandClaimOffer = (uid: string, remoteDid: string, show: 
   show,
 })
 
-export const denyOutOfBandClaimOffer = (uid: string) => ({
+export const denyOutOfBandClaimOffer = (uid: string): DenyOutofbandClaimOfferAction => ({
   type: DENY_OUTOFBAND_CLAIM_OFFER,
   uid,
 })
@@ -657,7 +652,7 @@ export function* watchAddSerializedClaimOffer(): any {
       CLAIM_OFFER_RECEIVED,
       SEND_CLAIM_REQUEST,
       CLAIM_OFFER_SHOWN,
-      CLAIM_OFFER_DELETED,
+      DELETE_CLAIM_SUCCESS,
       CLAIM_STORAGE_SUCCESS,
       SEND_CLAIM_REQUEST_FAIL,
     ],
@@ -766,47 +761,34 @@ export const hydrateClaimOffers = (claimOffers: ClaimOfferStore) => ({
   claimOffers,
 })
 
-export const deleteClaimOffer = (
+export const deleteClaim = (uuid: string): DeleteClaimAction => ({
+  type: DELETE_CLAIM,
+  uuid,
+})
+export const deleteClaimSuccess = (
+  messageId: string,
   uid: string,
-  userDID: string
-): DeleteClaimOfferAction => ({
-  type: DELETE_CLAIM_OFFER,
+  pwDid: string,
+): DeleteClaimSuccessAction => ({
+  type: DELETE_CLAIM_SUCCESS,
+  messageId,
   uid,
-  userDID,
+  pwDid,
 })
 
-export const claimOfferDeleted = (
-  uid: string,
-  vcxSerializedClaimOffers: SerializedClaimOffers
-): ClaimOfferDeletedAction => ({
-  type: CLAIM_OFFER_DELETED,
-  uid,
-  vcxSerializedClaimOffers,
-})
-
-function* deleteClaimOfferSaga(
-  action: DeleteClaimOfferAction
+export function* deleteClaimSaga(
+  action: DeleteClaimAction,
 ): Generator<*, *, *> {
   try {
-    const claimOffers = yield select(getClaimOffers)
-
-    const {
-      [action.uid]: deleted,
-      ...restSerializedOffers
-    } = claimOffers.vcxSerializedClaimOffers[action.userDID]
-    const serializedOffers = {
-      ...claimOffers.vcxSerializedClaimOffers,
-      [action.userDID]: restSerializedOffers,
+    const claim = yield call(getClaim, action.uuid)
+    if (!claim) {
+      return
     }
-
-    yield put(claimOfferDeleted(action.uid, serializedOffers))
+    yield call(deleteCredential, claim.handle)
+    yield put(deleteClaimSuccess(claim.vcxSerializedClaimOffer.messageId, action.uuid, claim.claim.myPairwiseDID))
   } catch (e) {
     captureError(e)
   }
-}
-
-export function* watchDeleteClaimOffer(): any {
-  yield takeEvery(DELETE_CLAIM_OFFER, deleteClaimOfferSaga)
 }
 
 function* claimOfferReceivedSaga(
@@ -814,6 +796,10 @@ function* claimOfferReceivedSaga(
 ): Generator<*, *, *> {
   // accepting of credential offer requires pool ledger connectivity.
   yield* ensureVcxInitAndPoolConnectSuccess()
+}
+
+export function* watchDeleteClaim(): any {
+  yield takeEvery(DELETE_CLAIM, deleteClaimSaga)
 }
 
 export function* watchClaimOfferReceived(): any {
@@ -826,7 +812,6 @@ export function* watchClaimOffer(): any {
     watchAddSerializedClaimOffer(),
     watchClaimStorageSuccess(),
     watchClaimStorageFail(),
-    watchDeleteClaimOffer(),
     watchClaimOfferReceived(),
   ])
 }
@@ -1027,7 +1012,12 @@ export default function claimOfferReducer(
           status: CLAIM_OFFER_STATUS.FAILED,
         },
       }
-    case CLAIM_OFFER_DELETED:
+    case DELETE_CLAIM_SUCCESS:
+      const {
+        [action.uid]: deleted,
+        ...restSerializedOffers
+      } = state.vcxSerializedClaimOffers[action.pwDid]
+
       return {
         ...state,
         [action.uid]: {
@@ -1035,7 +1025,10 @@ export default function claimOfferReducer(
           status: CLAIM_OFFER_STATUS.DELETED,
           claimRequestStatus: CLAIM_REQUEST_STATUS.DELETED,
         },
-        vcxSerializedClaimOffers: action.vcxSerializedClaimOffers,
+        vcxSerializedClaimOffers: {
+          ...state.vcxSerializedClaimOffers,
+          [action.pwDid]: restSerializedOffers,
+        },
       }
     default:
       return state

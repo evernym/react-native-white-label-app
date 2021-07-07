@@ -1,82 +1,62 @@
 // @flow
-import {
-  put,
-  call,
-  all,
-  select,
-  takeEvery,
-  fork,
-  spawn,
-} from 'redux-saga/effects'
+import { call, fork, put, select, spawn, takeEvery } from 'redux-saga/effects'
 import moment from 'moment'
 import type {
   Claim,
-  ClaimStore,
   ClaimAction,
+  ClaimMap,
   ClaimReceivedAction,
   ClaimStorageFailAction,
   ClaimStorageSuccessAction,
+  ClaimStore,
   MapClaimToSenderAction,
-  ClaimMap,
-  ClaimReceivedVcxAction,
-  ClaimVcx,
-  DeleteClaimAction,
-  DeleteClaimSuccessAction,
 } from './type-claim'
-import type { GetClaimVcxResult } from '../push-notification/type-push-notification'
 import {
   CLAIM_RECEIVED,
   CLAIM_STORAGE_FAIL,
   CLAIM_STORAGE_SUCCESS,
-  MAP_CLAIM_TO_SENDER,
+  ERROR_CLAIM_HYDRATE_FAIL,
   HYDRATE_CLAIM_MAP,
   HYDRATE_CLAIM_MAP_FAIL,
-  ERROR_CLAIM_HYDRATE_FAIL,
-  CLAIM_RECEIVED_VCX,
-  DELETE_CLAIM,
-  DELETE_CLAIM_SUCCESS,
+  MAP_CLAIM_TO_SENDER,
 } from './type-claim'
+import type { GetClaimVcxResult } from '../push-notification/type-push-notification'
 import type { CustomError, GenericObject } from '../common/type-common'
+import { RESET } from '../common/type-common'
 import {
-  getClaimHandleBySerializedClaimOffer,
-  updateClaimOfferState,
-  getClaimVcx,
   fetchPublicEntitiesForCredentials,
-  deleteCredential,
+  getClaimHandleBySerializedClaimOffer,
+  getClaimVcx,
+  updateClaimOfferState,
   updateClaimOfferStateWithMessage,
 } from '../bridge/react-native-cxs/RNCxs'
 import { CLAIM_STORAGE_ERROR } from '../services/error/error-code'
 import {
-  getClaimMap,
-  getSerializedClaimOffers,
-  getConnectionByUserDid,
-  getClaimOffers,
-  getSerializedClaimOffer,
-  getClaimOffer,
-  getConnectionHistory,
   getAllConnection,
   getClaimForOffer,
+  getClaimMap,
+  getClaimOffer,
+  getClaimOffers,
+  getConnectionByUserDid,
+  getConnectionHistory,
+  getSerializedClaimOffer,
+  getSerializedClaimOffers,
 } from '../store/store-selector'
-import { secureSet, getHydrationItem } from '../services/storage'
+import { getHydrationItem, secureSet } from '../services/storage'
 import { CLAIM_MAP } from '../common/secure-storage-constants'
-import { RESET } from '../common/type-common'
 import { updateMessageStatus } from '../store/config-store'
 import { ensureVcxInitAndPoolConnectSuccess } from '../store/route-store'
-import type {
-  ClaimOfferPayload,
-  SerializedClaimOffer,
-} from '../claim-offer/type-claim-offer'
+import type { ClaimOfferPayload, SerializedClaimOffer } from '../claim-offer/type-claim-offer'
 import { VCX_CLAIM_OFFER_STATE } from '../claim-offer/type-claim-offer'
-import {
-  deleteClaimOffer,
-  saveSerializedClaimOffer,
-} from '../claim-offer/claim-offer-store'
+import { saveSerializedClaimOffer } from '../claim-offer/claim-offer-store'
 import type { Connection } from '../store/type-connection-store'
 import { promptBackupBanner } from '../backup/backup-store'
 import { captureError } from '../services/error/error-handler'
 import { customLogger } from '../store/custom-logger'
 
-export const claimReceived = (claim: Claim): ClaimReceivedAction => ({
+export const claimReceived = (
+  claim: Claim
+): ClaimReceivedAction => ({
   type: CLAIM_RECEIVED,
   claim,
 })
@@ -187,12 +167,7 @@ export function* hydrateClaimMapSaga(): Generator<*, *, *> {
   }
 }
 
-export const claimReceivedVcx = (claim: ClaimVcx): ClaimReceivedVcxAction => ({
-  type: CLAIM_RECEIVED_VCX,
-  claim,
-})
-
-export function* claimReceivedVcxSaga(
+export function* claimReceivedSaga(
   action: ClaimReceivedAction
 ): Generator<*, *, *> {
   const { forDID, connectionHandle, uid, msg } = action.claim
@@ -356,13 +331,10 @@ export function* claimStoredSaga(): Generator<*, *, *> {
 }
 
 export function* saveClaimUuidMap(): Generator<*, *, *> {
-  const claimMap: ClaimMap = yield select(getClaimMap)
-
   try {
+    const claimMap: ClaimMap = yield select(getClaimMap)
     yield call(secureSet, CLAIM_MAP, JSON.stringify(claimMap))
   } catch (e) {
-    // TODO:KS what should we do if storage fails
-    captureError(e)
     customLogger.log(`Failed to store claim uuid map:${e}`)
   }
 }
@@ -399,51 +371,8 @@ export function* getClaim(claimOfferUuid: string): Generator<*, *, *> {
   }
 }
 
-export const deleteClaim = (uuid: string): DeleteClaimAction => ({
-  type: DELETE_CLAIM,
-  uuid,
-})
-
-export const deleteClaimSuccess = (
-  claimMap: ClaimMap,
-  messageId: string
-): DeleteClaimSuccessAction => ({
-  type: DELETE_CLAIM_SUCCESS,
-  claimMap,
-  messageId,
-})
-
-export function* deleteClaimSaga(
-  action: DeleteClaimAction
-): Generator<*, *, *> {
-  try {
-    const claims: GenericObject = yield select(getClaimMap)
-    const claim = yield call(getClaim, action.uuid)
-    if (!claim) {
-      return
-    }
-
-    yield call(deleteCredential, claim.handle)
-    yield put(deleteClaimOffer(action.uuid, claim.claim.myPairwiseDID))
-
-    // ideally we need to delete Claim from Claim Store as well but we don't have an claimUuid
-    // investigate if we can get claimUuid during hydration
-    yield put(deleteClaimSuccess(claims, claim.vcxSerializedClaimOffer.messageId))
-  } catch (e) {
-    captureError(e)
-  }
-}
-
-export function* watchClaimReceivedVcx(): any {
-  yield takeEvery(CLAIM_RECEIVED_VCX, claimReceivedVcxSaga)
-}
-
-export function* watchClaim(): any {
-  yield all([watchClaimReceivedVcx()])
-}
-
-export function* watchDeleteClaim(): any {
-  yield takeEvery(DELETE_CLAIM, deleteClaimSaga)
+export function* watchClaimReceived(): any {
+  yield takeEvery(CLAIM_RECEIVED, claimReceivedSaga)
 }
 
 export function* watchClaimStored(): any {
@@ -459,28 +388,6 @@ export default function claimReducer(
   action: ClaimAction
 ) {
   switch (action.type) {
-    case CLAIM_RECEIVED:
-      return {
-        ...state,
-        [action.claim.messageId]: {
-          claim: action.claim,
-        },
-      }
-
-    case CLAIM_STORAGE_FAIL:
-      return {
-        ...state,
-        [action.messageId]: {
-          ...state[action.messageId],
-          error: action.error,
-        },
-      }
-
-    case CLAIM_STORAGE_SUCCESS: {
-      const { [action.messageId]: deleted, ...newState } = state
-      return newState
-    }
-
     case MAP_CLAIM_TO_SENDER:
       const {
         claimUuid,
@@ -507,12 +414,6 @@ export default function claimReducer(
       }
 
     case HYDRATE_CLAIM_MAP:
-      return {
-        ...state,
-        claimMap: action.claimMap,
-      }
-
-    case DELETE_CLAIM_SUCCESS:
       return {
         ...state,
         claimMap: action.claimMap,

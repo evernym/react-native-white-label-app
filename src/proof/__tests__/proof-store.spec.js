@@ -13,6 +13,7 @@ import proofReducer, {
   convertIndyPreparedProofToAttributes,
   getProof,
   proofRequestDataToStore,
+  findCredentialsExcludedByAttributeRestrictions,
 } from '../proof-store'
 import {
   acceptProofRequest,
@@ -37,7 +38,7 @@ import {
   originalProofRequestDataWithAttributesAndPredicates,
   originalProofRequestDataWithPredicates,
   homeAddressAndAgePreparedProof,
-  proofRequestWithPredicates,
+  proofRequestWithPredicates, claimOfferPayload, claimUUID,
 } from '../../../__mocks__/static-data'
 import {
   getOriginalProofRequestData,
@@ -503,6 +504,48 @@ describe('Proof Store', () => {
     )
     expect(
       proofReducer(proofStateAfterFail, proofRequestShowStart(uid))
+    ).toMatchSnapshot()
+  })
+
+  it('should find existing credentials which cannot be used for proving', () => {
+    let storedCredentials = [ claimOfferPayload ]
+    let attribute = { name: 'Address 1' }
+    let usedCredentials = []
+
+    expect(
+      findCredentialsExcludedByAttributeRestrictions(
+        storedCredentials,
+        attribute,
+        usedCredentials
+      )
+    ).toMatchSnapshot()
+  })
+
+  it('should find existing credentials which cannot be used for proving', () => {
+    let storedCredentials = [ claimOfferPayload ]
+    let attribute = { name: 'Address 1' }
+    let usedCredentials = [claimOfferPayload.claimId]
+
+    expect(
+      findCredentialsExcludedByAttributeRestrictions(
+        storedCredentials,
+        attribute,
+        usedCredentials
+      )
+    ).toMatchSnapshot()
+  })
+
+  it('should find existing credentials which cannot be used for proving', () => {
+    let storedCredentials = [ claimOfferPayload ]
+    let attribute = { name: 'No Address' }
+    let usedCredentials = [claimUUID]
+
+    expect(
+      findCredentialsExcludedByAttributeRestrictions(
+        storedCredentials,
+        attribute,
+        usedCredentials
+      )
     ).toMatchSnapshot()
   })
 })

@@ -475,11 +475,11 @@ export const MESSAGE_MISSING_ATTRIBUTE_DESCRIPTION = (
 ) => `
   ${requester} is asking you to share ${attribute}, which is not found in your ${appName} wallet.`
 
-export const MESSAGE_ATTRIBUTE_FROM_DIFFERENT_LEDGER_TITLE = 'Network Mismatch'
-export const MESSAGE_ATTRIBUTE_FROM_DIFFERENT_LEDGER_DESCRIPTION = (
+export const MESSAGE_ATTRIBUTE_RESTRICTIONS_MISMATCH_TITLE = 'Missing Attributes'
+export const MESSAGE_ATTRIBUTE_RESTRICTIONS_MISMATCH_DESCRIPTION = (
   requester: string,
 ) => `
-  While you have matching attribute ${requester} is requesting, it is rooted to a different Ledger. Contact ${requester} for more information.`
+  The credentials you have were issued using a different network than the one ${requester} requires. To resolve this, obtain the required credentials from an issuer which ${requester}  recommends.`
 
 export const MESSAGE_PREDICATE_TITLE = 'Unfulfilled Predicate'
 export const MESSAGE_PREDICATE_DESCRIPTION = (
@@ -495,7 +495,7 @@ export const ATTRIBUTE_TYPE = {
   DISSATISFIED_ATTRIBUTE: 'DISSATISFIED_ATTRIBUTE',
   FILLED_PREDICATE: 'FILLED_PREDICATE',
   DISSATISFIED_PREDICATE: 'DISSATISFIED_PREDICATE',
-  NETWORK_MISMATCH: 'NETWORK_MISMATCH',
+  RESTRICTIONS_MISMATCH: 'RESTRICTIONS_MISMATCH',
 }
 
 export type AriesPresentationPreviewAttribute = {

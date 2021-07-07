@@ -226,6 +226,11 @@ Object {
   "name": "Home Address",
   "originalPayload": Object {
     "payload": Object {
+      "attributes": Object {
+        "address1": "Address Address Address",
+        "address2": "Address 2 Address 2 Address 2",
+      },
+      "claimId": "claimUUID",
       "claimRequestStatus": "CLAIM_REQUEST_SUCCESS",
       "data": Object {
         "claimDefinitionSchemaSequenceNumber": 36,
@@ -449,6 +454,11 @@ Object {
             "name": "Home Address",
             "originalPayload": Object {
               "payload": Object {
+                "attributes": Object {
+                  "address1": "Address Address Address",
+                  "address2": "Address 2 Address 2 Address 2",
+                },
+                "claimId": "claimUUID",
                 "claimRequestStatus": "CLAIM_REQUEST_SUCCESS",
                 "data": Object {
                   "claimDefinitionSchemaSequenceNumber": 36,
@@ -622,6 +632,11 @@ Object {
             "name": "Home Address",
             "originalPayload": Object {
               "payload": Object {
+                "attributes": Object {
+                  "address1": "Address Address Address",
+                  "address2": "Address 2 Address 2 Address 2",
+                },
+                "claimId": "claimUUID",
                 "claimRequestStatus": "CLAIM_REQUEST_SUCCESS",
                 "data": Object {
                   "claimDefinitionSchemaSequenceNumber": 36,

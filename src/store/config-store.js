@@ -80,9 +80,9 @@ import { connectRegisterCreateAgentDone } from './user/user-store'
 import findKey from 'lodash.findkey'
 import { SAFE_TO_DOWNLOAD_SMS_INVITATION } from '../sms-pending-invitation/type-sms-pending-invitation'
 import { GENESIS_FILE_NAME, MESSAGE_TYPE } from '../api/api-constants'
-import type { ClaimOfferMessagePayload, ClaimPushPayload } from './../push-notification/type-push-notification'
+import type { ClaimOfferMessagePayload } from './../push-notification/type-push-notification'
 import type { ProofRequestPushPayload } from '../proof-request/type-proof-request'
-import type { ClaimPushPayloadVcx } from './../claim/type-claim'
+import type { ClaimPushPayload } from './../claim/type-claim'
 import type { QuestionPayload } from './../question/type-question'
 import { saveSerializedClaimOffer } from './../claim-offer/claim-offer-store'
 import { getAllConnections, getPendingFetchAdditionalDataKey } from './store-selector'
@@ -668,7 +668,7 @@ function* handleProprietaryMessage(
       | ClaimOfferMessagePayload
       | ProofRequestPushPayload
       | ClaimPushPayload
-      | ClaimPushPayloadVcx
+      | ClaimPushPayload
       | QuestionPayload
       | null = null
 
@@ -814,7 +814,7 @@ function* handleAriesMessage(downloadMessage: DownloadedMessage): Generator<*, *
       | ClaimOfferMessagePayload
       | ProofRequestPushPayload
       | ClaimPushPayload
-      | ClaimPushPayloadVcx
+      | ClaimPushPayload
       | QuestionPayload
       | null = null
 

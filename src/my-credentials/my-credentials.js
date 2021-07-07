@@ -9,7 +9,6 @@ import { CameraButton } from '../components'
 import { CredentialsCards } from './cards/credentials-cards'
 import { myCredentialsRoute, qrCodeScannerTabRoute } from '../common'
 import { colors } from '../common/styles/constant'
-import { deleteClaim } from '../claim/claim-store'
 import { getReceivedCredentials } from '../store/store-selector'
 import { EmptyState } from '../home/empty-state'
 import {
@@ -18,6 +17,7 @@ import {
   CustomMyCredentialsScreen,
   MyCredentialsViewEmptyState,
 } from '../external-imports'
+import { deleteClaim } from '../claim-offer/claim-offer-store'
 
 export const headlineForCredentialRoute =
   credentialsHeadline || 'MY Credentials'
