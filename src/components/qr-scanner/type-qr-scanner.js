@@ -31,6 +31,7 @@ export const SCAN_STATUS = {
   DOWNLOADING: 'Downloading...',
   INVALID_DOWNLOADED_DATA: '007::Invalid data from QR Code.',
   INVALID_URL_QR_CODE: '008::Invalid QR code.',
+  INVALID_OPENID_QR_LINK: '009::Invalid OpenID link.',
 }
 
 export type QR_SCAN_STATUS =

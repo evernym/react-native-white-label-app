@@ -33,7 +33,7 @@ import {
   QR_CODE_TYPES,
 } from './type-qr-scanner'
 import { isValidUrl, getUrlData } from './qr-code-types/qr-url'
-import { fetchValidateJWT } from './qr-code-types/qr-code-oidc'
+import { fetchValidateJWT, getOpenidLinkData, isValidOpenIDLink } from './qr-code-types/qr-code-oidc'
 import { uuid } from '../../services/uuid'
 import {
   MESSAGE_NO_CAMERA_PERMISSION,
@@ -124,6 +124,17 @@ export default class QRScanner extends PureComponent<
       // we have different url type qr codes as well,
       // identify which type of url qr it is and get a json object from url
       const [urlError, urlData] = await getUrlData(urlQrCode, event.data)
+      if (urlError) {
+        // we could not get data from url, show error to user
+        return this.showError(urlError)
+      }
+
+      qrData = urlData
+    }
+
+    const openidLinkQrCode = isValidOpenIDLink(event.data)
+    if (openidLinkQrCode) {
+      const [urlError, urlData] = await getOpenidLinkData(event.data)
       if (urlError) {
         // we could not get data from url, show error to user
         return this.showError(urlError)
