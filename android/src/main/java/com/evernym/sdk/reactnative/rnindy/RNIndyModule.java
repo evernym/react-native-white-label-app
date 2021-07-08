@@ -209,36 +209,30 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
         BridgeUtils.writeCACert(this.getReactApplicationContext());
 
         try {
-            int retCode = VcxApi.initSovToken();
-            if (retCode != 0) {
-                promise.reject("Could not init sovtoken", String.valueOf(retCode));
-            } else {
-                VcxApi.vcxInitWithConfig(config).exceptionally((t) -> {
-                    VcxException ex = (VcxException) t;
-                    ex.printStackTrace();
-                    Log.e(TAG, "vcxInitWithConfig - Error: ", ex);
-                    promise.reject(String.valueOf(ex.getSdkErrorCode()), ex.getSdkMessage());
-                    return -1;
-                }).thenAccept(result -> {
-                    // Need to put this logic in every accept because that is how ugly Java's
-                    // promise API is
-                    // even if exceptionally is called, then also thenAccept block will be called
-                    // we either need to switch to complete method and pass two callbacks as
-                    // parameter
-                    // till we change to that API, we have to live with this IF condition
-                    // also reason to add this if condition is because we already rejected promise
-                    // in
-                    // exceptionally block, if we call promise.resolve now, then it `thenAccept`
-                    // block
-                    // would throw an exception that would not be caught here, because this is an
-                    // async
-                    // block and above try catch would not catch this exception
-                    if (result != -1) {
-                        promise.resolve(true);
-                    }
-                });
-            }
-
+          VcxApi.vcxInitWithConfig(config).exceptionally((t) -> {
+                VcxException ex = (VcxException) t;
+                ex.printStackTrace();
+                Log.e(TAG, "vcxInitWithConfig - Error: ", ex);
+                promise.reject(String.valueOf(ex.getSdkErrorCode()), ex.getSdkMessage());
+                return -1;
+            }).thenAccept(result -> {
+                // Need to put this logic in every accept because that is how ugly Java's
+                // promise API is
+                // even if exceptionally is called, then also thenAccept block will be called
+                // we either need to switch to complete method and pass two callbacks as
+                // parameter
+                // till we change to that API, we have to live with this IF condition
+                // also reason to add this if condition is because we already rejected promise
+                // in
+                // exceptionally block, if we call promise.resolve now, then it `thenAccept`
+                // block
+                // would throw an exception that would not be caught here, because this is an
+                // async
+                // block and above try catch would not catch this exception
+                if (result != -1) {
+                    promise.resolve(true);
+                }
+            });
         } catch (AlreadyInitializedException e) {
             // even if we get already initialized exception
             // then also we will resolve promise, because we don't care if vcx is already
@@ -2240,7 +2234,7 @@ public class RNIndyModule extends ReactContextBaseJavaModule {
     /**
      * Send a request to the SafetyNet Attestation API See
      * https://developer.android.com/training/safetynet/attestation.html#compat-check-request
-     * 
+     *
      * @param nonceString
      * @param apiKey
      * @param promise
