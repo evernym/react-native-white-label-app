@@ -49,7 +49,6 @@ export async function convertAgencyConfigToVcxProvision(
     wallet_key,
     agent_seed: null,
     enterprise_seed: null,
-    payment_method: config.paymentMethod,
     ...commonConfigParams,
   }
 }
@@ -109,7 +108,6 @@ export async function convertCxsInitToVcxInit(
     institution_logo_url: 'https://try.connect.me/img/CMicon@3x.png',
     institution_did: init.oneTimeAgencyDid,
     institution_verkey: init.oneTimeAgencyVerificationKey,
-    payment_method: init.paymentMethod,
     ...commonConfigParams,
   }
 }

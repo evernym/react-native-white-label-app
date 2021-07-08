@@ -125,8 +125,6 @@ RCT_EXPORT_METHOD(init: (NSString *)config
                   rejecter: (RCTPromiseRejectBlock) reject)
 {
   ConnectMeVcx *conn = [[ConnectMeVcx alloc] init];
-  //int retCode = [conn initNullPay];
-  int retCode = [conn initSovToken];
 
   if(retCode != 0) {
     NSString *indyErrorCode = [NSString stringWithFormat:@"%ld", (long)retCode];
@@ -1933,7 +1931,7 @@ RCT_EXPORT_METHOD(getDeviceCheckToken: (RCTPromiseResolveBlock) resolve
         }
         reject(errorDomain, error.localizedDescription, error);
     };
-    
+
     if (@available(iOS 11.0, *)) {
         if (DCDevice.currentDevice.supported) {
             [DCDevice.currentDevice generateTokenWithCompletionHandler:^(NSData * _Nullable token, NSError * _Nullable error) {
