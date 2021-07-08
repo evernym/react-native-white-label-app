@@ -242,6 +242,10 @@ function buildCaseInsensitiveMap(attrs: GenericObject) {
   )
 }
 
+function findCredentialAttribute(credential: ClaimOfferPayload, label: string) {
+  return credential.data.revealedAttributes.find(attribute => attribute.label === label)
+}
+
 export function findCredentialsExcludedByAttributeRestrictions(
   storedCredentials: Array<ClaimOfferPayload>,
   attribute: RequestedAttribute,
@@ -249,15 +253,18 @@ export function findCredentialsExcludedByAttributeRestrictions(
 ) {
   let credentialsExcludedByRestrictions = []
   for (let credential of storedCredentials) {
-    let credentialAttributes = credential.attributes || {}
+    let credentialAttributes = credential.caseInsensitiveAttributes || {}
 
     // group of requested attributes
     if (attribute.names && !usedCredentials.includes(credential.claimId)) {
       let credentialWithRequestedAttributes = {}
       for (let label of attribute.names) {
-        let value = credentialAttributes[caseInsensitive(label)]
-        if (value) {
-          credentialWithRequestedAttributes[label] = value
+        let attributeName = credentialAttributes[caseInsensitive(label)]
+        if (attributeName) {
+          const credentialAttribute = findCredentialAttribute(credential, attributeName)
+          if (credentialAttribute) {
+            credentialWithRequestedAttributes[label] = credentialAttribute.data
+          }
         } else {
           credentialWithRequestedAttributes = null
           break
@@ -277,14 +284,17 @@ export function findCredentialsExcludedByAttributeRestrictions(
 
     // single requested attribute
     if (attribute.name && !usedCredentials.includes(credential.claimId)) {
-      let value = credentialAttributes[caseInsensitive(attribute.name)]
-      if (value) {
-        credentialsExcludedByRestrictions.push({
-          label: attribute.name,
-          data: value,
-          claimUuid: credential.claimId,
-          type: ATTRIBUTE_TYPE.RESTRICTIONS_MISMATCH,
-        })
+      let attributeName = credentialAttributes[caseInsensitive(attribute.name || '')]
+      if (attributeName) {
+        const credentialAttribute = findCredentialAttribute(credential, attributeName)
+        if (credentialAttribute) {
+          credentialsExcludedByRestrictions.push({
+            label: attribute.name,
+            data: credentialAttribute.data,
+            claimUuid: credential.claimId,
+            type: ATTRIBUTE_TYPE.RESTRICTIONS_MISMATCH,
+          })
+        }
       }
     }
   }
@@ -298,15 +308,18 @@ export function findCredentialsExcludedByPredicateRestrictions(
 ) {
   const credentialsExcludedByRestrictions = []
   for (let credential of storedCredentials) {
-    let credentialAttributes = credential.attributes || {}
-    let value = credentialAttributes[caseInsensitive(predicate.name)]
-    if (value && !usedCredentials.includes(credential.claimId)) {
-      credentialsExcludedByRestrictions.push({
-        label: predicate.name,
-        data: value,
-        claimUuid: credential.claimId,
-        type: ATTRIBUTE_TYPE.RESTRICTIONS_MISMATCH,
-      })
+    let credentialAttributes = credential.caseInsensitiveAttributes || {}
+    let attributeName = credentialAttributes[caseInsensitive(predicate.name)]
+    if (attributeName && !usedCredentials.includes(credential.claimId)) {
+      const credentialAttribute = findCredentialAttribute(credential, predicate.name)
+      if (credentialAttribute) {
+        credentialsExcludedByRestrictions.push({
+          label: predicate.name,
+          data: credentialAttribute.data,
+          claimUuid: credential.claimId,
+          type: ATTRIBUTE_TYPE.RESTRICTIONS_MISMATCH,
+        })
+      }
     }
   }
   return credentialsExcludedByRestrictions
@@ -376,7 +389,6 @@ export function convertIndyPreparedProofToAttributes(
           attribute,
           usedCredentials,
         )
-
       attributes.push(
         credentialsCanBeUsed.concat(credentialsExcludedByRestrictions),
       )

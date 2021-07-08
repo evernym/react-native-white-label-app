@@ -3,10 +3,10 @@
 exports[`claim offer store action: ADD_SERIALIZED_CLAIM_OFFER 1`] = `
 Object {
   "usd123": Object {
-    "attributes": Array [
+    "caseInsensitiveAttributes": Array [
       Object {
-        "address1": "address1",
-        "address2": "address2",
+        "address1": "Address 1",
+        "address2": "Address 2",
       },
     ],
     "claimId": "claimUUID",
@@ -54,10 +54,10 @@ Object {
 exports[`claim offer store action: CLAIM_OFFER_SHOW_START 1`] = `
 Object {
   "usd123": Object {
-    "attributes": Array [
+    "caseInsensitiveAttributes": Array [
       Object {
-        "address1": "address1",
-        "address2": "address2",
+        "address1": "Address 1",
+        "address2": "Address 2",
       },
     ],
     "claimId": "claimUUID",
@@ -113,10 +113,10 @@ Object {
 exports[`claim offer store action: RESET_CLAIM_REQUEST_STATUS 1`] = `
 Object {
   "usd123": Object {
-    "attributes": Array [
+    "caseInsensitiveAttributes": Array [
       Object {
-        "address1": "address1",
-        "address2": "address2",
+        "address1": "Address 1",
+        "address2": "Address 2",
       },
     ],
     "claimId": "claimUUID",
@@ -334,10 +334,10 @@ Object {
 exports[`claim offer store claim request is fail 1`] = `
 Object {
   "usd123": Object {
-    "attributes": Array [
+    "caseInsensitiveAttributes": Array [
       Object {
-        "address1": "address1",
-        "address2": "address2",
+        "address1": "Address 1",
+        "address2": "Address 2",
       },
     ],
     "claimId": "claimUUID",
@@ -411,10 +411,10 @@ Object {
 exports[`claim offer store claim request is success 1`] = `
 Object {
   "usd123": Object {
-    "attributes": Array [
+    "caseInsensitiveAttributes": Array [
       Object {
-        "address1": "address1",
-        "address2": "address2",
+        "address1": "Address 1",
+        "address2": "Address 2",
       },
     ],
     "claimId": "claimUUID",

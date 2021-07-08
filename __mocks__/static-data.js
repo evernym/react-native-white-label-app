@@ -196,10 +196,10 @@ export const colorTheme = '#86B93B'
 const issuerDid = 'issuerDid'
 export const senderLogoUrl = 'http://testissuer.com/logoUrl.png'
 
-export const attributes = [
+export const caseInsensitiveAttributes = [
   {
-    'address1': 'address1',
-    'address2': 'address2',
+    'address1': 'Address 1',
+    'address2': 'Address 2',
   }
 ]
 
@@ -373,9 +373,9 @@ export const claimOfferPayload = {
   status: 'RECEIVED',
   claimRequestStatus: 'CLAIM_REQUEST_SUCCESS',
   claimId: claimUUID,
-  attributes: {
-    'address1': 'Address Address Address',
-    'address2': 'Address 2 Address 2 Address 2',
+  caseInsensitiveAttributes: {
+    'address1': 'Address 1',
+    'address2': 'Address 2',
   }
 }
 

@@ -186,14 +186,14 @@ export const claimRequestSuccess = (
   issueDate: number,
   colorTheme: string,
   claimId: string,
-  attributes: any,
+  caseInsensitiveAttributes: any,
 ): ClaimRequestSuccessAction => ({
   type: CLAIM_REQUEST_SUCCESS,
   uid,
   issueDate,
   colorTheme,
   claimId,
-  attributes,
+  caseInsensitiveAttributes,
 })
 
 export const claimRequestFail = (uid: string, error: CustomError) => ({
@@ -559,12 +559,12 @@ export function* checkCredentialStatus(
 
 export const caseInsensitive = (attr: string) => attr.toLowerCase().replace(/ /g, '')
 
-const buildClaimAttributes = (claimOfferPayload: ClaimOfferPayload) => {
+const buildCredentialCaseInsensitiveAttributes = (claimOfferPayload: ClaimOfferPayload) => {
   return claimOfferPayload.data.revealedAttributes
     .reduce(
       (acc, attribute) => ({
         ...acc,
-        [caseInsensitive(attribute.label)]: attribute.data
+        [caseInsensitive(attribute.label)]: attribute.label
       }), {})
 
 }
@@ -576,9 +576,9 @@ function* claimStorageSuccessSaga(
 
   const claimOfferPayload = yield select(getClaimOffer, messageId)
   const colorTheme = yield call(getColorTheme, claimOfferPayload.senderLogoUrl)
-  const attributes = buildClaimAttributes(claimOfferPayload)
+  const caseInsensitiveAttributes = buildCredentialCaseInsensitiveAttributes(claimOfferPayload)
 
-  yield put(claimRequestSuccess(messageId, issueDate, colorTheme, action.claimId, attributes))
+  yield put(claimRequestSuccess(messageId, issueDate, colorTheme, action.claimId, caseInsensitiveAttributes))
 }
 
 export function* watchClaimStorageSuccess(): any {
@@ -733,8 +733,8 @@ export function* hydrateClaimOffersSaga(): Generator<*, *, *> {
           }
         }
 
-        if (!offer.attributes) {
-          offer.attributes = buildClaimAttributes(offer)
+        if (!offer.caseInsensitiveAttributes) {
+          offer.caseInsensitiveAttributes = buildCredentialCaseInsensitiveAttributes(offer)
         }
 
         if (offer.data && offer.issuer && !offer.data.claimDefinitionId) {
@@ -905,7 +905,7 @@ export default function claimOfferReducer(
           issueDate: action.issueDate,
           colorTheme: action.colorTheme,
           claimId: action.claimId,
-          attributes: action.attributes,
+          caseInsensitiveAttributes: action.caseInsensitiveAttributes,
         },
       }
     case CLAIM_REQUEST_FAIL:

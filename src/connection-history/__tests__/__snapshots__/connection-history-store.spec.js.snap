@@ -226,9 +226,9 @@ Object {
   "name": "Home Address",
   "originalPayload": Object {
     "payload": Object {
-      "attributes": Object {
-        "address1": "Address Address Address",
-        "address2": "Address 2 Address 2 Address 2",
+      "caseInsensitiveAttributes": Object {
+        "address1": "Address 1",
+        "address2": "Address 2",
       },
       "claimId": "claimUUID",
       "claimRequestStatus": "CLAIM_REQUEST_SUCCESS",
@@ -454,9 +454,9 @@ Object {
             "name": "Home Address",
             "originalPayload": Object {
               "payload": Object {
-                "attributes": Object {
-                  "address1": "Address Address Address",
-                  "address2": "Address 2 Address 2 Address 2",
+                "caseInsensitiveAttributes": Object {
+                  "address1": "Address 1",
+                  "address2": "Address 2",
                 },
                 "claimId": "claimUUID",
                 "claimRequestStatus": "CLAIM_REQUEST_SUCCESS",
@@ -632,9 +632,9 @@ Object {
             "name": "Home Address",
             "originalPayload": Object {
               "payload": Object {
-                "attributes": Object {
-                  "address1": "Address Address Address",
-                  "address2": "Address 2 Address 2 Address 2",
+                "caseInsensitiveAttributes": Object {
+                  "address1": "Address 1",
+                  "address2": "Address 2",
                 },
                 "claimId": "claimUUID",
                 "claimRequestStatus": "CLAIM_REQUEST_SUCCESS",

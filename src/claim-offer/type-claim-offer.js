@@ -146,7 +146,7 @@ export type ClaimRequestSuccessAction = {
   issueDate: number,
   colorTheme: string,
   claimId: string,
-  attributes: string,
+  caseInsensitiveAttributes: string,
 }
 
 export const INSUFFICIENT_BALANCE = 'INSUFFICIENT_BALANCE'
@@ -293,7 +293,7 @@ export type ClaimOfferPayload = AdditionalDataPayload & {
   colorTheme?: string,
   ephemeralClaimOffer?: any,
   claimId?: string,
-  attributes?: GenericObject,
+  caseInsensitiveAttributes?: GenericObject,
 }
 
 export type SerializedClaimOffer = {
