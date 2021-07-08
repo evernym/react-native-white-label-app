@@ -43,6 +43,9 @@ import {
   serializedClaimOffer,
   vcxSerializedConnection,
   connectionHistory,
+  colorTheme,
+  claimUUID,
+  caseInsensitiveAttributes,
 } from '../../../__mocks__/static-data'
 import { expectSaga } from 'redux-saga-test-plan'
 import * as matchers from 'redux-saga-test-plan/matchers'
@@ -115,7 +118,13 @@ describe('claim offer store', () => {
   })
 
   it('claim request is success', () => {
-    newState = claimOfferStore(newState, claimRequestSuccess(uid, issueDate))
+    newState = claimOfferStore(newState, claimRequestSuccess(
+      uid,
+      issueDate,
+      colorTheme,
+      claimUUID,
+      caseInsensitiveAttributes,
+    ))
     expect(newState).toMatchSnapshot()
   })
 
@@ -232,6 +241,8 @@ describe('claim offer store', () => {
         uid: 'uid',
         remotePairwiseDID: 'remotePairwiseDID',
         senderLogoUrl: 'senderLogoUrl',
+        claimId: claimUUID,
+        caseInsensitiveAttributes: caseInsensitiveAttributes,
       },
     }
 

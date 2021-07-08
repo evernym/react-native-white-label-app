@@ -282,8 +282,8 @@ export function* hydrate(): any {
       // as hydrateClaimOffersSaga uses connection history store to restore issue date of claim offers if required
       // as hydrateClaimMapSaga uses connection history store to restore credential name if required
       yield* loadHistorySaga()
-      yield* hydrateClaimOffersSaga()
       yield* hydrateClaimMapSaga()
+      yield* hydrateClaimOffersSaga()
       yield* hydrateQuestionSaga()
       yield* hydrateInviteActionSaga()
       yield* hydrateVerifierSaga()
