@@ -31,7 +31,7 @@ export function isAriesOutOfBandInvitation(
 export async function isEncodedAriesOutOfBandInvitation(
   { query }: Url
 ): Promise<AriesOutOfBandInvite | false> {
-  const body = query.oob || query.c_i || query.d_m
+  const body = query.oob || query.c_i || query.d_m || query.m
   let qrData = await getBase64DecodedInvitation(body)
   if (!qrData) {
     return false

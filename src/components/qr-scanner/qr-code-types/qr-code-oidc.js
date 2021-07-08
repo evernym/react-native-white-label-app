@@ -7,7 +7,7 @@ import { stringify } from 'query-string'
 import type { QrCodeOIDC, JWTAuthenticationRequest, QR_SCAN_STATUS } from '../type-qr-scanner'
 
 import { QR_CODE_TYPES, SCAN_STATUS } from '../type-qr-scanner'
-import { flatFetch } from '../../../common/flat-fetch'
+import { acceptHeaders, flatFetch } from '../../../common/flat-fetch'
 import { schemaValidator } from '../../../services/schema-validator'
 import { toUtf8FromBase64 } from '../../../bridge/react-native-cxs/RNCxs'
 import { addBase64Padding } from '../../../common/base64-padding'
@@ -211,7 +211,6 @@ const jwtBodySchema = {
   ],
 }
 
-const headers = {'Accept': 'application/json;flavor=didcomm-msg',}
 const query_param = 'request_uri='
 const domain = 'openid://'
 
@@ -219,8 +218,8 @@ export function isValidOpenIDLink(data: string): boolean {
   return data.startsWith(domain)
 }
 
-export async function getOpenidLinkData(link: string):
-  [null | QR_SCAN_STATUS, GenericObject] {
+export async function getOpenidLinkData(link: string):  Promise<
+  [null | QR_SCAN_STATUS, GenericObject | null]> {
 
   if (!link.includes(query_param)){
     return [SCAN_STATUS.INVALID_OPENID_QR_LINK, null]
@@ -232,8 +231,8 @@ export async function getOpenidLinkData(link: string):
     return [SCAN_STATUS.INVALID_OPENID_QR_LINK, null]
   }
 
-  const [downloadErr, downloadedData] = await flatFetch(requestUri, null, headers)
-  if (downloadErr && !downloadedData){
+  const [, downloadedData] = await flatFetch(requestUri, undefined, acceptHeaders)
+  if (!downloadedData){
     return [SCAN_STATUS.INVALID_OPENID_QR_LINK, null]
   }
 

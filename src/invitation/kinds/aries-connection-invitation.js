@@ -29,7 +29,7 @@ export function isAriesInvitation(
 export async function isEncodedAriesConnectionInvitation(
   { query }: Url
 ): Promise<AriesConnectionInvite | false> {
-  const body = query.c_i || query.d_m
+  const body = query.c_i || query.d_m || query.m
   let qrData = await getBase64DecodedInvitation(body)
   if (!qrData) {
     return false
