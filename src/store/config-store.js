@@ -75,15 +75,14 @@ import {
   updatePayloadToRelevantStoreAndRedirect,
   updatePayloadToRelevantStoreSaga,
 } from '../push-notification/push-notification-store'
-import type { CxsPoolConfig } from '../bridge/react-native-cxs/type-cxs'
 import type { UserOneTimeInfo } from './user/type-user-store'
 import { connectRegisterCreateAgentDone } from './user/user-store'
 import findKey from 'lodash.findkey'
 import { SAFE_TO_DOWNLOAD_SMS_INVITATION } from '../sms-pending-invitation/type-sms-pending-invitation'
 import { GENESIS_FILE_NAME, MESSAGE_TYPE } from '../api/api-constants'
-import type { ClaimOfferMessagePayload, ClaimPushPayload } from './../push-notification/type-push-notification'
+import type { ClaimOfferMessagePayload } from './../push-notification/type-push-notification'
 import type { ProofRequestPushPayload } from '../proof-request/type-proof-request'
-import type { ClaimPushPayloadVcx } from './../claim/type-claim'
+import type { ClaimPushPayload } from './../claim/type-claim'
 import type { QuestionPayload } from './../question/type-question'
 import { saveSerializedClaimOffer } from './../claim-offer/claim-offer-store'
 import { getAllConnections, getPendingFetchAdditionalDataKey } from './store-selector'
@@ -102,7 +101,7 @@ import { updateVerifierState } from '../verifier/verifier-store'
 import { presentationProposalSchema } from '../proof-request/proof-request-qr-code-reader'
 import { deleteOneTimeConnection, deleteOneTimeConnectionOccurredSaga } from './connections-store'
 import { getAttachedRequestData } from '../invitation/invitation-helpers'
-import { baseUrls, defaultEnvironment } from '../environment'
+import { environments, defaultEnvironment } from '../environment'
 import {
   persistEnvironmentDetails,
   watchChangeEnvironmentUrl,
@@ -115,7 +114,7 @@ import {
 } from '../switch-environment/type-switch-environment'
 
 const initialState: ConfigStore = {
-  ...baseUrls[defaultEnvironment],
+  ...environments[defaultEnvironment],
   isAlreadyInstalled: false,
   // this flag is used to identify if we got the already stored data
   // from the phone and loaded in app
@@ -333,7 +332,6 @@ export function* initVcx(findingWallet?: any): Generator<*, *, *> {
           ...userOneTimeInfo,
           ...agencyConfig,
         },
-        getGenesisFileName(agencyUrl),
       )
       if (findingWallet !== true) {
         yield put(vcxInitSuccess())
@@ -355,18 +353,20 @@ export function* initVcx(findingWallet?: any): Generator<*, *, *> {
 }
 
 export function* connectToPool(): Generator<*, *, *> {
-  const { agencyUrl, poolConfig }: ConfigStore = yield select(getConfig)
+  const { agencyUrl }: ConfigStore = yield select(getConfig)
 
-  const config: CxsPoolConfig = {
-    poolConfig: poolConfig,
+  const configName = getConfigName(agencyUrl)
+  const environment = environments[configName]
+  if (!environment) {
+    yield put(vcxInitPoolFail(ERROR_VCX_INIT_FAIL('Cannot find requested configuration')))
+    return
   }
-  const genesisFileName = getGenesisFileName(agencyUrl)
 
   // re-try init pool 2 times, if it does not get success, raise fail
   let lastInitException = new Error('')
   for (let i = 0; i < 2; i++) {
     try {
-      yield call(initPool, config, genesisFileName)
+      yield call(initPool, environment.poolConfig)
       yield put(vcxInitPoolSuccess())
       return
     } catch (e) {
@@ -383,11 +383,15 @@ export function* connectToPool(): Generator<*, *, *> {
 export const ERROR_POOL_INIT_FAIL =
   'Unable to connect to pool ledger. Check your internet connection or try to restart app.'
 
+export const getConfigName = (agencyUrl: string) => {
+  return findKey(environments, (environment) => environment.agencyUrl === agencyUrl)
+}
+
 export const getGenesisFileName = (agencyUrl: string) => {
   return (
     GENESIS_FILE_NAME +
     '_' +
-    findKey(baseUrls, (environment) => environment.agencyUrl === agencyUrl)
+    findKey(environments, (environment) => environment.agencyUrl === agencyUrl)
   )
 }
 
@@ -417,6 +421,12 @@ export function* getMessagesSaga(
   params: ?GetUnacknowledgedMessagesAction,
 ): Generator<*, *, *> {
   try {
+    const userOneTimeInfo = yield select(getUserOneTimeInfo)
+    if (!userOneTimeInfo) {
+      // agent has not been provisioned yet
+      return
+    }
+
     //make sure vcx is initialized
     const vcxResult = yield* ensureVcxInitSuccess()
     if (vcxResult && vcxResult.fail) {
@@ -658,7 +668,7 @@ function* handleProprietaryMessage(
       | ClaimOfferMessagePayload
       | ProofRequestPushPayload
       | ClaimPushPayload
-      | ClaimPushPayloadVcx
+      | ClaimPushPayload
       | QuestionPayload
       | null = null
 
@@ -804,7 +814,7 @@ function* handleAriesMessage(downloadMessage: DownloadedMessage): Generator<*, *
       | ClaimOfferMessagePayload
       | ProofRequestPushPayload
       | ClaimPushPayload
-      | ClaimPushPayloadVcx
+      | ClaimPushPayload
       | QuestionPayload
       | null = null
 
@@ -1092,7 +1102,7 @@ export default function configReducer(
 ) {
   switch (action.type) {
     case SERVER_ENVIRONMENT_CHANGED:
-      const urls = baseUrls[action.serverEnvironment]
+      const urls = environments[action.serverEnvironment]
       return {
         ...state,
         ...urls,

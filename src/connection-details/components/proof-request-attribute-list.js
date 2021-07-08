@@ -19,8 +19,10 @@ import type {
 } from '../../proof-request/type-proof-request'
 import {
   ATTRIBUTE_TYPE,
-  MESSAGE_ATTRIBUTE_DESCRIPTION,
-  MESSAGE_ATTRIBUTE_TITLE,
+  MESSAGE_ATTRIBUTE_RESTRICTIONS_MISMATCH_DESCRIPTION,
+  MESSAGE_ATTRIBUTE_RESTRICTIONS_MISMATCH_TITLE,
+  MESSAGE_MISSING_ATTRIBUTE_DESCRIPTION,
+  MESSAGE_MISSING_ATTRIBUTE_TITLE,
   MESSAGE_PREDICATE_DESCRIPTION,
   MESSAGE_PREDICATE_TITLE,
 } from '../../proof-request/type-proof-request'
@@ -127,8 +129,20 @@ class ProofRequestAttributeList extends Component<
 
   showMissingAttributeModal = (attribute: string) => {
     Alert.alert(
-      MESSAGE_ATTRIBUTE_TITLE,
-      MESSAGE_ATTRIBUTE_DESCRIPTION(this.props.institutionalName, attribute),
+      MESSAGE_MISSING_ATTRIBUTE_TITLE,
+      MESSAGE_MISSING_ATTRIBUTE_DESCRIPTION(this.props.institutionalName, attribute),
+      [
+        {
+          text: 'OK',
+        },
+      ]
+    )
+  }
+
+  showNetworkMismatchModal = () => {
+    Alert.alert(
+      MESSAGE_ATTRIBUTE_RESTRICTIONS_MISMATCH_TITLE,
+      MESSAGE_ATTRIBUTE_RESTRICTIONS_MISMATCH_DESCRIPTION(this.props.institutionalName),
       [
         {
           text: 'OK',
@@ -186,6 +200,7 @@ class ProofRequestAttributeList extends Component<
     if (keys.length === 1) {
       return navigate(attributeValueRoute, {
         label: keys.join(),
+        sender: this.props.institutionalName,
         customValue: this.state?.[label],
         onTextChange,
         items,
@@ -498,7 +513,11 @@ class ProofRequestAttributeList extends Component<
           {keyIndex === 0 && (
             <TouchableOpacity
               style={[styles.iconWrapper, styles.alertIconWrapper]}
-              onPress={() => this.showMissingAttributeModal(label)}
+              onPress={() =>
+                attribute.hasCredentialsWithRequestedAttribute ?
+                  this.showNetworkMismatchModal() :
+                  this.showMissingAttributeModal(label)
+              }
             >
               <EvaIcon
                 name={ALERT_ICON}
@@ -626,7 +645,11 @@ class ProofRequestAttributeList extends Component<
           </View>
           <TouchableOpacity
             style={[styles.iconWrapper, styles.alertIconWrapper]}
-            onPress={() => this.showMissingPredicateModal(`${attribute.label} ${title.toLocaleLowerCase()}`)}
+            onPress={() =>
+              attribute.hasCredentialsWithRequestedAttribute ?
+                this.showNetworkMismatchModal() :
+                this.showMissingPredicateModal(`${attribute.label} ${title.toLocaleLowerCase()}`)
+            }
           >
             <EvaIcon
               name={ALERT_ICON}

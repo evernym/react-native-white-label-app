@@ -113,6 +113,7 @@ export type Attribute = {
   p_type?: string,
   p_value?: number,
   type?: string,
+  hasCredentialsWithRequestedAttribute?: boolean,
 }
 
 export type SelectedAttribute = {

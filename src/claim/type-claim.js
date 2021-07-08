@@ -1,51 +1,17 @@
 // @flow
 
 import type {
-  GenericObject,
   CustomError,
   InitialTestAction,
   ResetAction,
   NotificationPayload,
 } from '../common/type-common'
 
-export type Claim = {
-  messageId: string,
-  claim: { [string]: Array<string> },
-  schema_seq_no: number,
-  issuer_did: string,
-  signature: {
-    primary_claim: {
-      m2: string,
-      a: string,
-      e: string,
-      v: string,
-    },
-    non_revocation_claim?: GenericObject,
-  },
-  optional_data?: GenericObject,
-  remoteDid: string,
-  uid: string,
-  from_did: string,
-  forDID: string,
-  connectionHandle?: number,
-  remotePairwiseDID?: string,
-  msg?: ?string,
-}
-
-export type ClaimWithUuid = Claim & {
-  claim_uuid: string,
-}
-
-export const CLAIM_RECEIVED = 'CLAIM_RECEIVED'
-export type ClaimReceivedAction = {
-  type: typeof CLAIM_RECEIVED,
-  claim: Claim,
-}
-
 export const CLAIM_STORAGE_SUCCESS = 'CLAIM_STORAGE_SUCCESS'
 export type ClaimStorageSuccessAction = {
   type: typeof CLAIM_STORAGE_SUCCESS,
   messageId: string,
+  claimId: string,
   issueDate: number,
 }
 
@@ -68,17 +34,6 @@ export type MapClaimToSenderAction = {
   senderName?: string,
 }
 
-export type ClaimMap = {
-  +[claimUuid: string]: {
-    senderDID: string,
-    myPairwiseDID: string,
-    logoUrl: string,
-    issueDate: number,
-    name?: string,
-    senderName?: string,
-  },
-}
-
 export const HYDRATE_CLAIM_MAP = 'HYDRATE_CLAIM_MAP'
 export type HydrateClaimMapAction = {
   type: typeof HYDRATE_CLAIM_MAP,
@@ -91,33 +46,18 @@ export type HydrateClaimMapFailAction = {
   error: CustomError,
 }
 
-export type ClaimPushPayloadVcx = {
+export type ClaimPushPayload = {
   connectionHandle: number,
 }
-export type ClaimVcx = NotificationPayload & ClaimPushPayloadVcx
+export type Claim = NotificationPayload & ClaimPushPayload
 
-export const CLAIM_RECEIVED_VCX = 'CLAIM_RECEIVED_VCX'
-export type ClaimReceivedVcxAction = {
-  type: typeof HYDRATE_CLAIM_MAP_FAIL,
-  claim: ClaimVcx,
-}
-
-export const DELETE_CLAIM = 'DELETE_CLAIM'
-export type DeleteClaimAction = {
-  type: typeof DELETE_CLAIM,
-  uuid: string,
-}
-
-export const DELETE_CLAIM_SUCCESS = 'DELETE_CLAIM_SUCCESS'
-
-export type DeleteClaimSuccessAction = {
-  type: typeof DELETE_CLAIM_SUCCESS,
-  claimMap: ClaimMap,
-  messageId: string,
+export const CLAIM_RECEIVED = 'CLAIM_RECEIVED'
+export type ClaimReceivedAction = {
+  type: typeof CLAIM_RECEIVED,
+  claim: Claim,
 }
 
 export type ClaimAction =
-  | ClaimReceivedAction
   | ClaimStorageSuccessAction
   | ClaimStorageFailAction
   | MapClaimToSenderAction
@@ -125,12 +65,21 @@ export type ClaimAction =
   | HydrateClaimMapFailAction
   | InitialTestAction
   | ResetAction
-  | ClaimReceivedVcxAction
-  | DeleteClaimSuccessAction
+  | ClaimReceivedAction
+
+export type ClaimMap = {
+  +[claimUuid: string]: {
+    senderDID: string,
+    myPairwiseDID: string,
+    logoUrl: string,
+    issueDate: number,
+    name?: string,
+    senderName?: string,
+  },
+}
 
 export type ClaimStore = {
   +[string]: {
-    claim: Claim,
     error?: CustomError,
   },
   claimMap: ClaimMap,

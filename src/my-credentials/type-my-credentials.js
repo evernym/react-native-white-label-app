@@ -2,7 +2,7 @@
 import type { ReactNavigation } from '../common/type-common'
 import type { ClaimOfferPayload } from '../claim-offer/type-claim-offer'
 import type { Attribute } from '../push-notification/type-push-notification'
-import { deleteClaim } from '../claim/claim-store'
+import { deleteClaim } from '../claim-offer/claim-offer-store'
 
 export type MyCredentialsProps = {
   offers: ClaimOffers,

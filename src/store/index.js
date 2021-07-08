@@ -26,7 +26,7 @@ import smsPendingInvitation, {
 } from '../sms-pending-invitation/sms-pending-invitation-store'
 import claimOffer, {
   watchClaimOffer,
-  watchClaimOfferDeny,
+  watchClaimOfferDeny, watchDeleteClaim,
 } from '../claim-offer/claim-offer-store'
 import proofRequest, {
   watchProofRequestAccepted,
@@ -37,8 +37,7 @@ import proofRequest, {
 } from '../proof-request/proof-request-store'
 import invitation, { watchInvitation } from '../invitation/invitation-store'
 import claim, {
-  watchClaim,
-  watchDeleteClaim,
+  watchClaimReceived,
   watchClaimStored,
 } from '../claim/claim-store'
 import question, { watchQuestion } from '../question/question-store'
@@ -154,7 +153,7 @@ sagaMiddleware.run(function* (): Generator<*, *, *> {
     watchClaimOfferDeny(),
     watchPushNotification(),
     watchInvitation(),
-    watchClaim(),
+    watchClaimReceived(),
     watchDeleteClaim(),
     watchClaimStored(),
     watchShowCredentialStore(),

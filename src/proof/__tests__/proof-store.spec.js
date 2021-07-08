@@ -13,6 +13,7 @@ import proofReducer, {
   convertIndyPreparedProofToAttributes,
   getProof,
   proofRequestDataToStore,
+  findCredentialsExcludedByAttributeRestrictions,
 } from '../proof-store'
 import {
   acceptProofRequest,
@@ -37,7 +38,7 @@ import {
   originalProofRequestDataWithAttributesAndPredicates,
   originalProofRequestDataWithPredicates,
   homeAddressAndAgePreparedProof,
-  proofRequestWithPredicates,
+  proofRequestWithPredicates, claimOfferPayload, claimUUID,
 } from '../../../__mocks__/static-data'
 import {
   getOriginalProofRequestData,
@@ -140,12 +141,14 @@ describe('Proof Store', () => {
     expect(
       convertIndyPreparedProofToAttributes(
         homeAddressPreparedProof,
+        [],
         originalProofRequestData.requested_attributes
       )
     ).toMatchSnapshot()
     expect(
       convertIndyPreparedProofToAttributes(
         homeAddressPreparedProof,
+        [],
         originalProofRequestData10Attributes.requested_attributes
       )
     ).toMatchSnapshot()
@@ -153,6 +156,7 @@ describe('Proof Store', () => {
     expect(
       convertIndyPreparedProofToAttributes(
         homeAddressPreparedProof,
+        [],
         originalProofRequestDataWithSpaces.requested_attributes
       )
     ).toMatchSnapshot()
@@ -161,6 +165,7 @@ describe('Proof Store', () => {
     expect(
       convertIndyPreparedProofToAttributes(
         homeAddressAndAgePreparedProof,
+        [],
         originalProofRequestDataWithAttributesAndPredicates.requested_attributes,
         originalProofRequestDataWithAttributesAndPredicates.requested_predicates,
       )
@@ -203,11 +208,13 @@ describe('Proof Store', () => {
           },
         },
       },
+      claimOffer: {}
     }
     const requestedAttributes = convertIndyPreparedProofToAttributes(
       {
         ...homeAddressPreparedProof,
       },
+      [],
       originalProofRequestData.requested_attributes,
       originalProofRequestData.requested_predicates,
     )
@@ -270,11 +277,13 @@ describe('Proof Store', () => {
           },
         },
       },
+      claimOffer: {}
     }
     const requestedAttributes = convertIndyPreparedProofToAttributes(
       {
         ...homeAddressAndAgePreparedProof,
       },
+      [],
       originalProofRequestDataWithAttributesAndPredicates.requested_attributes,
       originalProofRequestDataWithAttributesAndPredicates.requested_predicates,
     )
@@ -332,6 +341,7 @@ describe('Proof Store', () => {
           },
         },
       },
+      claimOffer: {}
     }
     const copyHomeAddressPreparedProofMultipleCreds: typeof homeAddressPreparedProofMultipleCreds = JSON.parse(
       JSON.stringify(homeAddressPreparedProofMultipleCreds)
@@ -343,6 +353,7 @@ describe('Proof Store', () => {
         ...copyHomeAddressPreparedProofMultipleCreds,
         self_attested_attrs: {},
       },
+      [],
       originalProofRequestData.requested_attributes
     )
 
@@ -399,6 +410,7 @@ describe('Proof Store', () => {
         ...homeAddressPreparedProof,
         self_attested_attrs: {},
       },
+      [],
       originalProofRequestData.requested_attributes
     )
 
@@ -454,6 +466,7 @@ describe('Proof Store', () => {
         ...homeAddressPreparedProofWithMissingAttribute,
         self_attested_attrs: { ...selfAttestedAttributes },
       },
+      [],
       originalProofRequestDataMissingAttribute.requested_attributes
     )
 
@@ -491,6 +504,48 @@ describe('Proof Store', () => {
     )
     expect(
       proofReducer(proofStateAfterFail, proofRequestShowStart(uid))
+    ).toMatchSnapshot()
+  })
+
+  it('should find existing credentials which cannot be used for proving', () => {
+    let storedCredentials = [ claimOfferPayload ]
+    let attribute = { name: 'Address 1' }
+    let usedCredentials = []
+
+    expect(
+      findCredentialsExcludedByAttributeRestrictions(
+        storedCredentials,
+        attribute,
+        usedCredentials
+      )
+    ).toMatchSnapshot()
+  })
+
+  it('should find existing credentials which cannot be used for proving', () => {
+    let storedCredentials = [ claimOfferPayload ]
+    let attribute = { name: 'Address 1' }
+    let usedCredentials = [claimOfferPayload.claimId]
+
+    expect(
+      findCredentialsExcludedByAttributeRestrictions(
+        storedCredentials,
+        attribute,
+        usedCredentials
+      )
+    ).toMatchSnapshot()
+  })
+
+  it('should find existing credentials which cannot be used for proving', () => {
+    let storedCredentials = [ claimOfferPayload ]
+    let attribute = { name: 'No Address' }
+    let usedCredentials = [claimUUID]
+
+    expect(
+      findCredentialsExcludedByAttributeRestrictions(
+        storedCredentials,
+        attribute,
+        usedCredentials
+      )
     ).toMatchSnapshot()
   })
 })

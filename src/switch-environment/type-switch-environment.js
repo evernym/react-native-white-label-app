@@ -37,7 +37,6 @@ export const SERVER_ENVIRONMENT = {
   DEVTEAM2: 'DEVTEAM2',
   DEVTEAM3: 'DEVTEAM3',
   PROD: 'PROD',
-  BCOVRIN_TEST: 'BCOVRIN_TEST',
 }
 
 export type ServerEnvironment = $Keys<typeof SERVER_ENVIRONMENT>
