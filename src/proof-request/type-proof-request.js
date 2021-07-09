@@ -475,11 +475,11 @@ export const MESSAGE_MISSING_ATTRIBUTE_DESCRIPTION = (
 ) => `
   ${requester} is asking you to share ${attribute}, which is not found in your ${appName} wallet.`
 
-export const MESSAGE_ATTRIBUTE_RESTRICTIONS_MISMATCH_TITLE = 'Missing Attributes'
+export const MESSAGE_ATTRIBUTE_RESTRICTIONS_MISMATCH_TITLE = 'Restrictions Mismatch'
 export const MESSAGE_ATTRIBUTE_RESTRICTIONS_MISMATCH_DESCRIPTION = (
   requester: string,
 ) => `
-  The credentials you have were issued using a different network than the one ${requester} requires. To resolve this, obtain the required credentials from an issuer which ${requester}  recommends.`
+  While you have the matching attribute ${requester} is requesting, the credential does not meet the restrictions of this share request`
 
 export const MESSAGE_PREDICATE_TITLE = 'Unfulfilled Predicate'
 export const MESSAGE_PREDICATE_DESCRIPTION = (
