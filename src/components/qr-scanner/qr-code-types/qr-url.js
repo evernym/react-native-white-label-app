@@ -13,7 +13,7 @@ import type {
 
 import { SCAN_STATUS, QR_CODE_TYPES } from '../type-qr-scanner'
 import type { GenericObject } from '../../../common/type-common'
-import { flatFetch } from '../../../common/flat-fetch'
+import { acceptHeaders, flatFetch } from '../../../common/flat-fetch'
 import { flatJsonParse } from '../../../common/flat-json-parse'
 import { isValidOIDCQrCode } from './qr-code-oidc'
 import {getRequestRedirectionUrl} from '../../../bridge/react-native-cxs/RNCxs'
@@ -126,7 +126,7 @@ export async function getUrlData(
   }
 
   // 5. download data and get a valid json object
-  const [downloadErr, downloadedData] = await flatFetch(url)
+  const [downloadErr, downloadedData] = await flatFetch(url, undefined, acceptHeaders)
   if (downloadedData) {
     // we are able to get data from url
     // now we need to verify that data is a valid json

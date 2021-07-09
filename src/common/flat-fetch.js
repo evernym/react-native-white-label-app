@@ -14,6 +14,8 @@
 // calls
 // Problem #2 leads to unexpected app crashes at runtime
 
+export const acceptHeaders = {'Accept': 'application/json;flavor=didcomm-msg',}
+
 export async function flatFetch(
   url: string,
   body?: string,
