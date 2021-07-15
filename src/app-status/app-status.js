@@ -13,6 +13,7 @@ import type {
   AppStatusState,
   ConnectProps,
 } from './type-app-status'
+import { resetBackgroundTimeout, stopWithBackgroundTimeout } from '../bridge/react-native-cxs/RNCxs'
 
 export class AppStatusComponent extends React.Component<
   AppStatusProps,
@@ -41,6 +42,17 @@ export class AppStatusComponent extends React.Component<
       this.props.dispatch(getUnacknowledgedMessages())
     }
     this.setState({ appState: nextAppState })
+  }
+
+  componentDidUpdate() {
+    if (
+      this.state.appState &&
+      this.state.appState.match(/inactive|background/)
+    ) {
+      stopWithBackgroundTimeout()
+    } else {
+      resetBackgroundTimeout()
+    }
   }
 
   render() {
