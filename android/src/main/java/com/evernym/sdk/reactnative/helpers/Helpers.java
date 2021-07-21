@@ -35,7 +35,7 @@ public class Helpers extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void stopWithBackgroundTimeout() {
+  public void watchApplicationInactivity() {
     t = new Thread() {
       public void run() {
         try {

@@ -71,9 +71,9 @@ export function resetBackgroundTimeout() {
   }
 }
 
-export async function stopWithBackgroundTimeout() {
+export async function watchApplicationInactivity() {
   if (Platform.OS === 'android') {
-     Helpers.stopWithBackgroundTimeout()
+     Helpers.watchApplicationInactivity()
   }
 }
 
