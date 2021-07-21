@@ -66,11 +66,15 @@ import { WALLET_ITEM_NOT_FOUND } from "./error-cxs";
 const { RNIndy, Helpers } = NativeModules
 
 export function resetBackgroundTimeout() {
-  return Helpers.resetTimeout()
+  if (Platform.OS === 'android') {
+    return Helpers.resetTimeout()
+  }
 }
 
 export async function stopWithBackgroundTimeout() {
-  return Helpers.stopWithBackgroundTimeout()
+  if (Platform.OS === 'android') {
+     Helpers.stopWithBackgroundTimeout()
+  }
 }
 
 export async function acceptInvitationVcx(
