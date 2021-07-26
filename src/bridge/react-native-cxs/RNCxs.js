@@ -63,7 +63,19 @@ import type { GenericObject } from '../../common/type-common'
 import type { PairwiseAgent } from '../../store/type-connection-store'
 import { WALLET_ITEM_NOT_FOUND } from "./error-cxs";
 
-const { RNIndy } = NativeModules
+const { RNIndy, Helpers } = NativeModules
+
+export function resetBackgroundTimeout() {
+  if (Platform.OS === 'android') {
+    return Helpers.resetTimeout()
+  }
+}
+
+export async function watchApplicationInactivity() {
+  if (Platform.OS === 'android') {
+     Helpers.watchApplicationInactivity()
+  }
+}
 
 export async function acceptInvitationVcx(
   connectionHandle: number,
