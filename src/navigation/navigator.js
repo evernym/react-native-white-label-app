@@ -386,6 +386,7 @@ function CardStackScreen() {
       <CardStack.Screen
         name={waitForInvitationScreen.routeName}
         component={waitForInvitationScreen.screen}
+        options={waitForInvitationScreen.options}
       />
       <CardStack.Screen
         name={switchEnvironmentScreen.routeName}
