@@ -19,3 +19,4 @@ RUN npm install -g yarn
 RUN mkdir -p /usr/local/share/ca-certificates
 RUN curl -k https://repo.corp.evernym.com/ca.crt | tee /usr/local/share/ca-certificates/Evernym_Root_CA.crt
 RUN update-ca-certificates
+
