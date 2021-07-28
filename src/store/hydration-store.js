@@ -68,7 +68,7 @@ import {
   hydrated,
   initialized,
 } from './config-store'
-import { ensureVcxInitSuccess } from './route-store'
+import { ensureVcxInitAndPoolConnectSuccess, ensureVcxInitSuccess } from './route-store'
 import {
   lockEnable,
   enableTouchIdAction,
@@ -311,6 +311,8 @@ export function* hydrate(): any {
       if (!pairwiseAgent) {
         yield spawn(createPairwiseAgentSaga)
       }
+
+      yield* ensureVcxInitAndPoolConnectSuccess()
 
       // NOTE: This will be changed when the TAA flow changes.
       // yield* hydrateTxnAuthorAgreementSaga()
