@@ -13,7 +13,7 @@ import {
   vcxShutdown,
 } from '../../bridge/react-native-cxs/RNCxs'
 
-import { sponsorId, vcxPushType, getProvisionTokenFunc } from '../../external-imports'
+import { sponsorId, getProvisionTokenFunc } from '../../external-imports'
 
 export function* registerCloudAgentWithToken(
   agencyConfig: *
@@ -44,11 +44,7 @@ export function* registerCloudAgentWithToken(
       [provisionTokenError, provisionToken] = yield call(
         getProvisionToken,
         agencyConfig,
-        {
-          type: vcxPushType,
-          id,
-          value: `FCM:mock_value_just_to_register`,
-        },
+        id,
         sponsorId
       )
       if (provisionToken){

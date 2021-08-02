@@ -176,7 +176,7 @@ export async function createOneTimeInfo(
 
 export async function getProvisionToken(
   agencyConfig: AgencyPoolConfig,
-  comMethod: { type: number, id: string, value: string },
+  sponseeId: string,
   sponsorId: string
 ): Promise<[null | string, null | string]> {
   try {
@@ -188,18 +188,12 @@ export async function getProvisionToken(
     const vcxProvisionConfig = {
       vcx_config: vcxConfig,
       source_id: 'someSourceId',
-      com_method: comMethod,
-      sponsee_id: comMethod.id,
+      sponsee_id: sponseeId,
       sponsor_id: sponsorId,
     }
     let provisionToken: string = await RNIndy.getProvisionToken(
       JSON.stringify(vcxProvisionConfig)
     )
-
-    // TODO: FIXME temp workaround until we get fixed VCX
-    let tempProvisionToken = JSON.parse(provisionToken)
-    tempProvisionToken['sponseeId'] = comMethod.id
-    provisionToken = JSON.stringify(tempProvisionToken)
 
     return [null, provisionToken]
   } catch (e) {
