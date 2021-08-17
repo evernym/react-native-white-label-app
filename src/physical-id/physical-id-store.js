@@ -1,27 +1,29 @@
 // @flow
 import {
   put,
-  takeLatest,
   call,
   all,
   select,
   take,
   fork,
   race,
+  join,
+  takeEvery,
+  spawn,
 } from 'redux-saga/effects'
 import { NativeModules } from 'react-native'
+import delay from '@redux-saga/delay-p'
 
-import {
+import type {
   PhysicalIdStore,
   PhysicalIdStoreAction,
   LaunchPhysicalIdSDKAction,
   PhysicalIdProcessStatus,
   PhysicalIdConnectionStatus,
-  HYDRATE_PHYSICAL_ID_SDK_TOKEN,
-  ERROR_CONNECTION_DETAIL_FETCH_ERROR,
 } from './physical-id-type'
 import type { CustomError } from '../common/type-common'
 import type { Store } from '../store/type-store'
+import type { InvitationPayload } from '../invitation/type-invitation'
 
 import {
   LAUNCH_PHYSICAL_ID_SDK,
@@ -39,11 +41,15 @@ import {
   physicalIdConnectionStatus,
   UPDATE_PHYSICAL_ID_CONNECTION_STATUS,
   RESET_PHYSICAL_ID_STATUES,
+  HYDRATE_PHYSICAL_ID_SDK_TOKEN,
+  ERROR_CONNECTION_DETAIL_FETCH_ERROR,
+  ERROR_CONNECTION_FAIL,
 } from './physical-id-type'
 import {
   getSdkToken,
   getWorkflowData,
   getPhysicalIdInvitation,
+  issueCredential,
 } from './physical-id-api'
 import { captureError } from '../services/error/error-handler'
 import { secureDelete, getHydrationItem, secureSet } from '../services/storage'
@@ -51,21 +57,27 @@ import {
   invitationReceived,
   sendInvitationResponse,
 } from '../invitation/invitation-store'
-import { convertQrCodeToInvitation } from '../qr-code/qr-code'
 import { ResponseType } from '../components/request/type-request'
-import { QR_CODE_SENDER_DETAIL, QR_CODE_SENDER_DID } from '../api/api-constants'
-import { ensureAppHydrated, getEnvironmentName } from '../store/config-store'
+import {
+  ensureAppHydrated,
+  getUnacknowledgedMessages,
+} from '../store/config-store'
 import { getUserPairwiseDid } from '../store/store-selector'
 import { INVITATION_RESPONSE_FAIL } from '../invitation/type-invitation'
-import { SERVER_ENVIRONMENT } from '../store/type-config-store'
 import { NEW_CONNECTION_SUCCESS } from '../store/type-connection-store'
 import { flattenAsync } from '../common/flatten-async'
 import {
   getUrlData,
   isValidUrl,
 } from '../components/qr-scanner/qr-code-types/qr-url'
-
-const { JumioMobileSDKDocumentVerification } = NativeModules
+import { getEnvironmentName } from '../switch-environment/switсh-environment-store'
+import { convertQrCodeToAppInvitation } from '../components/qr-scanner/qr-code-converter'
+import { flatJsonParse } from '../common/flat-json-parse'
+import { countriesCodeMap } from './physical-id-countries-map'
+import {
+  GET_MESSAGES_FAIL,
+  GET_MESSAGES_SUCCESS,
+} from '../store/type-config-store'
 
 const initialState = {
   status: physicalIdProcessStatus.IDLE,
@@ -73,6 +85,7 @@ const initialState = {
   error: null,
   physicalIdDid: null,
   physicalIdConnectionStatus: physicalIdConnectionStatus.IDLE,
+  sdkToken: null,
 }
 
 export const updatePhysicalIdStatus = (
@@ -93,8 +106,10 @@ export const updatePhysicalIdConnectionStatus = (
   error,
 })
 
-export const launchPhysicalIdSDK = () => ({
+export const launchPhysicalIdSDK = (country: string, documentType: string) => ({
   type: LAUNCH_PHYSICAL_ID_SDK,
+  country,
+  documentType,
 })
 
 export const hydratePhysicalIdSdkToken = (sdkToken: string) => ({
@@ -150,66 +165,162 @@ function* launchPhysicalIdSDKSaga(
   action: LaunchPhysicalIdSDKAction
 ): Generator<*, *, *> {
   // make connection with physical Id scanner in background
-  const [
-    connectionError,
-    connectionDid,
-  ] = yield* makeConnectionWithPhysicalIdSaga()
+  const connectionTask = yield fork(makeConnectionWithPhysicalIdSaga)
 
-  if (connectionError || !connectionDid) {
-    yield put(
-      updatePhysicalIdStatus(
-        physicalIdProcessStatus.APPLICANT_ID_API_ERROR,
-        connectionError
-      )
-    )
-    return
-  }
-
-  const [tokenError, token]: [
+  const [tokenError, tokenResponse]: [
     string | null,
-    string | null
+    [string, string] | null
   ] = yield* getSdkTokenSaga()
-  if (tokenError) {
+  console.log({ tokenError, tokenResponse })
+  if (tokenError || !tokenResponse) {
     // action are already raised by sdk toke saga and status is also updated in above saga
     return
   }
 
-  const apiSecret = yield* getPhysicalApiSecret()
-  // TODO:KS for now, let's hard code the data center to US. We will choose data center dynamically on the basis of user country later
-  const dataCenter = 'US'
-
-  // Once we have connection and token, start SDK
-  try {
-    // init sdk
-    yield put(updatePhysicalIdStatus(physicalIdProcessStatus.SDK_INIT_START))
-    JumioMobileSDKDocumentVerification.initDocumentVerification(
-      token,
-      apiSecret,
-      dataCenter,
-      {
-        type: action.documentType,
-        userReference: connectionDid,
-        customerInternalReference: connectionDid,
-        country: action.country,
-      }
-    )
-
-    yield put(updatePhysicalIdStatus(physicalIdProcessStatus.SDK_INIT_SUCCESS))
-  } catch (e) {
+  const [token, apiDataCenter] = tokenResponse
+  // init sdk
+  yield put(updatePhysicalIdStatus(physicalIdProcessStatus.SDK_INIT_START))
+  const [midsSdkInitError] = yield call(
+    flattenAsync(midsSdkInit),
+    token,
+    apiDataCenter
+  )
+  if (midsSdkInitError) {
     yield put(updatePhysicalIdStatus(physicalIdProcessStatus.SDK_INIT_FAIL))
     return
   }
+  yield put(updatePhysicalIdStatus(physicalIdProcessStatus.SDK_INIT_SUCCESS))
 
-  try {
-    // start SDK
-    yield put(updatePhysicalIdStatus(physicalIdProcessStatus.SDK_SCAN_START))
-    JumioMobileSDKDocumentVerification.startDocumentVerification()
+  const [countryListError, countryList] = yield call(
+    flattenAsync(midsGetCountryList)
+  )
+  const selectedCountry = countriesCodeMap[action.country]
+  const [documentTypesError, documentTypes] = yield call(
+    flattenAsync(midsGetDocumentTypes),
+    selectedCountry
+  )
 
-    yield put(updatePhysicalIdStatus(physicalIdProcessStatus.SDK_SCAN_SUCCESS))
-  } catch (e) {
+  // start SDK
+  yield put(updatePhysicalIdStatus(physicalIdProcessStatus.SDK_SCAN_START))
+
+  // TODO:KS Validate that the spelling and casing is as per need of MC SDK
+  const document = action.documentType
+  const [workflowIdError, workflowId] = yield call(
+    flattenAsync(midsScanStart),
+    document
+  )
+  if (workflowIdError) {
     yield put(updatePhysicalIdStatus(physicalIdProcessStatus.SDK_SCAN_FAIL))
     return
   }
+  yield put(updatePhysicalIdStatus(physicalIdProcessStatus.SDK_SCAN_SUCCESS))
+
+  yield put(
+    updatePhysicalIdStatus(physicalIdProcessStatus.SEND_WORKFLOW_ID_START)
+  )
+  // send workflow Id to server so that it can get the data for workflowRefId
+  const [getWorkflowDataError] = yield call(flattenAsync(getWorkflowData), {
+    workflowId,
+    country: action.country,
+    document: action.documentType,
+  })
+
+  if (getWorkflowDataError) {
+    yield put(
+      updatePhysicalIdStatus(physicalIdProcessStatus.SEND_WORKFLOW_ID_FAIL)
+    )
+    // there was an error while sending workflow data
+    // this is the API that we can retry
+    return
+  }
+
+  yield put(
+    updatePhysicalIdStatus(physicalIdProcessStatus.SEND_WORKFLOW_ID_SUCCESS)
+  )
+
+  let [connectionError, connectionDID]: [
+    { code: string, message: string } | null | typeof undefined,
+    string | null | typeof undefined
+  ] = [null, null]
+  const connectionTaskResult = connectionTask.result()
+
+  if (!connectionTaskResult) {
+    // if connection task is still running, then wait for it's completion
+    ;[connectionError, connectionDID] = yield join(connectionTask)
+  } else {
+    // if connection task is already done, then just take the result
+    ;[connectionError, connectionDID] = connectionTaskResult
+  }
+
+  if (connectionError || !connectionDID) {
+    return
+  }
+
+  yield put(
+    updatePhysicalIdStatus(physicalIdProcessStatus.SEND_ISSUE_CREDENTIAL_START)
+  )
+  // TODO:KS Get a new hardware token here again, to make auth more stronger
+  // now we have connection, and we also have the workflow data
+  // we can now issue the credential
+  const [issueCredentialError] = yield call(flattenAsync(issueCredential), {
+    workflowId,
+    connectionDID,
+    hardwareToken: 'something-fails-for-now-till-we-add-auth',
+    country: action.country,
+    document: action.documentType,
+  })
+  if (issueCredentialError) {
+    yield put(
+      updatePhysicalIdStatus(physicalIdProcessStatus.SEND_ISSUE_CREDENTIAL_FAIL)
+    )
+
+    // something went wrong while asking to issue credential
+    return
+  }
+
+  yield put(
+    updatePhysicalIdStatus(
+      physicalIdProcessStatus.SEND_ISSUE_CREDENTIAL_SUCCESS
+    )
+  )
+}
+
+async function midsSdkInit(sdkToken: string, apiDataCenter: string) {
+  return new Promise((resolve, reject) => {
+    NativeModules.MIDSDocumentVerification.initMIDSSDK(
+      sdkToken,
+      apiDataCenter,
+      resolve,
+      reject
+    )
+  })
+}
+
+export async function midsGetCountryList() {
+  return new Promise((resolve, reject) => {
+    NativeModules.MIDSDocumentVerification.getCountryList(resolve, reject)
+  })
+}
+
+export async function midsGetDocumentTypes(country: string) {
+  return new Promise((resolve, reject) => {
+    NativeModules.MIDSDocumentVerification.getDocumentTypes(
+      country,
+      resolve,
+      reject
+    )
+  })
+}
+
+async function midsScanStart(document: string) {
+  return new Promise((resolve, reject) => {
+    NativeModules.MIDSDocumentVerification.startMIDSSDKScan(
+      document,
+      '1.0.0',
+      resolve,
+      reject
+    )
+  })
 }
 
 function* makeConnectionWithPhysicalIdSaga(): Generator<*, *, *> {
@@ -237,40 +348,41 @@ function* makeConnectionWithPhysicalIdSaga(): Generator<*, *, *> {
     { invitation: string } | null
   ] = yield call(flattenAsync(getPhysicalIdInvitation))
 
-  if (error || !invitationDetails.invitation) {
+  if (error || !invitationDetails || !invitationDetails.invitation) {
     yield put(
       updatePhysicalIdConnectionStatus(
         physicalIdConnectionStatus.CONNECTION_DETAIL_FETCH_ERROR,
-        ERROR_CONNECTION_DETAIL_FETCH_ERROR(error.message)
+        ERROR_CONNECTION_DETAIL_FETCH_ERROR(error?.message ?? '')
       )
     )
-    return [ERROR_CONNECTION_DETAIL_FETCH_ERROR(error.message), null]
+    return [ERROR_CONNECTION_DETAIL_FETCH_ERROR(error?.message ?? ''), null]
   }
 
+  let invitationData = null
+  let invitationParseError = null
   const urlQrCode = isValidUrl(invitationDetails.invitation)
-  if (!urlQrCode) {
-    yield put(
-      updatePhysicalIdConnectionStatus(
-        physicalIdConnectionStatus.CONNECTION_DETAIL_INVALID_ERROR,
-        ERROR_CONNECTION_DETAIL_INVALID('Invalid invite')
-      )
+  if (urlQrCode) {
+    ;[invitationParseError, invitationData] = yield call(
+      flattenAsync(getUrlData),
+      urlQrCode,
+      invitationDetails.invitation
     )
-    return [ERROR_CONNECTION_DETAIL_INVALID('Invalid invite'), null]
   }
 
-  const [invitationParseError, invitationData] = yield call(
-    flattenAsync(getUrlData),
-    urlQrCode,
-    invitationDetails.invitation
-  )
-  if (invitationParseError || !invitationData) {
+  if (!invitationData) {
+    ;[invitationParseError, invitationData] = flatJsonParse(
+      invitationDetails.invitation
+    )
+  }
+
+  if (invitationParseError) {
     yield put(
       updatePhysicalIdConnectionStatus(
         physicalIdConnectionStatus.CONNECTION_DETAIL_INVALID_ERROR,
-        ERROR_CONNECTION_DETAIL_INVALID('Invalid invite')
+        ERROR_CONNECTION_DETAIL_INVALID('Invalid invite URL')
       )
     )
-    return [ERROR_CONNECTION_DETAIL_INVALID('Invalid invite json'), null]
+    return [ERROR_CONNECTION_DETAIL_INVALID('Invalid invite URL'), null]
   }
 
   yield put(
@@ -278,12 +390,36 @@ function* makeConnectionWithPhysicalIdSaga(): Generator<*, *, *> {
       physicalIdConnectionStatus.CONNECTION_DETAIL_FETCH_SUCCESS
     )
   )
+  const [appInviteError, appInvitation]: [
+    null | string,
+    null | InvitationPayload
+  ] = yield call(
+    convertQrCodeToAppInvitation,
+    typeof invitationData !== 'string'
+      ? JSON.stringify(invitationData)
+      : invitationData
+  )
+  if (appInviteError || !appInvitation) {
+    yield put(
+      updatePhysicalIdConnectionStatus(
+        physicalIdConnectionStatus.CONNECTION_DETAIL_INVALID_ERROR,
+        ERROR_CONNECTION_DETAIL_INVALID(
+          'Could not convert invite to app invite'
+        )
+      )
+    )
+    return [
+      ERROR_CONNECTION_DETAIL_INVALID('Could not convert invite to app invite'),
+      null,
+    ]
+  }
+
   yield put(
     invitationReceived({
-      payload: convertQrCodeToInvitation(invitationData),
+      payload: appInvitation,
     })
   )
-  physicalIdDid = invitationData[QR_CODE_SENDER_DETAIL][QR_CODE_SENDER_DID]
+  physicalIdDid = appInvitation.senderDID
   yield put(
     sendInvitationResponse({
       response: ResponseType.accepted,
@@ -295,26 +431,39 @@ function* makeConnectionWithPhysicalIdSaga(): Generator<*, *, *> {
       physicalIdConnectionStatus.CONNECTION_IN_PROGRESS
     )
   )
+  // since we will be racing for connection status update
+  // it might happen that we would get some problem with push notification
+  // and connection status might never change
+  // So, we are manually refreshing
+  yield spawn(refreshConnectionStateSaga)
+
   const { fail } = yield race({
     success: take(NEW_CONNECTION_SUCCESS),
     fail: take(INVITATION_RESPONSE_FAIL),
+    refreshTimeout: take(CONNECTION_REFRESH_TIMEOUT),
   })
+
   if (fail) {
     yield put(
       updatePhysicalIdConnectionStatus(
         physicalIdConnectionStatus.CONNECTION_FAIL
       )
     )
-    return
+    return [
+      ERROR_CONNECTION_FAIL(physicalIdConnectionStatus.CONNECTION_FAIL),
+      null,
+    ]
   }
 
-  yield put(physicalIdConnectionEstablished(physicalIdDid))
+  yield put(physicalIdConnectionEstablished(appInvitation.senderDID))
   yield put(
     updatePhysicalIdConnectionStatus(
       physicalIdConnectionStatus.CONNECTION_SUCCESS
     )
   )
-  yield* persistPhysicalIdDidSaga(physicalIdDid)
+  yield* persistPhysicalIdDidSaga(appInvitation.senderDID)
+  console.log('persist done>>>')
+  return [null, physicalIdDid]
 }
 
 function* getPhysicalIdDidSaga(): Generator<*, *, *> {
@@ -347,51 +496,37 @@ function* getPhysicalIdDidSaga(): Generator<*, *, *> {
   return null
 }
 
-function* getPhysicalApiSecret(): Generator<*, *, *> {
-  const environment: string = yield select(selectEnvironmentName)
-  if (environment === SERVER_ENVIRONMENT.PROD) {
-    // TODO:KS Ask question
-    return 'prod-secret-key'
-  }
-
-  // TODO:KS Ask question
-  return 'test-secret-key'
-}
-
-function* persistPhysicalIdSdkToken(sdkToken: string): Generator<*, *, *> {
-  try {
-    yield put({ type: 'PERSIST_PHYSICAL_ID_SDK_TOKEN_START' })
-    yield call(secureSet, PHYSICAL_ID_SDK_TOKEN_STORAGE_KEY, sdkToken)
-    yield put({ type: 'PERSIST_PHYSICAL_ID_SDK_TOKEN_SUCCESS' })
-  } catch (e) {
-    captureError(e)
-    yield put({
-      type: 'PERSIST_PHYSICAL_ID_SDK_TOKEN_FAIL',
+const CONNECTION_REFRESH_TIMEOUT = 'CONNECTION_REFRESH_TIMEOUT'
+function* refreshConnectionStateSaga() {
+  let i = 0
+  while (i < 5) {
+    yield call(delay, 5000)
+    yield put(getUnacknowledgedMessages())
+    yield race({
+      success: take(GET_MESSAGES_SUCCESS),
+      fail: take(GET_MESSAGES_FAIL),
     })
+    i++
   }
-}
 
-const selectPhysicalIdSdkToken = (state: Store) => state.physicalId.sdkToken
+  yield call(delay, 3 * 60000)
+  yield put({ type: CONNECTION_REFRESH_TIMEOUT })
+}
 
 const selectPhysicalIdDid = (state: Store) => state.physicalId.physicalIdDid
 
 function* getSdkTokenSaga(): Generator<*, *, *> {
-  // TODO: Need to decide if we ca re-use same sdk token
-  // or do we need to generate a new one every time
   yield put(
     updatePhysicalIdStatus(physicalIdProcessStatus.SDK_TOKEN_FETCH_START)
   )
-  // below code is only if we can persist old sdk token
-  let oldSdkToken: ?string = yield select(selectPhysicalIdSdkToken)
-  if (!oldSdkToken) {
-    oldSdkToken = yield* hydratePhysicalIdSdkTokenSaga()
-  }
 
+  // TODO:KS Get hardware token, we  would need to get the nonce from server by calling getProvisionToken API
+  const hardwareToken = ''
   // get hardware token, if product decides to restrict access
   const [error, response]: [
     Error | null,
-    null | { sdkToken: string }
-  ] = yield call(flattenAsync(getSdkToken), oldSdkToken)
+    null | { result: string }
+  ] = yield call(flattenAsync(getSdkToken), hardwareToken)
   if (error || !response) {
     yield put(
       updatePhysicalIdStatus(physicalIdProcessStatus.SDK_TOKEN_FETCH_FAIL)
@@ -400,14 +535,22 @@ function* getSdkTokenSaga(): Generator<*, *, *> {
     return [physicalIdProcessStatus.SDK_TOKEN_FETCH_FAIL, null]
   }
 
-  yield put(updatePhysicalIdSdkToken(response.sdkToken))
+  const [tokenParseError, token] = flatJsonParse(response.result)
+  if (tokenParseError || !token) {
+    yield put(
+      updatePhysicalIdStatus(physicalIdProcessStatus.SDK_TOKEN_PARSE_FAIL)
+    )
+
+    return [physicalIdProcessStatus.SDK_TOKEN_PARSE_FAIL, null]
+  }
+
+  // TODO: save apiDataCenter as well from the token response
+  yield put(updatePhysicalIdSdkToken(token.sdkToken))
   yield put(
     updatePhysicalIdStatus(physicalIdProcessStatus.SDK_TOKEN_FETCH_SUCCESS)
   )
 
-  yield fork(persistPhysicalIdSdkToken, response.sdkToken)
-
-  return [null, response.sdkToken]
+  return [null, [token.sdkToken, token.apiDataCenter]]
 }
 
 export const selectPhysicalIdStatus = (state: Store) => state.physicalId.status
@@ -477,7 +620,7 @@ export const resetPhysicalIdStatues = () => ({
 })
 
 function* watchPhysicalIdStart(): any {
-  yield takeLatest(LAUNCH_PHYSICAL_ID_SDK, launchPhysicalIdSDKSaga)
+  yield takeEvery(LAUNCH_PHYSICAL_ID_SDK, launchPhysicalIdSDKSaga)
 }
 
 export function* watchPhysicalId(): any {

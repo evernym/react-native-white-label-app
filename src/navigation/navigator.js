@@ -112,6 +112,8 @@ import {
   CREDENTIALS_LABEL,
   DRAWER_ICON_HEIGHT,
   DRAWER_ICON_WIDTH,
+  PHYSICAL_ID,
+  PHYSICAL_ID_LABEL,
   SETTINGS,
   SETTINGS_LABEL,
 } from './navigator-constants'
@@ -131,6 +133,8 @@ import { ShowCredentialScreen } from '../show-credential/show-credential-modal'
 import { ProofProposalModal } from '../verifier/proof-proposal-modal'
 import { ReceivedProofScreen } from '../verifier/received-proof-modal'
 import { SETTINGS_MENU_BUTTON } from '../feedback/log-to-apptentive'
+import { physicalIdScreen } from '../physical-id/physical-id-screen'
+import { physicalIdSuccessScreen } from '../physical-id/physical-id-success-screen'
 
 enableScreens()
 
@@ -272,6 +276,14 @@ const defaultDrawerItemOptions = {
     label: CREDENTIALS_LABEL,
     headline: headlineForCredentialRoute,
   },
+  [PHYSICAL_ID]: {
+    route: physicalIdScreen.routeName,
+    component: physicalIdScreen.screen,
+    // TODO:KS Get an icon for Physical ID
+    icon: drawerSvgIcon('Credentials'),
+    label: PHYSICAL_ID_LABEL,
+    headline: physicalIdScreen.headline,
+  },
   [SETTINGS]: {
     route: settingsDrawerRoute,
     component: SettingsScreen,
@@ -284,6 +296,7 @@ const defaultDrawerItemOptions = {
 const menuNavigationOptions = customMenuNavigationOptions || [
   { name: CONNECTIONS },
   { name: CREDENTIALS },
+  { name: PHYSICAL_ID },
   { name: SETTINGS },
 ]
 const extraScreens = customExtraScreens || []
@@ -612,6 +625,11 @@ export function MSDKAppNavigator() {
         name={inviteActionScreen.routeName}
         component={inviteActionScreen.screen}
         options={inviteActionScreen.screen.navigationOptions}
+      />
+      <ModalStack.Screen
+        name={physicalIdSuccessScreen.routeName}
+        component={physicalIdSuccessScreen.screen}
+        options={physicalIdSuccessScreen.navigationOptions}
       />
       <CardStack.Screen
         name={ShowCredentialScreen.routeName}

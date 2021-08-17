@@ -65,7 +65,7 @@ export default class QRScanner extends PureComponent<
   // on state being updated immediately
   // so, while state being updated by react asynchronously,
   // onRead can be called multiple times and we don't want it
-  isScanning = false
+  isScanning: boolean = false
 
   // we queue few async tasks by assuming that camera might still be active
   // however, if this component is unmounted before we could call timers
@@ -104,7 +104,9 @@ export default class QRScanner extends PureComponent<
     this.timers = []
   }
 
-  onRead = async (event: {| data: string |}) => {
+  onRead: ({| data: string |}) => Promise<boolean | void> = async (event: {|
+    data: string,
+  |}) => {
     if (this.isScanning) {
       return false
     }
@@ -230,8 +232,13 @@ export default class QRScanner extends PureComponent<
     }
 
     // check if ephemeral claim offer
-    if (qrData.type === QR_CODE_TYPES.EPHEMERAL_CREDENTIAL_OFFER && qrData.data) {
-      const [, ephemeralCredentialOffer] = await validateEphemeralClaimOffer(qrData.data)
+    if (
+      qrData.type === QR_CODE_TYPES.EPHEMERAL_CREDENTIAL_OFFER &&
+      qrData.data
+    ) {
+      const [, ephemeralCredentialOffer] = await validateEphemeralClaimOffer(
+        qrData.data
+      )
       if (ephemeralCredentialOffer) {
         this.setState({ scanStatus: SCAN_STATUS.SCANNING })
         return this.props.onEphemeralCredentialOffer(

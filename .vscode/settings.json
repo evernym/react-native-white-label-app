@@ -1,5 +1,5 @@
 {
-  "flow.useNPMPackagedFlow": false,
+  "flow.useNPMPackagedFlow": true,
   "javascript.validate.enable": false,
   "cSpell.words": [
     "IPHONEXSMAX",
@@ -9,7 +9,7 @@
     "ellipsize",
     "jwks"
   ],
-  "flow.useLSP": false,
+  "flow.useLSP": true,
   "gitlab.instanceUrl": "https://gitlab.corp.evernym.com",
   "workbench.colorCustomizations": {
     "activityBar.background": "#8a2ca2",

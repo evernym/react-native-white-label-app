@@ -10,6 +10,7 @@ For more convenience, we grouped all configuration options by files representing
 For example `home.js` contains options for `Home` screen.
 
 **Content:**
+
 - [Configuration](#configuration)
   - [Application](#application)
     - [Receiving Message](#receiving-message)
@@ -34,6 +35,7 @@ For example `home.js` contains options for `Home` screen.
     - [Feedback](#feedback)
     - [Application information](#application-information)
     - [Splash screen and app icon](#splash-screen-and-app-icon)
+    - [Physical Id](#physical-id)
     - [Credential attachments](#credential-attachments)
   - [Examples](#examples)
     - [Credential](#credential)
@@ -44,17 +46,22 @@ For example `home.js` contains options for `Home` screen.
 
 The base application settings should be specified in `app.js` file.
 
-* `APP_NAME` - (string, Mandatory) name of the application 
+* `APP_NAME` - (string, Mandatory) name of the application
+
     ```javascript
     export const APP_NAME = 'AppName'
     ```
 
-* `APP_ICON` - (image source, Optional) application icon 
+* `APP_ICON` - (image source, Optional) application icon
+
     * to use default MSDK icon
+
         ```javascript
         export const APP_ICON = null
         ```
+
     * to use custom
+
         ```javascript
         export const APP_ICON = require('app_icon.png')
         ```
@@ -1356,6 +1363,14 @@ These are configured inside your application for specific platforms.
     * Application icon: replace file `ic_launcher.png` in `android/app/src/main/res/mipmap-hdpi` directory with a desired one.
     
 * iOS: TODO
+
+### Physical Id
+
+This module lets users scan their physical identity card and get a verifiable credential. Customization for this file, can be done in `physical-id.js` file. Following are the available options:
+
+* `PHYSICAL_ID_HEADLINE`: Set the title of the screen. This also sets the name of menu item in the left hand side drawer menu.
+* `PHYSICAL_ID_SCREEN`: Accepts a React Component which is set as the screen that would open after user chooses `PhysicalId` option from left drawer menu.
+* 
 
 ### Credential attachments
 

@@ -36,9 +36,7 @@ export {
   CustomProofRequestModal,
 } from '../../../../app/evernym-sdk/proof-request'
 
-export {
-  COLORS as customColors,
-} from '../../../../app/evernym-sdk/colors'
+export { COLORS as customColors } from '../../../../app/evernym-sdk/colors'
 
 export {
   FONT_FAMILY as customFontFamily,
@@ -70,7 +68,6 @@ export {
   deviceSecurityCheckFailedMessage,
   devicePlayServiceUpdateRequiredMessage,
   devicePlayServiceRequiredMessage,
-
 } from '../../../../app/evernym-sdk/startup'
 
 export {
@@ -86,9 +83,7 @@ export {
   CustomAboutAppScreen,
 } from '../../../../app/evernym-sdk/about'
 
-export {
-  APPTENTIVE_CREDENTIALS as apptentiveCredentials,
-} from '../../../../app/evernym-sdk/feedback'
+export { APPTENTIVE_CREDENTIALS as apptentiveCredentials } from '../../../../app/evernym-sdk/feedback'
 
 export {
   HEADLINE as connectionsHeadline,
@@ -105,13 +100,9 @@ export {
   MENU_NAVIGATION_OPTIONS as customMenuNavigationOptions,
 } from '../../../../app/evernym-sdk/navigator'
 
-export {
-  CustomConnectionDetailsScreen,
-} from '../../../../app/evernym-sdk/connections'
+export { CustomConnectionDetailsScreen } from '../../../../app/evernym-sdk/connections'
 
-export {
-  LockHeader,
-} from '../../../../app/evernym-sdk/lock'
+export { LockHeader } from '../../../../app/evernym-sdk/lock'
 
 export {
   HEADLINE as homeHeadline,
@@ -137,9 +128,7 @@ export {
   CustomQuestionModal,
 } from '../../../../app/evernym-sdk/question-dialog'
 
-export {
-  CustomCredentialDetailsScreen,
-} from '../../../../app/evernym-sdk/credentials'
+export { CustomCredentialDetailsScreen } from '../../../../app/evernym-sdk/credentials'
 
 export {
   HEADLINE as inviteActionHeadline,
@@ -162,9 +151,15 @@ export {
   CustomProofProposalModal,
 } from '../../../../app/evernym-sdk/proof-proposal'
 
+export {
+  PHYSICAL_ID_HEADLINE as physicalIdHeadline,
+  PHYSICAL_ID_SCREEN as physicalIdScreen,
+} from '../../../../app/evernym-sdk/physical-id'
+
 export const appName = APP_NAME || 'appName'
 export const appLogo = APP_LOGO
-export const defaultUserAvatar = DEFAULT_USER_AVATAR || require('./images/noImage.png')
+export const defaultUserAvatar =
+  DEFAULT_USER_AVATAR || require('./images/noImage.png')
 export const appIcon = APP_ICON || require('./images/app_icon.png')
 export const companyName = COMPANY_NAME || 'Your Company'
 export const companyLogo = COMPANY_LOGO

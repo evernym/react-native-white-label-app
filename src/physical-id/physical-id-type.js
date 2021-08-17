@@ -11,6 +11,7 @@ export const physicalIdProcessStatus = {
   SDK_TOKEN_FETCH_FAIL: 'SDK_TOKEN_FETCH_FAIL',
   SDK_TOKEN_FETCH_START: 'SDK_TOKEN_FETCH_START',
   SDK_TOKEN_FETCH_SUCCESS: 'SDK_TOKEN_FETCH_SUCCESS',
+  SDK_TOKEN_PARSE_FAIL: 'SDK_TOKEN_PARSE_FAIL',
   SDK_INIT_START: 'SDK_INIT_START',
   SDK_INIT_SUCCESS: 'SDK_INIT_SUCCESS',
   SDK_INIT_FAIL: 'SDK_INIT_FAIL',
@@ -20,6 +21,9 @@ export const physicalIdProcessStatus = {
   SEND_WORKFLOW_ID_START: 'SEND_WORKFLOW_ID_START',
   SEND_WORKFLOW_ID_SUCCESS: 'SEND_WORKFLOW_ID_SUCCESS',
   SEND_WORKFLOW_ID_FAIL: 'SEND_WORKFLOW_ID_FAIL',
+  SEND_ISSUE_CREDENTIAL_START: 'SEND_ISSUE_CREDENTIAL_START',
+  SEND_ISSUE_CREDENTIAL_FAIL: 'SEND_ISSUE_CREDENTIAL_FAIL',
+  SEND_ISSUE_CREDENTIAL_SUCCESS: 'SEND_ISSUE_CREDENTIAL_SUCCESS',
 }
 export type PhysicalIdProcessStatus = $Keys<typeof physicalIdProcessStatus>
 
@@ -178,6 +182,11 @@ export const ERROR_CONNECTION_DETAIL_INVALID = (message: string) => ({
 export const ERROR_CONNECTION_DETAIL_FETCH_ERROR = (message: string) => ({
   code: 'PH-004',
   message: `Could not get connection invitation for physicalId: ${message}`,
+})
+
+export const ERROR_CONNECTION_FAIL = (message: string) => ({
+  code: 'PH-004',
+  message: `Connection establishment failed for physicalId: ${message}`,
 })
 
 export const ERROR_MESSAGE_NO_SDK_TOKEN = 'Could not get SDK token'

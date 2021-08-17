@@ -47,6 +47,10 @@ In order to configure the building of your application for an Android platform, 
         }
     ```
 
+1. Create `android/app/libs` directory if not already exists
+1. Copy mids_sdk.aar and mids_verification.aar files to this directory
+1. Add `implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')` to `android/app/build.gradle` dependencies section
+
 1. Add the Jumio Mobile SDK repository
 
     ```groovy

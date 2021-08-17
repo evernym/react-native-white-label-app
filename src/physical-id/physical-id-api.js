@@ -1,6 +1,6 @@
 // @flow
 
-const physicalIdBaseUrl = 'http://localhost:1990'
+const physicalIdBaseUrl = 'https://8ed1d62a6aee.ngrok.io'
 
 async function post(config: {
   url: string,
@@ -8,7 +8,7 @@ async function post(config: {
   // we can use hardware based attestation to only allow
   // few selected apps to request SDK token from Evernym
   hardwareToken: string,
-  contentType: ?string,
+  contentType?: ?string,
 }) {
   const response = await fetch(config.url, {
     method: 'POST',
@@ -32,14 +32,23 @@ export async function getSdkToken(hardwareToken: string) {
   })
 }
 
-export async function getWorkflowData(
+export async function getWorkflowData({
+  workflowId,
+  hardwareToken,
+  country,
+  document,
+}: {
   workflowId: string,
-  hardwareToken: string
-) {
+  hardwareToken: string,
+  country: string,
+  document: string,
+}) {
   return post({
     url: `${physicalIdBaseUrl}/get-workflow-data`,
     body: JSON.stringify({ workflowId }),
     hardwareToken,
+    country,
+    document,
   })
 }
 
@@ -47,6 +56,27 @@ export async function getPhysicalIdInvitation(hardwareToken: string) {
   return post({
     url: `${physicalIdBaseUrl}/get-invitation`,
     body: '{}',
+    contentType: 'application/json',
+    hardwareToken,
+  })
+}
+
+export async function issueCredential({
+  workflowId,
+  connectionDID,
+  hardwareToken,
+  country,
+  document,
+}: {
+  workflowId: string,
+  connectionDID: string,
+  hardwareToken: string,
+  country: string,
+  document: string,
+}) {
+  return post({
+    url: `${physicalIdBaseUrl}/issue-credential`,
+    body: JSON.stringify({ workflowId, connectionDID, country, document }),
     contentType: 'application/json',
     hardwareToken,
   })
