@@ -45,10 +45,8 @@ export async function getWorkflowData({
 }) {
   return post({
     url: `${physicalIdBaseUrl}/get-workflow-data`,
-    body: JSON.stringify({ workflowId }),
+    body: JSON.stringify({ workflowId, country, document }),
     hardwareToken,
-    country,
-    document,
   })
 }
 
