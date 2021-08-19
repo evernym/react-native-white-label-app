@@ -4,9 +4,6 @@
   Here you need to specify application provisioning information.
 */
 
-// the type of push notifications
-export const VCX_PUSH_TYPE = 4
-
 // an ID given to you from Evernym's Support Team after the Sponsor onboarding process is complete.
 export const SPONSOR_ID = ''
 
@@ -17,7 +14,7 @@ export const SERVER_ENVIRONMENTS = {}
 export const DEFAULT_SERVER_ENVIRONMENT = null
 
 /*
-* Function to be called to get provision token
-* Signature: GET_PROVISION_TOKEN_FUNC() -> [error: string | null, token: string | null]
-* */
+ * Function to be called to get provision token
+ * Signature: GET_PROVISION_TOKEN_FUNC() -> [error: string | null, token: string | null]
+ * */
 export const GET_PROVISION_TOKEN_FUNC = null

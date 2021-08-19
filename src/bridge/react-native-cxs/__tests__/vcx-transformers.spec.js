@@ -6,7 +6,6 @@ import {
   convertCxsInitToVcxInit,
   convertInvitationToVcxConnectionCreate,
   convertVcxCredentialOfferToCxsClaimOffer,
-  convertCxsPoolInitToVcxPoolInit,
 } from '../vcx-transformers'
 import {
   vcxProvisionResult,
@@ -34,11 +33,6 @@ const initWithGenesisPathConfig = {
   genesis_path: 'genesis_path',
 }
 
-const initPoolConfig = {
-  poolConfig,
-  genesis_path: 'genesis_path',
-}
-
 const walletPoolName = {
   walletName: 'walletName',
   poolName: 'poolName',
@@ -47,7 +41,7 @@ const walletPoolName = {
 jest.mock('react-native-device-info', () => {
   return {
     getDeviceName: () => 'test-name',
-    getModel: () => 'test-model'
+    getModel: () => 'test-model',
   }
 })
 
@@ -72,14 +66,6 @@ describe('transformer:VCX', () => {
       walletPoolName
     )
     expect(vcxInitConfig).toMatchSnapshot()
-  })
-
-  it('convertCxsPoolInitToVcxPoolInit', async () => {
-    const vcxInitPoolConfig = await convertCxsPoolInitToVcxPoolInit(
-      initPoolConfig,
-      walletPoolName
-    )
-    expect(vcxInitPoolConfig).toMatchSnapshot()
   })
 
   it('convertInvitationToVcxConnectionCreate', () => {

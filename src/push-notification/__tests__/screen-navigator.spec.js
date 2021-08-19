@@ -6,7 +6,6 @@ import { Provider } from 'react-redux'
 import { ScreenNavigator } from '../../navigation/screen-navigator'
 import {
   convertClaimOfferPushPayloadToAppClaimOffer,
-  convertClaimPushPayloadToAppClaim,
   convertProofRequestPushPayloadToAppProofRequest,
 } from '../push-notification-store'
 import {
@@ -57,28 +56,6 @@ describe('convertProofRequestPushPayloadToAppProofRequest', () => {
         proofRequestPushPayloadAdditionalData
       )
     ).toMatchSnapshot()
-  })
-})
-
-describe('convertClaimPushPayloadToAppClaim', () => {
-  it('should match snapshot', () => {
-    const claimPushPayload = {
-      msg_type: 'claim',
-      version: '0.1',
-      claim_offer_id: '7TNw2k5',
-      from_did: '3KFuh4jmMC5Agsy5HcCwFB',
-      to_did: '5RHwxmBrGxaEskHcBnLKve',
-      claim: { name: ['Test', '12'] },
-      schema_seq_no: 12,
-      issuer_did: 'V4SGRU86Z58d6TV7PBUe6f',
-      signature: { primary_claim: { m2: 'm2', a: 'a', e: 'e', v: 'v' } },
-    }
-    const claim = convertClaimPushPayloadToAppClaim(
-      claimPushPayload,
-      '1',
-      claimPushPayload.to_did
-    )
-    expect(claim).toMatchSnapshot()
   })
 })
 

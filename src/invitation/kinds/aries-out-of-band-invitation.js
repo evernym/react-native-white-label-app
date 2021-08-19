@@ -1,11 +1,19 @@
-import type {Url} from "url-parse";
-import type {AriesOutOfBandInvite, AriesServiceEntry, InvitationPayload} from "../type-invitation";
-import {CONNECTION_INVITE_TYPES} from "../type-invitation";
-import { getAttachedRequest, getBase64DecodedInvitation, getConnectionLogoUrl } from '../invitation-helpers'
-import isUrl from "validator/lib/isURL";
-import type {GenericObject} from "../../common/type-common";
-import {ID, TYPE} from "../../common/type-common";
-import {schemaValidator} from "../../services/schema-validator";
+import type { Url } from 'url-parse'
+import type {
+  AriesOutOfBandInvite,
+  AriesServiceEntry,
+  InvitationPayload,
+} from '../type-invitation'
+import { CONNECTION_INVITE_TYPES } from '../type-invitation'
+import {
+  getAttachedRequest,
+  getBase64DecodedInvitation,
+  getConnectionLogoUrl,
+} from '../invitation-helpers'
+import isUrl from 'validator/lib/isURL'
+import type { GenericObject } from '../../common/type-common'
+import { ID, TYPE } from '../../common/type-common'
+import { schemaValidator } from '../../services/schema-validator'
 
 export function isAriesOutOfBandInvitation(
   invite: GenericObject
@@ -28,10 +36,10 @@ export function isAriesOutOfBandInvitation(
   return ((invite: any): AriesOutOfBandInvite)
 }
 
-export async function isEncodedAriesOutOfBandInvitation(
-  { query }: Url
-): Promise<AriesOutOfBandInvite | false> {
-  const body = query.oob || query.c_i || query.d_m
+export async function isEncodedAriesOutOfBandInvitation({
+  query,
+}: Url): Promise<AriesOutOfBandInvite | false> {
+  const body = query.oob || query.c_i || query.d_m || query.m
   let qrData = await getBase64DecodedInvitation(body)
   if (!qrData) {
     return false
@@ -46,8 +54,8 @@ export async function convertAriesOutOfBandInvitationToAppInvitation(
 
   const serviceEntry = payload.service
     ? ((payload.service.find(
-      (serviceEntry) => typeof serviceEntry === 'object'
-    ): any): AriesServiceEntry)
+        (serviceEntry) => typeof serviceEntry === 'object'
+      ): any): AriesServiceEntry)
     : null
 
   if (!serviceEntry) {
@@ -99,14 +107,14 @@ export async function convertAriesOutOfBandInvitationToAppInvitation(
 export const ariesOutOfBandInviteSchema = {
   type: 'object',
   properties: {
-    [ID]: {type: 'string'},
-    [TYPE]: {type: 'string'},
-    label: {type: ['null', 'string']},
-    goal_code: {type: ['null', 'string']},
-    goal: {type: ['null', 'string']},
+    [ID]: { type: 'string' },
+    [TYPE]: { type: 'string' },
+    label: { type: ['null', 'string'] },
+    goal_code: { type: ['null', 'string'] },
+    goal: { type: ['null', 'string'] },
     handshake_protocols: {
       type: 'array',
-      items: [{type: 'string'}],
+      items: [{ type: 'string' }],
     },
     'request~attach': {
       type: ['null', 'array'],
@@ -114,13 +122,13 @@ export const ariesOutOfBandInviteSchema = {
         {
           type: 'object',
           properties: {
-            [ID]: {type: 'string'},
-            'mime-type': {type: 'string'},
+            [ID]: { type: 'string' },
+            'mime-type': { type: 'string' },
             data: {
               type: 'object',
               anyOf: [
-                {properties: {json: {type: 'string'}}},
-                {properties: {base64: {type: 'string'}}},
+                { properties: { json: { type: 'string' } } },
+                { properties: { base64: { type: 'string' } } },
               ],
               minProperties: 1,
             },
@@ -133,23 +141,23 @@ export const ariesOutOfBandInviteSchema = {
       type: 'array',
       items: {
         anyOf: [
-          {type: 'string'},
+          { type: 'string' },
           {
             type: 'object',
             properties: {
-              id: {type: 'string'},
-              type: {type: 'string'},
+              id: { type: 'string' },
+              type: { type: 'string' },
               recipientKeys: {
                 type: 'array',
-                items: [{type: 'string'}],
+                items: [{ type: 'string' }],
                 minItems: 1,
               },
               routingKeys: {
                 type: ['null', 'array'],
-                items: [{type: 'string'}],
+                items: [{ type: 'string' }],
                 minItems: 0,
               },
-              serviceEndpoint: {type: 'string'},
+              serviceEndpoint: { type: 'string' },
             },
             required: ['id', 'type', 'recipientKeys', 'serviceEndpoint'],
           },
@@ -157,7 +165,7 @@ export const ariesOutOfBandInviteSchema = {
       },
       minItems: 1,
     },
-    public_did: {type: ['null', 'string']},
+    public_did: { type: ['null', 'string'] },
   },
   anyOf: [
     {

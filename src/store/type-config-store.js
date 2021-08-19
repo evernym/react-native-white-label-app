@@ -120,11 +120,16 @@ export type VcxPoolInitializationState =
   | typeof VCX_INIT_POOL_SUCCESS
   | typeof VCX_INIT_POOL_FAIL
 
+export type PoolConfig = {
+  key: string,
+  genesis: string,
+}
+
 export type AgencyPoolConfig = {
   agencyUrl: string,
   agencyDID: string,
   agencyVerificationKey: string,
-  poolConfig: string,
+  poolConfig: string | Array<PoolConfig>,
   paymentMethod: string,
 }
 

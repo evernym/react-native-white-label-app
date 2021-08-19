@@ -71,7 +71,11 @@ import {
   createOneTimeInfoWithToken,
 } from '../../bridge/react-native-cxs/RNCxs'
 import { updatePushToken } from '../../push-notification/push-notification-store'
-import { getPushToken, getAgencyUrl, getUserOneTimeInfo } from '../../store/store-selector'
+import {
+  getPushToken,
+  getAgencyUrl,
+  getUserOneTimeInfo,
+} from '../../store/store-selector'
 import { connectRegisterCreateAgentDone } from '../user/user-store'
 import {
   splashScreenRoute,
@@ -80,27 +84,31 @@ import {
 import { secureSet, getHydrationItem } from '../../services/storage'
 import * as errorHandler from './../../services/error/error-handler'
 import { addSerializedClaimOffer } from './../../claim-offer/claim-offer-store'
-import { claimReceivedVcx } from './../../claim/claim-store'
+import { claimReceived } from './../../claim/claim-store'
 import { NativeModules } from 'react-native'
-import { FETCH_ADDITIONAL_DATA, PUSH_NOTIFICATION_PERMISSION } from '../../push-notification/type-push-notification'
+import {
+  FETCH_ADDITIONAL_DATA,
+  PUSH_NOTIFICATION_PERMISSION,
+} from '../../push-notification/type-push-notification'
 import AlertAsync from 'react-native-alert-async'
+import { environments } from '../../environment'
 import {
-  baseUrls,
-
-
-
-
-} from '../../environment'
-import {
-  changeEnvironment, changeEnvironmentUrl,
-  changeServerEnvironment, getEnvironmentName,
+  changeEnvironment,
+  changeEnvironmentUrl,
+  changeServerEnvironment,
+  getEnvironmentName,
   hydrateSwitchedEnvironmentDetailFail,
-  hydrateSwitchedEnvironmentDetails, onChangeEnvironmentUrl,
+  hydrateSwitchedEnvironmentDetails,
+  onChangeEnvironmentUrl,
   onEnvironmentSwitch,
-  saveSwitchedEnvironmentDetailFail, watchChangeEnvironmentUrl,
+  saveSwitchedEnvironmentDetailFail,
+  watchChangeEnvironmentUrl,
   watchSwitchEnvironment,
 } from '../../switch-environment/switсh-environment-store'
-import { SERVER_ENVIRONMENT, SWITCH_ERROR_ALERTS } from '../../switch-environment/type-switch-environment'
+import {
+  SERVER_ENVIRONMENT,
+  SWITCH_ERROR_ALERTS,
+} from '../../switch-environment/type-switch-environment'
 
 const getConfigStoreInitialState = () =>
   configReducer(undefined, { type: 'INITIAL_TEST_ACTION' })
@@ -121,14 +129,14 @@ describe('server environment should change', () => {
 
   it('initial app should always point to PROD', () => {
     if (initialConfig) {
-      expect(initialConfig.agencyUrl).toBe(baseUrls.PROD.agencyUrl)
+      expect(initialConfig.agencyUrl).toBe(environments.PROD.agencyUrl)
     }
   })
 
   it('to demo if previously it was set to sandbox', () => {
     const expectedConfig = {
       ...initialConfig,
-      ...baseUrls[SERVER_ENVIRONMENT.DEMO],
+      ...environments[SERVER_ENVIRONMENT.DEMO],
     }
 
     if (initialConfig) {
@@ -385,33 +393,35 @@ describe('server environment should change', () => {
       paymentMethod,
     }
     const pushToken = 'token'
-    return expectSaga(watchChangeEnvironmentUrl)
-      .withState({
-        pushNotification: { pushToken },
-      })
-      .provide([
-        [
-          matchers.call.fn(
-            downloadEnvironmentDetails,
-            validQrCodeEnvironmentSwitchUrl
-          ),
-          environmentDetails,
-        ],
-      ])
-      .dispatch(changeEnvironmentUrl(validQrCodeEnvironmentSwitchUrl))
-      .put(reset())
-      .put(
-        changeEnvironment(
-          environmentDetails.agencyUrl,
-          environmentDetails.agencyDID,
-          environmentDetails.agencyVerificationKey,
-          environmentDetails.poolConfig,
-          environmentDetails.paymentMethod
+    return (
+      expectSaga(watchChangeEnvironmentUrl)
+        .withState({
+          pushNotification: { pushToken },
+        })
+        .provide([
+          [
+            matchers.call.fn(
+              downloadEnvironmentDetails,
+              validQrCodeEnvironmentSwitchUrl
+            ),
+            environmentDetails,
+          ],
+        ])
+        .dispatch(changeEnvironmentUrl(validQrCodeEnvironmentSwitchUrl))
+        .put(reset())
+        .put(
+          changeEnvironment(
+            environmentDetails.agencyUrl,
+            environmentDetails.agencyDID,
+            environmentDetails.agencyVerificationKey,
+            environmentDetails.poolConfig,
+            environmentDetails.paymentMethod
+          )
         )
-      )
-      // .put(updatePushToken(pushToken))
-      .put(vcxInitReset())
-      .run()
+        // .put(updatePushToken(pushToken))
+        .put(vcxInitReset())
+        .run()
+    )
   })
 })
 
@@ -484,8 +494,8 @@ describe('config-store:saga', () => {
       vcxInitializationState: VCX_INIT_SUCCESS,
     },
     user: {
-      userOneTimeInfo: userOneTimeInfo
-    }
+      userOneTimeInfo: userOneTimeInfo,
+    },
   }
   const agencyConfig = {
     agencyUrl,
@@ -996,7 +1006,7 @@ describe('config-store:saga', () => {
         ],
       ])
       .put(
-        claimReceivedVcx({
+        claimReceived({
           connectionHandle: connectionHandle,
           uid: 'mmziymm',
           type: 'cred',
@@ -1066,7 +1076,7 @@ describe('config-store:saga', () => {
         [matchers.call.fn(proofDeserialize, 'serializedProof'), proofHandle],
       ])
       .put(
-        claimReceivedVcx({
+        claimReceived({
           connectionHandle: connectionHandle,
           uid: 'mmziymm',
           type: 'cred',

@@ -46,11 +46,9 @@ import {
   DENY_CLAIM_OFFER,
   DENY_CLAIM_OFFER_SUCCESS,
   DENY_CLAIM_OFFER_FAIL,
-} from '../claim-offer/type-claim-offer'
-import {
-  CLAIM_STORAGE_SUCCESS,
   DELETE_CLAIM_SUCCESS,
-} from '../claim/type-claim'
+} from '../claim-offer/type-claim-offer'
+import { CLAIM_STORAGE_SUCCESS } from '../claim/type-claim'
 import {
   PROOF_REQUEST_RECEIVED,
   PROOF_REQUEST_ACCEPTED,

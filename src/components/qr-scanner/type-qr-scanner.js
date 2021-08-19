@@ -6,7 +6,7 @@ import type {
   InvitationPayload,
   ShortProprietaryConnectionInvitation,
 } from '../../invitation/type-invitation'
-import type {QrCodeEphemeralProofRequest} from '../../proof-request/type-proof-request'
+import type { QrCodeEphemeralProofRequest } from '../../proof-request/type-proof-request'
 import type { QrCodeEphemeralCredentialOffer } from '../../claim-offer/ephemeral-claim-offer'
 
 export const SCAN_STATUS = {
@@ -31,6 +31,7 @@ export const SCAN_STATUS = {
   DOWNLOADING: 'Downloading...',
   INVALID_DOWNLOADED_DATA: '007::Invalid data from QR Code.',
   INVALID_URL_QR_CODE: '008::Invalid QR code.',
+  INVALID_OPENID_QR_LINK: '009::Invalid OpenID link.',
 }
 
 export type QR_SCAN_STATUS =
@@ -64,7 +65,7 @@ export type QrScannerProps = {
   onAriesConnectionInviteRead: (AriesConnectionInvite) => Promise<void>,
   onAriesOutOfBandInviteRead: (AriesOutOfBandInvite) => Promise<void>,
   onEphemeralProofRequest: (QrCodeEphemeralProofRequest) => void,
-  onEphemeralCredentialOffer: (QrCodeEphemeralCredentialOffer) =>  Promise<void>,
+  onEphemeralCredentialOffer: (QrCodeEphemeralCredentialOffer) => Promise<void>,
 }
 
 export type CameraMarkerProps = {

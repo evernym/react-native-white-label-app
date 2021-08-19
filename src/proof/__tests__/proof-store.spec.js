@@ -13,6 +13,7 @@ import proofReducer, {
   convertIndyPreparedProofToAttributes,
   getProof,
   proofRequestDataToStore,
+  findCredentialsExcludedByAttributeRestrictions,
 } from '../proof-store'
 import {
   acceptProofRequest,
@@ -38,6 +39,8 @@ import {
   originalProofRequestDataWithPredicates,
   homeAddressAndAgePreparedProof,
   proofRequestWithPredicates,
+  claimOfferPayload,
+  claimUUID,
 } from '../../../__mocks__/static-data'
 import {
   getOriginalProofRequestData,
@@ -64,10 +67,7 @@ describe('Proof Store', () => {
 
   it('fn:findMissingRequestedAttributes', () => {
     expect(
-      findMissingRequestedAttributes(
-        preparedProof,
-        originalProofRequestData
-      )
+      findMissingRequestedAttributes(preparedProof, originalProofRequestData)
     ).toMatchSnapshot()
 
     // find one missing attribute
@@ -123,16 +123,13 @@ describe('Proof Store', () => {
         ...originalProofRequestData.requested_attributes,
         attr2_uuid: {
           name: 'Address 2',
-          restrictions: {issuer_did: 'did'}
+          restrictions: { issuer_did: 'did' },
         },
       },
     }
 
     expect(
-      findMissingRequestedAttributes(
-        proof,
-        proofRequest
-      )
+      findMissingRequestedAttributes(proof, proofRequest)
     ).toMatchSnapshot()
   })
 
@@ -140,12 +137,14 @@ describe('Proof Store', () => {
     expect(
       convertIndyPreparedProofToAttributes(
         homeAddressPreparedProof,
+        [],
         originalProofRequestData.requested_attributes
       )
     ).toMatchSnapshot()
     expect(
       convertIndyPreparedProofToAttributes(
         homeAddressPreparedProof,
+        [],
         originalProofRequestData10Attributes.requested_attributes
       )
     ).toMatchSnapshot()
@@ -153,6 +152,7 @@ describe('Proof Store', () => {
     expect(
       convertIndyPreparedProofToAttributes(
         homeAddressPreparedProof,
+        [],
         originalProofRequestDataWithSpaces.requested_attributes
       )
     ).toMatchSnapshot()
@@ -161,8 +161,9 @@ describe('Proof Store', () => {
     expect(
       convertIndyPreparedProofToAttributes(
         homeAddressAndAgePreparedProof,
+        [],
         originalProofRequestDataWithAttributesAndPredicates.requested_attributes,
-        originalProofRequestDataWithAttributesAndPredicates.requested_predicates,
+        originalProofRequestDataWithAttributesAndPredicates.requested_predicates
       )
     ).toMatchSnapshot()
   })
@@ -203,13 +204,15 @@ describe('Proof Store', () => {
           },
         },
       },
+      claimOffer: {},
     }
     const requestedAttributes = convertIndyPreparedProofToAttributes(
       {
         ...homeAddressPreparedProof,
       },
+      [],
       originalProofRequestData.requested_attributes,
-      originalProofRequestData.requested_predicates,
+      originalProofRequestData.requested_predicates
     )
 
     return expectSaga(generateProofSaga, getProof(uid))
@@ -270,13 +273,15 @@ describe('Proof Store', () => {
           },
         },
       },
+      claimOffer: {},
     }
     const requestedAttributes = convertIndyPreparedProofToAttributes(
       {
         ...homeAddressAndAgePreparedProof,
       },
+      [],
       originalProofRequestDataWithAttributesAndPredicates.requested_attributes,
-      originalProofRequestDataWithAttributesAndPredicates.requested_predicates,
+      originalProofRequestDataWithAttributesAndPredicates.requested_predicates
     )
 
     return expectSaga(generateProofSaga, getProof(uid))
@@ -332,6 +337,7 @@ describe('Proof Store', () => {
           },
         },
       },
+      claimOffer: {},
     }
     const copyHomeAddressPreparedProofMultipleCreds: typeof homeAddressPreparedProofMultipleCreds = JSON.parse(
       JSON.stringify(homeAddressPreparedProofMultipleCreds)
@@ -343,6 +349,7 @@ describe('Proof Store', () => {
         ...copyHomeAddressPreparedProofMultipleCreds,
         self_attested_attrs: {},
       },
+      [],
       originalProofRequestData.requested_attributes
     )
 
@@ -399,6 +406,7 @@ describe('Proof Store', () => {
         ...homeAddressPreparedProof,
         self_attested_attrs: {},
       },
+      [],
       originalProofRequestData.requested_attributes
     )
 
@@ -437,9 +445,7 @@ describe('Proof Store', () => {
     const preparedProofJson = JSON.stringify(
       homeAddressPreparedProofWithMissingAttribute
     )
-    const [
-      missingAttributes,
-    ] = findMissingRequestedAttributes(
+    const [missingAttributes] = findMissingRequestedAttributes(
       homeAddressPreparedProofWithMissingAttribute,
       originalProofRequestDataMissingAttribute
     )
@@ -454,6 +460,7 @@ describe('Proof Store', () => {
         ...homeAddressPreparedProofWithMissingAttribute,
         self_attested_attrs: { ...selfAttestedAttributes },
       },
+      [],
       originalProofRequestDataMissingAttribute.requested_attributes
     )
 
@@ -491,6 +498,48 @@ describe('Proof Store', () => {
     )
     expect(
       proofReducer(proofStateAfterFail, proofRequestShowStart(uid))
+    ).toMatchSnapshot()
+  })
+
+  it('should find existing credentials which cannot be used for proving', () => {
+    let storedCredentials = [claimOfferPayload]
+    let attribute = { name: 'Address 1' }
+    let usedCredentials = []
+
+    expect(
+      findCredentialsExcludedByAttributeRestrictions(
+        storedCredentials,
+        attribute,
+        usedCredentials
+      )
+    ).toMatchSnapshot()
+  })
+
+  it('should find existing credentials which cannot be used for proving', () => {
+    let storedCredentials = [claimOfferPayload]
+    let attribute = { name: 'Address 1' }
+    let usedCredentials = [claimOfferPayload.claimId]
+
+    expect(
+      findCredentialsExcludedByAttributeRestrictions(
+        storedCredentials,
+        attribute,
+        usedCredentials
+      )
+    ).toMatchSnapshot()
+  })
+
+  it('should find existing credentials which cannot be used for proving', () => {
+    let storedCredentials = [claimOfferPayload]
+    let attribute = { name: 'No Address' }
+    let usedCredentials = [claimUUID]
+
+    expect(
+      findCredentialsExcludedByAttributeRestrictions(
+        storedCredentials,
+        attribute,
+        usedCredentials
+      )
     ).toMatchSnapshot()
   })
 })

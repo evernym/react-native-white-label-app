@@ -4,7 +4,10 @@ import type {
   ClaimOfferPayload,
   SerializedClaimOffersPerDid,
 } from '../claim-offer/type-claim-offer'
-import { CLAIM_OFFER_STATUS } from '../claim-offer/type-claim-offer'
+import {
+  CLAIM_OFFER_STATUS,
+  CLAIM_REQUEST_STATUS,
+} from '../claim-offer/type-claim-offer'
 import type { Connection } from './type-connection-store'
 import type { ConnectionHistoryEvent } from '../connection-history/type-connection-history'
 import { HISTORY_EVENT_TYPE } from '../connection-history/type-connection-history'
@@ -16,7 +19,7 @@ import { PROOF_REQUEST_STATUS } from '../proof-request/type-proof-request'
 import type { QuestionStoreMessage } from '../question/type-question'
 import { QUESTION_STATUS } from '../question/type-question'
 import { DEEP_LINK_STATUS } from '../deep-link/type-deep-link'
-import { baseUrls } from '../environment'
+import { environments } from '../environment'
 
 /*
  * Selectors related to Config Store
@@ -49,7 +52,7 @@ export const getSnackError = (state: Store) => state.config.snackError
 
 export const getEnvironmentName = (state: Store) =>
   findKey(
-    baseUrls,
+    environments,
     (environment) => environment.agencyUrl === state.config.agencyUrl
   )
 
@@ -382,6 +385,23 @@ export const getClaimOffer = (state: Store, claimOfferId: string) =>
   state.claimOffer[claimOfferId]
 
 export const getClaimOffers = (state: Store) => state.claimOffer
+
+export const getReceivedCredentials = (state: Store) => {
+  const {
+    vcxSerializedClaimOffers: serializedOffers,
+    ...offers
+  } = state.claimOffer
+  const credentials: Array<ClaimOfferPayload> = []
+  Object.keys(offers).forEach((uid) => {
+    const offer: ClaimOfferPayload = offers[uid]
+    if (
+      offer.claimRequestStatus === CLAIM_REQUEST_STATUS.CLAIM_REQUEST_SUCCESS
+    ) {
+      credentials.push(offer)
+    }
+  })
+  return credentials
+}
 
 export const getSerializedClaimOffer = (
   state: Store,

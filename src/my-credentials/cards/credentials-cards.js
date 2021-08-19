@@ -76,7 +76,7 @@ export const CredentialsCards = (props: CredentialsCardsProps) => {
             return (
               <CredentialCard
                 item={credentialGroup[0]}
-                key={credentialGroup[0].uid}
+                key={credentialGroup[0].claimOfferUuid}
                 isExpanded={true}
                 isHidden={isHidden}
                 enabled={!isScrolling}
@@ -88,7 +88,7 @@ export const CredentialsCards = (props: CredentialsCardsProps) => {
             return (
               <CardStack
                 credentials={credentialGroup}
-                key={credentialGroup[0].uid}
+                key={credentialGroup[0].claimOfferUuid}
                 isExpanded={isExpanded}
                 setActiveStack={updateActiveStack}
                 stackCredentialName={stackCredential}

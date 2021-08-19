@@ -7,9 +7,19 @@ templatesPath='node_modules/@evernym/react-native-white-label-app/files'
 echo "1. Increasing the available JXN memory"
 echo -e 'org.gradle.jvmargs=-Xmx4608m -XX:MaxPermSize=512m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8\n' >> android/gradle.properties
 
-echo "2. Updating minimum supported SDK version to ${minVersion} "
+echo "2. Updating minimum supported SDK version to ${minVersion}"
 minVersion=23
 sed -ri "s|minSdkVersion = [0-9]*|minSdkVersion = ${minVersion}|" android/build.gradle
+
+echo "2.1 Updating supported SDK version to ${compileSdkVersion}"
+compileSdkVersion=30
+sed -ri "s|compileSdkVersion = [0-9]*|compileSdkVersion = ${compileSdkVersion}|" android/build.gradle
+targetSdkVersion=30
+sed -ri "s|targetSdkVersion = [0-9]*|targetSdkVersion = ${targetSdkVersion}|" android/build.gradle
+buildToolsVersion='30.0.3'
+sed -ri "s|buildToolsVersion = [0-9]\.[0-9]\.[0-9]*|buildToolsVersion = \'${buildToolsVersion}\'|" android/build.gradle
+distributionUrl='https\://services.gradle.org/distributions/gradle-6.7.1-bin.zip \n; distributionUrl='
+sed -ri "s|distributionUrl=*|distributionUrl=${distributionUrl}|" android/gradle/wrapper/gradle-wrapper.properties
 
 echo "3. Adding the source repository for VCX library"
 repository="
@@ -94,5 +104,10 @@ method='\
     } \
     '
 sed -i "/.*MainActivity.*/a ${method}" ${filepath}
+
+echo "9. Updating gradle version"
+
+sed -i "s/classpath 'com.android.tools.build:gradle:[0-9]\.[0-9]\.[0-9]'/classpath 'com.android.tools.build:gradle:4.2.0'/g" android/build.gradle
+sed -i "s/classpath(\"com.android.tools.build:gradle:[0-9]\.[0-9]\.[0-9]\")/classpath(\"com.android.tools.build:gradle:4.2.0\")/g" android/build.gradle
 
 echo "Completed!"

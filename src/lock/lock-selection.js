@@ -42,7 +42,7 @@ import {
 import { safeToDownloadSmsInvitation } from '../sms-pending-invitation/sms-pending-invitation-store'
 import { LockHeader } from '../external-imports'
 import { headerDefaultOptions } from '../navigation/navigation-header-config'
-import { baseUrls, defaultEnvironment } from '../environment'
+import { environments, defaultEnvironment } from '../environment'
 import { changeEnvironment } from '../switch-environment/switсh-environment-store'
 import { SERVER_ENVIRONMENT } from '../switch-environment/type-switch-environment'
 const { width, height } = Dimensions.get('screen')
@@ -75,8 +75,8 @@ export class LockSelection extends Component<LockSelectionProps, *> {
     if (this.state.devMode !== switchState) {
       this.setState({ devMode: switchState }, () => {
         const env = this.state.devMode
-          ? baseUrls[SERVER_ENVIRONMENT.DEMO]
-          : baseUrls[defaultEnvironment]
+          ? environments[SERVER_ENVIRONMENT.DEMO]
+          : environments[defaultEnvironment]
         this.props.changeEnvironment(
           env.agencyUrl,
           env.agencyDID,

@@ -8,14 +8,14 @@ import {
   CLAIM_OFFER_STATUS,
   CLAIM_REQUEST_STATUS,
 } from '../src/claim-offer/type-claim-offer'
-import { invitationAccepted, } from '../src/invitation/invitation-store'
-import { sendClaimRequestSuccess, } from '../src/claim-offer/claim-offer-store'
+import { invitationAccepted } from '../src/invitation/invitation-store'
+import { sendClaimRequestSuccess } from '../src/claim-offer/claim-offer-store'
 import { claimStorageSuccess } from '../src/claim/claim-store'
 import {
   proofRequestReceived,
   sendProofSuccess,
 } from '../src/proof-request/proof-request-store'
-import { color } from '../src/common/styles/constant'
+import { color, colors } from '../src/common/styles/constant'
 import {
   qrCodeScannerTabRoute,
   homeRoute,
@@ -190,9 +190,18 @@ export const invitationAcceptedData = firstInvitationPayload
 
 export const claimOfferId = 'usd123'
 export const claimOfferIssueDate = 123456789
+export const claimUUID = 'claimUUID'
+export const colorTheme = '#86B93B'
 export const claimDefinitionSchemaSequenceNumber = 36
 const issuerDid = 'issuerDid'
 export const senderLogoUrl = 'http://testissuer.com/logoUrl.png'
+
+export const caseInsensitiveAttributes = [
+  {
+    address1: 'Address 1',
+    address2: 'Address 2',
+  },
+]
 
 const requestedAttributes = [
   {
@@ -363,6 +372,11 @@ export const claimOfferPayload = {
   remotePairwiseDID: 'ha66899sadfjZJGINKN0770',
   status: 'RECEIVED',
   claimRequestStatus: 'CLAIM_REQUEST_SUCCESS',
+  claimId: claimUUID,
+  caseInsensitiveAttributes: {
+    address1: 'Address 1',
+    address2: 'Address 2',
+  },
 }
 
 export const pendingClaimHistory = {
@@ -1108,6 +1122,7 @@ export const sendClaimRequestSuccessEvent = sendClaimRequestSuccess(
 
 export const claimReceivedSuccessEvent = claimStorageSuccess(
   uid,
+  claimUUID,
   claimOfferIssueDate
 )
 

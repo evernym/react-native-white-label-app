@@ -60,11 +60,9 @@ import type {
   SendClaimRequestFailAction,
   PaidCredentialRequestFailAction,
   OutofbandClaimOfferAcceptedAction,
-} from '../claim-offer/type-claim-offer'
-import type {
-  ClaimStorageSuccessAction,
   DeleteClaimSuccessAction,
-} from '../claim/type-claim'
+} from '../claim-offer/type-claim-offer'
+import type { ClaimStorageSuccessAction } from '../claim/type-claim'
 import type {
   Proof,
   UpdateAttributeClaimAction,
@@ -80,7 +78,8 @@ import {
   DENY_CLAIM_OFFER_SUCCESS,
   DENY_CLAIM_OFFER_FAIL,
   OUTOFBAND_CLAIM_OFFER_ACCEPTED,
-  DELETE_OUTOFBAND_CLAIM_OFFER,
+  DENY_OUTOFBAND_CLAIM_OFFER,
+  DELETE_CLAIM_SUCCESS,
 } from '../claim-offer/type-claim-offer'
 import { UPDATE_ATTRIBUTE_CLAIM, ERROR_SEND_PROOF } from '../proof/type-proof'
 import type {
@@ -124,10 +123,7 @@ import {
   getConnection,
   getVerifier,
 } from '../store/store-selector'
-import {
-  CLAIM_STORAGE_SUCCESS,
-  DELETE_CLAIM_SUCCESS,
-} from '../claim/type-claim'
+import { CLAIM_STORAGE_SUCCESS } from '../claim/type-claim'
 import { RESET } from '../common/type-common'
 import {
   CLAIM_OFFER_RECEIVED,
@@ -1062,7 +1058,7 @@ export function convertPresentationProposalReceivedToHistoryEvent(
 
 export function convertPresentationProposalAcceptedToHistoryEvent(
   action: ProofProposalAcceptedAction,
-  event: ConnectionHistoryEvent,
+  event: ConnectionHistoryEvent
 ): ConnectionHistoryEvent {
   return {
     action: HISTORY_EVENT_STATUS[PROOF_PROPOSAL_ACCEPTED],
@@ -1083,7 +1079,7 @@ export function convertPresentationProposalAcceptedToHistoryEvent(
 
 export function convertPresentationRequestSentToHistoryEvent(
   action: ProofRequestSentAction,
-  event: ConnectionHistoryEvent,
+  event: ConnectionHistoryEvent
 ): ConnectionHistoryEvent {
   return {
     action: HISTORY_EVENT_STATUS[PROOF_REQUEST_SENT],
@@ -1104,7 +1100,7 @@ export function convertPresentationRequestSentToHistoryEvent(
 
 export function convertPresentationVerifiedToHistoryEvent(
   action: ProofVerifiedAction,
-  event: ConnectionHistoryEvent,
+  event: ConnectionHistoryEvent
 ): ConnectionHistoryEvent {
   return {
     action: HISTORY_EVENT_STATUS[PROOF_VERIFIED],
@@ -1125,7 +1121,7 @@ export function convertPresentationVerifiedToHistoryEvent(
 
 export function convertPresentationVerificationFailedToHistoryEvent(
   action: ProofVerificationFailedAction,
-  event: ConnectionHistoryEvent,
+  event: ConnectionHistoryEvent
 ): ConnectionHistoryEvent {
   return {
     action: HISTORY_EVENT_STATUS[PROOF_VERIFICATION_FAILED],
@@ -1307,7 +1303,7 @@ export function* historyEventOccurredSaga(
       if (existingEvent) historyEvent = null
     }
 
-    if (event.type === DELETE_OUTOFBAND_CLAIM_OFFER) {
+    if (event.type === DENY_OUTOFBAND_CLAIM_OFFER) {
       const claimOffer = yield select(getClaimOffer, event.uid)
       const claimOfferReceivedEvent = yield select(
         getHistoryEvent,
@@ -1669,7 +1665,8 @@ export function* historyEventOccurredSaga(
         event.remoteDid,
         UPDATE_ATTRIBUTE_CLAIM
       )
-      const oldHistoryEvent = storedProofReceivedEvent || storedUpdateAttributeEvent
+      const oldHistoryEvent =
+        storedProofReceivedEvent || storedUpdateAttributeEvent
       const errorSendProofEvent = convertErrorSendProofToHistoryEvent(
         event,
         oldHistoryEvent
@@ -1698,7 +1695,8 @@ export function* historyEventOccurredSaga(
         proofRequest.remotePairwiseDID,
         UPDATE_ATTRIBUTE_CLAIM
       )
-      const oldHistoryEvent = storedProofReceivedEvent || storedUpdateAttributeClaimEvent
+      const oldHistoryEvent =
+        storedProofReceivedEvent || storedUpdateAttributeClaimEvent
       historyEvent = convertProofSendToHistoryEvent(
         event,
         proofRequest,
@@ -1876,7 +1874,10 @@ export function* historyEventOccurredSaga(
       if (existingEvent) historyEvent = null
     }
 
-      if (event.type === PROOF_PROPOSAL_ACCEPTED || event.type === OUTOFBAND_PROOF_PROPOSAL_ACCEPTED) {
+    if (
+      event.type === PROOF_PROPOSAL_ACCEPTED ||
+      event.type === OUTOFBAND_PROOF_PROPOSAL_ACCEPTED
+    ) {
       const verifier = yield select(getVerifier, event.uid)
 
       const storedPresentationProposalReceivedEvent = yield select(
@@ -1890,7 +1891,7 @@ export function* historyEventOccurredSaga(
       if (oldHistoryEvent) {
         const presentationProposalAcceptedEvent = convertPresentationProposalAcceptedToHistoryEvent(
           event,
-          oldHistoryEvent,
+          oldHistoryEvent
         )
         yield put(deleteHistoryEvent(oldHistoryEvent))
         historyEvent = presentationProposalAcceptedEvent
@@ -1915,11 +1916,12 @@ export function* historyEventOccurredSaga(
       )
 
       const oldHistoryEvent =
-        storedPresentationProposalAcceptedEvent || storedOutofbandPresentationProposalAcceptedEvent
+        storedPresentationProposalAcceptedEvent ||
+        storedOutofbandPresentationProposalAcceptedEvent
 
       const presentationRequestSentEvent = convertPresentationRequestSentToHistoryEvent(
         event,
-        oldHistoryEvent,
+        oldHistoryEvent
       )
       if (oldHistoryEvent) {
         yield put(deleteHistoryEvent(oldHistoryEvent))
@@ -1964,7 +1966,8 @@ export function* historyEventOccurredSaga(
         PROOF_REQUEST_SENT
       )
       const oldHistoryEvent =
-        storedPresentationProposalAcceptedEvent ||  storedPresentationRequestSentEvent
+        storedPresentationProposalAcceptedEvent ||
+        storedPresentationRequestSentEvent
 
       const errorSendProofEvent = convertPresentationVerificationFailedToHistoryEvent(
         event,

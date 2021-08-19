@@ -8,7 +8,6 @@ import { NativeModules } from 'react-native'
 import type { Store } from '../store/type-store'
 import {
   CLAIM_RECEIVED,
-  CLAIM_RECEIVED_VCX,
   HYDRATE_CLAIM_MAP,
   HYDRATE_CLAIM_MAP_FAIL,
   MAP_CLAIM_TO_SENDER,
@@ -42,8 +41,6 @@ import {
   PAID_CREDENTIAL_REQUEST_FAIL,
   NEW_CONNECTION_SEEN,
   OUTOFBAND_CLAIM_OFFER_ACCEPTED,
-  DELETE_CLAIM_OFFER,
-  CLAIM_OFFER_DELETED,
 } from '../claim-offer/type-claim-offer'
 import {
   DEEP_LINK_DATA,
@@ -125,7 +122,10 @@ import {
   SMS_PENDING_INVITATION_SEEN,
 } from '../sms-pending-invitation/type-sms-pending-invitation'
 import { appName, CustomLogUtils } from '../external-imports'
-import { SERVER_ENVIRONMENT_CHANGED, SWITCH_ENVIRONMENT } from '../switch-environment/type-switch-environment'
+import {
+  SERVER_ENVIRONMENT_CHANGED,
+  SWITCH_ENVIRONMENT,
+} from '../switch-environment/type-switch-environment'
 
 const { RNIndy } = NativeModules
 
@@ -512,7 +512,6 @@ export function PiiHiddenActionTransformer(action: any) {
     [CONNECTION_DELETE_ATTACHED_REQUEST]: ['identifier'],
     [SEND_CONNECTION_REUSE]: ['invite', 'existingConnectionDetails'],
 
-    [CLAIM_RECEIVED]: ['claim'],
     [MAP_CLAIM_TO_SENDER]: [
       'claimUuid',
       'senderDID',
@@ -522,7 +521,7 @@ export function PiiHiddenActionTransformer(action: any) {
       'name',
       'senderName',
     ],
-    [CLAIM_RECEIVED_VCX]: ['claim'],
+    [CLAIM_RECEIVED]: ['claim'],
     [CLAIM_OFFER_RECEIVED]: ['payload', 'payloadInfo'],
     [SEND_CLAIM_REQUEST]: ['payload'],
     [SEND_CLAIM_REQUEST_SUCCESS]: ['payload'],
@@ -539,8 +538,6 @@ export function PiiHiddenActionTransformer(action: any) {
     [HYDRATE_CLAIM_MAP]: ['claimMap'],
     [HYDRATE_CLAIM_OFFERS_SUCCESS]: ['claimOffers'],
     [HYDRATE_CLAIM_MAP_FAIL]: ['claim'],
-    [DELETE_CLAIM_OFFER]: ['userDID'],
-    [CLAIM_OFFER_DELETED]: ['vcxSerializedClaimOffers'],
 
     [DEEP_LINK_DATA]: ['data'],
     [DEEP_LINK_PROCESSED]: ['data'],

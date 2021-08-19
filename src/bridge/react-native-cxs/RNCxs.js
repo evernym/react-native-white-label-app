@@ -14,8 +14,7 @@ import type {
   WalletTokenInfo,
   PaymentAddress,
   SignDataResponse,
-  CxsPoolConfig,
-  VcxPoolInitConfig,
+  WalletPoolName,
 } from './type-cxs'
 import type {
   AriesOutOfBandInvite,
@@ -31,13 +30,13 @@ import {
   convertVcxConnectionToCxsConnection,
   convertVcxCredentialOfferToCxsClaimOffer,
   paymentHandle,
-  convertCxsPoolInitToVcxPoolInit,
   addAttestation,
 } from './vcx-transformers'
 import type { UserOneTimeInfo } from '../../store/user/type-user-store'
 import type {
   AgencyPoolConfig,
   MessagePaymentDetails,
+  PoolConfig,
 } from '../../store/type-config-store'
 import type {
   ClaimPushPayload,
@@ -59,33 +58,49 @@ import {
   convertSovrinAtomsToSovrinTokens,
   convertVcxLedgerFeesToLedgerFees,
 } from '../../sovrin-token/sovrin-token-converter'
-import { uuid } from "../../services/uuid";
+import { uuid } from '../../services/uuid'
 import type { GenericObject } from '../../common/type-common'
 import type { PairwiseAgent } from '../../store/type-connection-store'
-import { WALLET_ITEM_NOT_FOUND } from "./error-cxs";
+import { WALLET_ITEM_NOT_FOUND } from './error-cxs'
 
-const { RNIndy } = NativeModules
+const { RNIndy, Helpers } = NativeModules
+
+export function resetBackgroundTimeout() {
+  if (Platform.OS === 'android') {
+    return Helpers.resetTimeout()
+  }
+}
+
+export async function watchApplicationInactivity() {
+  if (Platform.OS === 'android') {
+    Helpers.watchApplicationInactivity()
+  }
+}
 
 export async function acceptInvitationVcx(
   connectionHandle: number,
-  agentInfo: PairwiseAgent | null,
+  agentInfo: PairwiseAgent | null
 ): Promise<GenericObject> {
   const connectionOption = agentInfo ? { pairwise_agent_info: agentInfo } : {}
 
   let invitation
 
   try {
-    invitation = await RNIndy.vcxAcceptInvitation(connectionHandle, JSON.stringify(connectionOption))
+    invitation = await RNIndy.vcxAcceptInvitation(
+      connectionHandle,
+      JSON.stringify(connectionOption)
+    )
   } catch (error) {
     if (error.code === WALLET_ITEM_NOT_FOUND) {
       // pairwise agent info not found in the wallet -> try to accept connection again but without predefined agent
       invitation = await RNIndy.vcxAcceptInvitation(connectionHandle, '{}')
-    }
-    else {
+    } else {
       throw error
     }
   }
-  const serializedConnection: string = await serializeConnection(connectionHandle)
+  const serializedConnection: string = await serializeConnection(
+    connectionHandle
+  )
 
   const {
     data,
@@ -104,7 +119,7 @@ export async function acceptInvitationVcx(
   return {
     connection: convertVcxConnectionToCxsConnection(data),
     serializedConnection,
-    invitation
+    invitation,
   }
 }
 
@@ -165,7 +180,7 @@ export async function createOneTimeInfo(
 
 export async function getProvisionToken(
   agencyConfig: AgencyPoolConfig,
-  comMethod: { type: number, id: string, value: string },
+  sponseeId: string,
   sponsorId: string
 ): Promise<[null | string, null | string]> {
   try {
@@ -177,18 +192,12 @@ export async function getProvisionToken(
     const vcxProvisionConfig = {
       vcx_config: vcxConfig,
       source_id: 'someSourceId',
-      com_method: comMethod,
-      sponsee_id: comMethod.id,
+      sponsee_id: sponseeId,
       sponsor_id: sponsorId,
     }
     let provisionToken: string = await RNIndy.getProvisionToken(
       JSON.stringify(vcxProvisionConfig)
     )
-
-    // TODO: FIXME temp workaround until we get fixed VCX
-    let tempProvisionToken = JSON.parse(provisionToken)
-    tempProvisionToken['sponseeId'] = comMethod.id
-    provisionToken = JSON.stringify(tempProvisionToken)
 
     return [null, provisionToken]
   } catch (e) {
@@ -229,25 +238,38 @@ export async function init(config: CxsInitConfig): Promise<boolean> {
   return initResult
 }
 
-export async function initPool(
-  config: CxsPoolConfig,
-  fileName: string
-): Promise<boolean> {
-  const genesis_path: string = await RNIndy.getGenesisPathWithConfig(
-    config.poolConfig,
-    fileName
+async function preparePoolConfig(config: PoolConfig) {
+  let walletPoolName: WalletPoolName = await getWalletPoolName()
+  const genesisPath: string = await RNIndy.getGenesisPathWithConfig(
+    config.genesis,
+    config.key
   )
+  return {
+    genesis_path: genesisPath,
+    pool_name: walletPoolName.poolName + config.key,
+  }
+}
 
-  const initConfig = {
-    ...config,
-    genesis_path,
+export async function initPool(
+  poolConfig: string | Array<PoolConfig>
+): Promise<boolean> {
+  let vcxInitPoolConfig = []
+
+  if (Array.isArray(poolConfig)) {
+    for (const config: PoolConfig of poolConfig) {
+      vcxInitPoolConfig.push(await preparePoolConfig(config))
+    }
   }
 
-  const walletPoolName = await getWalletPoolName()
-  const vcxInitPoolConfig: VcxPoolInitConfig = await convertCxsPoolInitToVcxPoolInit(
-    initConfig,
-    walletPoolName
-  )
+  if (typeof poolConfig === 'string') {
+    vcxInitPoolConfig.push(
+      await preparePoolConfig({
+        key: '',
+        genesis: poolConfig,
+      })
+    )
+  }
+
   return await RNIndy.vcxInitPool(JSON.stringify(vcxInitPoolConfig))
 }
 
@@ -645,9 +667,7 @@ export async function sendProof(
   return await RNIndy.proofSend(proofHandle, connectionHandle)
 }
 
-export async function proofGetState(
-  proofHandle: number,
-): Promise<number> {
+export async function proofGetState(proofHandle: number): Promise<number> {
   return await RNIndy.proofGetState(proofHandle)
 }
 
@@ -934,9 +954,7 @@ export async function credentialReject(
   return RNIndy.credentialReject(credentialHandle, connectionHandle, comment)
 }
 
-export async function getRequestRedirectionUrl(
-  url: string
-): Promise<string> {
+export async function getRequestRedirectionUrl(url: string): Promise<string> {
   return RNIndy.getRequestRedirectionUrl(url)
 }
 
@@ -950,7 +968,7 @@ export async function createOutOfBandConnectionInvitation(
   goal: string,
   handshake?: boolean,
   attachment?: string | null,
-  agentInfo: PairwiseAgent | null,
+  agentInfo: PairwiseAgent | null
 ): Promise<GenericObject> {
   const connectionHandle = await RNIndy.createOutOfBandConnection(
     uuid(),
@@ -964,7 +982,7 @@ export async function createOutOfBandConnectionInvitation(
     connection: pairwiseInfo,
     serializedConnection: vcxSerializedConnection,
     invitation,
-  } =  await acceptInvitationVcx(connectionHandle, agentInfo)
+  } = await acceptInvitationVcx(connectionHandle, agentInfo)
 
   return {
     pairwiseInfo,
@@ -973,15 +991,21 @@ export async function createOutOfBandConnectionInvitation(
   }
 }
 
-export async function createProofVerifierWithProposal(presentationProposal: string, name: string): Promise<string> {
+export async function createProofVerifierWithProposal(
+  presentationProposal: string,
+  name: string
+): Promise<string> {
   return RNIndy.createProofVerifierWithProposal(
     uuid(),
     presentationProposal,
-    name,
+    name
   )
 }
 
-export async function proofVerifierSendRequest(handle: number, connectionHandle: number): Promise<null> {
+export async function proofVerifierSendRequest(
+  handle: number,
+  connectionHandle: number
+): Promise<null> {
   return RNIndy.proofVerifierSendRequest(handle, connectionHandle)
 }
 
@@ -989,20 +1013,29 @@ export async function proofVerifierSerialize(handle: number): Promise<string> {
   return RNIndy.proofVerifierSerialize(handle)
 }
 
-export async function proofVerifierDeserialize(serialized: number): Promise<number> {
-  return RNIndy.proofVerifierDeserialize(serialized,)
+export async function proofVerifierDeserialize(
+  serialized: number
+): Promise<number> {
+  return RNIndy.proofVerifierDeserialize(serialized)
 }
 
-export async function proofVerifierUpdateStateWithMessage(handle: number, message: number): Promise<number> {
+export async function proofVerifierUpdateStateWithMessage(
+  handle: number,
+  message: number
+): Promise<number> {
   return RNIndy.proofVerifierUpdateStateWithMessage(handle, message)
 }
 
-export async function proofVerifierGetProofMessage(handle: number): Promise<any> {
+export async function proofVerifierGetProofMessage(
+  handle: number
+): Promise<any> {
   return RNIndy.proofVerifierGetProofMessage(handle)
 }
 
-export async function proofVerifierGetProofRequest(handle: number): Promise<string> {
-  return RNIndy.proofVerifierGetPresentationRequest(handle,)
+export async function proofVerifierGetProofRequest(
+  handle: number
+): Promise<string> {
+  return RNIndy.proofVerifierGetPresentationRequest(handle)
 }
 
 export async function createPairwiseAgent(): Promise<string> {

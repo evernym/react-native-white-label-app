@@ -34,7 +34,10 @@ import {
 } from '../common'
 import { STORAGE_KEY_USER_ONE_TIME_INFO } from '../store/user/type-user-store'
 import { CLAIM_OFFERS } from '../claim-offer/type-claim-offer'
-import { STORAGE_KEY_PAIRWISE_AGENT, STORAGE_KEY_THEMES } from '../store/type-connection-store'
+import {
+  STORAGE_KEY_PAIRWISE_AGENT,
+  STORAGE_KEY_THEMES,
+} from '../store/type-connection-store'
 import { HISTORY_EVENT_STORAGE_KEY } from '../connection-history/type-connection-history'
 import {
   TOUCH_ID_STORAGE_KEY,
@@ -63,12 +66,11 @@ import {
   retryInterruptedActionsSaga,
 } from '../connection-history/connection-history-store'
 import { IS_ALREADY_INSTALLED } from '../common'
+import { alreadyInstalledAction, hydrated, initialized } from './config-store'
 import {
-  alreadyInstalledAction,
-  hydrated,
-  initialized,
-} from './config-store'
-import { ensureVcxInitSuccess } from './route-store'
+  ensureVcxInitAndPoolConnectSuccess,
+  ensureVcxInitSuccess,
+} from './route-store'
 import {
   lockEnable,
   enableTouchIdAction,
@@ -282,8 +284,8 @@ export function* hydrate(): any {
       // as hydrateClaimOffersSaga uses connection history store to restore issue date of claim offers if required
       // as hydrateClaimMapSaga uses connection history store to restore credential name if required
       yield* loadHistorySaga()
-      yield* hydrateClaimOffersSaga()
       yield* hydrateClaimMapSaga()
+      yield* hydrateClaimOffersSaga()
       yield* hydrateQuestionSaga()
       yield* hydrateInviteActionSaga()
       yield* hydrateVerifierSaga()
@@ -311,6 +313,8 @@ export function* hydrate(): any {
       if (!pairwiseAgent) {
         yield spawn(createPairwiseAgentSaga)
       }
+
+      yield* ensureVcxInitAndPoolConnectSuccess()
 
       // NOTE: This will be changed when the TAA flow changes.
       // yield* hydrateTxnAuthorAgreementSaga()

@@ -1,7 +1,7 @@
 //@flow
 import type { ReactNavigation } from '../common/type-common'
 import type { Attribute } from '../push-notification/type-push-notification'
-import { deleteClaim } from '../claim/claim-store'
+import { deleteClaim } from '../claim-offer/claim-offer-store'
 
 export type CredentialDetailsProps = {
   credentialName: string,

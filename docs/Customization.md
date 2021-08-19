@@ -307,15 +307,6 @@ You can configure a server environment used for agent provisioning inside the `p
         }
       ```
        
-    * `VCX_PUSH_TYPE` -  type of push notifications
-        * 1 - push notification to default app
-        * 3 - forwarding
-        * 4 - sponsor configured app
-       
-          ```javascript
-          export const VCX_PUSH_TYPE = 4
-          ```
-        
     * `SPONSOR_ID` - An ID given to you from Evernym's Support Team after the Sponsor onboarding process is complete.
 
         ```javascript

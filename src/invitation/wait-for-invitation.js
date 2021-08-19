@@ -21,6 +21,7 @@ import {
 } from '../store/store-selector'
 import { getSmsPendingInvitation } from '../sms-pending-invitation/sms-pending-invitation-store'
 import { DEEP_LINK_STATUS } from '../deep-link/type-deep-link'
+import { headerDefaultOptions } from '../navigation/navigation-header-config'
 
 const WaitForInvitation = (props: ReactNavigation) => {
   const { navigation, route } = props
@@ -67,6 +68,11 @@ const WaitForInvitation = (props: ReactNavigation) => {
 export const waitForInvitationScreen = {
   routeName: waitForInvitationRoute,
   screen: WaitForInvitation,
+  options: headerDefaultOptions({
+    headline: undefined,
+    headerHideShadow: true,
+    transparent: true,
+  }),
 }
 
 const styles = StyleSheet.create({

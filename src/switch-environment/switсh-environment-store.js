@@ -18,18 +18,24 @@ import { schemaValidator } from '../services/schema-validator'
 import { Alert } from 'react-native'
 import { resetStore, vcxInitReset } from '../store/config-store'
 import { usePushNotifications } from '../external-imports'
-import { getAgencyUrl, getConfig, getCurrentScreen, getPushToken } from '../store/store-selector'
+import {
+  getAgencyUrl,
+  getConfig,
+  getCurrentScreen,
+  getPushToken,
+} from '../store/store-selector'
 import { updatePushToken } from '../push-notification/push-notification-store'
 import { captureError } from '../services/error/error-handler'
 import { getHydrationItem, secureSet } from '../services/storage'
 import type { CustomError } from '../common/type-common'
 import { customLogger } from '../store/custom-logger'
 import { SAFE_TO_DOWNLOAD_SMS_INVITATION } from '../sms-pending-invitation/type-sms-pending-invitation'
-import { baseUrls } from '../environment'
+import { environments } from '../environment'
 import findKey from 'lodash.findkey'
 import type {
   ChangeEnvironment,
-  ChangeEnvironmentUrlAction, ServerEnvironment,
+  ChangeEnvironmentUrlAction,
+  ServerEnvironment,
   ServerEnvironmentChangedAction,
   SwitchEnvironmentAction,
 } from './type-switch-environment'
@@ -43,8 +49,8 @@ import {
 } from './type-switch-environment'
 
 /*
-* NOTE: It uses Reducer from store/config-store.js file
-* */
+ * NOTE: It uses Reducer from store/config-store.js file
+ * */
 
 export const changeEnvironmentUrl = (url: string) => ({
   type: CHANGE_ENVIRONMENT_VIA_URL,
@@ -57,7 +63,7 @@ export const hydrateSwitchedEnvironmentDetailFail = (error: CustomError) => ({
 })
 
 export const changeServerEnvironment = (
-  serverEnvironment: ServerEnvironment,
+  serverEnvironment: ServerEnvironment
 ): ServerEnvironmentChangedAction => ({
   type: SERVER_ENVIRONMENT_CHANGED,
   serverEnvironment,
@@ -68,18 +74,18 @@ export const saveSwitchedEnvironmentDetailFail = (error: CustomError) => ({
 })
 
 export function* onChangeEnvironmentUrl(
-  action: ChangeEnvironmentUrlAction,
+  action: ChangeEnvironmentUrlAction
 ): Generator<*, *, *> {
   try {
     const { url } = action
     const environmentDetails: EnvironmentDetailUrlDownloaded = yield call(
       downloadEnvironmentDetails,
-      url,
+      url
     )
     if (
       !schemaValidator.validate(
         schemaDownloadedEnvironmentDetails,
-        environmentDetails,
+        environmentDetails
       )
     ) {
       // TODO: We need to make a component which displays message
@@ -87,7 +93,7 @@ export function* onChangeEnvironmentUrl(
       // for now, we are using native alert to show error and messages
       Alert.alert(
         MESSAGE_FAIL_ENVIRONMENT_SWITCH_TITLE,
-        MESSAGE_FAIL_ENVIRONMENT_SWITCH_INVALID_DATA(url),
+        MESSAGE_FAIL_ENVIRONMENT_SWITCH_INVALID_DATA(url)
       )
 
       return
@@ -105,8 +111,8 @@ export function* onChangeEnvironmentUrl(
         environmentDetails.agencyDID,
         environmentDetails.agencyVerificationKey,
         environmentDetails.poolConfig,
-        environmentDetails.paymentMethod,
-      ),
+        environmentDetails.paymentMethod
+      )
     )
 
     if (usePushNotifications) {
@@ -122,13 +128,13 @@ export function* onChangeEnvironmentUrl(
     // that means environment is switched
     Alert.alert(
       MESSAGE_SUCCESS_ENVIRONMENT_SWITCH_TITLE,
-      MESSAGE_SUCCESS_ENVIRONMENT_SWITCH_DESCRIPTION,
+      MESSAGE_SUCCESS_ENVIRONMENT_SWITCH_DESCRIPTION
     )
   } catch (e) {
     captureError(e)
     Alert.alert(
       MESSAGE_FAIL_ENVIRONMENT_SWITCH_TITLE,
-      MESSAGE_FAIL_ENVIRONMENT_SWITCH_ERROR(e.message),
+      MESSAGE_FAIL_ENVIRONMENT_SWITCH_ERROR(e.message)
     )
   }
 }
@@ -138,7 +144,7 @@ export const changeEnvironment = (
   agencyDID: string,
   agencyVerificationKey: string,
   poolConfig: string,
-  paymentMethod: string,
+  paymentMethod: string
 ) => {
   let updatedPoolConfig = poolConfig
 
@@ -172,14 +178,14 @@ export const changeEnvironment = (
 }
 
 export function* onEnvironmentSwitch(
-  action: SwitchEnvironmentAction,
+  action: SwitchEnvironmentAction
 ): Generator<*, *, *> {
   const { type, ...switchedEnvironmentDetail } = action
   try {
     yield call(
       secureSet,
       STORAGE_KEY_SWITCHED_ENVIRONMENT_DETAIL,
-      JSON.stringify(switchedEnvironmentDetail),
+      JSON.stringify(switchedEnvironmentDetail)
     )
   } catch (e) {
     captureError(e)
@@ -189,7 +195,7 @@ export function* onEnvironmentSwitch(
       saveSwitchedEnvironmentDetailFail({
         code: ERROR_SAVE_SWITCH_ENVIRONMENT.code,
         message: `${ERROR_SAVE_SWITCH_ENVIRONMENT.message}${e.message}`,
-      }),
+      })
     )
   }
 }
@@ -198,7 +204,7 @@ export function* hydrateSwitchedEnvironmentDetails(): any {
   try {
     const switchedEnvironmentDetail: string | null = yield call(
       getHydrationItem,
-      STORAGE_KEY_SWITCHED_ENVIRONMENT_DETAIL,
+      STORAGE_KEY_SWITCHED_ENVIRONMENT_DETAIL
     )
     // if we did not find any saved environment details
     // then we are running an older version of the app where we did not save
@@ -213,7 +219,7 @@ export function* hydrateSwitchedEnvironmentDetails(): any {
       paymentMethod,
     }: ChangeEnvironment = switchedEnvironmentDetail
       ? JSON.parse(switchedEnvironmentDetail)
-      : baseUrls[SERVER_ENVIRONMENT.DEMO]
+      : environments[SERVER_ENVIRONMENT.DEMO]
     // if environment that is saved is same as what we have as default
     // then there is no need to raise change environment action
     const currentAgencyUrl = yield select(getAgencyUrl)
@@ -224,8 +230,8 @@ export function* hydrateSwitchedEnvironmentDetails(): any {
           agencyDID,
           agencyVerificationKey,
           poolConfig,
-          paymentMethod,
-        ),
+          paymentMethod
+        )
       )
     }
   } catch (e) {
@@ -235,7 +241,7 @@ export function* hydrateSwitchedEnvironmentDetails(): any {
       hydrateSwitchedEnvironmentDetailFail({
         code: ERROR_HYDRATE_SWITCH_ENVIRONMENT.code,
         message: `${ERROR_HYDRATE_SWITCH_ENVIRONMENT.message}${e.message}`,
-      }),
+      })
     )
   }
 }
@@ -270,7 +276,10 @@ export function* persistEnvironmentDetails(): any {
 export const getEnvironmentName = (configStore: ConfigStore) => {
   const { agencyUrl } = configStore
 
-  return findKey(baseUrls, (environment) => environment.agencyUrl === agencyUrl)
+  return findKey(
+    environments,
+    (environment) => environment.agencyUrl === agencyUrl
+  )
 }
 
 export function* watchSwitchEnvironment(): any {

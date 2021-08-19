@@ -125,23 +125,15 @@ RCT_EXPORT_METHOD(init: (NSString *)config
                   rejecter: (RCTPromiseRejectBlock) reject)
 {
   ConnectMeVcx *conn = [[ConnectMeVcx alloc] init];
-  //int retCode = [conn initNullPay];
-  int retCode = [conn initSovToken];
-
-  if(retCode != 0) {
-    NSString *indyErrorCode = [NSString stringWithFormat:@"%ld", (long)retCode];
-    reject(indyErrorCode, [NSString stringWithFormat:@"Error occurred while initializing sovtoken: %ld", (long)retCode], NULL);
-  } else {
-    [conn initWithConfig:config completion:^(NSError *error) {
-      if (error != nil && error.code != 0 && error.code != 1044)
-      {
-        NSString *indyErrorCode = [NSString stringWithFormat:@"%ld", (long)error.code];
-        reject(indyErrorCode, [NSString stringWithFormat:@"Error occurred while initializing vcx: %@ :: %ld",error.domain, (long)error.code], error);
-      }else{
-        resolve(@true);
-      }
-    }];
-  }
+  [conn initWithConfig:config completion:^(NSError *error) {
+    if (error != nil && error.code != 0 && error.code != 1044)
+    {
+      NSString *indyErrorCode = [NSString stringWithFormat:@"%ld", (long)error.code];
+      reject(indyErrorCode, [NSString stringWithFormat:@"Error occurred while initializing vcx: %@ :: %ld",error.domain, (long)error.code], error);
+    }else{
+      resolve(@true);
+    }
+  }];
 }
 
 RCT_EXPORT_METHOD(reset:
@@ -1933,7 +1925,7 @@ RCT_EXPORT_METHOD(getDeviceCheckToken: (RCTPromiseResolveBlock) resolve
         }
         reject(errorDomain, error.localizedDescription, error);
     };
-    
+
     if (@available(iOS 11.0, *)) {
         if (DCDevice.currentDevice.supported) {
             [DCDevice.currentDevice generateTokenWithCompletionHandler:^(NSData * _Nullable token, NSError * _Nullable error) {

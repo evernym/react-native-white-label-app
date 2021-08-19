@@ -13,7 +13,7 @@ import {
   vcxShutdown,
 } from '../../bridge/react-native-cxs/RNCxs'
 
-import { sponsorId, vcxPushType, getProvisionTokenFunc } from '../../external-imports'
+import { sponsorId, getProvisionTokenFunc } from '../../external-imports'
 
 export function* registerCloudAgentWithToken(
   agencyConfig: *
@@ -34,24 +34,18 @@ export function* registerCloudAgentWithToken(
 
   // get provision Token
   if (getProvisionTokenFunc) {
-    [provisionTokenError, provisionToken] = yield call(
-      getProvisionTokenFunc
-    )
+    ;[provisionTokenError, provisionToken] = yield call(getProvisionTokenFunc)
   } else {
     // call function to get token
-    for (let i=0; i<2; i++){
+    for (let i = 0; i < 2; i++) {
       // default function to get provision token twice
-      [provisionTokenError, provisionToken] = yield call(
+      ;[provisionTokenError, provisionToken] = yield call(
         getProvisionToken,
         agencyConfig,
-        {
-          type: vcxPushType,
-          id,
-          value: `FCM:mock_value_just_to_register`,
-        },
+        id,
         sponsorId
       )
-      if (provisionToken){
+      if (provisionToken) {
         provisionTokenError = null
         break
       }
@@ -64,7 +58,9 @@ export function* registerCloudAgentWithToken(
 
   if (provisionTokenError || !provisionToken) {
     return [
-      `CS-007::Error calling getProvisionToken vcx API call ${provisionTokenError || ''}`,
+      `CS-007::Error calling getProvisionToken vcx API call ${
+        provisionTokenError || ''
+      }`,
       null,
     ]
   }

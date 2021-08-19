@@ -43,14 +43,14 @@ import {
   serializedClaimOffer,
   vcxSerializedConnection,
   connectionHistory,
+  colorTheme,
+  claimUUID,
+  caseInsensitiveAttributes,
 } from '../../../__mocks__/static-data'
 import { expectSaga } from 'redux-saga-test-plan'
 import * as matchers from 'redux-saga-test-plan/matchers'
 import { throwError } from 'redux-saga-test-plan/providers'
-import {
-  secureSet,
-  getHydrationItem,
-} from '../../services/storage'
+import { secureSet, getHydrationItem } from '../../services/storage'
 import {
   VCX_INIT_POOL_SUCCESS,
   VCX_INIT_SUCCESS,
@@ -115,7 +115,16 @@ describe('claim offer store', () => {
   })
 
   it('claim request is success', () => {
-    newState = claimOfferStore(newState, claimRequestSuccess(uid, issueDate))
+    newState = claimOfferStore(
+      newState,
+      claimRequestSuccess(
+        uid,
+        issueDate,
+        colorTheme,
+        claimUUID,
+        caseInsensitiveAttributes
+      )
+    )
     expect(newState).toMatchSnapshot()
   })
 
@@ -232,6 +241,8 @@ describe('claim offer store', () => {
         uid: 'uid',
         remotePairwiseDID: 'remotePairwiseDID',
         senderLogoUrl: 'senderLogoUrl',
+        claimId: claimUUID,
+        caseInsensitiveAttributes: caseInsensitiveAttributes,
       },
     }
 
@@ -250,10 +261,7 @@ describe('claim offer store', () => {
           JSON.stringify(data),
         ],
         [matchers.select.selector(getConnectionHistory), history],
-        [
-          matchers.call.fn(getColorTheme, 'senderLogoUrl'),
-          colors.main
-        ]
+        [matchers.call.fn(getColorTheme, 'senderLogoUrl'), colors.main],
       ])
       .put(hydrateClaimOffers(JSON.parse(expectedJSON)))
       .run()
