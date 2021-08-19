@@ -6,9 +6,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigation } from '@react-navigation/native'
 import CountryPicker from 'react-native-country-picker-modal'
 import { moderateScale, verticalScale } from 'react-native-size-matters'
-import RadioButtonRN from 'radio-buttons-react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
+import { RadioButton } from './components/radio-button'
 import type { Store } from '../store/type-store'
 import type {
   PhysicalIdProcessStatus,
@@ -284,7 +284,7 @@ const PhysicalIdDefault = ({
       />
       {country ? (
         <View style={styles.documentsContainer}>
-          <RadioButtonRN
+          <RadioButton
             data={data}
             selectedBtn={setDocument}
             icon={<Icon name="check-circle" size={25} color={colors.green1} />}
