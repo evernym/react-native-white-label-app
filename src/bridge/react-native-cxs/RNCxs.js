@@ -180,7 +180,7 @@ export async function createOneTimeInfo(
 
 export async function getProvisionToken(
   agencyConfig: AgencyPoolConfig,
-  sponseeId: string,
+  comMethod: { type: number, id: string, value: string },
   sponsorId: string
 ): Promise<[null | string, null | string]> {
   try {
@@ -192,7 +192,8 @@ export async function getProvisionToken(
     const vcxProvisionConfig = {
       vcx_config: vcxConfig,
       source_id: 'someSourceId',
-      sponsee_id: sponseeId,
+      com_method: comMethod,
+      sponsee_id: comMethod.id,
       sponsor_id: sponsorId,
     }
     let provisionToken: string = await RNIndy.getProvisionToken(
