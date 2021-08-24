@@ -1,6 +1,6 @@
 // @flow
 
-const physicalIdBaseUrl = 'https://8ed1d62a6aee.ngrok.io'
+const physicalIdBaseUrl = 'https://70b5-160-202-39-43.ngrok.io'
 
 async function post(config: {
   url: string,
