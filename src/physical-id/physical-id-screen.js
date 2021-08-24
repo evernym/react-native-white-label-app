@@ -60,7 +60,7 @@ function PhysicalId() {
   }
 
   const onDocumentSelect = async (document) => {
-    setDocument(document.label)
+    setDocument(document.value)
   }
 
   useEffect(() => {
@@ -260,9 +260,9 @@ const PhysicalIdDefault = ({
   onCountrySelect,
 }) => {
   const data = [
-    { label: 'Passport' },
-    { label: "Driver's License" },
-    { label: 'Identity Document' },
+    { label: 'Passport', value: 'PASSPORT' },
+    { label: 'Driving License', value: 'DRIVING_LICENSE' },
+    { label: 'Identity Document', value: 'IDENTITY_CARD' },
   ]
 
   return (

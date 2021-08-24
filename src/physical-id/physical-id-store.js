@@ -221,7 +221,7 @@ function* launchPhysicalIdSDKSaga(
   // send workflow Id to server so that it can get the data for workflowRefId
   const [getWorkflowDataError] = yield call(flattenAsync(getWorkflowData), {
     workflowId,
-    country: action.country,
+    country: selectedCountry,
     document: action.documentType,
   })
 
@@ -266,7 +266,7 @@ function* launchPhysicalIdSDKSaga(
     workflowId,
     connectionDID,
     hardwareToken: 'something-fails-for-now-till-we-add-auth',
-    country: action.country,
+    country: selectedCountry,
     document: action.documentType,
   })
   if (issueCredentialError) {
