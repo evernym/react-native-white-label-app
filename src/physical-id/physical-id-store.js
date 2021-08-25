@@ -204,7 +204,13 @@ function* launchPhysicalIdSDKSaga(
   yield put(updatePhysicalIdStatus(physicalIdProcessStatus.SDK_SCAN_START))
 
   // TODO:KS Validate that the spelling and casing is as per need of MC SDK
-  const document = action.documentType
+  const documentNameMap = {
+    PASSPORT: 'Passport',
+    DRIVING_LICENSE: "Driver's license",
+    IDENTITY_CARD: 'Identity card',
+    VISA: 'Visa',
+  }
+  const document = documentNameMap[action.documentType]
   const [workflowIdError, workflowId] = yield call(
     flattenAsync(midsScanStart),
     document
