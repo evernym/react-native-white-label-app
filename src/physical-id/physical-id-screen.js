@@ -1,6 +1,12 @@
 // @flow
 
-import React, { useEffect, useState } from 'react'
+import React, {
+  useEffect,
+  useState,
+  useRef,
+  useImperativeHandle,
+  forwardRef,
+} from 'react'
 import { StyleSheet, Text, View, Platform } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigation } from '@react-navigation/native'
@@ -42,10 +48,13 @@ function PhysicalId() {
   const [document, setDocument] = useState()
   const [documents, setDocuments] = useState()
   const testID = 'physicalId'
+  const countryPickerRef = useRef(null)
 
   const onAction = async () => {
     if (!!country && !!document) {
       dispatch(launchPhysicalIdSDK(country, document))
+    } else if (!country) {
+      countryPickerRef.current && countryPickerRef.current.open()
     }
   }
 
@@ -76,7 +85,6 @@ function PhysicalId() {
     }
   }, [processStatus])
 
-  console.log({ processStatus, connectionStatus })
   if (isLoaderVisible(processStatus, connectionStatus)) {
     const loaderText = getLoaderMessageText(processStatus, connectionStatus)
     return (
@@ -95,6 +103,7 @@ function PhysicalId() {
           documents={documents}
           setDocument={onDocumentSelect}
           onCountrySelect={onCountrySelect}
+          ref={countryPickerRef}
         />
         {hasError(processStatus, connectionStatus) ? (
           <PhysicalIdError
@@ -111,7 +120,6 @@ function PhysicalId() {
           secondColorBackground={colors.main}
           denyButtonText="Cancel"
           acceptBtnText="Start Document Verification"
-          disableAccept={!country || !document}
           topTestID={`${testID}-deny`}
           bottomTestID={`${testID}-accept`}
           containerStyles={styles.actionContainer}
@@ -206,11 +214,7 @@ function PhysicalIdError(props: {
     return null
   }
 
-  return (
-    <CustomText bg="tertiary" h4 center>
-      {errorText}
-    </CustomText>
-  )
+  return <Text style={styles.errorText}>{errorText}</Text>
 }
 
 function hasError(
@@ -252,54 +256,68 @@ function getErrorConnectionText(connectionStatus: PhysicalIdConnectionStatus) {
   }
 }
 
-const PhysicalIdDefault = ({
-  country,
-  document,
-  setDocument,
-  documents,
-  onCountrySelect,
-}) => {
-  const data = [
-    { label: 'Passport', value: 'PASSPORT' },
-    { label: 'Driving License', value: 'DRIVING_LICENSE' },
-    { label: 'Identity Document', value: 'IDENTITY_CARD' },
-  ]
+const PhysicalIdDefault = forwardRef(
+  ({ country, document, setDocument, documents, onCountrySelect }, ref) => {
+    const data = [
+      { label: 'Passport', value: 'PASSPORT' },
+      { label: 'Driving License', value: 'DRIVING_LICENSE' },
+      { label: 'Identity Document', value: 'IDENTITY_CARD' },
+    ]
+    const [countryPickerVisible, setCountryPickerVisible] = useState(false)
+    const onCloseCountryPicker = () => {
+      setCountryPickerVisible(false)
+    }
 
-  return (
-    <>
-      <Text style={styles.physicalIdParagraphText}>
-        Scan your driver license or passport and receive a verifiable
-        credential. Have your document ready to scan.
-      </Text>
-      <CountryPicker
-        withFilter={true}
-        withFlag={true}
-        withCountryNameButton={true}
-        withEmoji={true}
-        withCloseButton={true}
-        withFlagButton={true}
-        onSelect={onCountrySelect}
-        countryCode={country || ''}
-        preferredCountries={['CA', 'IN', 'RS', 'GB', 'US']}
-      />
-      {country ? (
-        <View style={styles.documentsContainer}>
-          <RadioButton
-            data={data}
-            selectedBtn={setDocument}
-            icon={<Icon name="check-circle" size={25} color={colors.green1} />}
-            animationType="rotate"
-            duration={300}
-            textColor={colors.gray1}
-            activeColor={colors.green1}
-            boxActiveBgColor={colors.green3}
-            textStyle={styles.documentNameText}
-          />
-        </View>
-      ) : null}
-    </>
-  )
-}
+    useImperativeHandle(
+      ref,
+      () => ({
+        open: () => {
+          setCountryPickerVisible(true)
+        },
+      }),
+      [setCountryPickerVisible]
+    )
+
+    return (
+      <>
+        <Text style={styles.physicalIdParagraphText}>
+          Scan your driver license or passport and receive a verifiable
+          credential. Have your document ready to scan.
+        </Text>
+        <CountryPicker
+          withFilter={true}
+          withFlag={true}
+          withCountryNameButton={true}
+          withEmoji={true}
+          withCloseButton={true}
+          withFlagButton={true}
+          onSelect={onCountrySelect}
+          countryCode={country || ''}
+          preferredCountries={['CA', 'IN', 'RS', 'GB', 'US']}
+          visible={countryPickerVisible}
+          onClose={onCloseCountryPicker}
+        />
+        {country ? (
+          <View style={styles.documentsContainer}>
+            <RadioButton
+              data={data}
+              selectedBtn={setDocument}
+              icon={
+                <Icon name="check-circle" size={25} color={colors.green1} />
+              }
+              animationType="rotate"
+              duration={300}
+              textColor={colors.gray1}
+              activeColor={colors.green1}
+              boxActiveBgColor={colors.green3}
+              textStyle={styles.documentNameText}
+            />
+          </View>
+        ) : null}
+      </>
+    )
+  }
+)
 
 const styles = StyleSheet.create({
   buttonStyle: {
@@ -317,6 +335,15 @@ const styles = StyleSheet.create({
     fontSize: verticalScale(fontSizes.size6),
     fontWeight: '400',
     color: colors.gray1,
+    fontFamily: fontFamily,
+    textAlign: 'center',
+  },
+  errorText: {
+    marginBottom: '2%',
+    lineHeight: 25,
+    fontSize: verticalScale(fontSizes.size6),
+    fontWeight: '400',
+    color: colors.red,
     fontFamily: fontFamily,
     textAlign: 'center',
   },
