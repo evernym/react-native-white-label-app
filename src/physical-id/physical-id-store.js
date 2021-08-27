@@ -62,7 +62,10 @@ import {
   ensureAppHydrated,
   getUnacknowledgedMessages,
 } from '../store/config-store'
-import { getUserPairwiseDid } from '../store/store-selector'
+import {
+  getConnectionByProp,
+  getUserPairwiseDid,
+} from '../store/store-selector'
 import { INVITATION_RESPONSE_FAIL } from '../invitation/type-invitation'
 import { NEW_CONNECTION_SUCCESS } from '../store/type-connection-store'
 import { flattenAsync } from '../common/flatten-async'
@@ -270,12 +273,25 @@ function* launchPhysicalIdSDKSaga(
     updatePhysicalIdStatus(physicalIdProcessStatus.SEND_ISSUE_CREDENTIAL_START)
   )
 
+  // the relationshipId and connectionDID are different
+  // Verity-flow backend needs a relationshipId to communicate with the Verity
+  // so we get relationshipId from invitation
+  const [relationshipIdError, relationshipId] = yield* getRelationshipId(
+    connectionDID
+  )
+  if (relationshipIdError || !relationshipId) {
+    yield put(
+      updatePhysicalIdStatus(physicalIdProcessStatus.SEND_ISSUE_CREDENTIAL_FAIL)
+    )
+
+    return
+  }
   // TODO:KS Get a new hardware token here again, to make auth more stronger
   // now we have connection, and we also have the workflow data
   // we can now issue the credential
   const [issueCredentialError] = yield call(flattenAsync(issueCredential), {
     workflowId,
-    connectionDID,
+    connectionDID: relationshipId,
     hardwareToken: 'something-fails-for-now-till-we-add-auth',
     country: selectedCountry,
     document: action.documentType,
@@ -296,6 +312,38 @@ function* launchPhysicalIdSDKSaga(
       physicalIdProcessStatus.SEND_ISSUE_CREDENTIAL_SUCCESS
     )
   )
+}
+
+function* getRelationshipId(connectionDID: string): Generator<*, *, *> {
+  const connections = yield select(
+    getConnectionByProp,
+    'senderDID',
+    connectionDID
+  )
+  if (connections.length === 0) {
+    return ['NO_CONNECTION', null]
+  }
+
+  const connection = connections[0]
+  if (!connection) {
+    return ['NO_CONNECTION', null]
+  }
+
+  const [originalParseError, original] = flatJsonParse(connection.original)
+  if (originalParseError || !original) {
+    return [null, connectionDID]
+  }
+
+  if (!original.service || original.service.length === 0) {
+    return [null, connectionDID]
+  }
+
+  const relationshipId = original.service[0].id.split(';')[0]
+  if (relationshipId) {
+    return [null, relationshipId]
+  }
+
+  return [null, connectionDID]
 }
 
 async function midsSdkInit(sdkToken: string, apiDataCenter: string) {
@@ -368,7 +416,6 @@ function* makeConnectionWithPhysicalIdSaga(): Generator<*, *, *> {
     domainDID,
     verityFlowBaseUrl
   )
-
   if (error || !invitationDetails || !invitationDetails.invitation) {
     yield put(
       updatePhysicalIdConnectionStatus(
@@ -384,7 +431,7 @@ function* makeConnectionWithPhysicalIdSaga(): Generator<*, *, *> {
   const urlQrCode = isValidUrl(invitationDetails.invitation)
   if (urlQrCode) {
     ;[invitationParseError, invitationData] = yield call(
-      flattenAsync(getUrlData),
+      getUrlData,
       urlQrCode,
       invitationDetails.invitation
     )
@@ -483,7 +530,7 @@ function* makeConnectionWithPhysicalIdSaga(): Generator<*, *, *> {
     )
   )
   yield* persistPhysicalIdDidSaga(appInvitation.senderDID)
-  console.log('persist done>>>')
+
   return [null, physicalIdDid]
 }
 
