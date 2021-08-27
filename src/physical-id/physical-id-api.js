@@ -1,10 +1,9 @@
 // @flow
 
-const physicalIdBaseUrl = 'https://70b5-160-202-39-43.ngrok.io'
-
 async function post(config: {
   url: string,
   body: string,
+  domainDID: string,
   // we can use hardware based attestation to only allow
   // few selected apps to request SDK token from Evernym
   hardwareToken: string,
@@ -17,6 +16,7 @@ async function post(config: {
         ? config.contentType
         : 'application/x-www-form-urlencoded;charset=UTF-8',
       Authorization: `Token token=${config.hardwareToken}`,
+      domainDID: config.domainDID,
     },
     body: config.body,
   })
@@ -24,11 +24,16 @@ async function post(config: {
   return await response.json()
 }
 
-export async function getSdkToken(hardwareToken: string) {
+export async function getSdkToken(
+  hardwareToken: string,
+  domainDID: string,
+  verityFlowBaseUrl: string
+) {
   return post({
-    url: `${physicalIdBaseUrl}/get-sdk-token`,
+    url: `${verityFlowBaseUrl}/get-mc-sdk-token`,
     body: '{}',
     hardwareToken,
+    domainDID,
   })
 }
 
@@ -37,25 +42,35 @@ export async function getWorkflowData({
   hardwareToken,
   country,
   document,
+  domainDID,
+  verityFlowBaseUrl,
 }: {
   workflowId: string,
   hardwareToken: string,
   country: string,
   document: string,
+  domainDID: string,
+  verityFlowBaseUrl: string,
 }) {
   return post({
-    url: `${physicalIdBaseUrl}/get-workflow-data`,
+    url: `${verityFlowBaseUrl}/check-workflow-data`,
     body: JSON.stringify({ workflowId, country, document }),
     hardwareToken,
+    domainDID,
   })
 }
 
-export async function getPhysicalIdInvitation(hardwareToken: string) {
+export async function getPhysicalIdInvitation(
+  hardwareToken: string,
+  domainDID: string,
+  verityFlowBaseUrl: string
+) {
   return post({
-    url: `${physicalIdBaseUrl}/get-invitation`,
+    url: `${verityFlowBaseUrl}/create-invitation`,
     body: '{}',
     contentType: 'application/json',
     hardwareToken,
+    domainDID,
   })
 }
 
@@ -65,17 +80,22 @@ export async function issueCredential({
   hardwareToken,
   country,
   document,
+  domainDID,
+  verityFlowBaseUrl,
 }: {
   workflowId: string,
   connectionDID: string,
   hardwareToken: string,
   country: string,
   document: string,
+  domainDID: string,
+  verityFlowBaseUrl: string,
 }) {
   return post({
-    url: `${physicalIdBaseUrl}/issue-credential`,
+    url: `${verityFlowBaseUrl}/issue-credential`,
     body: JSON.stringify({ workflowId, connectionDID, country, document }),
     contentType: 'application/json',
     hardwareToken,
+    domainDID,
   })
 }

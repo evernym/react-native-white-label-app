@@ -133,6 +133,11 @@ export type AgencyPoolConfig = {
   paymentMethod: string,
 }
 
+export type VerityFlowConfig = {
+  domainDID: string,
+  verityFlowBaseUrl: string,
+}
+
 export type ConfigStore = {
   isAlreadyInstalled: boolean,
   isHydrated: boolean,
@@ -148,7 +153,8 @@ export type ConfigStore = {
   isVcxPoolInitFailed: boolean,
   isVcxInitFailed: boolean,
   isGetMessagesFailed: boolean,
-} & AgencyPoolConfig
+} & AgencyPoolConfig &
+  VerityFlowConfig
 
 export type MessageDownloadStatus =
   | typeof GET_MESSAGES_LOADING

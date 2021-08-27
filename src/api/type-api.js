@@ -23,4 +23,6 @@ export type EnvironmentDetailUrlDownloaded = {
   agencyVerificationKey: string,
   poolConfig: string,
   paymentMethod: string,
+  domainDID: string,
+  verityFlowBaseUrl: string,
 }

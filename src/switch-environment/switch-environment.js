@@ -42,6 +42,8 @@ class SwitchEnvironment extends Component<
     agencyUrl: '',
     poolConfig: '',
     paymentMethod: '',
+    domainDID: '',
+    verityFlowBaseUrl: '',
   }
 
   onSave = () => {
@@ -51,6 +53,8 @@ class SwitchEnvironment extends Component<
       agencyUrl,
       poolConfig,
       paymentMethod,
+      domainDID,
+      verityFlowBaseUrl,
     } = this.state
 
     this.props.changeEnvironment(
@@ -58,7 +62,9 @@ class SwitchEnvironment extends Component<
       agencyDID,
       agencyVerificationKey,
       poolConfig,
-      paymentMethod
+      paymentMethod,
+      domainDID,
+      verityFlowBaseUrl
     )
     this.props.navigation.goBack()
   }
@@ -70,13 +76,17 @@ class SwitchEnvironment extends Component<
       agencyUrl,
       poolConfig,
       paymentMethod,
+      domainDID,
+      verityFlowBaseUrl,
     } = this.state
     this.props.changeEnvironment(
       agencyUrl,
       agencyDID,
       agencyVerificationKey,
       poolConfig,
-      paymentMethod
+      paymentMethod,
+      domainDID,
+      verityFlowBaseUrl
     )
     this.props.navigation.navigate(selectRestoreMethodRoute)
   }
@@ -93,6 +103,8 @@ class SwitchEnvironment extends Component<
       disableDevMode,
       poolConfig,
       paymentMethod,
+      domainDID,
+      verityFlowBaseUrl,
     } = this.props
     disableDevMode()
     this.setState({
@@ -101,6 +113,8 @@ class SwitchEnvironment extends Component<
       agencyVerificationKey,
       poolConfig,
       paymentMethod,
+      domainDID,
+      verityFlowBaseUrl,
     })
   }
 
@@ -286,6 +300,44 @@ class SwitchEnvironment extends Component<
               autoCorrect={false}
               underlineColorAndroid="transparent"
             />
+            <CustomText
+              h7
+              uppercase
+              bold
+              bg="tertiary"
+              transparentBg
+              style={styles.label}
+            >
+              {'Domain DID'}
+            </CustomText>
+            <TextInput
+              style={styles.TextInput}
+              onChangeText={(domainDID) => this.setState({ domainDID })}
+              value={this.state.domainDID}
+              testID="text-input-domainDID"
+              autoCorrect={false}
+              underlineColorAndroid="transparent"
+            />
+            <CustomText
+              h7
+              uppercase
+              bold
+              bg="tertiary"
+              transparentBg
+              style={styles.label}
+            >
+              {'Verity Flow Backend URL'}
+            </CustomText>
+            <TextInput
+              style={styles.TextInput}
+              onChangeText={(verityFlowBaseUrl) =>
+                this.setState({ verityFlowBaseUrl })
+              }
+              value={this.state.verityFlowBaseUrl}
+              testID="text-input-verityFlowBaseUrl"
+              autoCorrect={false}
+              underlineColorAndroid="transparent"
+            />
           </KeyboardAwareScrollView>
         </Container>
         <FooterActions
@@ -307,6 +359,8 @@ const mapStateToProps = ({ config }: Store) => {
     agencyVerificationKey: config.agencyVerificationKey,
     poolConfig: config.poolConfig,
     paymentMethod: config.paymentMethod,
+    domainDID: config.domainDID,
+    verityFlowBaseUrl: config.verityFlowBaseUrl,
   }
 }
 

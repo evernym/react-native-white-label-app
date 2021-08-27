@@ -44,7 +44,9 @@ function* findWalletInCloud(
         environments[key].agencyDID,
         environments[key].agencyVerificationKey,
         environments[key].poolConfig,
-        environments[key].paymentMethod
+        environments[key].paymentMethod,
+        environments[key].domainDID,
+        environments[key].verityFlowBaseUrl
       )
     )
   }

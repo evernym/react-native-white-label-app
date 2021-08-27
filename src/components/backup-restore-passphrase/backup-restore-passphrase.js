@@ -43,7 +43,9 @@ export class BackupRestorePassphrase extends Component<
         environments[selectedEnv].agencyDID,
         environments[selectedEnv].agencyVerificationKey,
         environments[selectedEnv].poolConfig,
-        environments[selectedEnv].paymentMethod
+        environments[selectedEnv].paymentMethod,
+        environments[selectedEnv].domainDID,
+        environments[selectedEnv].verityFlowBaseUrl
       )
     }
     this.props.onSubmit(passphrase)

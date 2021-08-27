@@ -171,7 +171,7 @@ function* launchPhysicalIdSDKSaga(
     string | null,
     [string, string] | null
   ] = yield* getSdkTokenSaga()
-  console.log({ tokenError, tokenResponse })
+
   if (tokenError || !tokenResponse) {
     // action are already raised by sdk toke saga and status is also updated in above saga
     return
@@ -224,11 +224,15 @@ function* launchPhysicalIdSDKSaga(
   yield put(
     updatePhysicalIdStatus(physicalIdProcessStatus.SEND_WORKFLOW_ID_START)
   )
+  const domainDID: string = yield select(selectDomainDID)
+  const verityFlowBaseUrl: string = yield select(selectVerityFlowBaseUrl)
   // send workflow Id to server so that it can get the data for workflowRefId
   const [getWorkflowDataError] = yield call(flattenAsync(getWorkflowData), {
     workflowId,
     country: selectedCountry,
     document: action.documentType,
+    domainDID,
+    verityFlowBaseUrl,
   })
 
   if (getWorkflowDataError) {
@@ -265,6 +269,7 @@ function* launchPhysicalIdSDKSaga(
   yield put(
     updatePhysicalIdStatus(physicalIdProcessStatus.SEND_ISSUE_CREDENTIAL_START)
   )
+
   // TODO:KS Get a new hardware token here again, to make auth more stronger
   // now we have connection, and we also have the workflow data
   // we can now issue the credential
@@ -274,6 +279,8 @@ function* launchPhysicalIdSDKSaga(
     hardwareToken: 'something-fails-for-now-till-we-add-auth',
     country: selectedCountry,
     document: action.documentType,
+    domainDID,
+    verityFlowBaseUrl,
   })
   if (issueCredentialError) {
     yield put(
@@ -349,10 +356,18 @@ function* makeConnectionWithPhysicalIdSaga(): Generator<*, *, *> {
     )
   )
 
+  const hardwareToken = ''
+  const domainDID: string = yield select(selectDomainDID)
+  const verityFlowBaseUrl: string = yield select(selectVerityFlowBaseUrl)
   const [error, invitationDetails]: [
     Error | null,
     { invitation: string } | null
-  ] = yield call(flattenAsync(getPhysicalIdInvitation))
+  ] = yield call(
+    flattenAsync(getPhysicalIdInvitation),
+    hardwareToken,
+    domainDID,
+    verityFlowBaseUrl
+  )
 
   if (error || !invitationDetails || !invitationDetails.invitation) {
     yield put(
@@ -520,6 +535,8 @@ function* refreshConnectionStateSaga() {
 }
 
 const selectPhysicalIdDid = (state: Store) => state.physicalId.physicalIdDid
+const selectDomainDID = (state: Store) => state.config.domainDID
+const selectVerityFlowBaseUrl = (state: Store) => state.config.verityFlowBaseUrl
 
 function* getSdkTokenSaga(): Generator<*, *, *> {
   yield put(
@@ -528,11 +545,18 @@ function* getSdkTokenSaga(): Generator<*, *, *> {
 
   // TODO:KS Get hardware token, we  would need to get the nonce from server by calling getProvisionToken API
   const hardwareToken = ''
+  const domainDID: string = yield select(selectDomainDID)
+  const verityFlowBaseUrl: string = yield select(selectVerityFlowBaseUrl)
   // get hardware token, if product decides to restrict access
   const [error, response]: [
     Error | null,
     null | { result: string }
-  ] = yield call(flattenAsync(getSdkToken), hardwareToken)
+  ] = yield call(
+    flattenAsync(getSdkToken),
+    hardwareToken,
+    domainDID,
+    verityFlowBaseUrl
+  )
   if (error || !response) {
     yield put(
       updatePhysicalIdStatus(physicalIdProcessStatus.SDK_TOKEN_FETCH_FAIL)

@@ -111,7 +111,9 @@ export function* onChangeEnvironmentUrl(
         environmentDetails.agencyDID,
         environmentDetails.agencyVerificationKey,
         environmentDetails.poolConfig,
-        environmentDetails.paymentMethod
+        environmentDetails.paymentMethod,
+        environmentDetails.domainDID,
+        environmentDetails.verityFlowBaseUrl
       )
     )
 
@@ -144,7 +146,9 @@ export const changeEnvironment = (
   agencyDID: string,
   agencyVerificationKey: string,
   poolConfig: string,
-  paymentMethod: string
+  paymentMethod: string,
+  domainDID: string,
+  verityFlowBaseUrl: String
 ) => {
   let updatedPoolConfig = poolConfig
 
@@ -174,6 +178,8 @@ export const changeEnvironment = (
     agencyVerificationKey,
     agencyUrl: updatedAgencyUrl,
     paymentMethod,
+    domainDID,
+    verityFlowBaseUrl,
   }
 }
 
@@ -217,6 +223,8 @@ export function* hydrateSwitchedEnvironmentDetails(): any {
       agencyVerificationKey,
       poolConfig,
       paymentMethod,
+      domainDID,
+      verityFlowBaseUrl,
     }: ChangeEnvironment = switchedEnvironmentDetail
       ? JSON.parse(switchedEnvironmentDetail)
       : environments[SERVER_ENVIRONMENT.DEMO]
@@ -230,7 +238,9 @@ export function* hydrateSwitchedEnvironmentDetails(): any {
           agencyDID,
           agencyVerificationKey,
           poolConfig,
-          paymentMethod
+          paymentMethod,
+          domainDID,
+          verityFlowBaseUrl
         )
       )
     }
@@ -262,6 +272,8 @@ export function* persistEnvironmentDetails(): any {
     agencyVerificationKey,
     poolConfig,
     paymentMethod,
+    domainDID,
+    verityFlowBaseUrl,
   }: ConfigStore = yield select(getConfig)
   yield call(onEnvironmentSwitch, {
     type: SWITCH_ENVIRONMENT,
@@ -270,6 +282,8 @@ export function* persistEnvironmentDetails(): any {
     agencyVerificationKey,
     poolConfig,
     paymentMethod,
+    domainDID,
+    verityFlowBaseUrl,
   })
 }
 
