@@ -1179,6 +1179,8 @@ export default function configReducer(
         agencyVerificationKey: action.agencyVerificationKey,
         agencyUrl: action.agencyUrl,
         paymentMethod: action.paymentMethod,
+        domainDID: action.domainDID,
+        verityFlowBaseUrl: action.verityFlowBaseUrl,
       }
     case VCX_INIT_NOT_STARTED:
       return {

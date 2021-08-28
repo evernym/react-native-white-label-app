@@ -601,6 +601,7 @@ export function PiiHiddenActionTransformer(action: any) {
       'agencyUrl',
       'agencyDID',
       'agencyVerificationKey',
+      'domainDID',
     ],
 
     [REFRESH_WALLET_BALANCE]: ['walletBalance'],
