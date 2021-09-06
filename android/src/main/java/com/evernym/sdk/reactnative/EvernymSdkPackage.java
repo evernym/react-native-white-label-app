@@ -12,6 +12,7 @@ import com.facebook.react.bridge.JavaScriptModule;
 
 import com.evernym.sdk.reactnative.rnindy.RNIndyModule;
 import com.evernym.sdk.reactnative.helpers.Helpers;
+import com.evernym.sdk.reactnative.mids.MIDSDocumentVerification;
 
 public class EvernymSdkPackage implements ReactPackage {
     @Override
@@ -19,6 +20,7 @@ public class EvernymSdkPackage implements ReactPackage {
         return Arrays.<NativeModule>asList(new NativeModule[]{
           new RNIndyModule(reactContext),
           new Helpers(reactContext),
+          new MIDSDocumentVerification(reactContext),
         });
     }
 

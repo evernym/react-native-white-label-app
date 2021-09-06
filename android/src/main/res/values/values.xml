@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:ns1="http://schemas.android.com/tools">
+  <string name="audit_event_type_authentication_initialized_sdk" translatable="false">Initialized Re-Authentication SDK</string>
+  <string name="audit_event_type_authentication_verification_complete" translatable="false">Liveness check of user</string>
+  <string name="audit_event_type_enrollment_complete_driving_license" translatable="false">Liveness check and Driver\'s License capture</string>
+  <string name="audit_event_type_enrollment_complete_other" translatable="false">Liveness check and document capture</string>
+  <string name="audit_event_type_enrollment_complete_passport" translatable="false">Liveness check and Passport capture</string>
+  <string name="audit_event_type_enrollment_initialized_sdk" translatable="false">Initialized Enrollment SDK</string>
+  <string name="audit_event_type_fraud_detect_initialized" translatable="false">Fraud detection Initialized</string>
+  <string name="audit_event_type_fraud_detect_payload_retrieved" translatable="false">Retrieved payload data</string>
+  <string name="audit_event_type_user_pds_update" translatable="false">Storing the PDS</string>
+  <string name="audit_event_type_user_profile_creation" translatable="false">User Profile Creation</string>
+  <string name="audit_event_type_user_profile_registration" translatable="false">User Profile Registration</string>
+  <string name="log_event_authentication_audit_initialized_sdk" translatable="false">Initialized_Authentication_SDK</string>
+  <string name="log_event_authentication_audit_verification_complete" translatable="false">Authentication_Verification_Complete</string>
+  <string name="log_event_enrollment_audit_initialized_sdk" translatable="false">Initialized_Enrollment_SDK</string>
+  <string name="log_event_enrollment_audit_verification_complete" translatable="false">Document_Scan_Complete</string>
+  <string name="log_event_fraud_detect_initialized" translatable="false">Fraud_Detect_Initialized</string>
+  <string name="log_event_fraud_detect_payload_retrieved" translatable="false">Retrieved_Payload_Data</string>
+  <string name="log_event_user_pds_update" translatable="false">PDS_Updated_Success</string>
+  <string name="log_event_user_profile_creation" translatable="false">User_Profile_Creation</string>
+  <string name="log_event_user_profile_registration" translatable="false">User_Profile_Registration</string>
+  <string name="request_flow_core" translatable="false">TP-Core_SDK</string>
+  <string name="request_flow_fraud_detection" translatable="false">TP-Fraud_Detection_SDK</string>
+  <string name="request_flow_verification" translatable="false">TP-MIDS_SDK</string>
+  <style name="MIDSVerificationTheme" parent="Theme.Netverify" ns1:ignore="UnusedResources"/>
+</resources>

@@ -22,6 +22,10 @@ def safeExtGet(prop, fallback) {
 apply plugin: 'com.android.library'
 apply plugin: 'maven'
 
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-parcelize'
+apply plugin: 'kotlin-kapt'
+
 buildscript {
     // The Android Gradle plugin is only required when opening the android folder stand-alone.
     // This avoids unnecessary downloads and potential conflicts when the library is included as a
@@ -33,7 +37,9 @@ buildscript {
             mavenCentral()
         }
         dependencies {
-            classpath 'com.android.tools.build:gradle:4.2.0'
+            classpath 'com.android.tools.build:gradle:3.4.2'
+
+            classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.20"
         }
     }
 }
@@ -79,12 +85,18 @@ repositories {
         // Android JSC is installed from npm
         url "$rootDir/../node_modules/jsc-android/dist"
     }
+    maven { url 'http://mobile-sdk.jumio.com' }
+    flatDir {
+      dirs 'libs'
+    }
     google()
     mavenCentral()
 }
 
 dependencies {
-    //noinspection GradleDynamicVersion
+    implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
+
+  //noinspection GradleDynamicVersion
     implementation 'com.facebook.react:react-native:+'  // From node_modules
     implementation "androidx.palette:palette:1.0.0"
     implementation 'androidx.annotation:annotation:1.1.0'
@@ -100,6 +112,38 @@ dependencies {
     androidTestImplementation 'androidx.annotation:annotation:1.0.0'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test:rules:1.1.1'
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.4.20"
+
+    implementation "com.jumio.android:core:3.9.1@aar"
+    implementation "com.jumio.android:nv:3.9.1@aar"
+    implementation "com.jumio.android:nv-mrz:3.9.1@aar"
+    implementation "com.jumio.android:nv-ocr:3.9.1@aar"
+    implementation "com.jumio.android:nv-nfc:3.9.1@aar"
+    implementation "com.jumio.android:nv-barcode:3.9.1@aar"
+    implementation "com.jumio.android:iproov:3.9.1@aar"
+
+    implementation ("com.iproov.sdk:iproov:6.3.1"){
+      exclude group: 'org.json', module:'json'
+    }
+
+    implementation ("io.socket:socket.io-client:0.9.0") {
+      exclude group: 'org.json', module: 'json'
+    }
+
+    implementation "org.jmrtd:jmrtd:0.7.24"
+    implementation "org.bouncycastle:bcprov-jdk15on:1.67"
+
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.0"
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.0"
+
+    implementation "androidx.appcompat:appcompat:1.2.0"
+    implementation "androidx.cardview:cardview:1.0.0"
+    implementation "androidx.room:room-runtime:2.2.6"
+    implementation "androidx.constraintlayout:constraintlayout:2.0.4"
+    implementation "androidx.core:core-ktx:1.3.2"
+
+    implementation "com.google.android.material:material:1.2.1"
 }
 
 def configureReactNativePom(def pom) {

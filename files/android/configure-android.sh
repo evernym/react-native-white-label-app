@@ -28,6 +28,7 @@ allprojects {
         maven {
             url 'https://evernym.mycloudrepo.io/public/repositories/libvcx-android'
         }
+        maven { url 'http://mobile-sdk.jumio.com' }
     }
 }"
 cat <<EOT >> android/build.gradle
