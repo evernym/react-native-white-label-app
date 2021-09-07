@@ -67,6 +67,39 @@ public class MIDSDocumentVerification extends ReactContextBaseJavaModule {
     return REACT_CLASS;
   }
 
+  private void rejectToReact() {
+    if (reject != null) {
+      reject.invoke();
+      reject = null;
+    }
+  }
+
+  private void resolveToReact() {
+    if (resolve != null) {
+      resolve.invoke();
+      resolve = null;
+    }
+  }
+
+  private void resolveToReact(String args) {
+    System.out.println(resolve);
+    if (resolve != null) {
+      resolve.invoke(args);
+      resolve = null;
+    }
+  }
+
+  private void resetSdk() {
+    sdkManager = null;
+    scanSidesDV = new ArrayList<MIDSScanSide>();
+    resolve = null;
+    reject = null;
+    selectedCountry = null;
+    scanListener = null;
+    presenter = null;
+    sideIndex = 0;
+  }
+
   private MIDSEnrollmentManager getEnrollmentManagerInstance() {
     if (sdkManager == null) {
       System.out.println("getEnrollmentManagerInstance");
@@ -105,8 +138,7 @@ public class MIDSDocumentVerification extends ReactContextBaseJavaModule {
     public void onError(@NotNull MIDSVerificationError error) {
       System.out.println("EnrollmentSDKListener - method: onError - error: " + error.getMessage().toString());
 
-      reject.invoke();
-      reject = null;
+      rejectToReact();
     }
 
     @Override
@@ -132,12 +164,9 @@ public class MIDSDocumentVerification extends ReactContextBaseJavaModule {
       System.out.println("EnrollmentSDKListener - method: onVerificationFinished - reference number: " + referenceNumber);
 
       getEnrollmentManagerInstance().endScan();
-      resolve.invoke(referenceNumber);
-
-      resolve = null;
-      sdkManager = null;
-      sideIndex = 0;
-      scanSidesDV = new ArrayList<MIDSScanSide>();
+      getEnrollmentManagerInstance().terminateSDK();
+      resolveToReact(referenceNumber);
+      resetSdk();
     }
   }
 
@@ -146,7 +175,6 @@ public class MIDSDocumentVerification extends ReactContextBaseJavaModule {
     @Override
     public void onCameraAvailable() {
       System.out.println("ScanListener - method: onCameraAvailable ");
-      presenter.showShutterButton();
       presenter.resume();
     }
 
@@ -169,8 +197,7 @@ public class MIDSDocumentVerification extends ReactContextBaseJavaModule {
         System.out.println("ScanListener - method: onError - error: " + error.getMessage());
         presenter.destroy();
 
-        reject.invoke();
-        reject = null;
+        rejectToReact();
       }
     }
 
@@ -249,18 +276,6 @@ public class MIDSDocumentVerification extends ReactContextBaseJavaModule {
   }
 
   private MIDSDocumentType getMIDSDocumentTypeFromString(String documentType) {
-    MIDSVerificationResponse<List<MIDSDocumentType>> documentTypeResponse = getEnrollmentManagerInstance().getDocumentTypes(selectedCountry);
-    List<MIDSDocumentType> documentTypeList = documentTypeResponse.getResponse();
-
-    for (MIDSDocumentType doc : documentTypeList) {
-      if (doc.name().equals(documentType.toUpperCase())) {
-        return doc;
-      }
-    }
-    return MIDSDocumentType.PASSPORT;
-  }
-
-  private MIDSDocumentType getMIDSDocumentTypeFromString(String documentType) {
     if (documentType.equals("Passport")) {
       return MIDSDocumentType.PASSPORT;
     } else if (documentType.equals("Driver's license")) {
@@ -275,7 +290,7 @@ public class MIDSDocumentVerification extends ReactContextBaseJavaModule {
 
   private void inflateScanFragment() {
     Activity currentActivity = reactContext.getCurrentActivity();
-    if (currentActivity != null) {
+    if (currentActivity != null && midsVerificationScanView == null && midsVerificationConfirmationView == null) {
       LayoutInflater inflater = currentActivity.getLayoutInflater();
       ViewGroup viewGroup = (ViewGroup) ((ViewGroup) currentActivity.findViewById(android.R.id.content)).getRootView();
       View view = inflater.inflate(R.layout.fragment_scan, viewGroup, true);

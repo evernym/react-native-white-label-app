@@ -127,6 +127,7 @@ import {
   customExtraModals,
   customExtraScreens,
   usePushNotifications,
+  useDocumentVerification
 } from '../external-imports'
 import { inviteActionScreen } from '../invite-action/invite-action-screen'
 import { ShowCredentialScreen } from '../show-credential/show-credential-modal'
@@ -304,8 +305,14 @@ const extraModals = customExtraModals || []
 
 function AppDrawer(navigation) {
   const dispatch = useDispatch()
+  console.log('====================================');
+  console.log(useDocumentVerification, menuNavigationOptions);
+  console.log('====================================');
+  const menuNavigationOptionsWithDocVerFilter = useDocumentVerification
+    ? menuNavigationOptions
+    : menuNavigationOptions.filter(option => option.name !== PHYSICAL_ID)
 
-  const tabs = menuNavigationOptions.map((option) => {
+  const tabs = menuNavigationOptionsWithDocVerFilter.map((option) => {
     const defaultOption = defaultDrawerItemOptions[option.name] || {}
 
     return (

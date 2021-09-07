@@ -6,6 +6,7 @@ import {
   COMPANY_LOGO,
   DEFAULT_USER_AVATAR,
   USE_PUSH_NOTIFICATION,
+  USE_DOCUMENT_VERIFICATION,
   STORAGE_KEY,
   DEEP_LINK,
 } from '../../../../app/evernym-sdk/app'
@@ -164,5 +165,6 @@ export const appIcon = APP_ICON || require('./images/app_icon.png')
 export const companyName = COMPANY_NAME || 'Your Company'
 export const companyLogo = COMPANY_LOGO
 export const usePushNotifications = !!USE_PUSH_NOTIFICATION || false
+export const useDocumentVerification = !!USE_DOCUMENT_VERIFICATION || false
 export const storageKey = STORAGE_KEY || '@msdkDefaults'
 export const deepLinkAddress = DEEP_LINK || null
