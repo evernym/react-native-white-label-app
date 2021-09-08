@@ -113,7 +113,10 @@ export function* onChangeEnvironmentUrl(
         environmentDetails.poolConfig,
         environmentDetails.paymentMethod,
         environmentDetails.domainDID,
-        environmentDetails.verityFlowBaseUrl
+        environmentDetails.verityFlowBaseUrl,
+        environmentDetails.identityCardCredDefId,
+        environmentDetails.drivingLicenseCredDefId,
+        environmentDetails.passportCredDefId
       )
     )
 
@@ -148,7 +151,10 @@ export const changeEnvironment = (
   poolConfig: string,
   paymentMethod: string,
   domainDID: string,
-  verityFlowBaseUrl: String
+  verityFlowBaseUrl: string,
+  identityCardCredDefId: string,
+  drivingLicenseCredDefId: string,
+  passportCredDefId: string
 ) => {
   let updatedPoolConfig = poolConfig
 
@@ -180,6 +186,9 @@ export const changeEnvironment = (
     paymentMethod,
     domainDID,
     verityFlowBaseUrl,
+    identityCardCredDefId,
+    drivingLicenseCredDefId,
+    passportCredDefId,
   }
 }
 
@@ -225,6 +234,9 @@ export function* hydrateSwitchedEnvironmentDetails(): any {
       paymentMethod,
       domainDID,
       verityFlowBaseUrl,
+      identityCardCredDefId,
+      drivingLicenseCredDefId,
+      passportCredDefId,
     }: ChangeEnvironment = switchedEnvironmentDetail
       ? JSON.parse(switchedEnvironmentDetail)
       : environments[SERVER_ENVIRONMENT.DEMO]
@@ -240,7 +252,10 @@ export function* hydrateSwitchedEnvironmentDetails(): any {
           poolConfig,
           paymentMethod,
           domainDID,
-          verityFlowBaseUrl
+          verityFlowBaseUrl,
+          identityCardCredDefId,
+          drivingLicenseCredDefId,
+          passportCredDefId
         )
       )
     }
@@ -274,6 +289,9 @@ export function* persistEnvironmentDetails(): any {
     paymentMethod,
     domainDID,
     verityFlowBaseUrl,
+    identityCardCredDefId,
+    drivingLicenseCredDefId,
+    passportCredDefId,
   }: ConfigStore = yield select(getConfig)
   yield call(onEnvironmentSwitch, {
     type: SWITCH_ENVIRONMENT,
@@ -284,6 +302,9 @@ export function* persistEnvironmentDetails(): any {
     paymentMethod,
     domainDID,
     verityFlowBaseUrl,
+    identityCardCredDefId,
+    drivingLicenseCredDefId,
+    passportCredDefId,
   })
 }
 

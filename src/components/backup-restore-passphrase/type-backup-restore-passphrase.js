@@ -14,7 +14,10 @@ export type BackupRestorePassphraseProps = {
     poolConfig: string,
     paymentMethod: string,
     domainDID: string,
-    verityFlowBaseUrl: string
+    verityFlowBaseUrl: string,
+    identityCardCredDefId: string,
+    drivingLicenseCredDefId: string,
+    passportCredDefId: string
   ) => void,
   navigation?: any,
 }

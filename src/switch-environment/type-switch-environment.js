@@ -9,7 +9,10 @@ export type SwitchEnvironmentProps = {
     poolConfig: string,
     paymentMethod: string,
     domainDID: string,
-    verityFlowBaseUrl: string
+    verityFlowBaseUrl: string,
+    identityCardCredDefId: string,
+    drivingLicenseCredDefId: string,
+    passportCredDefId: string
   ) => void,
   agencyDID: string,
   agencyVerificationKey: string,
@@ -18,6 +21,9 @@ export type SwitchEnvironmentProps = {
   paymentMethod: string,
   domainDID: string,
   verityFlowBaseUrl: string,
+  identityCardCredDefId: string,
+  drivingLicenseCredDefId: string,
+  passportCredDefId: string,
   disableDevMode: () => void,
 } & ReactNavigation
 
@@ -29,6 +35,9 @@ export type SwitchEnvironmentState = {
   paymentMethod: string,
   domainDID: string,
   verityFlowBaseUrl: string,
+  identityCardCredDefId: string,
+  drivingLicenseCredDefId: string,
+  passportCredDefId: string,
 }
 
 export const SERVER_ENVIRONMENT = {
@@ -64,6 +73,9 @@ export type ChangeEnvironment = {
   paymentMethod: string,
   domainDID: string,
   verityFlowBaseUrl: string,
+  identityCardCredDefId: string,
+  drivingLicenseCredDefId: string,
+  passportCredDefId: string,
 }
 
 export type SwitchEnvironmentAction = {

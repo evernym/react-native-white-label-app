@@ -136,6 +136,9 @@ export type AgencyPoolConfig = {
 export type VerityFlowConfig = {
   domainDID: string,
   verityFlowBaseUrl: string,
+  identityCardCredDefId: string,
+  drivingLicenseCredDefId: string,
+  passportCredDefId: string,
 }
 
 export type ConfigStore = {

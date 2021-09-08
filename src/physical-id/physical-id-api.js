@@ -37,29 +37,6 @@ export async function getSdkToken(
   })
 }
 
-export async function getWorkflowData({
-  workflowId,
-  hardwareToken,
-  country,
-  document,
-  domainDID,
-  verityFlowBaseUrl,
-}: {
-  workflowId: string,
-  hardwareToken: string,
-  country: string,
-  document: string,
-  domainDID: string,
-  verityFlowBaseUrl: string,
-}) {
-  return post({
-    url: `${verityFlowBaseUrl}/check-workflow-data`,
-    body: JSON.stringify({ workflowId, country, document }),
-    hardwareToken,
-    domainDID,
-  })
-}
-
 export async function getPhysicalIdInvitation(
   hardwareToken: string,
   domainDID: string,
@@ -82,6 +59,7 @@ export async function issueCredential({
   document,
   domainDID,
   verityFlowBaseUrl,
+  credDefId,
 }: {
   workflowId: string,
   connectionDID: string,
@@ -90,10 +68,17 @@ export async function issueCredential({
   document: string,
   domainDID: string,
   verityFlowBaseUrl: string,
+  credDefId: string,
 }) {
   return post({
     url: `${verityFlowBaseUrl}/issue-credential`,
-    body: JSON.stringify({ workflowId, connectionDID, country, document }),
+    body: JSON.stringify({
+      workflowId,
+      connectionDID,
+      country,
+      document,
+      credDefId,
+    }),
     contentType: 'application/json',
     hardwareToken,
     domainDID,

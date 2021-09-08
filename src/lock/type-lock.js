@@ -175,7 +175,10 @@ export type LockSelectionProps = {
     poolConfig: string,
     paymentMethod: string,
     domainDID: string,
-    verityFlowBaseUrl: string
+    verityFlowBaseUrl: string,
+    identityCardCredDefId: string,
+    drivingLicenseCredDefId: string,
+    passportCredDefId: string
   ) => void,
   disableTouchIdAction: () => void,
   enableTouchIdAction: () => void,

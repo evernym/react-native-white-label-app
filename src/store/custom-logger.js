@@ -602,6 +602,9 @@ export function PiiHiddenActionTransformer(action: any) {
       'agencyDID',
       'agencyVerificationKey',
       'domainDID',
+      'identityCardCredDefId',
+      'drivingLicenseCredDefId',
+      'passportCredDefId',
     ],
 
     [REFRESH_WALLET_BALANCE]: ['walletBalance'],

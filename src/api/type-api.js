@@ -25,4 +25,7 @@ export type EnvironmentDetailUrlDownloaded = {
   paymentMethod: string,
   domainDID: string,
   verityFlowBaseUrl: string,
+  identityCardCredDefId: string,
+  drivingLicenseCredDefId: string,
+  passportCredDefId: string,
 }

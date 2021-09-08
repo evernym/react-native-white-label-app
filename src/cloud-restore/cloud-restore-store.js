@@ -46,7 +46,10 @@ function* findWalletInCloud(
         environments[key].poolConfig,
         environments[key].paymentMethod,
         environments[key].domainDID,
-        environments[key].verityFlowBaseUrl
+        environments[key].verityFlowBaseUrl,
+        environments[key].identityCardCredDefId,
+        environments[key].drivingLicenseCredDefId,
+        environments[key].passportCredDefId
       )
     )
   }

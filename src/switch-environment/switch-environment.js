@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginHorizontal: OFFSET_1X,
     marginBottom: OFFSET_2X,
+    color: 'gray',
   },
   label: {
     marginHorizontal: OFFSET_1X,
@@ -44,6 +45,9 @@ class SwitchEnvironment extends Component<
     paymentMethod: '',
     domainDID: '',
     verityFlowBaseUrl: '',
+    identityCardCredDefId: '',
+    drivingLicenseCredDefId: '',
+    passportCredDefId: '',
   }
 
   onSave = () => {
@@ -55,6 +59,9 @@ class SwitchEnvironment extends Component<
       paymentMethod,
       domainDID,
       verityFlowBaseUrl,
+      identityCardCredDefId,
+      drivingLicenseCredDefId,
+      passportCredDefId,
     } = this.state
 
     this.props.changeEnvironment(
@@ -64,7 +71,10 @@ class SwitchEnvironment extends Component<
       poolConfig,
       paymentMethod,
       domainDID,
-      verityFlowBaseUrl
+      verityFlowBaseUrl,
+      identityCardCredDefId,
+      drivingLicenseCredDefId,
+      passportCredDefId
     )
     this.props.navigation.goBack()
   }
@@ -78,6 +88,9 @@ class SwitchEnvironment extends Component<
       paymentMethod,
       domainDID,
       verityFlowBaseUrl,
+      identityCardCredDefId,
+      drivingLicenseCredDefId,
+      passportCredDefId,
     } = this.state
     this.props.changeEnvironment(
       agencyUrl,
@@ -86,7 +99,10 @@ class SwitchEnvironment extends Component<
       poolConfig,
       paymentMethod,
       domainDID,
-      verityFlowBaseUrl
+      verityFlowBaseUrl,
+      identityCardCredDefId,
+      drivingLicenseCredDefId,
+      passportCredDefId
     )
     this.props.navigation.navigate(selectRestoreMethodRoute)
   }
@@ -105,6 +121,9 @@ class SwitchEnvironment extends Component<
       paymentMethod,
       domainDID,
       verityFlowBaseUrl,
+      identityCardCredDefId,
+      drivingLicenseCredDefId,
+      passportCredDefId,
     } = this.props
     disableDevMode()
     this.setState({
@@ -115,6 +134,9 @@ class SwitchEnvironment extends Component<
       paymentMethod,
       domainDID,
       verityFlowBaseUrl,
+      identityCardCredDefId,
+      drivingLicenseCredDefId,
+      passportCredDefId,
     })
   }
 
@@ -335,6 +357,66 @@ class SwitchEnvironment extends Component<
               }
               value={this.state.verityFlowBaseUrl}
               testID="text-input-verityFlowBaseUrl"
+              autoCorrect={false}
+              underlineColorAndroid="transparent"
+            />
+            <CustomText
+              h7
+              uppercase
+              bold
+              bg="tertiary"
+              transparentBg
+              style={styles.label}
+            >
+              {'Identity Card Cred Def Id'}
+            </CustomText>
+            <TextInput
+              style={styles.TextInput}
+              onChangeText={(identityCardCredDefId) =>
+                this.setState({ identityCardCredDefId })
+              }
+              value={this.state.identityCardCredDefId}
+              testID="text-input-identityCardCredDefId"
+              autoCorrect={false}
+              underlineColorAndroid="transparent"
+            />
+            <CustomText
+              h7
+              uppercase
+              bold
+              bg="tertiary"
+              transparentBg
+              style={styles.label}
+            >
+              {'Driving License Cred Def Id'}
+            </CustomText>
+            <TextInput
+              style={styles.TextInput}
+              onChangeText={(drivingLicenseCredDefId) =>
+                this.setState({ drivingLicenseCredDefId })
+              }
+              value={this.state.drivingLicenseCredDefId}
+              testID="text-input-drivingLicenseCredDefId"
+              autoCorrect={false}
+              underlineColorAndroid="transparent"
+            />
+            <CustomText
+              h7
+              uppercase
+              bold
+              bg="tertiary"
+              transparentBg
+              style={styles.label}
+            >
+              {'Passport Cred Def Id'}
+            </CustomText>
+            <TextInput
+              style={styles.TextInput}
+              onChangeText={(passportCredDefId) =>
+                this.setState({ passportCredDefId })
+              }
+              value={this.state.passportCredDefId}
+              testID="text-input-passportCredDefId"
               autoCorrect={false}
               underlineColorAndroid="transparent"
             />

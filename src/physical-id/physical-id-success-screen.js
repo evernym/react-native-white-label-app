@@ -33,7 +33,7 @@ function PhysicalIdSuccess() {
           />
         </View>
         <Text style={style.descriptionText}>
-          Your document and facial scan are being reviewed. If everything cheks
+          Your document and facial scan are being reviewed. If everything checks
           out, you will receive a credential offer. This can take up to an hour.
         </Text>
       </View>

@@ -47,7 +47,6 @@ import {
 } from './physical-id-type'
 import {
   getSdkToken,
-  getWorkflowData,
   getPhysicalIdInvitation,
   issueCredential,
 } from './physical-id-api'
@@ -224,33 +223,6 @@ function* launchPhysicalIdSDKSaga(
   }
   yield put(updatePhysicalIdStatus(physicalIdProcessStatus.SDK_SCAN_SUCCESS))
 
-  yield put(
-    updatePhysicalIdStatus(physicalIdProcessStatus.SEND_WORKFLOW_ID_START)
-  )
-  const domainDID: string = yield select(selectDomainDID)
-  const verityFlowBaseUrl: string = yield select(selectVerityFlowBaseUrl)
-  // send workflow Id to server so that it can get the data for workflowRefId
-  const [getWorkflowDataError] = yield call(flattenAsync(getWorkflowData), {
-    workflowId,
-    country: selectedCountry,
-    document: action.documentType,
-    domainDID,
-    verityFlowBaseUrl,
-  })
-
-  if (getWorkflowDataError) {
-    yield put(
-      updatePhysicalIdStatus(physicalIdProcessStatus.SEND_WORKFLOW_ID_FAIL)
-    )
-    // there was an error while sending workflow data
-    // this is the API that we can retry
-    return
-  }
-
-  yield put(
-    updatePhysicalIdStatus(physicalIdProcessStatus.SEND_WORKFLOW_ID_SUCCESS)
-  )
-
   let [connectionError, connectionDID]: [
     { code: string, message: string } | null | typeof undefined,
     string | null | typeof undefined
@@ -268,6 +240,10 @@ function* launchPhysicalIdSDKSaga(
   if (connectionError || !connectionDID) {
     return
   }
+
+  const domainDID: string = yield select(selectDomainDID)
+  const verityFlowBaseUrl: string = yield select(selectVerityFlowBaseUrl)
+  const credDefId: string = yield* getCredDefId(action.documentType)
 
   yield put(
     updatePhysicalIdStatus(physicalIdProcessStatus.SEND_ISSUE_CREDENTIAL_START)
@@ -297,6 +273,7 @@ function* launchPhysicalIdSDKSaga(
     document: action.documentType,
     domainDID,
     verityFlowBaseUrl,
+    credDefId,
   })
   if (issueCredentialError) {
     yield put(
@@ -344,6 +321,18 @@ function* getRelationshipId(connectionDID: string): Generator<*, *, *> {
   }
 
   return [null, connectionDID]
+}
+
+function* getCredDefId(documentType: string): Generator<*, *, *> {
+  const credDefIdDocumentMap = {
+    PASSPORT: 'passportCredDefId',
+    DRIVING_LICENSE: 'drivingLicenseCredDefId',
+    IDENTITY_CARD: 'identityCardCredDefId',
+  }
+
+  return yield select(
+    (store: Store) => store.config[credDefIdDocumentMap[documentType]]
+  )
 }
 
 async function midsSdkInit(sdkToken: string, apiDataCenter: string) {

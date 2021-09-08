@@ -135,9 +135,6 @@ const LoaderVisiblePhysicalIdStates = [
   physicalIdProcessStatus.SDK_INIT_START,
   physicalIdProcessStatus.SDK_INIT_SUCCESS,
   physicalIdProcessStatus.SDK_SCAN_START,
-  physicalIdProcessStatus.SDK_SCAN_SUCCESS,
-  physicalIdProcessStatus.SEND_WORKFLOW_ID_START,
-  physicalIdProcessStatus.SEND_WORKFLOW_ID_SUCCESS,
 ]
 
 const LoaderVisiblePhysicalIdConnectionStates = [
@@ -179,10 +176,6 @@ function getLoaderMessageText(
       return 'Scanning...'
     case physicalIdProcessStatus.SDK_SCAN_SUCCESS:
       return 'Processing document'
-    case physicalIdProcessStatus.SEND_WORKFLOW_ID_START:
-      return 'Processing document'
-    case physicalIdProcessStatus.SEND_WORKFLOW_ID_SUCCESS:
-      return 'Processing document'
   }
 }
 
@@ -191,7 +184,6 @@ const physicalIdErrorStates = [
   physicalIdProcessStatus.SDK_TOKEN_PARSE_FAIL,
   physicalIdProcessStatus.SDK_INIT_FAIL,
   physicalIdProcessStatus.SDK_SCAN_FAIL,
-  physicalIdProcessStatus.SEND_WORKFLOW_ID_FAIL,
   physicalIdProcessStatus.SEND_ISSUE_CREDENTIAL_FAIL,
 ]
 
@@ -235,7 +227,6 @@ function getErrorText(status: PhysicalIdProcessStatus) {
 
     case physicalIdProcessStatus.SDK_INIT_FAIL:
     case physicalIdProcessStatus.SDK_SCAN_FAIL:
-    case physicalIdProcessStatus.SEND_WORKFLOW_ID_FAIL:
     case physicalIdProcessStatus.SEND_ISSUE_CREDENTIAL_FAIL:
       return 'Document verification could not complete processing your document. Please try again.'
 

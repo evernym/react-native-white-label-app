@@ -1181,6 +1181,9 @@ export default function configReducer(
         paymentMethod: action.paymentMethod,
         domainDID: action.domainDID,
         verityFlowBaseUrl: action.verityFlowBaseUrl,
+        identityCardCredDefId: action.identityCardCredDefId,
+        drivingLicenseCredDefId: action.identityCardCredDefId,
+        passportCredDefId: action.identityCardCredDefId,
       }
     case VCX_INIT_NOT_STARTED:
       return {
