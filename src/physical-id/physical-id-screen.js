@@ -267,8 +267,8 @@ const PhysicalIdDefault = ({
       <>
         <View style={styles.containerStyles}>
           <Text style={styles.physicalIdParagraphText}>
-            {!country ? "\t\tScan your driver license or passport and receive a verifiable credential. Have your document ready to scan"
-            : "\t\tChoose a document to scan. If prompted, please grant camera permissions."}
+            {!country ? "Scan your driver license or passport and receive a verifiable credential. Have your document ready to scan"
+            : "Choose a document to scan. If prompted, please grant camera permissions."}
           </Text>
           {countryPickerVisible || country ? (
             <CountryPicker
@@ -329,7 +329,7 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     color: colors.gray1,
     fontFamily: fontFamily,
-    textAlign: 'justify',
+    textAlign: 'left',
   },
   errorText: {
     marginBottom: '2%',
