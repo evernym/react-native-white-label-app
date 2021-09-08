@@ -3,11 +3,12 @@
 import React, {
   useEffect,
   useState,
-  useMemo
+  useMemo,
+  useCallback
 } from 'react'
 import { StyleSheet, Text, View, Platform } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useFocusEffect  } from '@react-navigation/native'
 import CountryPicker from 'react-native-country-picker-modal'
 import { moderateScale, verticalScale } from 'react-native-size-matters'
 import Icon from 'react-native-vector-icons/FontAwesome'
@@ -48,6 +49,16 @@ function PhysicalId() {
   const [loaderText, setLoaderText] = useState(LOADER_TEXT.preparation)
   const [countryPickerVisible, setCountryPickerVisible] = useState(false)
 
+  useFocusEffect(
+    useCallback(() => {
+      return () => {
+        setCountry()
+        setDocument()
+        setCountryPickerVisible(false)
+      }
+    }, [])
+  )
+  
   const onAction = () => {
     if (!!country && !!document) {
       dispatch(launchPhysicalIdSDK(country, document))
