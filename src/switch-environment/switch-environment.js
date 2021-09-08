@@ -443,6 +443,9 @@ const mapStateToProps = ({ config }: Store) => {
     paymentMethod: config.paymentMethod,
     domainDID: config.domainDID,
     verityFlowBaseUrl: config.verityFlowBaseUrl,
+    identityCardCredDefId: config.identityCardCredDefId,
+    drivingLicenseCredDefId: config.drivingLicenseCredDefId,
+    passportCredDefId: config.passportCredDefId,
   }
 }
 
