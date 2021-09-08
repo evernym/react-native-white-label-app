@@ -6,8 +6,9 @@ import React, {
   useRef,
   useImperativeHandle,
   forwardRef,
+  useMemo
 } from 'react'
-import { StyleSheet, Text, View, Platform } from 'react-native'
+import { StyleSheet, Text, View, Platform, DeviceEventEmitter  } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigation } from '@react-navigation/native'
 import CountryPicker from 'react-native-country-picker-modal'
@@ -49,6 +50,7 @@ function PhysicalId() {
   const [documents, setDocuments] = useState()
   const testID = 'physicalId'
   const countryPickerRef = useRef(null)
+  const [loaderText, setLoaderText] = useState(LOADER_TEXT.preparation)
 
   const onAction = async () => {
     if (!!country && !!document) {
@@ -85,13 +87,28 @@ function PhysicalId() {
     }
   }, [processStatus])
 
-  if (isLoaderVisible(processStatus, connectionStatus)) {
-    const loaderText = getLoaderMessageText(processStatus, connectionStatus)
-    return (
-      <Container tertiary>
+  useEffect(() => {
+    DeviceEventEmitter.addListener('FACE_SCAN',(event)=>{
+      setLoaderText(LOADER_TEXT.finish)
+    });
+
+    return () => {
+      DeviceEventEmitter.removeAllListeners()
+    }
+  }, [])
+
+  useEffect(() => {
+    setLoaderText(getLoaderMessageText(processStatus))
+  }, [processStatus])
+
+  const loaderWithMessage = useMemo(() => (
+      <Container tertiary key={loaderText}>
         <Loader showMessage={true} message={loaderText} />
       </Container>
-    )
+    ), [processStatus, loaderText])
+
+  if (isLoaderVisible(processStatus, connectionStatus)) {
+    return loaderWithMessage
   }
 
   return (
@@ -129,6 +146,12 @@ function PhysicalId() {
   )
 }
 
+const LOADER_TEXT = {
+  preparation: "Please have your document ready",
+  finish: "Finishing up...",
+  processing: "Processing..."
+}
+
 const LoaderVisiblePhysicalIdStates = [
   physicalIdProcessStatus.SDK_TOKEN_FETCH_START,
   physicalIdProcessStatus.SDK_TOKEN_FETCH_SUCCESS,
@@ -153,29 +176,20 @@ function isLoaderVisible(
 }
 
 function getLoaderMessageText(
-  status: PhysicalIdProcessStatus,
-  connectionStatus: PhysicalIdConnectionStatus
+  status: PhysicalIdProcessStatus
 ) {
-  switch (connectionStatus) {
-    case physicalIdConnectionStatus.CONNECTION_DETAIL_FETCHING:
-      return 'Fetching connection details'
-    case physicalIdConnectionStatus.CONNECTION_IN_PROGRESS:
-      return 'Establishing connection'
-  }
 
   switch (status) {
-    case physicalIdProcessStatus.SDK_TOKEN_FETCH_START:
-      return 'Loading'
-    case physicalIdProcessStatus.SDK_TOKEN_FETCH_SUCCESS:
-      return 'Loading'
-    case physicalIdProcessStatus.SDK_INIT_START:
-      return 'Loading'
-    case physicalIdProcessStatus.SDK_INIT_SUCCESS:
-      return 'Loading'
     case physicalIdProcessStatus.SDK_SCAN_START:
-      return 'Scanning...'
+      return LOADER_TEXT.processing
     case physicalIdProcessStatus.SDK_SCAN_SUCCESS:
-      return 'Processing document'
+      return LOADER_TEXT.finish
+    case physicalIdProcessStatus.SEND_WORKFLOW_ID_START:
+      return LOADER_TEXT.finish
+    case physicalIdProcessStatus.SEND_WORKFLOW_ID_SUCCESS:
+      return LOADER_TEXT.finish
+    default:
+      return LOADER_TEXT.preparation
   }
 }
 
