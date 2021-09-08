@@ -288,7 +288,6 @@ const PhysicalIdDefault = ({
         {country ? (
           <View style={styles.documentsContainer}>
             <RadioButton
-              style={{ width: "100%"}}
               data={data}
               selectedBtn={setDocument}
               icon={
