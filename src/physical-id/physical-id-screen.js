@@ -51,14 +51,16 @@ function PhysicalId() {
   const testID = 'physicalId'
   const countryPickerRef = useRef(null)
   const [loaderText, setLoaderText] = useState(LOADER_TEXT.preparation)
+  const [countryPickerVisible, setCountryPickerVisible] = useState(false)
 
-  const onAction = async () => {
+  const onAction = () => {
     if (!!country && !!document) {
       dispatch(launchPhysicalIdSDK(country, document))
     } else if (!country) {
-      countryPickerRef.current && countryPickerRef.current.open()
+      setCountryPickerVisible(true)
     }
   }
+  
 
   const onCancel = () => {
     navigation.navigate(homeRoute, {
@@ -88,16 +90,6 @@ function PhysicalId() {
   }, [processStatus])
 
   useEffect(() => {
-    DeviceEventEmitter.addListener('FACE_SCAN',(event)=>{
-      setLoaderText(LOADER_TEXT.finish)
-    });
-
-    return () => {
-      DeviceEventEmitter.removeAllListeners()
-    }
-  }, [])
-
-  useEffect(() => {
     setLoaderText(getLoaderMessageText(processStatus))
   }, [processStatus])
 
@@ -116,11 +108,10 @@ function PhysicalId() {
       <Container vCenter hCenter horizontalSpace>
         <PhysicalIdDefault
           country={country}
-          document={document}
-          documents={documents}
           setDocument={onDocumentSelect}
           onCountrySelect={onCountrySelect}
-          ref={countryPickerRef}
+          countryPickerVisible={countryPickerVisible}
+          setCountryPickerVisible={setCountryPickerVisible}
         />
         {hasError(processStatus, connectionStatus) ? (
           <PhysicalIdError
@@ -136,7 +127,7 @@ function PhysicalId() {
           colorBackground={colors.main}
           secondColorBackground={colors.main}
           denyButtonText="Cancel"
-          acceptBtnText="Start Document Verification"
+          acceptBtnText="Scan Document"
           topTestID={`${testID}-deny`}
           bottomTestID={`${testID}-accept`}
           containerStyles={styles.actionContainer}
@@ -261,50 +252,49 @@ function getErrorConnectionText(connectionStatus: PhysicalIdConnectionStatus) {
   }
 }
 
-const PhysicalIdDefault = forwardRef(
-  ({ country, document, setDocument, documents, onCountrySelect }, ref) => {
+const PhysicalIdDefault = ({
+  country,
+  setDocument,
+  onCountrySelect,
+  countryPickerVisible,
+  setCountryPickerVisible,
+}) => {
     const data = [
       { label: 'Passport', value: 'PASSPORT' },
       { label: 'Driving License', value: 'DRIVING_LICENSE' },
       { label: 'Identity Document', value: 'IDENTITY_CARD' },
     ]
-    const [countryPickerVisible, setCountryPickerVisible] = useState(false)
+
     const onCloseCountryPicker = () => {
       setCountryPickerVisible(false)
     }
 
-    useImperativeHandle(
-      ref,
-      () => ({
-        open: () => {
-          setCountryPickerVisible(true)
-        },
-      }),
-      [setCountryPickerVisible]
-    )
-
     return (
       <>
-        <Text style={styles.physicalIdParagraphText}>
-          Scan your driver license or passport and receive a verifiable
-          credential. Have your document ready to scan.
-        </Text>
-        <CountryPicker
-          withFilter={true}
-          withFlag={true}
-          withCountryNameButton={true}
-          withEmoji={true}
-          withCloseButton={true}
-          withFlagButton={true}
-          onSelect={onCountrySelect}
-          countryCode={country || ''}
-          preferredCountries={['CA', 'IN', 'RS', 'GB', 'US']}
-          visible={countryPickerVisible}
-          onClose={onCloseCountryPicker}
-        />
+        <View style={styles.containerStyles}>
+          <Text style={styles.physicalIdParagraphText}>
+            {!country ? "\t\tScan your driver license or passport and receive a verifiable credential. Have your document ready to scan"
+            : "\t\tChoose a document to scan. If prompted, please grant camera permissions."}
+          </Text>
+          {countryPickerVisible || country ? (
+            <CountryPicker
+              withFilter={true}
+              withFlag={true}
+              withCountryNameButton={true}
+              withEmoji={true}
+              withCloseButton={true}
+              withFlagButton={true}
+              withAlphaFilter={true}
+              onSelect={onCountrySelect}
+              countryCode={country || ''}
+              visible={countryPickerVisible}
+              onClose={onCloseCountryPicker}
+            />)  : null}
+        </View>
         {country ? (
           <View style={styles.documentsContainer}>
             <RadioButton
+              style={{ width: "100%"}}
               data={data}
               selectedBtn={setDocument}
               icon={
@@ -322,9 +312,14 @@ const PhysicalIdDefault = forwardRef(
       </>
     )
   }
-)
 
 const styles = StyleSheet.create({
+  containerStyles: {
+    flexDirection: 'column',
+    justifyContent: "space-around",
+    flex: 1,
+    alignItems: 'center'
+  },
   buttonStyle: {
     borderLeftColor: white,
     borderLeftWidth: StyleSheet.hairlineWidth,
@@ -335,13 +330,13 @@ const styles = StyleSheet.create({
     marginVertical: 15,
   },
   physicalIdParagraphText: {
-    marginBottom: '5%',
+    marginTop: '5%',
     lineHeight: 25,
     fontSize: verticalScale(fontSizes.size6),
     fontWeight: '400',
     color: colors.gray1,
     fontFamily: fontFamily,
-    textAlign: 'center',
+    textAlign: 'justify',
   },
   errorText: {
     marginBottom: '2%',
@@ -358,8 +353,8 @@ const styles = StyleSheet.create({
       Platform.OS === 'ios' ? moderateScale(30) : moderateScale(10),
   },
   documentsContainer: {
-    // padding: moderateScale(15),
-    flex: 1,
+    marginTop: '3%',
+    flex: 2,
     width: '100%',
   },
   documentNameText: {
@@ -369,7 +364,7 @@ const styles = StyleSheet.create({
   },
 })
 
-const headline = 'Document Verification'
+let headline = 'Document Verification'
 export const physicalIdScreen = {
   routeName: physicalIdRoute,
   screen: PhysicalId,
