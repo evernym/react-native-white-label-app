@@ -169,10 +169,6 @@ function getLoaderMessageText(
       return LOADER_TEXT.processing
     case physicalIdProcessStatus.SDK_SCAN_SUCCESS:
       return LOADER_TEXT.finish
-    case physicalIdProcessStatus.SEND_WORKFLOW_ID_START:
-      return LOADER_TEXT.finish
-    case physicalIdProcessStatus.SEND_WORKFLOW_ID_SUCCESS:
-      return LOADER_TEXT.finish
     default:
       return LOADER_TEXT.preparation
   }
