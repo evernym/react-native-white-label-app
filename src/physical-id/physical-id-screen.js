@@ -47,9 +47,7 @@ function PhysicalId() {
   const navigation = useNavigation()
   const [country, setCountry] = useState()
   const [document, setDocument] = useState()
-  const [documents, setDocuments] = useState()
   const testID = 'physicalId'
-  const countryPickerRef = useRef(null)
   const [loaderText, setLoaderText] = useState(LOADER_TEXT.preparation)
   const [countryPickerVisible, setCountryPickerVisible] = useState(false)
 
@@ -61,7 +59,6 @@ function PhysicalId() {
     }
   }
   
-
   const onCancel = () => {
     navigation.navigate(homeRoute, {
       screen: homeDrawerRoute,

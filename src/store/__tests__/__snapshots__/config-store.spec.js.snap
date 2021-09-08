@@ -7,6 +7,7 @@ Object {
   "agencyDID": "DwXzE7GdE5DNfsrRXJChSD",
   "agencyUrl": "https://agency.evernym.com",
   "agencyVerificationKey": "844sJfb2snyeEugKvpY7Y4jZJk9LT6BnS6bnuKoiqbip",
+  "domainDID": "",
   "isAlreadyInstalled": false,
   "isGetMessagesFailed": false,
   "isHydrated": false,
@@ -197,6 +198,7 @@ Object {
   "vcxInitializationState": "VCX_INIT_FAIL",
   "vcxPoolInitializationError": null,
   "vcxPoolInitializationState": "VCX_INIT_POOL_NOT_STARTED",
+  "verityFlowBaseUrl": "https://simple-verifier-backend.evernym.com/Prod/issuer-service",
 }
 `;
 
@@ -205,6 +207,7 @@ Object {
   "agencyDID": "DwXzE7GdE5DNfsrRXJChSD",
   "agencyUrl": "https://agency.evernym.com",
   "agencyVerificationKey": "844sJfb2snyeEugKvpY7Y4jZJk9LT6BnS6bnuKoiqbip",
+  "domainDID": "",
   "isAlreadyInstalled": false,
   "isGetMessagesFailed": false,
   "isHydrated": false,
@@ -392,6 +395,7 @@ Object {
   "vcxInitializationState": "VCX_INIT_NOT_STARTED",
   "vcxPoolInitializationError": null,
   "vcxPoolInitializationState": "VCX_INIT_POOL_NOT_STARTED",
+  "verityFlowBaseUrl": "https://simple-verifier-backend.evernym.com/Prod/issuer-service",
 }
 `;
 
@@ -400,6 +404,7 @@ Object {
   "agencyDID": "DwXzE7GdE5DNfsrRXJChSD",
   "agencyUrl": "https://agency.evernym.com",
   "agencyVerificationKey": "844sJfb2snyeEugKvpY7Y4jZJk9LT6BnS6bnuKoiqbip",
+  "domainDID": "",
   "isAlreadyInstalled": false,
   "isGetMessagesFailed": false,
   "isHydrated": false,
@@ -590,6 +595,7 @@ Object {
     "message": "Failed to init vcx: error from test",
   },
   "vcxPoolInitializationState": "VCX_INIT_POOL_FAIL",
+  "verityFlowBaseUrl": "https://simple-verifier-backend.evernym.com/Prod/issuer-service",
 }
 `;
 
@@ -598,6 +604,7 @@ Object {
   "agencyDID": "DwXzE7GdE5DNfsrRXJChSD",
   "agencyUrl": "https://agency.evernym.com",
   "agencyVerificationKey": "844sJfb2snyeEugKvpY7Y4jZJk9LT6BnS6bnuKoiqbip",
+  "domainDID": "",
   "isAlreadyInstalled": false,
   "isGetMessagesFailed": false,
   "isHydrated": false,
@@ -785,6 +792,7 @@ Object {
   "vcxInitializationState": "VCX_INIT_NOT_STARTED",
   "vcxPoolInitializationError": null,
   "vcxPoolInitializationState": "VCX_INIT_POOL_START",
+  "verityFlowBaseUrl": "https://simple-verifier-backend.evernym.com/Prod/issuer-service",
 }
 `;
 
@@ -793,6 +801,7 @@ Object {
   "agencyDID": "DwXzE7GdE5DNfsrRXJChSD",
   "agencyUrl": "https://agency.evernym.com",
   "agencyVerificationKey": "844sJfb2snyeEugKvpY7Y4jZJk9LT6BnS6bnuKoiqbip",
+  "domainDID": "",
   "isAlreadyInstalled": false,
   "isGetMessagesFailed": false,
   "isHydrated": false,
@@ -980,6 +989,7 @@ Object {
   "vcxInitializationState": "VCX_INIT_NOT_STARTED",
   "vcxPoolInitializationError": null,
   "vcxPoolInitializationState": "VCX_INIT_POOL_SUCCESS",
+  "verityFlowBaseUrl": "https://simple-verifier-backend.evernym.com/Prod/issuer-service",
 }
 `;
 
@@ -988,6 +998,7 @@ Object {
   "agencyDID": "DwXzE7GdE5DNfsrRXJChSD",
   "agencyUrl": "https://agency.evernym.com",
   "agencyVerificationKey": "844sJfb2snyeEugKvpY7Y4jZJk9LT6BnS6bnuKoiqbip",
+  "domainDID": "",
   "isAlreadyInstalled": false,
   "isGetMessagesFailed": false,
   "isHydrated": false,
@@ -1175,6 +1186,7 @@ Object {
   "vcxInitializationState": "VCX_INIT_START",
   "vcxPoolInitializationError": null,
   "vcxPoolInitializationState": "VCX_INIT_POOL_NOT_STARTED",
+  "verityFlowBaseUrl": "https://simple-verifier-backend.evernym.com/Prod/issuer-service",
 }
 `;
 
@@ -1183,6 +1195,7 @@ Object {
   "agencyDID": "DwXzE7GdE5DNfsrRXJChSD",
   "agencyUrl": "https://agency.evernym.com",
   "agencyVerificationKey": "844sJfb2snyeEugKvpY7Y4jZJk9LT6BnS6bnuKoiqbip",
+  "domainDID": "",
   "isAlreadyInstalled": false,
   "isGetMessagesFailed": false,
   "isHydrated": false,
@@ -1370,5 +1383,6 @@ Object {
   "vcxInitializationState": "VCX_INIT_SUCCESS",
   "vcxPoolInitializationError": null,
   "vcxPoolInitializationState": "VCX_INIT_POOL_NOT_STARTED",
+  "verityFlowBaseUrl": "https://simple-verifier-backend.evernym.com/Prod/issuer-service",
 }
 `;
