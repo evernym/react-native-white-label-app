@@ -7,7 +7,9 @@ Object {
   "agencyDID": "DwXzE7GdE5DNfsrRXJChSD",
   "agencyUrl": "https://agency.evernym.com",
   "agencyVerificationKey": "844sJfb2snyeEugKvpY7Y4jZJk9LT6BnS6bnuKoiqbip",
-  "domainDID": "",
+  "domainDID": "5yZ1ygmhTN8dnRtt2gRsK2",
+  "drivingLicenseCredDefId": "RkayAfMr1FzjcK89NX8NtM:3:CL:72544:latest",
+  "identityCardCredDefId": "RkayAfMr1FzjcK89NX8NtM:3:CL:72542:latest",
   "isAlreadyInstalled": false,
   "isGetMessagesFailed": false,
   "isHydrated": false,
@@ -16,6 +18,7 @@ Object {
   "isVcxInitFailed": true,
   "isVcxPoolInitFailed": false,
   "messageDownloadStatus": "GET_MESSAGES_SUCCESS",
+  "passportCredDefId": "RkayAfMr1FzjcK89NX8NtM:3:CL:72546:latest",
   "paymentMethod": "sov",
   "poolConfig": Array [
     Object {
@@ -207,7 +210,9 @@ Object {
   "agencyDID": "DwXzE7GdE5DNfsrRXJChSD",
   "agencyUrl": "https://agency.evernym.com",
   "agencyVerificationKey": "844sJfb2snyeEugKvpY7Y4jZJk9LT6BnS6bnuKoiqbip",
-  "domainDID": "",
+  "domainDID": "5yZ1ygmhTN8dnRtt2gRsK2",
+  "drivingLicenseCredDefId": "RkayAfMr1FzjcK89NX8NtM:3:CL:72544:latest",
+  "identityCardCredDefId": "RkayAfMr1FzjcK89NX8NtM:3:CL:72542:latest",
   "isAlreadyInstalled": false,
   "isGetMessagesFailed": false,
   "isHydrated": false,
@@ -216,6 +221,7 @@ Object {
   "isVcxInitFailed": false,
   "isVcxPoolInitFailed": false,
   "messageDownloadStatus": "GET_MESSAGES_SUCCESS",
+  "passportCredDefId": "RkayAfMr1FzjcK89NX8NtM:3:CL:72546:latest",
   "paymentMethod": "sov",
   "poolConfig": Array [
     Object {
@@ -404,7 +410,9 @@ Object {
   "agencyDID": "DwXzE7GdE5DNfsrRXJChSD",
   "agencyUrl": "https://agency.evernym.com",
   "agencyVerificationKey": "844sJfb2snyeEugKvpY7Y4jZJk9LT6BnS6bnuKoiqbip",
-  "domainDID": "",
+  "domainDID": "5yZ1ygmhTN8dnRtt2gRsK2",
+  "drivingLicenseCredDefId": "RkayAfMr1FzjcK89NX8NtM:3:CL:72544:latest",
+  "identityCardCredDefId": "RkayAfMr1FzjcK89NX8NtM:3:CL:72542:latest",
   "isAlreadyInstalled": false,
   "isGetMessagesFailed": false,
   "isHydrated": false,
@@ -413,6 +421,7 @@ Object {
   "isVcxInitFailed": false,
   "isVcxPoolInitFailed": true,
   "messageDownloadStatus": "GET_MESSAGES_SUCCESS",
+  "passportCredDefId": "RkayAfMr1FzjcK89NX8NtM:3:CL:72546:latest",
   "paymentMethod": "sov",
   "poolConfig": Array [
     Object {
@@ -604,7 +613,9 @@ Object {
   "agencyDID": "DwXzE7GdE5DNfsrRXJChSD",
   "agencyUrl": "https://agency.evernym.com",
   "agencyVerificationKey": "844sJfb2snyeEugKvpY7Y4jZJk9LT6BnS6bnuKoiqbip",
-  "domainDID": "",
+  "domainDID": "5yZ1ygmhTN8dnRtt2gRsK2",
+  "drivingLicenseCredDefId": "RkayAfMr1FzjcK89NX8NtM:3:CL:72544:latest",
+  "identityCardCredDefId": "RkayAfMr1FzjcK89NX8NtM:3:CL:72542:latest",
   "isAlreadyInstalled": false,
   "isGetMessagesFailed": false,
   "isHydrated": false,
@@ -613,6 +624,7 @@ Object {
   "isVcxInitFailed": false,
   "isVcxPoolInitFailed": false,
   "messageDownloadStatus": "GET_MESSAGES_SUCCESS",
+  "passportCredDefId": "RkayAfMr1FzjcK89NX8NtM:3:CL:72546:latest",
   "paymentMethod": "sov",
   "poolConfig": Array [
     Object {
@@ -801,7 +813,9 @@ Object {
   "agencyDID": "DwXzE7GdE5DNfsrRXJChSD",
   "agencyUrl": "https://agency.evernym.com",
   "agencyVerificationKey": "844sJfb2snyeEugKvpY7Y4jZJk9LT6BnS6bnuKoiqbip",
-  "domainDID": "",
+  "domainDID": "5yZ1ygmhTN8dnRtt2gRsK2",
+  "drivingLicenseCredDefId": "RkayAfMr1FzjcK89NX8NtM:3:CL:72544:latest",
+  "identityCardCredDefId": "RkayAfMr1FzjcK89NX8NtM:3:CL:72542:latest",
   "isAlreadyInstalled": false,
   "isGetMessagesFailed": false,
   "isHydrated": false,
@@ -810,6 +824,7 @@ Object {
   "isVcxInitFailed": false,
   "isVcxPoolInitFailed": false,
   "messageDownloadStatus": "GET_MESSAGES_SUCCESS",
+  "passportCredDefId": "RkayAfMr1FzjcK89NX8NtM:3:CL:72546:latest",
   "paymentMethod": "sov",
   "poolConfig": Array [
     Object {
@@ -998,7 +1013,9 @@ Object {
   "agencyDID": "DwXzE7GdE5DNfsrRXJChSD",
   "agencyUrl": "https://agency.evernym.com",
   "agencyVerificationKey": "844sJfb2snyeEugKvpY7Y4jZJk9LT6BnS6bnuKoiqbip",
-  "domainDID": "",
+  "domainDID": "5yZ1ygmhTN8dnRtt2gRsK2",
+  "drivingLicenseCredDefId": "RkayAfMr1FzjcK89NX8NtM:3:CL:72544:latest",
+  "identityCardCredDefId": "RkayAfMr1FzjcK89NX8NtM:3:CL:72542:latest",
   "isAlreadyInstalled": false,
   "isGetMessagesFailed": false,
   "isHydrated": false,
@@ -1007,6 +1024,7 @@ Object {
   "isVcxInitFailed": false,
   "isVcxPoolInitFailed": false,
   "messageDownloadStatus": "GET_MESSAGES_SUCCESS",
+  "passportCredDefId": "RkayAfMr1FzjcK89NX8NtM:3:CL:72546:latest",
   "paymentMethod": "sov",
   "poolConfig": Array [
     Object {
@@ -1195,7 +1213,9 @@ Object {
   "agencyDID": "DwXzE7GdE5DNfsrRXJChSD",
   "agencyUrl": "https://agency.evernym.com",
   "agencyVerificationKey": "844sJfb2snyeEugKvpY7Y4jZJk9LT6BnS6bnuKoiqbip",
-  "domainDID": "",
+  "domainDID": "5yZ1ygmhTN8dnRtt2gRsK2",
+  "drivingLicenseCredDefId": "RkayAfMr1FzjcK89NX8NtM:3:CL:72544:latest",
+  "identityCardCredDefId": "RkayAfMr1FzjcK89NX8NtM:3:CL:72542:latest",
   "isAlreadyInstalled": false,
   "isGetMessagesFailed": false,
   "isHydrated": false,
@@ -1204,6 +1224,7 @@ Object {
   "isVcxInitFailed": false,
   "isVcxPoolInitFailed": false,
   "messageDownloadStatus": "GET_MESSAGES_SUCCESS",
+  "passportCredDefId": "RkayAfMr1FzjcK89NX8NtM:3:CL:72546:latest",
   "paymentMethod": "sov",
   "poolConfig": Array [
     Object {
