@@ -3,12 +3,9 @@
 import React, {
   useEffect,
   useState,
-  useRef,
-  useImperativeHandle,
-  forwardRef,
   useMemo
 } from 'react'
-import { StyleSheet, Text, View, Platform, DeviceEventEmitter  } from 'react-native'
+import { StyleSheet, Text, View, Platform } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigation } from '@react-navigation/native'
 import CountryPicker from 'react-native-country-picker-modal'
