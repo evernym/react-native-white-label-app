@@ -8,7 +8,7 @@ import React, {
 } from 'react'
 import { StyleSheet, Text, View, Platform } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigation, useFocusEffect  } from '@react-navigation/native'
+import { useNavigation, useIsFocused } from '@react-navigation/native'
 import CountryPicker from 'react-native-country-picker-modal'
 import { moderateScale, verticalScale } from 'react-native-size-matters'
 import Icon from 'react-native-vector-icons/FontAwesome'
@@ -24,6 +24,7 @@ import { Container, CustomText, CustomView, Loader } from '../components'
 import {
   launchPhysicalIdSDK,
   resetPhysicalIdStatues,
+  stopPhysicalId
 } from './physical-id-store'
 import { white, colors, fontFamily, fontSizes } from '../common/styles'
 import {
@@ -48,17 +49,22 @@ function PhysicalId() {
   const testID = 'physicalId'
   const [loaderText, setLoaderText] = useState(LOADER_TEXT.preparation)
   const [countryPickerVisible, setCountryPickerVisible] = useState(false)
+  const focus = useIsFocused()
 
-  useFocusEffect(
-    useCallback(() => {
-      return () => {
-        setCountry()
-        setDocument()
-        setCountryPickerVisible(false)
-      }
-    }, [])
-  )
-  
+  const resetProcess = () => {
+    setCountry()
+    setDocument()
+    setCountryPickerVisible(false)
+    setLoaderText(LOADER_TEXT.preparation)
+    dispatch(stopPhysicalId())
+  }
+
+  useEffect(() => {
+    if (processStatus !== physicalIdProcessStatus.SEND_ISSUE_CREDENTIAL_START) {
+      resetProcess()
+    }
+  }, [focus])
+
   const onAction = () => {
     if (!!country && !!document) {
       dispatch(launchPhysicalIdSDK(country, document))

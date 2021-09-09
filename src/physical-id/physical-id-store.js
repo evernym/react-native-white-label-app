@@ -44,6 +44,7 @@ import {
   HYDRATE_PHYSICAL_ID_SDK_TOKEN,
   ERROR_CONNECTION_DETAIL_FETCH_ERROR,
   ERROR_CONNECTION_FAIL,
+  STOP_PHYSICAL_ID
 } from './physical-id-type'
 import {
   getSdkToken,
@@ -685,8 +686,24 @@ export const resetPhysicalIdStatues = () => ({
   type: RESET_PHYSICAL_ID_STATUES,
 })
 
+export const stopPhysicalId = () => ({
+  type: STOP_PHYSICAL_ID,
+})
+
+// Redux-Saga has a method called race race.
+// It will run 2 tasks, but when one finishes, it will automatically cancel the other. So
+//  - watchPhysicalIdStart is always running
+//  - Every time there's a LAUNCH_PHYSICAL_ID_SDK, start a race between launchPhysicalIdSDKSaga
+//  and listening for the next STOP_PHYSICAL_ID action.
+//  - When one of those tasks finishes, the other task is cancelled this is the behavior of race.
+//  - The names "task" and "cancel" inside of race do not matter, they just help readability of the code
 function* watchPhysicalIdStart(): any {
-  yield takeEvery(LAUNCH_PHYSICAL_ID_SDK, launchPhysicalIdSDKSaga)
+  yield takeEvery(LAUNCH_PHYSICAL_ID_SDK, function* (...args) {
+    yield race({
+      task: call(launchPhysicalIdSDKSaga, ...args),
+      cancel: take(STOP_PHYSICAL_ID)
+    })
+  })
 }
 
 export function* watchPhysicalId(): any {
@@ -727,6 +744,8 @@ export default function physicalIdReducer(
         error: initialState.error,
         physicalIdConnectionStatus: initialState.physicalIdConnectionStatus,
       }
+    case STOP_PHYSICAL_ID:
+      return initialState
     default:
       return state
   }
