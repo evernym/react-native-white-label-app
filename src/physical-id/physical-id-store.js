@@ -29,22 +29,19 @@ import {
   LAUNCH_PHYSICAL_ID_SDK,
   UPDATE_PHYSICAL_ID_PROCESS_STATUS,
   physicalIdProcessStatus,
-  ERROR_PHYSICAL_ID_SDK_TOKEN_API,
   UPDATE_PHYSICAL_ID_SDK_TOKEN,
-  ERROR_MESSAGE_NO_SDK_TOKEN,
-  ERROR_PHYSICAL_ID_SDK,
   ERROR_CONNECTION_DETAIL_INVALID,
   PHYSICAL_ID_CONNECTION_ESTABLISHED,
   HYDRATE_PHYSICAL_ID_DID_SUCCESS,
   REMOVE_PHYSICAL_ID_DID,
-  GET_SDK_TOKEN,
   physicalIdConnectionStatus,
   UPDATE_PHYSICAL_ID_CONNECTION_STATUS,
   RESET_PHYSICAL_ID_STATUES,
   HYDRATE_PHYSICAL_ID_SDK_TOKEN,
   ERROR_CONNECTION_DETAIL_FETCH_ERROR,
   ERROR_CONNECTION_FAIL,
-  STOP_PHYSICAL_ID
+  STOP_PHYSICAL_ID,
+  PHYSICAL_ID_DOCUMENT_SUBMITTED
 } from './physical-id-type'
 import {
   getSdkToken,
@@ -128,6 +125,11 @@ export const updatePhysicalIdSdkToken = (sdkToken: string) => ({
 export const physicalIdConnectionEstablished = (physicalIdDid: string) => ({
   type: PHYSICAL_ID_CONNECTION_ESTABLISHED,
   physicalIdDid,
+})
+
+export const physicalIdDocumentSubmittedAction = (documentType: string) => ({
+  type: PHYSICAL_ID_DOCUMENT_SUBMITTED,
+  documentType,
 })
 
 const PHYSICAL_ID_SDK_TOKEN_STORAGE_KEY = 'PHYSICAL_ID_SDK_TOKEN_STORAGE_KEY'
@@ -246,6 +248,8 @@ function* launchPhysicalIdSDKSaga(
   const verityFlowBaseUrl: string = yield select(selectVerityFlowBaseUrl)
   const credDefId: string = yield* getCredDefId(action.documentType)
 
+  yield put(physicalIdDocumentSubmittedAction(action.documentType))
+
   yield put(
     updatePhysicalIdStatus(physicalIdProcessStatus.SEND_ISSUE_CREDENTIAL_START)
   )
@@ -263,6 +267,7 @@ function* launchPhysicalIdSDKSaga(
 
     return
   }
+
   // TODO:KS Get a new hardware token here again, to make auth more stronger
   // now we have connection, and we also have the workflow data
   // we can now issue the credential

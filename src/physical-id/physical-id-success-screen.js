@@ -2,7 +2,6 @@
 
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
-import Icon from 'react-native-vector-icons/FontAwesome'
 import { useNavigation } from '@react-navigation/native'
 import LottieView from 'lottie-react-native'
 

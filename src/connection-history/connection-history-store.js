@@ -122,6 +122,7 @@ import {
   getLastConnectionEvent,
   getConnection,
   getVerifier,
+  selectPhysicalIdDid,
 } from '../store/store-selector'
 import { CLAIM_STORAGE_SUCCESS } from '../claim/type-claim'
 import { RESET } from '../common/type-common'
@@ -187,6 +188,8 @@ import type {
   ProofVerificationFailedAction,
   ProofVerifiedAction,
 } from '../verifier/type-verifier'
+import { PHYSICAL_ID_DOCUMENT_SUBMITTED } from '../physical-id/physical-id-type'
+import type { PhysicalIdDocumentSubmittedAction } from '../physical-id/physical-id-type'
 
 const initialState = {
   error: null,
@@ -1140,6 +1143,26 @@ export function convertPresentationVerificationFailedToHistoryEvent(
   }
 }
 
+// physical ID Document Submitted
+export function convertPhysicalIdDocumentSubmittedActionEvent(
+  action: PhysicalIdDocumentSubmittedAction,
+  connectionDid: string,
+): ConnectionHistoryEvent {
+  return {
+    action: HISTORY_EVENT_STATUS[PHYSICAL_ID_DOCUMENT_SUBMITTED],
+    data: {},
+    id: uuid(),
+    name: 'Evernym, Inc',
+    status: HISTORY_EVENT_STATUS[PHYSICAL_ID_DOCUMENT_SUBMITTED],
+    timestamp: moment().format(),
+    type: HISTORY_EVENT_TYPE.INVITATION,
+    remoteDid: connectionDid,
+    originalPayload: action,
+    senderName: 'Evernym, Inc',
+    senderLogoUrl: 'https://try.connect.me/img/CMicon@3x.png',
+  }
+}
+
 export const recordHistoryEvent = (historyEvent: ConnectionHistoryEvent) => ({
   type: RECORD_HISTORY_EVENT,
   historyEvent,
@@ -1977,6 +2000,11 @@ export function* historyEventOccurredSaga(
         yield put(deleteHistoryEvent(oldHistoryEvent))
       }
       historyEvent = errorSendProofEvent
+    }
+
+    if (event.type === PHYSICAL_ID_DOCUMENT_SUBMITTED) {
+      let connectionDid = yield select(selectPhysicalIdDid)
+      historyEvent = convertPhysicalIdDocumentSubmittedActionEvent(event, connectionDid)
     }
 
     if (historyEvent) {

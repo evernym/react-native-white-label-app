@@ -67,6 +67,8 @@ export const getEventMessage = (item: Object) => {
     return `"${action}" proof verification passed`
   } else if (status === HISTORY_EVENT_STATUS.PROOF_VERIFICATION_FAILED) {
     return `"${action}" proof verification failed`
+  } else if (status === HISTORY_EVENT_STATUS.PHYSICAL_ID_DOCUMENT_SUBMITTED) {
+    return `You submitted ID documents`
   } else {
     return null
   }

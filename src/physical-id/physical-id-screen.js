@@ -19,7 +19,7 @@ import type {
   PhysicalIdConnectionStatus,
 } from './physical-id-type'
 
-import { Container, CustomText, CustomView, Loader } from '../components'
+import { Container, CustomView, Loader } from '../components'
 import {
   launchPhysicalIdSDK,
   resetPhysicalIdStatues,
@@ -84,7 +84,7 @@ function PhysicalId() {
       setCountryPickerVisible(true)
     }
   }
-  
+
   const onCancel = () => {
     navigation.navigate(homeRoute, {
       screen: homeDrawerRoute,

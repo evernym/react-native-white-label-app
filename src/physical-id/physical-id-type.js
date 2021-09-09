@@ -122,6 +122,13 @@ export type ResetPhysicalIdStatuesAction = {
   type: typeof RESET_PHYSICAL_ID_STATUES,
 }
 
+export const PHYSICAL_ID_DOCUMENT_SUBMITTED =
+  'PHYSICAL_ID_DOCUMENT_SUBMITTED'
+export type PhysicalIdDocumentSubmittedAction = {
+  type: typeof PHYSICAL_ID_DOCUMENT_SUBMITTED,
+  documentType: string,
+}
+
 export type PhysicalIdStoreAction =
   | LaunchPhysicalIdSDKAction
   | UpdatePhysicalIdProcessStatusAction
@@ -133,6 +140,7 @@ export type PhysicalIdStoreAction =
   | GetSdkTokenAction
   | UpdatePhysicalIdConnectionStatusAction
   | ResetPhysicalIdStatuesAction
+  | PhysicalIdDocumentSubmittedAction
 
 export const JumioDocTypes = {
   BankStatement: { value: 'BS', text: 'Bank statement' },

@@ -45,7 +45,7 @@ import { deleteConnectionAction } from '../../store/connections-store'
 import { LOADING_ACTIONS } from '../../connection-history/type-connection-history'
 import { PROOF_VERIFICATION_FAILED } from '../../verifier/type-verifier'
 import { renderUserAvatar } from '../../components/user-avatar/user-avatar'
-import { formatTimestamp } from '../../utils/datetime'
+import { EventTimestamp } from '../../components/event-timestamp/event-timestamp'
 
 class RecentCardComponent extends React.Component<RecentCardProps, void> {
   render() {
@@ -101,9 +101,7 @@ class RecentCardComponent extends React.Component<RecentCardProps, void> {
           ) : isLoading ? (
             <ActivityIndicator size="small" />
           ) : (
-            <Text style={styles.textDate}>
-              {formatTimestamp(props.timestamp)}
-            </Text>
+            <EventTimestamp timestamp={props.timestamp}/>
           )}
         </View>
       </View>
