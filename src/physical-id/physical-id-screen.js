@@ -63,9 +63,7 @@ function PhysicalId() {
       resetProcess()
     }
   }, [focus])
-  console.log('====================================');
-  console.log(loaderText, processStatus);
-  console.log('====================================');
+
   useEffect(() => {
     if (Platform.OS === 'android') {
       DeviceEventEmitter.addListener('FACE_SCAN', () => {
