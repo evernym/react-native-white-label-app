@@ -3,10 +3,9 @@
 import React, {
   useEffect,
   useState,
-  useMemo,
-  useCallback
+  useMemo
 } from 'react'
-import { StyleSheet, Text, View, Platform } from 'react-native'
+import { StyleSheet, Text, View, Platform, DeviceEventEmitter } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigation, useIsFocused } from '@react-navigation/native'
 import CountryPicker from 'react-native-country-picker-modal'
@@ -64,6 +63,21 @@ function PhysicalId() {
       resetProcess()
     }
   }, [focus])
+  console.log('====================================');
+  console.log(loaderText, processStatus);
+  console.log('====================================');
+  useEffect(() => {
+    if (Platform.OS === 'android') {
+      DeviceEventEmitter.addListener('FACE_SCAN', () => {
+        setLoaderText(LOADER_TEXT.finish)
+      });
+    }
+    return () => {
+      if (Platform.OS === 'android') {
+        DeviceEventEmitter.removeAllListeners()
+      }
+    }
+  }, [])
 
   const onAction = () => {
     if (!!country && !!document) {
