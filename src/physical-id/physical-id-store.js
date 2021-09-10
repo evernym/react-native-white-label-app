@@ -41,7 +41,8 @@ import {
   ERROR_CONNECTION_DETAIL_FETCH_ERROR,
   ERROR_CONNECTION_FAIL,
   STOP_PHYSICAL_ID,
-  PHYSICAL_ID_DOCUMENT_SUBMITTED
+  PHYSICAL_ID_DOCUMENT_SUBMITTED,
+  PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED,
 } from './physical-id-type'
 import {
   getSdkToken,
@@ -57,7 +58,7 @@ import {
 import { ResponseType } from '../components/request/type-request'
 import {
   ensureAppHydrated,
-  getUnacknowledgedMessages,
+  getUnacknowledgedMessages, showSnackError,
 } from '../store/config-store'
 import {
   getConnectionByProp,
@@ -127,9 +128,16 @@ export const physicalIdConnectionEstablished = (physicalIdDid: string) => ({
   physicalIdDid,
 })
 
-export const physicalIdDocumentSubmittedAction = (documentType: string) => ({
+export const physicalIdDocumentSubmittedAction = (uid: string, documentType: string) => ({
   type: PHYSICAL_ID_DOCUMENT_SUBMITTED,
+  uid,
   documentType,
+})
+
+export const physicalIdDocumentIssuanceFailedAction = (uid: string, error: ?CustomError,) => ({
+  type: PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED,
+  uid,
+  error,
 })
 
 const PHYSICAL_ID_SDK_TOKEN_STORAGE_KEY = 'PHYSICAL_ID_SDK_TOKEN_STORAGE_KEY'
@@ -266,7 +274,10 @@ function* launchPhysicalIdSDKSaga(
     return
   }
 
-  yield put(physicalIdDocumentSubmittedAction(action.documentType))
+  yield put(physicalIdDocumentSubmittedAction(
+    workflowId,
+    action.documentType,
+  ))
 
   // TODO:KS Get a new hardware token here again, to make auth more stronger
   // now we have connection, and we also have the workflow data
@@ -285,6 +296,13 @@ function* launchPhysicalIdSDKSaga(
     yield put(
       updatePhysicalIdStatus(physicalIdProcessStatus.SEND_ISSUE_CREDENTIAL_FAIL)
     )
+
+    yield put(physicalIdDocumentIssuanceFailedAction(
+      workflowId,
+      issueCredentialError
+    ))
+
+    yield call(showSnackError, issueCredentialError.message)
 
     // something went wrong while asking to issue credential
     return

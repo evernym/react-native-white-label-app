@@ -91,7 +91,11 @@ import type {
   ProofVerificationFailedAction,
   ProofVerifiedAction,
 } from '../verifier/type-verifier'
-import { PHYSICAL_ID_DOCUMENT_SUBMITTED } from '../physical-id/physical-id-type'
+import { PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED, PHYSICAL_ID_DOCUMENT_SUBMITTED } from '../physical-id/physical-id-type'
+import type {
+  PhysicalIdDocumentIssuanceFailedAction,
+  PhysicalIdDocumentSubmittedAction,
+} from '../physical-id/physical-id-type'
 
 export const HISTORY_EVENT_STATUS = {
   [INVITATION_RECEIVED]: 'CONNECTION REQUEST',
@@ -134,6 +138,7 @@ export const HISTORY_EVENT_STATUS = {
   [PROOF_VERIFIED]: PROOF_VERIFIED,
   [PROOF_VERIFICATION_FAILED]: PROOF_VERIFICATION_FAILED,
   [PHYSICAL_ID_DOCUMENT_SUBMITTED]: PHYSICAL_ID_DOCUMENT_SUBMITTED,
+  [PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED]: PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED,
 }
 
 export const HISTORY_EVENT_TYPE = {
@@ -217,6 +222,8 @@ export type HistoryEventOccurredEventType =
   | ProofRequestSentAction
   | ProofVerifiedAction
   | ProofVerificationFailedAction
+  | PhysicalIdDocumentSubmittedAction
+  | PhysicalIdDocumentIssuanceFailedAction
 
 export type HistoryEventOccurredAction = {
   type: typeof HISTORY_EVENT_OCCURRED,

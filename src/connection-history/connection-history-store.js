@@ -188,8 +188,14 @@ import type {
   ProofVerificationFailedAction,
   ProofVerifiedAction,
 } from '../verifier/type-verifier'
-import { PHYSICAL_ID_DOCUMENT_SUBMITTED } from '../physical-id/physical-id-type'
-import type { PhysicalIdDocumentSubmittedAction } from '../physical-id/physical-id-type'
+import {
+  PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED,
+  PHYSICAL_ID_DOCUMENT_SUBMITTED
+} from '../physical-id/physical-id-type'
+import type {
+  PhysicalIdDocumentIssuanceFailedAction,
+  PhysicalIdDocumentSubmittedAction,
+} from '../physical-id/physical-id-type'
 
 const initialState = {
   error: null,
@@ -1163,6 +1169,27 @@ export function convertPhysicalIdDocumentSubmittedActionEvent(
   }
 }
 
+// physical ID Document Issuance Failed
+export function convertPhysicalIdDocumentIssuanceFailedEvent(
+  action: PhysicalIdDocumentIssuanceFailedAction,
+  documentSubmittedEvent: ConnectionHistoryEvent
+): ConnectionHistoryEvent {
+  return {
+    action: HISTORY_EVENT_STATUS[PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED],
+    // $FlowFixMe
+    data: documentSubmittedEvent.data,
+    id: uuid(),
+    name: documentSubmittedEvent.name,
+    status: HISTORY_EVENT_STATUS[PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED],
+    timestamp: moment().format(),
+    type: HISTORY_EVENT_TYPE.PHYSICAL_ID,
+    remoteDid: documentSubmittedEvent.remoteDid,
+    originalPayload: action,
+    senderName: documentSubmittedEvent.senderName,
+    senderLogoUrl: documentSubmittedEvent.senderLogoUrl,
+  }
+}
+
 export const recordHistoryEvent = (historyEvent: ConnectionHistoryEvent) => ({
   type: RECORD_HISTORY_EVENT,
   historyEvent,
@@ -2009,6 +2036,20 @@ export function* historyEventOccurredSaga(
         return
       }
       historyEvent = convertPhysicalIdDocumentSubmittedActionEvent(event, connection)
+    }
+
+    if (event.type === PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED) {
+      let physicalIdDid = yield select(selectPhysicalIdDid)
+      const documentSubmittedEvent = yield select(
+        getPendingHistory,
+        event.uid,
+        physicalIdDid,
+        PHYSICAL_ID_DOCUMENT_SUBMITTED
+      )
+      historyEvent = convertPhysicalIdDocumentIssuanceFailedEvent(event, documentSubmittedEvent)
+      if (documentSubmittedEvent) {
+        yield put(deleteHistoryEvent(documentSubmittedEvent))
+      }
     }
 
     if (historyEvent) {

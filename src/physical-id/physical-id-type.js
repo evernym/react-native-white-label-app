@@ -126,7 +126,16 @@ export const PHYSICAL_ID_DOCUMENT_SUBMITTED =
   'PHYSICAL_ID_DOCUMENT_SUBMITTED'
 export type PhysicalIdDocumentSubmittedAction = {
   type: typeof PHYSICAL_ID_DOCUMENT_SUBMITTED,
+  uid: string,
   documentType: string,
+}
+
+export const PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED =
+  'PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED'
+export type PhysicalIdDocumentIssuanceFailedAction = {
+  type: typeof PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED,
+  uid: string,
+  error: ?CustomError,
 }
 
 export type PhysicalIdStoreAction =
@@ -141,6 +150,7 @@ export type PhysicalIdStoreAction =
   | UpdatePhysicalIdConnectionStatusAction
   | ResetPhysicalIdStatuesAction
   | PhysicalIdDocumentSubmittedAction
+  | PhysicalIdDocumentIssuanceFailedAction
 
 export const JumioDocTypes = {
   BankStatement: { value: 'BS', text: 'Bank statement' },

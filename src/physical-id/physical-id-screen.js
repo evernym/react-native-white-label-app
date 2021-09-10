@@ -146,16 +146,28 @@ function PhysicalId() {
         ) : null}
       </Container>
       <CustomView row safeArea>
-        <ModalButtons
-          onPress={onAction}
-          onIgnore={onCancel}
-          colorBackground={colors.main}
-          secondColorBackground={colors.main}
-          denyButtonText="Cancel"
-          acceptBtnText="Scan Document"
-          topTestID={`${testID}-deny`}
-          containerStyles={styles.actionContainer}
-        />
+        {
+          !country ?
+            <ModalButtons
+              onPress={onAction}
+              onIgnore={onCancel}
+              colorBackground={colors.main}
+              acceptBtnText="Start Document Verification"
+              topTestID={`${testID}-start`}
+              containerStyles={styles.actionContainer}
+            />:
+            <ModalButtons
+              onPress={onAction}
+              onIgnore={onCancel}
+              colorBackground={colors.main}
+              secondColorBackground={colors.main}
+              denyButtonText="Cancel"
+              acceptBtnText="Continue"
+              disableAccept={country && !document}
+              topTestID={`${testID}-continue`}
+              containerStyles={styles.actionContainer}
+            />
+        }
       </CustomView>
     </Container>
   )
