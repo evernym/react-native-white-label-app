@@ -5,7 +5,7 @@ import React, {
   useState,
   useMemo
 } from 'react'
-import { StyleSheet, Text, View, Platform, DeviceEventEmitter } from 'react-native'
+import { StyleSheet, Text, View, Platform, Image, DeviceEventEmitter } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigation, useIsFocused } from '@react-navigation/native'
 import CountryPicker from 'react-native-country-picker-modal'
@@ -35,6 +35,8 @@ import { homeDrawerRoute, homeRoute, physicalIdSuccessRoute } from '../common'
 import { ModalButtons } from '../components/buttons/modal-buttons'
 
 // import { physicalIdHeadline } from '../external-imports'
+
+const documentVerificationImage = require('../images/physicalId.png')
 
 function PhysicalId() {
   const {
@@ -152,7 +154,6 @@ function PhysicalId() {
           denyButtonText="Cancel"
           acceptBtnText="Scan Document"
           topTestID={`${testID}-deny`}
-          bottomTestID={`${testID}-accept`}
           containerStyles={styles.actionContainer}
         />
       </CustomView>
@@ -288,55 +289,68 @@ const PhysicalIdDefault = ({
       setCountryPickerVisible(false)
     }
 
-    return (
-      <>
-        <View style={styles.containerStyles}>
-          <Text style={styles.physicalIdParagraphText}>
-            {!country ? "Scan your driver license or passport and receive a verifiable credential. Have your document ready to scan"
-            : "Choose a document to scan. If prompted, please grant camera permissions."}
-          </Text>
-          {countryPickerVisible || country ? (
-            <CountryPicker
-              withFilter={true}
-              withFlag={true}
-              withCountryNameButton={true}
-              withEmoji={true}
-              withCloseButton={true}
-              withFlagButton={true}
-              withAlphaFilter={true}
-              onSelect={onCountrySelect}
-              countryCode={country || ''}
-              visible={countryPickerVisible}
-              onClose={onCloseCountryPicker}
-            />)  : null}
+  return (
+    <>
+      <View style={styles.containerStyles}>
+        {
+          !country ?
+            (
+              <View style={styles.containerStyles}>
+                <Image source={documentVerificationImage} style={styles.image}/>
+                <Text style={styles.physicalIdParagraphText}>
+                  By scanning your government-issued documents and taking a selfie, you can turn your physical documents into private, secure digital credentials stored on your phone. Your personal information is discarded after verification.
+                </Text>
+              </View>
+            ) :
+            (
+              <Text style={styles.physicalIdParagraphText}>
+                Choose a document to scan. If prompted, please grant camera permissions.
+              </Text>
+            )
+        }
+        {countryPickerVisible || country ? (
+          <CountryPicker
+            withFilter={true}
+            withFlag={true}
+            withCountryNameButton={true}
+            withEmoji={true}
+            withCloseButton={true}
+            withFlagButton={true}
+            withAlphaFilter={true}
+            onSelect={onCountrySelect}
+            countryCode={country || ''}
+            visible={countryPickerVisible}
+            onClose={onCloseCountryPicker}
+          />)  : null}
+      </View>
+      {country ? (
+        <View style={styles.documentsContainer}>
+          <RadioButton
+            data={data}
+            selectedBtn={setDocument}
+            icon={
+              <Icon name="check-circle" size={25} color={colors.green1} />
+            }
+            animationType="rotate"
+            duration={300}
+            textColor={colors.gray1}
+            activeColor={colors.green1}
+            boxActiveBgColor={colors.green3}
+            textStyle={styles.documentNameText}
+          />
         </View>
-        {country ? (
-          <View style={styles.documentsContainer}>
-            <RadioButton
-              data={data}
-              selectedBtn={setDocument}
-              icon={
-                <Icon name="check-circle" size={25} color={colors.green1} />
-              }
-              animationType="rotate"
-              duration={300}
-              textColor={colors.gray1}
-              activeColor={colors.green1}
-              boxActiveBgColor={colors.green3}
-              textStyle={styles.documentNameText}
-            />
-          </View>
-        ) : null}
-      </>
-    )
-  }
+      ) : null}
+    </>
+  )
+}
 
 const styles = StyleSheet.create({
   containerStyles: {
     flexDirection: 'column',
     justifyContent: "space-around",
     flex: 1,
-    alignItems: 'center'
+    alignItems: 'center',
+    marginBottom: 10,
   },
   buttonStyle: {
     borderLeftColor: white,
@@ -379,6 +393,12 @@ const styles = StyleSheet.create({
     fontFamily: fontFamily,
     fontWeight: '400',
     fontSize: verticalScale(fontSizes.size6),
+  },
+  image: {
+    flex: 1,
+    width: '100%',
+    height: undefined,
+    aspectRatio: 1,
   },
 })
 

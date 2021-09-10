@@ -1146,20 +1146,20 @@ export function convertPresentationVerificationFailedToHistoryEvent(
 // physical ID Document Submitted
 export function convertPhysicalIdDocumentSubmittedActionEvent(
   action: PhysicalIdDocumentSubmittedAction,
-  connectionDid: string,
+  connection: Connection,
 ): ConnectionHistoryEvent {
   return {
     action: HISTORY_EVENT_STATUS[PHYSICAL_ID_DOCUMENT_SUBMITTED],
     data: {},
     id: uuid(),
-    name: 'Evernym, Inc',
+    name: connection.senderName || 'Unknown',
     status: HISTORY_EVENT_STATUS[PHYSICAL_ID_DOCUMENT_SUBMITTED],
     timestamp: moment().format(),
-    type: HISTORY_EVENT_TYPE.INVITATION,
-    remoteDid: connectionDid,
+    type: HISTORY_EVENT_TYPE.PHYSICAL_ID,
+    remoteDid: connection.senderDID,
     originalPayload: action,
-    senderName: 'Evernym, Inc',
-    senderLogoUrl: 'https://try.connect.me/img/CMicon@3x.png',
+    senderName: connection.senderName || 'Unknown',
+    senderLogoUrl: connection.logoUrl,
   }
 }
 
@@ -2003,8 +2003,12 @@ export function* historyEventOccurredSaga(
     }
 
     if (event.type === PHYSICAL_ID_DOCUMENT_SUBMITTED) {
-      let connectionDid = yield select(selectPhysicalIdDid)
-      historyEvent = convertPhysicalIdDocumentSubmittedActionEvent(event, connectionDid)
+      let physicalIdDid = yield select(selectPhysicalIdDid)
+      let [connection] = yield select(getConnection, physicalIdDid)
+      if (!connection) {
+        return
+      }
+      historyEvent = convertPhysicalIdDocumentSubmittedActionEvent(event, connection)
     }
 
     if (historyEvent) {

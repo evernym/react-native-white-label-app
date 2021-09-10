@@ -248,8 +248,6 @@ function* launchPhysicalIdSDKSaga(
   const verityFlowBaseUrl: string = yield select(selectVerityFlowBaseUrl)
   const credDefId: string = yield* getCredDefId(action.documentType)
 
-  yield put(physicalIdDocumentSubmittedAction(action.documentType))
-
   yield put(
     updatePhysicalIdStatus(physicalIdProcessStatus.SEND_ISSUE_CREDENTIAL_START)
   )
@@ -267,6 +265,8 @@ function* launchPhysicalIdSDKSaga(
 
     return
   }
+
+  yield put(physicalIdDocumentSubmittedAction(action.documentType))
 
   // TODO:KS Get a new hardware token here again, to make auth more stronger
   // now we have connection, and we also have the workflow data

@@ -99,7 +99,7 @@ class RecentCardComponent extends React.Component<RecentCardProps, void> {
               Tap to retry
             </Text>
           ) : isLoading ? (
-            <ActivityIndicator size="small" />
+            <ActivityIndicator size="small" color={colors.gray3} />
           ) : (
             <EventTimestamp timestamp={props.timestamp}/>
           )}
