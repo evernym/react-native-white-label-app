@@ -21,7 +21,11 @@ async function post(config: {
     body: config.body,
   })
 
-  return await response.json()
+  let responseText = await response.json()
+  if (!response.ok) {
+    throw new Error(responseText.errorMessage || responseText.message || responseText)
+  }
+  return responseText
 }
 
 export async function getSdkToken(

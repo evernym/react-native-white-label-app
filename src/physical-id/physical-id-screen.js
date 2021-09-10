@@ -162,7 +162,7 @@ function PhysicalId() {
               colorBackground={colors.main}
               secondColorBackground={colors.main}
               denyButtonText="Cancel"
-              acceptBtnText="Continue"
+              acceptBtnText="Scan Document"
               disableAccept={country && !document}
               topTestID={`${testID}-continue`}
               containerStyles={styles.actionContainer}

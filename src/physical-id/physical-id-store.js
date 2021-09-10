@@ -293,18 +293,15 @@ function* launchPhysicalIdSDKSaga(
     credDefId,
   })
   if (issueCredentialError) {
+    // something went wrong while asking to issue credential
     yield put(
       updatePhysicalIdStatus(physicalIdProcessStatus.SEND_ISSUE_CREDENTIAL_FAIL)
     )
-
     yield put(physicalIdDocumentIssuanceFailedAction(
       workflowId,
       issueCredentialError
     ))
-
     yield call(showSnackError, issueCredentialError.message)
-
-    // something went wrong while asking to issue credential
     return
   }
 
