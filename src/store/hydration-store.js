@@ -95,6 +95,7 @@ import { hydrateInviteActionSaga } from '../invite-action/invite-action-store'
 import { hydrateVerifierSaga } from '../verifier/verifier-store'
 import { getConnectionPairwiseAgentInfo } from './store-selector'
 import { hydrateSwitchedEnvironmentDetails } from '../switch-environment/switсh-environment-store'
+import { initPhysicalIdSdkSaga } from '../physical-id/physical-id-store'
 
 export function* deleteDeviceSpecificData(): Generator<*, *, *> {
   try {
@@ -305,6 +306,8 @@ export function* hydrate(): any {
       // NOTE: VERY IMPORTANT!! Do not put safeToDownloadSmsInvitation until after
       // the call to vcxShutdown as this will mess up the inRecovery logic of items from the wallet
       yield put(safeToDownloadSmsInvitation())
+
+      yield spawn(initPhysicalIdSdkSaga)
 
       yield* ensureVcxInitSuccess()
 

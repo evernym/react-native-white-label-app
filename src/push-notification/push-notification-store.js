@@ -76,6 +76,7 @@ import {
   homeRoute,
   inviteActionRoute,
   proofProposalRoute,
+  physicalIdRoute,
 } from '../common'
 import type { NavigationParams, GenericObject } from '../common/type-common'
 
@@ -131,6 +132,7 @@ const blackListedRoute = {
   [invitationRoute]: invitationRoute,
   [questionRoute]: questionRoute,
   [inviteActionRoute]: inviteActionRoute,
+  [physicalIdRoute]: physicalIdRoute,
 }
 
 const initialState = {

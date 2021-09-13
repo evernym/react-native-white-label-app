@@ -801,5 +801,3 @@ export const getDeepLinks = (state: Store) => state.deepLink.tokens
 
 export const getDeepLinkStatus = (state: Store, smsToken: string) =>
   state.deepLink.tokens[smsToken]?.status
-
-export const selectPhysicalIdDid = (state: Store) => state.physicalId.physicalIdDid

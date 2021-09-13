@@ -21,9 +21,12 @@ import type {
 
 import { Container, CustomView, Loader } from '../components'
 import {
+  getSupportedDocuments,
   launchPhysicalIdSDK,
   resetPhysicalIdStatues,
-  stopPhysicalId
+  selectDocumentTypes,
+  selectDocumentTypesIsLoading,
+  stopPhysicalId,
 } from './physical-id-store'
 import { white, colors, fontFamily, fontSizes } from '../common/styles'
 import {
@@ -52,11 +55,15 @@ function PhysicalId() {
   const [countryPickerVisible, setCountryPickerVisible] = useState(false)
   const focus = useIsFocused()
 
-  const resetProcess = () => {
+  const resetState = () => {
     setCountry()
     setDocument()
     setCountryPickerVisible(false)
     setLoaderText(LOADER_TEXT.preparation)
+  }
+
+  const resetProcess = () => {
+    resetState()
     dispatch(stopPhysicalId())
   }
 
@@ -82,12 +89,14 @@ function PhysicalId() {
   const onAction = () => {
     if (!!country && !!document) {
       dispatch(launchPhysicalIdSDK(country, document))
+      resetState()
     } else if (!country) {
       setCountryPickerVisible(true)
     }
   }
 
   const onCancel = () => {
+    resetState()
     navigation.navigate(homeRoute, {
       screen: homeDrawerRoute,
     })
@@ -119,10 +128,10 @@ function PhysicalId() {
   }, [processStatus])
 
   const loaderWithMessage = useMemo(() => (
-      <Container tertiary key={loaderText}>
-        <Loader showMessage={true} message={loaderText} />
-      </Container>
-    ), [processStatus, loaderText])
+    <Container tertiary key={loaderText}>
+      <Loader showMessage={true} message={loaderText} />
+    </Container>
+  ), [processStatus, loaderText])
 
   if (isLoaderVisible(processStatus, connectionStatus)) {
     return loaderWithMessage
@@ -180,10 +189,6 @@ const LOADER_TEXT = {
 }
 
 const LoaderVisiblePhysicalIdStates = [
-  physicalIdProcessStatus.SDK_TOKEN_FETCH_START,
-  physicalIdProcessStatus.SDK_TOKEN_FETCH_SUCCESS,
-  physicalIdProcessStatus.SDK_INIT_START,
-  physicalIdProcessStatus.SDK_INIT_SUCCESS,
   physicalIdProcessStatus.SDK_SCAN_START,
 ]
 
@@ -284,22 +289,42 @@ function getErrorConnectionText(connectionStatus: PhysicalIdConnectionStatus) {
   }
 }
 
-const PhysicalIdDefault = ({
-  country,
-  setDocument,
-  onCountrySelect,
-  countryPickerVisible,
-  setCountryPickerVisible,
-}) => {
-    const data = [
-      { label: 'Passport', value: 'PASSPORT' },
-      { label: 'Driving License', value: 'DRIVING_LICENSE' },
-      { label: 'Identity Document', value: 'IDENTITY_CARD' },
-    ]
+const orderedDocuments = ["PASSPORT", "DRIVING_LICENSE", "IDENTITY_CARD"]
 
-    const onCloseCountryPicker = () => {
-      setCountryPickerVisible(false)
+const documentTypesMap = {
+  PASSPORT: 'Passport',
+  DRIVING_LICENSE: 'Driving License',
+  IDENTITY_CARD: 'Identity Document',
+}
+
+const PhysicalIdDefault = ({
+                             country,
+                             setDocument,
+                             onCountrySelect,
+                             countryPickerVisible,
+                             setCountryPickerVisible,
+                           }) => {
+  const dispatch = useDispatch()
+  const documentTypes = useSelector(selectDocumentTypes)
+  const documentTypesIsLoading = useSelector(selectDocumentTypesIsLoading)
+
+  useEffect(() => {
+    if (country) {
+      dispatch(getSupportedDocuments(country))
     }
+  }, [country])
+
+  const data = useMemo(() => {
+    return documentTypes ?
+      orderedDocuments
+        .filter(document => documentTypes.includes(document))
+        .map(document => ({ label: documentTypesMap[document], value: document }))
+      : []
+  }, [documentTypes])
+
+  const onCloseCountryPicker = () => {
+    setCountryPickerVisible(false)
+  }
 
   return (
     <>
@@ -337,6 +362,15 @@ const PhysicalIdDefault = ({
       </View>
       {country ? (
         <View style={styles.documentsContainer}>
+          { documentTypesIsLoading &&
+          <Loader showMessage={true} message="Getting supported document types" />
+          }
+          { !documentTypesIsLoading && (!data || data.length === 0) &&
+          <Text style={styles.errorText}>
+            There are no supported documents for this country
+          </Text>
+          }
+          { !documentTypesIsLoading && data && data.length > 0 &&
           <RadioButton
             data={data}
             selectedBtn={setDocument}
@@ -350,6 +384,7 @@ const PhysicalIdDefault = ({
             boxActiveBgColor={colors.green3}
             textStyle={styles.documentNameText}
           />
+          }
         </View>
       ) : null}
     </>

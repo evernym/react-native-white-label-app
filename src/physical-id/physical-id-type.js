@@ -6,6 +6,14 @@ import type {
   NavigationLeafRoute,
 } from '@react-navigation/native'
 
+export const sdkInitStatus = {
+  IDLE: 'IDLE',
+  SDK_INIT_START: 'SDK_INIT_START',
+  SDK_INIT_SUCCESS: 'SDK_INIT_SUCCESS',
+  SDK_INIT_FAIL: 'SDK_INIT_FAIL',
+}
+export type SdkInitStatus = $Keys<typeof sdkInitStatus>
+
 export const physicalIdProcessStatus = {
   IDLE: 'IDLE',
   SDK_TOKEN_FETCH_FAIL: 'SDK_TOKEN_FETCH_FAIL',
@@ -49,12 +57,28 @@ export type PhysicalIdNavigation = {
   },
 }
 
+export type LoadedData = {
+  data: ?[string],
+  isLoading: false,
+  error: ?CustomError,
+}
+
 export type PhysicalIdStore = {
+  sdkInitStatus: SdkInitStatus,
   status: PhysicalIdProcessStatus,
   sdkToken: ?string,
   error: ?CustomError,
   physicalIdDid: ?string,
   physicalIdConnectionStatus: PhysicalIdConnectionStatus,
+  documentTypes: ?LoadedData,
+}
+
+export const UPDATE_SDK_INIT_STATUS =
+  'UPDATE_SDK_INIT_STATUS'
+export type UpdateSdkInitStatusAction = {
+  type: typeof UPDATE_SDK_INIT_STATUS,
+  status: SdkInitStatus,
+  error?: ?CustomError,
 }
 
 export const UPDATE_PHYSICAL_ID_PROCESS_STATUS =
@@ -63,6 +87,12 @@ export type UpdatePhysicalIdProcessStatusAction = {
   type: typeof UPDATE_PHYSICAL_ID_PROCESS_STATUS,
   status: PhysicalIdProcessStatus,
   error?: ?CustomError,
+}
+
+export const SDK_INIT =
+  'SDK_INIT'
+export type SDKInitAction = {
+  type: typeof SDK_INIT,
 }
 
 export const STOP_PHYSICAL_ID = "STOP_PHYSICAL_ID"
@@ -138,8 +168,27 @@ export type PhysicalIdDocumentIssuanceFailedAction = {
   error: ?CustomError,
 }
 
+export const GET_SUPPORTED_DOCUMENT_TYPES = 'GET_SUPPORTED_DOCUMENT_TYPES'
+export type GetSupportedDocumentTypesAction = {
+  type: typeof GET_SUPPORTED_DOCUMENT_TYPES,
+  country: string
+}
+
+export const GET_SUPPORTED_DOCUMENT_TYPES_SUCCESS = 'GET_SUPPORTED_DOCUMENT_TYPES_SUCCESS'
+export type GetSupportedDocumentTypesSuccessAction = {
+  type: typeof GET_SUPPORTED_DOCUMENT_TYPES_SUCCESS,
+  documentTypes: [string]
+}
+
+export const GET_SUPPORTED_DOCUMENT_TYPES_FAILED = 'GET_SUPPORTED_DOCUMENT_TYPES_FAILED'
+export type GetSupportedDocumentTypesFailedAction = {
+  type: typeof GET_SUPPORTED_DOCUMENT_TYPES_FAILED,
+  error: ?CustomError,
+}
+
 export type PhysicalIdStoreAction =
   | LaunchPhysicalIdSDKAction
+  | UpdateSdkInitStatusAction
   | UpdatePhysicalIdProcessStatusAction
   | UpdatePhysicalIdSdkTokenAction
   | HydratePhysicalIdSdkTokenAction
@@ -151,35 +200,9 @@ export type PhysicalIdStoreAction =
   | ResetPhysicalIdStatuesAction
   | PhysicalIdDocumentSubmittedAction
   | PhysicalIdDocumentIssuanceFailedAction
-
-export const JumioDocTypes = {
-  BankStatement: { value: 'BS', text: 'Bank statement' },
-  InsuranceCard: { value: 'IC', text: 'Insurance card' },
-  UtilityBill: { value: 'UB', text: 'Utility bill' },
-  CashAdvanceApplication: { value: 'CAAP', text: 'Utility bill' },
-  CorporateResolutionCertificate: { value: 'CRC', text: 'Utility bill' },
-  CreditCardStatement: { value: 'CCS', text: 'Utility bill' },
-  LeaseAgreement: { value: 'LAG', text: 'Utility bill' },
-  LoanApplication: { value: 'LOAP', text: 'Utility bill' },
-  MortgageApplication: { value: 'MOAP', text: 'Utility bill' },
-  TaxReturn: { value: 'TR', text: 'Utility bill' },
-  VehicleTitle: { value: 'VT', text: 'Utility bill' },
-  VoidedCheck: { value: 'VC', text: 'Utility bill' },
-  StudentCard: { value: 'STUC', text: 'Utility bill' },
-  HealthCareCard: { value: 'HCC', text: 'Utility bill' },
-  CouncilBill: { value: 'CB', text: 'Utility bill' },
-  SeniorsCard: { value: 'SENC', text: 'Utility bill' },
-  MedicareCard: { value: 'MEDC', text: 'Utility bill' },
-  BirthCertificate: { value: 'BC', text: 'Utility bill' },
-  WorkingWithChildrenCheck: { value: 'WWCC', text: 'Utility bill' },
-  SuperannuationStatement: { value: 'SS', text: 'Utility bill' },
-  TradeAssociationCard: { value: 'TAC', text: 'Utility bill' },
-  SchoolEnrollmentLetter: { value: 'SEL', text: 'School enrollment letter' },
-  PhoneBill: { value: 'PB', text: 'Phone bill' },
-  USSocialSecurityCard: { value: 'USSS', text: 'US social security card' },
-  SocialSecurityCard: { value: 'SSC', text: 'Social security card' },
-  CustomDocumentType: { value: 'CUSTOM', text: 'Custom document type' },
-}
+  | GetSupportedDocumentTypesAction
+  | GetSupportedDocumentTypesSuccessAction
+  | GetSupportedDocumentTypesFailedAction
 
 export const ERROR_PHYSICAL_ID_SDK_TOKEN_API = (message: string) => ({
   code: 'PH-001',
@@ -204,6 +227,11 @@ export const ERROR_CONNECTION_DETAIL_FETCH_ERROR = (message: string) => ({
 export const ERROR_CONNECTION_FAIL = (message: string) => ({
   code: 'PH-004',
   message: `Connection establishment failed for physicalId: ${message}`,
+})
+
+export const ERROR_FETCH_DOCUMENT_TYPES_FAIL = (message: string) => ({
+  code: 'PH-003',
+  message: `Failed to fetch supported document types for country: ${message}`,
 })
 
 export const ERROR_MESSAGE_NO_SDK_TOKEN = 'Could not get SDK token'

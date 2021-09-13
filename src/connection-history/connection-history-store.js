@@ -122,7 +122,6 @@ import {
   getLastConnectionEvent,
   getConnection,
   getVerifier,
-  selectPhysicalIdDid,
 } from '../store/store-selector'
 import { CLAIM_STORAGE_SUCCESS } from '../claim/type-claim'
 import { RESET } from '../common/type-common'
@@ -196,6 +195,7 @@ import type {
   PhysicalIdDocumentIssuanceFailedAction,
   PhysicalIdDocumentSubmittedAction,
 } from '../physical-id/physical-id-type'
+import { selectPhysicalIdDid } from '../physical-id/physical-id-store'
 
 const initialState = {
   error: null,
