@@ -147,13 +147,19 @@ export const physicalIdConnectionEstablished = (physicalIdDid: string) => ({
   physicalIdDid,
 })
 
-export const physicalIdDocumentSubmittedAction = (uid: string, documentType: string) => ({
+export const physicalIdDocumentSubmittedAction = (
+  uid: string,
+  documentType: string
+) => ({
   type: PHYSICAL_ID_DOCUMENT_SUBMITTED,
   uid,
   documentType,
 })
 
-export const physicalIdDocumentIssuanceFailedAction = (uid: string, error: ?CustomError,) => ({
+export const physicalIdDocumentIssuanceFailedAction = (
+  uid: string,
+  error: ?CustomError
+) => ({
   type: PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED,
   uid,
   error,
@@ -229,7 +235,7 @@ function* launchPhysicalIdSDKSaga(
     flattenAsync(midsScanStart),
     document
   )
-  if (workflowIdError) {
+  if (workflowIdError || !workflowId) {
     yield put(updatePhysicalIdStatus(physicalIdProcessStatus.SDK_SCAN_FAIL))
     return
   }
@@ -278,10 +284,7 @@ function* launchPhysicalIdSDKSaga(
     return
   }
 
-  yield put(physicalIdDocumentSubmittedAction(
-    workflowId,
-    action.documentType,
-  ))
+  yield put(physicalIdDocumentSubmittedAction(workflowId, action.documentType))
 
   // TODO:KS Get a new hardware token here again, to make auth more stronger
   // now we have connection, and we also have the workflow data
@@ -301,10 +304,9 @@ function* launchPhysicalIdSDKSaga(
     yield put(
       updatePhysicalIdStatus(physicalIdProcessStatus.SEND_ISSUE_CREDENTIAL_FAIL)
     )
-    yield put(physicalIdDocumentIssuanceFailedAction(
-      workflowId,
-      issueCredentialError
-    ))
+    yield put(
+      physicalIdDocumentIssuanceFailedAction(workflowId, issueCredentialError)
+    )
     yield call(showSnackError, issueCredentialError.message)
     return
   }
@@ -782,7 +784,7 @@ function* watchPhysicalIdStart(): any {
   yield takeEvery(LAUNCH_PHYSICAL_ID_SDK, function* (...args) {
     yield race({
       task: call(launchPhysicalIdSDKSaga, ...args),
-      cancel: take(STOP_PHYSICAL_ID)
+      cancel: take(STOP_PHYSICAL_ID),
     })
   })
 }

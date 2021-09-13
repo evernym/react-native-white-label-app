@@ -1,11 +1,14 @@
 // @flow
 
-import React, {
-  useEffect,
-  useState,
-  useMemo
-} from 'react'
-import { StyleSheet, Text, View, Platform, Image, DeviceEventEmitter } from 'react-native'
+import React, { useEffect, useState, useMemo } from 'react'
+import {
+  StyleSheet,
+  Text,
+  View,
+  Platform,
+  Image,
+  DeviceEventEmitter,
+} from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigation, useIsFocused } from '@react-navigation/native'
 import CountryPicker from 'react-native-country-picker-modal'
@@ -84,7 +87,10 @@ function PhysicalId() {
     if (Platform.OS === 'android') {
       DeviceEventEmitter.addListener('FACE_SCAN', () => {
         setLoaderText(LOADER_TEXT.finish)
-      });
+      })
+      DeviceEventEmitter.addListener('DESTROY', () => {
+        resetProcess()
+      })
     }
     return () => {
       if (Platform.OS === 'android') {
@@ -191,9 +197,9 @@ function PhysicalId() {
 }
 
 const LOADER_TEXT = {
-  preparation: "Please have your document ready",
-  finish: "Finishing up...",
-  processing: "Processing..."
+  preparation: 'Please have your document ready',
+  finish: 'Finishing up...',
+  processing: 'Processing...',
 }
 
 const LoaderVisiblePhysicalIdStates = [
@@ -215,10 +221,7 @@ function isLoaderVisible(
   )
 }
 
-function getLoaderMessageText(
-  status: PhysicalIdProcessStatus
-) {
-
+function getLoaderMessageText(status: PhysicalIdProcessStatus) {
   switch (status) {
     case physicalIdProcessStatus.SDK_SCAN_START:
       return LOADER_TEXT.processing
@@ -337,22 +340,22 @@ const PhysicalIdDefault = ({
   return (
     <>
       <View style={styles.containerStyles}>
-        {
-          !country ?
-            (
-              <View style={styles.containerStyles}>
-                <Image source={documentVerificationImage} style={styles.image}/>
-                <Text style={styles.physicalIdParagraphText}>
-                  By scanning your government-issued documents and taking a selfie, you can turn your physical documents into private, secure digital credentials stored on your phone. Your personal information is discarded after verification.
-                </Text>
-              </View>
-            ) :
-            (
-              <Text style={styles.physicalIdParagraphText}>
-                Choose a document to scan. If prompted, please grant camera permissions.
-              </Text>
-            )
-        }
+        {!country ? (
+          <View style={styles.containerStyles}>
+            <Image source={documentVerificationImage} style={styles.image} />
+            <Text style={styles.physicalIdParagraphText}>
+              By scanning your government-issued documents and taking a selfie,
+              you can turn your physical documents into private, secure digital
+              credentials stored on your phone. Your personal information is
+              discarded after verification.
+            </Text>
+          </View>
+        ) : (
+          <Text style={styles.physicalIdParagraphText}>
+            Choose a document to scan. If prompted, please grant camera
+            permissions.
+          </Text>
+        )}
         {countryPickerVisible || country ? (
           <CountryPicker
             withFilter={true}
@@ -366,7 +369,8 @@ const PhysicalIdDefault = ({
             countryCode={country || ''}
             visible={countryPickerVisible}
             onClose={onCloseCountryPicker}
-          />)  : null}
+          />
+        ) : null}
       </View>
       {country ? (
         <View style={styles.documentsContainer}>
@@ -382,9 +386,7 @@ const PhysicalIdDefault = ({
           <RadioButton
             data={data}
             selectedBtn={setDocument}
-            icon={
-              <Icon name="check-circle" size={25} color={colors.green1} />
-            }
+            icon={<Icon name="check-circle" size={25} color={colors.green1} />}
             animationType="rotate"
             duration={300}
             textColor={colors.gray1}
@@ -402,7 +404,7 @@ const PhysicalIdDefault = ({
 const styles = StyleSheet.create({
   containerStyles: {
     flexDirection: 'column',
-    justifyContent: "space-around",
+    justifyContent: 'space-around',
     flex: 1,
     alignItems: 'center',
     marginBottom: 10,
