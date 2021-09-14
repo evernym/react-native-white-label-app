@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useEffect, useState, useMemo } from 'react'
+import React, { useEffect, useState, useMemo, useRef } from 'react'
 import {
   StyleSheet,
   Text,
@@ -39,8 +39,15 @@ import {
   sdkStatus,
 } from './physical-id-type'
 import { physicalIdRoute } from '../common/route-constants'
-import { homeDrawerRoute, homeRoute, physicalIdSuccessRoute } from '../common'
+import {
+  homeDrawerRoute,
+  homeRoute,
+  physicalIdSuccessRoute,
+  pushNotificationPermissionRoute,
+} from '../common'
 import { ModalButtons } from '../components/buttons/modal-buttons'
+import { getPushNotificationAuthorizationStatus } from '../push-notification/components/push-notification-permission-screen'
+import { usePushNotifications } from '../external-imports'
 
 // import { physicalIdHeadline } from '../external-imports'
 
@@ -59,8 +66,11 @@ function PhysicalId() {
   const [loaderText, setLoaderText] = useState(LOADER_TEXT.preparation)
   const [countryPickerVisible, setCountryPickerVisible] = useState(false)
   const focus = useIsFocused()
+  const actedOnPushPermission = useRef()
   let status = useSelector(selectSdkStatus)
-  let isSdkInitialized = useMemo(() => status === sdkStatus.SDK_INIT_SUCCESS, [status])
+  let isSdkInitialized = useMemo(() => status === sdkStatus.SDK_INIT_SUCCESS, [
+    status,
+  ])
 
   const resetState = () => {
     setCountry()
@@ -99,7 +109,21 @@ function PhysicalId() {
     }
   }, [])
 
-  const onAction = () => {
+  const onAction = async () => {
+    const isAuthorized = await getPushNotificationAuthorizationStatus()
+    if (
+      Platform.OS === 'ios' &&
+      usePushNotifications &&
+      !isAuthorized &&
+      !actedOnPushPermission.current
+    ) {
+      navigation.navigate(pushNotificationPermissionRoute, {
+        intendedRoute: physicalIdRoute,
+      })
+      actedOnPushPermission.current = true
+      return
+    }
+
     if (!!country && !!document) {
       dispatch(launchPhysicalIdSDK(country, document))
       resetState()
@@ -140,11 +164,14 @@ function PhysicalId() {
     setLoaderText(getLoaderMessageText(processStatus))
   }, [processStatus])
 
-  const loaderWithMessage = useMemo(() => (
-    <Container tertiary key={loaderText}>
-      <Loader showMessage={true} message={loaderText} />
-    </Container>
-  ), [processStatus, loaderText])
+  const loaderWithMessage = useMemo(
+    () => (
+      <Container tertiary key={loaderText}>
+        <Loader showMessage={true} message={loaderText} />
+      </Container>
+    ),
+    [processStatus, loaderText]
+  )
 
   if (isLoaderVisible(processStatus, connectionStatus)) {
     return loaderWithMessage
@@ -168,29 +195,33 @@ function PhysicalId() {
         ) : null}
       </Container>
       <CustomView row safeArea>
-        {
-          !country ?
-            <ModalButtons
-              onPress={onAction}
-              onIgnore={onCancel}
-              colorBackground={colors.main}
-              acceptBtnText={isSdkInitialized ? "Start Document Verification": "Initializing..."}
-              topTestID={`${testID}-start`}
-              containerStyles={styles.actionContainer}
-              disableAccept={!isSdkInitialized}
-            />:
-            <ModalButtons
-              onPress={onAction}
-              onIgnore={onCancel}
-              colorBackground={colors.main}
-              secondColorBackground={colors.main}
-              denyButtonText="Cancel"
-              acceptBtnText="Scan Document"
-              disableAccept={country && !document}
-              topTestID={`${testID}-continue`}
-              containerStyles={styles.actionContainer}
-            />
-        }
+        {!country ? (
+          <ModalButtons
+            onPress={onAction}
+            onIgnore={onCancel}
+            colorBackground={colors.main}
+            acceptBtnText={
+              isSdkInitialized
+                ? 'Start Document Verification'
+                : 'Initializing...'
+            }
+            topTestID={`${testID}-start`}
+            containerStyles={styles.actionContainer}
+            disableAccept={!isSdkInitialized}
+          />
+        ) : (
+          <ModalButtons
+            onPress={onAction}
+            onIgnore={onCancel}
+            colorBackground={colors.main}
+            secondColorBackground={colors.main}
+            denyButtonText="Cancel"
+            acceptBtnText="Scan Document"
+            disableAccept={country && !document}
+            topTestID={`${testID}-continue`}
+            containerStyles={styles.actionContainer}
+          />
+        )}
       </CustomView>
     </Container>
   )
@@ -202,9 +233,7 @@ const LOADER_TEXT = {
   processing: 'Processing...',
 }
 
-const LoaderVisiblePhysicalIdStates = [
-  physicalIdProcessStatus.SDK_SCAN_START,
-]
+const LoaderVisiblePhysicalIdStates = [physicalIdProcessStatus.SDK_SCAN_START]
 
 const LoaderVisiblePhysicalIdConnectionStates = [
   physicalIdConnectionStatus.CONNECTION_DETAIL_FETCHING,
@@ -300,7 +329,7 @@ function getErrorConnectionText(connectionStatus: PhysicalIdConnectionStatus) {
   }
 }
 
-const orderedDocuments = ["PASSPORT", "DRIVING_LICENSE", "IDENTITY_CARD"]
+const orderedDocuments = ['PASSPORT', 'DRIVING_LICENSE', 'IDENTITY_CARD']
 
 const documentTypesMap = {
   PASSPORT: 'Passport',
@@ -309,12 +338,12 @@ const documentTypesMap = {
 }
 
 const PhysicalIdDefault = ({
-                             country,
-                             setDocument,
-                             onCountrySelect,
-                             countryPickerVisible,
-                             setCountryPickerVisible,
-                           }) => {
+  country,
+  setDocument,
+  onCountrySelect,
+  countryPickerVisible,
+  setCountryPickerVisible,
+}) => {
   const dispatch = useDispatch()
   const documentTypes = useSelector(selectDocumentTypes)
   const documentTypesIsLoading = useSelector(selectDocumentTypesIsLoading)
@@ -326,10 +355,13 @@ const PhysicalIdDefault = ({
   }, [country])
 
   const data = useMemo(() => {
-    return documentTypes ?
-      orderedDocuments
-        .filter(document => documentTypes.includes(document))
-        .map(document => ({ label: documentTypesMap[document], value: document }))
+    return documentTypes
+      ? orderedDocuments
+          .filter((document) => documentTypes.includes(document))
+          .map((document) => ({
+            label: documentTypesMap[document],
+            value: document,
+          }))
       : []
   }, [documentTypes])
 
@@ -374,27 +406,32 @@ const PhysicalIdDefault = ({
       </View>
       {country ? (
         <View style={styles.documentsContainer}>
-          { documentTypesIsLoading &&
-          <Loader showMessage={true} message="Getting supported document types" />
-          }
-          { !documentTypesIsLoading && (!data || data.length === 0) &&
-          <Text style={styles.errorText}>
-            There are no supported documents for this country
-          </Text>
-          }
-          { !documentTypesIsLoading && data && data.length > 0 &&
-          <RadioButton
-            data={data}
-            selectedBtn={setDocument}
-            icon={<Icon name="check-circle" size={25} color={colors.green1} />}
-            animationType="rotate"
-            duration={300}
-            textColor={colors.gray1}
-            activeColor={colors.green1}
-            boxActiveBgColor={colors.green3}
-            textStyle={styles.documentNameText}
-          />
-          }
+          {documentTypesIsLoading && (
+            <Loader
+              showMessage={true}
+              message="Getting supported document types"
+            />
+          )}
+          {!documentTypesIsLoading && (!data || data.length === 0) && (
+            <Text style={styles.errorText}>
+              There are no supported documents for this country
+            </Text>
+          )}
+          {!documentTypesIsLoading && data && data.length > 0 && (
+            <RadioButton
+              data={data}
+              selectedBtn={setDocument}
+              icon={
+                <Icon name="check-circle" size={25} color={colors.green1} />
+              }
+              animationType="rotate"
+              duration={300}
+              textColor={colors.gray1}
+              activeColor={colors.green1}
+              boxActiveBgColor={colors.green3}
+              textStyle={styles.documentNameText}
+            />
+          )}
         </View>
       ) : null}
     </>

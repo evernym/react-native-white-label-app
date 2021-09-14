@@ -59,8 +59,7 @@ export type PhysicalIdStore = {
   documentTypes: ?LoadedData,
 }
 
-export const UPDATE_SDK_INIT_STATUS =
-  'UPDATE_SDK_INIT_STATUS'
+export const UPDATE_SDK_INIT_STATUS = 'UPDATE_SDK_INIT_STATUS'
 export type UpdateSdkInitStatusAction = {
   type: typeof UPDATE_SDK_INIT_STATUS,
   status: SdkStatus,
@@ -75,13 +74,12 @@ export type UpdatePhysicalIdProcessStatusAction = {
   error?: ?CustomError,
 }
 
-export const PHYSICAL_ID_SDK_INIT =
-  'PHYSICAL_ID_SDK_INIT'
+export const PHYSICAL_ID_SDK_INIT = 'PHYSICAL_ID_SDK_INIT'
 export type PhysicalIdSdkInitAction = {
   type: typeof PHYSICAL_ID_SDK_INIT,
 }
 
-export const STOP_PHYSICAL_ID = "STOP_PHYSICAL_ID"
+export const STOP_PHYSICAL_ID = 'STOP_PHYSICAL_ID'
 
 export const LAUNCH_PHYSICAL_ID_SDK = 'LAUNCH_PHYSICAL_ID_SDK'
 export type LaunchPhysicalIdSDKAction = {
@@ -127,8 +125,7 @@ export type UpdatePhysicalIdConnectionStatusAction = {
   error?: ?CustomError,
 }
 
-export const PHYSICAL_ID_DOCUMENT_SUBMITTED =
-  'PHYSICAL_ID_DOCUMENT_SUBMITTED'
+export const PHYSICAL_ID_DOCUMENT_SUBMITTED = 'PHYSICAL_ID_DOCUMENT_SUBMITTED'
 export type PhysicalIdDocumentSubmittedAction = {
   type: typeof PHYSICAL_ID_DOCUMENT_SUBMITTED,
   uid: string,
@@ -146,16 +143,18 @@ export type PhysicalIdDocumentIssuanceFailedAction = {
 export const GET_SUPPORTED_DOCUMENT_TYPES = 'GET_SUPPORTED_DOCUMENT_TYPES'
 export type GetSupportedDocumentTypesAction = {
   type: typeof GET_SUPPORTED_DOCUMENT_TYPES,
-  country: string
+  country: string,
 }
 
-export const GET_SUPPORTED_DOCUMENT_TYPES_SUCCESS = 'GET_SUPPORTED_DOCUMENT_TYPES_SUCCESS'
+export const GET_SUPPORTED_DOCUMENT_TYPES_SUCCESS =
+  'GET_SUPPORTED_DOCUMENT_TYPES_SUCCESS'
 export type GetSupportedDocumentTypesSuccessAction = {
   type: typeof GET_SUPPORTED_DOCUMENT_TYPES_SUCCESS,
-  documentTypes: [string]
+  documentTypes: [string],
 }
 
-export const GET_SUPPORTED_DOCUMENT_TYPES_FAILED = 'GET_SUPPORTED_DOCUMENT_TYPES_FAILED'
+export const GET_SUPPORTED_DOCUMENT_TYPES_FAILED =
+  'GET_SUPPORTED_DOCUMENT_TYPES_FAILED'
 export type GetSupportedDocumentTypesFailedAction = {
   type: typeof GET_SUPPORTED_DOCUMENT_TYPES_FAILED,
   error: ?CustomError,
