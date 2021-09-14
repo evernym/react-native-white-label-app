@@ -40,5 +40,6 @@ const styles = StyleSheet.create({
     fontFamily: fontFamily,
     fontStyle: 'italic',
     color: colors.gray3,
+    textAlign: 'right',
   },
 })
