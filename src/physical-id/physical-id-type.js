@@ -1,18 +1,15 @@
 // @flow
 
 import type { CustomError } from '../common/type-common'
-import type {
-  NavigationScreenProp,
-  NavigationLeafRoute,
-} from '@react-navigation/native'
 
-export const sdkInitStatus = {
+export const sdkStatus = {
   IDLE: 'IDLE',
   SDK_INIT_START: 'SDK_INIT_START',
   SDK_INIT_SUCCESS: 'SDK_INIT_SUCCESS',
   SDK_INIT_FAIL: 'SDK_INIT_FAIL',
+  SDK_USED: 'SDK_USED',
 }
-export type SdkInitStatus = $Keys<typeof sdkInitStatus>
+export type SdkStatus = $Keys<typeof sdkStatus>
 
 export const physicalIdProcessStatus = {
   IDLE: 'IDLE',
@@ -46,17 +43,6 @@ export type PhysicalIdConnectionStatus = $Keys<
   typeof physicalIdConnectionStatus
 >
 
-export type PhysicalIdNavigation = {
-  navigation: NavigationScreenProp<{|
-    ...NavigationLeafRoute,
-  |}>,
-  route: {
-    params: {|
-      title: string,
-    |},
-  },
-}
-
 export type LoadedData = {
   data: ?[string],
   isLoading: false,
@@ -64,7 +50,7 @@ export type LoadedData = {
 }
 
 export type PhysicalIdStore = {
-  sdkInitStatus: SdkInitStatus,
+  sdkInitStatus: SdkStatus,
   status: PhysicalIdProcessStatus,
   sdkToken: ?string,
   error: ?CustomError,
@@ -77,7 +63,7 @@ export const UPDATE_SDK_INIT_STATUS =
   'UPDATE_SDK_INIT_STATUS'
 export type UpdateSdkInitStatusAction = {
   type: typeof UPDATE_SDK_INIT_STATUS,
-  status: SdkInitStatus,
+  status: SdkStatus,
   error?: ?CustomError,
 }
 
@@ -89,10 +75,10 @@ export type UpdatePhysicalIdProcessStatusAction = {
   error?: ?CustomError,
 }
 
-export const SDK_INIT =
-  'SDK_INIT'
-export type SDKInitAction = {
-  type: typeof SDK_INIT,
+export const PHYSICAL_ID_SDK_INIT =
+  'PHYSICAL_ID_SDK_INIT'
+export type PhysicalIdSdkInitAction = {
+  type: typeof PHYSICAL_ID_SDK_INIT,
 }
 
 export const STOP_PHYSICAL_ID = "STOP_PHYSICAL_ID"
@@ -107,12 +93,6 @@ export type LaunchPhysicalIdSDKAction = {
 export const UPDATE_PHYSICAL_ID_SDK_TOKEN = 'UPDATE_PHYSICAL_ID_SDK_TOKEN'
 export type UpdatePhysicalIdSdkTokenAction = {
   type: typeof UPDATE_PHYSICAL_ID_SDK_TOKEN,
-  sdkToken: string,
-}
-
-export const HYDRATE_PHYSICAL_ID_SDK_TOKEN = 'HYDRATE_PHYSICAL_ID_SDK_TOKEN'
-export type HydratePhysicalIdSdkTokenAction = {
-  type: typeof HYDRATE_PHYSICAL_ID_SDK_TOKEN,
   sdkToken: string,
 }
 
@@ -145,11 +125,6 @@ export type UpdatePhysicalIdConnectionStatusAction = {
   type: typeof UPDATE_PHYSICAL_ID_CONNECTION_STATUS,
   status: PhysicalIdConnectionStatus,
   error?: ?CustomError,
-}
-
-export const RESET_PHYSICAL_ID_STATUES = 'RESET_PHYSICAL_ID_STATUES'
-export type ResetPhysicalIdStatuesAction = {
-  type: typeof RESET_PHYSICAL_ID_STATUES,
 }
 
 export const PHYSICAL_ID_DOCUMENT_SUBMITTED =
@@ -187,17 +162,16 @@ export type GetSupportedDocumentTypesFailedAction = {
 }
 
 export type PhysicalIdStoreAction =
+  | PhysicalIdSdkInitAction
   | LaunchPhysicalIdSDKAction
   | UpdateSdkInitStatusAction
   | UpdatePhysicalIdProcessStatusAction
   | UpdatePhysicalIdSdkTokenAction
-  | HydratePhysicalIdSdkTokenAction
   | PhysicalIdConnectionEstablishedAction
   | HydratePhysicalIdDidSuccessAction
   | RemovePhysicalIdDidAction
   | GetSdkTokenAction
   | UpdatePhysicalIdConnectionStatusAction
-  | ResetPhysicalIdStatuesAction
   | PhysicalIdDocumentSubmittedAction
   | PhysicalIdDocumentIssuanceFailedAction
   | GetSupportedDocumentTypesAction
