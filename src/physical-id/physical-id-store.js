@@ -10,7 +10,7 @@ import {
   join,
   takeEvery,
   spawn,
-  takeLatest,
+  takeLeading,
 } from 'redux-saga/effects'
 import { NativeModules } from 'react-native'
 import delay from '@redux-saga/delay-p'
@@ -812,7 +812,7 @@ function* watchPhysicalIdStart(): any {
 }
 
 export function* watchSdkInit(): any {
-  yield takeLatest(PHYSICAL_ID_SDK_INIT, initPhysicalIdSdkSaga)
+  yield takeLeading(PHYSICAL_ID_SDK_INIT, initPhysicalIdSdkSaga)
 }
 
 export function* watchGetSupportedDocuments(): any {
