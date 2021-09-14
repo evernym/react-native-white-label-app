@@ -26,15 +26,17 @@ import { Container, CustomView, Loader } from '../components'
 import {
   getSupportedDocuments,
   launchPhysicalIdSDK,
-  resetPhysicalIdStatues,
+  physicalIdSdkInit,
   selectDocumentTypes,
   selectDocumentTypesIsLoading,
+  selectSdkStatus,
   stopPhysicalId,
 } from './physical-id-store'
 import { white, colors, fontFamily, fontSizes } from '../common/styles'
 import {
   physicalIdProcessStatus,
   physicalIdConnectionStatus,
+  sdkStatus,
 } from './physical-id-type'
 import { physicalIdRoute } from '../common/route-constants'
 import {
@@ -65,6 +67,10 @@ function PhysicalId() {
   const [countryPickerVisible, setCountryPickerVisible] = useState(false)
   const focus = useIsFocused()
   const actedOnPushPermission = useRef()
+  let status = useSelector(selectSdkStatus)
+  let isSdkInitialized = useMemo(() => status === sdkStatus.SDK_INIT_SUCCESS, [
+    status,
+  ])
 
   const resetState = () => {
     setCountry()
@@ -81,6 +87,9 @@ function PhysicalId() {
   useEffect(() => {
     if (processStatus !== physicalIdProcessStatus.SEND_ISSUE_CREDENTIAL_START) {
       resetProcess()
+    }
+    if (focus) {
+      dispatch(physicalIdSdkInit())
     }
   }, [focus])
 
@@ -136,7 +145,7 @@ function PhysicalId() {
   }
 
   useEffect(() => {
-    dispatch(resetPhysicalIdStatues())
+    dispatch(stopPhysicalId())
   }, [])
 
   useEffect(() => {
@@ -188,9 +197,14 @@ function PhysicalId() {
             onPress={onAction}
             onIgnore={onCancel}
             colorBackground={colors.main}
-            acceptBtnText="Start Document Verification"
+            acceptBtnText={
+              isSdkInitialized
+                ? 'Start Document Verification'
+                : 'Initializing...'
+            }
             topTestID={`${testID}-start`}
             containerStyles={styles.actionContainer}
+            disableAccept={!isSdkInitialized}
           />
         ) : (
           <ModalButtons

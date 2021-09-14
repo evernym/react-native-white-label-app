@@ -28,7 +28,6 @@ import { EvaIcon, SHARE_ICON } from '../common/icons'
 
 import { getPendingRedirection } from '../store/store-selector'
 import { CustomEulaScreen } from '../external-imports'
-import { sdkInit } from '../physical-id/physical-id-store'
 
 export const EulaScreen = ({
   dispatch,
@@ -56,7 +55,6 @@ export const EulaScreen = ({
 
     dispatch(unlockApp())
     dispatch(vcxInitStart())
-    dispatch(sdkInit())
 
     if (pendingRedirection) {
       pendingRedirection.map((pendingRoute) => {

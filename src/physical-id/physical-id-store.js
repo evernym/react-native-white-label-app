@@ -10,6 +10,7 @@ import {
   join,
   takeEvery,
   spawn,
+  takeLatest,
 } from 'redux-saga/effects'
 import { NativeModules } from 'react-native'
 import delay from '@redux-saga/delay-p'
@@ -21,7 +22,7 @@ import type {
   PhysicalIdProcessStatus,
   PhysicalIdConnectionStatus,
   GetSupportedDocumentTypesAction,
-  SdkInitStatus,
+  SdkStatus,
 } from './physical-id-type'
 import type { CustomError } from '../common/type-common'
 import type { Store } from '../store/type-store'
@@ -31,27 +32,26 @@ import {
   LAUNCH_PHYSICAL_ID_SDK,
   UPDATE_PHYSICAL_ID_PROCESS_STATUS,
   physicalIdProcessStatus,
-  UPDATE_PHYSICAL_ID_SDK_TOKEN,
   ERROR_CONNECTION_DETAIL_INVALID,
   PHYSICAL_ID_CONNECTION_ESTABLISHED,
   HYDRATE_PHYSICAL_ID_DID_SUCCESS,
   REMOVE_PHYSICAL_ID_DID,
   physicalIdConnectionStatus,
   UPDATE_PHYSICAL_ID_CONNECTION_STATUS,
-  HYDRATE_PHYSICAL_ID_SDK_TOKEN,
   ERROR_CONNECTION_DETAIL_FETCH_ERROR,
   ERROR_CONNECTION_FAIL,
   STOP_PHYSICAL_ID,
   PHYSICAL_ID_DOCUMENT_SUBMITTED,
   PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED,
-  SDK_INIT,
+  PHYSICAL_ID_SDK_INIT,
   GET_SUPPORTED_DOCUMENT_TYPES,
   GET_SUPPORTED_DOCUMENT_TYPES_SUCCESS,
   GET_SUPPORTED_DOCUMENT_TYPES_FAILED,
-  RESET_PHYSICAL_ID_STATUES,
   UPDATE_SDK_INIT_STATUS,
-  sdkInitStatus,
+  sdkStatus,
   ERROR_FETCH_DOCUMENT_TYPES_FAIL,
+  UPDATE_PHYSICAL_ID_SDK_TOKEN,
+  ERROR_PHYSICAL_ID_SDK,
 } from './physical-id-type'
 import {
   getSdkToken,
@@ -90,9 +90,8 @@ import {
 } from '../store/type-config-store'
 
 const initialState = {
-  sdkInitStatus: sdkInitStatus.IDLE,
+  sdkInitStatus: sdkStatus.IDLE,
   status: physicalIdProcessStatus.IDLE,
-  applicantId: null,
   error: null,
   physicalIdDid: null,
   physicalIdConnectionStatus: physicalIdConnectionStatus.IDLE,
@@ -100,13 +99,12 @@ const initialState = {
   documentTypes: null,
 }
 
-export const sdkInit = (
-) => ({
-  type: SDK_INIT,
+export const physicalIdSdkInit = () => ({
+  type: PHYSICAL_ID_SDK_INIT,
 })
 
 export const updateSdkInitStatus = (
-  status: SdkInitStatus,
+  status: SdkStatus,
   error: ?CustomError
 ) => ({
   type: UPDATE_SDK_INIT_STATUS,
@@ -138,14 +136,13 @@ export const launchPhysicalIdSDK = (country: string, documentType: string) => ({
   documentType,
 })
 
-export const hydratePhysicalIdSdkToken = (sdkToken: string) => ({
-  type: HYDRATE_PHYSICAL_ID_SDK_TOKEN,
-  sdkToken,
-})
-
-export const updatePhysicalIdSdkToken = (sdkToken: string) => ({
+export const updatePhysicalIdSdkToken = (
+  sdkToken: string,
+  apiDataCenter: string
+) => ({
   type: UPDATE_PHYSICAL_ID_SDK_TOKEN,
   sdkToken,
+  apiDataCenter,
 })
 
 export const physicalIdConnectionEstablished = (physicalIdDid: string) => ({
@@ -153,13 +150,19 @@ export const physicalIdConnectionEstablished = (physicalIdDid: string) => ({
   physicalIdDid,
 })
 
-export const physicalIdDocumentSubmittedAction = (uid: string, documentType: string) => ({
+export const physicalIdDocumentSubmittedAction = (
+  uid: string,
+  documentType: string
+) => ({
   type: PHYSICAL_ID_DOCUMENT_SUBMITTED,
   uid,
   documentType,
 })
 
-export const physicalIdDocumentIssuanceFailedAction = (uid: string, error: ?CustomError,) => ({
+export const physicalIdDocumentIssuanceFailedAction = (
+  uid: string,
+  error: ?CustomError
+) => ({
   type: PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED,
   uid,
   error,
@@ -167,38 +170,51 @@ export const physicalIdDocumentIssuanceFailedAction = (uid: string, error: ?Cust
 
 export const getSupportedDocuments = (country: string) => ({
   type: GET_SUPPORTED_DOCUMENT_TYPES,
-  country
+  country,
 })
 
 export const getSupportedDocumentTypesSuccess = (documentTypes: [string]) => ({
   type: GET_SUPPORTED_DOCUMENT_TYPES_SUCCESS,
-  documentTypes
+  documentTypes,
 })
 
 export const getSupportedDocumentTypesFailed = (error: ?CustomError) => ({
   type: GET_SUPPORTED_DOCUMENT_TYPES_FAILED,
-  error
+  error,
 })
 
 export function* ensureSdkInitSuccess(): Generator<*, *, *> {
   let status = yield select(selectSdkStatus)
-  if (status === sdkInitStatus.SDK_INIT_SUCCESS) {
+  if (status === sdkStatus.SDK_INIT_SUCCESS) {
     // if already initialized, no need to process further
     return
   }
 
-  if ([sdkInitStatus.IDLE, sdkInitStatus.SDK_INIT_FAIL].includes(status)) {
+  if (
+    [sdkStatus.IDLE, sdkStatus.SDK_INIT_FAIL, sdkStatus.SDK_USED].includes(
+      status
+    )
+  ) {
     // if vcx init not started or vcx init failed and we want to init again
-    yield put(sdkInit())
+    yield put(physicalIdSdkInit())
   }
 
   // if we are here, that means we either started vcx init
   // or vcx init was already in progress and now we need to wait for success
-  return yield race({
-    success: take(action => action.status === sdkInitStatus.SDK_INIT_SUCCESS),
-    fail: take(action => action.status === sdkInitStatus.SDK_INIT_FAIL),
-    timeout: call(delay, 30000),
+  const result = yield race({
+    success: take((action) => action.status === sdkStatus.SDK_INIT_SUCCESS),
+    fail: take((action) => action.status === sdkStatus.SDK_INIT_FAIL),
+    timeout: call(delay, 60000),
   })
+  if (result && result.timeout) {
+    yield put(
+      updateSdkInitStatus(
+        sdkStatus.SDK_INIT_FAIL,
+        ERROR_PHYSICAL_ID_SDK('Unable to init SDK')
+      )
+    )
+  }
+  return result
 }
 
 function* launchPhysicalIdSDKSaga(
@@ -216,6 +232,7 @@ function* launchPhysicalIdSDKSaga(
   const selectedCountry = countriesCodeMap[action.country]
 
   // start SDK
+  yield put(updateSdkInitStatus(sdkStatus.SDK_USED))
   yield put(updatePhysicalIdStatus(physicalIdProcessStatus.SDK_SCAN_START))
 
   // TODO:KS Validate that the spelling and casing is as per need of MC SDK
@@ -279,10 +296,7 @@ function* launchPhysicalIdSDKSaga(
     return
   }
 
-  yield put(physicalIdDocumentSubmittedAction(
-    workflowId,
-    action.documentType,
-  ))
+  yield put(physicalIdDocumentSubmittedAction(workflowId, action.documentType))
 
   // TODO:KS Get a new hardware token here again, to make auth more stronger
   // now we have connection, and we also have the workflow data
@@ -302,10 +316,9 @@ function* launchPhysicalIdSDKSaga(
     yield put(
       updatePhysicalIdStatus(physicalIdProcessStatus.SEND_ISSUE_CREDENTIAL_FAIL)
     )
-    yield put(physicalIdDocumentIssuanceFailedAction(
-      workflowId,
-      issueCredentialError
-    ))
+    yield put(
+      physicalIdDocumentIssuanceFailedAction(workflowId, issueCredentialError)
+    )
     yield call(showSnackError, issueCredentialError.message)
     return
   }
@@ -598,12 +611,21 @@ function* refreshConnectionStateSaga() {
 
 const selectDomainDID = (state: Store) => state.config.domainDID
 const selectVerityFlowBaseUrl = (state: Store) => state.config.verityFlowBaseUrl
-const selectSdkStatus = (state: Store) => state.physicalId.sdkInitStatus
+export const selectSdkStatus = (state: Store) => state.physicalId.sdkInitStatus
 
 export function* initPhysicalIdSdkSaga(): Generator<*, *, *> {
+  let status = yield select(selectSdkStatus)
+  if (
+    status === sdkStatus.SDK_INIT_SUCCESS ||
+    status === sdkStatus.SDK_INIT_START
+  ) {
+    // if already initialized or in progress, no need to process further
+    return
+  }
+
   const [tokenError, tokenResponse]: [
-      string | null,
-      [string, string] | null
+    string | null,
+    [string, string] | null
   ] = yield* getSdkTokenSaga()
 
   if (tokenError || !tokenResponse) {
@@ -613,7 +635,8 @@ export function* initPhysicalIdSdkSaga(): Generator<*, *, *> {
 
   // init sdk
   let [sdkToken, apiDataCenter] = tokenResponse
-  yield put(updateSdkInitStatus(sdkInitStatus.SDK_INIT_START))
+
+  yield put(updateSdkInitStatus(sdkStatus.SDK_INIT_START))
   yield put(updatePhysicalIdStatus(physicalIdProcessStatus.SDK_INIT_START))
   const [midsSdkInitError] = yield call(
     flattenAsync(midsSdkInit),
@@ -621,11 +644,11 @@ export function* initPhysicalIdSdkSaga(): Generator<*, *, *> {
     apiDataCenter
   )
   if (midsSdkInitError) {
-    yield put(updateSdkInitStatus(sdkInitStatus.SDK_INIT_FAIL))
+    yield put(updateSdkInitStatus(sdkStatus.SDK_INIT_FAIL))
     yield put(updatePhysicalIdStatus(physicalIdProcessStatus.SDK_INIT_FAIL))
     return
   }
-  yield put(updateSdkInitStatus(sdkInitStatus.SDK_INIT_SUCCESS))
+  yield put(updateSdkInitStatus(sdkStatus.SDK_INIT_SUCCESS))
   yield put(updatePhysicalIdStatus(physicalIdProcessStatus.SDK_INIT_SUCCESS))
 }
 
@@ -649,7 +672,7 @@ export function* getSdkTokenSaga(): Generator<*, *, *> {
     verityFlowBaseUrl
   )
   if (error || !response) {
-    yield put(updateSdkInitStatus(sdkInitStatus.SDK_INIT_FAIL))
+    yield put(updateSdkInitStatus(sdkStatus.SDK_INIT_FAIL))
     yield put(
       updatePhysicalIdStatus(physicalIdProcessStatus.SDK_TOKEN_FETCH_FAIL)
     )
@@ -659,7 +682,7 @@ export function* getSdkTokenSaga(): Generator<*, *, *> {
 
   const [tokenParseError, token] = flatJsonParse(response.result)
   if (tokenParseError || !token) {
-    yield put(updateSdkInitStatus(sdkInitStatus.SDK_INIT_FAIL))
+    yield put(updateSdkInitStatus(sdkStatus.SDK_INIT_FAIL))
     yield put(
       updatePhysicalIdStatus(physicalIdProcessStatus.SDK_TOKEN_PARSE_FAIL)
     )
@@ -668,7 +691,7 @@ export function* getSdkTokenSaga(): Generator<*, *, *> {
   }
 
   // TODO: save apiDataCenter as well from the token response
-  yield put(updatePhysicalIdSdkToken(token.sdkToken))
+  yield put(updatePhysicalIdSdkToken(token.sdkToken, token.apiDataCenter))
   yield put(
     updatePhysicalIdStatus(physicalIdProcessStatus.SDK_TOKEN_FETCH_SUCCESS)
   )
@@ -729,7 +752,11 @@ function* getSupportedDocumentTypesSaga(
 ): Generator<*, *, *> {
   const result = yield* ensureSdkInitSuccess()
   if (result && (result.fail || result.timeout)) {
-    yield put(getSupportedDocumentTypesFailed(ERROR_FETCH_DOCUMENT_TYPES_FAIL(action.country)))
+    yield put(
+      getSupportedDocumentTypesFailed(
+        ERROR_FETCH_DOCUMENT_TYPES_FAIL(action.country)
+      )
+    )
     return
   }
 
@@ -739,15 +766,18 @@ function* getSupportedDocumentTypesSaga(
     country
   )
   if (documentTypesError || !documentTypes) {
-    yield put(getSupportedDocumentTypesFailed(ERROR_FETCH_DOCUMENT_TYPES_FAIL(action.country)))
+    yield put(
+      getSupportedDocumentTypesFailed(
+        ERROR_FETCH_DOCUMENT_TYPES_FAIL(action.country)
+      )
+    )
     return
   }
 
-  const parsedDocumentTypes =
-    documentTypes
-      .substring(1, documentTypes.length - 1)
-      .replace(/ /g, "")
-      .split(",")
+  const parsedDocumentTypes = documentTypes
+    .substring(1, documentTypes.length - 1)
+    .replace(/ /g, '')
+    .split(',')
 
   yield put(getSupportedDocumentTypesSuccess(parsedDocumentTypes))
 }
@@ -759,10 +789,6 @@ export const hydratePhysicalIdDid = (physicalIdDid: string) => ({
 
 export const removePhysicalIdDid = () => ({
   type: REMOVE_PHYSICAL_ID_DID,
-})
-
-export const resetPhysicalIdStatues = () => ({
-  type: RESET_PHYSICAL_ID_STATUES,
 })
 
 export const stopPhysicalId = () => ({
@@ -780,13 +806,13 @@ function* watchPhysicalIdStart(): any {
   yield takeEvery(LAUNCH_PHYSICAL_ID_SDK, function* (...args) {
     yield race({
       task: call(launchPhysicalIdSDKSaga, ...args),
-      cancel: take(STOP_PHYSICAL_ID)
+      cancel: take(STOP_PHYSICAL_ID),
     })
   })
 }
 
 export function* watchSdkInit(): any {
-  yield takeEvery(SDK_INIT, initPhysicalIdSdkSaga)
+  yield takeLatest(PHYSICAL_ID_SDK_INIT, initPhysicalIdSdkSaga)
 }
 
 export function* watchGetSupportedDocuments(): any {
@@ -794,25 +820,26 @@ export function* watchGetSupportedDocuments(): any {
 }
 
 export function* watchPhysicalId(): any {
-  yield all([watchSdkInit(), watchPhysicalIdStart(), watchGetSupportedDocuments()])
+  yield all([
+    watchSdkInit(),
+    watchPhysicalIdStart(),
+    watchGetSupportedDocuments(),
+  ])
 }
 
-export const selectPhysicalIdDid = (state: Store) => state.physicalId.physicalIdDid
+export const selectPhysicalIdDid = (state: Store) =>
+  state.physicalId.physicalIdDid
 
 export const selectDocumentTypes = (state: Store) =>
-  state.physicalId.documentTypes ?
-    state.physicalId.documentTypes.data:
-    null
+  state.physicalId.documentTypes ? state.physicalId.documentTypes.data : null
 
 export const selectDocumentTypesIsLoading = (state: Store) =>
-  state.physicalId.documentTypes ?
-    state.physicalId.documentTypes.isLoading:
-    false
+  state.physicalId.documentTypes
+    ? state.physicalId.documentTypes.isLoading
+    : false
 
 export const selectDocumentTypesError = (state: Store) =>
-  state.physicalId.documentTypes ?
-    state.physicalId.documentTypes.error:
-    false
+  state.physicalId.documentTypes ? state.physicalId.documentTypes.error : false
 
 export default function physicalIdReducer(
   state: PhysicalIdStore = initialState,
@@ -836,6 +863,11 @@ export default function physicalIdReducer(
         ...state,
         physicalIdConnectionStatus: action.status,
       }
+    case UPDATE_PHYSICAL_ID_SDK_TOKEN:
+      return {
+        ...state,
+        sdkToken: action.sdkToken,
+      }
     case PHYSICAL_ID_CONNECTION_ESTABLISHED:
     case HYDRATE_PHYSICAL_ID_DID_SUCCESS:
       return {
@@ -846,11 +878,6 @@ export default function physicalIdReducer(
       return {
         ...state,
         physicalIdDid: null,
-      }
-    case RESET_PHYSICAL_ID_STATUES:
-      return {
-        ...state,
-        error: initialState.error,
       }
     case GET_SUPPORTED_DOCUMENT_TYPES:
       return {
@@ -882,10 +909,7 @@ export default function physicalIdReducer(
     case STOP_PHYSICAL_ID:
       return {
         ...state,
-        applicantId: null,
         error: null,
-        physicalIdDid: null,
-        sdkToken: null,
         documentTypes: null,
       }
     default:
