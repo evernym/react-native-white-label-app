@@ -21,7 +21,6 @@ import type {
   LaunchPhysicalIdSDKAction,
   PhysicalIdProcessStatus,
   PhysicalIdConnectionStatus,
-  GetSupportedDocumentTypesAction,
   SdkStatus,
 } from './physical-id-type'
 import type { CustomError } from '../common/type-common'
@@ -44,13 +43,8 @@ import {
   PHYSICAL_ID_DOCUMENT_SUBMITTED,
   PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED,
   PHYSICAL_ID_SDK_INIT,
-  GET_SUPPORTED_DOCUMENT_TYPES,
-  GET_SUPPORTED_DOCUMENT_TYPES_SUCCESS,
-  GET_SUPPORTED_DOCUMENT_TYPES_FAILED,
   UPDATE_SDK_INIT_STATUS,
   sdkStatus,
-  ERROR_FETCH_DOCUMENT_TYPES_FAIL,
-  UPDATE_PHYSICAL_ID_SDK_TOKEN,
   ERROR_PHYSICAL_ID_SDK,
 } from './physical-id-type'
 import {
@@ -83,7 +77,7 @@ import {
 } from '../components/qr-scanner/qr-code-types/qr-url'
 import { convertQrCodeToAppInvitation } from '../components/qr-scanner/qr-code-converter'
 import { flatJsonParse } from '../common/flat-json-parse'
-import { countriesCodeMap } from './physical-id-countries-map'
+import { countriesCodeMap, documentNameMap } from './physical-id-constants'
 import {
   GET_MESSAGES_FAIL,
   GET_MESSAGES_SUCCESS,
@@ -95,7 +89,6 @@ const initialState = {
   error: null,
   physicalIdDid: null,
   physicalIdConnectionStatus: physicalIdConnectionStatus.IDLE,
-  sdkToken: null,
   documentTypes: null,
 }
 
@@ -136,15 +129,6 @@ export const launchPhysicalIdSDK = (country: string, documentType: string) => ({
   documentType,
 })
 
-export const updatePhysicalIdSdkToken = (
-  sdkToken: string,
-  apiDataCenter: string
-) => ({
-  type: UPDATE_PHYSICAL_ID_SDK_TOKEN,
-  sdkToken,
-  apiDataCenter,
-})
-
 export const physicalIdConnectionEstablished = (physicalIdDid: string) => ({
   type: PHYSICAL_ID_CONNECTION_ESTABLISHED,
   physicalIdDid,
@@ -165,21 +149,6 @@ export const physicalIdDocumentIssuanceFailedAction = (
 ) => ({
   type: PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED,
   uid,
-  error,
-})
-
-export const getSupportedDocuments = (country: string) => ({
-  type: GET_SUPPORTED_DOCUMENT_TYPES,
-  country,
-})
-
-export const getSupportedDocumentTypesSuccess = (documentTypes: [string]) => ({
-  type: GET_SUPPORTED_DOCUMENT_TYPES_SUCCESS,
-  documentTypes,
-})
-
-export const getSupportedDocumentTypesFailed = (error: ?CustomError) => ({
-  type: GET_SUPPORTED_DOCUMENT_TYPES_FAILED,
   error,
 })
 
@@ -220,6 +189,12 @@ export function* ensureSdkInitSuccess(): Generator<*, *, *> {
 function* launchPhysicalIdSDKSaga(
   action: LaunchPhysicalIdSDKAction
 ): Generator<*, *, *> {
+  yield put(
+    updatePhysicalIdStatus(
+      physicalIdProcessStatus.SDK_DOCUMENT_VERIFICATION_START
+    )
+  )
+
   // make connection with physical Id scanner in background
   const connectionTask = yield fork(makeConnectionWithPhysicalIdSaga)
 
@@ -236,13 +211,11 @@ function* launchPhysicalIdSDKSaga(
   yield put(updatePhysicalIdStatus(physicalIdProcessStatus.SDK_SCAN_START))
 
   // TODO:KS Validate that the spelling and casing is as per need of MC SDK
-  const documentNameMap = {
-    PASSPORT: 'Passport',
-    DRIVING_LICENSE: "Driver's license",
-    IDENTITY_CARD: 'Identity card',
-    VISA: 'Visa',
-  }
   const document = documentNameMap[action.documentType]
+
+  // ONE OME STUPID THING! We have to call it
+  yield call(flattenAsync(midsGetDocumentTypes), selectedCountry)
+
   const [workflowIdError, workflowId] = yield call(
     flattenAsync(midsScanStart),
     document
@@ -252,9 +225,6 @@ function* launchPhysicalIdSDKSaga(
     return
   }
   yield put(updatePhysicalIdStatus(physicalIdProcessStatus.SDK_SCAN_SUCCESS))
-
-  // init sdk again with new token for the next try
-  yield spawn(initPhysicalIdSdkSaga)
 
   let [connectionError, connectionDID]: [
     { code: string, message: string } | null | typeof undefined,
@@ -690,8 +660,6 @@ export function* getSdkTokenSaga(): Generator<*, *, *> {
     return [physicalIdProcessStatus.SDK_TOKEN_PARSE_FAIL, null]
   }
 
-  // TODO: save apiDataCenter as well from the token response
-  yield put(updatePhysicalIdSdkToken(token.sdkToken, token.apiDataCenter))
   yield put(
     updatePhysicalIdStatus(physicalIdProcessStatus.SDK_TOKEN_FETCH_SUCCESS)
   )
@@ -747,41 +715,6 @@ export function* persistPhysicalIdDidSaga(
   }
 }
 
-function* getSupportedDocumentTypesSaga(
-  action: GetSupportedDocumentTypesAction
-): Generator<*, *, *> {
-  const result = yield* ensureSdkInitSuccess()
-  if (result && (result.fail || result.timeout)) {
-    yield put(
-      getSupportedDocumentTypesFailed(
-        ERROR_FETCH_DOCUMENT_TYPES_FAIL(action.country)
-      )
-    )
-    return
-  }
-
-  const country = countriesCodeMap[action.country]
-  const [documentTypesError, documentTypes] = yield call(
-    flattenAsync(midsGetDocumentTypes),
-    country
-  )
-  if (documentTypesError || !documentTypes) {
-    yield put(
-      getSupportedDocumentTypesFailed(
-        ERROR_FETCH_DOCUMENT_TYPES_FAIL(action.country)
-      )
-    )
-    return
-  }
-
-  const parsedDocumentTypes = documentTypes
-    .substring(1, documentTypes.length - 1)
-    .replace(/ /g, '')
-    .split(',')
-
-  yield put(getSupportedDocumentTypesSuccess(parsedDocumentTypes))
-}
-
 export const hydratePhysicalIdDid = (physicalIdDid: string) => ({
   type: HYDRATE_PHYSICAL_ID_DID_SUCCESS,
   physicalIdDid,
@@ -815,31 +748,12 @@ export function* watchSdkInit(): any {
   yield takeLeading(PHYSICAL_ID_SDK_INIT, initPhysicalIdSdkSaga)
 }
 
-export function* watchGetSupportedDocuments(): any {
-  yield takeEvery(GET_SUPPORTED_DOCUMENT_TYPES, getSupportedDocumentTypesSaga)
-}
-
 export function* watchPhysicalId(): any {
-  yield all([
-    watchSdkInit(),
-    watchPhysicalIdStart(),
-    watchGetSupportedDocuments(),
-  ])
+  yield all([watchSdkInit(), watchPhysicalIdStart()])
 }
 
 export const selectPhysicalIdDid = (state: Store) =>
   state.physicalId.physicalIdDid
-
-export const selectDocumentTypes = (state: Store) =>
-  state.physicalId.documentTypes ? state.physicalId.documentTypes.data : null
-
-export const selectDocumentTypesIsLoading = (state: Store) =>
-  state.physicalId.documentTypes
-    ? state.physicalId.documentTypes.isLoading
-    : false
-
-export const selectDocumentTypesError = (state: Store) =>
-  state.physicalId.documentTypes ? state.physicalId.documentTypes.error : false
 
 export default function physicalIdReducer(
   state: PhysicalIdStore = initialState,
@@ -863,11 +777,6 @@ export default function physicalIdReducer(
         ...state,
         physicalIdConnectionStatus: action.status,
       }
-    case UPDATE_PHYSICAL_ID_SDK_TOKEN:
-      return {
-        ...state,
-        sdkToken: action.sdkToken,
-      }
     case PHYSICAL_ID_CONNECTION_ESTABLISHED:
     case HYDRATE_PHYSICAL_ID_DID_SUCCESS:
       return {
@@ -878,33 +787,6 @@ export default function physicalIdReducer(
       return {
         ...state,
         physicalIdDid: null,
-      }
-    case GET_SUPPORTED_DOCUMENT_TYPES:
-      return {
-        ...state,
-        documentTypes: {
-          data: [],
-          isLoading: true,
-          error: null,
-        },
-      }
-    case GET_SUPPORTED_DOCUMENT_TYPES_SUCCESS:
-      return {
-        ...state,
-        documentTypes: {
-          data: action.documentTypes,
-          isLoading: false,
-          error: null,
-        },
-      }
-    case GET_SUPPORTED_DOCUMENT_TYPES_FAILED:
-      return {
-        ...state,
-        documentTypes: {
-          data: [],
-          isLoading: false,
-          error: action.error,
-        },
       }
     case STOP_PHYSICAL_ID:
       return {
