@@ -24,19 +24,14 @@ import type {
 
 import { Container, CustomView, Loader } from '../components'
 import {
-  getSupportedDocuments,
   launchPhysicalIdSDK,
   physicalIdSdkInit,
-  selectDocumentTypes,
-  selectDocumentTypesIsLoading,
-  selectSdkStatus,
   stopPhysicalId,
 } from './physical-id-store'
 import { white, colors, fontFamily, fontSizes } from '../common/styles'
 import {
   physicalIdProcessStatus,
   physicalIdConnectionStatus,
-  sdkStatus,
 } from './physical-id-type'
 import { physicalIdRoute } from '../common/route-constants'
 import {
@@ -48,6 +43,7 @@ import {
 import { ModalButtons } from '../components/buttons/modal-buttons'
 import { getPushNotificationAuthorizationStatus } from '../push-notification/components/push-notification-permission-screen'
 import { usePushNotifications } from '../external-imports'
+import { countryDocumentsMap, documentTypesMap } from './physical-id-constants'
 
 // import { physicalIdHeadline } from '../external-imports'
 
@@ -67,10 +63,6 @@ function PhysicalId() {
   const [countryPickerVisible, setCountryPickerVisible] = useState(false)
   const focus = useIsFocused()
   const actedOnPushPermission = useRef()
-  let status = useSelector(selectSdkStatus)
-  let isSdkInitialized = useMemo(() => status === sdkStatus.SDK_INIT_SUCCESS, [
-    status,
-  ])
 
   const resetState = () => {
     setCountry()
@@ -87,9 +79,6 @@ function PhysicalId() {
   useEffect(() => {
     if (processStatus !== physicalIdProcessStatus.SEND_ISSUE_CREDENTIAL_START) {
       resetProcess()
-    }
-    if (focus) {
-      dispatch(physicalIdSdkInit())
     }
   }, [focus])
 
@@ -109,7 +98,7 @@ function PhysicalId() {
     }
   }, [])
 
-  const onAction = async () => {
+  const onStartDocumentVerification = async () => {
     const isAuthorized = await getPushNotificationAuthorizationStatus()
     if (
       Platform.OS === 'ios' &&
@@ -123,13 +112,16 @@ function PhysicalId() {
       actedOnPushPermission.current = true
       return
     }
+    dispatch(physicalIdSdkInit())
+    setCountryPickerVisible(true)
+  }
 
-    if (!!country && !!document) {
-      dispatch(launchPhysicalIdSDK(country, document))
-      resetState()
-    } else if (!country) {
-      setCountryPickerVisible(true)
+  const onScanDocument = () => {
+    if (!country || !document) {
+      return
     }
+    dispatch(launchPhysicalIdSDK(country, document))
+    resetState()
   }
 
   const onCancel = () => {
@@ -197,21 +189,16 @@ function PhysicalId() {
       <CustomView row safeArea>
         {!country ? (
           <ModalButtons
-            onPress={onAction}
+            onPress={onStartDocumentVerification}
             onIgnore={onCancel}
             colorBackground={colors.main}
-            acceptBtnText={
-              isSdkInitialized
-                ? 'Start Document Verification'
-                : 'Initializing...'
-            }
+            acceptBtnText='Start Document Verification'
             topTestID={`${testID}-start`}
             containerStyles={styles.actionContainer}
-            disableAccept={!isSdkInitialized}
           />
         ) : (
           <ModalButtons
-            onPress={onAction}
+            onPress={onScanDocument}
             onIgnore={onCancel}
             colorBackground={colors.main}
             secondColorBackground={colors.main}
@@ -233,7 +220,10 @@ const LOADER_TEXT = {
   processing: 'Processing...',
 }
 
-const LoaderVisiblePhysicalIdStates = [physicalIdProcessStatus.SDK_SCAN_START]
+const LoaderVisiblePhysicalIdStates = [
+  physicalIdProcessStatus.SDK_DOCUMENT_VERIFICATION_START,
+  physicalIdProcessStatus.SDK_SCAN_START
+]
 
 const LoaderVisiblePhysicalIdConnectionStates = [
   physicalIdConnectionStatus.CONNECTION_DETAIL_FETCHING,
@@ -329,14 +319,6 @@ function getErrorConnectionText(connectionStatus: PhysicalIdConnectionStatus) {
   }
 }
 
-const orderedDocuments = ['PASSPORT', 'DRIVING_LICENSE', 'IDENTITY_CARD']
-
-const documentTypesMap = {
-  PASSPORT: 'Passport',
-  DRIVING_LICENSE: 'Driving License',
-  IDENTITY_CARD: 'Identity Document',
-}
-
 const PhysicalIdDefault = ({
   country,
   setDocument,
@@ -344,26 +326,14 @@ const PhysicalIdDefault = ({
   countryPickerVisible,
   setCountryPickerVisible,
 }) => {
-  const dispatch = useDispatch()
-  const documentTypes = useSelector(selectDocumentTypes)
-  const documentTypesIsLoading = useSelector(selectDocumentTypesIsLoading)
-
-  useEffect(() => {
-    if (country) {
-      dispatch(getSupportedDocuments(country))
-    }
-  }, [country])
-
   const data = useMemo(() => {
-    return documentTypes
-      ? orderedDocuments
-          .filter((document) => documentTypes.includes(document))
-          .map((document) => ({
-            label: documentTypesMap[document],
-            value: document,
-          }))
-      : []
-  }, [documentTypes])
+    const documents = country ? countryDocumentsMap[country] || [] : []
+    return documents
+      .map((document) => ({
+        label: documentTypesMap[document],
+        value: document,
+      }))
+  }, [country])
 
   const onCloseCountryPicker = () => {
     setCountryPickerVisible(false)
@@ -406,18 +376,12 @@ const PhysicalIdDefault = ({
       </View>
       {country ? (
         <View style={styles.documentsContainer}>
-          {documentTypesIsLoading && (
-            <Loader
-              showMessage={true}
-              message="Getting supported document types"
-            />
-          )}
-          {!documentTypesIsLoading && (!data || data.length === 0) && (
+          {(!data || data.length === 0) && (
             <Text style={styles.errorText}>
               There are no supported documents for this country
             </Text>
           )}
-          {!documentTypesIsLoading && data && data.length > 0 && (
+          {data && data.length > 0 && (
             <RadioButton
               data={data}
               selectedBtn={setDocument}
