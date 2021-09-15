@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useEffect, useState, useMemo, useRef } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import {
   StyleSheet,
   Text,
@@ -39,15 +39,8 @@ import {
   sdkStatus,
 } from './physical-id-type'
 import { physicalIdRoute } from '../common/route-constants'
-import {
-  homeDrawerRoute,
-  homeRoute,
-  physicalIdSuccessRoute,
-  pushNotificationPermissionRoute,
-} from '../common'
+import { homeDrawerRoute, homeRoute, physicalIdSuccessRoute } from '../common'
 import { ModalButtons } from '../components/buttons/modal-buttons'
-import { getPushNotificationAuthorizationStatus } from '../push-notification/components/push-notification-permission-screen'
-import { usePushNotifications } from '../external-imports'
 
 // import { physicalIdHeadline } from '../external-imports'
 
@@ -66,7 +59,6 @@ function PhysicalId() {
   const [loaderText, setLoaderText] = useState(LOADER_TEXT.preparation)
   const [countryPickerVisible, setCountryPickerVisible] = useState(false)
   const focus = useIsFocused()
-  const actedOnPushPermission = useRef()
   let status = useSelector(selectSdkStatus)
   let isSdkInitialized = useMemo(() => status === sdkStatus.SDK_INIT_SUCCESS, [
     status,
@@ -110,20 +102,6 @@ function PhysicalId() {
   }, [])
 
   const onAction = async () => {
-    const isAuthorized = await getPushNotificationAuthorizationStatus()
-    if (
-      Platform.OS === 'ios' &&
-      usePushNotifications &&
-      !isAuthorized &&
-      !actedOnPushPermission.current
-    ) {
-      navigation.navigate(pushNotificationPermissionRoute, {
-        intendedRoute: physicalIdRoute,
-      })
-      actedOnPushPermission.current = true
-      return
-    }
-
     if (!!country && !!document) {
       dispatch(launchPhysicalIdSDK(country, document))
       resetState()

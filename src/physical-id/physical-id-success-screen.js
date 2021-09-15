@@ -1,20 +1,32 @@
 // @flow
 
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, Platform } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import LottieView from 'lottie-react-native'
 
-import { physicalIdSuccessRoute } from '../common/route-constants'
+import {
+  physicalIdSuccessRoute,
+  homeRoute,
+  pushNotificationPermissionRoute,
+} from '../common/route-constants'
 import { modalOptions } from '../connection-details/utils/modalOptions'
 import { colors, fontFamily, fontSizes } from '../common/styles'
 import { Button } from '../components/buttons/button'
 import { verticalScale } from 'react-native-size-matters'
+import { getPushNotificationAuthorizationStatus } from '../push-notification/components/push-notification-permission-screen'
+import { usePushNotifications } from '../external-imports'
 
 function PhysicalIdSuccess() {
   const navigation = useNavigation()
-  const onDone = () => {
+  const onDone = async () => {
     navigation.goBack()
+    const isAuthorized = await getPushNotificationAuthorizationStatus()
+    if (Platform.OS === 'ios' && usePushNotifications && !isAuthorized) {
+      navigation.navigate(pushNotificationPermissionRoute, {
+        intendedRoute: homeRoute,
+      })
+    }
   }
 
   return (
