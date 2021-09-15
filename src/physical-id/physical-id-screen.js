@@ -39,6 +39,7 @@ import { ModalButtons } from '../components/buttons/modal-buttons'
 import { countryDocumentsMap, documentTypesMap } from './physical-id-constants'
 
 // import { physicalIdHeadline } from '../external-imports'
+import { requestCameraPermissions } from "../permissions/permissions";
 
 const documentVerificationImage = require('../images/physicalId.png')
 
@@ -90,9 +91,16 @@ function PhysicalId() {
     }
   }, [])
 
-  const onStartDocumentVerification = async () => {
+  const onCameraPermissionsGranted = () => {
     dispatch(physicalIdSdkInit())
     setCountryPickerVisible(true)
+  }
+
+  const onStartDocumentVerification = async () => {
+    requestCameraPermissions(
+      "Application need to access the Camera to scan document",
+      onCameraPermissionsGranted,
+    )
   }
 
   const onScanDocument = () => {
