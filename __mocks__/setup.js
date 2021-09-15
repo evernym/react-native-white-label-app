@@ -74,6 +74,9 @@ jest.doMock('react-native', () => {
           addListener: jest.fn(),
           removeListeners: jest.fn(),
         },
+        RNPermissions: {
+
+        },
       },
       Dimensions: {
         ...ReactNative.Dimensions,
