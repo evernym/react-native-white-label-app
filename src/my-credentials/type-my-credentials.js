@@ -47,6 +47,7 @@ export type CardStackProps = {
   isHidden: boolean,
   setActiveStack: (stackName: string | null) => void,
   enabledCardGesture?: boolean,
+  isNeedMargin?: boolean,
 }
 
 export const MESSAGE_DELETE_CLAIM_TITLE = 'Delete credential?'
