@@ -280,7 +280,7 @@ const defaultDrawerItemOptions = {
     route: physicalIdScreen.routeName,
     component: physicalIdScreen.screen,
     // TODO:KS Get an icon for Physical ID
-    icon: drawerSvgIcon('Credentials'),
+    icon: drawerSvgIcon('DocumentVerification'),
     label: PHYSICAL_ID_LABEL,
     headline: physicalIdScreen.headline,
   },
