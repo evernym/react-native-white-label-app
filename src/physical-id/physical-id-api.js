@@ -22,7 +22,7 @@ async function post(config: {
   })
 
   let responseText = await response.json()
-  if (response.status !== 504 && !response.ok) {
+  if (response.status !== 504 && response.status !== 408 && !response.ok) {
     // when we receive a timeout, we don't want to throw error
     // because Lambda might still be running on server
     throw new Error(
