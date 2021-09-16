@@ -35,7 +35,7 @@ For example `home.js` contains options for `Home` screen.
     - [Feedback](#feedback)
     - [Application information](#application-information)
     - [Splash screen and app icon](#splash-screen-and-app-icon)
-    - [Physical Id](#physical-id)
+    - [Document Verification](#document-verification)
     - [Credential attachments](#credential-attachments)
   - [Examples](#examples)
     - [Credential](#credential)
@@ -1355,13 +1355,30 @@ These are configured inside your application for specific platforms.
     
 * iOS: TODO
 
-### Physical Id
+### Document Verification
+Document verification feature is a integration with mastercard which allows to get a verifiable credential after scanning and processing user's of the documents as 
+ * Passport
+ * Driver License
+ * Identity card
 
-This module lets users scan their physical identity card and get a verifiable credential. Customization for this file, can be done in `physical-id.js` file. Following are the available options:
+If you wish to use **Document Verification** feature you need to set variable `USE_DOCUMENT_VERIFICATION` in the `app.js` module:
+* `USE_DOCUMENT_VERIFICATION` - (boolean, Optional) whether you want to enable document verification feature.
+    * to use default - **false**
+        ```javascript
+        export const USE_DOCUMENT_VERIFICATION = null
+        ```
+    * to enable
+        ```javascript
+        export const USE_DOCUMENT_VERIFICATION = true
+        ```
+After that get new navigation menu tab "Document verification". There the users gets the opportunity to select user's country and document type which will be verivication then can start scan documents. As result will be get verifiable credential with document data.
+
+Don't worry, document verification process have all necessary help messages so no one gets stuck.
+
+Customization for this module, can be done in `physical-id.js` file as well. Following are the available options:
 
 * `PHYSICAL_ID_HEADLINE`: Set the title of the screen. This also sets the name of menu item in the left hand side drawer menu.
 * `PHYSICAL_ID_SCREEN`: Accepts a React Component which is set as the screen that would open after user chooses `PhysicalId` option from left drawer menu.
-* 
 
 ### Credential attachments
 
