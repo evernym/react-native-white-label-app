@@ -6,6 +6,7 @@ import {
   Animated,
   TouchableOpacity,
 } from 'react-native'
+import { colors } from '../../common/styles'
 
 export class RadioButton extends React.Component {
   constructor(props) {
@@ -281,7 +282,7 @@ RadioButton.defaultProps = {
   animationTypes: [],
   selectedBtn: () => {},
   activeColor: '#03a9f4',
-  deactiveColor: '#e2e2e2',
+  deactiveColor: colors.gray4,
   boxActiveBgColor: '#e1f5fe33',
   boxDeactiveBgColor: '#fff',
   textColor: '#383838',

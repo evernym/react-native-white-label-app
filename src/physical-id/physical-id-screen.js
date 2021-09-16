@@ -8,10 +8,11 @@ import {
   Platform,
   Image,
   DeviceEventEmitter,
+  TouchableWithoutFeedback,
 } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigation, useIsFocused } from '@react-navigation/native'
-import CountryPicker from 'react-native-country-picker-modal'
+import CountryPicker, { Flag } from 'react-native-country-picker-modal'
 import { moderateScale, verticalScale } from 'react-native-size-matters'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
@@ -51,6 +52,7 @@ function PhysicalId() {
   const dispatch = useDispatch()
   const navigation = useNavigation()
   const [country, setCountry] = useState()
+  const [countryName, setCountryName] = useState()
   const [document, setDocument] = useState()
   const testID = 'physicalId'
   const [loaderText, setLoaderText] = useState(LOADER_TEXT.preparation)
@@ -59,6 +61,7 @@ function PhysicalId() {
 
   const resetState = () => {
     setCountry()
+    setCountryName()
     setDocument()
     setCountryPickerVisible(false)
     setLoaderText(LOADER_TEXT.preparation)
@@ -120,6 +123,7 @@ function PhysicalId() {
 
   const onCountrySelect = async (country) => {
     setCountry(country.cca2)
+    setCountryName(country.name)
   }
 
   const onDocumentSelect = async (document) => {
@@ -161,6 +165,7 @@ function PhysicalId() {
       <Container vCenter hCenter horizontalSpace>
         <PhysicalIdDefault
           country={country}
+          countryName={countryName}
           setDocument={onDocumentSelect}
           onCountrySelect={onCountrySelect}
           countryPickerVisible={countryPickerVisible}
@@ -308,6 +313,7 @@ function getErrorConnectionText(connectionStatus: PhysicalIdConnectionStatus) {
 
 const PhysicalIdDefault = ({
   country,
+  countryName,
   setDocument,
   onCountrySelect,
   countryPickerVisible,
@@ -323,6 +329,10 @@ const PhysicalIdDefault = ({
 
   const onCloseCountryPicker = () => {
     setCountryPickerVisible(false)
+  }
+
+  const openCountryPicker = () => {
+    setCountryPickerVisible(true)
   }
 
   return (
@@ -344,14 +354,14 @@ const PhysicalIdDefault = ({
             permissions.
           </Text>
         )}
-        {countryPickerVisible || country ? (
+        {countryPickerVisible ? (
           <CountryPicker
             withFilter={true}
             withFlag={true}
-            withCountryNameButton={true}
+            withCountryNameButton={false}
             withEmoji={true}
             withCloseButton={true}
-            withFlagButton={true}
+            withFlagButton={false}
             withAlphaFilter={true}
             onSelect={onCountrySelect}
             countryCode={country || ''}
@@ -367,6 +377,26 @@ const PhysicalIdDefault = ({
               There are no supported documents for this country
             </Text>
           )}
+          {
+            <TouchableWithoutFeedback onPress={openCountryPicker}>
+              <View style={styles.countryContainer}>
+                <View style={styles.countryFlagContainer}>
+                  <Flag
+                    countryCode={country}
+                    withEmoji={true}
+                    withFlagButton={true}
+                    flagSize={35}
+                  />
+                </View>
+                <View style={styles.countryNameContainer}>
+                  <Text style={styles.documentNameText}>{countryName}</Text>
+                </View>
+                <View style={styles.countryArrowContainer}>
+                  <Icon name="chevron-down" size={20} color={colors.gray1} />
+                </View>
+              </View>
+            </TouchableWithoutFeedback>
+          }
           {data && data.length > 0 && (
             <RadioButton
               data={data}
@@ -434,6 +464,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   documentNameText: {
+    color: colors.gray1,
     fontFamily: fontFamily,
     fontWeight: '400',
     fontSize: verticalScale(fontSizes.size6),
@@ -443,6 +474,30 @@ const styles = StyleSheet.create({
     width: '100%',
     height: undefined,
     aspectRatio: 1,
+  },
+  countryContainer: {
+    width: '100%',
+    borderColor: colors.gray4,
+    borderWidth: 1,
+    borderRadius: 7,
+    flexDirection: 'row',
+    paddingHorizontal: 15,
+    paddingVertical: 5,
+  },
+  countryNameContainer: {
+    flex: 6,
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    paddingHorizontal: 4,
+  },
+  countryFlagContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  countryArrowContainer: {
+    justifyContent: 'center',
+    marginTop: -6,
   },
 })
 
