@@ -35,7 +35,7 @@
 
     <activity
       android:name=".MainActivity"
-      android:theme="@style/Theme.Design.NoActionBar"
+      android:theme="@style/MIDSVerificationTheme"
       android:launchMode="singleTask"
       android:label="@string/app_name"
       android:configChanges="keyboard|keyboardHidden|orientation|screenSize"

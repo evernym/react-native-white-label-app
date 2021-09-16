@@ -23,5 +23,8 @@ export const STORAGE_KEY = null
 // whether you want to use Firebase Push Notifications
 export const USE_PUSH_NOTIFICATION = null
 
+// ConnectMe uses Document Verification feature
+export const USE_DOCUMENT_VERIFICATION = null
+
 // Branch.io Deep link address
 export const DEEP_LINK = null

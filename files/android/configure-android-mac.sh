@@ -6,7 +6,7 @@ echo 'org.gradle.jvmargs=-Xmx4608m -XX:MaxPermSize=512m -XX:+HeapDumpOnOutOfMemo
 echo "2. Updating minimum supported SDK version to ${minVersion} "
 minVersion=23
 sed -ri '' "s|minSdkVersion = [0-9]*|minSdkVersion = ${minVersion}|" android/build.gradle
-echo "3. Adding the source repository for VCX library"
+echo "3. Adding the source repository for VCX and Jumio libraries"
 repository="
 allprojects {
     repositories {
@@ -80,3 +80,28 @@ method='\
     '
 sed -i '' "/.*MainActivity.*/a ${method}" ${filepath}
 echo "Completed!"
+
+echo "9. Updating gradle version add kotlin dependence"
+
+sed -i "s/classpath 'com.android.tools.build:gradle:[0-9]\.[0-9]\.[0-9]'/classpath 'com.android.tools.build:gradle:3.4.2'\n\t\tclasspath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.20'/g" android/build.gradle
+sed -i "s/classpath(\"com.android.tools.build:gradle:[0-9]\.[0-9]\.[0-9]\")/classpath(\"com.android.tools.build:gradle:3.4.2\")\n\t\tclasspath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.20'/g" android/build.gradle
+
+echo "Completed!"
+
+echo "10. Add blacklist to gradle.properties"
+blacklist="
+android.jetifier.blacklist=bcprov
+"
+cat <<EOT >> android/gradle.properties
+$blacklist
+EOT
+
+echo "11. Add kotlin dependence"
+dependencies="
+dependencies {
+    implementation \"org.jetbrains.kotlin:kotlin-stdlib:1.4.20\"
+}
+"
+cat <<EOT >> android/app/build.gradle
+$dependencies
+EOT
