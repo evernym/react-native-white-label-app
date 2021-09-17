@@ -1,0 +1,11 @@
+diff --git a/node_modules/react-native-camera/react-native-camera.podspec b/node_modules/react-native-camera/react-native-camera.podspec
+index f8bb4d2..a67d1fd 100644
+--- a/node_modules/react-native-camera/react-native-camera.podspec
++++ b/node_modules/react-native-camera/react-native-camera.podspec
+@@ -48,5 +48,5 @@ Pod::Spec.new do |s|
+ 
+   s.preserve_paths = 'LICENSE', 'README.md', 'package.json', 'index.js'
+ 
+-  s.dependency 'React'
++  s.dependency 'React-Core'
+ end

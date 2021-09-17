@@ -1,0 +1,12 @@
+diff --git a/node_modules/react-native-randombytes/react-native-randombytes.podspec b/node_modules/react-native-randombytes/react-native-randombytes.podspec
+index adae4ee..a337180 100644
+--- a/node_modules/react-native-randombytes/react-native-randombytes.podspec
++++ b/node_modules/react-native-randombytes/react-native-randombytes.podspec
+@@ -12,6 +12,6 @@ Pod::Spec.new do |s|
+   s.platform       = :ios, "7.0"
+   s.source         = { :git => "#{package_json["repository"]["url"]}" }
+   s.source_files   = '*.{h,m}'
+-  s.dependency 'React'
++  s.dependency 'React-Core'
+ 
+ end
