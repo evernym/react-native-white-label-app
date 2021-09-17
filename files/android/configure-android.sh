@@ -19,6 +19,9 @@ sed -ri "s|targetSdkVersion = [0-9]*|targetSdkVersion = ${targetSdkVersion}|" an
 buildToolsVersion='30.0.3'
 sed -ri "s|buildToolsVersion = [0-9]\.[0-9]\.[0-9]*|buildToolsVersion = \'${buildToolsVersion}\'|" android/build.gradle
 
+distributionUrl='https\://services.gradle.org/distributions/gradle-6.5-bin.zip\n;distributionUrl='
+sed -ri "s|distributionUrl=*|distributionUrl=${distributionUrl}|" android/gradle/wrapper/gradle-wrapper.properties
+
 echo "3. Adding the source repository for VCX and Jumio libraries"
 repository="
 allprojects {
