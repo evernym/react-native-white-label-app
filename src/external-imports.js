@@ -6,7 +6,6 @@ import {
   COMPANY_LOGO,
   DEFAULT_USER_AVATAR,
   USE_PUSH_NOTIFICATION,
-  USE_DOCUMENT_VERIFICATION,
   STORAGE_KEY,
   DEEP_LINK,
 } from '../../../../app/evernym-sdk/app'
@@ -153,9 +152,9 @@ export {
 } from '../../../../app/evernym-sdk/proof-proposal'
 
 export {
-  PHYSICAL_ID_HEADLINE as physicalIdHeadline,
-  PHYSICAL_ID_SCREEN as physicalIdScreen,
-} from '../../../../app/evernym-sdk/physical-id'
+  DOCUMENT_VERIFICATION_HEADLINE as documentVerificationHeadline,
+  CustomDocumentVerificationScreen as documentVerificationScreen,
+} from '../../../../app/evernym-sdk/physical-document-verification'
 
 export const appName = APP_NAME || 'appName'
 export const appLogo = APP_LOGO
@@ -165,6 +164,5 @@ export const appIcon = APP_ICON || require('./images/app_icon.png')
 export const companyName = COMPANY_NAME || 'Your Company'
 export const companyLogo = COMPANY_LOGO
 export const usePushNotifications = !!USE_PUSH_NOTIFICATION || false
-export const useDocumentVerification = !!USE_DOCUMENT_VERIFICATION || false
 export const storageKey = STORAGE_KEY || '@msdkDefaults'
 export const deepLinkAddress = DEEP_LINK || null

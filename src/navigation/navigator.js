@@ -112,8 +112,8 @@ import {
   CREDENTIALS_LABEL,
   DRAWER_ICON_HEIGHT,
   DRAWER_ICON_WIDTH,
-  PHYSICAL_ID,
-  PHYSICAL_ID_LABEL,
+  PHYSICAL_DOCUMENT_VERIFICATION,
+  PHYSICAL_DOCUMENT_VERIFICATION_LABEL,
   SETTINGS,
   SETTINGS_LABEL,
 } from './navigator-constants'
@@ -127,7 +127,6 @@ import {
   customExtraModals,
   customExtraScreens,
   usePushNotifications,
-  useDocumentVerification
 } from '../external-imports'
 import { inviteActionScreen } from '../invite-action/invite-action-screen'
 import { ShowCredentialScreen } from '../show-credential/show-credential-modal'
@@ -277,12 +276,12 @@ const defaultDrawerItemOptions = {
     label: CREDENTIALS_LABEL,
     headline: headlineForCredentialRoute,
   },
-  [PHYSICAL_ID]: {
+  [PHYSICAL_DOCUMENT_VERIFICATION]: {
     route: physicalIdScreen.routeName,
     component: physicalIdScreen.screen,
     // TODO:KS Get an icon for Physical ID
     icon: drawerSvgIcon('DocumentVerification'),
-    label: PHYSICAL_ID_LABEL,
+    label: PHYSICAL_DOCUMENT_VERIFICATION_LABEL,
     headline: physicalIdScreen.headline,
   },
   [SETTINGS]: {
@@ -297,7 +296,7 @@ const defaultDrawerItemOptions = {
 const menuNavigationOptions = customMenuNavigationOptions || [
   { name: CONNECTIONS },
   { name: CREDENTIALS },
-  { name: PHYSICAL_ID },
+  { name: PHYSICAL_DOCUMENT_VERIFICATION },
   { name: SETTINGS },
 ]
 const extraScreens = customExtraScreens || []
@@ -305,14 +304,8 @@ const extraModals = customExtraModals || []
 
 function AppDrawer(navigation) {
   const dispatch = useDispatch()
-  console.log('====================================');
-  console.log(useDocumentVerification, menuNavigationOptions);
-  console.log('====================================');
-  const menuNavigationOptionsWithDocVerFilter = useDocumentVerification
-    ? menuNavigationOptions
-    : menuNavigationOptions.filter(option => option.name !== PHYSICAL_ID)
 
-  const tabs = menuNavigationOptionsWithDocVerFilter.map((option) => {
+  const tabs = menuNavigationOptions.map((option) => {
     const defaultOption = defaultDrawerItemOptions[option.name] || {}
 
     return (
