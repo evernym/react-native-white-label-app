@@ -25,7 +25,7 @@ import type {
 
 import { Container, CustomView, Loader } from '../components'
 import {
-  launchPhysicalIdSDK,
+  launchPhysicalIdSDK, physicalIdConnectionStart,
   physicalIdSdkInit,
   stopPhysicalId,
 } from './physical-id-store'
@@ -90,6 +90,7 @@ function PhysicalId() {
 
   const onCameraPermissionsGranted = () => {
     dispatch(physicalIdSdkInit())
+    dispatch(physicalIdConnectionStart())
     setCountryPickerVisible(true)
   }
 
@@ -146,7 +147,7 @@ function PhysicalId() {
     [processStatus, loaderText]
   )
 
-  if (isLoaderVisible(processStatus, connectionStatus)) {
+  if (isLoaderVisible(processStatus)) {
     return loaderWithMessage
   }
 
@@ -207,18 +208,11 @@ const LoaderVisiblePhysicalIdStates = [
   physicalIdProcessStatus.SDK_SCAN_START,
 ]
 
-const LoaderVisiblePhysicalIdConnectionStates = [
-  physicalIdConnectionStatus.CONNECTION_DETAIL_FETCHING,
-  physicalIdConnectionStatus.CONNECTION_IN_PROGRESS,
-]
-
 function isLoaderVisible(
   status: PhysicalIdProcessStatus,
-  connectionStatus: PhysicalIdConnectionStatus
 ) {
   return (
-    LoaderVisiblePhysicalIdStates.includes(status) ||
-    LoaderVisiblePhysicalIdConnectionStates.includes(connectionStatus)
+    LoaderVisiblePhysicalIdStates.includes(status)
   )
 }
 

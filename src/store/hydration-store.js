@@ -95,6 +95,7 @@ import { hydrateInviteActionSaga } from '../invite-action/invite-action-store'
 import { hydrateVerifierSaga } from '../verifier/verifier-store'
 import { getConnectionPairwiseAgentInfo } from './store-selector'
 import { hydrateSwitchedEnvironmentDetails } from '../switch-environment/switсh-environment-store'
+import { hydratePhysicalIdDidSaga } from '../physical-id/physical-id-store'
 
 export function* deleteDeviceSpecificData(): Generator<*, *, *> {
   try {
@@ -290,6 +291,7 @@ export function* hydrate(): any {
       yield* hydrateInviteActionSaga()
       yield* hydrateVerifierSaga()
       yield* hydratePairwiseAgentSaga()
+      yield* hydratePhysicalIdDidSaga()
       // find and try to retry actions which was interrupted by closing the app
       yield* retryInterruptedActionsSaga()
 

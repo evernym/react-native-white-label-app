@@ -5,9 +5,7 @@ import {
   all,
   select,
   take,
-  fork,
   race,
-  join,
   takeEvery,
   spawn,
   takeLeading,
@@ -45,7 +43,7 @@ import {
   PHYSICAL_ID_SDK_INIT,
   UPDATE_SDK_INIT_STATUS,
   sdkStatus,
-  ERROR_PHYSICAL_ID_SDK,
+  ERROR_PHYSICAL_ID_SDK, PHYSICAL_ID_CONNECTION_START,
 } from './physical-id-type'
 import {
   getSdkToken,
@@ -94,6 +92,10 @@ const initialState = {
 
 export const physicalIdSdkInit = () => ({
   type: PHYSICAL_ID_SDK_INIT,
+})
+
+export const physicalIdConnectionStart = () => ({
+  type: PHYSICAL_ID_CONNECTION_START,
 })
 
 export const updateSdkInitStatus = (
@@ -195,9 +197,6 @@ function* launchPhysicalIdSDKSaga(
     )
   )
 
-  // make connection with physical Id scanner in background
-  const connectionTask = yield fork(makeConnectionWithPhysicalIdSaga)
-
   const result = yield* ensureSdkInitSuccess()
   if (result && (result.fail || result.timeout)) {
     yield put(updatePhysicalIdStatus(physicalIdProcessStatus.SDK_INIT_FAIL))
@@ -226,21 +225,9 @@ function* launchPhysicalIdSDKSaga(
   }
   yield put(updatePhysicalIdStatus(physicalIdProcessStatus.SDK_SCAN_SUCCESS))
 
-  let [connectionError, connectionDID]: [
-    { code: string, message: string } | null | typeof undefined,
-    string | null | typeof undefined
-  ] = [null, null]
-  const connectionTaskResult = connectionTask.result()
-
-  if (!connectionTaskResult) {
-    // if connection task is still running, then wait for it's completion
-    ;[connectionError, connectionDID] = yield join(connectionTask)
-  } else {
-    // if connection task is already done, then just take the result
-    ;[connectionError, connectionDID] = connectionTaskResult
-  }
-
-  if (connectionError || !connectionDID) {
+  let physicalIdDid: ?string = yield* getPhysicalIdDidSaga()
+  if (!physicalIdDid) {
+    yield put(updatePhysicalIdStatus(physicalIdProcessStatus.SDK_INIT_FAIL))
     return
   }
 
@@ -256,7 +243,7 @@ function* launchPhysicalIdSDKSaga(
   // Verity-flow backend needs a relationshipId to communicate with the Verity
   // so we get relationshipId from invitation
   const [relationshipIdError, relationshipId] = yield* getRelationshipId(
-    connectionDID
+    physicalIdDid
   )
   if (relationshipIdError || !relationshipId) {
     yield put(
@@ -383,6 +370,11 @@ async function midsScanStart(document: string) {
 }
 
 function* makeConnectionWithPhysicalIdSaga(): Generator<*, *, *> {
+  // since we want to take data from connections store
+  // we need to make sure that data is hydrated before we take data
+  // from persisted stores
+  yield* ensureAppHydrated()
+
   // if connection is already established, then don't make connection again
   let physicalIdDid: ?string = yield* getPhysicalIdDidSaga()
   if (physicalIdDid) {
@@ -497,6 +489,7 @@ function* makeConnectionWithPhysicalIdSaga(): Generator<*, *, *> {
       physicalIdConnectionStatus.CONNECTION_IN_PROGRESS
     )
   )
+
   // since we will be racing for connection status update
   // it might happen that we would get some problem with push notification
   // and connection status might never change
@@ -508,7 +501,6 @@ function* makeConnectionWithPhysicalIdSaga(): Generator<*, *, *> {
     fail: take(INVITATION_RESPONSE_FAIL),
     refreshTimeout: take(CONNECTION_REFRESH_TIMEOUT),
   })
-
   if (fail) {
     yield put(
       updatePhysicalIdConnectionStatus(
@@ -535,17 +527,36 @@ function* makeConnectionWithPhysicalIdSaga(): Generator<*, *, *> {
 function* getPhysicalIdDidSaga(): Generator<*, *, *> {
   let physicalIdDid: ?string = yield select(selectPhysicalIdDid)
   if (!physicalIdDid) {
-    physicalIdDid = yield* hydratePhysicalIdDidSaga()
-  }
-
-  if (!physicalIdDid) {
     return null
   }
 
-  // since we want to take data from connections store
-  // we need to make sure that data is hydrated before we take data
-  // from persisted stores
-  yield* ensureAppHydrated()
+  let connectionStatus = yield select(selectConnectionStatus)
+  if (
+    connectionStatus === physicalIdConnectionStatus.CONNECTION_DETAIL_FETCHING ||
+    connectionStatus === physicalIdConnectionStatus.CONNECTION_DETAIL_FETCH_SUCCESS ||
+    connectionStatus === physicalIdConnectionStatus.CONNECTION_IN_PROGRESS
+  ) {
+    // if already in progress, no need to process further - wait for the in progress one
+    const { fail, timeout } = yield race({
+      success: take(NEW_CONNECTION_SUCCESS),
+      fail: take(INVITATION_RESPONSE_FAIL),
+      timeout: call(delay, 300000),
+    })
+
+    if (fail || timeout) {
+      yield put(
+        updatePhysicalIdConnectionStatus(
+          physicalIdConnectionStatus.CONNECTION_FAIL
+        )
+      )
+      return null
+    }
+    let physicalIdDid: ?string = yield select(selectPhysicalIdDid)
+    if (!physicalIdDid) {
+      return null
+    }
+  }
+
   const userPairwiseDid: ?string = yield select(
     getUserPairwiseDid,
     physicalIdDid
@@ -582,8 +593,10 @@ function* refreshConnectionStateSaga() {
 const selectDomainDID = (state: Store) => state.config.domainDID
 const selectVerityFlowBaseUrl = (state: Store) => state.config.verityFlowBaseUrl
 export const selectSdkStatus = (state: Store) => state.physicalId.sdkInitStatus
+export const selectConnectionStatus = (state: Store) => state.physicalId.physicalIdConnectionStatus
 
 export function* initPhysicalIdSdkSaga(): Generator<*, *, *> {
+  // check sdk status and init
   let status = yield select(selectSdkStatus)
   if (
     status === sdkStatus.SDK_INIT_SUCCESS ||
@@ -729,8 +742,12 @@ export function* watchSdkInit(): any {
   yield takeLeading(PHYSICAL_ID_SDK_INIT, initPhysicalIdSdkSaga)
 }
 
+export function* watchPhysicalIdConnectionStart(): any {
+  yield takeLeading(PHYSICAL_ID_CONNECTION_START, makeConnectionWithPhysicalIdSaga)
+}
+
 export function* watchPhysicalId(): any {
-  yield all([watchSdkInit(), watchPhysicalIdStart()])
+  yield all([watchSdkInit(), watchPhysicalIdStart(), watchPhysicalIdConnectionStart()])
 }
 
 export const selectPhysicalIdDid = (state: Store) =>
@@ -775,7 +792,6 @@ export default function physicalIdReducer(
         error: null,
         sdkInitStatus: sdkStatus.IDLE,
         status: physicalIdProcessStatus.IDLE,
-        documentTypes: null,
       }
     default:
       return state

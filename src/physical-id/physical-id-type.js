@@ -82,6 +82,12 @@ export type LaunchPhysicalIdSDKAction = {
   country: string,
 }
 
+export const PHYSICAL_ID_CONNECTION_START =
+  'PHYSICAL_ID_CONNECTION_START'
+export type PhysicalIdConnectionStartAction = {
+  type: typeof PHYSICAL_ID_CONNECTION_START,
+}
+
 export const PHYSICAL_ID_CONNECTION_ESTABLISHED =
   'PHYSICAL_ID_CONNECTION_ESTABLISHED'
 export type PhysicalIdConnectionEstablishedAction = {
@@ -133,6 +139,7 @@ export type PhysicalIdStoreAction =
   | LaunchPhysicalIdSDKAction
   | UpdateSdkInitStatusAction
   | UpdatePhysicalIdProcessStatusAction
+  | PhysicalIdConnectionStartAction
   | PhysicalIdConnectionEstablishedAction
   | HydratePhysicalIdDidSuccessAction
   | RemovePhysicalIdDidAction
