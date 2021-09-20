@@ -56,6 +56,7 @@ function PhysicalId() {
   const [document, setDocument] = useState()
   const testID = 'physicalId'
   const [loaderText, setLoaderText] = useState(LOADER_TEXT.preparation)
+  const [isLoader, setIsLoader] = useState(isLoaderVisible(processStatus, connectionStatus))
   const [countryPickerVisible, setCountryPickerVisible] = useState(false)
   const focus = useIsFocused()
 
@@ -65,6 +66,7 @@ function PhysicalId() {
     setDocument()
     setCountryPickerVisible(false)
     setLoaderText(LOADER_TEXT.preparation)
+    setIsLoader(false)
   }
 
   const resetProcess = () => {
@@ -93,6 +95,10 @@ function PhysicalId() {
       }
     }
   }, [])
+
+  useEffect(() => {
+    setIsLoader(isLoaderVisible(processStatus, connectionStatus))
+  }, [processStatus, connectionStatus, loaderText])
 
   const onCameraPermissionsGranted = () => {
     dispatch(physicalIdSdkInit())
@@ -156,7 +162,7 @@ function PhysicalId() {
     [processStatus, loaderText]
   )
 
-  if (isLoaderVisible(processStatus, connectionStatus)) {
+  if (isLoader) {
     return loaderWithMessage
   }
 
