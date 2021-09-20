@@ -73,6 +73,18 @@ In order to configure the building of your application for an Android platform, 
     org.gradle.jvmargs=-Xmx4608m -XX:MaxPermSize=512m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8
     ```
 
+1. Add blacklist to your `android/gradle.properties`
+
+    ```properties
+   android.jetifier.blacklist=bcprov
+    ```
+
+1. Set distribution url in your `android/gradle/wrapper/gradle-wrapper.properties`
+
+    ```properties
+    distributionUrl='https\://services.gradle.org/distributions/gradle-6.5-bin.zip
+    ```
+
 1. Set the minimum supported SDK version in your `android/build.gradle`:
 
     ```groovy
@@ -85,7 +97,7 @@ In order to configure the building of your application for an Android platform, 
         ...
     ```
 
-1. Add the libvcx android repository in your `android/build.gradle`:
+1. Add the libvcx and jumio android repositories in your `android/build.gradle`:
 
     ```groovy
     allprojects {
@@ -94,10 +106,21 @@ In order to configure the building of your application for an Android platform, 
             maven {
                 url 'https://evernym.mycloudrepo.io/public/repositories/libvcx-android'
             }
+            maven { url 'http://mobile-sdk.jumio.com' }
         }
     }
     ```
 
+1. Set gradle version and add kotlin dependence in your  `android/build.gradle`:
+
+    ```groovy
+   dependencies {
+        classpath 'com.android.tools.build:gradle:3.4.2'
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.20'
+        ...
+   }
+    ```
+   
 1. Setup packaging options in your `android/app/build.gradle`:
 
    ```groovy
@@ -127,6 +150,15 @@ In order to configure the building of your application for an Android platform, 
            missingDimensionStrategy 'react-native-camera', 'general'
        }
        ...
+   }
+   ```
+
+1. Add kotlin dependence in your `android/app/build.gradle`:
+
+   ```groovy
+   dependencies {
+        implementation "org.jetbrains.kotlin:kotlin-stdlib:1.4.20"
+        ...
    }
    ```
 
