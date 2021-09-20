@@ -56,28 +56,19 @@ function PhysicalId() {
   const [document, setDocument] = useState()
   const testID = 'physicalId'
   const [loaderText, setLoaderText] = useState(LOADER_TEXT.preparation)
-  const [isLoader, setIsLoader] = useState(isLoaderVisible(processStatus, connectionStatus))
   const [countryPickerVisible, setCountryPickerVisible] = useState(false)
   const focus = useIsFocused()
 
-  const resetState = () => {
+  const resetComponentState = () => {
     setCountry()
     setCountryName()
     setDocument()
     setCountryPickerVisible(false)
     setLoaderText(LOADER_TEXT.preparation)
-    setIsLoader(false)
-  }
-
-  const resetProcess = () => {
-    resetState()
-    dispatch(stopPhysicalId())
   }
 
   useEffect(() => {
-    if (processStatus !== physicalIdProcessStatus.SEND_ISSUE_CREDENTIAL_START) {
-      resetProcess()
-    }
+    resetComponentState()
   }, [focus])
 
   useEffect(() => {
@@ -86,7 +77,8 @@ function PhysicalId() {
         setLoaderText(LOADER_TEXT.finish)
       })
       DeviceEventEmitter.addListener('DESTROY', () => {
-        resetProcess()
+        resetComponentState()
+        dispatch(stopPhysicalId())
       })
     }
     return () => {
@@ -95,10 +87,6 @@ function PhysicalId() {
       }
     }
   }, [])
-
-  useEffect(() => {
-    setIsLoader(isLoaderVisible(processStatus, connectionStatus))
-  }, [processStatus, connectionStatus, loaderText])
 
   const onCameraPermissionsGranted = () => {
     dispatch(physicalIdSdkInit())
@@ -117,11 +105,11 @@ function PhysicalId() {
       return
     }
     dispatch(launchPhysicalIdSDK(country, document))
-    resetState()
+    resetComponentState()
   }
 
   const onCancel = () => {
-    resetState()
+    resetComponentState()
     navigation.navigate(homeRoute, {
       screen: homeDrawerRoute,
     })
@@ -135,10 +123,6 @@ function PhysicalId() {
   const onDocumentSelect = async (document) => {
     setDocument(document.value)
   }
-
-  useEffect(() => {
-    dispatch(stopPhysicalId())
-  }, [])
 
   useEffect(() => {
     if (processStatus === physicalIdProcessStatus.SEND_ISSUE_CREDENTIAL_START) {
@@ -162,7 +146,7 @@ function PhysicalId() {
     [processStatus, loaderText]
   )
 
-  if (isLoader) {
+  if (isLoaderVisible(processStatus, connectionStatus)) {
     return loaderWithMessage
   }
 
@@ -240,6 +224,8 @@ function isLoaderVisible(
 
 function getLoaderMessageText(status: PhysicalIdProcessStatus) {
   switch (status) {
+    case physicalIdProcessStatus.SDK_DOCUMENT_VERIFICATION_START:
+      return LOADER_TEXT.preparation
     case physicalIdProcessStatus.SDK_SCAN_START:
       return LOADER_TEXT.processing
     case physicalIdProcessStatus.SDK_SCAN_SUCCESS:
@@ -250,8 +236,6 @@ function getLoaderMessageText(status: PhysicalIdProcessStatus) {
 }
 
 const physicalIdErrorStates = [
-  physicalIdProcessStatus.SDK_TOKEN_FETCH_FAIL,
-  physicalIdProcessStatus.SDK_TOKEN_PARSE_FAIL,
   physicalIdProcessStatus.SDK_INIT_FAIL,
   physicalIdProcessStatus.SDK_SCAN_FAIL,
   physicalIdProcessStatus.SEND_ISSUE_CREDENTIAL_FAIL,
@@ -291,11 +275,6 @@ function hasError(
 
 function getErrorText(status: PhysicalIdProcessStatus) {
   switch (status) {
-    case physicalIdProcessStatus.SDK_TOKEN_FETCH_FAIL:
-    case physicalIdProcessStatus.SDK_TOKEN_PARSE_FAIL:
-      return 'Document verification faced an error while trying to start process. Please try again.'
-
-    case physicalIdProcessStatus.SDK_INIT_FAIL:
     case physicalIdProcessStatus.SDK_SCAN_FAIL:
     case physicalIdProcessStatus.SEND_ISSUE_CREDENTIAL_FAIL:
       return 'Document verification could not complete processing your document. Please try again.'
@@ -318,13 +297,13 @@ function getErrorConnectionText(connectionStatus: PhysicalIdConnectionStatus) {
 }
 
 const PhysicalIdDefault = ({
-  country,
-  countryName,
-  setDocument,
-  onCountrySelect,
-  countryPickerVisible,
-  setCountryPickerVisible,
-}) => {
+                             country,
+                             countryName,
+                             setDocument,
+                             onCountrySelect,
+                             countryPickerVisible,
+                             setCountryPickerVisible,
+                           }) => {
   const data = useMemo(() => {
     const documents = country ? countryDocumentsMap[country] || [] : []
     return documents.map((document) => ({

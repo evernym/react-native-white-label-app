@@ -16,7 +16,7 @@
   "scripts": {
     "test": "jest --detectOpenHandles --forceExit",
     "lint": "flow stop && flow && eslint src",
-    "configure": "./files/configure.sh"
+    "configure": "chmod +x files/configure.sh && ./files/configure.sh"
   },
   "repository": {
     "type": "git",

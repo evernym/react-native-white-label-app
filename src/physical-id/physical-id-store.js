@@ -607,7 +607,6 @@ export function* initPhysicalIdSdkSaga(): Generator<*, *, *> {
   let [sdkToken, apiDataCenter] = tokenResponse
 
   yield put(updateSdkInitStatus(sdkStatus.SDK_INIT_START))
-  yield put(updatePhysicalIdStatus(physicalIdProcessStatus.SDK_INIT_START))
   const [midsSdkInitError] = yield call(
     flattenAsync(midsSdkInit),
     sdkToken,
@@ -615,18 +614,12 @@ export function* initPhysicalIdSdkSaga(): Generator<*, *, *> {
   )
   if (midsSdkInitError) {
     yield put(updateSdkInitStatus(sdkStatus.SDK_INIT_FAIL))
-    yield put(updatePhysicalIdStatus(physicalIdProcessStatus.SDK_INIT_FAIL))
     return
   }
   yield put(updateSdkInitStatus(sdkStatus.SDK_INIT_SUCCESS))
-  yield put(updatePhysicalIdStatus(physicalIdProcessStatus.SDK_INIT_SUCCESS))
 }
 
 export function* getSdkTokenSaga(): Generator<*, *, *> {
-  yield put(
-    updatePhysicalIdStatus(physicalIdProcessStatus.SDK_TOKEN_FETCH_START)
-  )
-
   // TODO:KS Get hardware token, we  would need to get the nonce from server by calling getProvisionToken API
   const hardwareToken = ''
   const domainDID: string = yield select(selectDomainDID)
@@ -643,26 +636,14 @@ export function* getSdkTokenSaga(): Generator<*, *, *> {
   )
   if (error || !response) {
     yield put(updateSdkInitStatus(sdkStatus.SDK_INIT_FAIL))
-    yield put(
-      updatePhysicalIdStatus(physicalIdProcessStatus.SDK_TOKEN_FETCH_FAIL)
-    )
-
-    return [physicalIdProcessStatus.SDK_TOKEN_FETCH_FAIL, null]
+    return [sdkStatus.SDK_INIT_FAIL, null]
   }
 
   const [tokenParseError, token] = flatJsonParse(response.result)
   if (tokenParseError || !token) {
     yield put(updateSdkInitStatus(sdkStatus.SDK_INIT_FAIL))
-    yield put(
-      updatePhysicalIdStatus(physicalIdProcessStatus.SDK_TOKEN_PARSE_FAIL)
-    )
-
-    return [physicalIdProcessStatus.SDK_TOKEN_PARSE_FAIL, null]
+    return [sdkStatus.SDK_INIT_FAIL, null]
   }
-
-  yield put(
-    updatePhysicalIdStatus(physicalIdProcessStatus.SDK_TOKEN_FETCH_SUCCESS)
-  )
 
   return [null, [token.sdkToken, token.apiDataCenter]]
 }
@@ -792,6 +773,8 @@ export default function physicalIdReducer(
       return {
         ...state,
         error: null,
+        sdkInitStatus: sdkStatus.IDLE,
+        status: physicalIdProcessStatus.IDLE,
         documentTypes: null,
       }
     default:
