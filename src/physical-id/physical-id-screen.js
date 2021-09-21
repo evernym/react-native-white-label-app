@@ -364,14 +364,14 @@ const PhysicalIdDefault = ({
                     countryCode={country}
                     withEmoji={true}
                     withFlagButton={true}
-                    flagSize={35}
+                    flagSize={moderateScale(20)}
                   />
                 </View>
                 <View style={styles.countryNameContainer}>
                   <Text style={styles.documentNameText}>{countryName}</Text>
                 </View>
                 <View style={styles.countryArrowContainer}>
-                  <Icon name="chevron-down" size={20} color={colors.gray1} />
+                  <Icon name="chevron-down" size={25} color={colors.gray1} />
                 </View>
               </View>
             </TouchableWithoutFeedback>
