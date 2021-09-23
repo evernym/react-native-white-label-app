@@ -13,7 +13,7 @@ export const isDevEnvironment = __DEV__ && process.env.NODE_ENV !== 'test'
 export const defaultEnvironment = defaultServerEnvironment
   ? SERVER_ENVIRONMENT[defaultServerEnvironment]
   : isDevEnvironment
-    ? SERVER_ENVIRONMENT.DEVTEAM1
+    ? SERVER_ENVIRONMENT.DEMO
     : SERVER_ENVIRONMENT.PROD
 
 const sovrinLiveGenesisTransactions =
