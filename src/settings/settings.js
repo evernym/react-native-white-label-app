@@ -96,6 +96,7 @@ import {
   BIOMETRICS_SWITCH_ON,
   BIOMETRICS_SWITCH_OFF,
   GIVE_APP_FEEDBACK_BUTTON_IN_SETTINGS,
+  SETTINGS_MENU_BUTTON
 } from '../feedback/log-to-apptentive'
 import { setupTouchId } from '../lock/lock-auth-for-action'
 
@@ -112,6 +113,8 @@ export class Settings extends Component<SettingsProps, SettingsState> {
     walletBackupModalVisible: false,
     disableTouchIdSwitch: false,
   }
+
+  _unsubscribe = null
 
   onAuthSuccess = () => {
     this.props.navigation.push(lockPinSetupRoute, {
@@ -262,6 +265,15 @@ export class Settings extends Component<SettingsProps, SettingsState> {
       setupApptentive().catch((e) => {
         customLogger.log(e)
       })
+    }
+    this._unsubscribe = this.props.navigation.addListener('focus', () => {
+      this.props.onSettingPress()
+    });
+  }
+
+  componentWillUnmount() {
+    if (_unsubscribe) {
+      this._unsubscribe()
     }
   }
 
@@ -686,6 +698,7 @@ const mapDispatchToProps = (dispatch) =>
       biometricsSwitchOff: () => BIOMETRICS_SWITCH_OFF,
       giveAppFeedbackButtonInSetting: () =>
         GIVE_APP_FEEDBACK_BUTTON_IN_SETTINGS,
+      onSettingPress: () => SETTINGS_MENU_BUTTON,
       disableTouchIdAction,
       enableTouchIdAction,
     },

@@ -141,13 +141,6 @@ const builtBy = companyName
 
 const drawerComponent = (props: Object, dispatch) => {
   const { state, ...rest } = props
-  const newState = { ...state }
-  newState.routes = newState.routes.filter((item) => item.name !== SETTINGS)
-
-  const withLogOnSettingPress = () => {
-    dispatch(SETTINGS_MENU_BUTTON)
-    props.navigation.navigate(settingsDrawerRoute)
-  }
 
   return (
     <SafeAreaView
@@ -171,12 +164,7 @@ const drawerComponent = (props: Object, dispatch) => {
           testID: 'user-avatar',
         })}
       </View>
-      <DrawerItemList state={newState} {...rest} />
-      <DrawerItem
-        label={drawerItemLabel(defaultDrawerItemOptions[SETTINGS].label)}
-        icon={drawerIcon(defaultDrawerItemOptions[SETTINGS].icon)}
-        onPress={withLogOnSettingPress}
-      />
+      <DrawerItemList state={state} {...rest} />
       <View style={styles.drawerFooterContainer}>
         <View style={styles.drawerFooter}>
           {CustomDrawerFooterContent ? (
