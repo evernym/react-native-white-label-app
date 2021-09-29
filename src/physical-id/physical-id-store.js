@@ -43,7 +43,8 @@ import {
   PHYSICAL_ID_SDK_INIT,
   UPDATE_SDK_INIT_STATUS,
   sdkStatus,
-  ERROR_PHYSICAL_ID_SDK, PHYSICAL_ID_CONNECTION_START,
+  ERROR_PHYSICAL_ID_SDK,
+  PHYSICAL_ID_CONNECTION_START,
 } from './physical-id-type'
 import {
   getSdkToken,
@@ -197,10 +198,19 @@ function* launchPhysicalIdSDKSaga(
     )
   )
 
-  const result = yield* ensureSdkInitSuccess()
-  if (result && (result.fail || result.timeout)) {
-    yield put(updatePhysicalIdStatus(physicalIdProcessStatus.SDK_INIT_FAIL))
-    return
+  while (true) {
+    let numberOfRetries = 0
+    const result = yield* ensureSdkInitSuccess()
+    if (result && (result.fail || result.timeout)) {
+      if (numberOfRetries < 3) {
+        // try to call terminate SDK, because that might also be the problem
+        yield call(flattenAsync(terminateSDK))
+        numberOfRetries++
+        continue
+      }
+      yield put(updatePhysicalIdStatus(physicalIdProcessStatus.SDK_INIT_FAIL))
+      return
+    }
   }
 
   const selectedCountry = countriesCodeMap[action.country]
@@ -369,6 +379,12 @@ async function midsScanStart(document: string) {
   })
 }
 
+async function terminateSDK() {
+  return new Promise((resolve, reject) => {
+    NativeModules.MIDSDocumentVerification.terminateSDK(resolve, reject)
+  })
+}
+
 function* makeConnectionWithPhysicalIdSaga(): Generator<*, *, *> {
   // since we want to take data from connections store
   // we need to make sure that data is hydrated before we take data
@@ -532,8 +548,10 @@ function* getPhysicalIdDidSaga(): Generator<*, *, *> {
 
   let connectionStatus = yield select(selectConnectionStatus)
   if (
-    connectionStatus === physicalIdConnectionStatus.CONNECTION_DETAIL_FETCHING ||
-    connectionStatus === physicalIdConnectionStatus.CONNECTION_DETAIL_FETCH_SUCCESS ||
+    connectionStatus ===
+      physicalIdConnectionStatus.CONNECTION_DETAIL_FETCHING ||
+    connectionStatus ===
+      physicalIdConnectionStatus.CONNECTION_DETAIL_FETCH_SUCCESS ||
     connectionStatus === physicalIdConnectionStatus.CONNECTION_IN_PROGRESS
   ) {
     // if already in progress, no need to process further - wait for the in progress one
@@ -593,7 +611,8 @@ function* refreshConnectionStateSaga() {
 const selectDomainDID = (state: Store) => state.config.domainDID
 const selectVerityFlowBaseUrl = (state: Store) => state.config.verityFlowBaseUrl
 export const selectSdkStatus = (state: Store) => state.physicalId.sdkInitStatus
-export const selectConnectionStatus = (state: Store) => state.physicalId.physicalIdConnectionStatus
+export const selectConnectionStatus = (state: Store) =>
+  state.physicalId.physicalIdConnectionStatus
 
 export function* initPhysicalIdSdkSaga(): Generator<*, *, *> {
   // check sdk status and init
@@ -743,11 +762,18 @@ export function* watchSdkInit(): any {
 }
 
 export function* watchPhysicalIdConnectionStart(): any {
-  yield takeLeading(PHYSICAL_ID_CONNECTION_START, makeConnectionWithPhysicalIdSaga)
+  yield takeLeading(
+    PHYSICAL_ID_CONNECTION_START,
+    makeConnectionWithPhysicalIdSaga
+  )
 }
 
 export function* watchPhysicalId(): any {
-  yield all([watchSdkInit(), watchPhysicalIdStart(), watchPhysicalIdConnectionStart()])
+  yield all([
+    watchSdkInit(),
+    watchPhysicalIdStart(),
+    watchPhysicalIdConnectionStart(),
+  ])
 }
 
 export const selectPhysicalIdDid = (state: Store) =>

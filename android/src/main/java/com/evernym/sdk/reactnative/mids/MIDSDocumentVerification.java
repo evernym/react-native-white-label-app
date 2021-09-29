@@ -114,9 +114,7 @@ public class MIDSDocumentVerification extends ReactContextBaseJavaModule {
   private MIDSEnrollmentManager getEnrollmentManagerInstance() {
     if (sdkManager == null) {
       System.out.println("getEnrollmentManagerInstance");
-      sdkManager = new MIDSEnrollmentManager(
-        new EnrollmentSDKListener()
-      );
+      sdkManager = new MIDSEnrollmentManager(new EnrollmentSDKListener());
     }
     return sdkManager;
   }
@@ -147,7 +145,8 @@ public class MIDSDocumentVerification extends ReactContextBaseJavaModule {
 
     @Override
     public void onError(@NotNull MIDSVerificationError error) {
-      System.out.println("EnrollmentSDKListener - method: onError - error: " + error.getMessage().toString() + MIDSVerificationError.SDK_USER_CANCELLED);
+      System.out.println("EnrollmentSDKListener - method: onError - error: " + error.getMessage().toString()
+          + MIDSVerificationError.SDK_USER_CANCELLED);
 
       rejectToReact();
     }
@@ -172,7 +171,8 @@ public class MIDSDocumentVerification extends ReactContextBaseJavaModule {
 
     @Override
     public void onVerificationFinished(@NotNull String referenceNumber) {
-      System.out.println("EnrollmentSDKListener - method: onVerificationFinished - reference number: " + referenceNumber);
+      System.out
+          .println("EnrollmentSDKListener - method: onVerificationFinished - reference number: " + referenceNumber);
 
       getEnrollmentManagerInstance().endScan();
       getEnrollmentManagerInstance().terminateSDK();
@@ -227,12 +227,14 @@ public class MIDSDocumentVerification extends ReactContextBaseJavaModule {
 
     @Override
     public void onProcessFinished(MIDSScanSide scanSide, boolean allPartsScanned) {
-      System.out.println("ScanListener - method: onProcessFinished - scan side: " + scanSide + " - is all parts scanned: " + allPartsScanned);
+      System.out.println("ScanListener - method: onProcessFinished - scan side: " + scanSide
+          + " - is all parts scanned: " + allPartsScanned);
       presenter.destroy();
       presenter = null;
 
       if (allPartsScanned) {
-        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("FACE_SCAN", Arguments.createMap());
+        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("FACE_SCAN",
+            Arguments.createMap());
         getEnrollmentManagerInstance().endScan();
       }
     }
@@ -250,6 +252,13 @@ public class MIDSDocumentVerification extends ReactContextBaseJavaModule {
     requestPermissionsForSDK(currentActivity, currentContext);
 
     getEnrollmentManagerInstance().initializeSDK(currentActivity, token, dataCanter);
+  }
+
+  @ReactMethod
+  public void terminateSDK(Callback resolve, Callback reject) {
+    getEnrollmentManagerInstance().terminateSDK();
+
+    resolve.invoke();
   }
 
   @ReactMethod
@@ -275,7 +284,8 @@ public class MIDSDocumentVerification extends ReactContextBaseJavaModule {
     try {
       MIDSCountry code = new MIDSCountry(countryCode);
       this.selectedCountry = code;
-      MIDSVerificationResponse<List<MIDSDocumentType>> documentTypeResponse = getEnrollmentManagerInstance().getDocumentTypes(code);
+      MIDSVerificationResponse<List<MIDSDocumentType>> documentTypeResponse = getEnrollmentManagerInstance()
+          .getDocumentTypes(code);
       List<MIDSDocumentType> documentType = documentTypeResponse.getResponse();
       resolve.invoke(documentType.toString());
     } catch (Exception ignored) {
@@ -324,8 +334,9 @@ public class MIDSDocumentVerification extends ReactContextBaseJavaModule {
           if (isDestroy) {
             getEnrollmentManagerInstance().endScan();
             getEnrollmentManagerInstance().terminateSDK();
-            reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("DESTROY", Arguments.createMap());
-          } else if (sideIndex <= scanSidesDV.size() -1) {
+            reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("DESTROY",
+                Arguments.createMap());
+          } else if (sideIndex <= scanSidesDV.size() - 1) {
             sideIndex = sideIndex + 1;
             System.out.println("ScanListener onDismiss" + sideIndex + scanSidesDV.get(sideIndex));
             scanning();
@@ -339,25 +350,23 @@ public class MIDSDocumentVerification extends ReactContextBaseJavaModule {
     runOnUiThread(new Runnable() {
       @Override
       public void run() {
-        new AlertDialog.Builder(reactContext.getCurrentActivity())
-          .setTitle("Something went wrong")
-          .setPositiveButton("Retry scan", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-              presenter.retryScan();
-            }
-          })
+        new AlertDialog.Builder(reactContext.getCurrentActivity()).setTitle("Something went wrong")
+            .setPositiveButton("Retry scan", new DialogInterface.OnClickListener() {
+              public void onClick(DialogInterface dialog, int which) {
+                presenter.retryScan();
+              }
+            })
 
-          .setNegativeButton("Finish scan", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-              presenter.destroy();
-              getEnrollmentManagerInstance().endScan();
-              getEnrollmentManagerInstance().terminateSDK();
-              resetSdk();
-              reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("DESTROY", Arguments.createMap());
-            }
-          })
-          .setIcon(android.R.drawable.ic_dialog_alert)
-          .show();
+            .setNegativeButton("Finish scan", new DialogInterface.OnClickListener() {
+              public void onClick(DialogInterface dialog, int which) {
+                presenter.destroy();
+                getEnrollmentManagerInstance().endScan();
+                getEnrollmentManagerInstance().terminateSDK();
+                resetSdk();
+                reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("DESTROY",
+                    Arguments.createMap());
+              }
+            }).setIcon(android.R.drawable.ic_dialog_alert).show();
       }
     });
   }
@@ -378,12 +387,8 @@ public class MIDSDocumentVerification extends ReactContextBaseJavaModule {
       this.midsVerificationScanView.setMode(MIDSVerificationScanView.MODE_FACE);
 
       MIDSVerificationResponse<MIDSVerificationScanPresenter> presenterResponse = getEnrollmentManagerInstance()
-        .getPresenter(
-          MIDSScanSide.FACE,
-          this.midsVerificationScanView,
-          this.midsVerificationConfirmationView,
-          this.scanListener
-        );
+          .getPresenter(MIDSScanSide.FACE, this.midsVerificationScanView, this.midsVerificationConfirmationView,
+              this.scanListener);
 
       MIDSVerificationError error = presenterResponse.getError();
       if (error != null) {
@@ -404,12 +409,7 @@ public class MIDSDocumentVerification extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void startMIDSSDKScan(
-    String documentType,
-    String policyVersion,
-    Callback resolve,
-    Callback reject
-  ) {
+  public void startMIDSSDKScan(String documentType, String policyVersion, Callback resolve, Callback reject) {
     this.resolve = resolve;
     this.reject = reject;
 
