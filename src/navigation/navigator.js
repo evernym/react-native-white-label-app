@@ -9,11 +9,9 @@ import { createNativeStackNavigator } from 'react-native-screens/native-stack'
 import {
   createDrawerNavigator,
   DrawerItemList,
-  DrawerItem,
 } from '@react-navigation/drawer'
 import { enableScreens } from 'react-native-screens'
 import VersionNumber from 'react-native-version-number'
-import { useDispatch } from 'react-redux'
 
 import { headerOptionForDrawerStack } from './navigation-header-config'
 
@@ -130,7 +128,6 @@ import { inviteActionScreen } from '../invite-action/invite-action-screen'
 import { ShowCredentialScreen } from '../show-credential/show-credential-modal'
 import { ProofProposalModal } from '../verifier/proof-proposal-modal'
 import { ReceivedProofScreen } from '../verifier/received-proof-modal'
-import { SETTINGS_MENU_BUTTON } from '../feedback/log-to-apptentive'
 
 enableScreens()
 
@@ -139,7 +136,7 @@ const { width } = Dimensions.get('screen')
 const footerIcon = appIcon
 const builtBy = companyName
 
-const drawerComponent = (props: Object, dispatch) => {
+const drawerComponent = (props: Object) => {
   const { state, ...rest } = props
 
   return (
@@ -278,8 +275,6 @@ const extraScreens = customExtraScreens || []
 const extraModals = customExtraModals || []
 
 function AppDrawer(navigation) {
-  const dispatch = useDispatch()
-
   const tabs = menuNavigationOptions.map((option) => {
     const defaultOption = defaultDrawerItemOptions[option.name] || {}
 
@@ -302,7 +297,7 @@ function AppDrawer(navigation) {
 
   return (
     <Drawer.Navigator
-      drawerContent={(props) => drawerComponent(props, dispatch)}
+      drawerContent={(props) => drawerComponent(props)}
       drawerContentOptions={drawerContentOptions}
       drawerStyle={drawerStyle}
       initialRouteName={homeDrawerRoute}

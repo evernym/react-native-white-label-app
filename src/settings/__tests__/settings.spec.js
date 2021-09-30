@@ -59,6 +59,7 @@ describe('user settings screen', () => {
       giveAppFeedbackButtonInSetting: jest.fn(),
       disableTouchIdAction: jest.fn(),
       enableTouchIdAction: jest.fn(),
+      onSettingPress: jest.fn(),
     }
   }
 

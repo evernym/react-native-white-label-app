@@ -266,13 +266,15 @@ export class Settings extends Component<SettingsProps, SettingsState> {
         customLogger.log(e)
       })
     }
-    this._unsubscribe = this.props.navigation.addListener('focus', () => {
-      this.props.onSettingPress()
-    });
+    if (this.props.navigation) {
+      this._unsubscribe = this.props.navigation.addListener('focus', () => {
+        this.props.onSettingPress()
+      });
+    }
   }
 
   componentWillUnmount() {
-    if (_unsubscribe) {
+    if (this._unsubscribe) {
       this._unsubscribe()
     }
   }
