@@ -131,3 +131,11 @@ dependencies {
 cat <<EOT >> android/app/build.gradle
 $dependencies
 EOT
+
+echo "12. Apply fonts"
+fonts="
+apply from: \"../../node_modules/react-native-vector-icons/fonts.gradle\"
+"
+cat <<EOT >> android/app/build.gradle
+$fonts
+EOT

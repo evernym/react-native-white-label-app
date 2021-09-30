@@ -140,6 +140,12 @@ In order to configure the building of your application for an Android platform, 
    }
    ```
 
+1. Add fonts in your `android/app/build.gradle`:
+
+    ```groovy
+    apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
+    ```
+
 1. Set default configuration for the camera in your `android/app/build.gradle`:
 
    ```groovy
