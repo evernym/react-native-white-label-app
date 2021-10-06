@@ -2064,7 +2064,7 @@ export function* historyEventOccurredSaga(
         physicalIdDid,
         PHYSICAL_ID_DOCUMENT_SUBMITTED
       )
-      historyEvent = convertPhysicalIdDocumentIssuanceFailedEvent(event, {})
+      historyEvent = convertPhysicalIdDocumentIssuanceFailedEvent(event, documentSubmittedEvent)
       if (documentSubmittedEvent) {
         yield put(deleteHistoryEvent(documentSubmittedEvent))
       }
