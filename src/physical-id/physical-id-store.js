@@ -44,7 +44,7 @@ import {
   UPDATE_SDK_INIT_STATUS,
   sdkStatus,
   ERROR_PHYSICAL_ID_SDK,
-  PHYSICAL_ID_CONNECTION_START, RECEIVED_MESSAGE,
+  PHYSICAL_ID_CONNECTION_START,
 } from './physical-id-type'
 import {
   getSdkToken,
@@ -81,7 +81,6 @@ import {
   GET_MESSAGES_FAIL,
   GET_MESSAGES_SUCCESS,
 } from '../store/type-config-store'
-import type {QuestionReceivedAction} from '../question/type-question';
 
 const initialState = {
   sdkInitStatus: sdkStatus.IDLE,
@@ -156,16 +155,6 @@ export const physicalIdDocumentIssuanceFailedAction = (
   uid,
   data,
 })
-
-export const messageReceived = (
-  message: any
-): QuestionReceivedAction => {
-  console.log("messageReceived".toUpperCase(), message)
-  return {
-    type: RECEIVED_MESSAGE,
-    message,
-  }
-}
 
 export function* ensureSdkInitSuccess(): Generator<*, *, *> {
   let status = yield select(selectSdkStatus)
@@ -290,17 +279,17 @@ function* launchPhysicalIdSDKSaga(
     verityFlowBaseUrl,
     credDefId,
   })
-  if (issueCredentialError) {
-    // something went wrong while asking to issue credential
-    yield put(
-      updatePhysicalIdStatus(physicalIdProcessStatus.SEND_ISSUE_CREDENTIAL_FAIL)
-    )
-    yield put(
-      physicalIdDocumentIssuanceFailedAction(workflowId, issueCredentialError)
-    )
-    yield call(showSnackError, issueCredentialError.message)
-    return
-  }
+  // if (issueCredentialError) {
+  //   // something went wrong while asking to issue credential
+  //   yield put(
+  //     updatePhysicalIdStatus(physicalIdProcessStatus.SEND_ISSUE_CREDENTIAL_FAIL)
+  //   )
+  //   yield put(
+  //     physicalIdDocumentIssuanceFailedAction(workflowId, issueCredentialError)
+  //   )
+  //   yield call(showSnackError, issueCredentialError.message)
+  //   return
+  // }
 
   yield put(
     updatePhysicalIdStatus(
@@ -837,7 +826,7 @@ export default function physicalIdReducer(
         reports: {
           ...state.reports,
           [action.uid]: {
-            payload: action.additionalData
+            payload: action.data
           }
         }
       }

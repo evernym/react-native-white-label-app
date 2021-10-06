@@ -9,6 +9,7 @@ import { ProofRequestStore } from '../proof-request/type-proof-request'
 import { CLAIM_OFFER_STATUS, ClaimOfferPayload, ClaimOfferStore } from '../claim-offer/type-claim-offer'
 import { QuestionStoreData } from '../question/type-question'
 import { HISTORY_EVENT_STATUS } from '../connection-history/type-connection-history'
+import {PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED} from '../physical-id/physical-id-type';
 
 
 export const isConnectionCompleted = (connection: Connection) => !connection.isFetching
@@ -53,7 +54,7 @@ export const isNewEvent = (status: string, show?: boolean) => {
       status === HISTORY_EVENT_STATUS.PROOF_REQUEST_RECEIVED ||
       status === HISTORY_EVENT_STATUS.QUESTION_RECEIVED ||
       status === HISTORY_EVENT_STATUS.INVITE_ACTION_RECEIVED ||
-      status === HISTORY_EVENT_STATUS.RECEIVED_MESSAGE) &&
+      status === HISTORY_EVENT_STATUS.PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED) &&
     show
   ) {
     return true

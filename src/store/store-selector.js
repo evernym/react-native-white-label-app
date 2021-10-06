@@ -803,4 +803,3 @@ export const getDeepLinkStatus = (state: Store, smsToken: string) =>
   state.deepLink.tokens[smsToken]?.status
 
 export const getPhysicalReport = (state: Store, uid: string) => state.physicalId.reports[uid].payload
-

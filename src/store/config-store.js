@@ -1045,7 +1045,6 @@ function* handleAriesMessage(
     }
   } catch (e) {
     captureError(e)
-    console.log(123123123, e)
     yield put(
       fetchAdditionalDataError({
         code: 'OCS-000',

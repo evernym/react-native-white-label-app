@@ -4,20 +4,27 @@ import React from 'react'
 import { Text, View, StyleSheet } from 'react-native'
 import LottieView from 'lottie-react-native'
 import { moderateScale, verticalScale } from 'react-native-size-matters'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 
-import {colors, fontSises, fontSizes} from '../common/styles'
+import {colors, fontSizes} from '../common/styles'
 import { Button } from '../components/buttons/button'
-import { Container } from '../components'
-import {CustomQuestionModal} from '../external-imports'
-import {modalOptions} from '../connection-details/utils/modalOptions'
-import {homeRoute, physicalIdModalReportRoute, questionRoute} from '../common'
-import {getPhysicalReport} from '../store/store-selector'
+import { CustomQuestionModal } from '../external-imports'
+import { modalOptions } from '../connection-details/utils/modalOptions'
+import { homeRoute, problemReportModalRoute } from '../common'
+import { getPhysicalReport } from '../store/store-selector'
+import { removeEvent } from '../connection-history/connection-history-store'
 
-const PhysicalIdModalReport = ({ navigation, route }) => {
+const ProblemModalReport = ({ navigation, route }) => {
   const uid: ?string = route.params?.uid || null
   const report = useSelector(state => getPhysicalReport(state, uid))
+  const dispatch = useDispatch()
+
   console.log(report)
+
+  const onPress = () => {
+    dispatch(removeEvent(uid, problemReportModalRoute))
+    navigation.navigate(homeRoute)
+  }
 
   return (
     <>
@@ -33,7 +40,7 @@ const PhysicalIdModalReport = ({ navigation, route }) => {
         </Text>
       </View>
       <Button
-        onPress={() => navigation.navigate(homeRoute)}
+        onPress={onPress}
         labelStyle={styles.greenButtonLabel}
         label={"Ok"}
       />
@@ -73,9 +80,9 @@ const navigationOptions =
   (CustomQuestionModal && CustomQuestionModal.navigationOptions) ||
   modalOptions("ID Verification failed", 'CloseIcon')
 
-export const physicalIdModalReport = {
-  routeName: physicalIdModalReportRoute,
-  screen: PhysicalIdModalReport
+export const problemModalReport = {
+  routeName: problemReportModalRoute,
+  screen: ProblemModalReport
 }
 
-physicalIdModalReport.screen.navigationOptions = navigationOptions
+problemModalReport.screen.navigationOptions = navigationOptions

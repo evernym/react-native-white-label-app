@@ -4,12 +4,10 @@ import { ERROR_SEND_PROOF, UPDATE_ATTRIBUTE_CLAIM } from '../proof/type-proof'
 import {
   claimOfferRoute,
   inviteActionRoute,
-  physicalIdModalReportRoute,
+  problemReportModalRoute,
   proofRequestRoute,
   questionRoute
 } from '../common'
-import {MESSAGE_RECEIVED} from '../invitation/type-invitation';
-import {RECEIVED_MESSAGE} from '../physical-id/physical-id-type';
 
 export const getEventMessage = (item: Object) => {
   const status = item.action
@@ -95,6 +93,6 @@ export const getEventRedirectionRoute = (item: Object) => {
     case HISTORY_EVENT_STATUS.INVITE_ACTION_RECEIVED:
       return inviteActionRoute
     case HISTORY_EVENT_STATUS.PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED:
-      return physicalIdModalReportRoute
+      return problemReportModalRoute
   }
 }

@@ -76,7 +76,8 @@ import {
   homeRoute,
   inviteActionRoute,
   proofProposalRoute,
-  physicalIdRoute, physicalIdModalReportRoute,
+  physicalIdRoute,
+  problemReportModalRoute,
 } from '../common'
 import type { NavigationParams, GenericObject } from '../common/type-common'
 
@@ -118,9 +119,8 @@ import { ATTRIBUTE_TYPE } from '../proof-request/type-proof-request'
 import { flattenAsync } from '../common/flatten-async'
 import { Platform } from 'react-native'
 import { usePushNotifications, vcxPushType } from '../external-imports'
-import {inviteActionReceived, selectInviteAction} from '../invite-action/invite-action-store'
-import {messageReceived, physicalIdDocumentIssuanceFailedAction} from '../physical-id/physical-id-store';
-import type {InviteActionPayload} from '../invite-action/type-invite-action';
+import { inviteActionReceived } from '../invite-action/invite-action-store'
+import { physicalIdDocumentIssuanceFailedAction } from '../physical-id/physical-id-store'
 
 const blackListedRoute = {
   [proofRequestRoute]: proofRequestRoute,
@@ -657,7 +657,6 @@ function* redirectToRelevantScreen(notification: RedirectToRelevantScreen) {
     remotePairwiseDID,
     forDID,
   } = notification
-  console.log("redirectToRelevantScreen".toUpperCase(), notification)
   if (uiType || type) {
     let routeToDirect = null
     switch (uiType || type) {
@@ -688,7 +687,7 @@ function* redirectToRelevantScreen(notification: RedirectToRelevantScreen) {
 
       case MESSAGE_TYPE.PROBLEM_REPORT:
       case MESSAGE_TYPE.PROBLEM_REPORT.toLowerCase():
-        routeToDirect = physicalIdModalReportRoute
+        routeToDirect = problemReportModalRoute
         break
     }
 
