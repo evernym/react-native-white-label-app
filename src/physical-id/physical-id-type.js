@@ -75,6 +75,8 @@ export type PhysicalIdSdkInitAction = {
 
 export const STOP_PHYSICAL_ID = 'STOP_PHYSICAL_ID'
 
+export const RECEIVED_MESSAGE = 'RECEIVED_MESSAGE'
+
 export const LAUNCH_PHYSICAL_ID_SDK = 'LAUNCH_PHYSICAL_ID_SDK'
 export type LaunchPhysicalIdSDKAction = {
   type: typeof LAUNCH_PHYSICAL_ID_SDK,

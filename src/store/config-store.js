@@ -977,6 +977,15 @@ function* handleAriesMessage(
       yield call(updateVerifierState, message)
     }
 
+    if (payloadType.name === 'message') {
+      const payloadMessage = JSON.parse(message)
+      const content = JSON.parse(payloadMessage.content)
+      if (content.kind === 'document-issuer-error') {
+        additionalData = content
+        messageType = MESSAGE_TYPE.PROBLEM_REPORT
+      }
+    }
+
     if (payloadType.name === 'problem-report') {
       const payloadMessageType = JSON.parse(message)['@type']
       if (payloadMessageType && payloadMessageType.includes('present-proof')) {
@@ -1036,6 +1045,7 @@ function* handleAriesMessage(
     }
   } catch (e) {
     captureError(e)
+    console.log(123123123, e)
     yield put(
       fetchAdditionalDataError({
         code: 'OCS-000',

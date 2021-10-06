@@ -76,7 +76,7 @@ import {
   homeRoute,
   inviteActionRoute,
   proofProposalRoute,
-  physicalIdRoute,
+  physicalIdRoute, physicalIdModalReportRoute,
 } from '../common'
 import type { NavigationParams, GenericObject } from '../common/type-common'
 
@@ -118,7 +118,9 @@ import { ATTRIBUTE_TYPE } from '../proof-request/type-proof-request'
 import { flattenAsync } from '../common/flatten-async'
 import { Platform } from 'react-native'
 import { usePushNotifications, vcxPushType } from '../external-imports'
-import { inviteActionReceived } from '../invite-action/invite-action-store'
+import {inviteActionReceived, selectInviteAction} from '../invite-action/invite-action-store'
+import {messageReceived, physicalIdDocumentIssuanceFailedAction} from '../physical-id/physical-id-store';
+import type {InviteActionPayload} from '../invite-action/type-invite-action';
 
 const blackListedRoute = {
   [proofRequestRoute]: proofRequestRoute,
@@ -636,6 +638,11 @@ export function* updatePayloadToRelevantStoreSaga(
       case MESSAGE_TYPE.INVITE_ACTION:
         yield put(inviteActionReceived(additionalData))
         break
+
+      case MESSAGE_TYPE.PROBLEM_REPORT:
+      case MESSAGE_TYPE.PROBLEM_REPORT.toLowerCase():
+        yield put(physicalIdDocumentIssuanceFailedAction(uid, additionalData))
+        break
     }
   }
 }
@@ -650,6 +657,7 @@ function* redirectToRelevantScreen(notification: RedirectToRelevantScreen) {
     remotePairwiseDID,
     forDID,
   } = notification
+  console.log("redirectToRelevantScreen".toUpperCase(), notification)
   if (uiType || type) {
     let routeToDirect = null
     switch (uiType || type) {
@@ -676,6 +684,11 @@ function* redirectToRelevantScreen(notification: RedirectToRelevantScreen) {
       case MESSAGE_TYPE.PRESENTATION_PROPOSAL:
       case MESSAGE_TYPE.PRESENTATION_PROPOSAL.toLowerCase():
         routeToDirect = proofProposalRoute
+        break
+
+      case MESSAGE_TYPE.PROBLEM_REPORT:
+      case MESSAGE_TYPE.PROBLEM_REPORT.toLowerCase():
+        routeToDirect = physicalIdModalReportRoute
         break
     }
 

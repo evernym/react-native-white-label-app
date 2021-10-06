@@ -1,7 +1,15 @@
 import { HISTORY_EVENT_STATUS } from '../connection-history/type-connection-history'
 import { PAID_CREDENTIAL_REQUEST_FAIL, SEND_CLAIM_REQUEST_FAIL } from '../claim-offer/type-claim-offer'
 import { ERROR_SEND_PROOF, UPDATE_ATTRIBUTE_CLAIM } from '../proof/type-proof'
-import { claimOfferRoute, inviteActionRoute, proofRequestRoute, questionRoute } from '../common'
+import {
+  claimOfferRoute,
+  inviteActionRoute,
+  physicalIdModalReportRoute,
+  proofRequestRoute,
+  questionRoute
+} from '../common'
+import {MESSAGE_RECEIVED} from '../invitation/type-invitation';
+import {RECEIVED_MESSAGE} from '../physical-id/physical-id-type';
 
 export const getEventMessage = (item: Object) => {
   const status = item.action
@@ -86,5 +94,7 @@ export const getEventRedirectionRoute = (item: Object) => {
       return questionRoute
     case HISTORY_EVENT_STATUS.INVITE_ACTION_RECEIVED:
       return inviteActionRoute
+    case HISTORY_EVENT_STATUS.PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED:
+      return physicalIdModalReportRoute
   }
 }

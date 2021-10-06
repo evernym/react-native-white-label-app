@@ -52,7 +52,8 @@ export const isNewEvent = (status: string, show?: boolean) => {
     (status === HISTORY_EVENT_STATUS.CLAIM_OFFER_RECEIVED ||
       status === HISTORY_EVENT_STATUS.PROOF_REQUEST_RECEIVED ||
       status === HISTORY_EVENT_STATUS.QUESTION_RECEIVED ||
-      status === HISTORY_EVENT_STATUS.INVITE_ACTION_RECEIVED) &&
+      status === HISTORY_EVENT_STATUS.INVITE_ACTION_RECEIVED ||
+      status === HISTORY_EVENT_STATUS.RECEIVED_MESSAGE) &&
     show
   ) {
     return true

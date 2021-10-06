@@ -44,7 +44,7 @@ import {
   UPDATE_SDK_INIT_STATUS,
   sdkStatus,
   ERROR_PHYSICAL_ID_SDK,
-  PHYSICAL_ID_CONNECTION_START,
+  PHYSICAL_ID_CONNECTION_START, RECEIVED_MESSAGE,
 } from './physical-id-type'
 import {
   getSdkToken,
@@ -81,6 +81,7 @@ import {
   GET_MESSAGES_FAIL,
   GET_MESSAGES_SUCCESS,
 } from '../store/type-config-store'
+import type {QuestionReceivedAction} from '../question/type-question';
 
 const initialState = {
   sdkInitStatus: sdkStatus.IDLE,
@@ -89,6 +90,7 @@ const initialState = {
   physicalIdDid: null,
   physicalIdConnectionStatus: physicalIdConnectionStatus.IDLE,
   documentTypes: null,
+  reports: null
 }
 
 export const physicalIdSdkInit = () => ({
@@ -148,12 +150,22 @@ export const physicalIdDocumentSubmittedAction = (
 
 export const physicalIdDocumentIssuanceFailedAction = (
   uid: string,
-  error: ?CustomError
+  data: any
 ) => ({
   type: PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED,
   uid,
-  error,
+  data,
 })
+
+export const messageReceived = (
+  message: any
+): QuestionReceivedAction => {
+  console.log("messageReceived".toUpperCase(), message)
+  return {
+    type: RECEIVED_MESSAGE,
+    message,
+  }
+}
 
 export function* ensureSdkInitSuccess(): Generator<*, *, *> {
   let status = yield select(selectSdkStatus)
@@ -818,6 +830,16 @@ export default function physicalIdReducer(
         error: null,
         sdkInitStatus: sdkStatus.IDLE,
         status: physicalIdProcessStatus.IDLE,
+      }
+    case PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED:
+      return {
+        ...state,
+        reports: {
+          ...state.reports,
+          [action.uid]: {
+            payload: action.additionalData
+          }
+        }
       }
     default:
       return state

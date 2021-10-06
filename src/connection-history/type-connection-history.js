@@ -91,7 +91,11 @@ import type {
   ProofVerificationFailedAction,
   ProofVerifiedAction,
 } from '../verifier/type-verifier'
-import { PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED, PHYSICAL_ID_DOCUMENT_SUBMITTED } from '../physical-id/physical-id-type'
+import {
+  PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED,
+  PHYSICAL_ID_DOCUMENT_SUBMITTED,
+  RECEIVED_MESSAGE
+} from '../physical-id/physical-id-type'
 import type {
   PhysicalIdDocumentIssuanceFailedAction,
   PhysicalIdDocumentSubmittedAction,
@@ -139,6 +143,7 @@ export const HISTORY_EVENT_STATUS = {
   [PROOF_VERIFICATION_FAILED]: PROOF_VERIFICATION_FAILED,
   [PHYSICAL_ID_DOCUMENT_SUBMITTED]: PHYSICAL_ID_DOCUMENT_SUBMITTED,
   [PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED]: PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED,
+  [RECEIVED_MESSAGE]: RECEIVED_MESSAGE,
 }
 
 export const HISTORY_EVENT_TYPE = {

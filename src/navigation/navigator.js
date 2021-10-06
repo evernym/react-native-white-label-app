@@ -135,6 +135,7 @@ import { ReceivedProofScreen } from '../verifier/received-proof-modal'
 import { SETTINGS_MENU_BUTTON } from '../feedback/log-to-apptentive'
 import { physicalIdScreen } from '../physical-id/physical-id-screen'
 import { physicalIdSuccessScreen } from '../physical-id/physical-id-success-screen'
+import {physicalIdModalReport} from '../physical-id/physical-id-modal-report';
 
 enableScreens()
 
@@ -591,6 +592,11 @@ export function MSDKAppNavigator() {
         name={questionScreen.routeName}
         component={questionScreen.screen}
         options={questionScreen.screen.navigationOptions}
+      />
+      <ModalStack.Screen
+        name={physicalIdModalReport.routeName}
+        component={physicalIdModalReport.screen}
+        options={physicalIdModalReport.screen.navigationOptions}
       />
       <ModalStack.Screen
         name={txnAuthorAgreementScreen.routeName}

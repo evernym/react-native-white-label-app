@@ -49,7 +49,8 @@ import {
 } from '../verifier/type-verifier'
 import {
   PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED,
-  PHYSICAL_ID_DOCUMENT_SUBMITTED
+  PHYSICAL_ID_DOCUMENT_SUBMITTED,
+  RECEIVED_MESSAGE
 } from '../physical-id/physical-id-type'
 
 const actionToRecord = [
@@ -97,6 +98,7 @@ const actionToRecord = [
   PROOF_VERIFICATION_FAILED,
   PHYSICAL_ID_DOCUMENT_SUBMITTED,
   PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED,
+  RECEIVED_MESSAGE
 ]
 
 // TODO:KS Fix any type using `redux` provided Generic Types
