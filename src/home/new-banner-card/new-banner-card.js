@@ -38,7 +38,7 @@ const NewBannerCardComponent = (props: NewBannerCardProps) => {
           accessible={true}
           accessibilityLabel="new-message"
           onPress={() =>
-            props.navigation.navigate(props.navigationRoute, { uid: props.uid })
+            props.navigation.navigate(props.navigationRoute, { uid: props.uid, event: props.event })
           }
         >
           <View style={styles.iconSection}>

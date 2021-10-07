@@ -641,7 +641,10 @@ export function* updatePayloadToRelevantStoreSaga(
 
       case MESSAGE_TYPE.PROBLEM_REPORT:
       case MESSAGE_TYPE.PROBLEM_REPORT.toLowerCase():
-        yield put(physicalIdDocumentIssuanceFailedAction(uid, additionalData))
+        yield put(physicalIdDocumentIssuanceFailedAction(
+          additionalData.thid,
+          additionalData.description
+        ))
         break
     }
   }

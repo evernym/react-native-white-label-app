@@ -89,6 +89,7 @@ export const HomeScreen = (props: HomeProps) => {
         logoUrl={item.senderLogoUrl}
         uid={item.originalPayload.payloadInfo.uid}
         issuerName={item.senderName}
+        event={item}
       />
     )
   }, [props])

@@ -61,7 +61,6 @@ import { ResponseType } from '../components/request/type-request'
 import {
   ensureAppHydrated,
   getUnacknowledgedMessages,
-  showSnackError,
 } from '../store/config-store'
 import {
   getConnectionByProp,
@@ -149,11 +148,11 @@ export const physicalIdDocumentSubmittedAction = (
 
 export const physicalIdDocumentIssuanceFailedAction = (
   uid: string,
-  data: any
+  error: string
 ) => ({
   type: PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED,
   uid,
-  data,
+  error,
 })
 
 export function* ensureSdkInitSuccess(): Generator<*, *, *> {
@@ -211,6 +210,8 @@ function* launchPhysicalIdSDKSaga(
       }
       yield put(updatePhysicalIdStatus(physicalIdProcessStatus.SDK_INIT_FAIL))
       return
+    } else {
+      break
     }
   }
 
@@ -264,12 +265,10 @@ function* launchPhysicalIdSDKSaga(
     return
   }
 
-  yield put(physicalIdDocumentSubmittedAction(workflowId, action.documentType))
-
   // TODO:KS Get a new hardware token here again, to make auth more stronger
   // now we have connection, and we also have the workflow data
   // we can now issue the credential
-  const [issueCredentialError] = yield call(flattenAsync(issueCredential), {
+  yield spawn(submitDocuments, {
     workflowId,
     connectionDID: relationshipId,
     hardwareToken: 'something-fails-for-now-till-we-add-auth',
@@ -279,23 +278,26 @@ function* launchPhysicalIdSDKSaga(
     verityFlowBaseUrl,
     credDefId,
   })
-  // if (issueCredentialError) {
-  //   // something went wrong while asking to issue credential
-  //   yield put(
-  //     updatePhysicalIdStatus(physicalIdProcessStatus.SEND_ISSUE_CREDENTIAL_FAIL)
-  //   )
-  //   yield put(
-  //     physicalIdDocumentIssuanceFailedAction(workflowId, issueCredentialError)
-  //   )
-  //   yield call(showSnackError, issueCredentialError.message)
-  //   return
-  // }
 
+  yield put(physicalIdDocumentSubmittedAction(workflowId, action.documentType))
   yield put(
     updatePhysicalIdStatus(
       physicalIdProcessStatus.SEND_ISSUE_CREDENTIAL_SUCCESS
     )
   )
+}
+
+function *submitDocuments(data: any): Generator<*, *, *> {
+  const [issueCredentialError] = yield call(flattenAsync(issueCredential), data)
+  if (issueCredentialError) {
+    // something went wrong while asking to issue credential
+    yield put(
+      updatePhysicalIdStatus(physicalIdProcessStatus.SEND_ISSUE_CREDENTIAL_FAIL)
+    )
+    yield put(
+      physicalIdDocumentIssuanceFailedAction(data.workflowId, issueCredentialError.message)
+    )
+  }
 }
 
 function* getRelationshipId(connectionDID: string): Generator<*, *, *> {
@@ -819,16 +821,6 @@ export default function physicalIdReducer(
         error: null,
         sdkInitStatus: sdkStatus.IDLE,
         status: physicalIdProcessStatus.IDLE,
-      }
-    case PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED:
-      return {
-        ...state,
-        reports: {
-          ...state.reports,
-          [action.uid]: {
-            payload: action.data
-          }
-        }
       }
     default:
       return state

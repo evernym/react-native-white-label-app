@@ -4,7 +4,7 @@ import { all, takeEvery, put, call, select } from 'redux-saga/effects'
 import merge from 'lodash.merge'
 import {
   claimOfferRoute,
-  inviteActionRoute, problemReportModalRoute,
+  inviteActionRoute,
   proofRequestRoute,
   questionRoute,
 } from '../common'
@@ -1177,16 +1177,16 @@ export function convertPhysicalIdDocumentIssuanceFailedEvent(
   return {
     action: HISTORY_EVENT_STATUS[PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED],
     // $FlowFixMe
-    data: documentSubmittedEvent?.data,
+    data: { uid: action.uid, error: action.error },
     id: uuid(),
-    name: documentSubmittedEvent?.name,
+    name: documentSubmittedEvent.name,
     status: HISTORY_EVENT_STATUS[PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED],
     timestamp: moment().format(),
     type: HISTORY_EVENT_TYPE.PHYSICAL_ID,
-    remoteDid: documentSubmittedEvent?.remoteDid,
+    remoteDid: documentSubmittedEvent.remoteDid,
     originalPayload: { payloadInfo : { ...action } },
-    senderName: documentSubmittedEvent?.senderName,
-    senderLogoUrl: documentSubmittedEvent?.senderLogoUrl,
+    senderName: documentSubmittedEvent.senderName,
+    senderLogoUrl: documentSubmittedEvent.senderLogoUrl,
     showBadge: true,
   }
 }
@@ -2041,15 +2041,20 @@ export function* historyEventOccurredSaga(
 
     if (event.type === PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED) {
       let physicalIdDid = yield select(selectPhysicalIdDid)
+      const existingPhysicalIdDocumentIssuanceFailedEvent = yield select(
+        getPendingHistory,
+        event.uid,
+        physicalIdDid,
+        PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED
+      )
       const documentSubmittedEvent = yield select(
         getPendingHistory,
         event.uid,
         physicalIdDid,
         PHYSICAL_ID_DOCUMENT_SUBMITTED
       )
-      historyEvent = convertPhysicalIdDocumentIssuanceFailedEvent(event, documentSubmittedEvent)
-      if (documentSubmittedEvent) {
-        yield put(deleteHistoryEvent(documentSubmittedEvent))
+      if (!existingPhysicalIdDocumentIssuanceFailedEvent) {
+        historyEvent = convertPhysicalIdDocumentIssuanceFailedEvent(event, documentSubmittedEvent)
       }
     }
 
@@ -2098,16 +2103,6 @@ export function* removeEventSaga(
     )
     eventType = MESSAGE_TYPE.INVITE_ACTION
     remotePairwiseDID = inviteActionPayload.remotePairwiseDID
-  } else if (action.navigationRoute === problemReportModalRoute) {
-    let physicalIdDid = yield select(selectPhysicalIdDid)
-    // const documentSubmittedEvent = yield select(
-    //   getPendingHistory,
-    //   event.uid,
-    //   physicalIdDid,
-    //   PHYSICAL_ID_DOCUMENT_SUBMITTED
-    // )
-    eventType = MESSAGE_TYPE.PROBLEM_REPORT
-    remotePairwiseDID = physicalIdDid
   }
 
   if (eventType && remotePairwiseDID) {
@@ -2123,7 +2118,7 @@ export function* removeEventSaga(
 }
 
 export function* watchRecordHistoryEvent(): any {
-  yield takeEvery([RECORD_HISTORY_EVENT, DELETE_HISTORY_EVENT], persistHistory)
+  yield takeEvery([RECORD_HISTORY_EVENT, DELETE_HISTORY_EVENT, UPDATE_HISTORY_EVENT], persistHistory)
 }
 
 export function* watchNewConnectionSeen(): any {

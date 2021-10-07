@@ -4,25 +4,24 @@ import React from 'react'
 import { Text, View, StyleSheet } from 'react-native'
 import LottieView from 'lottie-react-native'
 import { moderateScale, verticalScale } from 'react-native-size-matters'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
-import {colors, fontSizes} from '../common/styles'
+import { colors, fontSizes } from '../common/styles'
 import { Button } from '../components/buttons/button'
-import { CustomQuestionModal } from '../external-imports'
 import { modalOptions } from '../connection-details/utils/modalOptions'
 import { homeRoute, problemReportModalRoute } from '../common'
-import { getPhysicalReport } from '../store/store-selector'
-import { removeEvent } from '../connection-history/connection-history-store'
+import { updateHistoryEvent } from '../connection-history/connection-history-store'
 
-const ProblemModalReport = ({ navigation, route }) => {
-  const uid: ?string = route.params?.uid || null
-  const report = useSelector(state => getPhysicalReport(state, uid))
+const ProblemModalReport = ({ navigation, route }: any) => {
+  const event = route.params?.event || {}
+
   const dispatch = useDispatch()
 
-  console.log(report)
-
   const onPress = () => {
-    dispatch(removeEvent(uid, problemReportModalRoute))
+    dispatch(updateHistoryEvent({
+      ...event,
+      showBadge: false,
+    }))
     navigation.navigate(homeRoute)
   }
 
@@ -36,13 +35,15 @@ const ProblemModalReport = ({ navigation, route }) => {
           style={styles.across}
         />
         <Text style={styles.errorDescription}>
-          {report.description}
+          {
+            event.data ? event.data.error : 'Failed to issue ID documents'
+          }
         </Text>
       </View>
       <Button
         onPress={onPress}
         labelStyle={styles.greenButtonLabel}
-        label={"Ok"}
+        label={'Ok'}
       />
     </>
   )
@@ -54,35 +55,33 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingTop: moderateScale(16)
+    paddingTop: moderateScale(16),
   },
   errorDescription: {
     color: colors.gray1,
     fontSize: moderateScale(22),
     textAlign: 'center',
-    marginVertical: 20
+    marginVertical: 20,
   },
   darkLabel: {
     fontSize: moderateScale(17),
-    color: colors.gray1
+    color: colors.gray1,
   },
   greenButtonLabel: {
     fontSize: verticalScale(fontSizes.size4),
-    color: colors.white
+    color: colors.white,
   },
   across: {
     width: 120,
-    height: 120
-  }
+    height: 120,
+  },
 })
 
-const navigationOptions =
-  (CustomQuestionModal && CustomQuestionModal.navigationOptions) ||
-  modalOptions("ID Verification failed", 'CloseIcon')
+const navigationOptions = modalOptions('ID Verification failed', 'CloseIcon')
 
 export const problemModalReport = {
   routeName: problemReportModalRoute,
-  screen: ProblemModalReport
+  screen: ProblemModalReport,
 }
 
 problemModalReport.screen.navigationOptions = navigationOptions

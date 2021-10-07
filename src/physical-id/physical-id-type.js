@@ -131,7 +131,7 @@ export const PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED =
 export type PhysicalIdDocumentIssuanceFailedAction = {
   type: typeof PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED,
   uid: string,
-  error: ?CustomError,
+  error: string,
 }
 
 export type PhysicalIdStoreAction =
