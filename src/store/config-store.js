@@ -985,7 +985,6 @@ function* handleAriesMessage(
         additionalData = content
         uid = content['uid']
         messageType = MESSAGE_TYPE.PROBLEM_REPORT
-        yield put(physicalIdDocumentIssuanceFailedAction(uid, content['error']))
       }
     }
 

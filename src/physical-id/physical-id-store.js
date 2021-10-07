@@ -294,9 +294,9 @@ function *submitDocuments(data: any): Generator<*, *, *> {
     yield put(
       updatePhysicalIdStatus(physicalIdProcessStatus.SEND_ISSUE_CREDENTIAL_FAIL)
     )
-    yield put(
-      physicalIdDocumentIssuanceFailedAction(data.workflowId, issueCredentialError.message)
-    )
+    // yield put(
+    //   physicalIdDocumentIssuanceFailedAction(data.workflowId, issueCredentialError.message)
+    // )
   }
 }
 
