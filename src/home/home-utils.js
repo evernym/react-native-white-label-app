@@ -76,7 +76,7 @@ export const getEventMessage = (item: Object) => {
   } else if (status === HISTORY_EVENT_STATUS.PHYSICAL_ID_DOCUMENT_SUBMITTED) {
     return `You submitted ID documents`
   } else if (status === HISTORY_EVENT_STATUS.PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED) {
-    return `Failed to issue ID documents`
+    return `ID verification failed: ${item && item.data && item.data.error ? item.data.error : ''}`
   } else {
     return null
   }

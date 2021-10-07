@@ -140,6 +140,7 @@ import {
   SWITCH_ENVIRONMENT,
   SWITCH_ERROR_ALERTS,
 } from '../switch-environment/type-switch-environment'
+import { physicalIdDocumentIssuanceFailedAction } from '../physical-id/physical-id-store'
 
 const initialState: ConfigStore = {
   ...environments[defaultEnvironment],
@@ -982,7 +983,9 @@ function* handleAriesMessage(
       const content = JSON.parse(payloadMessage.content)
       if (content.kind === 'document-issuer-error') {
         additionalData = content
+        uid = content['uid']
         messageType = MESSAGE_TYPE.PROBLEM_REPORT
+        yield put(physicalIdDocumentIssuanceFailedAction(uid, content['error']))
       }
     }
 

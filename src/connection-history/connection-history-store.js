@@ -5,6 +5,7 @@ import merge from 'lodash.merge'
 import {
   claimOfferRoute,
   inviteActionRoute,
+  problemReportModalRoute,
   proofRequestRoute,
   questionRoute,
 } from '../common'
@@ -1184,7 +1185,10 @@ export function convertPhysicalIdDocumentIssuanceFailedEvent(
     timestamp: moment().format(),
     type: HISTORY_EVENT_TYPE.PHYSICAL_ID,
     remoteDid: documentSubmittedEvent.remoteDid,
-    originalPayload: { payloadInfo : { ...action } },
+    originalPayload: {
+      type: PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED,
+      payloadInfo : { ...action }
+    },
     senderName: documentSubmittedEvent.senderName,
     senderLogoUrl: documentSubmittedEvent.senderLogoUrl,
     showBadge: true,
@@ -2103,6 +2107,10 @@ export function* removeEventSaga(
     )
     eventType = MESSAGE_TYPE.INVITE_ACTION
     remotePairwiseDID = inviteActionPayload.remotePairwiseDID
+  } else if (action.navigationRoute === problemReportModalRoute) {
+    const physicalIdDid = yield select(selectPhysicalIdDid)
+    eventType = PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED
+    remotePairwiseDID = physicalIdDid
   }
 
   if (eventType && remotePairwiseDID) {
@@ -2113,7 +2121,17 @@ export function* removeEventSaga(
       eventType
     )
 
-    if (event) yield put(deleteHistoryEvent(event))
+    if (event) {
+      if (action.navigationRoute === problemReportModalRoute) {
+        yield put(updateHistoryEvent({
+            ...event,
+            showBadge: false,
+        }))
+      } else {
+        yield put(deleteHistoryEvent(event))
+
+      }
+    }
   }
 }
 

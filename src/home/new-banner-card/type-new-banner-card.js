@@ -10,5 +10,4 @@ export type NewBannerCardProps = {
   uid: string,
   issuerName: string,
   removeEvent: typeof removeEvent,
-  event: ConnectionHistoryEvent,
 }

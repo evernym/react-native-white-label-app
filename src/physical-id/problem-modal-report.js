@@ -4,16 +4,29 @@ import React from 'react'
 import { Text, View, StyleSheet } from 'react-native'
 import LottieView from 'lottie-react-native'
 import { moderateScale, verticalScale } from 'react-native-size-matters'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { colors, fontSizes } from '../common/styles'
 import { Button } from '../components/buttons/button'
 import { modalOptions } from '../connection-details/utils/modalOptions'
 import { homeRoute, problemReportModalRoute } from '../common'
 import { updateHistoryEvent } from '../connection-history/connection-history-store'
+import { getHistoryEvent } from '../store/store-selector'
+import { selectPhysicalIdDid } from './physical-id-store'
+import { PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED } from './physical-id-type'
 
 const ProblemModalReport = ({ navigation, route }: any) => {
-  const event = route.params?.event || {}
+  const uid = route.params?.uid || {}
+
+  const physicalIdDid = useSelector(selectPhysicalIdDid)
+  const event = useSelector((state) => {
+    return getHistoryEvent(
+      state,
+      uid,
+      physicalIdDid,
+      PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED,
+    )
+  })
 
   const dispatch = useDispatch()
 
@@ -36,7 +49,7 @@ const ProblemModalReport = ({ navigation, route }: any) => {
         />
         <Text style={styles.errorDescription}>
           {
-            event.data ? event.data.error : 'Failed to issue ID documents'
+            event && event.data ? event.data.error : 'Failed to issue ID documents'
           }
         </Text>
       </View>
