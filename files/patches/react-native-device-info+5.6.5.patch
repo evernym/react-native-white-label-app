@@ -9,3 +9,21 @@ index 712e77a..2cd53ba 100644
 -  s.dependency 'React'
 +  s.dependency 'React-Core'
  end
+diff --git a/node_modules/react-native-device-info/android/src/main/AndroidManifest.xml b/node_modules/react-native-device-info/android/src/main/AndroidManifest.xml
+index 1205f0e..5f31d42 100644
+--- a/node_modules/react-native-device-info/android/src/main/AndroidManifest.xml
++++ b/node_modules/react-native-device-info/android/src/main/AndroidManifest.xml
+@@ -2,13 +2,4 @@
+     xmlns:tools="http://schemas.android.com/tools"
+     package="com.learnium.RNDeviceInfo">
+ 
+-  <application>
+-    <receiver android:name="com.learnium.RNDeviceInfo.RNDeviceReceiver" android:enabled="true" android:exported="true"
+-        tools:ignore="ExportedReceiver">
+-      <intent-filter>
+-        <action android:name="com.android.vending.INSTALL_REFERRER" />
+-      </intent-filter>
+-    </receiver>
+-  </application>
+-
+ </manifest>
