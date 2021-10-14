@@ -74,9 +74,7 @@ jest.doMock('react-native', () => {
           addListener: jest.fn(),
           removeListeners: jest.fn(),
         },
-        RNPermissions: {
-
-        },
+        RNPermissions: {},
       },
       Dimensions: {
         ...ReactNative.Dimensions,
@@ -321,10 +319,6 @@ jest.mock('react-native-gesture-handler', () => {
 jest.mock('react-native-snackbar', () => ({
   show: jest.fn(),
   LENGTH_LONG: 3,
-}))
-
-jest.mock('react-native-localize', () => ({
-  getLocales: () => [{ countryCode: 'US' }],
 }))
 
 jest.mock('reactotron-react-native', () => ({
