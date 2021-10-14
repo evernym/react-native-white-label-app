@@ -468,78 +468,41 @@ exports[`<QuestionScreen /> should match idle state snapshot 1`] = `
             testID="question-title"
           >
             <Text
-              allowFontScaling={false}
+              ellipsizeMode="tail"
+              numberOfLines={2}
+              onTextLayout={[Function]}
               style={
-                Array [
-                  Object {
-                    "fontSize": 23,
-                  },
-                  Object {
-                    "fontFamily": "System",
-                  },
-                  Object {},
-                  Object {
-                    "fontWeight": "bold",
-                  },
-                  null,
-                  null,
-                  null,
-                  null,
-                  null,
-                  null,
-                  null,
-                  null,
-                  null,
-                  null,
-                  null,
-                  null,
-                  Object {
-                    "color": "#505050",
-                  },
-                ]
+                Object {
+                  "color": "#505050",
+                  "fontSize": 23,
+                  "fontWeight": "bold",
+                }
               }
             >
               Survey request for family members
             </Text>
           </View>
-          <Text
-            accessibilityLabel="Hi User,"
-            accessible={true}
-            allowFontScaling={false}
+          <View
             style={
-              Array [
-                Object {
-                  "fontSize": 17,
-                },
-                Object {
-                  "fontFamily": "System",
-                },
-                Object {},
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
+              Object {
+                "marginBottom": 9.571428571428571,
+              }
+            }
+          >
+            <Text
+              ellipsizeMode="tail"
+              numberOfLines={2}
+              onTextLayout={[Function]}
+              style={
                 Object {
                   "color": "#505050",
-                },
-                Object {
-                  "marginBottom": 30,
-                },
-              ]
-            }
-            testID="question-description"
-          >
-            Hi User,
-          </Text>
+                  "fontSize": 17,
+                }
+              }
+            >
+              Hi User,
+            </Text>
+          </View>
           <View
             style={
               Array [
@@ -1259,78 +1222,41 @@ exports[`<QuestionScreen /> should match invalid data 1`] = `
             testID="question-title"
           >
             <Text
-              allowFontScaling={false}
+              ellipsizeMode="tail"
+              numberOfLines={2}
+              onTextLayout={[Function]}
               style={
-                Array [
-                  Object {
-                    "fontSize": 23,
-                  },
-                  Object {
-                    "fontFamily": "System",
-                  },
-                  Object {},
-                  Object {
-                    "fontWeight": "bold",
-                  },
-                  null,
-                  null,
-                  null,
-                  null,
-                  null,
-                  null,
-                  null,
-                  null,
-                  null,
-                  null,
-                  null,
-                  null,
-                  Object {
-                    "color": "#505050",
-                  },
-                ]
+                Object {
+                  "color": "#505050",
+                  "fontSize": 23,
+                  "fontWeight": "bold",
+                }
               }
             >
               Survey request for family members
             </Text>
           </View>
-          <Text
-            accessibilityLabel="Hi User,"
-            accessible={true}
-            allowFontScaling={false}
+          <View
             style={
-              Array [
-                Object {
-                  "fontSize": 17,
-                },
-                Object {
-                  "fontFamily": "System",
-                },
-                Object {},
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
+              Object {
+                "marginBottom": 9.571428571428571,
+              }
+            }
+          >
+            <Text
+              ellipsizeMode="tail"
+              numberOfLines={2}
+              onTextLayout={[Function]}
+              style={
                 Object {
                   "color": "#505050",
-                },
-                Object {
-                  "marginBottom": 30,
-                },
-              ]
-            }
-            testID="question-description"
-          >
-            Hi User,
-          </Text>
+                  "fontSize": 17,
+                }
+              }
+            >
+              Hi User,
+            </Text>
+          </View>
           <View
             style={Object {}}
           >
