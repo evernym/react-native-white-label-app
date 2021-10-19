@@ -7,13 +7,8 @@ import { connect } from 'react-redux'
 import type { Store } from '../store/type-store'
 import type { HomeProps } from './type-home'
 import { CameraButton } from '../components'
-import {
-  homeDrawerRoute,
-  qrCodeScannerTabRoute,
-} from '../common'
-import {
-  getUnacknowledgedMessages,
-} from '../store/config-store'
+import { homeDrawerRoute, qrCodeScannerTabRoute } from '../common'
+import { getUnacknowledgedMessages } from '../store/config-store'
 import { GET_MESSAGES_LOADING } from '../store/type-config-store'
 import { colors } from '../common/styles'
 import { NewBannerCard } from './new-banner-card/new-banner-card'
@@ -32,7 +27,10 @@ import { isNewEvent } from '../store/store-utils'
 import { getEventMessage, getEventRedirectionRoute } from './home-utils'
 import { useIsDrawerOpen } from '@react-navigation/drawer'
 import { useDispatch } from 'react-redux'
-import { CLOSING_THE_SIDE_MENU, OPENING_THE_SIDE_MENU } from '../feedback/log-to-apptentive'
+import {
+  CLOSING_THE_SIDE_MENU,
+  OPENING_THE_SIDE_MENU,
+} from '../feedback/log-to-apptentive'
 
 export const headlineForHomeRoute = homeHeadline || 'Home'
 const showHistoryEvents =
@@ -42,7 +40,7 @@ const showCameraButton =
 
 const keyExtractor = (item: Object) => item.id
 
-const renderEmptyListPlaceholder = () => <EmptyViewPlaceholder/>
+const renderEmptyListPlaceholder = () => <EmptyViewPlaceholder />
 
 export const HomeScreen = (props: HomeProps) => {
   const dispatch = useDispatch()
@@ -66,32 +64,32 @@ export const HomeScreen = (props: HomeProps) => {
     props.getUnacknowledgedMessages()
   }
 
-  const renderRecentCard = useCallback((item: Object) => {
-    const statusMessage = getEventMessage(item)
-    return statusMessage ?
-      <RecentCard
-        status={item.action}
-        timestamp={item.timestamp}
-        statusMessage={statusMessage}
-        issuerName={item.senderName}
-        logoUrl={item.senderLogoUrl}
-        item={item}
-      /> :
-      <View/>
-  })
+  const renderRecentCard = useCallback((item: Object) => (
+    <RecentCard
+      status={item.action}
+      timestamp={item.timestamp}
+      statusMessage={getEventMessage(item)}
+      issuerName={item.senderName}
+      logoUrl={item.senderLogoUrl}
+      item={item}
+    />
+  ))
 
-  const renderNewBannerCard = useCallback((item: Object) => {
-    return (
-      <NewBannerCard
-        navigation={props.navigation}
-        navigationRoute={getEventRedirectionRoute(item)}
-        timestamp={item.timestamp}
-        logoUrl={item.senderLogoUrl}
-        uid={item.originalPayload.payloadInfo.uid}
-        issuerName={item.senderName}
-      />
-    )
-  }, [props])
+  const renderNewBannerCard = useCallback(
+    (item: Object) => {
+      return (
+        <NewBannerCard
+          navigation={props.navigation}
+          navigationRoute={getEventRedirectionRoute(item)}
+          timestamp={item.timestamp}
+          logoUrl={item.senderLogoUrl}
+          uid={item.originalPayload.payloadInfo.uid}
+          issuerName={item.senderName}
+        />
+      )
+    },
+    [props]
+  )
 
   return (
     <View style={styles.outerContainer}>
@@ -101,8 +99,9 @@ export const HomeScreen = (props: HomeProps) => {
         accessible={false}
         accessibilityLabel="home-container"
       >
-        {props.hasNoConnection &&
-        (HomeViewEmptyState ? <HomeViewEmptyState/> : <EmptyState/>)}
+        {props.hasNoConnection ||
+          (props.hasNoRecentConnections &&
+            (HomeViewEmptyState ? <HomeViewEmptyState /> : <EmptyState />))}
         <View style={styles.checkmarkContainer}>
           <FlatList
             keyExtractor={keyExtractor}
@@ -117,7 +116,7 @@ export const HomeScreen = (props: HomeProps) => {
 
         {showHistoryEvents && (
           <>
-            <RecentCardSeparator/>
+            <RecentCardSeparator />
             <View style={styles.recentFlatListContainer}>
               <FlatList
                 keyExtractor={keyExtractor}
@@ -129,11 +128,7 @@ export const HomeScreen = (props: HomeProps) => {
           </>
         )}
       </View>
-      {showCameraButton && (
-        <CameraButton
-          onPress={onCameraButton}
-        />
-      )}
+      {showCameraButton && <CameraButton onPress={onCameraButton} />}
     </View>
   )
 }
@@ -151,7 +146,7 @@ const mapStateToProps = (state: Store) => {
         ) {
           historyEvents.push(...connectionHistory.data)
         }
-      },
+      }
     )
   }
 
@@ -175,14 +170,19 @@ const mapStateToProps = (state: Store) => {
     if (isNewEvent(connection.status, connection.showBadge)) {
       newEvents.push(connection)
     } else {
-      recentEvents.push(connection)
+      const statusMessage = getEventMessage(connection)
+      if (statusMessage) {
+        recentEvents.push(connection)
+      }
     }
   })
 
   const hasNoConnection = historyEvents.length === 0
+  const hasNoRecentConnections = recentEvents.length === 0
 
   return {
     hasNoConnection,
+    hasNoRecentConnections,
     newBannerConnections: newEvents,
     recentConnections: recentEvents,
     messageDownloadStatus: state.config.messageDownloadStatus,
@@ -194,7 +194,7 @@ const mapDispatchToProps = (dispatch) =>
     {
       getUnacknowledgedMessages,
     },
-    dispatch,
+    dispatch
   )
 
 const screen = CustomHomeScreen || HomeScreen
