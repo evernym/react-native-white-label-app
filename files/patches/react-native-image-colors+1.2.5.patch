@@ -1,0 +1,13 @@
+diff --git a/node_modules/react-native-image-colors/RNImageColors.podspec b/node_modules/react-native-image-colors/RNImageColors.podspec
+index 4266682..c40f93a 100644
+--- a/node_modules/react-native-image-colors/RNImageColors.podspec
++++ b/node_modules/react-native-image-colors/RNImageColors.podspec
+@@ -15,7 +15,7 @@ Pod::Spec.new do |s|
+   s.platform     = :ios, "9.0"
+   s.source       = { :git => "https://github.com/osamaq/react-native-image-colors.git", :tag => "v#{s.version}" }
+   s.source_files  = "ios/**/*.{h,m,swift}"
+-  s.dependency 'React'
++  s.dependency 'React-Core'
+   s.pod_target_xcconfig = {
+     "SWIFT_VERSION" => "5.0"
+   }  

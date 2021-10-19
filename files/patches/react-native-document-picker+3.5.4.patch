@@ -1,0 +1,11 @@
+diff --git a/node_modules/react-native-document-picker/react-native-document-picker.podspec b/node_modules/react-native-document-picker/react-native-document-picker.podspec
+index 0124c4c..25226e2 100644
+--- a/node_modules/react-native-document-picker/react-native-document-picker.podspec
++++ b/node_modules/react-native-document-picker/react-native-document-picker.podspec
+@@ -12,5 +12,5 @@ Pod::Spec.new do |s|
+   s.source          = { :git => "https://github.com/Elyx0/react-native-document-picker", :tag => "v#{s.version}" }
+   s.source_files    = "ios/RNDocumentPicker/*.{h,m}"
+   s.platform        = :ios, "9.0"
+-  s.dependency        'React'
++  s.dependency        'React-Core'
+ end

@@ -1,0 +1,11 @@
+diff --git a/node_modules/react-native-branch/react-native-branch.podspec b/node_modules/react-native-branch/react-native-branch.podspec
+index c9334dc..35336ec 100644
+--- a/node_modules/react-native-branch/react-native-branch.podspec
++++ b/node_modules/react-native-branch/react-native-branch.podspec
+@@ -23,5 +23,5 @@ Pod::Spec.new do |s|
+   s.compiler_flags = %[-DRNBRANCH_VERSION=@\\"#{s.version}\\"]
+   s.header_dir   = 'RNBranch' # also sets generated module name
+   s.dependency 'Branch', '0.37.0'
+-  s.dependency 'React' # to ensure the correct build order
++  s.dependency 'React-Core' # to ensure the correct build order
+ end

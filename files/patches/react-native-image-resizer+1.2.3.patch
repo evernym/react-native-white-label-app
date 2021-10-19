@@ -1,0 +1,11 @@
+diff --git a/node_modules/react-native-image-resizer/react-native-image-resizer.podspec b/node_modules/react-native-image-resizer/react-native-image-resizer.podspec
+index 1d8cecd..d7e700a 100644
+--- a/node_modules/react-native-image-resizer/react-native-image-resizer.podspec
++++ b/node_modules/react-native-image-resizer/react-native-image-resizer.podspec
+@@ -16,5 +16,5 @@ Pod::Spec.new do |s|
+   s.preserve_paths = 'README.md', 'LICENSE', 'package.json', 'index.js'
+   s.source_files   = "ios/RCTImageResizer/*.{h,m}"
+ 
+-  s.dependency 'React'
++  s.dependency 'React-Core'
+ end
