@@ -1,11 +1,13 @@
-diff --git a/node_modules/react-native-device-info/RNDeviceInfo.podspec b/node_modules/react-native-device-info/RNDeviceInfo.podspec
-index 712e77a..2cd53ba 100644
---- a/node_modules/react-native-device-info/RNDeviceInfo.podspec
-+++ b/node_modules/react-native-device-info/RNDeviceInfo.podspec
-@@ -17,5 +17,5 @@ Pod::Spec.new do |s|
-   s.source       = { :git => "https://github.com/react-native-community/react-native-device-info.git", :tag => "v#{s.version}" }
-   s.source_files  = "ios/**/*.{h,m}"
+diff --git a/node_modules/react-native-device-info/android/src/main/AndroidManifest.xml b/node_modules/react-native-device-info/android/src/main/AndroidManifest.xml
+index 1205f0e..6450fcc 100644
+--- a/node_modules/react-native-device-info/android/src/main/AndroidManifest.xml
++++ b/node_modules/react-native-device-info/android/src/main/AndroidManifest.xml
+@@ -3,7 +3,7 @@
+     package="com.learnium.RNDeviceInfo">
  
--  s.dependency 'React'
-+  s.dependency 'React-Core'
- end
+   <application>
+-    <receiver android:name="com.learnium.RNDeviceInfo.RNDeviceReceiver" android:enabled="true" android:exported="true"
++    <receiver android:name="com.learnium.RNDeviceInfo.RNDeviceReceiver" android:enabled="true" android:exported="false"
+         tools:ignore="ExportedReceiver">
+       <intent-filter>
+         <action android:name="com.android.vending.INSTALL_REFERRER" />
