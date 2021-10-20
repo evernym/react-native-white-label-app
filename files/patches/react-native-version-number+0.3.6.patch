@@ -1,0 +1,13 @@
+diff --git a/node_modules/react-native-version-number/react-native-version-number.podspec b/node_modules/react-native-version-number/react-native-version-number.podspec
+index 67c862e..632edfd 100644
+--- a/node_modules/react-native-version-number/react-native-version-number.podspec
++++ b/node_modules/react-native-version-number/react-native-version-number.podspec
+@@ -12,6 +12,6 @@ Pod::Spec.new do |s|
+   s.platform       = :ios, "7.0"
+   s.source         = { :git => "#{package_json["repository"]["url"]}.git", :tag => "v#{s.version}" }
+   s.source_files   = 'ios/*.{h,m}'
+-  s.dependency 'React'
++  s.dependency 'React-Core'
+ 
+ end
+\ No newline at end of file
