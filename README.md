@@ -45,7 +45,7 @@ For the testing of your identity wallet you can use [Verity SDK](https://gitlab.
 ## Prerequisites
 
 - **Node >12.13** . Preferred way to install node is via [nvm](https://www.sitepoint.com/quick-tip-multiple-versions-node-nvm/)
-- **React Native**. The currently supported version is 0.61.4
+- **React Native**. The currently supported version is 0.65.1
 - **Sponsor server**. <br />
   You must have a Sponsor Server registered in Evernym environment.
   See [the document](https://gitlab.com/evernym/mobile/mobile-sdk/-/blob/main/docs/2.Initialization.md#sponsor-server) describing Sponsor onboarding process in detail. <br />
@@ -58,11 +58,11 @@ To create a new project, you would need to go through the following steps.
 #### Create base app
 Create new react native project. We will call it `awesomeMsdkProject` for this guide.
 ```shell
-npx react-native init awesomeMsdkProject --version 0.61.4
+npx react-native init awesomeMsdkProject --version 0.65.1
 ```
 
 **NOTE**: you need to use the same version of `react-native` as specified in `peerDependencies` section of `package.json` file for the evernym react-native-sdk.
-The currently recommended React-Native version is `0.61.4`.
+The currently recommended React-Native version is `0.65.1`.
 By using a different version you are taking a risk of having issues with sdk.
 
 #### Base app configuration
@@ -84,7 +84,7 @@ By using a different version you are taking a risk of having issues with sdk.
         "@react-native-community/async-storage": "x",
         ...
         "react-native-zip-archive": "x",
-        "react-native": "0.61.4",
+        "react-native": "0.65.1",
         "rn-fetch-blob": "x",
         ...
       },
