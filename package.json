@@ -92,6 +92,7 @@
     "react-native-pbkdf2": "git://github.com/evernym/react-native-pbkdf2.git#v0.1.5",
     "react-native-permissions": "^3.0.5",
     "react-native-qrcode-svg": "^6.1.1",
+    "react-native-randombytes": "3.5.3",
     "react-native-reanimated": "1.9.0",
     "react-native-redash": "^15.7.3",
     "react-native-safe-area-context": "3.0.5",
