@@ -109,8 +109,9 @@ exports[`<ClaimRequestStatusModal /> should hideModal if continue is clicked 1`]
           }
         }
         accessible={true}
+        collapsable={false}
         focusable={true}
-        isTVSelectable={true}
+        nativeID="animatedComponent"
         onClick={[Function]}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -269,8 +270,9 @@ exports[`<ClaimRequestStatusModal /> should match paid credential success, if se
           }
         }
         accessible={true}
+        collapsable={false}
         focusable={true}
-        isTVSelectable={true}
+        nativeID="animatedComponent"
         onClick={[Function]}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -404,7 +406,6 @@ exports[`<ClaimRequestStatusModal /> should match snapshot when pending popOver 
         }
       >
         <ActivityIndicator
-          animating={true}
           color="#777777"
           hidesWhenStopped={true}
           size="large"
@@ -571,7 +572,6 @@ exports[`<ClaimRequestStatusModal /> should show arrow right and accepting text,
         }
         accessible={true}
         focusable={true}
-        isTVSelectable={true}
         onClick={[Function]}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -705,7 +705,6 @@ exports[`<ClaimRequestStatusModal /> should show arrow right and only Paying tex
         }
       >
         <ActivityIndicator
-          animating={true}
           color="#777777"
           hidesWhenStopped={true}
           size="large"
@@ -871,8 +870,9 @@ exports[`<ClaimRequestStatusModal /> should show check mark, token amount, if pa
           }
         }
         accessible={true}
+        collapsable={false}
         focusable={true}
-        isTVSelectable={true}
+        nativeID="animatedComponent"
         onClick={[Function]}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -1031,8 +1031,9 @@ exports[`<ClaimRequestStatusModal /> should show check mark, you accepted text, 
           }
         }
         accessible={true}
+        collapsable={false}
         focusable={true}
-        isTVSelectable={true}
+        nativeID="animatedComponent"
         onClick={[Function]}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}

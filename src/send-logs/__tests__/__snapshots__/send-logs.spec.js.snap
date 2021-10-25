@@ -23,7 +23,6 @@ exports[`send logs screen should render properly and snapshot should match 1`] =
     }
   >
     <ActivityIndicator
-      animating={true}
       color="#777777"
       hidesWhenStopped={true}
       size="large"

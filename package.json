@@ -149,7 +149,7 @@
     "testEnvironment": "node",
     "preset": "react-native",
     "transformIgnorePatterns": [
-      "node_modules/(?!(jest-)?react-native|@react-navigation/.*|jest-fetch-mock|apptentive-react-native|@react-native-community|react-native-version-number)"
+      "node_modules/(?!(jest-)?@?react-native|@react-navigation/.*|jest-fetch-mock|apptentive-react-native|@react-native-community|react-native-version-number)"
     ],
     "moduleNameMapper": {
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/image-mock.js",

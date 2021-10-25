@@ -108,6 +108,8 @@ exports[`user about app screen should render properly and snapshot should match 
               <Text
                 accessibilityRole="header"
                 aria-level="1"
+                collapsable={false}
+                nativeID="animatedComponent"
                 numberOfLines={1}
                 onLayout={[Function]}
                 style={
@@ -202,6 +204,8 @@ exports[`user about app screen should render properly and snapshot should match 
           }
         >
           <View
+            collapsable={false}
+            nativeID="animatedComponent"
             needsOffscreenAlphaCompositing={false}
             pointerEvents="box-none"
             style={
@@ -588,7 +592,6 @@ exports[`user about app screen should render properly and snapshot should match 
                           <View
                             accessible={true}
                             focusable={true}
-                            isTVSelectable={true}
                             onClick={[Function]}
                             onResponderGrant={[Function]}
                             onResponderMove={[Function]}
@@ -596,7 +599,6 @@ exports[`user about app screen should render properly and snapshot should match 
                             onResponderTerminate={[Function]}
                             onResponderTerminationRequest={[Function]}
                             onStartShouldSetResponder={[Function]}
-                            style={null}
                           >
                             <View
                               style={
@@ -708,6 +710,8 @@ exports[`user about app screen should render properly and snapshot should match 
                                 }
                               />
                               <View
+                                collapsable={false}
+                                nativeID="animatedComponent"
                                 style={
                                   Object {
                                     "transform": Array [
@@ -787,7 +791,6 @@ exports[`user about app screen should render properly and snapshot should match 
                           <View
                             accessible={true}
                             focusable={true}
-                            isTVSelectable={true}
                             onClick={[Function]}
                             onResponderGrant={[Function]}
                             onResponderMove={[Function]}
@@ -795,7 +798,6 @@ exports[`user about app screen should render properly and snapshot should match 
                             onResponderTerminate={[Function]}
                             onResponderTerminationRequest={[Function]}
                             onStartShouldSetResponder={[Function]}
-                            style={null}
                           >
                             <View
                               style={
@@ -907,6 +909,8 @@ exports[`user about app screen should render properly and snapshot should match 
                                 }
                               />
                               <View
+                                collapsable={false}
+                                nativeID="animatedComponent"
                                 style={
                                   Object {
                                     "transform": Array [
