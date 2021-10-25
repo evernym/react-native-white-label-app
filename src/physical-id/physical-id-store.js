@@ -10,7 +10,7 @@ import {
   spawn,
   takeLeading,
 } from 'redux-saga/effects'
-import { NativeModules } from 'react-native'
+import { NativeModules, Platform } from 'react-native'
 import delay from '@redux-saga/delay-p'
 
 import type {
@@ -80,6 +80,8 @@ import {
   GET_MESSAGES_FAIL,
   GET_MESSAGES_SUCCESS,
 } from '../store/type-config-store'
+import { uuid } from '../services/uuid'
+import { androidDeviceCheckApiKey } from '../external-imports'
 
 const initialState = {
   sdkInitStatus: sdkStatus.IDLE,
@@ -88,7 +90,7 @@ const initialState = {
   physicalIdDid: null,
   physicalIdConnectionStatus: physicalIdConnectionStatus.IDLE,
   documentTypes: null,
-  reports: null
+  reports: null,
 }
 
 export const physicalIdSdkInit = () => ({
@@ -265,13 +267,30 @@ function* launchPhysicalIdSDKSaga(
     return
   }
 
-  // TODO:KS Get a new hardware token here again, to make auth more stronger
+  // get safety net token for android
+  // get device check token for ios
+  // add a new param to send data for android or ios
+  let hardwareToken = ''
+  if (Platform.OS === 'android') {
+    hardwareToken = yield call(
+      NativeModules.RNIndy.sendAttestationRequest,
+      uuid(),
+      androidDeviceCheckApiKey
+    )
+  }
+
+  if (Platform.OS === 'ios') {
+    hardwareToken = yield call(NativeModules.RNIndy.getDeviceCheckToken)
+  }
+
+  console.log({ hardwareToken })
   // now we have connection, and we also have the workflow data
   // we can now issue the credential
   yield spawn(submitDocuments, {
     workflowId,
     connectionDID: relationshipId,
-    hardwareToken: 'something-fails-for-now-till-we-add-auth',
+    hardwareToken,
+    platform: Platform.OS,
     country: selectedCountry,
     document: action.documentType,
     domainDID,
@@ -287,7 +306,7 @@ function* launchPhysicalIdSDKSaga(
   )
 }
 
-function *submitDocuments(data: any): Generator<*, *, *> {
+function* submitDocuments(data: any): Generator<*, *, *> {
   const [issueCredentialError] = yield call(flattenAsync(issueCredential), data)
   if (issueCredentialError) {
     // something went wrong while asking to issue credential
