@@ -84,6 +84,7 @@ yarn-test:
   stage: test
   image: ${CI_REGISTRY_IMAGE}/ubuntu18:${CI_COMMIT_REF_SLUG}
   script:
+    - apt install libatomic1
     - sed -i 's/peerDependencies/dependencies/g' package.json
     - yarn config set ignore-engines true
     - yarn install
