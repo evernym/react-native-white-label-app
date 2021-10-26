@@ -8,5 +8,5 @@ index adae4ee..a337180 100644
    s.source_files   = '*.{h,m}'
 -  s.dependency 'React'
 +  s.dependency 'React-Core'
- 
+
  end

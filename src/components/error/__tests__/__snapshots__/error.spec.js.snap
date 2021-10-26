@@ -33,8 +33,11 @@ exports[`<Error /> should render errorText 1`] = `
     >
       <View
         autoPlay={true}
+        collapsable={false}
         enableMergePathsAndroidForKitKatAndAbove={false}
+        forwardedRef={[Function]}
         loop={false}
+        nativeID="animatedComponent"
         onAnimationFinish={[Function]}
         onLayout={[Function]}
         progress={0}

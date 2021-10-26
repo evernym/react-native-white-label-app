@@ -164,8 +164,9 @@ exports[`<LedgerFeesModalComponent /> show error if fetching fees failed, show r
             }
           }
           accessible={true}
+          collapsable={false}
           focusable={true}
-          isTVSelectable={true}
+          nativeID="animatedComponent"
           onClick={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
@@ -240,8 +241,9 @@ exports[`<LedgerFeesModalComponent /> show error if fetching fees failed, show r
             }
           }
           accessible={true}
+          collapsable={false}
           focusable={true}
-          isTVSelectable={true}
+          nativeID="animatedComponent"
           onClick={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
@@ -345,7 +347,6 @@ exports[`<LedgerFeesModalComponent /> show loader, loading text, no buttons, if 
         }
       >
         <ActivityIndicator
-          animating={true}
           color="#777777"
           hidesWhenStopped={true}
           size="large"
@@ -651,8 +652,9 @@ exports[`<LedgerFeesModalComponent /> show text passed by consumer of component,
             }
           }
           accessible={true}
+          collapsable={false}
           focusable={true}
-          isTVSelectable={true}
+          nativeID="animatedComponent"
           onClick={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
@@ -727,8 +729,9 @@ exports[`<LedgerFeesModalComponent /> show text passed by consumer of component,
             }
           }
           accessible={true}
+          collapsable={false}
           focusable={true}
-          isTVSelectable={true}
+          nativeID="animatedComponent"
           onClick={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
@@ -1079,8 +1082,9 @@ exports[`<LedgerFeesModalComponent /> show transfer fees, Yes & No buttons, if f
             }
           }
           accessible={true}
+          collapsable={false}
           focusable={true}
-          isTVSelectable={true}
+          nativeID="animatedComponent"
           onClick={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
@@ -1155,8 +1159,9 @@ exports[`<LedgerFeesModalComponent /> show transfer fees, Yes & No buttons, if f
             }
           }
           accessible={true}
+          collapsable={false}
           focusable={true}
-          isTVSelectable={true}
+          nativeID="animatedComponent"
           onClick={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
@@ -1260,7 +1265,6 @@ exports[`<LedgerFeesModalComponent /> trigger getLedgerFees to start fetching le
         }
       >
         <ActivityIndicator
-          animating={true}
           color="#777777"
           hidesWhenStopped={true}
           size="large"

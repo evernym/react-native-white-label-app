@@ -108,6 +108,8 @@ exports[`<LockPinCodeSetup /> should render pin code box 1`] = `
               <Text
                 accessibilityRole="header"
                 aria-level="1"
+                collapsable={false}
+                nativeID="animatedComponent"
                 numberOfLines={1}
                 onLayout={[Function]}
                 style={
@@ -202,6 +204,8 @@ exports[`<LockPinCodeSetup /> should render pin code box 1`] = `
           }
         >
           <View
+            collapsable={false}
+            nativeID="animatedComponent"
             needsOffscreenAlphaCompositing={false}
             pointerEvents="box-none"
             style={
@@ -689,7 +693,6 @@ exports[`<LockPinCodeSetup /> should render pin code box 1`] = `
                             <TextInput
                               accessibilityLabel="pin-code-input-box"
                               accessible={true}
-                              allowFontScaling={true}
                               autoCorrect={false}
                               blurOnSubmit={false}
                               editable={true}
@@ -698,7 +701,6 @@ exports[`<LockPinCodeSetup /> should render pin code box 1`] = `
                               keyboardType="number-pad"
                               maxLength={6}
                               onChangeText={[Function]}
-                              rejectResponderTermination={true}
                               style={
                                 Object {
                                   "height": 0,
@@ -708,7 +710,6 @@ exports[`<LockPinCodeSetup /> should render pin code box 1`] = `
                                 }
                               }
                               testID="pin-code-input-box"
-                              underlineColorAndroid="transparent"
                               value=""
                             />
                           </View>
@@ -835,6 +836,8 @@ exports[`<LockPinCodeSetup /> should set pinSetupState and pinReEnterSuccessPin 
               <Text
                 accessibilityRole="header"
                 aria-level="1"
+                collapsable={false}
+                nativeID="animatedComponent"
                 numberOfLines={1}
                 onLayout={[Function]}
                 style={
@@ -929,6 +932,8 @@ exports[`<LockPinCodeSetup /> should set pinSetupState and pinReEnterSuccessPin 
           }
         >
           <View
+            collapsable={false}
+            nativeID="animatedComponent"
             needsOffscreenAlphaCompositing={false}
             pointerEvents="box-none"
             style={
@@ -1416,7 +1421,6 @@ exports[`<LockPinCodeSetup /> should set pinSetupState and pinReEnterSuccessPin 
                             <TextInput
                               accessibilityLabel="pin-code-input-box"
                               accessible={true}
-                              allowFontScaling={true}
                               autoCorrect={false}
                               blurOnSubmit={false}
                               editable={true}
@@ -1425,7 +1429,6 @@ exports[`<LockPinCodeSetup /> should set pinSetupState and pinReEnterSuccessPin 
                               keyboardType="number-pad"
                               maxLength={6}
                               onChangeText={[Function]}
-                              rejectResponderTermination={true}
                               style={
                                 Object {
                                   "height": 0,
@@ -1435,7 +1438,6 @@ exports[`<LockPinCodeSetup /> should set pinSetupState and pinReEnterSuccessPin 
                                 }
                               }
                               testID="pin-code-input-box"
-                              underlineColorAndroid="transparent"
                               value=""
                             />
                           </View>
@@ -1562,6 +1564,8 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
               <Text
                 accessibilityRole="header"
                 aria-level="1"
+                collapsable={false}
+                nativeID="animatedComponent"
                 numberOfLines={1}
                 onLayout={[Function]}
                 style={
@@ -1656,6 +1660,8 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
           }
         >
           <View
+            collapsable={false}
+            nativeID="animatedComponent"
             needsOffscreenAlphaCompositing={false}
             pointerEvents="box-none"
             style={
@@ -2145,7 +2151,6 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
                             <TextInput
                               accessibilityLabel="pin-code-input-box"
                               accessible={true}
-                              allowFontScaling={true}
                               autoCorrect={false}
                               blurOnSubmit={false}
                               editable={true}
@@ -2154,7 +2159,6 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
                               keyboardType="number-pad"
                               maxLength={6}
                               onChangeText={[Function]}
-                              rejectResponderTermination={true}
                               style={
                                 Object {
                                   "height": 0,
@@ -2164,7 +2168,6 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
                                 }
                               }
                               testID="pin-code-input-box"
-                              underlineColorAndroid="transparent"
                               value=""
                             />
                           </View>
@@ -2291,6 +2294,8 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
               <Text
                 accessibilityRole="header"
                 aria-level="1"
+                collapsable={false}
+                nativeID="animatedComponent"
                 numberOfLines={1}
                 onLayout={[Function]}
                 style={
@@ -2385,6 +2390,8 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
           }
         >
           <View
+            collapsable={false}
+            nativeID="animatedComponent"
             needsOffscreenAlphaCompositing={false}
             pointerEvents="box-none"
             style={
@@ -2872,7 +2879,6 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
                             <TextInput
                               accessibilityLabel="pin-code-input-box"
                               accessible={true}
-                              allowFontScaling={true}
                               autoCorrect={false}
                               blurOnSubmit={false}
                               editable={true}
@@ -2881,7 +2887,6 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
                               keyboardType="number-pad"
                               maxLength={6}
                               onChangeText={[Function]}
-                              rejectResponderTermination={true}
                               style={
                                 Object {
                                   "height": 0,
@@ -2891,7 +2896,6 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
                                 }
                               }
                               testID="pin-code-input-box"
-                              underlineColorAndroid="transparent"
                               value=""
                             />
                           </View>
@@ -3018,6 +3022,8 @@ exports[`<LockPinCodeSetup /> should show re enter pass code after first entry 1
               <Text
                 accessibilityRole="header"
                 aria-level="1"
+                collapsable={false}
+                nativeID="animatedComponent"
                 numberOfLines={1}
                 onLayout={[Function]}
                 style={
@@ -3112,6 +3118,8 @@ exports[`<LockPinCodeSetup /> should show re enter pass code after first entry 1
           }
         >
           <View
+            collapsable={false}
+            nativeID="animatedComponent"
             needsOffscreenAlphaCompositing={false}
             pointerEvents="box-none"
             style={
@@ -3599,7 +3607,6 @@ exports[`<LockPinCodeSetup /> should show re enter pass code after first entry 1
                             <TextInput
                               accessibilityLabel="pin-code-input-box"
                               accessible={true}
-                              allowFontScaling={true}
                               autoCorrect={false}
                               blurOnSubmit={false}
                               editable={true}
@@ -3608,7 +3615,6 @@ exports[`<LockPinCodeSetup /> should show re enter pass code after first entry 1
                               keyboardType="number-pad"
                               maxLength={6}
                               onChangeText={[Function]}
-                              rejectResponderTermination={true}
                               style={
                                 Object {
                                   "height": 0,
@@ -3618,7 +3624,6 @@ exports[`<LockPinCodeSetup /> should show re enter pass code after first entry 1
                                 }
                               }
                               testID="pin-code-input-box"
-                              underlineColorAndroid="transparent"
                               value=""
                             />
                           </View>

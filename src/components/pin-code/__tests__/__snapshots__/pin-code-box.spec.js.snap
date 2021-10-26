@@ -285,7 +285,6 @@ exports[`<PinCodeBox /> should match snapshot 1`] = `
   <TextInput
     accessibilityLabel="pin-code-input-box"
     accessible={true}
-    allowFontScaling={true}
     autoCorrect={false}
     blurOnSubmit={false}
     editable={true}
@@ -294,7 +293,6 @@ exports[`<PinCodeBox /> should match snapshot 1`] = `
     keyboardType="number-pad"
     maxLength={6}
     onChangeText={[Function]}
-    rejectResponderTermination={true}
     style={
       Object {
         "height": 0,
@@ -304,7 +302,6 @@ exports[`<PinCodeBox /> should match snapshot 1`] = `
       }
     }
     testID="pin-code-input-box"
-    underlineColorAndroid="transparent"
     value=""
   />
 </View>
@@ -597,7 +594,6 @@ exports[`<PinCodeBox /> should show two sovrin symbol if two digits are entered 
   <TextInput
     accessibilityLabel="pin-code-input-box"
     accessible={true}
-    allowFontScaling={true}
     autoCorrect={false}
     blurOnSubmit={false}
     editable={true}
@@ -606,7 +602,6 @@ exports[`<PinCodeBox /> should show two sovrin symbol if two digits are entered 
     keyboardType="number-pad"
     maxLength={6}
     onChangeText={[Function]}
-    rejectResponderTermination={true}
     style={
       Object {
         "height": 0,
@@ -616,7 +611,6 @@ exports[`<PinCodeBox /> should show two sovrin symbol if two digits are entered 
       }
     }
     testID="pin-code-input-box"
-    underlineColorAndroid="transparent"
     value="12"
   />
 </View>

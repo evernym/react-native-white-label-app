@@ -108,6 +108,8 @@ exports[`<MyConnectionsScreen /> should render MyConnections and redirect user t
               <Text
                 accessibilityRole="header"
                 aria-level="1"
+                collapsable={false}
+                nativeID="animatedComponent"
                 numberOfLines={1}
                 onLayout={[Function]}
                 style={
@@ -202,6 +204,8 @@ exports[`<MyConnectionsScreen /> should render MyConnections and redirect user t
           }
         >
           <View
+            collapsable={false}
+            nativeID="animatedComponent"
             needsOffscreenAlphaCompositing={false}
             pointerEvents="box-none"
             style={
@@ -314,17 +318,12 @@ exports[`<MyConnectionsScreen /> should render MyConnections and redirect user t
                               }
                             }
                             data={Array []}
-                            disableVirtualization={false}
                             getItem={[Function]}
                             getItemCount={[Function]}
-                            horizontal={false}
-                            initialNumToRender={10}
                             keyExtractor={[Function]}
-                            maxToRenderPerBatch={10}
-                            numColumns={2}
                             onContentSizeChange={[Function]}
-                            onEndReachedThreshold={2}
                             onLayout={[Function]}
+                            onMomentumScrollBegin={[Function]}
                             onMomentumScrollEnd={[Function]}
                             onRefresh={[Function]}
                             onScroll={[Function]}
@@ -348,9 +347,7 @@ exports[`<MyConnectionsScreen /> should render MyConnections and redirect user t
                                 "width": "100%",
                               }
                             }
-                            updateCellsBatchingPeriod={50}
                             viewabilityConfigCallbackPairs={Array []}
-                            windowSize={21}
                           >
                             <RCTRefreshControl />
                             <View />
@@ -359,7 +356,6 @@ exports[`<MyConnectionsScreen /> should render MyConnections and redirect user t
                         <View
                           accessible={true}
                           focusable={true}
-                          isTVSelectable={true}
                           onClick={[Function]}
                           onResponderGrant={[Function]}
                           onResponderMove={[Function]}
@@ -591,6 +587,8 @@ exports[`<MyConnectionsScreen /> should render MyConnections and show introducto
               <Text
                 accessibilityRole="header"
                 aria-level="1"
+                collapsable={false}
+                nativeID="animatedComponent"
                 numberOfLines={1}
                 onLayout={[Function]}
                 style={
@@ -685,6 +683,8 @@ exports[`<MyConnectionsScreen /> should render MyConnections and show introducto
           }
         >
           <View
+            collapsable={false}
+            nativeID="animatedComponent"
             needsOffscreenAlphaCompositing={false}
             pointerEvents="box-none"
             style={
@@ -797,17 +797,12 @@ exports[`<MyConnectionsScreen /> should render MyConnections and show introducto
                               }
                             }
                             data={Array []}
-                            disableVirtualization={false}
                             getItem={[Function]}
                             getItemCount={[Function]}
-                            horizontal={false}
-                            initialNumToRender={10}
                             keyExtractor={[Function]}
-                            maxToRenderPerBatch={10}
-                            numColumns={2}
                             onContentSizeChange={[Function]}
-                            onEndReachedThreshold={2}
                             onLayout={[Function]}
+                            onMomentumScrollBegin={[Function]}
                             onMomentumScrollEnd={[Function]}
                             onRefresh={[Function]}
                             onScroll={[Function]}
@@ -831,9 +826,7 @@ exports[`<MyConnectionsScreen /> should render MyConnections and show introducto
                                 "width": "100%",
                               }
                             }
-                            updateCellsBatchingPeriod={50}
                             viewabilityConfigCallbackPairs={Array []}
-                            windowSize={21}
                           >
                             <RCTRefreshControl />
                             <View />
@@ -842,7 +835,6 @@ exports[`<MyConnectionsScreen /> should render MyConnections and show introducto
                         <View
                           accessible={true}
                           focusable={true}
-                          isTVSelectable={true}
                           onClick={[Function]}
                           onResponderGrant={[Function]}
                           onResponderMove={[Function]}

@@ -298,8 +298,9 @@ exports[`<Request /> should match snapshot 1`] = `
     <View
       accessibilityLabel="request-accept"
       accessible={true}
+      collapsable={false}
       focusable={true}
-      isTVSelectable={true}
+      nativeID="animatedComponent"
       onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
@@ -367,8 +368,9 @@ exports[`<Request /> should match snapshot 1`] = `
     <View
       accessibilityLabel="request-deny"
       accessible={true}
+      collapsable={false}
       focusable={true}
-      isTVSelectable={true}
+      nativeID="animatedComponent"
       onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}

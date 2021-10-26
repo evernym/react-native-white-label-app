@@ -408,7 +408,6 @@ exports[`<LockAuthorization /> should match snapshot 1`] = `
           <TextInput
             accessibilityLabel="pin-code-input-box"
             accessible={true}
-            allowFontScaling={true}
             autoCorrect={false}
             blurOnSubmit={false}
             editable={true}
@@ -417,7 +416,6 @@ exports[`<LockAuthorization /> should match snapshot 1`] = `
             keyboardType="number-pad"
             maxLength={6}
             onChangeText={[Function]}
-            rejectResponderTermination={true}
             style={
               Object {
                 "height": 0,
@@ -427,7 +425,6 @@ exports[`<LockAuthorization /> should match snapshot 1`] = `
               }
             }
             testID="pin-code-input-box"
-            underlineColorAndroid="transparent"
             value=""
           />
         </View>
