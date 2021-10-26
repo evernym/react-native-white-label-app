@@ -5,12 +5,14 @@
   - [Decentralized Identifier - DID](#decentralized-identifier---did)
   - [Verifiable Credentials](#verifiable-credentials)
 - [React MSDK](#react-msdk)
+- [Prerequisites](#prerequisites)
 - [Creating a new application with React MSDK](#creating-a-new-application-with-react-msdk)
     - [Create base app](#create-base-app)
     - [Base app configuration](#base-app-configuration)
     - [Android](#android)
     - [iOS](#ios)
 - [Customization](#customization)
+- [Acknowledgements](#acknowledgements)
   
 ## Introduction
 
@@ -44,8 +46,9 @@ For the testing of your identity wallet you can use [Verity SDK](https://gitlab.
  
 ## Prerequisites
 
-- **Node >12.13** . Preferred way to install node is via [nvm](https://www.sitepoint.com/quick-tip-multiple-versions-node-nvm/)
+- **Node >12.22** . Preferred way to install node is via [nvm](https://www.sitepoint.com/quick-tip-multiple-versions-node-nvm/)
 - **React Native**. The currently supported version is 0.65.1
+- **Cocoapod >1.10.1**
 - **Sponsor server**. <br />
   You must have a Sponsor Server registered in Evernym environment.
   See [the document](https://gitlab.com/evernym/mobile/mobile-sdk/-/blob/main/docs/2.Initialization.md#sponsor-server) describing Sponsor onboarding process in detail. <br />
