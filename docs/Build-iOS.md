@@ -200,6 +200,33 @@ By default ios app uses `System` font which is usually `San Francisco` on ios. I
 
 ## Issues
 
+* **Building the app fails on XCode 12.5+**
+
+  Adding those two blocks into your application Podfile file should resolve the issue:
+
+  * after the section containing `source` statements:
+    ```
+    def find_and_replace(dir, findstr, replacestr)
+      Dir[dir].each do |name|
+          text = File.read(name)
+          replace = text.gsub(findstr,replacestr)
+          if text != replace
+              puts "Fix: " + name
+              File.open(name, "w") { |file| file.puts replace }
+              STDOUT.flush
+          end
+      end
+      Dir[dir + '*/'].each(&method(:find_and_replace))
+    end
+    ```
+  * at the end of the file (before the last `end)
+    ```
+    find_and_replace("../node_modules/react-native/React/CxxBridge/RCTCxxBridge.mm",
+    "_initializeModules:(NSArray<id<RCTBridgeModule>> *)modules", "_initializeModules:(NSArray<Class> *)modules")
+    find_and_replace("../node_modules/react-native/ReactCommon/turbomodule/core/platform/ios/RCTTurboModuleManager.mm",
+    "RCTBridgeModuleNameForClass(module))", "RCTBridgeModuleNameForClass(Class(module)))")
+    ```
+
 * **Missing ObjectiveC**
 
   Make sure you added .swift file and bridging header to your Xcode project, as instructed in this documentation.
