@@ -127,7 +127,7 @@ exports[`user about app screen should render properly and snapshot should match 
         </View>
       </View>
     </View>
-    <View
+    <RNSScreenContainer
       onLayout={[Function]}
       style={
         Object {
@@ -135,7 +135,9 @@ exports[`user about app screen should render properly and snapshot should match 
         }
       }
     >
-      <View
+      <RNSScreen
+        activityState={2}
+        forwardedRef={[Function]}
         pointerEvents="box-none"
         style={
           Object {
@@ -996,8 +998,8 @@ exports[`user about app screen should render properly and snapshot should match 
             </View>
           </View>
         </View>
-      </View>
-    </View>
+      </RNSScreen>
+    </RNSScreenContainer>
   </RNCSafeAreaProvider>
 </View>
 `;

@@ -127,7 +127,7 @@ exports[`<MyConnectionsScreen /> should render MyConnections and redirect user t
         </View>
       </View>
     </View>
-    <View
+    <RNSScreenContainer
       onLayout={[Function]}
       style={
         Object {
@@ -135,7 +135,9 @@ exports[`<MyConnectionsScreen /> should render MyConnections and redirect user t
         }
       }
     >
-      <View
+      <RNSScreen
+        activityState={2}
+        forwardedRef={[Function]}
         pointerEvents="box-none"
         style={
           Object {
@@ -473,8 +475,8 @@ exports[`<MyConnectionsScreen /> should render MyConnections and redirect user t
             </View>
           </View>
         </View>
-      </View>
-    </View>
+      </RNSScreen>
+    </RNSScreenContainer>
   </RNCSafeAreaProvider>
 </View>
 `;
@@ -606,7 +608,7 @@ exports[`<MyConnectionsScreen /> should render MyConnections and show introducto
         </View>
       </View>
     </View>
-    <View
+    <RNSScreenContainer
       onLayout={[Function]}
       style={
         Object {
@@ -614,7 +616,9 @@ exports[`<MyConnectionsScreen /> should render MyConnections and show introducto
         }
       }
     >
-      <View
+      <RNSScreen
+        activityState={2}
+        forwardedRef={[Function]}
         pointerEvents="box-none"
         style={
           Object {
@@ -952,8 +956,8 @@ exports[`<MyConnectionsScreen /> should render MyConnections and show introducto
             </View>
           </View>
         </View>
-      </View>
-    </View>
+      </RNSScreen>
+    </RNSScreenContainer>
   </RNCSafeAreaProvider>
 </View>
 `;

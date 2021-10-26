@@ -127,7 +127,7 @@ exports[`<OpenIdConnectScreen /> should match in fail state 1`] = `
         </View>
       </View>
     </View>
-    <View
+    <RNSScreenContainer
       onLayout={[Function]}
       style={
         Object {
@@ -135,7 +135,9 @@ exports[`<OpenIdConnectScreen /> should match in fail state 1`] = `
         }
       }
     >
-      <View
+      <RNSScreen
+        activityState={2}
+        forwardedRef={[Function]}
         pointerEvents="box-none"
         style={
           Object {
@@ -578,8 +580,8 @@ exports[`<OpenIdConnectScreen /> should match in fail state 1`] = `
             </View>
           </View>
         </View>
-      </View>
-    </View>
+      </RNSScreen>
+    </RNSScreenContainer>
   </RNCSafeAreaProvider>
 </View>
 `;
@@ -711,7 +713,7 @@ exports[`<OpenIdConnectScreen /> should match in progress state 1`] = `
         </View>
       </View>
     </View>
-    <View
+    <RNSScreenContainer
       onLayout={[Function]}
       style={
         Object {
@@ -719,7 +721,9 @@ exports[`<OpenIdConnectScreen /> should match in progress state 1`] = `
         }
       }
     >
-      <View
+      <RNSScreen
+        activityState={2}
+        forwardedRef={[Function]}
         pointerEvents="box-none"
         style={
           Object {
@@ -958,8 +962,8 @@ exports[`<OpenIdConnectScreen /> should match in progress state 1`] = `
             </View>
           </View>
         </View>
-      </View>
-    </View>
+      </RNSScreen>
+    </RNSScreenContainer>
   </RNCSafeAreaProvider>
 </View>
 `;
@@ -1091,7 +1095,7 @@ exports[`<OpenIdConnectScreen /> should match in received state 1`] = `
         </View>
       </View>
     </View>
-    <View
+    <RNSScreenContainer
       onLayout={[Function]}
       style={
         Object {
@@ -1099,7 +1103,9 @@ exports[`<OpenIdConnectScreen /> should match in received state 1`] = `
         }
       }
     >
-      <View
+      <RNSScreen
+        activityState={2}
+        forwardedRef={[Function]}
         pointerEvents="box-none"
         style={
           Object {
@@ -1575,8 +1581,8 @@ exports[`<OpenIdConnectScreen /> should match in received state 1`] = `
             </View>
           </View>
         </View>
-      </View>
-    </View>
+      </RNSScreen>
+    </RNSScreenContainer>
   </RNCSafeAreaProvider>
 </View>
 `;
@@ -1708,7 +1714,7 @@ exports[`<OpenIdConnectScreen /> should match in signature verification failed 1
         </View>
       </View>
     </View>
-    <View
+    <RNSScreenContainer
       onLayout={[Function]}
       style={
         Object {
@@ -1716,7 +1722,9 @@ exports[`<OpenIdConnectScreen /> should match in signature verification failed 1
         }
       }
     >
-      <View
+      <RNSScreen
+        activityState={2}
+        forwardedRef={[Function]}
         pointerEvents="box-none"
         style={
           Object {
@@ -2230,8 +2238,8 @@ exports[`<OpenIdConnectScreen /> should match in signature verification failed 1
             </View>
           </View>
         </View>
-      </View>
-    </View>
+      </RNSScreen>
+    </RNSScreenContainer>
   </RNCSafeAreaProvider>
 </View>
 `;
@@ -2363,7 +2371,7 @@ exports[`<OpenIdConnectScreen /> should match in success state 1`] = `
         </View>
       </View>
     </View>
-    <View
+    <RNSScreenContainer
       onLayout={[Function]}
       style={
         Object {
@@ -2371,7 +2379,9 @@ exports[`<OpenIdConnectScreen /> should match in success state 1`] = `
         }
       }
     >
-      <View
+      <RNSScreen
+        activityState={2}
+        forwardedRef={[Function]}
         pointerEvents="box-none"
         style={
           Object {
@@ -2629,8 +2639,8 @@ exports[`<OpenIdConnectScreen /> should match in success state 1`] = `
             </View>
           </View>
         </View>
-      </View>
-    </View>
+      </RNSScreen>
+    </RNSScreenContainer>
   </RNCSafeAreaProvider>
 </View>
 `;

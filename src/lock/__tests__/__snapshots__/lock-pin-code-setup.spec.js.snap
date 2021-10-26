@@ -127,7 +127,7 @@ exports[`<LockPinCodeSetup /> should render pin code box 1`] = `
         </View>
       </View>
     </View>
-    <View
+    <RNSScreenContainer
       onLayout={[Function]}
       style={
         Object {
@@ -135,7 +135,9 @@ exports[`<LockPinCodeSetup /> should render pin code box 1`] = `
         }
       }
     >
-      <View
+      <RNSScreen
+        activityState={2}
+        forwardedRef={[Function]}
         pointerEvents="box-none"
         style={
           Object {
@@ -722,8 +724,8 @@ exports[`<LockPinCodeSetup /> should render pin code box 1`] = `
             </View>
           </View>
         </View>
-      </View>
-    </View>
+      </RNSScreen>
+    </RNSScreenContainer>
   </RNCSafeAreaProvider>
 </View>
 `;
@@ -855,7 +857,7 @@ exports[`<LockPinCodeSetup /> should set pinSetupState and pinReEnterSuccessPin 
         </View>
       </View>
     </View>
-    <View
+    <RNSScreenContainer
       onLayout={[Function]}
       style={
         Object {
@@ -863,7 +865,9 @@ exports[`<LockPinCodeSetup /> should set pinSetupState and pinReEnterSuccessPin 
         }
       }
     >
-      <View
+      <RNSScreen
+        activityState={2}
+        forwardedRef={[Function]}
         pointerEvents="box-none"
         style={
           Object {
@@ -1450,8 +1454,8 @@ exports[`<LockPinCodeSetup /> should set pinSetupState and pinReEnterSuccessPin 
             </View>
           </View>
         </View>
-      </View>
-    </View>
+      </RNSScreen>
+    </RNSScreenContainer>
   </RNCSafeAreaProvider>
 </View>
 `;
@@ -1583,7 +1587,7 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
         </View>
       </View>
     </View>
-    <View
+    <RNSScreenContainer
       onLayout={[Function]}
       style={
         Object {
@@ -1591,7 +1595,9 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
         }
       }
     >
-      <View
+      <RNSScreen
+        activityState={2}
+        forwardedRef={[Function]}
         pointerEvents="box-none"
         style={
           Object {
@@ -2180,8 +2186,8 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
             </View>
           </View>
         </View>
-      </View>
-    </View>
+      </RNSScreen>
+    </RNSScreenContainer>
   </RNCSafeAreaProvider>
 </View>
 `;
@@ -2313,7 +2319,7 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
         </View>
       </View>
     </View>
-    <View
+    <RNSScreenContainer
       onLayout={[Function]}
       style={
         Object {
@@ -2321,7 +2327,9 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
         }
       }
     >
-      <View
+      <RNSScreen
+        activityState={2}
+        forwardedRef={[Function]}
         pointerEvents="box-none"
         style={
           Object {
@@ -2908,8 +2916,8 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
             </View>
           </View>
         </View>
-      </View>
-    </View>
+      </RNSScreen>
+    </RNSScreenContainer>
   </RNCSafeAreaProvider>
 </View>
 `;
@@ -3041,7 +3049,7 @@ exports[`<LockPinCodeSetup /> should show re enter pass code after first entry 1
         </View>
       </View>
     </View>
-    <View
+    <RNSScreenContainer
       onLayout={[Function]}
       style={
         Object {
@@ -3049,7 +3057,9 @@ exports[`<LockPinCodeSetup /> should show re enter pass code after first entry 1
         }
       }
     >
-      <View
+      <RNSScreen
+        activityState={2}
+        forwardedRef={[Function]}
         pointerEvents="box-none"
         style={
           Object {
@@ -3636,8 +3646,8 @@ exports[`<LockPinCodeSetup /> should show re enter pass code after first entry 1
             </View>
           </View>
         </View>
-      </View>
-    </View>
+      </RNSScreen>
+    </RNSScreenContainer>
   </RNCSafeAreaProvider>
 </View>
 `;
