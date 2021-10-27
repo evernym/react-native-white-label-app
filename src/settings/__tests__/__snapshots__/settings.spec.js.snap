@@ -346,19 +346,26 @@ exports[`user settings screen should render properly and snapshot should match i
                                 >
                                   <View
                                     style={
-                                      Object {
-                                        "alignItems": "center",
-                                        "backgroundColor": "#F2F2F2",
-                                        "borderBottomColor": "#EAEAEA",
-                                        "borderBottomWidth": 1,
-                                        "borderTopWidth": 0,
-                                        "flex": 1,
-                                        "flexDirection": "row",
-                                        "justifyContent": "center",
-                                        "minHeight": 41.29411764705882,
-                                        "paddingHorizontal": 15.314285714285713,
-                                        "paddingVertical": 7.941176470588235,
-                                      }
+                                      Array [
+                                        Object {
+                                          "alignItems": "flex-start",
+                                          "flex": 1,
+                                          "justifyContent": "center",
+                                        },
+                                        Object {
+                                          "alignItems": "center",
+                                          "backgroundColor": "#F2F2F2",
+                                          "borderBottomColor": "#EAEAEA",
+                                          "borderBottomWidth": 1,
+                                          "borderTopWidth": 0,
+                                          "flex": 1,
+                                          "flexDirection": "row",
+                                          "justifyContent": "center",
+                                          "minHeight": 41.29411764705882,
+                                          "paddingHorizontal": 15.314285714285713,
+                                          "paddingVertical": 7.941176470588235,
+                                        },
+                                      ]
                                     }
                                     theme={
                                       Object {
@@ -379,9 +386,19 @@ exports[`user settings screen should render properly and snapshot should match i
                                               "error": "#f44336",
                                               "grey": "rgba(0, 0, 0, 0.54)",
                                               "primary": "#2196f3",
+                                              "searchBg": "#dcdce1",
                                               "secondary": "#9C27B0",
                                               "success": "#4caf50",
                                               "warning": "#ffeb3b",
+                                            },
+                                            "default": Object {
+                                              "error": "#ff3b30",
+                                              "grey": "#7d7d7d",
+                                              "primary": "#007aff",
+                                              "searchBg": "#dcdce1",
+                                              "secondary": "#5856d6",
+                                              "success": "#4cd964",
+                                              "warning": "#ffcc00",
                                             },
                                             "ios": Object {
                                               "error": "#ff3b30",
@@ -391,6 +408,15 @@ exports[`user settings screen should render properly and snapshot should match i
                                               "secondary": "#5856d6",
                                               "success": "#4cd964",
                                               "warning": "#ffcc00",
+                                            },
+                                            "web": Object {
+                                              "error": "#ff190c",
+                                              "grey": "#393e42",
+                                              "primary": "#2089dc",
+                                              "searchBg": "#303337",
+                                              "secondary": "#ca71eb",
+                                              "success": "#52c41a",
+                                              "warning": "#faad14",
                                             },
                                           },
                                           "primary": "#2089dc",
@@ -455,12 +481,17 @@ exports[`user settings screen should render properly and snapshot should match i
                                     </View>
                                     <View
                                       style={
-                                        Object {
-                                          "alignItems": "flex-start",
-                                          "flex": 1,
-                                          "justifyContent": "center",
-                                          "paddingHorizontal": 7.941176470588235,
-                                        }
+                                        Array [
+                                          Object {
+                                            "alignItems": "flex-start",
+                                            "flex": 1,
+                                            "justifyContent": "center",
+                                          },
+                                          Object {
+                                            "flex": 1,
+                                            "paddingHorizontal": 7.941176470588235,
+                                          },
+                                        ]
                                       }
                                       theme={
                                         Object {
@@ -481,9 +512,19 @@ exports[`user settings screen should render properly and snapshot should match i
                                                 "error": "#f44336",
                                                 "grey": "rgba(0, 0, 0, 0.54)",
                                                 "primary": "#2196f3",
+                                                "searchBg": "#dcdce1",
                                                 "secondary": "#9C27B0",
                                                 "success": "#4caf50",
                                                 "warning": "#ffeb3b",
+                                              },
+                                              "default": Object {
+                                                "error": "#ff3b30",
+                                                "grey": "#7d7d7d",
+                                                "primary": "#007aff",
+                                                "searchBg": "#dcdce1",
+                                                "secondary": "#5856d6",
+                                                "success": "#4cd964",
+                                                "warning": "#ffcc00",
                                               },
                                               "ios": Object {
                                                 "error": "#ff3b30",
@@ -493,6 +534,15 @@ exports[`user settings screen should render properly and snapshot should match i
                                                 "secondary": "#5856d6",
                                                 "success": "#4cd964",
                                                 "warning": "#ffcc00",
+                                              },
+                                              "web": Object {
+                                                "error": "#ff190c",
+                                                "grey": "#393e42",
+                                                "primary": "#2089dc",
+                                                "searchBg": "#303337",
+                                                "secondary": "#ca71eb",
+                                                "success": "#52c41a",
+                                                "warning": "#faad14",
                                               },
                                             },
                                             "primary": "#2089dc",
@@ -570,19 +620,26 @@ exports[`user settings screen should render properly and snapshot should match i
                                 >
                                   <View
                                     style={
-                                      Object {
-                                        "alignItems": "center",
-                                        "backgroundColor": "#F2F2F2",
-                                        "borderBottomColor": "#EAEAEA",
-                                        "borderBottomWidth": 1,
-                                        "borderTopWidth": 0,
-                                        "flex": 1,
-                                        "flexDirection": "row",
-                                        "justifyContent": "center",
-                                        "minHeight": 41.29411764705882,
-                                        "paddingHorizontal": 15.314285714285713,
-                                        "paddingVertical": 7.941176470588235,
-                                      }
+                                      Array [
+                                        Object {
+                                          "alignItems": "flex-start",
+                                          "flex": 1,
+                                          "justifyContent": "center",
+                                        },
+                                        Object {
+                                          "alignItems": "center",
+                                          "backgroundColor": "#F2F2F2",
+                                          "borderBottomColor": "#EAEAEA",
+                                          "borderBottomWidth": 1,
+                                          "borderTopWidth": 0,
+                                          "flex": 1,
+                                          "flexDirection": "row",
+                                          "justifyContent": "center",
+                                          "minHeight": 41.29411764705882,
+                                          "paddingHorizontal": 15.314285714285713,
+                                          "paddingVertical": 7.941176470588235,
+                                        },
+                                      ]
                                     }
                                     theme={
                                       Object {
@@ -603,9 +660,19 @@ exports[`user settings screen should render properly and snapshot should match i
                                               "error": "#f44336",
                                               "grey": "rgba(0, 0, 0, 0.54)",
                                               "primary": "#2196f3",
+                                              "searchBg": "#dcdce1",
                                               "secondary": "#9C27B0",
                                               "success": "#4caf50",
                                               "warning": "#ffeb3b",
+                                            },
+                                            "default": Object {
+                                              "error": "#ff3b30",
+                                              "grey": "#7d7d7d",
+                                              "primary": "#007aff",
+                                              "searchBg": "#dcdce1",
+                                              "secondary": "#5856d6",
+                                              "success": "#4cd964",
+                                              "warning": "#ffcc00",
                                             },
                                             "ios": Object {
                                               "error": "#ff3b30",
@@ -615,6 +682,15 @@ exports[`user settings screen should render properly and snapshot should match i
                                               "secondary": "#5856d6",
                                               "success": "#4cd964",
                                               "warning": "#ffcc00",
+                                            },
+                                            "web": Object {
+                                              "error": "#ff190c",
+                                              "grey": "#393e42",
+                                              "primary": "#2089dc",
+                                              "searchBg": "#303337",
+                                              "secondary": "#ca71eb",
+                                              "success": "#52c41a",
+                                              "warning": "#faad14",
                                             },
                                           },
                                           "primary": "#2089dc",
@@ -679,12 +755,17 @@ exports[`user settings screen should render properly and snapshot should match i
                                     </View>
                                     <View
                                       style={
-                                        Object {
-                                          "alignItems": "flex-start",
-                                          "flex": 1,
-                                          "justifyContent": "center",
-                                          "paddingHorizontal": 7.941176470588235,
-                                        }
+                                        Array [
+                                          Object {
+                                            "alignItems": "flex-start",
+                                            "flex": 1,
+                                            "justifyContent": "center",
+                                          },
+                                          Object {
+                                            "flex": 1,
+                                            "paddingHorizontal": 7.941176470588235,
+                                          },
+                                        ]
                                       }
                                       theme={
                                         Object {
@@ -705,9 +786,19 @@ exports[`user settings screen should render properly and snapshot should match i
                                                 "error": "#f44336",
                                                 "grey": "rgba(0, 0, 0, 0.54)",
                                                 "primary": "#2196f3",
+                                                "searchBg": "#dcdce1",
                                                 "secondary": "#9C27B0",
                                                 "success": "#4caf50",
                                                 "warning": "#ffeb3b",
+                                              },
+                                              "default": Object {
+                                                "error": "#ff3b30",
+                                                "grey": "#7d7d7d",
+                                                "primary": "#007aff",
+                                                "searchBg": "#dcdce1",
+                                                "secondary": "#5856d6",
+                                                "success": "#4cd964",
+                                                "warning": "#ffcc00",
                                               },
                                               "ios": Object {
                                                 "error": "#ff3b30",
@@ -717,6 +808,15 @@ exports[`user settings screen should render properly and snapshot should match i
                                                 "secondary": "#5856d6",
                                                 "success": "#4cd964",
                                                 "warning": "#ffcc00",
+                                              },
+                                              "web": Object {
+                                                "error": "#ff190c",
+                                                "grey": "#393e42",
+                                                "primary": "#2089dc",
+                                                "searchBg": "#303337",
+                                                "secondary": "#ca71eb",
+                                                "success": "#52c41a",
+                                                "warning": "#faad14",
                                               },
                                             },
                                             "primary": "#2089dc",
@@ -856,19 +956,26 @@ exports[`user settings screen should render properly and snapshot should match i
                                 >
                                   <View
                                     style={
-                                      Object {
-                                        "alignItems": "center",
-                                        "backgroundColor": "#F2F2F2",
-                                        "borderBottomColor": "#EAEAEA",
-                                        "borderBottomWidth": 1,
-                                        "borderTopWidth": 0,
-                                        "flex": 1,
-                                        "flexDirection": "row",
-                                        "justifyContent": "center",
-                                        "minHeight": 41.29411764705882,
-                                        "paddingHorizontal": 15.314285714285713,
-                                        "paddingVertical": 7.941176470588235,
-                                      }
+                                      Array [
+                                        Object {
+                                          "alignItems": "flex-start",
+                                          "flex": 1,
+                                          "justifyContent": "center",
+                                        },
+                                        Object {
+                                          "alignItems": "center",
+                                          "backgroundColor": "#F2F2F2",
+                                          "borderBottomColor": "#EAEAEA",
+                                          "borderBottomWidth": 1,
+                                          "borderTopWidth": 0,
+                                          "flex": 1,
+                                          "flexDirection": "row",
+                                          "justifyContent": "center",
+                                          "minHeight": 41.29411764705882,
+                                          "paddingHorizontal": 15.314285714285713,
+                                          "paddingVertical": 7.941176470588235,
+                                        },
+                                      ]
                                     }
                                     theme={
                                       Object {
@@ -889,9 +996,19 @@ exports[`user settings screen should render properly and snapshot should match i
                                               "error": "#f44336",
                                               "grey": "rgba(0, 0, 0, 0.54)",
                                               "primary": "#2196f3",
+                                              "searchBg": "#dcdce1",
                                               "secondary": "#9C27B0",
                                               "success": "#4caf50",
                                               "warning": "#ffeb3b",
+                                            },
+                                            "default": Object {
+                                              "error": "#ff3b30",
+                                              "grey": "#7d7d7d",
+                                              "primary": "#007aff",
+                                              "searchBg": "#dcdce1",
+                                              "secondary": "#5856d6",
+                                              "success": "#4cd964",
+                                              "warning": "#ffcc00",
                                             },
                                             "ios": Object {
                                               "error": "#ff3b30",
@@ -901,6 +1018,15 @@ exports[`user settings screen should render properly and snapshot should match i
                                               "secondary": "#5856d6",
                                               "success": "#4cd964",
                                               "warning": "#ffcc00",
+                                            },
+                                            "web": Object {
+                                              "error": "#ff190c",
+                                              "grey": "#393e42",
+                                              "primary": "#2089dc",
+                                              "searchBg": "#303337",
+                                              "secondary": "#ca71eb",
+                                              "success": "#52c41a",
+                                              "warning": "#faad14",
                                             },
                                           },
                                           "primary": "#2089dc",
@@ -1007,12 +1133,17 @@ exports[`user settings screen should render properly and snapshot should match i
                                     </View>
                                     <View
                                       style={
-                                        Object {
-                                          "alignItems": "flex-start",
-                                          "flex": 1,
-                                          "justifyContent": "center",
-                                          "paddingHorizontal": 7.941176470588235,
-                                        }
+                                        Array [
+                                          Object {
+                                            "alignItems": "flex-start",
+                                            "flex": 1,
+                                            "justifyContent": "center",
+                                          },
+                                          Object {
+                                            "flex": 1,
+                                            "paddingHorizontal": 7.941176470588235,
+                                          },
+                                        ]
                                       }
                                       theme={
                                         Object {
@@ -1033,9 +1164,19 @@ exports[`user settings screen should render properly and snapshot should match i
                                                 "error": "#f44336",
                                                 "grey": "rgba(0, 0, 0, 0.54)",
                                                 "primary": "#2196f3",
+                                                "searchBg": "#dcdce1",
                                                 "secondary": "#9C27B0",
                                                 "success": "#4caf50",
                                                 "warning": "#ffeb3b",
+                                              },
+                                              "default": Object {
+                                                "error": "#ff3b30",
+                                                "grey": "#7d7d7d",
+                                                "primary": "#007aff",
+                                                "searchBg": "#dcdce1",
+                                                "secondary": "#5856d6",
+                                                "success": "#4cd964",
+                                                "warning": "#ffcc00",
                                               },
                                               "ios": Object {
                                                 "error": "#ff3b30",
@@ -1045,6 +1186,15 @@ exports[`user settings screen should render properly and snapshot should match i
                                                 "secondary": "#5856d6",
                                                 "success": "#4cd964",
                                                 "warning": "#ffcc00",
+                                              },
+                                              "web": Object {
+                                                "error": "#ff190c",
+                                                "grey": "#393e42",
+                                                "primary": "#2089dc",
+                                                "searchBg": "#303337",
+                                                "secondary": "#ca71eb",
+                                                "success": "#52c41a",
+                                                "warning": "#faad14",
                                               },
                                             },
                                             "primary": "#2089dc",
@@ -1184,19 +1334,26 @@ exports[`user settings screen should render properly and snapshot should match i
                                 >
                                   <View
                                     style={
-                                      Object {
-                                        "alignItems": "center",
-                                        "backgroundColor": "#F2F2F2",
-                                        "borderBottomColor": "#EAEAEA",
-                                        "borderBottomWidth": 1,
-                                        "borderTopWidth": 0,
-                                        "flex": 1,
-                                        "flexDirection": "row",
-                                        "justifyContent": "center",
-                                        "minHeight": 41.29411764705882,
-                                        "paddingHorizontal": 15.314285714285713,
-                                        "paddingVertical": 7.941176470588235,
-                                      }
+                                      Array [
+                                        Object {
+                                          "alignItems": "flex-start",
+                                          "flex": 1,
+                                          "justifyContent": "center",
+                                        },
+                                        Object {
+                                          "alignItems": "center",
+                                          "backgroundColor": "#F2F2F2",
+                                          "borderBottomColor": "#EAEAEA",
+                                          "borderBottomWidth": 1,
+                                          "borderTopWidth": 0,
+                                          "flex": 1,
+                                          "flexDirection": "row",
+                                          "justifyContent": "center",
+                                          "minHeight": 41.29411764705882,
+                                          "paddingHorizontal": 15.314285714285713,
+                                          "paddingVertical": 7.941176470588235,
+                                        },
+                                      ]
                                     }
                                     theme={
                                       Object {
@@ -1217,9 +1374,19 @@ exports[`user settings screen should render properly and snapshot should match i
                                               "error": "#f44336",
                                               "grey": "rgba(0, 0, 0, 0.54)",
                                               "primary": "#2196f3",
+                                              "searchBg": "#dcdce1",
                                               "secondary": "#9C27B0",
                                               "success": "#4caf50",
                                               "warning": "#ffeb3b",
+                                            },
+                                            "default": Object {
+                                              "error": "#ff3b30",
+                                              "grey": "#7d7d7d",
+                                              "primary": "#007aff",
+                                              "searchBg": "#dcdce1",
+                                              "secondary": "#5856d6",
+                                              "success": "#4cd964",
+                                              "warning": "#ffcc00",
                                             },
                                             "ios": Object {
                                               "error": "#ff3b30",
@@ -1229,6 +1396,15 @@ exports[`user settings screen should render properly and snapshot should match i
                                               "secondary": "#5856d6",
                                               "success": "#4cd964",
                                               "warning": "#ffcc00",
+                                            },
+                                            "web": Object {
+                                              "error": "#ff190c",
+                                              "grey": "#393e42",
+                                              "primary": "#2089dc",
+                                              "searchBg": "#303337",
+                                              "secondary": "#ca71eb",
+                                              "success": "#52c41a",
+                                              "warning": "#faad14",
                                             },
                                           },
                                           "primary": "#2089dc",
@@ -1335,12 +1511,17 @@ exports[`user settings screen should render properly and snapshot should match i
                                     </View>
                                     <View
                                       style={
-                                        Object {
-                                          "alignItems": "flex-start",
-                                          "flex": 1,
-                                          "justifyContent": "center",
-                                          "paddingHorizontal": 7.941176470588235,
-                                        }
+                                        Array [
+                                          Object {
+                                            "alignItems": "flex-start",
+                                            "flex": 1,
+                                            "justifyContent": "center",
+                                          },
+                                          Object {
+                                            "flex": 1,
+                                            "paddingHorizontal": 7.941176470588235,
+                                          },
+                                        ]
                                       }
                                       theme={
                                         Object {
@@ -1361,9 +1542,19 @@ exports[`user settings screen should render properly and snapshot should match i
                                                 "error": "#f44336",
                                                 "grey": "rgba(0, 0, 0, 0.54)",
                                                 "primary": "#2196f3",
+                                                "searchBg": "#dcdce1",
                                                 "secondary": "#9C27B0",
                                                 "success": "#4caf50",
                                                 "warning": "#ffeb3b",
+                                              },
+                                              "default": Object {
+                                                "error": "#ff3b30",
+                                                "grey": "#7d7d7d",
+                                                "primary": "#007aff",
+                                                "searchBg": "#dcdce1",
+                                                "secondary": "#5856d6",
+                                                "success": "#4cd964",
+                                                "warning": "#ffcc00",
                                               },
                                               "ios": Object {
                                                 "error": "#ff3b30",
@@ -1373,6 +1564,15 @@ exports[`user settings screen should render properly and snapshot should match i
                                                 "secondary": "#5856d6",
                                                 "success": "#4cd964",
                                                 "warning": "#ffcc00",
+                                              },
+                                              "web": Object {
+                                                "error": "#ff190c",
+                                                "grey": "#393e42",
+                                                "primary": "#2089dc",
+                                                "searchBg": "#303337",
+                                                "secondary": "#ca71eb",
+                                                "success": "#52c41a",
+                                                "warning": "#faad14",
                                               },
                                             },
                                             "primary": "#2089dc",
@@ -1512,19 +1712,26 @@ exports[`user settings screen should render properly and snapshot should match i
                                 >
                                   <View
                                     style={
-                                      Object {
-                                        "alignItems": "center",
-                                        "backgroundColor": "#F2F2F2",
-                                        "borderBottomColor": "#EAEAEA",
-                                        "borderBottomWidth": 1,
-                                        "borderTopWidth": 0,
-                                        "flex": 1,
-                                        "flexDirection": "row",
-                                        "justifyContent": "center",
-                                        "minHeight": 41.29411764705882,
-                                        "paddingHorizontal": 15.314285714285713,
-                                        "paddingVertical": 7.941176470588235,
-                                      }
+                                      Array [
+                                        Object {
+                                          "alignItems": "flex-start",
+                                          "flex": 1,
+                                          "justifyContent": "center",
+                                        },
+                                        Object {
+                                          "alignItems": "center",
+                                          "backgroundColor": "#F2F2F2",
+                                          "borderBottomColor": "#EAEAEA",
+                                          "borderBottomWidth": 1,
+                                          "borderTopWidth": 0,
+                                          "flex": 1,
+                                          "flexDirection": "row",
+                                          "justifyContent": "center",
+                                          "minHeight": 41.29411764705882,
+                                          "paddingHorizontal": 15.314285714285713,
+                                          "paddingVertical": 7.941176470588235,
+                                        },
+                                      ]
                                     }
                                     theme={
                                       Object {
@@ -1545,9 +1752,19 @@ exports[`user settings screen should render properly and snapshot should match i
                                               "error": "#f44336",
                                               "grey": "rgba(0, 0, 0, 0.54)",
                                               "primary": "#2196f3",
+                                              "searchBg": "#dcdce1",
                                               "secondary": "#9C27B0",
                                               "success": "#4caf50",
                                               "warning": "#ffeb3b",
+                                            },
+                                            "default": Object {
+                                              "error": "#ff3b30",
+                                              "grey": "#7d7d7d",
+                                              "primary": "#007aff",
+                                              "searchBg": "#dcdce1",
+                                              "secondary": "#5856d6",
+                                              "success": "#4cd964",
+                                              "warning": "#ffcc00",
                                             },
                                             "ios": Object {
                                               "error": "#ff3b30",
@@ -1557,6 +1774,15 @@ exports[`user settings screen should render properly and snapshot should match i
                                               "secondary": "#5856d6",
                                               "success": "#4cd964",
                                               "warning": "#ffcc00",
+                                            },
+                                            "web": Object {
+                                              "error": "#ff190c",
+                                              "grey": "#393e42",
+                                              "primary": "#2089dc",
+                                              "searchBg": "#303337",
+                                              "secondary": "#ca71eb",
+                                              "success": "#52c41a",
+                                              "warning": "#faad14",
                                             },
                                           },
                                           "primary": "#2089dc",
@@ -1663,12 +1889,17 @@ exports[`user settings screen should render properly and snapshot should match i
                                     </View>
                                     <View
                                       style={
-                                        Object {
-                                          "alignItems": "flex-start",
-                                          "flex": 1,
-                                          "justifyContent": "center",
-                                          "paddingHorizontal": 7.941176470588235,
-                                        }
+                                        Array [
+                                          Object {
+                                            "alignItems": "flex-start",
+                                            "flex": 1,
+                                            "justifyContent": "center",
+                                          },
+                                          Object {
+                                            "flex": 1,
+                                            "paddingHorizontal": 7.941176470588235,
+                                          },
+                                        ]
                                       }
                                       theme={
                                         Object {
@@ -1689,9 +1920,19 @@ exports[`user settings screen should render properly and snapshot should match i
                                                 "error": "#f44336",
                                                 "grey": "rgba(0, 0, 0, 0.54)",
                                                 "primary": "#2196f3",
+                                                "searchBg": "#dcdce1",
                                                 "secondary": "#9C27B0",
                                                 "success": "#4caf50",
                                                 "warning": "#ffeb3b",
+                                              },
+                                              "default": Object {
+                                                "error": "#ff3b30",
+                                                "grey": "#7d7d7d",
+                                                "primary": "#007aff",
+                                                "searchBg": "#dcdce1",
+                                                "secondary": "#5856d6",
+                                                "success": "#4cd964",
+                                                "warning": "#ffcc00",
                                               },
                                               "ios": Object {
                                                 "error": "#ff3b30",
@@ -1701,6 +1942,15 @@ exports[`user settings screen should render properly and snapshot should match i
                                                 "secondary": "#5856d6",
                                                 "success": "#4cd964",
                                                 "warning": "#ffcc00",
+                                              },
+                                              "web": Object {
+                                                "error": "#ff190c",
+                                                "grey": "#393e42",
+                                                "primary": "#2089dc",
+                                                "searchBg": "#303337",
+                                                "secondary": "#ca71eb",
+                                                "success": "#52c41a",
+                                                "warning": "#faad14",
                                               },
                                             },
                                             "primary": "#2089dc",

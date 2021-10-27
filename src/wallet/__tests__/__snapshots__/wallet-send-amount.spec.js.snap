@@ -68,12 +68,20 @@ exports[`<WalletSendAmount /> should render properly and match the snapshot 1`] 
     >
       <View
         style={
-          Object {
-            "borderRadius": 3,
-            "marginLeft": 0,
-            "marginRight": 0,
-            "overflow": "hidden",
-          }
+          Array [
+            Object {
+              "borderRadius": 3,
+              "overflow": "hidden",
+            },
+            Object {
+              "borderRadius": 3,
+            },
+            Object {
+              "marginLeft": 0,
+              "marginRight": 0,
+            },
+            false,
+          ]
         }
       >
         <View
@@ -130,8 +138,7 @@ exports[`<WalletSendAmount /> should render properly and match the snapshot 1`] 
                 Object {
                   "color": "white",
                   "fontSize": 18,
-                  "paddingBottom": 1,
-                  "paddingTop": 2,
+                  "paddingVertical": 1,
                   "textAlign": "center",
                 }
               }
