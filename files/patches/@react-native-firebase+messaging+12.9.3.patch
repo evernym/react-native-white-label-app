@@ -1,0 +1,13 @@
+diff --git a/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml b/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml
+index 699830a..d8238e3 100644
+--- a/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml
++++ b/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml
+@@ -16,7 +16,7 @@
+     </service>
+     <receiver
+       android:name=".ReactNativeFirebaseMessagingReceiver"
+-      android:exported="true"
++      android:exported="false"
+       android:permission="com.google.android.c2dm.permission.SEND">
+       <intent-filter>
+         <action android:name="com.google.android.c2dm.intent.RECEIVE" />
