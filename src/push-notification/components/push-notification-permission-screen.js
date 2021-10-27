@@ -30,7 +30,7 @@ import type {
   PushNotificationPermissionProps,
   PushNotificationPermissionState,
 } from './type-push-notification-permission'
-import { appName, usePushNotifications } from '../../external-imports'
+import { appName, usePushNotifications, pushNotificationPermissionImage } from '../../external-imports'
 
 const pushNotificationsAuthorizationStatus = async () =>
   usePushNotifications ? await messaging().hasPermission() : 0
@@ -251,7 +251,7 @@ class PushNotificationPermission extends Component<
         <View style={styles.imageSection}>
           <Image
             style={styles.image}
-            source={require('../../images/iphoneX.png')}
+            source={pushNotificationPermissionImage}
           />
           <View style={styles.buttonsSection} accessible={false} accessibilityLabel="push-notifications-buttons-container">
             {this.renderCorrectButton()}
