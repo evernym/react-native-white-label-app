@@ -56,7 +56,7 @@ The base application settings should be specified in `app.js` file.
         ```
     * to use custom
         ```javascript
-        export const APP_ICON = require('app_icon.png')
+        export const APP_ICON = require('path/to/app_icon.png')
         ```
 
 * `APP_LOGO` - (image source, Optional) small application logo used on several screens. 
@@ -66,7 +66,7 @@ The base application settings should be specified in `app.js` file.
         ```
     * to use custom
         ```javascript
-        export const APP_LOGO = require('logo_app.png')
+        export const APP_LOGO = require('path/to/logo_app.png')
         ```
 
 * `COMPANY_NAME` - (string, Optional) name of a company built app. 
@@ -86,7 +86,7 @@ The base application settings should be specified in `app.js` file.
          ```
      * to use custom
          ```javascript
-        export const COMPANY_LOGO = require('app_company.png')
+        export const COMPANY_LOGO = require('path/to/app_company.png')
          ```
  
 * `DEFAULT_USER_AVATAR` - (image source, Optional) default user avatar placeholder.
@@ -96,7 +96,7 @@ The base application settings should be specified in `app.js` file.
         ```
     * to use custom
         ```javascript
-        export const DEFAULT_USER_AVATAR = require('user_avatar.png')
+        export const DEFAULT_USER_AVATAR = require('path/to/user_avatar.png')
         ```
  
 * `DEEP_LINK` - (string, Optional) Branch.io Deep link address.
@@ -421,7 +421,7 @@ You can configure application startup wizard which is shown for the newly instal
         ```
     * to use custom
         ```javascript
-        export const BACKGROUND_IMAGE = require('setup.png')
+        export const BACKGROUND_IMAGE = require('path/to/setup.png')
         ```
   
 * `CustomStartUpScreen` - (React Component) custom component for Start Up screen rendering (instead of predefined one).
