@@ -48,7 +48,7 @@
     "@react-navigation/stack": "5.12.0",
     "@redux-saga/delay-p": "1.1.2",
     "ajv": "^6.12.2",
-    "apptentive-react-native": "5.5.0",
+    "apptentive-react-native": "^5.7.2",
     "bignumber.js": "^9.0.0",
     "color": "^3.1.2",
     "dayjs": "^1.9.1",
