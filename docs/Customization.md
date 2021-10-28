@@ -109,6 +109,16 @@ The base application settings should be specified in `app.js` file.
         export const DEEP_LINK = 'https://address.com'
         ```
 
+* `PUSH_NOTIFICATION_PERMISSION_SCREEN_IMAGE_IOS` - (image source, Optional) For iOS side we have push notification permission screen with image which simulate ConnectMe notification by default. It's way for customization this screen.
+  * to omit
+      ```javascript
+      export const PUSH_NOTIFICATION_PERMISSION_SCREEN_IMAGE_IOS = null
+      ```
+    * to use custom
+        ```javascript
+        export const PUSH_NOTIFICATION_PERMISSION_SCREEN_IMAGE_IOS = require('iphoneX.png')
+        ```
+
 ### Environment
 
 You should set up an environment to be used by your application in the `provision.js` module.
