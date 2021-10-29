@@ -127,6 +127,9 @@ import { inviteActionScreen } from '../invite-action/invite-action-screen'
 import { ShowCredentialScreen } from '../show-credential/show-credential-modal'
 import { ProofProposalModal } from '../verifier/proof-proposal-modal'
 import { ReceivedProofScreen } from '../verifier/received-proof-modal'
+import { physicalIdScreen } from '../physical-id/physical-id-screen'
+import { problemModalReport } from '../physical-id/problem-modal-report'
+import { physicalIdSuccessScreen } from '../physical-id/physical-id-success-screen'
 
 enableScreens()
 
