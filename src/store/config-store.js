@@ -535,25 +535,29 @@ export function* processMessages(
 
   for (let i = 0; i < messages.length; i++) {
     try {
-      let pairwiseDID = messages[i].pairwiseDID || ''
+      const isDecryptedPayload = !!messages[i]?.decryptedPayload
 
-      if (
-        !(
-          dataAlreadyExists &&
-          dataAlreadyExists[`${messages[i].uid}-${pairwiseDID}`]
-        )
-      ) {
-        yield put(
-          setFetchAdditionalDataPendingKeys(messages[i].uid, pairwiseDID)
-        )
+      if (isDecryptedPayload) {
+        let pairwiseDID = messages[i].pairwiseDID || ''
 
-        // get message type
-        let isAries = messages[i].type === MESSAGE_TYPE.ARIES
+        if (
+          !(
+            dataAlreadyExists &&
+            dataAlreadyExists[`${messages[i].uid}-${pairwiseDID}`]
+          )
+        ) {
+          yield put(
+            setFetchAdditionalDataPendingKeys(messages[i].uid, pairwiseDID)
+          )
 
-        if (isAries) {
-          yield fork(handleAriesMessage, messages[i])
-        } else {
-          yield fork(handleProprietaryMessage, messages[i])
+          // get message type
+          const isAries = messages[i].type === MESSAGE_TYPE.ARIES
+
+          if (isAries) {
+            yield fork(handleAriesMessage, messages[i])
+          } else {
+            yield fork(handleProprietaryMessage, messages[i])
+          }
         }
       }
     } catch (e) {

@@ -11,18 +11,7 @@ echo "2. Updating minimum supported SDK version to ${minVersion}"
 minVersion=23
 sed -ri "s|minSdkVersion = [0-9]*|minSdkVersion = ${minVersion}|" android/build.gradle
 
-echo "2.1 Updating supported SDK version to ${compileSdkVersion}"
-compileSdkVersion=30
-sed -ri "s|compileSdkVersion = [0-9]*|compileSdkVersion = ${compileSdkVersion}|" android/build.gradle
-targetSdkVersion=30
-sed -ri "s|targetSdkVersion = [0-9]*|targetSdkVersion = ${targetSdkVersion}|" android/build.gradle
-buildToolsVersion='30.0.3'
-sed -ri "s|buildToolsVersion = [0-9]\.[0-9]\.[0-9]*|buildToolsVersion = \'${buildToolsVersion}\'|" android/build.gradle
-
-distributionUrl='https\://services.gradle.org/distributions/gradle-6.5-bin.zip\n;distributionUrl='
-sed -ri "s|distributionUrl=*|distributionUrl=${distributionUrl}|" android/gradle/wrapper/gradle-wrapper.properties
-
-echo "3. Adding the source repository for VCX and Jumio libraries"
+echo "3. Adding the source repository for VCX library"
 repository="
 allprojects {
     repositories {
@@ -106,11 +95,6 @@ method='\
     } \
     '
 sed -i "/.*MainActivity.*/a ${method}" ${filepath}
-
-echo "9. Updating gradle version add kotlin dependence"
-
-sed -i "s/classpath 'com.android.tools.build:gradle:[0-9]\.[0-9]\.[0-9]'/classpath 'com.android.tools.build:gradle:3.4.2'\n\t\tclasspath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.20'/g" android/build.gradle
-sed -i "s/classpath(\"com.android.tools.build:gradle:[0-9]\.[0-9]\.[0-9]\")/classpath(\"com.android.tools.build:gradle:3.4.2\")\n\t\tclasspath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.20'/g" android/build.gradle
 
 echo "Completed!"
 

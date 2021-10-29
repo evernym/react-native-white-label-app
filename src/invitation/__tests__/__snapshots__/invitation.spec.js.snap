@@ -305,8 +305,9 @@ exports[`<Invitation /> should match snapshot 1`] = `
       <View
         accessibilityLabel="invitation-accept"
         accessible={true}
+        collapsable={false}
         focusable={true}
-        isTVSelectable={true}
+        nativeID="animatedComponent"
         onClick={[Function]}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -374,8 +375,9 @@ exports[`<Invitation /> should match snapshot 1`] = `
       <View
         accessibilityLabel="invitation-deny"
         accessible={true}
+        collapsable={false}
         focusable={true}
-        isTVSelectable={true}
+        nativeID="animatedComponent"
         onClick={[Function]}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}

@@ -151,17 +151,12 @@ Array [
               },
             ]
           }
-          disableVirtualization={false}
           getItem={[Function]}
           getItemCount={[Function]}
-          horizontal={false}
-          initialNumToRender={10}
           keyExtractor={[Function]}
-          maxToRenderPerBatch={10}
-          numColumns={1}
           onContentSizeChange={[Function]}
-          onEndReachedThreshold={2}
           onLayout={[Function]}
+          onMomentumScrollBegin={[Function]}
           onMomentumScrollEnd={[Function]}
           onScroll={[Function]}
           onScrollBeginDrag={[Function]}
@@ -170,9 +165,7 @@ Array [
           renderItem={[Function]}
           scrollEventThrottle={50}
           stickyHeaderIndices={Array []}
-          updateCellsBatchingPeriod={50}
           viewabilityConfigCallbackPairs={Array []}
-          windowSize={21}
         >
           <View>
             <View
@@ -265,8 +258,9 @@ Array [
   >
     <View
       accessible={true}
+      collapsable={false}
       focusable={true}
-      isTVSelectable={true}
+      nativeID="animatedComponent"
       onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
@@ -333,8 +327,9 @@ Array [
     </View>
     <View
       accessible={true}
+      collapsable={false}
       focusable={true}
-      isTVSelectable={true}
+      nativeID="animatedComponent"
       onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}

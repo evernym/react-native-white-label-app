@@ -21,8 +21,9 @@ exports[`<ConnectionTheme /> should render default theme properly 1`] = `
         }
       }
       accessible={true}
+      collapsable={false}
       focusable={true}
-      isTVSelectable={true}
+      nativeID="animatedComponent"
       onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}

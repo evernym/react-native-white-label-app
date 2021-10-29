@@ -6,6 +6,7 @@ export type HomeProps = {
   newBannerConnections: Array<Object>,
   recentConnections: Array<Object>,
   hasNoConnection: boolean,
+  hasNoRecentConnections: boolean,
   mappedDidToLogoAndName: Object,
   getUnacknowledgedMessages: () => void,
   messageDownloadStatus: MessageDownloadStatus,

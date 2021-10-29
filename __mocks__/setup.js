@@ -115,7 +115,9 @@ jest.doMock('react-native', () => {
   )
 })
 
-jest.mock('react-native/Libraries/Animated/src/NativeAnimatedHelper')
+jest.mock('react-native/Libraries/Animated/NativeAnimatedHelper')
+
+jest.mock('react-native/Libraries/LogBox/LogBox')
 
 jest.doMock('react-native-vector-icons/lib/icon-button', () => () => {
   const { View, Text } = require('react-native')
