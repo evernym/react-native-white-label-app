@@ -22,5 +22,14 @@ Pod::Spec.new do |s|
 
   s.dependency "React-Core"
   s.dependency "vcx"
+  s.dependency "JumioMobileSDK", '~>3.9.0'
+  s.dependency "JumioMobileSDK/Netverify", '~>3.9.0'
+  s.dependency "JumioMobileSDK/NetverifyBase", '~>3.9.0'
+  s.dependency "JumioMobileSDK/NetverifyNFC", '~>3.9.0'
+  s.dependency "JumioMobileSDK/NetverifyBarcode", '~>3.9.0'
+  s.dependency "JumioMobileSDK/NetverifyFace+iProov", '~>3.9.0'
+  s.dependency "JumioMobileSDK/NetverifyFace+Zoom", '~>3.9.0'
+  s.dependency "JumioMobileSDK/DocumentVerification", '~>3.9.0'
+  s.dependency "JumioMobileSDK/BAMCheckout", '~>3.9.0'
 
 end

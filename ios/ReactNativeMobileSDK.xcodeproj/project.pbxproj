@@ -10,6 +10,9 @@
 		07B5B59325386BD80062AC4E /* RNIndy.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B5B58F25386BD80062AC4E /* RNIndy.m */; };
 		07B5B59425386BD80062AC4E /* ReactNativeMobileSDK.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B5B59025386BD80062AC4E /* ReactNativeMobileSDK.m */; };
 		7C29EC5512172124ADDE5A90 /* Pods_ReactNativeMobileSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DD590E93EF00459971B85C0 /* Pods_ReactNativeMobileSDK.framework */; };
+		DD70345E272C1B8300CA2B3C /* ConfirmScannedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD70345A272C1B8300CA2B3C /* ConfirmScannedImageView.swift */; };
+		DD70345F272C1B8300CA2B3C /* MIDS.m in Sources */ = {isa = PBXBuildFile; fileRef = DD70345C272C1B8300CA2B3C /* MIDS.m */; };
+		DD703460272C1B8300CA2B3C /* MIDS.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD70345D272C1B8300CA2B3C /* MIDS.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -33,6 +36,11 @@
 		07B5B59225386BD80062AC4E /* ReactNativeMobileSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactNativeMobileSDK.h; sourceTree = "<group>"; };
 		45E1C5759FA9B22E25963AEC /* Pods-ReactNativeMobileSDK.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactNativeMobileSDK.release.xcconfig"; path = "Target Support Files/Pods-ReactNativeMobileSDK/Pods-ReactNativeMobileSDK.release.xcconfig"; sourceTree = "<group>"; };
 		9DD590E93EF00459971B85C0 /* Pods_ReactNativeMobileSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ReactNativeMobileSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DD703458272C1B8300CA2B3C /* ReactNativeMobileSDK-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ReactNativeMobileSDK-Bridging-Header.h"; sourceTree = "<group>"; };
+		DD70345A272C1B8300CA2B3C /* ConfirmScannedImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfirmScannedImageView.swift; sourceTree = "<group>"; };
+		DD70345B272C1B8300CA2B3C /* ConfirmScannedImageView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ConfirmScannedImageView.xib; sourceTree = "<group>"; };
+		DD70345C272C1B8300CA2B3C /* MIDS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MIDS.m; sourceTree = "<group>"; };
+		DD70345D272C1B8300CA2B3C /* MIDS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MIDS.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,10 +76,14 @@
 		07B5B58E25386BC80062AC4E /* ReactNativeMobileSDK */ = {
 			isa = PBXGroup;
 			children = (
+				DD703459272C1B8300CA2B3C /* ConfirmScannedImageView */,
+				DD70345C272C1B8300CA2B3C /* MIDS.m */,
+				DD70345D272C1B8300CA2B3C /* MIDS.swift */,
 				07B5B59225386BD80062AC4E /* ReactNativeMobileSDK.h */,
 				07B5B59025386BD80062AC4E /* ReactNativeMobileSDK.m */,
 				07B5B59125386BD80062AC4E /* RNIndy.h */,
 				07B5B58F25386BD80062AC4E /* RNIndy.m */,
+				DD703458272C1B8300CA2B3C /* ReactNativeMobileSDK-Bridging-Header.h */,
 			);
 			path = ReactNativeMobileSDK;
 			sourceTree = "<group>";
@@ -82,6 +94,15 @@
 				9DD590E93EF00459971B85C0 /* Pods_ReactNativeMobileSDK.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		DD703459272C1B8300CA2B3C /* ConfirmScannedImageView */ = {
+			isa = PBXGroup;
+			children = (
+				DD70345A272C1B8300CA2B3C /* ConfirmScannedImageView.swift */,
+				DD70345B272C1B8300CA2B3C /* ConfirmScannedImageView.xib */,
+			);
+			path = ConfirmScannedImageView;
 			sourceTree = "<group>";
 		};
 		F13509C223E14B373B1D58CD /* Pods */ = {
@@ -124,6 +145,7 @@
 				TargetAttributes = {
 					07B5B57825386A750062AC4E = {
 						CreatedOnToolsVersion = 12.0;
+						LastSwiftMigration = 1300;
 					};
 				};
 			};
@@ -175,8 +197,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DD703460272C1B8300CA2B3C /* MIDS.swift in Sources */,
 				07B5B59325386BD80062AC4E /* RNIndy.m in Sources */,
 				07B5B59425386BD80062AC4E /* ReactNativeMobileSDK.m in Sources */,
+				DD70345F272C1B8300CA2B3C /* MIDS.m in Sources */,
+				DD70345E272C1B8300CA2B3C /* ConfirmScannedImageView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -299,12 +324,21 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 01D3544BC1B1DE3E56E84280 /* Pods-ReactNativeMobileSDK.debug.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = ES8QU3D2A4;
 				ENABLE_BITCODE = NO;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "ReactNativeMobileSDK/ReactNativeMobileSDK-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -313,12 +347,20 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 45E1C5759FA9B22E25963AEC /* Pods-ReactNativeMobileSDK.release.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = ES8QU3D2A4;
 				ENABLE_BITCODE = NO;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "ReactNativeMobileSDK/ReactNativeMobileSDK-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
