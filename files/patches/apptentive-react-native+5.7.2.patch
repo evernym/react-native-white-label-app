@@ -1,0 +1,12 @@
+diff --git a/node_modules/apptentive-react-native/android/build.gradle b/node_modules/apptentive-react-native/android/build.gradle
+index 9ad1441..8c67e6d 100644
+--- a/node_modules/apptentive-react-native/android/build.gradle
++++ b/node_modules/apptentive-react-native/android/build.gradle
+@@ -1,6 +1,6 @@
+ buildscript {
+     repositories {
+-        jcenter()
++        mavenCentral()
+         google()
+     }
+ 
