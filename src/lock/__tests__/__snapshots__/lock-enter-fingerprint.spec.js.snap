@@ -118,8 +118,9 @@ exports[`app lock selection page should render properly 1`] = `
         }
       }
       accessible={true}
+      collapsable={false}
       focusable={true}
-      isTVSelectable={true}
+      nativeID="animatedComponent"
       onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}

@@ -23,7 +23,6 @@ exports[`<SplashScreen /> should match snapshot 1`] = `
     }
   >
     <ActivityIndicator
-      animating={true}
       color="#777777"
       hidesWhenStopped={true}
       size="large"

@@ -103,7 +103,7 @@ export class WalletTabReceive extends PureComponent<
 
     return (
       <Container>
-        <Container>
+        {/* <Container>
           <CustomView style={[styles.container]}>
             <ScrollView scrollEnabled={walletAddresses.length > 1}>
               <CustomText
@@ -152,7 +152,7 @@ export class WalletTabReceive extends PureComponent<
               title={this.state.copyButtonText}
             />
           )}
-        </CustomView>
+        </CustomView> */}
       </Container>
     )
   }

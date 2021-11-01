@@ -2,6 +2,8 @@
 
 exports[`<CloudBackup /> should match snapshot 1`] = `
 <View
+  collapsable={false}
+  nativeID="animatedComponent"
   style={
     Object {
       "backgroundColor": "rgba(0, 0, 0, 0.8)",
@@ -11,6 +13,8 @@ exports[`<CloudBackup /> should match snapshot 1`] = `
   }
 >
   <View
+    collapsable={false}
+    nativeID="animatedComponent"
     style={
       Object {
         "flex": 1,
@@ -35,6 +39,8 @@ exports[`<CloudBackup /> should match snapshot 1`] = `
         onHandlerStateChange={[Function]}
       >
         <View
+          collapsable={false}
+          nativeID="animatedComponent"
           style={
             Object {
               "flex": 1,
@@ -123,6 +129,8 @@ exports[`<CloudBackup /> should match snapshot 1`] = `
       </View>
     </View>
     <View
+      collapsable={false}
+      nativeID="animatedComponent"
       style={
         Object {
           "backgroundColor": "#ffffff",
@@ -406,8 +414,9 @@ exports[`<CloudBackup /> should match snapshot 1`] = `
                       }
                     }
                     accessible={true}
+                    collapsable={false}
                     focusable={true}
-                    isTVSelectable={true}
+                    nativeID="animatedComponent"
                     onClick={[Function]}
                     onResponderGrant={[Function]}
                     onResponderMove={[Function]}
@@ -482,8 +491,9 @@ exports[`<CloudBackup /> should match snapshot 1`] = `
                         }
                       }
                       accessible={true}
+                      collapsable={false}
                       focusable={true}
-                      isTVSelectable={true}
+                      nativeID="animatedComponent"
                       onClick={[Function]}
                       onResponderGrant={[Function]}
                       onResponderMove={[Function]}

@@ -108,6 +108,8 @@ exports[`user settings screen should render properly and snapshot should match i
               <Text
                 accessibilityRole="header"
                 aria-level="1"
+                collapsable={false}
+                nativeID="animatedComponent"
                 numberOfLines={1}
                 onLayout={[Function]}
                 style={
@@ -125,7 +127,7 @@ exports[`user settings screen should render properly and snapshot should match i
         </View>
       </View>
     </View>
-    <View
+    <RNSScreenContainer
       onLayout={[Function]}
       style={
         Object {
@@ -133,7 +135,9 @@ exports[`user settings screen should render properly and snapshot should match i
         }
       }
     >
-      <View
+      <RNSScreen
+        activityState={2}
+        forwardedRef={[Function]}
         pointerEvents="box-none"
         style={
           Object {
@@ -202,6 +206,8 @@ exports[`user settings screen should render properly and snapshot should match i
           }
         >
           <View
+            collapsable={false}
+            nativeID="animatedComponent"
             needsOffscreenAlphaCompositing={false}
             pointerEvents="box-none"
             style={
@@ -322,8 +328,9 @@ exports[`user settings screen should render properly and snapshot should match i
                               >
                                 <View
                                   accessible={true}
+                                  collapsable={false}
                                   focusable={true}
-                                  isTVSelectable={true}
+                                  nativeID="animatedComponent"
                                   onClick={[Function]}
                                   onResponderGrant={[Function]}
                                   onResponderMove={[Function]}
@@ -527,7 +534,7 @@ exports[`user settings screen should render properly and snapshot should match i
                                       </Text>
                                     </View>
                                     <RCTSwitch
-                                      accessibilityRole="button"
+                                      accessibilityRole="switch"
                                       disabled={false}
                                       onChange={[Function]}
                                       onResponderTerminationRequest={[Function]}
@@ -545,8 +552,9 @@ exports[`user settings screen should render properly and snapshot should match i
                                 </View>
                                 <View
                                   accessible={true}
+                                  collapsable={false}
                                   focusable={true}
-                                  isTVSelectable={true}
+                                  nativeID="animatedComponent"
                                   onClick={[Function]}
                                   onResponderGrant={[Function]}
                                   onResponderMove={[Function]}
@@ -750,6 +758,8 @@ exports[`user settings screen should render properly and snapshot should match i
                                       </Text>
                                     </View>
                                     <View
+                                      collapsable={false}
+                                      nativeID="animatedComponent"
                                       style={
                                         Object {
                                           "transform": Array [
@@ -828,8 +838,9 @@ exports[`user settings screen should render properly and snapshot should match i
                                 </View>
                                 <View
                                   accessible={true}
+                                  collapsable={false}
                                   focusable={true}
-                                  isTVSelectable={true}
+                                  nativeID="animatedComponent"
                                   onClick={[Function]}
                                   onResponderGrant={[Function]}
                                   onResponderMove={[Function]}
@@ -911,6 +922,8 @@ exports[`user settings screen should render properly and snapshot should match i
                                       }
                                     >
                                       <View
+                                        collapsable={false}
+                                        nativeID="animatedComponent"
                                         style={
                                           Object {
                                             "transform": Array [
@@ -1073,6 +1086,8 @@ exports[`user settings screen should render properly and snapshot should match i
                                       </Text>
                                     </View>
                                     <View
+                                      collapsable={false}
+                                      nativeID="animatedComponent"
                                       style={
                                         Object {
                                           "transform": Array [
@@ -1151,8 +1166,9 @@ exports[`user settings screen should render properly and snapshot should match i
                                 </View>
                                 <View
                                   accessible={true}
+                                  collapsable={false}
                                   focusable={true}
-                                  isTVSelectable={true}
+                                  nativeID="animatedComponent"
                                   onClick={[Function]}
                                   onResponderGrant={[Function]}
                                   onResponderMove={[Function]}
@@ -1234,6 +1250,8 @@ exports[`user settings screen should render properly and snapshot should match i
                                       }
                                     >
                                       <View
+                                        collapsable={false}
+                                        nativeID="animatedComponent"
                                         style={
                                           Object {
                                             "transform": Array [
@@ -1396,6 +1414,8 @@ exports[`user settings screen should render properly and snapshot should match i
                                       </Text>
                                     </View>
                                     <View
+                                      collapsable={false}
+                                      nativeID="animatedComponent"
                                       style={
                                         Object {
                                           "transform": Array [
@@ -1474,8 +1494,9 @@ exports[`user settings screen should render properly and snapshot should match i
                                 </View>
                                 <View
                                   accessible={true}
+                                  collapsable={false}
                                   focusable={true}
-                                  isTVSelectable={true}
+                                  nativeID="animatedComponent"
                                   onClick={[Function]}
                                   onResponderGrant={[Function]}
                                   onResponderMove={[Function]}
@@ -1557,6 +1578,8 @@ exports[`user settings screen should render properly and snapshot should match i
                                       }
                                     >
                                       <View
+                                        collapsable={false}
+                                        nativeID="animatedComponent"
                                         style={
                                           Object {
                                             "transform": Array [
@@ -1719,6 +1742,8 @@ exports[`user settings screen should render properly and snapshot should match i
                                       </Text>
                                     </View>
                                     <View
+                                      collapsable={false}
+                                      nativeID="animatedComponent"
                                       style={
                                         Object {
                                           "transform": Array [
@@ -1801,8 +1826,9 @@ exports[`user settings screen should render properly and snapshot should match i
                         </View>
                         <View
                           accessible={true}
+                          collapsable={false}
                           focusable={true}
-                          isTVSelectable={true}
+                          nativeID="animatedComponent"
                           onClick={[Function]}
                           onResponderGrant={[Function]}
                           onResponderMove={[Function]}
@@ -1835,6 +1861,8 @@ exports[`user settings screen should render properly and snapshot should match i
                           }
                         >
                           <View
+                            collapsable={false}
+                            nativeID="animatedComponent"
                             style={
                               Object {
                                 "transform": Array [
@@ -1920,8 +1948,8 @@ exports[`user settings screen should render properly and snapshot should match i
             </View>
           </View>
         </View>
-      </View>
-    </View>
+      </RNSScreen>
+    </RNSScreenContainer>
   </RNCSafeAreaProvider>
 </View>
 `;

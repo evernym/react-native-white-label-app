@@ -3,7 +3,7 @@ import React from 'react'
 import { StyleSheet } from 'react-native'
 import { Container, Loader } from '../components'
 import { OFFSET_3X } from '../common/styles'
-import { expiredTokenRoute, waitForInvitationRoute } from '../common'
+import { expiredTokenRoute, homeRoute, waitForInvitationRoute } from '../common'
 import type { ReactNavigation } from '../common/type-common'
 import { useSelector, useDispatch } from 'react-redux'
 import { useEffect } from 'react'
@@ -18,10 +18,12 @@ import {
   getDeepLinkStatus,
   getSmsPendingInvitationError,
   getSmsPendingInvitationPayload,
+  getSmsPendingInvitationStatus,
 } from '../store/store-selector'
 import { getSmsPendingInvitation } from '../sms-pending-invitation/sms-pending-invitation-store'
 import { DEEP_LINK_STATUS } from '../deep-link/type-deep-link'
 import { headerDefaultOptions } from '../navigation/navigation-header-config'
+import { SMSPendingInvitationStatus } from '../sms-pending-invitation/type-sms-pending-invitation'
 
 const WaitForInvitation = (props: ReactNavigation) => {
   const { navigation, route } = props
@@ -36,7 +38,9 @@ const WaitForInvitation = (props: ReactNavigation) => {
     getSmsPendingInvitationError(state, smsToken)
   )
   const status = useSelector((state) => getDeepLinkStatus(state, smsToken))
-
+  const inviteStatus = useSelector((state) =>
+    getSmsPendingInvitationStatus(state, smsToken)
+  )
   useEffect(() => {
     dispatch(getSmsPendingInvitation(smsToken))
   }, [route])
@@ -57,6 +61,15 @@ const WaitForInvitation = (props: ReactNavigation) => {
       dispatch(handleInvitation(payload, smsToken))
     }
   })
+
+  useEffect(() => {
+    if (
+      status !== DEEP_LINK_STATUS.PROCESSED &&
+      inviteStatus === SMSPendingInvitationStatus.RECEIVED
+    ) {
+      navigation.navigate(homeRoute)
+    }
+  }, [status, inviteStatus])
 
   return (
     <Container center style={[styles.container]}>
