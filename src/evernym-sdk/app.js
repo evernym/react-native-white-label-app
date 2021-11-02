@@ -27,3 +27,6 @@ export const PUSH_NOTIFICATION_PERMISSION_SCREEN_IMAGE_IOS = null
 
 // Branch.io Deep link address
 export const DEEP_LINK = null
+
+// Polling Cloud Agent interval in milliseconds
+export const POOLING_INTERVAL = null

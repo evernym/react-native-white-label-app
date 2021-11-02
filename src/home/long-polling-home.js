@@ -13,6 +13,7 @@ import {
   GET_MESSAGES_LOADING,
   GET_MESSAGES_SUCCESS,
 } from '../store/type-config-store'
+import { pollingInterval } from '../external-imports'
 
 function* longPollHome(): any {
   while (true) {
@@ -49,7 +50,7 @@ function* longPollHome(): any {
     // and we need to wait for user to come back to home screen
     // so essentially starting this loop from start again
     const [timeToRefresh] = yield race([
-      call(delay, 15000),
+      call(delay, pollingInterval),
       take(GET_MESSAGES_LOADING),
       take(GET_MESSAGES_SUCCESS),
       take(GET_MESSAGES_FAIL),
@@ -62,7 +63,7 @@ function* longPollHome(): any {
       yield put(getUnacknowledgedMessages())
       // put to sleep for few seconds because we are triggering message download
       // we don't want to put too much load on CAS
-      yield call(delay, 15000)
+      yield call(delay, pollingInterval)
     }
   }
 }
