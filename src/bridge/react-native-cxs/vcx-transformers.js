@@ -163,12 +163,7 @@ export function convertVcxCredentialOfferToCxsClaimOffer(
     to_did: vcxCredentialOffer.to_did,
     from_did: vcxCredentialOffer.from_did,
     claim: vcxCredentialOffer.credential_attrs,
-    claim_name:
-      extractCredentialNameFromSchemaId(
-        extractSchemaIdFromLibinyOffer(vcxCredentialOffer.libindy_offer)
-      ) ||
-      vcxCredentialOffer.claim_name ||
-      'Credential',
+    claim_name: vcxCredentialOffer.claim_name || 'Credential',
     claim_def_id: extractCredDefIdFromLibinyOffer(
       vcxCredentialOffer.libindy_offer
     ),
@@ -227,18 +222,6 @@ export async function convertAriesCredentialOfferToCxsClaimOffer(
       credentialOffer.comment ||
       credentialOffer['~alias']?.label ||
       'Unnamed Connection',
-  }
-}
-
-const extractSchemaIdFromLibinyOffer = (offer: string | null) => {
-  try {
-    if (!offer) {
-      return null
-    }
-    const parsed = JSON.parse(offer)
-    return parsed['schema_id']
-  } catch (e) {
-    return null
   }
 }
 

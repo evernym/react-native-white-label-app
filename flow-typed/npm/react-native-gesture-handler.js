@@ -1,4 +1,6 @@
 // @flow
+
+// $FlowFixMe
 import React from 'react'
 
 // declare module 'react-native-gesture-handler' {
