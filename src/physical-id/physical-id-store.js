@@ -283,7 +283,6 @@ function* launchPhysicalIdSDKSaga(
     hardwareToken = yield call(NativeModules.RNIndy.getDeviceCheckToken)
   }
 
-  console.log({ hardwareToken })
   // now we have connection, and we also have the workflow data
   // we can now issue the credential
   yield spawn(submitDocuments, {
@@ -647,10 +646,8 @@ export function* initPhysicalIdSdkSaga(): Generator<*, *, *> {
     return
   }
 
-  const [tokenError, tokenResponse]: [
-    string | null,
-    [string, string] | null
-  ] = yield* getSdkTokenSaga()
+  const [tokenError, tokenResponse]: [string | null, [string, string] | null] =
+    yield* getSdkTokenSaga()
 
   if (tokenError || !tokenResponse) {
     // action are already raised by sdk toke saga and status is also updated in above saga
@@ -679,15 +676,13 @@ export function* getSdkTokenSaga(): Generator<*, *, *> {
   const domainDID: string = yield select(selectDomainDID)
   const verityFlowBaseUrl: string = yield select(selectVerityFlowBaseUrl)
   // get hardware token, if product decides to restrict access
-  const [error, response]: [
-    Error | null,
-    null | { result: string }
-  ] = yield call(
-    flattenAsync(getSdkToken),
-    hardwareToken,
-    domainDID,
-    verityFlowBaseUrl
-  )
+  const [error, response]: [Error | null, null | { result: string }] =
+    yield call(
+      flattenAsync(getSdkToken),
+      hardwareToken,
+      domainDID,
+      verityFlowBaseUrl
+    )
   if (error || !response) {
     yield put(updateSdkInitStatus(sdkStatus.SDK_INIT_FAIL))
     return [sdkStatus.SDK_INIT_FAIL, null]
