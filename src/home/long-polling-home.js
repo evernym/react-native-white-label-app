@@ -29,29 +29,28 @@ import { SEND_CLAIM_REQUEST_SUCCESS } from '../claim-offer/type-claim-offer'
 import { UPDATE_QUESTION_ANSWER } from '../question/type-question'
 import { PROOF_SUCCESS } from '../proof/type-proof'
 
-const pollWithInterval = (interval: number) =>
-  function* poll(): any {
-    while (true) {
-      yield* ensureAppActive()
+function* poll(interval: number): any {
+  while (true) {
+    yield* ensureAppActive()
 
-      // we need to start a race
-      // among interval seconds or message download statues
-      // We are starting a race here because if before 15 seconds
-      // we receive a push notification, or user pull-refresh
-      // or user goes to some other screen, then we need to reset timer
-      // so essentially starting this while loop from start again
-      const [timeToRefresh] = yield race([
-        call(delay, interval),
-        take([GET_MESSAGES_LOADING, GET_MESSAGES_SUCCESS, GET_MESSAGES_FAIL]),
-      ])
+    // we need to start a race
+    // among interval seconds or message download statues
+    // We are starting a race here because if before interval seconds
+    // we receive a push notification, or user pull-refresh
+    // or user goes to some other screen, then we need to reset timer
+    // so essentially starting this while loop from start again
+    const [timeToRefresh] = yield race([
+      call(delay, interval),
+      take([GET_MESSAGES_LOADING, GET_MESSAGES_SUCCESS, GET_MESSAGES_FAIL]),
+    ])
 
-      if (timeToRefresh) {
-        console.log(`refresh after ${interval} seconds`)
-        // if 15 seconds are done, then start downloading messages
-        yield put(getUnacknowledgedMessages())
-      }
+    if (timeToRefresh) {
+      console.log(`refresh after ${interval} seconds`)
+      // if interval seconds are done, then start downloading messages
+      yield put(getUnacknowledgedMessages())
     }
   }
+}
 
 function* ensureAppActive(): any {
   if (AppState.currentState !== 'active') {
@@ -97,16 +96,17 @@ function appStateSource() {
 function* startPolling(): any {
   while (true) {
     // first, we want to run polling with 2 seconds interval for 60 seconds
-    yield race([call(delay, 60), call(pollWithInterval(2))])
+    yield race([call(delay, 60000), call(poll, 2000)])
 
     // we will exit above call after 60 seconds, because pollWithInterval function
     // never returns, and hence race will end it's execution after 60 seconds delay is done
 
     // now, we want to run polling with 3 seconds interval for 2 minutes
-    yield race([call(delay, 120), call(pollWithInterval(3))])
+    yield race([call(delay, 120000), call(poll, 3000)])
 
-    // Now we want to run polling normally with 15 seconds interval forever
-    yield* pollWithInterval(15)()
+    // We are already running a long polling with 15 seconds, so here we can minimize the load
+    // on CAS by using 30 seconds interval
+    yield* poll(30000)
   }
 }
 
@@ -127,6 +127,12 @@ function* frequentPolling(): any {
   )
 }
 
+function* longPolling(): any {
+  // this polling will run in the background even if user does not do anything
+  yield* ensureAppActive()
+  yield* poll(15000)
+}
+
 export function* watchLongPollingHome(): any {
-  yield all([frequentPolling()])
+  yield all([frequentPolling(), longPolling()])
 }
