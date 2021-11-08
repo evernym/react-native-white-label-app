@@ -44,7 +44,6 @@ exports[`<ConnectionDetails /> should ConnectionDetails render CLAIM OFFER RECEI
         accessibilityLabel="back-arrow"
         accessible={true}
         focusable={true}
-        isTVSelectable={true}
         onClick={[Function]}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -237,7 +236,6 @@ exports[`<ConnectionDetails /> should ConnectionDetails render CLAIM OFFER RECEI
         accessibilityLabel="three-dots"
         accessible={true}
         focusable={true}
-        isTVSelectable={true}
         onClick={[Function]}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -373,17 +371,12 @@ exports[`<ConnectionDetails /> should ConnectionDetails render CLAIM OFFER RECEI
         },
       ]
     }
-    disableVirtualization={false}
     getItem={[Function]}
     getItemCount={[Function]}
-    horizontal={false}
-    initialNumToRender={10}
     keyExtractor={[Function]}
-    maxToRenderPerBatch={10}
-    numColumns={1}
     onContentSizeChange={[Function]}
-    onEndReachedThreshold={2}
     onLayout={[Function]}
+    onMomentumScrollBegin={[Function]}
     onMomentumScrollEnd={[Function]}
     onScroll={[Function]}
     onScrollBeginDrag={[Function]}
@@ -399,9 +392,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render CLAIM OFFER RECEI
         "width": "100%",
       }
     }
-    updateCellsBatchingPeriod={50}
     viewabilityConfigCallbackPairs={Array []}
-    windowSize={21}
   >
     <View>
       <View
@@ -483,8 +474,9 @@ exports[`<ConnectionDetails /> should ConnectionDetails render CLAIM OFFER RECEI
           >
             <View
               accessible={true}
+              collapsable={false}
               focusable={true}
-              isTVSelectable={true}
+              nativeID="animatedComponent"
               onClick={[Function]}
               onResponderGrant={[Function]}
               onResponderMove={[Function]}
@@ -578,7 +570,6 @@ exports[`<ConnectionDetails /> should ConnectionDetails render CONNECTED properl
         accessibilityLabel="back-arrow"
         accessible={true}
         focusable={true}
-        isTVSelectable={true}
         onClick={[Function]}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -771,7 +762,6 @@ exports[`<ConnectionDetails /> should ConnectionDetails render CONNECTED properl
         accessibilityLabel="three-dots"
         accessible={true}
         focusable={true}
-        isTVSelectable={true}
         onClick={[Function]}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -898,17 +888,12 @@ exports[`<ConnectionDetails /> should ConnectionDetails render CONNECTED properl
         },
       ]
     }
-    disableVirtualization={false}
     getItem={[Function]}
     getItemCount={[Function]}
-    horizontal={false}
-    initialNumToRender={10}
     keyExtractor={[Function]}
-    maxToRenderPerBatch={10}
-    numColumns={1}
     onContentSizeChange={[Function]}
-    onEndReachedThreshold={2}
     onLayout={[Function]}
+    onMomentumScrollBegin={[Function]}
     onMomentumScrollEnd={[Function]}
     onScroll={[Function]}
     onScrollBeginDrag={[Function]}
@@ -924,9 +909,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render CONNECTED properl
         "width": "100%",
       }
     }
-    updateCellsBatchingPeriod={50}
     viewabilityConfigCallbackPairs={Array []}
-    windowSize={21}
   >
     <View>
       <View
@@ -1008,8 +991,9 @@ exports[`<ConnectionDetails /> should ConnectionDetails render CONNECTED properl
           >
             <View
               accessible={true}
+              collapsable={false}
               focusable={true}
-              isTVSelectable={true}
+              nativeID="animatedComponent"
               onClick={[Function]}
               onResponderGrant={[Function]}
               onResponderMove={[Function]}
@@ -1103,7 +1087,6 @@ exports[`<ConnectionDetails /> should ConnectionDetails render PENDING properly 
         accessibilityLabel="back-arrow"
         accessible={true}
         focusable={true}
-        isTVSelectable={true}
         onClick={[Function]}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -1296,7 +1279,6 @@ exports[`<ConnectionDetails /> should ConnectionDetails render PENDING properly 
         accessibilityLabel="three-dots"
         accessible={true}
         focusable={true}
-        isTVSelectable={true}
         onClick={[Function]}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -1423,17 +1405,12 @@ exports[`<ConnectionDetails /> should ConnectionDetails render PENDING properly 
         },
       ]
     }
-    disableVirtualization={false}
     getItem={[Function]}
     getItemCount={[Function]}
-    horizontal={false}
-    initialNumToRender={10}
     keyExtractor={[Function]}
-    maxToRenderPerBatch={10}
-    numColumns={1}
     onContentSizeChange={[Function]}
-    onEndReachedThreshold={2}
     onLayout={[Function]}
+    onMomentumScrollBegin={[Function]}
     onMomentumScrollEnd={[Function]}
     onScroll={[Function]}
     onScrollBeginDrag={[Function]}
@@ -1449,9 +1426,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render PENDING properly 
         "width": "100%",
       }
     }
-    updateCellsBatchingPeriod={50}
     viewabilityConfigCallbackPairs={Array []}
-    windowSize={21}
   >
     <View>
       <View
@@ -1621,7 +1596,6 @@ exports[`<ConnectionDetails /> should ConnectionDetails render PROOF RECEIVED pr
         accessibilityLabel="back-arrow"
         accessible={true}
         focusable={true}
-        isTVSelectable={true}
         onClick={[Function]}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -1814,7 +1788,6 @@ exports[`<ConnectionDetails /> should ConnectionDetails render PROOF RECEIVED pr
         accessibilityLabel="three-dots"
         accessible={true}
         focusable={true}
-        isTVSelectable={true}
         onClick={[Function]}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -1950,17 +1923,12 @@ exports[`<ConnectionDetails /> should ConnectionDetails render PROOF RECEIVED pr
         },
       ]
     }
-    disableVirtualization={false}
     getItem={[Function]}
     getItemCount={[Function]}
-    horizontal={false}
-    initialNumToRender={10}
     keyExtractor={[Function]}
-    maxToRenderPerBatch={10}
-    numColumns={1}
     onContentSizeChange={[Function]}
-    onEndReachedThreshold={2}
     onLayout={[Function]}
+    onMomentumScrollBegin={[Function]}
     onMomentumScrollEnd={[Function]}
     onScroll={[Function]}
     onScrollBeginDrag={[Function]}
@@ -1976,9 +1944,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render PROOF RECEIVED pr
         "width": "100%",
       }
     }
-    updateCellsBatchingPeriod={50}
     viewabilityConfigCallbackPairs={Array []}
-    windowSize={21}
   >
     <View>
       <View
@@ -2060,8 +2026,9 @@ exports[`<ConnectionDetails /> should ConnectionDetails render PROOF RECEIVED pr
           >
             <View
               accessible={true}
+              collapsable={false}
               focusable={true}
-              isTVSelectable={true}
+              nativeID="animatedComponent"
               onClick={[Function]}
               onResponderGrant={[Function]}
               onResponderMove={[Function]}
@@ -2155,7 +2122,6 @@ exports[`<ConnectionDetails /> should ConnectionDetails render RECEIVED properly
         accessibilityLabel="back-arrow"
         accessible={true}
         focusable={true}
-        isTVSelectable={true}
         onClick={[Function]}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -2348,7 +2314,6 @@ exports[`<ConnectionDetails /> should ConnectionDetails render RECEIVED properly
         accessibilityLabel="three-dots"
         accessible={true}
         focusable={true}
-        isTVSelectable={true}
         onClick={[Function]}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -2484,17 +2449,12 @@ exports[`<ConnectionDetails /> should ConnectionDetails render RECEIVED properly
         },
       ]
     }
-    disableVirtualization={false}
     getItem={[Function]}
     getItemCount={[Function]}
-    horizontal={false}
-    initialNumToRender={10}
     keyExtractor={[Function]}
-    maxToRenderPerBatch={10}
-    numColumns={1}
     onContentSizeChange={[Function]}
-    onEndReachedThreshold={2}
     onLayout={[Function]}
+    onMomentumScrollBegin={[Function]}
     onMomentumScrollEnd={[Function]}
     onScroll={[Function]}
     onScrollBeginDrag={[Function]}
@@ -2510,9 +2470,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render RECEIVED properly
         "width": "100%",
       }
     }
-    updateCellsBatchingPeriod={50}
     viewabilityConfigCallbackPairs={Array []}
-    windowSize={21}
   >
     <View>
       <View
@@ -2772,7 +2730,6 @@ exports[`<ConnectionDetails /> should ConnectionDetails render RECEIVED properly
                   <View
                     accessible={true}
                     focusable={true}
-                    isTVSelectable={true}
                     onClick={[Function]}
                     onResponderGrant={[Function]}
                     onResponderMove={[Function]}
@@ -2868,7 +2825,6 @@ exports[`<ConnectionDetails /> should ConnectionDetails render SHARED properly 1
         accessibilityLabel="back-arrow"
         accessible={true}
         focusable={true}
-        isTVSelectable={true}
         onClick={[Function]}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -3061,7 +3017,6 @@ exports[`<ConnectionDetails /> should ConnectionDetails render SHARED properly 1
         accessibilityLabel="three-dots"
         accessible={true}
         focusable={true}
-        isTVSelectable={true}
         onClick={[Function]}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -3188,17 +3143,12 @@ exports[`<ConnectionDetails /> should ConnectionDetails render SHARED properly 1
         },
       ]
     }
-    disableVirtualization={false}
     getItem={[Function]}
     getItemCount={[Function]}
-    horizontal={false}
-    initialNumToRender={10}
     keyExtractor={[Function]}
-    maxToRenderPerBatch={10}
-    numColumns={1}
     onContentSizeChange={[Function]}
-    onEndReachedThreshold={2}
     onLayout={[Function]}
+    onMomentumScrollBegin={[Function]}
     onMomentumScrollEnd={[Function]}
     onScroll={[Function]}
     onScrollBeginDrag={[Function]}
@@ -3214,9 +3164,7 @@ exports[`<ConnectionDetails /> should ConnectionDetails render SHARED properly 1
         "width": "100%",
       }
     }
-    updateCellsBatchingPeriod={50}
     viewabilityConfigCallbackPairs={Array []}
-    windowSize={21}
   >
     <View>
       <View
@@ -3476,7 +3424,6 @@ exports[`<ConnectionDetails /> should ConnectionDetails render SHARED properly 1
                   <View
                     accessible={true}
                     focusable={true}
-                    isTVSelectable={true}
                     onClick={[Function]}
                     onResponderGrant={[Function]}
                     onResponderMove={[Function]}

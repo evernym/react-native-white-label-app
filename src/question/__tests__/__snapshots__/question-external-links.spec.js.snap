@@ -13,8 +13,9 @@ exports[`<QuestionExternalLinks /> should render MAX_EXTERNAL_LINKS_TO_SHOW link
   >
     <View
       accessible={true}
+      collapsable={false}
       focusable={true}
-      isTVSelectable={true}
+      nativeID="animatedComponent"
       onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
@@ -72,8 +73,9 @@ exports[`<QuestionExternalLinks /> should render MAX_EXTERNAL_LINKS_TO_SHOW link
   >
     <View
       accessible={true}
+      collapsable={false}
       focusable={true}
-      isTVSelectable={true}
+      nativeID="animatedComponent"
       onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
@@ -131,8 +133,9 @@ exports[`<QuestionExternalLinks /> should render MAX_EXTERNAL_LINKS_TO_SHOW link
   >
     <View
       accessible={true}
+      collapsable={false}
       focusable={true}
-      isTVSelectable={true}
+      nativeID="animatedComponent"
       onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
@@ -190,8 +193,9 @@ exports[`<QuestionExternalLinks /> should render MAX_EXTERNAL_LINKS_TO_SHOW link
   >
     <View
       accessible={true}
+      collapsable={false}
       focusable={true}
-      isTVSelectable={true}
+      nativeID="animatedComponent"
       onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
@@ -249,8 +253,9 @@ exports[`<QuestionExternalLinks /> should render MAX_EXTERNAL_LINKS_TO_SHOW link
   >
     <View
       accessible={true}
+      collapsable={false}
       focusable={true}
-      isTVSelectable={true}
+      nativeID="animatedComponent"
       onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
@@ -308,8 +313,9 @@ exports[`<QuestionExternalLinks /> should render MAX_EXTERNAL_LINKS_TO_SHOW link
   >
     <View
       accessible={true}
+      collapsable={false}
       focusable={true}
-      isTVSelectable={true}
+      nativeID="animatedComponent"
       onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
@@ -367,8 +373,9 @@ exports[`<QuestionExternalLinks /> should render MAX_EXTERNAL_LINKS_TO_SHOW link
   >
     <View
       accessible={true}
+      collapsable={false}
       focusable={true}
-      isTVSelectable={true}
+      nativeID="animatedComponent"
       onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
@@ -426,8 +433,9 @@ exports[`<QuestionExternalLinks /> should render MAX_EXTERNAL_LINKS_TO_SHOW link
   >
     <View
       accessible={true}
+      collapsable={false}
       focusable={true}
-      isTVSelectable={true}
+      nativeID="animatedComponent"
       onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
@@ -485,8 +493,9 @@ exports[`<QuestionExternalLinks /> should render MAX_EXTERNAL_LINKS_TO_SHOW link
   >
     <View
       accessible={true}
+      collapsable={false}
       focusable={true}
-      isTVSelectable={true}
+      nativeID="animatedComponent"
       onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
@@ -544,8 +553,9 @@ exports[`<QuestionExternalLinks /> should render MAX_EXTERNAL_LINKS_TO_SHOW link
   >
     <View
       accessible={true}
+      collapsable={false}
       focusable={true}
-      isTVSelectable={true}
+      nativeID="animatedComponent"
       onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
@@ -603,8 +613,9 @@ exports[`<QuestionExternalLinks /> should render MAX_EXTERNAL_LINKS_TO_SHOW link
   >
     <View
       accessible={true}
+      collapsable={false}
       focusable={true}
-      isTVSelectable={true}
+      nativeID="animatedComponent"
       onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
@@ -662,8 +673,9 @@ exports[`<QuestionExternalLinks /> should render MAX_EXTERNAL_LINKS_TO_SHOW link
   >
     <View
       accessible={true}
+      collapsable={false}
       focusable={true}
-      isTVSelectable={true}
+      nativeID="animatedComponent"
       onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
@@ -721,8 +733,9 @@ exports[`<QuestionExternalLinks /> should render MAX_EXTERNAL_LINKS_TO_SHOW link
   >
     <View
       accessible={true}
+      collapsable={false}
       focusable={true}
-      isTVSelectable={true}
+      nativeID="animatedComponent"
       onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
@@ -780,8 +793,9 @@ exports[`<QuestionExternalLinks /> should render MAX_EXTERNAL_LINKS_TO_SHOW link
   >
     <View
       accessible={true}
+      collapsable={false}
       focusable={true}
-      isTVSelectable={true}
+      nativeID="animatedComponent"
       onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
@@ -839,8 +853,9 @@ exports[`<QuestionExternalLinks /> should render MAX_EXTERNAL_LINKS_TO_SHOW link
   >
     <View
       accessible={true}
+      collapsable={false}
       focusable={true}
-      isTVSelectable={true}
+      nativeID="animatedComponent"
       onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
@@ -898,8 +913,9 @@ exports[`<QuestionExternalLinks /> should render MAX_EXTERNAL_LINKS_TO_SHOW link
   >
     <View
       accessible={true}
+      collapsable={false}
       focusable={true}
-      isTVSelectable={true}
+      nativeID="animatedComponent"
       onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
@@ -957,8 +973,9 @@ exports[`<QuestionExternalLinks /> should render MAX_EXTERNAL_LINKS_TO_SHOW link
   >
     <View
       accessible={true}
+      collapsable={false}
       focusable={true}
-      isTVSelectable={true}
+      nativeID="animatedComponent"
       onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
@@ -1016,8 +1033,9 @@ exports[`<QuestionExternalLinks /> should render MAX_EXTERNAL_LINKS_TO_SHOW link
   >
     <View
       accessible={true}
+      collapsable={false}
       focusable={true}
-      isTVSelectable={true}
+      nativeID="animatedComponent"
       onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
@@ -1075,8 +1093,9 @@ exports[`<QuestionExternalLinks /> should render MAX_EXTERNAL_LINKS_TO_SHOW link
   >
     <View
       accessible={true}
+      collapsable={false}
       focusable={true}
-      isTVSelectable={true}
+      nativeID="animatedComponent"
       onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
@@ -1134,8 +1153,9 @@ exports[`<QuestionExternalLinks /> should render MAX_EXTERNAL_LINKS_TO_SHOW link
   >
     <View
       accessible={true}
+      collapsable={false}
       focusable={true}
-      isTVSelectable={true}
+      nativeID="animatedComponent"
       onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
@@ -1200,8 +1220,9 @@ exports[`<QuestionExternalLinks /> should render links if links are passed 1`] =
   >
     <View
       accessible={true}
+      collapsable={false}
       focusable={true}
-      isTVSelectable={true}
+      nativeID="animatedComponent"
       onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
@@ -1259,8 +1280,9 @@ exports[`<QuestionExternalLinks /> should render links if links are passed 1`] =
   >
     <View
       accessible={true}
+      collapsable={false}
       focusable={true}
-      isTVSelectable={true}
+      nativeID="animatedComponent"
       onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}

@@ -39,6 +39,8 @@ exports[`<LockSetupSuccess /> should display Loading while fetching the invitati
       }
     >
       <View
+        collapsable={false}
+        nativeID="animatedComponent"
         style={
           Object {
             "transform": Array [
@@ -215,8 +217,9 @@ exports[`<LockSetupSuccess /> should display Loading while fetching the invitati
           }
         }
         accessible={true}
+        collapsable={false}
         focusable={true}
-        isTVSelectable={true}
+        nativeID="animatedComponent"
         onClick={[Function]}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -308,6 +311,8 @@ exports[`<LockSetupSuccess /> should render Lock setup success Screen 1`] = `
       }
     >
       <View
+        collapsable={false}
+        nativeID="animatedComponent"
         style={
           Object {
             "transform": Array [
@@ -492,8 +497,9 @@ exports[`<LockSetupSuccess /> should render Lock setup success Screen 1`] = `
           }
         }
         accessible={true}
+        collapsable={false}
         focusable={true}
-        isTVSelectable={true}
+        nativeID="animatedComponent"
         onClick={[Function]}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}

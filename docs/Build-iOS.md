@@ -182,7 +182,7 @@ By default ios app uses `System` font which is usually `San Francisco` on ios. I
 
 1. Add `Lato` fonts to Xcode project located here: `node_modules/@evernym/react-native-white-label-app/src/fonts/Lato` and update `info.plist` with configuration related to fonts:
 
-    ```plist
+    ```xml
         <key>UIAppFonts</key>
         <array>
             <string>Lato-Bold.ttf</string>
@@ -199,6 +199,36 @@ By default ios app uses `System` font which is usually `San Francisco` on ios. I
    In case you already added custom fonts to Xcode project, just expand list by adding Lato fonts.
 
 ## Issues
+
+* **Building the app fails on XCode 12.5+**
+
+  Adding those two blocks into your application Podfile file should resolve the issue:
+
+  * after the section containing `source` statements:
+
+    ```ruby
+    def find_and_replace(dir, findstr, replacestr)
+      Dir[dir].each do |name|
+          text = File.read(name)
+          replace = text.gsub(findstr,replacestr)
+          if text != replace
+              puts "Fix: " + name
+              File.open(name, "w") { |file| file.puts replace }
+              STDOUT.flush
+          end
+      end
+      Dir[dir + '*/'].each(&method(:find_and_replace))
+    end
+    ```
+
+  * inside the `post_install` hook before `end` keyword, add below code
+
+    ```ruby
+    find_and_replace("../node_modules/react-native/React/CxxBridge/RCTCxxBridge.mm",
+    "_initializeModules:(NSArray<id<RCTBridgeModule>> *)modules", "_initializeModules:(NSArray<Class> *)modules")
+    find_and_replace("../node_modules/react-native/ReactCommon/turbomodule/core/platform/ios/RCTTurboModuleManager.mm",
+    "RCTBridgeModuleNameForClass(module))", "RCTBridgeModuleNameForClass(Class(module)))")
+    ```
 
 * **Missing ObjectiveC**
 
@@ -228,22 +258,55 @@ By default ios app uses `System` font which is usually `San Francisco` on ios. I
   1. Open project in XCode and set `Bitcode=NO` for target pods.
   1. Add following lines to your app Podfile:
   
-        ```ruby
-            post_install do |installer|
-                installer.pods_project.build_configurations.each do |config|
-                    config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
-                end
-                installer.pods_project.targets.each do |target|
-                    if target.name == "react-native-white-label-app"
-                        target.build_configurations.each do |config|
-                            config.build_settings['ENABLE_BITCODE'] = 'NO'
-                        end
+    ```ruby
+        post_install do |installer|
+            installer.pods_project.build_configurations.each do |config|
+                config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
+            end
+            installer.pods_project.targets.each do |target|
+                if target.name == "react-native-white-label-app"
+                    target.build_configurations.each do |config|
+                        config.build_settings['ENABLE_BITCODE'] = 'NO'
                     end
-                    if target.name == "vcx"
-                        target.build_configurations.each do |config|
-                            config.build_settings['ENABLE_BITCODE'] = 'NO'
-                        end
+                end
+                if target.name == "vcx"
+                    target.build_configurations.each do |config|
+                        config.build_settings['ENABLE_BITCODE'] = 'NO'
                     end
                 end
             end
-        ```
+        end
+    ```
+
+* App builds fine, but at runtime we see error `No permission handler detected`. Add a `pre_install` hook
+
+  * ```ruby
+        pre_install do |installer|
+            Pod::Installer::Xcode::TargetValidator.send(:define_method, :verify_no_static_framework_transitive_dependencies) {}
+
+            installer.pod_targets.each do |pod|
+                if pod.name.eql?('RNPermissions') || pod.name.start_with?('Permission-')
+                    def pod.build_type;
+                        # Uncomment the line corresponding to your CocoaPods version
+                        Pod::BuildType.static_library # >= 1.9
+                        # Pod::Target::BuildType.static_library # < 1.9
+                    end
+                end
+            end
+        end
+    ```
+
+  * Add permission handler for Camera. Put below code inside target of Podfile
+
+    ```ruby
+        # react-native-permissions permission handlers
+        permissions_path = '../node_modules/react-native-permissions/ios'
+
+        pod 'Permission-Camera', :path => "#{permissions_path}/Camera.podspec"
+        pod 'Permission-FaceID', :path => "#{permissions_path}/FaceID.podspec"
+        pod 'Permission-Microphone', :path => "#{permissions_path}/Microphone.podspec"
+        pod 'Permission-PhotoLibrary', :path => "#{permissions_path}/PhotoLibrary.podspec"
+    ```
+
+* App build fails due to transitive statically linked Flipper libraries
+  * For now, we don't support Flipper. Please disable Flipper by commenting this line (`# use_flipper!()`) in Podfile

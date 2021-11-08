@@ -108,6 +108,8 @@ exports[`<OpenIdConnectScreen /> should match in fail state 1`] = `
               <Text
                 accessibilityRole="header"
                 aria-level="1"
+                collapsable={false}
+                nativeID="animatedComponent"
                 numberOfLines={1}
                 onLayout={[Function]}
                 style={
@@ -125,7 +127,7 @@ exports[`<OpenIdConnectScreen /> should match in fail state 1`] = `
         </View>
       </View>
     </View>
-    <View
+    <RNSScreenContainer
       onLayout={[Function]}
       style={
         Object {
@@ -133,7 +135,9 @@ exports[`<OpenIdConnectScreen /> should match in fail state 1`] = `
         }
       }
     >
-      <View
+      <RNSScreen
+        activityState={2}
+        forwardedRef={[Function]}
         pointerEvents="box-none"
         style={
           Object {
@@ -202,6 +206,8 @@ exports[`<OpenIdConnectScreen /> should match in fail state 1`] = `
           }
         >
           <View
+            collapsable={false}
+            nativeID="animatedComponent"
             needsOffscreenAlphaCompositing={false}
             pointerEvents="box-none"
             style={
@@ -329,8 +335,11 @@ exports[`<OpenIdConnectScreen /> should match in fail state 1`] = `
                             >
                               <View
                                 autoPlay={true}
+                                collapsable={false}
                                 enableMergePathsAndroidForKitKatAndAbove={false}
+                                forwardedRef={[Function]}
                                 loop={false}
+                                nativeID="animatedComponent"
                                 onAnimationFinish={[Function]}
                                 onLayout={[Function]}
                                 progress={0}
@@ -430,8 +439,9 @@ exports[`<OpenIdConnectScreen /> should match in fail state 1`] = `
                                     }
                                   }
                                   accessible={true}
+                                  collapsable={false}
                                   focusable={true}
-                                  isTVSelectable={true}
+                                  nativeID="animatedComponent"
                                   onClick={[Function]}
                                   onResponderGrant={[Function]}
                                   onResponderMove={[Function]}
@@ -508,8 +518,9 @@ exports[`<OpenIdConnectScreen /> should match in fail state 1`] = `
                                     }
                                   }
                                   accessible={true}
+                                  collapsable={false}
                                   focusable={true}
-                                  isTVSelectable={true}
+                                  nativeID="animatedComponent"
                                   onClick={[Function]}
                                   onResponderGrant={[Function]}
                                   onResponderMove={[Function]}
@@ -569,8 +580,8 @@ exports[`<OpenIdConnectScreen /> should match in fail state 1`] = `
             </View>
           </View>
         </View>
-      </View>
-    </View>
+      </RNSScreen>
+    </RNSScreenContainer>
   </RNCSafeAreaProvider>
 </View>
 `;
@@ -683,6 +694,8 @@ exports[`<OpenIdConnectScreen /> should match in progress state 1`] = `
               <Text
                 accessibilityRole="header"
                 aria-level="1"
+                collapsable={false}
+                nativeID="animatedComponent"
                 numberOfLines={1}
                 onLayout={[Function]}
                 style={
@@ -700,7 +713,7 @@ exports[`<OpenIdConnectScreen /> should match in progress state 1`] = `
         </View>
       </View>
     </View>
-    <View
+    <RNSScreenContainer
       onLayout={[Function]}
       style={
         Object {
@@ -708,7 +721,9 @@ exports[`<OpenIdConnectScreen /> should match in progress state 1`] = `
         }
       }
     >
-      <View
+      <RNSScreen
+        activityState={2}
+        forwardedRef={[Function]}
         pointerEvents="box-none"
         style={
           Object {
@@ -777,6 +792,8 @@ exports[`<OpenIdConnectScreen /> should match in progress state 1`] = `
           }
         >
           <View
+            collapsable={false}
+            nativeID="animatedComponent"
             needsOffscreenAlphaCompositing={false}
             pointerEvents="box-none"
             style={
@@ -886,7 +903,6 @@ exports[`<OpenIdConnectScreen /> should match in progress state 1`] = `
                           }
                         >
                           <ActivityIndicator
-                            animating={true}
                             color="#777777"
                             hidesWhenStopped={true}
                             size="large"
@@ -946,8 +962,8 @@ exports[`<OpenIdConnectScreen /> should match in progress state 1`] = `
             </View>
           </View>
         </View>
-      </View>
-    </View>
+      </RNSScreen>
+    </RNSScreenContainer>
   </RNCSafeAreaProvider>
 </View>
 `;
@@ -1060,6 +1076,8 @@ exports[`<OpenIdConnectScreen /> should match in received state 1`] = `
               <Text
                 accessibilityRole="header"
                 aria-level="1"
+                collapsable={false}
+                nativeID="animatedComponent"
                 numberOfLines={1}
                 onLayout={[Function]}
                 style={
@@ -1077,7 +1095,7 @@ exports[`<OpenIdConnectScreen /> should match in received state 1`] = `
         </View>
       </View>
     </View>
-    <View
+    <RNSScreenContainer
       onLayout={[Function]}
       style={
         Object {
@@ -1085,7 +1103,9 @@ exports[`<OpenIdConnectScreen /> should match in received state 1`] = `
         }
       }
     >
-      <View
+      <RNSScreen
+        activityState={2}
+        forwardedRef={[Function]}
         pointerEvents="box-none"
         style={
           Object {
@@ -1154,6 +1174,8 @@ exports[`<OpenIdConnectScreen /> should match in received state 1`] = `
           }
         >
           <View
+            collapsable={false}
+            nativeID="animatedComponent"
             needsOffscreenAlphaCompositing={false}
             pointerEvents="box-none"
             style={
@@ -1418,8 +1440,9 @@ exports[`<OpenIdConnectScreen /> should match in received state 1`] = `
                                     }
                                   }
                                   accessible={true}
+                                  collapsable={false}
                                   focusable={true}
-                                  isTVSelectable={true}
+                                  nativeID="animatedComponent"
                                   onClick={[Function]}
                                   onResponderGrant={[Function]}
                                   onResponderMove={[Function]}
@@ -1496,8 +1519,9 @@ exports[`<OpenIdConnectScreen /> should match in received state 1`] = `
                                     }
                                   }
                                   accessible={true}
+                                  collapsable={false}
                                   focusable={true}
-                                  isTVSelectable={true}
+                                  nativeID="animatedComponent"
                                   onClick={[Function]}
                                   onResponderGrant={[Function]}
                                   onResponderMove={[Function]}
@@ -1557,8 +1581,8 @@ exports[`<OpenIdConnectScreen /> should match in received state 1`] = `
             </View>
           </View>
         </View>
-      </View>
-    </View>
+      </RNSScreen>
+    </RNSScreenContainer>
   </RNCSafeAreaProvider>
 </View>
 `;
@@ -1671,6 +1695,8 @@ exports[`<OpenIdConnectScreen /> should match in signature verification failed 1
               <Text
                 accessibilityRole="header"
                 aria-level="1"
+                collapsable={false}
+                nativeID="animatedComponent"
                 numberOfLines={1}
                 onLayout={[Function]}
                 style={
@@ -1688,7 +1714,7 @@ exports[`<OpenIdConnectScreen /> should match in signature verification failed 1
         </View>
       </View>
     </View>
-    <View
+    <RNSScreenContainer
       onLayout={[Function]}
       style={
         Object {
@@ -1696,7 +1722,9 @@ exports[`<OpenIdConnectScreen /> should match in signature verification failed 1
         }
       }
     >
-      <View
+      <RNSScreen
+        activityState={2}
+        forwardedRef={[Function]}
         pointerEvents="box-none"
         style={
           Object {
@@ -1765,6 +1793,8 @@ exports[`<OpenIdConnectScreen /> should match in signature verification failed 1
           }
         >
           <View
+            collapsable={false}
+            nativeID="animatedComponent"
             needsOffscreenAlphaCompositing={false}
             pointerEvents="box-none"
             style={
@@ -2067,8 +2097,9 @@ exports[`<OpenIdConnectScreen /> should match in signature verification failed 1
                                     }
                                   }
                                   accessible={true}
+                                  collapsable={false}
                                   focusable={true}
-                                  isTVSelectable={true}
+                                  nativeID="animatedComponent"
                                   onClick={[Function]}
                                   onResponderGrant={[Function]}
                                   onResponderMove={[Function]}
@@ -2145,8 +2176,9 @@ exports[`<OpenIdConnectScreen /> should match in signature verification failed 1
                                     }
                                   }
                                   accessible={true}
+                                  collapsable={false}
                                   focusable={true}
-                                  isTVSelectable={true}
+                                  nativeID="animatedComponent"
                                   onClick={[Function]}
                                   onResponderGrant={[Function]}
                                   onResponderMove={[Function]}
@@ -2206,8 +2238,8 @@ exports[`<OpenIdConnectScreen /> should match in signature verification failed 1
             </View>
           </View>
         </View>
-      </View>
-    </View>
+      </RNSScreen>
+    </RNSScreenContainer>
   </RNCSafeAreaProvider>
 </View>
 `;
@@ -2320,6 +2352,8 @@ exports[`<OpenIdConnectScreen /> should match in success state 1`] = `
               <Text
                 accessibilityRole="header"
                 aria-level="1"
+                collapsable={false}
+                nativeID="animatedComponent"
                 numberOfLines={1}
                 onLayout={[Function]}
                 style={
@@ -2337,7 +2371,7 @@ exports[`<OpenIdConnectScreen /> should match in success state 1`] = `
         </View>
       </View>
     </View>
-    <View
+    <RNSScreenContainer
       onLayout={[Function]}
       style={
         Object {
@@ -2345,7 +2379,9 @@ exports[`<OpenIdConnectScreen /> should match in success state 1`] = `
         }
       }
     >
-      <View
+      <RNSScreen
+        activityState={2}
+        forwardedRef={[Function]}
         pointerEvents="box-none"
         style={
           Object {
@@ -2414,6 +2450,8 @@ exports[`<OpenIdConnectScreen /> should match in success state 1`] = `
           }
         >
           <View
+            collapsable={false}
+            nativeID="animatedComponent"
             needsOffscreenAlphaCompositing={false}
             pointerEvents="box-none"
             style={
@@ -2532,8 +2570,11 @@ exports[`<OpenIdConnectScreen /> should match in success state 1`] = `
                           >
                             <View
                               autoPlay={true}
+                              collapsable={false}
                               enableMergePathsAndroidForKitKatAndAbove={false}
+                              forwardedRef={[Function]}
                               loop={false}
+                              nativeID="animatedComponent"
                               onAnimationFinish={[Function]}
                               onLayout={[Function]}
                               progress={0}
@@ -2598,8 +2639,8 @@ exports[`<OpenIdConnectScreen /> should match in success state 1`] = `
             </View>
           </View>
         </View>
-      </View>
-    </View>
+      </RNSScreen>
+    </RNSScreenContainer>
   </RNCSafeAreaProvider>
 </View>
 `;

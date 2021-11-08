@@ -30,8 +30,9 @@ exports[`<QuestionActions /> when more than two responses are present match snap
     <View
       accessibilityLabel="question-action-submit"
       accessible={true}
+      collapsable={false}
       focusable={true}
-      isTVSelectable={true}
+      nativeID="animatedComponent"
       onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
@@ -130,8 +131,9 @@ exports[`<QuestionActions /> when more than two responses are present match snap
     <View
       accessibilityLabel="question-action-submit"
       accessible={true}
+      collapsable={false}
       focusable={true}
-      isTVSelectable={true}
+      nativeID="animatedComponent"
       onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
@@ -230,8 +232,9 @@ exports[`<QuestionActions /> when more than two responses are present render Ign
     <View
       accessibilityLabel="question-action-submit"
       accessible={true}
+      collapsable={false}
       focusable={true}
-      isTVSelectable={true}
+      nativeID="animatedComponent"
       onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
@@ -330,8 +333,9 @@ exports[`<QuestionActions /> when one response is present match snapshot if in e
     <View
       accessibilityLabel="question-action-submit"
       accessible={true}
+      collapsable={false}
       focusable={true}
-      isTVSelectable={true}
+      nativeID="animatedComponent"
       onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
@@ -430,8 +434,9 @@ exports[`<QuestionActions /> when one response is present match snapshot if in s
     <View
       accessibilityLabel="question-action-submit"
       accessible={true}
+      collapsable={false}
       focusable={true}
-      isTVSelectable={true}
+      nativeID="animatedComponent"
       onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
@@ -552,8 +557,9 @@ exports[`<QuestionActions /> when one response is present render Ignore and resp
             }
           }
           accessible={true}
+          collapsable={false}
           focusable={true}
-          isTVSelectable={true}
+          nativeID="animatedComponent"
           onClick={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
@@ -641,8 +647,9 @@ exports[`<QuestionActions /> when two responses are present match snapshot if in
     <View
       accessibilityLabel="question-action-submit"
       accessible={true}
+      collapsable={false}
       focusable={true}
-      isTVSelectable={true}
+      nativeID="animatedComponent"
       onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
@@ -741,8 +748,9 @@ exports[`<QuestionActions /> when two responses are present match snapshot if in
     <View
       accessibilityLabel="question-action-submit"
       accessible={true}
+      collapsable={false}
       focusable={true}
-      isTVSelectable={true}
+      nativeID="animatedComponent"
       onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
@@ -863,8 +871,9 @@ exports[`<QuestionActions /> when two responses are present render both response
             }
           }
           accessible={true}
+          collapsable={false}
           focusable={true}
-          isTVSelectable={true}
+          nativeID="animatedComponent"
           onClick={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
@@ -949,8 +958,9 @@ exports[`<QuestionActions /> when two responses are present render both response
             }
           }
           accessible={true}
+          collapsable={false}
           focusable={true}
-          isTVSelectable={true}
+          nativeID="animatedComponent"
           onClick={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
@@ -1026,17 +1036,12 @@ exports[`<QuestionScreen /> should match error snapshot 1`] = `
         "error",
       ]
     }
-    disableVirtualization={false}
     getItem={[Function]}
     getItemCount={[Function]}
-    horizontal={false}
-    initialNumToRender={10}
     keyExtractor={[Function]}
-    maxToRenderPerBatch={10}
-    numColumns={1}
     onContentSizeChange={[Function]}
-    onEndReachedThreshold={2}
     onLayout={[Function]}
+    onMomentumScrollBegin={[Function]}
     onMomentumScrollEnd={[Function]}
     onScroll={[Function]}
     onScrollBeginDrag={[Function]}
@@ -1051,9 +1056,7 @@ exports[`<QuestionScreen /> should match error snapshot 1`] = `
         "padding": 20,
       }
     }
-    updateCellsBatchingPeriod={50}
     viewabilityConfigCallbackPairs={Array []}
-    windowSize={21}
   >
     <View>
       <View
@@ -1170,8 +1173,11 @@ exports[`<QuestionScreen /> should match error snapshot 1`] = `
             >
               <View
                 autoPlay={true}
+                collapsable={false}
                 enableMergePathsAndroidForKitKatAndAbove={false}
+                forwardedRef={[Function]}
                 loop={false}
+                nativeID="animatedComponent"
                 onAnimationFinish={[Function]}
                 onLayout={[Function]}
                 progress={0}
@@ -1253,8 +1259,9 @@ exports[`<QuestionScreen /> should match error snapshot 1`] = `
       <View
         accessibilityLabel="question-action-submit"
         accessible={true}
+        collapsable={false}
         focusable={true}
-        isTVSelectable={true}
+        nativeID="animatedComponent"
         onClick={[Function]}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -1342,17 +1349,12 @@ exports[`<QuestionScreen /> should match idle state snapshot 1`] = `
         "idle",
       ]
     }
-    disableVirtualization={false}
     getItem={[Function]}
     getItemCount={[Function]}
-    horizontal={false}
-    initialNumToRender={10}
     keyExtractor={[Function]}
-    maxToRenderPerBatch={10}
-    numColumns={1}
     onContentSizeChange={[Function]}
-    onEndReachedThreshold={2}
     onLayout={[Function]}
+    onMomentumScrollBegin={[Function]}
     onMomentumScrollEnd={[Function]}
     onScroll={[Function]}
     onScrollBeginDrag={[Function]}
@@ -1367,9 +1369,7 @@ exports[`<QuestionScreen /> should match idle state snapshot 1`] = `
         "padding": 20,
       }
     }
-    updateCellsBatchingPeriod={50}
     viewabilityConfigCallbackPairs={Array []}
-    windowSize={21}
   >
     <View>
       <View
@@ -1476,78 +1476,41 @@ exports[`<QuestionScreen /> should match idle state snapshot 1`] = `
             testID="question-title"
           >
             <Text
-              allowFontScaling={false}
+              ellipsizeMode="tail"
+              numberOfLines={2}
+              onTextLayout={[Function]}
               style={
-                Array [
-                  Object {
-                    "fontSize": 23,
-                  },
-                  Object {
-                    "fontFamily": "System",
-                  },
-                  Object {},
-                  Object {
-                    "fontWeight": "bold",
-                  },
-                  null,
-                  null,
-                  null,
-                  null,
-                  null,
-                  null,
-                  null,
-                  null,
-                  null,
-                  null,
-                  null,
-                  null,
-                  Object {
-                    "color": "#505050",
-                  },
-                ]
+                Object {
+                  "color": "#505050",
+                  "fontSize": 23,
+                  "fontWeight": "bold",
+                }
               }
             >
               Survey request for family members
             </Text>
           </View>
-          <Text
-            accessibilityLabel="Hi User,"
-            accessible={true}
-            allowFontScaling={false}
+          <View
             style={
-              Array [
-                Object {
-                  "fontSize": 17,
-                },
-                Object {
-                  "fontFamily": "System",
-                },
-                Object {},
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
+              Object {
+                "marginBottom": 9.571428571428571,
+              }
+            }
+          >
+            <Text
+              ellipsizeMode="tail"
+              numberOfLines={2}
+              onTextLayout={[Function]}
+              style={
                 Object {
                   "color": "#505050",
-                },
-                Object {
-                  "marginBottom": 30,
-                },
-              ]
-            }
-            testID="question-description"
-          >
-            Hi User,
-          </Text>
+                  "fontSize": 17,
+                }
+              }
+            >
+              Hi User,
+            </Text>
+          </View>
           <View
             style={
               Array [
@@ -1581,8 +1544,9 @@ exports[`<QuestionScreen /> should match idle state snapshot 1`] = `
                 >
                   <View
                     accessible={true}
+                    collapsable={false}
                     focusable={true}
-                    isTVSelectable={true}
+                    nativeID="animatedComponent"
                     onClick={[Function]}
                     onResponderGrant={[Function]}
                     onResponderMove={[Function]}
@@ -1691,8 +1655,9 @@ exports[`<QuestionScreen /> should match idle state snapshot 1`] = `
                 >
                   <View
                     accessible={true}
+                    collapsable={false}
                     focusable={true}
-                    isTVSelectable={true}
+                    nativeID="animatedComponent"
                     onClick={[Function]}
                     onResponderGrant={[Function]}
                     onResponderMove={[Function]}
@@ -1801,8 +1766,9 @@ exports[`<QuestionScreen /> should match idle state snapshot 1`] = `
                 >
                   <View
                     accessible={true}
+                    collapsable={false}
                     focusable={true}
-                    isTVSelectable={true}
+                    nativeID="animatedComponent"
                     onClick={[Function]}
                     onResponderGrant={[Function]}
                     onResponderMove={[Function]}
@@ -1900,8 +1866,9 @@ exports[`<QuestionScreen /> should match idle state snapshot 1`] = `
             >
               <View
                 accessible={true}
+                collapsable={false}
                 focusable={true}
-                isTVSelectable={true}
+                nativeID="animatedComponent"
                 onClick={[Function]}
                 onResponderGrant={[Function]}
                 onResponderMove={[Function]}
@@ -1959,8 +1926,9 @@ exports[`<QuestionScreen /> should match idle state snapshot 1`] = `
             >
               <View
                 accessible={true}
+                collapsable={false}
                 focusable={true}
-                isTVSelectable={true}
+                nativeID="animatedComponent"
                 onClick={[Function]}
                 onResponderGrant={[Function]}
                 onResponderMove={[Function]}
@@ -2043,8 +2011,9 @@ exports[`<QuestionScreen /> should match idle state snapshot 1`] = `
       <View
         accessibilityLabel="question-action-submit"
         accessible={true}
+        collapsable={false}
         focusable={true}
-        isTVSelectable={true}
+        nativeID="animatedComponent"
         onClick={[Function]}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -2133,17 +2102,12 @@ exports[`<QuestionScreen /> should match invalid data 1`] = `
         "invalidData",
       ]
     }
-    disableVirtualization={false}
     getItem={[Function]}
     getItemCount={[Function]}
-    horizontal={false}
-    initialNumToRender={10}
     keyExtractor={[Function]}
-    maxToRenderPerBatch={10}
-    numColumns={1}
     onContentSizeChange={[Function]}
-    onEndReachedThreshold={2}
     onLayout={[Function]}
+    onMomentumScrollBegin={[Function]}
     onMomentumScrollEnd={[Function]}
     onScroll={[Function]}
     onScrollBeginDrag={[Function]}
@@ -2158,9 +2122,7 @@ exports[`<QuestionScreen /> should match invalid data 1`] = `
         "padding": 20,
       }
     }
-    updateCellsBatchingPeriod={50}
     viewabilityConfigCallbackPairs={Array []}
-    windowSize={21}
   >
     <View>
       <View
@@ -2267,78 +2229,41 @@ exports[`<QuestionScreen /> should match invalid data 1`] = `
             testID="question-title"
           >
             <Text
-              allowFontScaling={false}
+              ellipsizeMode="tail"
+              numberOfLines={2}
+              onTextLayout={[Function]}
               style={
-                Array [
-                  Object {
-                    "fontSize": 23,
-                  },
-                  Object {
-                    "fontFamily": "System",
-                  },
-                  Object {},
-                  Object {
-                    "fontWeight": "bold",
-                  },
-                  null,
-                  null,
-                  null,
-                  null,
-                  null,
-                  null,
-                  null,
-                  null,
-                  null,
-                  null,
-                  null,
-                  null,
-                  Object {
-                    "color": "#505050",
-                  },
-                ]
+                Object {
+                  "color": "#505050",
+                  "fontSize": 23,
+                  "fontWeight": "bold",
+                }
               }
             >
               Survey request for family members
             </Text>
           </View>
-          <Text
-            accessibilityLabel="Hi User,"
-            accessible={true}
-            allowFontScaling={false}
+          <View
             style={
-              Array [
-                Object {
-                  "fontSize": 17,
-                },
-                Object {
-                  "fontFamily": "System",
-                },
-                Object {},
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
+              Object {
+                "marginBottom": 9.571428571428571,
+              }
+            }
+          >
+            <Text
+              ellipsizeMode="tail"
+              numberOfLines={2}
+              onTextLayout={[Function]}
+              style={
                 Object {
                   "color": "#505050",
-                },
-                Object {
-                  "marginBottom": 30,
-                },
-              ]
-            }
-            testID="question-description"
-          >
-            Hi User,
-          </Text>
+                  "fontSize": 17,
+                }
+              }
+            >
+              Hi User,
+            </Text>
+          </View>
           <View
             style={Object {}}
           >
@@ -2351,8 +2276,9 @@ exports[`<QuestionScreen /> should match invalid data 1`] = `
             >
               <View
                 accessible={true}
+                collapsable={false}
                 focusable={true}
-                isTVSelectable={true}
+                nativeID="animatedComponent"
                 onClick={[Function]}
                 onResponderGrant={[Function]}
                 onResponderMove={[Function]}
@@ -2410,8 +2336,9 @@ exports[`<QuestionScreen /> should match invalid data 1`] = `
             >
               <View
                 accessible={true}
+                collapsable={false}
                 focusable={true}
-                isTVSelectable={true}
+                nativeID="animatedComponent"
                 onClick={[Function]}
                 onResponderGrant={[Function]}
                 onResponderMove={[Function]}
@@ -2540,17 +2467,12 @@ exports[`<QuestionScreen /> should match loading snapshot 1`] = `
         "loading",
       ]
     }
-    disableVirtualization={false}
     getItem={[Function]}
     getItemCount={[Function]}
-    horizontal={false}
-    initialNumToRender={10}
     keyExtractor={[Function]}
-    maxToRenderPerBatch={10}
-    numColumns={1}
     onContentSizeChange={[Function]}
-    onEndReachedThreshold={2}
     onLayout={[Function]}
+    onMomentumScrollBegin={[Function]}
     onMomentumScrollEnd={[Function]}
     onScroll={[Function]}
     onScrollBeginDrag={[Function]}
@@ -2565,9 +2487,7 @@ exports[`<QuestionScreen /> should match loading snapshot 1`] = `
         "padding": 20,
       }
     }
-    updateCellsBatchingPeriod={50}
     viewabilityConfigCallbackPairs={Array []}
-    windowSize={21}
   >
     <View>
       <View
@@ -2674,7 +2594,6 @@ exports[`<QuestionScreen /> should match loading snapshot 1`] = `
             }
           >
             <ActivityIndicator
-              animating={true}
               color="#777777"
               hidesWhenStopped={true}
               size="large"
@@ -2751,17 +2670,12 @@ exports[`<QuestionScreen /> should match success snapshot 1`] = `
         "success",
       ]
     }
-    disableVirtualization={false}
     getItem={[Function]}
     getItemCount={[Function]}
-    horizontal={false}
-    initialNumToRender={10}
     keyExtractor={[Function]}
-    maxToRenderPerBatch={10}
-    numColumns={1}
     onContentSizeChange={[Function]}
-    onEndReachedThreshold={2}
     onLayout={[Function]}
+    onMomentumScrollBegin={[Function]}
     onMomentumScrollEnd={[Function]}
     onScroll={[Function]}
     onScrollBeginDrag={[Function]}
@@ -2776,9 +2690,7 @@ exports[`<QuestionScreen /> should match success snapshot 1`] = `
         "padding": 20,
       }
     }
-    updateCellsBatchingPeriod={50}
     viewabilityConfigCallbackPairs={Array []}
-    windowSize={21}
   >
     <View>
       <View
@@ -2895,8 +2807,11 @@ exports[`<QuestionScreen /> should match success snapshot 1`] = `
             >
               <View
                 autoPlay={true}
+                collapsable={false}
                 enableMergePathsAndroidForKitKatAndAbove={false}
+                forwardedRef={[Function]}
                 loop={false}
+                nativeID="animatedComponent"
                 onAnimationFinish={[Function]}
                 onLayout={[Function]}
                 progress={0}

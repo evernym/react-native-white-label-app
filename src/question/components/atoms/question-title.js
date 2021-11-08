@@ -1,8 +1,10 @@
 // @flow
 import React from 'react'
+import { StyleSheet } from 'react-native'
 
 import { CustomView } from '../../../components/layout'
-import QuestionScreenText from './question-screen-text'
+import { ExpandableText } from '../../../components/expandable-text/expandable-text'
+import { color, fontSizes as fonts } from '../../../common/styles'
 
 const QuestionTitle = (props: { title: string, questionStyles: any }) => {
   const maxLength = 500
@@ -11,14 +13,25 @@ const QuestionTitle = (props: { title: string, questionStyles: any }) => {
       ? props.title
       : `${props.title.substring(0, maxLength)}...`
   return (
-    <CustomView 
+    <CustomView
       style={props.questionStyles.questionTitle}
       testID={`question-title`}
       accessible={true}
       accessibilityLabel={`question-title`}
     >
-      <QuestionScreenText size="h3b">{title}</QuestionScreenText>
+      <ExpandableText
+        text={title}
+        style={styles.text} />
     </CustomView>
   )
 }
+
+const styles = StyleSheet.create({
+  text: {
+    color: color.bg.tertiary.font.seventh,
+    fontSize: fonts.size2,
+    fontWeight: 'bold'
+  }
+})
+
 export default QuestionTitle

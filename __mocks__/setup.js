@@ -74,6 +74,7 @@ jest.doMock('react-native', () => {
           addListener: jest.fn(),
           removeListeners: jest.fn(),
         },
+        RNPermissions: {},
       },
       Dimensions: {
         ...ReactNative.Dimensions,
@@ -114,7 +115,9 @@ jest.doMock('react-native', () => {
   )
 })
 
-jest.mock('react-native/Libraries/Animated/src/NativeAnimatedHelper')
+jest.mock('react-native/Libraries/Animated/NativeAnimatedHelper')
+
+jest.mock('react-native/Libraries/LogBox/LogBox')
 
 jest.doMock('react-native-vector-icons/lib/icon-button', () => () => {
   const { View, Text } = require('react-native')
@@ -318,10 +321,6 @@ jest.mock('react-native-gesture-handler', () => {
 jest.mock('react-native-snackbar', () => ({
   show: jest.fn(),
   LENGTH_LONG: 3,
-}))
-
-jest.mock('react-native-localize', () => ({
-  getLocales: () => [{ countryCode: 'US' }],
 }))
 
 jest.mock('reactotron-react-native', () => ({

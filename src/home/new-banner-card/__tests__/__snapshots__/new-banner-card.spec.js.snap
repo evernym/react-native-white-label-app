@@ -44,8 +44,9 @@ exports[`<NewBannerCard /> should render NewBannerCard component and match snaps
     >
       <View
         accessible={true}
+        collapsable={false}
         focusable={true}
-        isTVSelectable={true}
+        nativeID="animatedComponent"
         onClick={[Function]}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -85,11 +86,13 @@ exports[`<NewBannerCard /> should render NewBannerCard component and match snaps
     </View>
   </View>
   <View
+    collapsable={false}
     manipulationModes={
       Array [
         "translateX",
       ]
     }
+    nativeID="animatedComponent"
     onLayout={[Function]}
     onMoveShouldSetResponder={[Function]}
     onMoveShouldSetResponderCapture={[Function]}
@@ -116,8 +119,9 @@ exports[`<NewBannerCard /> should render NewBannerCard component and match snaps
   >
     <View
       accessible={false}
+      collapsable={false}
       focusable={true}
-      isTVSelectable={true}
+      nativeID="animatedComponent"
       onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
@@ -151,8 +155,9 @@ exports[`<NewBannerCard /> should render NewBannerCard component and match snaps
         <View
           accessibilityLabel="new-message"
           accessible={true}
+          collapsable={false}
           focusable={true}
-          isTVSelectable={true}
+          nativeID="animatedComponent"
           onClick={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}

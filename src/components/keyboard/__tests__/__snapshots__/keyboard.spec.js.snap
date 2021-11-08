@@ -43,6 +43,8 @@ exports[`<Keyboard /> should render properly and match the snapshot 1`] = `
     >
       <Text
         allowFontScaling={true}
+        collapsable={false}
+        nativeID="animatedComponent"
         style={
           Object {
             "backgroundColor": "transparent",
@@ -80,6 +82,8 @@ exports[`<Keyboard /> should render properly and match the snapshot 1`] = `
     >
       <Text
         allowFontScaling={true}
+        collapsable={false}
+        nativeID="animatedComponent"
         style={
           Object {
             "backgroundColor": "transparent",
@@ -117,6 +121,8 @@ exports[`<Keyboard /> should render properly and match the snapshot 1`] = `
     >
       <Text
         allowFontScaling={true}
+        collapsable={false}
+        nativeID="animatedComponent"
         style={
           Object {
             "backgroundColor": "transparent",
@@ -165,6 +171,8 @@ exports[`<Keyboard /> should render properly and match the snapshot 1`] = `
     >
       <Text
         allowFontScaling={true}
+        collapsable={false}
+        nativeID="animatedComponent"
         style={
           Object {
             "backgroundColor": "transparent",
@@ -202,6 +210,8 @@ exports[`<Keyboard /> should render properly and match the snapshot 1`] = `
     >
       <Text
         allowFontScaling={true}
+        collapsable={false}
+        nativeID="animatedComponent"
         style={
           Object {
             "backgroundColor": "transparent",
@@ -239,6 +249,8 @@ exports[`<Keyboard /> should render properly and match the snapshot 1`] = `
     >
       <Text
         allowFontScaling={true}
+        collapsable={false}
+        nativeID="animatedComponent"
         style={
           Object {
             "backgroundColor": "transparent",
@@ -287,6 +299,8 @@ exports[`<Keyboard /> should render properly and match the snapshot 1`] = `
     >
       <Text
         allowFontScaling={true}
+        collapsable={false}
+        nativeID="animatedComponent"
         style={
           Object {
             "backgroundColor": "transparent",
@@ -324,6 +338,8 @@ exports[`<Keyboard /> should render properly and match the snapshot 1`] = `
     >
       <Text
         allowFontScaling={true}
+        collapsable={false}
+        nativeID="animatedComponent"
         style={
           Object {
             "backgroundColor": "transparent",
@@ -361,6 +377,8 @@ exports[`<Keyboard /> should render properly and match the snapshot 1`] = `
     >
       <Text
         allowFontScaling={true}
+        collapsable={false}
+        nativeID="animatedComponent"
         style={
           Object {
             "backgroundColor": "transparent",
@@ -409,6 +427,8 @@ exports[`<Keyboard /> should render properly and match the snapshot 1`] = `
     >
       <Text
         allowFontScaling={true}
+        collapsable={false}
+        nativeID="animatedComponent"
         style={
           Object {
             "backgroundColor": "transparent",
@@ -446,6 +466,8 @@ exports[`<Keyboard /> should render properly and match the snapshot 1`] = `
     >
       <Text
         allowFontScaling={true}
+        collapsable={false}
+        nativeID="animatedComponent"
         style={
           Object {
             "backgroundColor": "transparent",
@@ -491,6 +513,8 @@ exports[`<Keyboard /> should render properly and match the snapshot 1`] = `
     >
       <Text
         allowFontScaling={true}
+        collapsable={false}
+        nativeID="animatedComponent"
         style={
           Object {
             "backgroundColor": "transparent",

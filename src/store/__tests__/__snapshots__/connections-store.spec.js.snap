@@ -195,7 +195,7 @@ Object {
           "STORAGE_KEY_THEMES",
         ],
         "context": null,
-        "fn": "@@redux-saga-test-plan/json/function/getHydrationItem",
+        "fn": "@@redux-saga-test-plan/json/function/_callee5",
       },
       "type": "CALL",
     },

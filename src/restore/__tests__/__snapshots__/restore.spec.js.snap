@@ -161,8 +161,9 @@ exports[`Restore screen should render properly and match the snapshot 1`] = `
       >
         <View
           accessible={true}
+          collapsable={false}
           focusable={true}
-          isTVSelectable={true}
+          nativeID="animatedComponent"
           onClick={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
@@ -207,8 +208,9 @@ exports[`Restore screen should render properly and match the snapshot 1`] = `
         </View>
         <View
           accessible={true}
+          collapsable={false}
           focusable={true}
-          isTVSelectable={true}
+          nativeID="animatedComponent"
           onClick={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}

@@ -1,0 +1,11 @@
+diff --git a/node_modules/react-native-sensitive-info/react-native-sensitive-info.podspec b/node_modules/react-native-sensitive-info/react-native-sensitive-info.podspec
+index ab68c85..0241a6e 100644
+--- a/node_modules/react-native-sensitive-info/react-native-sensitive-info.podspec
++++ b/node_modules/react-native-sensitive-info/react-native-sensitive-info.podspec
+@@ -13,5 +13,5 @@ Pod::Spec.new do |s|
+   s.homepage      = 'https://github.com/mCodex/react-native-sensitive-info'
+   s.source        = { :git => 'https://github.com/mCodex/react-native-sensitive-info.git' }
+ 
+-  s.dependency "React"
++  s.dependency "React-Core"
+ end
