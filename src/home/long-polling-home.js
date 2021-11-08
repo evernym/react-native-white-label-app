@@ -4,10 +4,8 @@ import {
   all,
   put,
   race,
-  select,
   take,
   call,
-  takeLeading,
   takeLatest,
 } from 'redux-saga/effects'
 import delay from '@redux-saga/delay-p'
@@ -20,7 +18,7 @@ import {
   GET_MESSAGES_LOADING,
   GET_MESSAGES_SUCCESS,
 } from '../store/type-config-store'
-import { pollingInterval } from '../external-imports'
+import { pollingIntervals } from '../external-imports'
 import {
   CONNECTION_REQUEST_SENT,
   NEW_CONNECTION_SUCCESS,
@@ -95,18 +93,18 @@ function appStateSource() {
 
 function* startPolling(): any {
   while (true) {
-    // first, we want to run polling with 2 seconds interval for 60 seconds
-    yield race([call(delay, 60000), call(poll, 2000)])
+    // first, we want to run polling with `pollingIntervals.short` interval for 60 seconds
+    yield race([call(delay, 60000), call(poll, pollingIntervals.short)])
 
     // we will exit above call after 60 seconds, because pollWithInterval function
     // never returns, and hence race will end it's execution after 60 seconds delay is done
 
-    // now, we want to run polling with 3 seconds interval for 2 minutes
-    yield race([call(delay, 120000), call(poll, 3000)])
+    // now, we want to run polling with `pollingIntervals.medium` seconds interval for 2 minutes
+    yield race([call(delay, 120000), call(poll, pollingIntervals.medium)])
 
     // We are already running a long polling with 15 seconds, so here we can minimize the load
-    // on CAS by using 30 seconds interval
-    yield* poll(30000)
+    // on CAS by using `pollingIntervals.long * 2` seconds interval
+    yield* poll(pollingIntervals.long * 2)
   }
 }
 
@@ -130,7 +128,7 @@ function* frequentPolling(): any {
 function* longPolling(): any {
   // this polling will run in the background even if user does not do anything
   yield* ensureAppActive()
-  yield* poll(15000)
+  yield* poll(pollingIntervals.long)
 }
 
 export function* watchLongPollingHome(): any {
