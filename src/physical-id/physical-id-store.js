@@ -81,7 +81,10 @@ import {
   GET_MESSAGES_SUCCESS,
 } from '../store/type-config-store'
 import { uuid } from '../services/uuid'
-import { androidDeviceCheckApiKey } from '../external-imports'
+import {
+  androidDeviceCheckApiKey,
+  iosGetDeviceCheckJWT,
+} from '../external-imports'
 
 const initialState = {
   sdkInitStatus: sdkStatus.IDLE,
@@ -271,6 +274,8 @@ function* launchPhysicalIdSDKSaga(
   // get device check token for ios
   // add a new param to send data for android or ios
   let hardwareToken = ''
+  // this is the token that we can get by calling a function of host app
+  let platformJWT = ''
   if (Platform.OS === 'android') {
     hardwareToken = yield call(
       NativeModules.RNIndy.sendAttestationRequest,
@@ -281,6 +286,53 @@ function* launchPhysicalIdSDKSaga(
 
   if (Platform.OS === 'ios') {
     hardwareToken = yield call(NativeModules.RNIndy.getDeviceCheckToken)
+    try {
+      // putting try catch here because host app
+      // might not be returning the correct data type from the calling code
+      const response = yield call(iosGetDeviceCheckJWT)
+      // if host app returned an array which is expected, then we check for error and JWT
+      if (Array.isArray(response) && response.length === 2) {
+        if (response[0] !== null && response[1]) {
+          // if we get an error while calling get jwt function,
+          // then console.log error, fail here and return
+          console.log(
+            'API call to get JWT token failed with error.',
+            response[0]
+          )
+          yield put(
+            updatePhysicalIdStatus(
+              physicalIdProcessStatus.SEND_ISSUE_CREDENTIAL_FAIL
+            )
+          )
+
+          return
+        }
+        // since we got the data and no error, set the jwt value
+        platformJWT = response[1]
+      } else if (typeof response === 'string') {
+        // if host app is only returning string as response, then use it as it is
+        platformJWT = response
+      } else {
+        console.log(
+          "Response to get jwt API call can either be in [error, jwt] format or a string jwt. We did not find any matching response type and also the promise was not rejected. Can't proceed further to submit document and issue credential."
+        )
+        yield put(
+          updatePhysicalIdStatus(
+            physicalIdProcessStatus.SEND_ISSUE_CREDENTIAL_FAIL
+          )
+        )
+
+        return
+      }
+    } catch (e) {
+      yield put(
+        updatePhysicalIdStatus(
+          physicalIdProcessStatus.SEND_ISSUE_CREDENTIAL_FAIL
+        )
+      )
+
+      return
+    }
   }
 
   // now we have connection, and we also have the workflow data
@@ -290,6 +342,7 @@ function* launchPhysicalIdSDKSaga(
     connectionDID: relationshipId,
     hardwareToken,
     platform: Platform.OS,
+    platformJWT,
     country: selectedCountry,
     document: action.documentType,
     domainDID,
@@ -646,8 +699,10 @@ export function* initPhysicalIdSdkSaga(): Generator<*, *, *> {
     return
   }
 
-  const [tokenError, tokenResponse]: [string | null, [string, string] | null] =
-    yield* getSdkTokenSaga()
+  const [tokenError, tokenResponse]: [
+    string | null,
+    [string, string] | null
+  ] = yield* getSdkTokenSaga()
 
   if (tokenError || !tokenResponse) {
     // action are already raised by sdk toke saga and status is also updated in above saga
@@ -676,13 +731,15 @@ export function* getSdkTokenSaga(): Generator<*, *, *> {
   const domainDID: string = yield select(selectDomainDID)
   const verityFlowBaseUrl: string = yield select(selectVerityFlowBaseUrl)
   // get hardware token, if product decides to restrict access
-  const [error, response]: [Error | null, null | { result: string }] =
-    yield call(
-      flattenAsync(getSdkToken),
-      hardwareToken,
-      domainDID,
-      verityFlowBaseUrl
-    )
+  const [error, response]: [
+    Error | null,
+    null | { result: string }
+  ] = yield call(
+    flattenAsync(getSdkToken),
+    hardwareToken,
+    domainDID,
+    verityFlowBaseUrl
+  )
   if (error || !response) {
     yield put(updateSdkInitStatus(sdkStatus.SDK_INIT_FAIL))
     return [sdkStatus.SDK_INIT_FAIL, null]

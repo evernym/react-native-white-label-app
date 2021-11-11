@@ -164,6 +164,9 @@ export type MessageDownloadStatus =
   | typeof GET_MESSAGES_FAIL
   | typeof GET_MESSAGES_SUCCESS
 
+// IMPORTANT NOTE: If this key value changes,
+// then it would need to be changed in ConnectMe app/evernym-sdk/physical-id.js
+// and other repos that we have based out of this white label app
 export const STORAGE_KEY_SWITCHED_ENVIRONMENT_DETAIL =
   'STORAGE_KEY_SWITCHED_ENVIRONMENT_DETAIL'
 

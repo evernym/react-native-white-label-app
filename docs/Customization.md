@@ -1381,7 +1381,44 @@ Following are the available options:
   * to use custom
       ```javascript
       export const CustomDocumentVerificationScreen = () => <Text>Custom Header</Text>
-      ``` 
+      ```
+
+* `IOS_GET_DEVICE_CHECK_JWT` - Function that would be called to verify device check token of ios app. Below are the details to fulfill this functionality:
+  * Generate an API Key from developer.apple.com which only has access to call Device Check APIs
+    * In your developer account, go to Certificates, Identifiers & Profiles.
+    * Under Keys, select All and click the Add button (+) in the upper-right corner.
+    * Under Key Description, enter a unique name for the signing key.
+    * Under Key Services, select the Device Check, then click Continue.
+    * Review the key configuration, then click Confirm.
+    * Take note of key id.
+    * Click Download to generate and download the key now. If you download the key, it is saved as a text file with a .p8 file extension. Save the file in a secure place because the key is not saved in your developer account and you won’t be able to download it again.
+    * Click Done.
+  * On server side below code can be used to generate JWT
+    ```javascript
+        // server side api.js, function to get JWT
+        const { getToken } = require('@sagi.io/workers-jwt')
+        // team id or issuer-id
+        const iss = ''
+        // key-id
+        const kid = ''
+        const privateKeyPEM = ''
+
+        const jwtPayload = {
+            iss,
+            iat: Math.floor(Date.now() / 1000)
+        }
+
+        const jwt = await getToken({
+            privateKeyPEM,
+            payload: jwtPayload,
+            alg: 'ES256',
+            headerAdditions: {
+                kid
+            }
+        })
+    ```
+  * Mobile app can call above API via http method and get the JWT. Make sure to add proper Authorization/Authentication as per your own app logic for above API call
+  * The function that call above API is the same function that we need to pass to `IOS_GET_DEVICE_CHECK_JWT`
 
 ### Splash screen and app icon
 
