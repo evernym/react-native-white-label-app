@@ -1418,6 +1418,36 @@ Following are the available options:
         })
     ```
   * Mobile app can call above API via http method and get the JWT. Make sure to add proper Authorization/Authentication as per your own app logic for above API call
+    ```javascript
+        export const IOS_GET_DEVICE_CHECK_JWT = async function getDeviceCheckJwt(): Promise<[typeof Error | null, string | null]> {
+            try {
+                // call your backend api to get ios platform jwt, this API call is the one that contains above server side code
+                const response = await fetch(`<your-app-backend-url>/get-ios-jwt`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer <your own auth strategy>'
+                    },
+                    body: '{}',
+                })
+
+                let responseText = await response.json()
+                if (!response.ok) {
+                    return [
+                        responseText.errorMessage ||
+                            responseText.message ||
+                            responseText,
+                        null,
+                    ]
+                }
+                // please ensure that response from this function is an array which has first value as Error or null and second value as jwt or null
+                // assuming that your API call response was JSON and had a property `jwt` which contains jwt token
+                return [null, responseText.jwt]
+            } catch (e) {
+                return [e, null]
+            }
+        }
+    ```
   * The function that call above API is the same function that we need to pass to `IOS_GET_DEVICE_CHECK_JWT`
 
 ### Splash screen and app icon
