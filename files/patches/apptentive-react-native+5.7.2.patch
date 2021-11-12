@@ -9,4 +9,16 @@ index 9ad1441..8c67e6d 100644
 +        mavenCentral()
          google()
      }
-
+ 
+diff --git a/node_modules/apptentive-react-native/apptentive-react-native.podspec b/node_modules/apptentive-react-native/apptentive-react-native.podspec
+index 3f36342..34f8ad0 100644
+--- a/node_modules/apptentive-react-native/apptentive-react-native.podspec
++++ b/node_modules/apptentive-react-native/apptentive-react-native.podspec
+@@ -15,6 +15,6 @@ Pod::Spec.new do |s|
+   s.source       = { :git => "https://github.com/apptentive/apptentive-react-native.git", :tag => "v#{s.version}" }
+   s.source_files  = "ios/*.{h,m}"
+   s.public_header_files = "ios/*.h"
+-  s.dependency "React"
++  s.dependency "React-Core"
+   s.dependency "apptentive-ios", ">= 5.3.1", "< 6.0"
+ end
