@@ -51,7 +51,7 @@
 
 4. Add apptentive. You are not required to use this library. As of now we have a dependency on this library. We will make this optional in future. Add below dependency in `Podfile`
   
-    `pod 'apptentive-ios', '5.2.2'`
+    `pod 'apptentive-ios'`
 
 5. Run `pod install`
 
