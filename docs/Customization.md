@@ -1393,7 +1393,7 @@ Following are the available options:
     * Take note of key id.
     * Click Download to generate and download the key now. If you download the key, it is saved as a text file with a .p8 file extension. Save the file in a secure place because the key is not saved in your developer account and you won’t be able to download it again.
     * Click Done.
-  * On server side below code can be used to generate JWT
+  * On server side below code can be used to generate JWT. Note: The below functionality can be done inside the app itself. For example: when you are in development phase. But, we would recommend to do it on server side. You can use your sponsor provision backend to add one more API endpoint to generate ios specific JWT. 
     ```javascript
         // server side api.js, function to get JWT
         const { getToken } = require('@sagi.io/workers-jwt')
