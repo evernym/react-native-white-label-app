@@ -64,7 +64,7 @@ export class MSDKMeApp extends Component<AppProps, void> {
   exitTimeout: number = 0
 
   componentDidMount() {
-    RNShake.addListener(() => {
+    RNShake.addEventListener('ShakeEvent', () => {
       if (this.currentRoute !== sendLogsRoute) {
         this.navigateToRoute(sendLogsRoute)
       }
@@ -74,7 +74,7 @@ export class MSDKMeApp extends Component<AppProps, void> {
   }
 
   componentWillUnmount() {
-    RNShake.removeAllListeners()
+    RNShake.removeEventListener('ShakeEvent', () => {})
   }
 
   // gets the current screen from navigation state
