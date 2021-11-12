@@ -539,20 +539,12 @@ exports[`<QuestionActions /> when one response is present render Ignore and resp
     >
       <View
         style={
-          Array [
-            Object {
-              "borderRadius": 3,
-              "overflow": "hidden",
-            },
-            Object {
-              "borderRadius": 3,
-            },
-            Object {
-              "marginLeft": 0,
-              "marginRight": 0,
-            },
-            false,
-          ]
+          Object {
+            "borderRadius": 3,
+            "marginLeft": 0,
+            "marginRight": 0,
+            "overflow": "hidden",
+          }
         }
       >
         <View
@@ -609,7 +601,8 @@ exports[`<QuestionActions /> when one response is present render Ignore and resp
                 Object {
                   "color": "white",
                   "fontSize": 18,
-                  "paddingVertical": 1,
+                  "paddingBottom": 1,
+                  "paddingTop": 2,
                   "textAlign": "center",
                 }
               }
@@ -860,20 +853,12 @@ exports[`<QuestionActions /> when two responses are present render both response
     >
       <View
         style={
-          Array [
-            Object {
-              "borderRadius": 3,
-              "overflow": "hidden",
-            },
-            Object {
-              "borderRadius": 3,
-            },
-            Object {
-              "marginLeft": 0,
-              "marginRight": 0,
-            },
-            false,
-          ]
+          Object {
+            "borderRadius": 3,
+            "marginLeft": 0,
+            "marginRight": 0,
+            "overflow": "hidden",
+          }
         }
       >
         <View
@@ -930,7 +915,8 @@ exports[`<QuestionActions /> when two responses are present render both response
                 Object {
                   "color": "white",
                   "fontSize": 18,
-                  "paddingVertical": 1,
+                  "paddingBottom": 1,
+                  "paddingTop": 2,
                   "textAlign": "center",
                 }
               }
@@ -954,20 +940,12 @@ exports[`<QuestionActions /> when two responses are present render both response
     >
       <View
         style={
-          Array [
-            Object {
-              "borderRadius": 3,
-              "overflow": "hidden",
-            },
-            Object {
-              "borderRadius": 3,
-            },
-            Object {
-              "marginLeft": 0,
-              "marginRight": 0,
-            },
-            false,
-          ]
+          Object {
+            "borderRadius": 3,
+            "marginLeft": 0,
+            "marginRight": 0,
+            "overflow": "hidden",
+          }
         }
       >
         <View
@@ -1024,7 +1002,8 @@ exports[`<QuestionActions /> when two responses are present render both response
                   "backgroundColor": "#FFFFFF",
                   "color": "#CE0B24",
                   "fontSize": 18,
-                  "paddingVertical": 1,
+                  "paddingBottom": 1,
+                  "paddingTop": 2,
                   "textAlign": "center",
                 }
               }
@@ -1194,7 +1173,6 @@ exports[`<QuestionScreen /> should match error snapshot 1`] = `
             >
               <View
                 autoPlay={true}
-                cacheComposition={true}
                 collapsable={false}
                 enableMergePathsAndroidForKitKatAndAbove={false}
                 forwardedRef={[Function]}
@@ -2829,7 +2807,6 @@ exports[`<QuestionScreen /> should match success snapshot 1`] = `
             >
               <View
                 autoPlay={true}
-                cacheComposition={true}
                 collapsable={false}
                 enableMergePathsAndroidForKitKatAndAbove={false}
                 forwardedRef={[Function]}

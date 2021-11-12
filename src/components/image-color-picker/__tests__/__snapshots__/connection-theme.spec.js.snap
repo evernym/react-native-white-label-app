@@ -6,17 +6,10 @@ exports[`<ConnectionTheme /> should render default theme properly 1`] = `
 >
   <View
     style={
-      Array [
-        Object {
-          "borderRadius": 3,
-          "overflow": "hidden",
-        },
-        Object {
-          "borderRadius": 3,
-        },
-        undefined,
-        false,
-      ]
+      Object {
+        "borderRadius": 3,
+        "overflow": "hidden",
+      }
     }
   >
     <View
@@ -63,7 +56,8 @@ exports[`<ConnectionTheme /> should render default theme properly 1`] = `
             Object {
               "color": "white",
               "fontSize": 18,
-              "paddingVertical": 1,
+              "paddingBottom": 1,
+              "paddingTop": 2,
               "textAlign": "center",
             }
           }

@@ -146,20 +146,12 @@ exports[`<LedgerFeesModalComponent /> show error if fetching fees failed, show r
     >
       <View
         style={
-          Array [
-            Object {
-              "borderRadius": 3,
-              "overflow": "hidden",
-            },
-            Object {
-              "borderRadius": 3,
-            },
-            Object {
-              "marginLeft": 0,
-              "marginRight": 0,
-            },
-            false,
-          ]
+          Object {
+            "borderRadius": 3,
+            "marginLeft": 0,
+            "marginRight": 0,
+            "overflow": "hidden",
+          }
         }
       >
         <View
@@ -210,7 +202,8 @@ exports[`<LedgerFeesModalComponent /> show error if fetching fees failed, show r
                 Object {
                   "color": "white",
                   "fontSize": 18,
-                  "paddingVertical": 1,
+                  "paddingBottom": 1,
+                  "paddingTop": 2,
                   "textAlign": "center",
                 }
               }
@@ -230,20 +223,12 @@ exports[`<LedgerFeesModalComponent /> show error if fetching fees failed, show r
     >
       <View
         style={
-          Array [
-            Object {
-              "borderRadius": 3,
-              "overflow": "hidden",
-            },
-            Object {
-              "borderRadius": 3,
-            },
-            Object {
-              "marginLeft": 0,
-              "marginRight": 0,
-            },
-            false,
-          ]
+          Object {
+            "borderRadius": 3,
+            "marginLeft": 0,
+            "marginRight": 0,
+            "overflow": "hidden",
+          }
         }
       >
         <View
@@ -294,7 +279,8 @@ exports[`<LedgerFeesModalComponent /> show error if fetching fees failed, show r
                 Object {
                   "color": "white",
                   "fontSize": 18,
-                  "paddingVertical": 1,
+                  "paddingBottom": 1,
+                  "paddingTop": 2,
                   "textAlign": "center",
                 }
               }
@@ -648,20 +634,12 @@ exports[`<LedgerFeesModalComponent /> show text passed by consumer of component,
     >
       <View
         style={
-          Array [
-            Object {
-              "borderRadius": 3,
-              "overflow": "hidden",
-            },
-            Object {
-              "borderRadius": 3,
-            },
-            Object {
-              "marginLeft": 0,
-              "marginRight": 0,
-            },
-            false,
-          ]
+          Object {
+            "borderRadius": 3,
+            "marginLeft": 0,
+            "marginRight": 0,
+            "overflow": "hidden",
+          }
         }
       >
         <View
@@ -712,7 +690,8 @@ exports[`<LedgerFeesModalComponent /> show text passed by consumer of component,
                 Object {
                   "color": "white",
                   "fontSize": 18,
-                  "paddingVertical": 1,
+                  "paddingBottom": 1,
+                  "paddingTop": 2,
                   "textAlign": "center",
                 }
               }
@@ -732,20 +711,12 @@ exports[`<LedgerFeesModalComponent /> show text passed by consumer of component,
     >
       <View
         style={
-          Array [
-            Object {
-              "borderRadius": 3,
-              "overflow": "hidden",
-            },
-            Object {
-              "borderRadius": 3,
-            },
-            Object {
-              "marginLeft": 0,
-              "marginRight": 0,
-            },
-            false,
-          ]
+          Object {
+            "borderRadius": 3,
+            "marginLeft": 0,
+            "marginRight": 0,
+            "overflow": "hidden",
+          }
         }
       >
         <View
@@ -796,7 +767,8 @@ exports[`<LedgerFeesModalComponent /> show text passed by consumer of component,
                 Object {
                   "color": "white",
                   "fontSize": 18,
-                  "paddingVertical": 1,
+                  "paddingBottom": 1,
+                  "paddingTop": 2,
                   "textAlign": "center",
                 }
               }
@@ -1092,20 +1064,12 @@ exports[`<LedgerFeesModalComponent /> show transfer fees, Yes & No buttons, if f
     >
       <View
         style={
-          Array [
-            Object {
-              "borderRadius": 3,
-              "overflow": "hidden",
-            },
-            Object {
-              "borderRadius": 3,
-            },
-            Object {
-              "marginLeft": 0,
-              "marginRight": 0,
-            },
-            false,
-          ]
+          Object {
+            "borderRadius": 3,
+            "marginLeft": 0,
+            "marginRight": 0,
+            "overflow": "hidden",
+          }
         }
       >
         <View
@@ -1156,7 +1120,8 @@ exports[`<LedgerFeesModalComponent /> show transfer fees, Yes & No buttons, if f
                 Object {
                   "color": "white",
                   "fontSize": 18,
-                  "paddingVertical": 1,
+                  "paddingBottom": 1,
+                  "paddingTop": 2,
                   "textAlign": "center",
                 }
               }
@@ -1176,20 +1141,12 @@ exports[`<LedgerFeesModalComponent /> show transfer fees, Yes & No buttons, if f
     >
       <View
         style={
-          Array [
-            Object {
-              "borderRadius": 3,
-              "overflow": "hidden",
-            },
-            Object {
-              "borderRadius": 3,
-            },
-            Object {
-              "marginLeft": 0,
-              "marginRight": 0,
-            },
-            false,
-          ]
+          Object {
+            "borderRadius": 3,
+            "marginLeft": 0,
+            "marginRight": 0,
+            "overflow": "hidden",
+          }
         }
       >
         <View
@@ -1240,7 +1197,8 @@ exports[`<LedgerFeesModalComponent /> show transfer fees, Yes & No buttons, if f
                 Object {
                   "color": "white",
                   "fontSize": 18,
-                  "paddingVertical": 1,
+                  "paddingBottom": 1,
+                  "paddingTop": 2,
                   "textAlign": "center",
                 }
               }

@@ -33,7 +33,6 @@ exports[`<Success /> should render successText 1`] = `
     >
       <View
         autoPlay={true}
-        cacheComposition={true}
         collapsable={false}
         enableMergePathsAndroidForKitKatAndAbove={false}
         forwardedRef={[Function]}

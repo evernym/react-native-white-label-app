@@ -397,20 +397,12 @@ exports[`<CloudBackup /> should match snapshot 1`] = `
               >
                 <View
                   style={
-                    Array [
-                      Object {
-                        "borderRadius": 3,
-                        "overflow": "hidden",
-                      },
-                      Object {
-                        "borderRadius": 3,
-                      },
-                      Object {
-                        "marginLeft": 0,
-                        "marginRight": 0,
-                      },
-                      false,
-                    ]
+                    Object {
+                      "borderRadius": 3,
+                      "marginLeft": 0,
+                      "marginRight": 0,
+                      "overflow": "hidden",
+                    }
                   }
                 >
                   <View
@@ -462,7 +454,8 @@ exports[`<CloudBackup /> should match snapshot 1`] = `
                           Object {
                             "color": "white",
                             "fontSize": 18,
-                            "paddingVertical": 1,
+                            "paddingBottom": 1,
+                            "paddingTop": 2,
                             "textAlign": "center",
                           }
                         }
@@ -481,20 +474,12 @@ exports[`<CloudBackup /> should match snapshot 1`] = `
                 >
                   <View
                     style={
-                      Array [
-                        Object {
-                          "borderRadius": 3,
-                          "overflow": "hidden",
-                        },
-                        Object {
-                          "borderRadius": 3,
-                        },
-                        Object {
-                          "marginLeft": 0,
-                          "marginRight": 0,
-                        },
-                        false,
-                      ]
+                      Object {
+                        "borderRadius": 3,
+                        "marginLeft": 0,
+                        "marginRight": 0,
+                        "overflow": "hidden",
+                      }
                     }
                   >
                     <View
@@ -547,7 +532,8 @@ exports[`<CloudBackup /> should match snapshot 1`] = `
                             Object {
                               "color": "white",
                               "fontSize": 18,
-                              "paddingVertical": 1,
+                              "paddingBottom": 1,
+                              "paddingTop": 2,
                               "textAlign": "center",
                             }
                           }

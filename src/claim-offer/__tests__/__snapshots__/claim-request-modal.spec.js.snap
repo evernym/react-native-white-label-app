@@ -92,20 +92,12 @@ exports[`<ClaimRequestStatusModal /> should hideModal if continue is clicked 1`]
     </View>
     <View
       style={
-        Array [
-          Object {
-            "borderRadius": 3,
-            "overflow": "hidden",
-          },
-          Object {
-            "borderRadius": 3,
-          },
-          Object {
-            "marginLeft": 0,
-            "marginRight": 0,
-          },
-          false,
-        ]
+        Object {
+          "borderRadius": 3,
+          "marginLeft": 0,
+          "marginRight": 0,
+          "overflow": "hidden",
+        }
       }
     >
       <View
@@ -154,7 +146,8 @@ exports[`<ClaimRequestStatusModal /> should hideModal if continue is clicked 1`]
               Object {
                 "color": "white",
                 "fontSize": 18,
-                "paddingVertical": 1,
+                "paddingBottom": 1,
+                "paddingTop": 2,
                 "textAlign": "center",
               }
             }
@@ -260,20 +253,12 @@ exports[`<ClaimRequestStatusModal /> should match paid credential success, if se
     </View>
     <View
       style={
-        Array [
-          Object {
-            "borderRadius": 3,
-            "overflow": "hidden",
-          },
-          Object {
-            "borderRadius": 3,
-          },
-          Object {
-            "marginLeft": 0,
-            "marginRight": 0,
-          },
-          false,
-        ]
+        Object {
+          "borderRadius": 3,
+          "marginLeft": 0,
+          "marginRight": 0,
+          "overflow": "hidden",
+        }
       }
     >
       <View
@@ -322,7 +307,8 @@ exports[`<ClaimRequestStatusModal /> should match paid credential success, if se
               Object {
                 "color": "white",
                 "fontSize": 18,
-                "paddingVertical": 1,
+                "paddingBottom": 1,
+                "paddingTop": 2,
                 "textAlign": "center",
               }
             }
@@ -568,20 +554,12 @@ exports[`<ClaimRequestStatusModal /> should show arrow right and accepting text,
     </View>
     <View
       style={
-        Array [
-          Object {
-            "borderRadius": 3,
-            "overflow": "hidden",
-          },
-          Object {
-            "borderRadius": 3,
-          },
-          Object {
-            "marginLeft": 0,
-            "marginRight": 0,
-          },
-          false,
-        ]
+        Object {
+          "borderRadius": 3,
+          "marginLeft": 0,
+          "marginRight": 0,
+          "overflow": "hidden",
+        }
       }
     >
       <View
@@ -628,7 +606,8 @@ exports[`<ClaimRequestStatusModal /> should show arrow right and accepting text,
               Object {
                 "color": "white",
                 "fontSize": 18,
-                "paddingVertical": 1,
+                "paddingBottom": 1,
+                "paddingTop": 2,
                 "textAlign": "center",
               }
             }
@@ -874,20 +853,12 @@ exports[`<ClaimRequestStatusModal /> should show check mark, token amount, if pa
     </View>
     <View
       style={
-        Array [
-          Object {
-            "borderRadius": 3,
-            "overflow": "hidden",
-          },
-          Object {
-            "borderRadius": 3,
-          },
-          Object {
-            "marginLeft": 0,
-            "marginRight": 0,
-          },
-          false,
-        ]
+        Object {
+          "borderRadius": 3,
+          "marginLeft": 0,
+          "marginRight": 0,
+          "overflow": "hidden",
+        }
       }
     >
       <View
@@ -936,7 +907,8 @@ exports[`<ClaimRequestStatusModal /> should show check mark, token amount, if pa
               Object {
                 "color": "white",
                 "fontSize": 18,
-                "paddingVertical": 1,
+                "paddingBottom": 1,
+                "paddingTop": 2,
                 "textAlign": "center",
               }
             }
@@ -1042,20 +1014,12 @@ exports[`<ClaimRequestStatusModal /> should show check mark, you accepted text, 
     </View>
     <View
       style={
-        Array [
-          Object {
-            "borderRadius": 3,
-            "overflow": "hidden",
-          },
-          Object {
-            "borderRadius": 3,
-          },
-          Object {
-            "marginLeft": 0,
-            "marginRight": 0,
-          },
-          false,
-        ]
+        Object {
+          "borderRadius": 3,
+          "marginLeft": 0,
+          "marginRight": 0,
+          "overflow": "hidden",
+        }
       }
     >
       <View
@@ -1104,7 +1068,8 @@ exports[`<ClaimRequestStatusModal /> should show check mark, you accepted text, 
               Object {
                 "color": "white",
                 "fontSize": 18,
-                "paddingVertical": 1,
+                "paddingBottom": 1,
+                "paddingTop": 2,
                 "textAlign": "center",
               }
             }
