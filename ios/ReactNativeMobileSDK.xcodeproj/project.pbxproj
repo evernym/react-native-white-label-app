@@ -13,6 +13,7 @@
 		DD70345E272C1B8300CA2B3C /* ConfirmScannedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD70345A272C1B8300CA2B3C /* ConfirmScannedImageView.swift */; };
 		DD70345F272C1B8300CA2B3C /* MIDS.m in Sources */ = {isa = PBXBuildFile; fileRef = DD70345C272C1B8300CA2B3C /* MIDS.m */; };
 		DD703460272C1B8300CA2B3C /* MIDS.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD70345D272C1B8300CA2B3C /* MIDS.swift */; };
+		DDAB42FF273E9FBE00746392 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDAB42FE273E9FBE00746392 /* LoadingView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -41,6 +42,9 @@
 		DD70345B272C1B8300CA2B3C /* ConfirmScannedImageView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ConfirmScannedImageView.xib; sourceTree = "<group>"; };
 		DD70345C272C1B8300CA2B3C /* MIDS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MIDS.m; sourceTree = "<group>"; };
 		DD70345D272C1B8300CA2B3C /* MIDS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MIDS.swift; sourceTree = "<group>"; };
+		DDAB42FD273E9FBE00746392 /* LoadingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingView.xib; sourceTree = "<group>"; };
+		DDAB42FE273E9FBE00746392 /* LoadingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
+		DDAB4303273EA66D00746392 /* spinner.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = spinner.gif; path = ../../../src/images/spinner.gif; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +80,8 @@
 		07B5B58E25386BC80062AC4E /* ReactNativeMobileSDK */ = {
 			isa = PBXGroup;
 			children = (
+				DDAB4302273EA64A00746392 /* Resources */,
+				DDAB42FC273E9FBD00746392 /* Loading */,
 				DD703459272C1B8300CA2B3C /* ConfirmScannedImageView */,
 				DD70345C272C1B8300CA2B3C /* MIDS.m */,
 				DD70345D272C1B8300CA2B3C /* MIDS.swift */,
@@ -103,6 +109,23 @@
 				DD70345B272C1B8300CA2B3C /* ConfirmScannedImageView.xib */,
 			);
 			path = ConfirmScannedImageView;
+			sourceTree = "<group>";
+		};
+		DDAB42FC273E9FBD00746392 /* Loading */ = {
+			isa = PBXGroup;
+			children = (
+				DDAB42FD273E9FBE00746392 /* LoadingView.xib */,
+				DDAB42FE273E9FBE00746392 /* LoadingView.swift */,
+			);
+			path = Loading;
+			sourceTree = "<group>";
+		};
+		DDAB4302273EA64A00746392 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				DDAB4303273EA66D00746392 /* spinner.gif */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		F13509C223E14B373B1D58CD /* Pods */ = {
@@ -202,6 +225,7 @@
 				07B5B59425386BD80062AC4E /* ReactNativeMobileSDK.m in Sources */,
 				DD70345F272C1B8300CA2B3C /* MIDS.m in Sources */,
 				DD70345E272C1B8300CA2B3C /* ConfirmScannedImageView.swift in Sources */,
+				DDAB42FF273E9FBE00746392 /* LoadingView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -15,7 +15,7 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://gitlab.com/evernym/mobile/react-native-white-label-app.git", :tag => "#{s.version}" }
   s.swift_version = '5.0'
 
-  s.source_files = "ios/**/*.{h,c,m,swift,xib}"
+  s.source_files = "ios/**/*.{h,c,m,swift,xib,gif}"
   s.requires_arc = true
 
   s.vendored_frameworks = 'ios/Frameworks/MIDSAssistSDK.xcframework', 'ios/Frameworks/MIDSVerificationSDK.xcframework'
@@ -31,5 +31,6 @@ Pod::Spec.new do |s|
   s.dependency "JumioMobileSDK/NetverifyFace+Zoom", '~>3.9.0'
   s.dependency "JumioMobileSDK/DocumentVerification", '~>3.9.0'
   s.dependency "JumioMobileSDK/BAMCheckout", '~>3.9.0'
+  s.dependency "Gifu"
 
 end

@@ -183,7 +183,27 @@ extension MIDSDocumentVerification: MIDSEnrollmentDelegate {
   
   func midsEnrollmentManager(customScanViewControllerWillPresentIProovController scanViewController: MIDSCustomScanViewController) {}
   
-  func midsEnrollmentManager(customScanViewControllerWillPrepareIProovController scanViewController: MIDSCustomScanViewController) {}
+  func midsEnrollmentManager(customScanViewControllerWillPrepareIProovController scanViewController: MIDSCustomScanViewController) {
+      // add loading logic here
+      DispatchQueue.main.async {
+          guard let appDelegate = UIApplication.shared.delegate as? AppDelegate,
+              let window = appDelegate.window else {
+                  return
+          }
+          let loadingView = LoadingView(frame: window.frame)
+          loadingView.tag  = LoadingViewConstants.tag
+          // we can set a message as well, but for now, we are just showing loader
+          // so we show view without the message
+          loadingView.loadingWithoutMessageView.isHidden = false
+          loadingView.loaderImageView.prepareForAnimation(withGIFNamed: LoadingView.imageName)
+          loadingView.loaderImageView.startAnimatingGIF()
+          if let view = scanViewController.customOverlayLayer {
+              view.addSubview(loadingView)
+          } else {
+              window.addSubview(loadingView)
+          }
+      }
+  }
   
   func midsEnrollmentManager(didCaptureAllParts status: Bool) {
     currentScanView = nil
