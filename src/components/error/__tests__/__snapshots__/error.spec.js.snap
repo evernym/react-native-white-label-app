@@ -33,6 +33,7 @@ exports[`<Error /> should render errorText 1`] = `
     >
       <View
         autoPlay={true}
+        cacheComposition={true}
         collapsable={false}
         enableMergePathsAndroidForKitKatAndAbove={false}
         forwardedRef={[Function]}

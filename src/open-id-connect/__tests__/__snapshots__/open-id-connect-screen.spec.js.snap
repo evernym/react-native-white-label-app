@@ -335,6 +335,7 @@ exports[`<OpenIdConnectScreen /> should match in fail state 1`] = `
                             >
                               <View
                                 autoPlay={true}
+                                cacheComposition={true}
                                 collapsable={false}
                                 enableMergePathsAndroidForKitKatAndAbove={false}
                                 forwardedRef={[Function]}
@@ -421,12 +422,20 @@ exports[`<OpenIdConnectScreen /> should match in fail state 1`] = `
                             >
                               <View
                                 style={
-                                  Object {
-                                    "borderRadius": 3,
-                                    "marginLeft": 0,
-                                    "marginRight": 0,
-                                    "overflow": "hidden",
-                                  }
+                                  Array [
+                                    Object {
+                                      "borderRadius": 3,
+                                      "overflow": "hidden",
+                                    },
+                                    Object {
+                                      "borderRadius": 3,
+                                    },
+                                    Object {
+                                      "marginLeft": 0,
+                                      "marginRight": 0,
+                                    },
+                                    false,
+                                  ]
                                 }
                               >
                                 <View
@@ -479,8 +488,7 @@ exports[`<OpenIdConnectScreen /> should match in fail state 1`] = `
                                         Object {
                                           "color": "white",
                                           "fontSize": 18,
-                                          "paddingBottom": 1,
-                                          "paddingTop": 2,
+                                          "paddingVertical": 1,
                                           "textAlign": "center",
                                         }
                                       }
@@ -500,12 +508,20 @@ exports[`<OpenIdConnectScreen /> should match in fail state 1`] = `
                             >
                               <View
                                 style={
-                                  Object {
-                                    "borderRadius": 3,
-                                    "marginLeft": 0,
-                                    "marginRight": 0,
-                                    "overflow": "hidden",
-                                  }
+                                  Array [
+                                    Object {
+                                      "borderRadius": 3,
+                                      "overflow": "hidden",
+                                    },
+                                    Object {
+                                      "borderRadius": 3,
+                                    },
+                                    Object {
+                                      "marginLeft": 0,
+                                      "marginRight": 0,
+                                    },
+                                    false,
+                                  ]
                                 }
                               >
                                 <View
@@ -558,8 +574,7 @@ exports[`<OpenIdConnectScreen /> should match in fail state 1`] = `
                                         Object {
                                           "color": "white",
                                           "fontSize": 18,
-                                          "paddingBottom": 1,
-                                          "paddingTop": 2,
+                                          "paddingVertical": 1,
                                           "textAlign": "center",
                                         }
                                       }
@@ -1422,12 +1437,20 @@ exports[`<OpenIdConnectScreen /> should match in received state 1`] = `
                             >
                               <View
                                 style={
-                                  Object {
-                                    "borderRadius": 3,
-                                    "marginLeft": 0,
-                                    "marginRight": 0,
-                                    "overflow": "hidden",
-                                  }
+                                  Array [
+                                    Object {
+                                      "borderRadius": 3,
+                                      "overflow": "hidden",
+                                    },
+                                    Object {
+                                      "borderRadius": 3,
+                                    },
+                                    Object {
+                                      "marginLeft": 0,
+                                      "marginRight": 0,
+                                    },
+                                    false,
+                                  ]
                                 }
                               >
                                 <View
@@ -1480,8 +1503,7 @@ exports[`<OpenIdConnectScreen /> should match in received state 1`] = `
                                         Object {
                                           "color": "white",
                                           "fontSize": 18,
-                                          "paddingBottom": 1,
-                                          "paddingTop": 2,
+                                          "paddingVertical": 1,
                                           "textAlign": "center",
                                         }
                                       }
@@ -1501,12 +1523,20 @@ exports[`<OpenIdConnectScreen /> should match in received state 1`] = `
                             >
                               <View
                                 style={
-                                  Object {
-                                    "borderRadius": 3,
-                                    "marginLeft": 0,
-                                    "marginRight": 0,
-                                    "overflow": "hidden",
-                                  }
+                                  Array [
+                                    Object {
+                                      "borderRadius": 3,
+                                      "overflow": "hidden",
+                                    },
+                                    Object {
+                                      "borderRadius": 3,
+                                    },
+                                    Object {
+                                      "marginLeft": 0,
+                                      "marginRight": 0,
+                                    },
+                                    false,
+                                  ]
                                 }
                               >
                                 <View
@@ -1559,8 +1589,7 @@ exports[`<OpenIdConnectScreen /> should match in received state 1`] = `
                                         Object {
                                           "color": "white",
                                           "fontSize": 18,
-                                          "paddingBottom": 1,
-                                          "paddingTop": 2,
+                                          "paddingVertical": 1,
                                           "textAlign": "center",
                                         }
                                       }
@@ -2079,12 +2108,20 @@ exports[`<OpenIdConnectScreen /> should match in signature verification failed 1
                             >
                               <View
                                 style={
-                                  Object {
-                                    "borderRadius": 3,
-                                    "marginLeft": 0,
-                                    "marginRight": 0,
-                                    "overflow": "hidden",
-                                  }
+                                  Array [
+                                    Object {
+                                      "borderRadius": 3,
+                                      "overflow": "hidden",
+                                    },
+                                    Object {
+                                      "borderRadius": 3,
+                                    },
+                                    Object {
+                                      "marginLeft": 0,
+                                      "marginRight": 0,
+                                    },
+                                    false,
+                                  ]
                                 }
                               >
                                 <View
@@ -2137,8 +2174,7 @@ exports[`<OpenIdConnectScreen /> should match in signature verification failed 1
                                         Object {
                                           "color": "white",
                                           "fontSize": 18,
-                                          "paddingBottom": 1,
-                                          "paddingTop": 2,
+                                          "paddingVertical": 1,
                                           "textAlign": "center",
                                         }
                                       }
@@ -2158,12 +2194,20 @@ exports[`<OpenIdConnectScreen /> should match in signature verification failed 1
                             >
                               <View
                                 style={
-                                  Object {
-                                    "borderRadius": 3,
-                                    "marginLeft": 0,
-                                    "marginRight": 0,
-                                    "overflow": "hidden",
-                                  }
+                                  Array [
+                                    Object {
+                                      "borderRadius": 3,
+                                      "overflow": "hidden",
+                                    },
+                                    Object {
+                                      "borderRadius": 3,
+                                    },
+                                    Object {
+                                      "marginLeft": 0,
+                                      "marginRight": 0,
+                                    },
+                                    false,
+                                  ]
                                 }
                               >
                                 <View
@@ -2216,8 +2260,7 @@ exports[`<OpenIdConnectScreen /> should match in signature verification failed 1
                                         Object {
                                           "color": "white",
                                           "fontSize": 18,
-                                          "paddingBottom": 1,
-                                          "paddingTop": 2,
+                                          "paddingVertical": 1,
                                           "textAlign": "center",
                                         }
                                       }
@@ -2570,6 +2613,7 @@ exports[`<OpenIdConnectScreen /> should match in success state 1`] = `
                           >
                             <View
                               autoPlay={true}
+                              cacheComposition={true}
                               collapsable={false}
                               enableMergePathsAndroidForKitKatAndAbove={false}
                               forwardedRef={[Function]}

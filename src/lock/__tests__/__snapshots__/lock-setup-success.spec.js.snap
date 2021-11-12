@@ -199,12 +199,20 @@ exports[`<LockSetupSuccess /> should display Loading while fetching the invitati
   >
     <View
       style={
-        Object {
-          "borderRadius": 3,
-          "marginLeft": 0,
-          "marginRight": 0,
-          "overflow": "hidden",
-        }
+        Array [
+          Object {
+            "borderRadius": 3,
+            "overflow": "hidden",
+          },
+          Object {
+            "borderRadius": 3,
+          },
+          Object {
+            "marginLeft": 0,
+            "marginRight": 0,
+          },
+          false,
+        ]
       }
     >
       <View
@@ -257,8 +265,7 @@ exports[`<LockSetupSuccess /> should display Loading while fetching the invitati
               Object {
                 "color": "hsl(208, 8%, 63%)",
                 "fontSize": 18,
-                "paddingBottom": 1,
-                "paddingTop": 2,
+                "paddingVertical": 1,
                 "textAlign": "center",
               }
             }
@@ -471,20 +478,30 @@ exports[`<LockSetupSuccess /> should render Lock setup success Screen 1`] = `
   >
     <View
       style={
-        Object {
-          "backgroundColor": "#fff",
-          "borderRadius": 3,
-          "marginLeft": 0,
-          "marginRight": 0,
-          "overflow": "visible",
-          "shadowColor": "rgba(0,0,0, .4)",
-          "shadowOffset": Object {
-            "height": 1,
-            "width": 1,
+        Array [
+          Object {
+            "borderRadius": 3,
+            "overflow": "hidden",
           },
-          "shadowOpacity": 1,
-          "shadowRadius": 1,
-        }
+          Object {
+            "borderRadius": 3,
+          },
+          Object {
+            "marginLeft": 0,
+            "marginRight": 0,
+          },
+          Object {
+            "backgroundColor": "#fff",
+            "overflow": "visible",
+            "shadowColor": "rgba(0,0,0, .4)",
+            "shadowOffset": Object {
+              "height": 1,
+              "width": 1,
+            },
+            "shadowOpacity": 1,
+            "shadowRadius": 1,
+          },
+        ]
       }
     >
       <View
@@ -536,8 +553,7 @@ exports[`<LockSetupSuccess /> should render Lock setup success Screen 1`] = `
               Object {
                 "color": "white",
                 "fontSize": 18,
-                "paddingBottom": 1,
-                "paddingTop": 2,
+                "paddingVertical": 1,
                 "textAlign": "center",
               }
             }
