@@ -87,6 +87,7 @@ class PushNotificationPermission extends Component<
           attachedRequest: this.props.route.params?.intendedPayload
             ?.attachedRequest,
           senderName: this.props.route.params?.intendedPayload?.senderName,
+          hidden: this.props.route.params?.intendedPayload?.hidden
         }
       )
     }
@@ -113,6 +114,7 @@ class PushNotificationPermission extends Component<
             attachedRequest: this.props.route.params?.intendedPayload
               ?.attachedRequest,
             senderName: this.props.route.params?.intendedPayload?.senderName,
+            hidden: this.props.route.params?.intendedPayload?.hidden
           }
         )
         this.props.allowPushNotifications()
@@ -211,6 +213,7 @@ class PushNotificationPermission extends Component<
       attachedRequest: this.props.route.params?.intendedPayload
         ?.attachedRequest,
       senderName: this.props.route.params?.intendedPayload?.senderName,
+      hidden: this.props.route.params?.intendedPayload?.hidden
     })
 
     setTimeout(() => pushNotificationPermissionAction(false), 100)
@@ -235,6 +238,7 @@ class PushNotificationPermission extends Component<
       attachedRequest: this.props.route.params?.intendedPayload
         ?.attachedRequest,
       senderName: this.props.route.params?.intendedPayload?.senderName,
+      hidden: this.props.route.params?.intendedPayload?.hidden
     })
 
     allowPushNotifications()
