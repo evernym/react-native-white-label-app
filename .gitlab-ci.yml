@@ -97,18 +97,17 @@ yarn-test:
   tags:
     - docker-machine
 
-
-#connectme-check-test:
-#  stage: test
-#  variables:
-#      REACT_SOURCE_BRANCH: $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME
-#  trigger:
-#      project: evernym/mobile/connectme
-#      branch: white-label-app-e2e-testing
-#      strategy: depend
-#  only:
-#    # check merge-request functionality
-#    - merge_requests
+connectme-check-test:
+  stage: test
+  variables:
+      REACT_SOURCE_BRANCH: $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME
+  trigger:
+      project: evernym/mobile/connectme
+      branch: white-label-app-e2e-testing
+      strategy: depend
+  only:
+    # check merge-request functionality
+    - merge_requests
 
 
 nodejs-publish:
