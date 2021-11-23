@@ -8,7 +8,7 @@ import {
   USE_PUSH_NOTIFICATION,
   STORAGE_KEY,
   DEEP_LINK,
-  PUSH_NOTIFICATION_PERMISSION_SCREEN_IMAGE_IOS
+  PUSH_NOTIFICATION_PERMISSION_SCREEN_IMAGE_IOS,
 } from '../../../../app/evernym-sdk/app'
 
 export {
@@ -157,6 +157,8 @@ export {
   CustomDocumentVerificationScreen as documentVerificationScreen,
 } from '../../../../app/evernym-sdk/physical-document-verification'
 
+export { IOS_GET_DEVICE_CHECK_JWT as iosGetDeviceCheckJWT } from '../../../../app/evernym-sdk/physical-id'
+
 export const appName = APP_NAME || 'appName'
 export const appLogo = APP_LOGO
 export const defaultUserAvatar =
@@ -167,4 +169,6 @@ export const companyLogo = COMPANY_LOGO
 export const usePushNotifications = !!USE_PUSH_NOTIFICATION || false
 export const storageKey = STORAGE_KEY || '@msdkDefaults'
 export const deepLinkAddress = DEEP_LINK || null
-export const pushNotificationPermissionImage = PUSH_NOTIFICATION_PERMISSION_SCREEN_IMAGE_IOS || require('./images/iphoneX.png')
+export const pushNotificationPermissionImage =
+  PUSH_NOTIFICATION_PERMISSION_SCREEN_IMAGE_IOS ||
+  require('./images/iphoneX.png')

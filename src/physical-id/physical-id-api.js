@@ -69,6 +69,7 @@ export async function issueCredential({
   domainDID,
   verityFlowBaseUrl,
   credDefId,
+  platformJWT,
 }: {
   workflowId: string,
   connectionDID: string,
@@ -79,6 +80,7 @@ export async function issueCredential({
   domainDID: string,
   verityFlowBaseUrl: string,
   credDefId: string,
+  platformJWT: string,
 }) {
   return post({
     url: `${verityFlowBaseUrl}/issue-credential`,
@@ -90,6 +92,7 @@ export async function issueCredential({
       credDefId,
       hardwareToken,
       platform,
+      platformJWT,
     }),
     contentType: 'application/json',
     hardwareToken,

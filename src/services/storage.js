@@ -11,6 +11,10 @@ import { WALLET_KEY } from '../common/secure-storage-constants'
 
 const { RNIndy } = NativeModules
 
+// IMPORTANT NOTE: If the value changes for storageName,
+// then this value also needs to be changed in
+// ConnectMe repo app/evernym-sdk/physical-id.js
+// and other apps dependent on this white label app
 const storageName = {
   sharedPreferencesName: 'ConnectMeSharedPref',
   keychainService: 'ConnectMeKeyChain',
