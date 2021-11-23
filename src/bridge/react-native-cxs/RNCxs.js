@@ -3,19 +3,19 @@ import { NativeModules, Platform } from 'react-native'
 import memoize from 'lodash.memoize'
 import type {
   CxsCredentialOfferResult,
+  VcxProvisionResult,
+  VcxProvision,
   CxsInitConfig,
-  CxsPoolConfig,
+  VcxInitConfig,
   CxsPushTokenConfig,
-  PaymentAddress,
-  SignDataResponse,
+  VcxCredentialOffer,
   VcxClaimInfo,
   VcxConnectionConnectResult,
-  VcxCredentialOffer,
-  VcxInitConfig,
-  VcxPoolInitConfig,
-  VcxProvision,
-  VcxProvisionResult,
   WalletTokenInfo,
+  PaymentAddress,
+  SignDataResponse,
+  CxsPoolConfig,
+  VcxPoolInitConfig,
 } from './type-cxs'
 import { signDataResponseSchema, smallDeviceMemory } from './type-cxs'
 import type { AriesOutOfBandInvite, InvitationPayload } from '../../invitation/type-invitation'
@@ -96,7 +96,7 @@ export async function createOneTimeInfo(
 export async function getProvisionToken(
   agencyConfig: AgencyPoolConfig,
   comMethod: { type: number, id: string, value: string },
-  sponsorId: string,
+  sponsorId: string
 ): Promise<[null | string, null | string]> {
   try {
     const walletPoolName = await getWalletPoolName()
@@ -107,17 +107,12 @@ export async function getProvisionToken(
     const vcxProvisionConfig = {
       vcx_config: vcxConfig,
       source_id: 'someSourceId',
-      com_method: comMethod,
-      sponsee_id: comMethod.id,
+      sponsee_id: sponseeId,
       sponsor_id: sponsorId,
     }
     let provisionToken: string = await Agent.getProvisionToken({
       agencyConfig: JSON.stringify(vcxProvisionConfig),
     })
-
-    let tempProvisionToken = JSON.parse(provisionToken)
-    tempProvisionToken['sponseeId'] = comMethod.id
-    provisionToken = JSON.stringify(tempProvisionToken)
 
     return [null, provisionToken]
   } catch (e) {
@@ -127,13 +122,13 @@ export async function getProvisionToken(
 
 export async function createOneTimeInfoWithToken(
   agencyConfig: AgencyPoolConfig,
-  token: string,
+  token: string
 ): Promise<[null | string, null | UserOneTimeInfo]> {
   try {
     const walletPoolName = await getWalletPoolName()
     const vcxProvisionConfig: VcxProvision = await convertAgencyConfigToVcxProvision(
       agencyConfig,
-      walletPoolName,
+      walletPoolName
     )
     const provisionVcxResult: string = await Agent.provisionWithToken({
       agencyConfig: JSON.stringify(vcxProvisionConfig),
@@ -637,16 +632,12 @@ export async function createCredentialWithAriesOfferObject(
   sourceId: string,
   credentialOffer: CredentialOffer,
 ): Promise<CxsCredentialOfferResult> {
-  const credential_handle = await credentialCreateWithOffer(
+  return await credentialCreateWithOffer(
     sourceId,
-    JSON.stringify(credentialOffer),
+    JSON.stringify(credentialOffer)
   )
-
-  return {
-    claimHandle: credential_handle,
-    claimOffer: convertAriesCredentialOfferToCxsClaimOffer(credentialOffer),
-  }
 }
+
 
 /*
  * Library API
@@ -741,15 +732,11 @@ export async function sendProof(
 }
 
 export async function proofCreateWithRequest(
-  sourceId: string,
   proofRequest: string,
-): Promise<number> {
   return await DisclosedProof.createWithRequest({
     sourceID: sourceId,
     proofRequest
   })
-}
-
 export async function proofSerialize(handle: number): Promise<string> {
   return await DisclosedProof.serialize({
     handle,

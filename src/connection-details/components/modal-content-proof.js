@@ -21,8 +21,7 @@ import type {
 import {
   MESSAGE_ERROR_PROOF_GENERATION_TITLE,
   MESSAGE_ERROR_PROOF_GENERATION_DESCRIPTION,
-  MESSAGE_ERROR_DISSATISFIED_ATTRIBUTES_TITLE,
-  MESSAGE_ERROR_DISSATISFIED_ATTRIBUTES_DESCRIPTION, PRIMARY_ACTION_SEND,
+  PRIMARY_ACTION_SEND,
 } from '../../proof-request/type-proof-request'
 import type { SelectedAttribute } from '../../push-notification/type-push-notification'
 
@@ -55,7 +54,11 @@ import { colors } from '../../common/styles/constant'
 import { hasMissingAttributes } from '../utils'
 import { authForAction } from '../../lock/lock-auth-for-action.js'
 import { homeDrawerRoute, homeRoute } from '../../common'
-import { proofRequestAcceptButtonText, proofRequestDenyButtonText } from '../../external-imports'
+import {
+  proofRequestAcceptButtonText,
+  proofRequestDenyButtonText,
+} from '../../external-imports'
+import { unlockApp } from '../../lock/lock-store'
 
 class ModalContentProof extends Component<
   ProofRequestAndHeaderProps,
@@ -80,26 +83,6 @@ class ModalContentProof extends Component<
   }
 
   componentDidUpdate(prevProps: ProofRequestAndHeaderProps) {
-    if (
-      prevProps.dissatisfiedAttributes !== this.props.dissatisfiedAttributes &&
-      this.props.dissatisfiedAttributes.length > 0
-    ) {
-      Alert.alert(
-        MESSAGE_ERROR_DISSATISFIED_ATTRIBUTES_TITLE,
-        MESSAGE_ERROR_DISSATISFIED_ATTRIBUTES_DESCRIPTION(
-          this.props.dissatisfiedAttributes,
-          this.props.name
-        ),
-        [
-          {
-            text: 'OK',
-            onPress: this.onIgnore,
-          },
-        ]
-      )
-      return
-    }
-
     if (
       this.props.dissatisfiedAttributes.length === 0 &&
       this.props.missingAttributes !== prevProps.missingAttributes &&
@@ -133,7 +116,9 @@ class ModalContentProof extends Component<
       this.props.data &&
       this.props.data.requestedAttributes !== nextProps.data.requestedAttributes
     ) {
-      const attributesFilledFromCredential = convertSelectedCredentialsToVCXFormat(nextProps.data.requestedAttributes)
+      const attributesFilledFromCredential = convertSelectedCredentialsToVCXFormat(
+        nextProps.data.requestedAttributes
+      )
       this.setState({ attributesFilledFromCredential })
     }
   }
@@ -235,6 +220,7 @@ class ModalContentProof extends Component<
         lock: this.props.lock,
         navigation: this.props.navigation,
         onSuccess: this.onDenyAuthSuccess,
+        unlockApp: this.props.unlockApp,
       })
     }
   }
@@ -249,6 +235,7 @@ class ModalContentProof extends Component<
       lock: this.props.lock,
       navigation: this.props.navigation,
       onSuccess: this.onSendAuthSuccess,
+      unlockApp: this.props.unlockApp,
     })
   }
 
@@ -257,9 +244,7 @@ class ModalContentProof extends Component<
 
     if (this.props.invitationPayload) {
       // if properties contains invitation it means we accepted out-of-band presentation request
-      this.props.acceptOutOfBandInvitation(
-        this.props.invitationPayload,
-      )
+      this.props.acceptOutOfBandInvitation(this.props.invitationPayload)
       this.props.applyAttributesForPresentationRequest(
         this.props.uid,
         this.state.attributesFilledFromCredential,
@@ -302,7 +287,9 @@ class ModalContentProof extends Component<
         this.props.dissatisfiedAttributes.length > 0)
 
     let acceptButtonText = proofRequestAcceptButtonText || PRIMARY_ACTION_SEND
-    let denyButtonText = proofRequestDenyButtonText || (this.props.canBeIgnored ? 'Cancel' : 'Reject')
+    let denyButtonText =
+      proofRequestDenyButtonText ||
+      (this.props.canBeIgnored ? 'Cancel' : 'Reject')
 
     const {
       canEnablePrimaryAction,
@@ -393,6 +380,7 @@ const mapDispatchToProps = (dispatch) =>
       proofRequestShowStart,
       newConnectionSeen,
       denyProofRequest,
+      unlockApp,
     },
     dispatch
   )

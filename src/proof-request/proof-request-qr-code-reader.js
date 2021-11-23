@@ -76,7 +76,6 @@ export async function validateEphemeralProofQrCode(
     {
       type: QR_CODE_TYPES.EPHEMERAL_PROOF_REQUEST_V1,
       proofRequest: {
-        originalMessage,
         ephemeralProofRequest,
         proofRequestPayload: convertProofRequestPushPayloadToAppProofRequest({
           proof_request_data: {
@@ -84,7 +83,7 @@ export async function validateEphemeralProofQrCode(
           },
           '@topic': { mid: 0, tid: 0 },
           '@type': { name: 'proof_request', version: '0.1' },
-          remoteName: ephemeralProofRequest.comment || 'Unknown',
+          remoteName: ephemeralProofRequest.comment || 'Unnamed Connection',
           proofHandle: 0,
           ephemeralProofRequest: originalMessage,
         }),
@@ -127,7 +126,7 @@ export async function validateOutofbandProofRequestQrCode(
       },
       '@topic': { mid: 0, tid: 0 },
       '@type': { name: 'proof_request', version: '0.1' },
-      remoteName: senderName || presentationRequest.comment || 'Unknown',
+      remoteName: senderName || presentationRequest.comment || 'Verification Request',
       proofHandle: 0,
       outofbandProofRequest: JSON.stringify(presentationRequest),
     }),

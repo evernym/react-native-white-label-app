@@ -43,7 +43,7 @@ export const ModalHeader = ({
           <View style={styles.issuerAndInfoSection}>
             <Text style={styles.infoText}>{credentialText}</Text>
             <ExpandableText
-              text={institutionalName || 'Unknown'}
+              text={institutionalName || 'Unnamed Connection'}
               style={styles.issuerNameText}
             />
           </View>
@@ -93,6 +93,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     flexDirection: 'column',
     alignItems: 'center',
+    paddingRight: '5%',
   },
   topSection: {
     flexDirection: 'row',

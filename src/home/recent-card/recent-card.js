@@ -31,15 +31,11 @@ import {
   acceptClaimOffer,
   denyClaimOffer,
 } from '../../claim-offer/claim-offer-store'
-import {
-  ERROR_SEND_PROOF,
-} from '../../proof/type-proof'
+import { ERROR_SEND_PROOF } from '../../proof/type-proof'
 import { reTrySendProof } from '../../proof/proof-store'
 import { deleteHistoryEvent } from '../../connection-history/connection-history-store'
 import { safeGet, safeSet } from '../../services/storage'
-import {
-  DENY_PROOF_REQUEST_FAIL,
-} from '../../proof-request/type-proof-request'
+import { DENY_PROOF_REQUEST_FAIL } from '../../proof-request/type-proof-request'
 import { denyProofRequest } from '../../proof-request/proof-request-store'
 import { DefaultLogo } from '../../components/default-logo/default-logo'
 import { CONNECTION_FAIL } from '../../store/type-connection-store'
@@ -48,7 +44,7 @@ import { ResponseType } from '../../components/request/type-request'
 import { deleteConnectionAction } from '../../store/connections-store'
 import { LOADING_ACTIONS } from '../../connection-history/type-connection-history'
 import { PROOF_VERIFICATION_FAILED } from '../../verifier/type-verifier'
-import { renderUserAvatar } from "../../components/user-avatar/user-avatar";
+import { renderUserAvatar } from '../../components/user-avatar/user-avatar'
 import { formatTimestamp } from '../../utils/datetime'
 
 class RecentCardComponent extends React.Component<RecentCardProps, void> {
@@ -62,10 +58,12 @@ class RecentCardComponent extends React.Component<RecentCardProps, void> {
     const cardContent = (
       <View style={styles.container}>
         <View style={styles.iconSection}>
-          { props.issuerName ?
-            renderImageOrText(props.logoUrl, props.issuerName) :
-            renderUserAvatar({ size: 'superSmall' })
-          }
+          {props.issuerName
+            ? renderImageOrText(props.logoUrl, props.issuerName)
+            : renderUserAvatar({
+                size: 'superSmall',
+                imageStyle: { opacity: 0.5 },
+              })}
         </View>
         <View style={styles.textSection}>
           <View style={styles.textMessageSection}>
@@ -103,7 +101,9 @@ class RecentCardComponent extends React.Component<RecentCardProps, void> {
           ) : isLoading ? (
             <ActivityIndicator size="small" />
           ) : (
-            <Text style={styles.textDate}>{formatTimestamp(props.timestamp)}</Text>
+            <Text style={styles.textDate}>
+              {formatTimestamp(props.timestamp)}
+            </Text>
           )}
         </View>
       </View>

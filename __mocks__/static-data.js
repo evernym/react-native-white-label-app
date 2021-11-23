@@ -15,7 +15,7 @@ import {
   proofRequestReceived,
   sendProofSuccess,
 } from '../src/proof-request/proof-request-store'
-import { color } from '../src/common/styles/constant'
+import { color, colors } from '../src/common/styles/constant'
 import {
   qrCodeScannerTabRoute,
   homeRoute,
@@ -33,10 +33,6 @@ import { userOneTimeInfo } from './data/user-store-mock-data'
 import { STORE_STATUS } from '../src/wallet/type-wallet'
 import { ledgerStoreWithTransferFees } from './data/ledger-store-mock-data'
 import { PREPARE_BACKUP_SUCCESS } from '../src/backup/type-backup'
-import {
-  onfidoProcessStatus,
-  onfidoConnectionStatus,
-} from '../src/onfido/type-onfido'
 import { STORAGE_STATUS } from '../src/common/type-common'
 import {
   PROOF_REQUEST_STATUS,
@@ -194,9 +190,18 @@ export const invitationAcceptedData = firstInvitationPayload
 
 export const claimOfferId = 'usd123'
 export const claimOfferIssueDate = 123456789
-export const claimDefinitionSchemaSequenceNumber = 36
+export const claimUUID = 'claimUUID'
+export const colorTheme = '#86B93B'
+  export const claimDefinitionSchemaSequenceNumber = 36
 const issuerDid = 'issuerDid'
 export const senderLogoUrl = 'http://testissuer.com/logoUrl.png'
+
+export const caseInsensitiveAttributes = [
+  {
+    'address1': 'Address 1',
+    'address2': 'Address 2',
+  }
+]
 
 const requestedAttributes = [
   {
@@ -367,6 +372,11 @@ export const claimOfferPayload = {
   remotePairwiseDID: 'ha66899sadfjZJGINKN0770',
   status: 'RECEIVED',
   claimRequestStatus: 'CLAIM_REQUEST_SUCCESS',
+  claimId: claimUUID,
+  caseInsensitiveAttributes: {
+    'address1': 'Address 1',
+    'address2': 'Address 2',
+  }
 }
 
 export const pendingClaimHistory = {
@@ -959,13 +969,6 @@ export function getStore(store?: Object = {}) {
           sendlogs: {
             encryptLogStatus: false,
           },
-          onfido: {
-            status: onfidoProcessStatus.IDLE,
-            applicantId: null,
-            error: null,
-            onfidoDid: null,
-            onfidoConnectionStatus: onfidoConnectionStatus.IDLE,
-          },
           history: {
             data: {
               connections: {
@@ -1119,6 +1122,7 @@ export const sendClaimRequestSuccessEvent = sendClaimRequestSuccess(
 
 export const claimReceivedSuccessEvent = claimStorageSuccess(
   uid,
+  claimUUID,
   claimOfferIssueDate
 )
 

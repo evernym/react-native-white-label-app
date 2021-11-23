@@ -47,7 +47,6 @@ import type {
   PushNotificationStore,
   DownloadedNotification,
   ClaimOfferPushPayload,
-  ClaimPushPayload,
   HydratePushTokenAction,
   updatePayloadToRelevantStoreAndRedirectAction,
   RedirectToRelevantScreen,
@@ -70,7 +69,6 @@ import type {
   ProofRequestPushPayload,
   AdditionalProofDataPayload,
 } from '../proof-request/type-proof-request'
-import type { Claim } from '../claim/type-claim'
 import { safeGet, safeSet, walletSet } from '../services/storage'
 import {
   PUSH_COM_METHOD,
@@ -98,7 +96,7 @@ import {
   lockAuthorizationHomeRoute,
   questionRoute,
 } from '../common'
-import { claimReceivedVcx } from '../claim/claim-store'
+import { claimReceived } from '../claim/claim-store'
 import { questionReceived } from '../question/question-store'
 import { customLogger } from '../store/custom-logger'
 import {
@@ -214,8 +212,10 @@ export function convertClaimOfferPushPayloadToAppClaimOffer(
       version: pushPayload.version,
       revealedAttributes,
       claimDefinitionSchemaSequenceNumber: pushPayload.schema_seq_no,
+      claimDefinitionId: pushPayload.claim_def_id,
     },
     payTokenValue: pushPayload.price,
+    ephemeralClaimOffer: pushPayload.ephemeralClaimOffer,
   }
 }
 
@@ -295,20 +295,6 @@ export function convertProofRequestPushPayloadToAppProofRequest(
     proofHandle,
     ephemeralProofRequest,
     outofbandProofRequest,
-  }
-}
-
-export function convertClaimPushPayloadToAppClaim(
-  pushPayload: ClaimPushPayload,
-  uid: string,
-  forDID: string
-): Claim {
-  return {
-    ...pushPayload,
-    messageId: pushPayload.claim_offer_id,
-    remoteDid: pushPayload.from_did,
-    uid,
-    forDID,
   }
 }
 
@@ -631,7 +617,7 @@ export function* updatePayloadToRelevantStoreSaga(
         break
       case MESSAGE_TYPE.CLAIM:
         yield put(
-          claimReceivedVcx({
+          claimReceived({
             connectionHandle: additionalData.connectionHandle,
             uid,
             type,

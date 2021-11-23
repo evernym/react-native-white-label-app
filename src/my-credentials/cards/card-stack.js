@@ -17,7 +17,13 @@ import {
 import { colors } from '../../common/styles/constant'
 
 const CardStack = (props: CardStackProps) => {
-  const { credentials, isExpanded, setActiveStack, isHidden } = props
+  const {
+    credentials,
+    isExpanded,
+    setActiveStack,
+    isHidden,
+    enabledCardGesture,
+  } = props
   const credsToDisplay = isExpanded ? credentials : credentials.slice(0, 3)
   const credCount = credsToDisplay.length
   const hasMoreCreds = !isExpanded && credentials.length > credsToDisplay.length
@@ -60,7 +66,13 @@ const CardStack = (props: CardStackProps) => {
               -(CARD_HEIGHT + margin) * index,
               0
             )
-            const scaleX = mix(expandedTransition, 1 * 0.9 ** index, 1)
+            const scaleX = mix(expandedTransition, 0.9 ** index, 1)
+
+            if (!isExpanded && index > 2) {
+              return null
+            }
+
+            const marginTopDefault = index === 0 ? -CARD_MARGIN : 0
 
             return (
               <Animated.View
@@ -68,6 +80,8 @@ const CardStack = (props: CardStackProps) => {
                 style={{
                   zIndex: credCount - index,
                   transform: [{ scaleX }, { translateY }],
+                  marginTop: isExpanded ? CARD_MARGIN : marginTopDefault,
+                  marginBottom: isExpanded ? -CARD_MARGIN : undefined,
                 }}
               >
                 <CredentialCard
@@ -75,6 +89,8 @@ const CardStack = (props: CardStackProps) => {
                   isExpanded={isExpanded}
                   setActiveStack={setActiveStack}
                   elevation={credCount - index}
+                  enabled={enabledCardGesture}
+                  isNeedMargin={isExpanded && index !== 0}
                 />
               </Animated.View>
             )
@@ -120,6 +136,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginVertical: CARD_MARGIN * 2,
   },
+
   hideBtn: {
     shadowColor: '#000',
     shadowOffset: {
@@ -136,6 +153,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: HIDE_ICON_HIGHT / 2,
   },
-  moreTextRow: { alignItems: 'center' },
+  moreTextRow: { alignItems: 'center', marginTop: -CARD_MARGIN },
   moreText: { fontSize: verticalScale(14), color: colors.gray2 },
 })

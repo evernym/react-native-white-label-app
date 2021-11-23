@@ -68,7 +68,7 @@ import {
   hydrated,
   initialized,
 } from './config-store'
-import { ensureVcxInitSuccess } from './route-store'
+import { ensureVcxInitAndPoolConnectSuccess, ensureVcxInitSuccess } from './route-store'
 import {
   lockEnable,
   enableTouchIdAction,
@@ -82,10 +82,6 @@ import { safeToDownloadSmsInvitation } from '../sms-pending-invitation/sms-pendi
 import { hydrateProofRequestsSaga } from './../proof-request/proof-request-store'
 import RNFetchBlob from 'rn-fetch-blob'
 import { customLogger } from '../store/custom-logger'
-import {
-  removePersistedOnfidoApplicantIdSaga,
-  removePersistedOnfidoDidSaga,
-} from '../onfido/onfido-store'
 import { hydrateQuestionSaga } from '../question/question-store'
 import { QUESTION_STORAGE_KEY } from '../question/type-question'
 import {
@@ -149,8 +145,6 @@ function* deleteSecureStorageData(): Generator<*, *, *> {
       // not waiting for one delete operation to finish
       deleteOperations.push(call(secureDelete, secureKey))
     }
-    deleteOperations.push(call(removePersistedOnfidoApplicantIdSaga))
-    deleteOperations.push(call(removePersistedOnfidoDidSaga))
     // wait till all delete operations are done in parallel
     yield all(deleteOperations)
   } catch (e) {
@@ -288,8 +282,8 @@ export function* hydrate(): any {
       // as hydrateClaimOffersSaga uses connection history store to restore issue date of claim offers if required
       // as hydrateClaimMapSaga uses connection history store to restore credential name if required
       yield* loadHistorySaga()
-      yield* hydrateClaimOffersSaga()
       yield* hydrateClaimMapSaga()
+      yield* hydrateClaimOffersSaga()
       yield* hydrateQuestionSaga()
       yield* hydrateInviteActionSaga()
       yield* hydrateVerifierSaga()
@@ -317,6 +311,8 @@ export function* hydrate(): any {
       if (!pairwiseAgent) {
         yield spawn(createPairwiseAgentSaga)
       }
+
+      yield* ensureVcxInitAndPoolConnectSuccess()
 
       // NOTE: This will be changed when the TAA flow changes.
       // yield* hydrateTxnAuthorAgreementSaga()

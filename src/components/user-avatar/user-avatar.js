@@ -29,7 +29,8 @@ export class UserAvatarComponent extends Component<UserAvatarProps, void> {
     const props = {
       [size]: true,
       round: this.props.round || true,
-      resizeMode: "cover"
+      resizeMode: 'cover',
+      imageStyle: [this.props.imageStyle || {}],
     }
 
     if (this.props.children) {
@@ -69,14 +70,15 @@ const mapStateToProps = (state: Store, props) => ({
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators({ selectUserAvatar }, dispatch)
 
-const UserAvatar = connect(mapStateToProps, mapDispatchToProps)(UserAvatarComponent)
+const UserAvatar = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(UserAvatarComponent)
 
 export default UserAvatar
 
 export const renderUserAvatar = (props: any) => (
-  <UserAvatar {...props}>
-    {renderAvatarWithSource}
-  </UserAvatar>
+  <UserAvatar {...props}>{renderAvatarWithSource}</UserAvatar>
 )
 
 const renderAvatarWithSource = (avatarSource: number | ImageSource, props) => {

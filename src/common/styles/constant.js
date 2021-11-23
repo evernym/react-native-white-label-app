@@ -99,6 +99,7 @@ const secondaryShade = '0.6'
 export const alertCancel = { text: 'Cancel', style: 'cancel' }
 export const color = {
   actions: {
+    main: colors.main,
     primary: pumpkin,
     secondary: seaBuckthorn,
     tertiary: mantis,
@@ -122,6 +123,7 @@ export const color = {
       },
     },
     font: {
+      main: colors.main,
       primary: white,
       secondary: white,
       tertiary: white,

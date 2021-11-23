@@ -7,7 +7,6 @@ Object {
   "agency_verkey": "VCNhKASjLU5tVWnZpjcyEsoV1QC3adrPVMCCjeKMobn",
   "agent_seed": null,
   "enterprise_seed": null,
-  "payment_method": "sov",
   "protocol_type": "3.0",
   "wallet_key": "walletKey",
   "wallet_name": "walletName",
@@ -23,7 +22,6 @@ Object {
   "institution_logo_url": "https://try.connect.me/img/CMicon@3x.png",
   "institution_name": "test-name",
   "institution_verkey": "oneTimeAgencyVerKey",
-  "payment_method": "sov",
   "protocol_type": "3.0",
   "remote_to_sdk_did": "myOneTimeAgentDid",
   "remote_to_sdk_verkey": "myOneTimeAgentVerificationKey",
@@ -31,13 +29,6 @@ Object {
   "sdk_to_remote_verkey": "myOneTimeVerificationKey",
   "wallet_key": "walletKey",
   "wallet_name": "walletName",
-}
-`;
-
-exports[`transformer:VCX convertCxsPoolInitToVcxPoolInit 1`] = `
-Object {
-  "genesis_path": "genesis_path",
-  "pool_name": "poolName",
 }
 `;
 
@@ -108,6 +99,7 @@ Object {
       "Address 2 Address 2 Address 2",
     ],
   },
+  "claim_def_id": undefined,
   "claim_name": "Home Address",
   "from_did": "ha66899sadfjZJGINKN0770",
   "issuer_did": "ha66899sadfjZJGINKN0770",

@@ -88,21 +88,12 @@ export const style = StyleSheet.create({
     color: colors.gray2,
     fontFamily: fontFamily,
   },
-  onfidoIcon: {
-    width: verticalScale(24),
-    height: verticalScale(24),
-    marginHorizontal: moderateScale(10),
-  },
   container: {
     flex: 1,
     alignItems: 'stretch',
     justifyContent: 'flex-start',
     backgroundColor: colors.white,
   },
-  // onfidoIcon: {
-  //   width: verticalScale(22),
-  //   height: verticalScale(22),
-  // },
   avatarView: {
     width: moderateScale(40),
     alignItems: 'center',

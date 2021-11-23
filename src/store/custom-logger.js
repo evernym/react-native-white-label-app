@@ -8,7 +8,6 @@ import { NativeModules } from 'react-native'
 import type { Store } from '../store/type-store'
 import {
   CLAIM_RECEIVED,
-  CLAIM_RECEIVED_VCX,
   HYDRATE_CLAIM_MAP,
   HYDRATE_CLAIM_MAP_FAIL,
   MAP_CLAIM_TO_SENDER,
@@ -42,8 +41,6 @@ import {
   PAID_CREDENTIAL_REQUEST_FAIL,
   NEW_CONNECTION_SEEN,
   OUTOFBAND_CLAIM_OFFER_ACCEPTED,
-  DELETE_CLAIM_OFFER,
-  CLAIM_OFFER_DELETED,
 } from '../claim-offer/type-claim-offer'
 import {
   DEEP_LINK_DATA,
@@ -55,12 +52,6 @@ import {
   DELETE_HISTORY_EVENT,
   HISTORY_EVENT_OCCURRED,
 } from '../connection-history/type-connection-history'
-import {
-  ONFIDO_CONNECTION_ESTABLISHED,
-  HYDRATE_ONFIDO_APPLICANT_ID_SUCCESS,
-  HYDRATE_ONFIDO_DID_SUCCESS,
-  UPDATE_ONFIDO_APPLICANT_ID,
-} from '../onfido/type-onfido'
 import {
   UPDATE_ATTRIBUTE_CLAIM,
   PROOF_SUCCESS,
@@ -434,12 +425,6 @@ export function PiiHiddenTransformer(state: Store) {
       ...state.history,
       data: hiddenInfoReplacement,
     },
-    onfido: {
-      ...state.onfido,
-      applicantId:
-        state.onfido.applicantId == null ? null : hiddenInfoReplacement,
-      onfidoDid: state.onfido.onfidoDid == null ? null : hiddenInfoReplacement,
-    },
     proof: hiddenInfoReplacement,
     proofRequest: hiddenInfoReplacement,
     question: {
@@ -531,7 +516,6 @@ export function PiiHiddenActionTransformer(action: any) {
     [CONNECTION_DELETE_ATTACHED_REQUEST]: ['identifier'],
     [SEND_CONNECTION_REUSE]: ['invite', 'existingConnectionDetails'],
 
-    [CLAIM_RECEIVED]: ['claim'],
     [MAP_CLAIM_TO_SENDER]: [
       'claimUuid',
       'senderDID',
@@ -541,7 +525,7 @@ export function PiiHiddenActionTransformer(action: any) {
       'name',
       'senderName',
     ],
-    [CLAIM_RECEIVED_VCX]: ['claim'],
+    [CLAIM_RECEIVED]: ['claim'],
     [CLAIM_OFFER_RECEIVED]: ['payload', 'payloadInfo'],
     [SEND_CLAIM_REQUEST]: ['payload'],
     [SEND_CLAIM_REQUEST_SUCCESS]: ['payload'],
@@ -558,8 +542,6 @@ export function PiiHiddenActionTransformer(action: any) {
     [HYDRATE_CLAIM_MAP]: ['claimMap'],
     [HYDRATE_CLAIM_OFFERS_SUCCESS]: ['claimOffers'],
     [HYDRATE_CLAIM_MAP_FAIL]: ['claim'],
-    [DELETE_CLAIM_OFFER]: ['userDID'],
-    [CLAIM_OFFER_DELETED]: ['vcxSerializedClaimOffers'],
 
     [DEEP_LINK_DATA]: ['data'],
     [DEEP_LINK_PROCESSED]: ['data'],
@@ -568,11 +550,6 @@ export function PiiHiddenActionTransformer(action: any) {
     [RECORD_HISTORY_EVENT]: ['historyEvent'],
     [DELETE_HISTORY_EVENT]: ['historyEvent'],
     [HISTORY_EVENT_OCCURRED]: ['event'],
-
-    [ONFIDO_CONNECTION_ESTABLISHED]: ['onfidoDid'],
-    [HYDRATE_ONFIDO_APPLICANT_ID_SUCCESS]: ['applicantId'],
-    [UPDATE_ONFIDO_APPLICANT_ID]: ['applicantId'],
-    [HYDRATE_ONFIDO_DID_SUCCESS]: ['onfidoDid'],
 
     [UPDATE_ATTRIBUTE_CLAIM]: ['requestedAttrsJson', 'remoteDid'],
     [PROOF_SUCCESS]: ['proof'],

@@ -35,6 +35,9 @@ export type SettingsProps = {
   biometricsSwitchOff: () => void,
   aboutButtonInSetting: () => void,
   giveAppFeedbackButtonInSetting: () => void,
+  disableTouchIdAction: () => void,
+  enableTouchIdAction: () => void,
+  onSettingPress: () => any,
 } & ReactNavigation
 
 export type SettingsState = {

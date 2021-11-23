@@ -113,6 +113,7 @@ export type Attribute = {
   p_type?: string,
   p_value?: number,
   type?: string,
+  hasCredentialsWithRequestedAttribute?: boolean,
 }
 
 export type SelectedAttribute = {
@@ -128,6 +129,7 @@ export type AdditionalData = {
   version: string,
   revealedAttributes: Array<Attribute>,
   claimDefinitionSchemaSequenceNumber: number,
+  claimDefinitionId?: ?string,
 }
 
 export type AdditionalDataPayload = {
@@ -138,6 +140,7 @@ export type AdditionalDataPayload = {
   },
   statusMsg?: string,
   price?: ?string,
+  ephemeralClaimOffer?: any,
 }
 
 export type ClaimOfferPushPayload = {
@@ -160,6 +163,8 @@ export type ClaimOfferPushPayload = {
   optional_data?: GenericObject,
   remoteName: string,
   price?: ?string,
+  claim_def_id?: string | null,
+  ephemeralClaimOffer?: any,
 }
 
 export type ClaimOfferMessagePayload = {

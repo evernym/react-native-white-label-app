@@ -229,9 +229,17 @@ function* onAriesOutOfBandInviteRead(
     const type_ = invitation.attachedRequest[TYPE]
 
     if (type_.endsWith('offer-credential')) {
-      const claimOffer = convertAriesCredentialOfferToCxsClaimOffer(
+      const claimOffer = yield call(convertAriesCredentialOfferToCxsClaimOffer,
         invitation.attachedRequest
       )
+      if (!claimOffer) {
+        yield put(navigateToRoutePN(homeRoute, {}))
+        yield call(
+          showSnackError,
+          'QR code contains invalid formatted Aries Out-of-Band invitation.'
+        )
+        return
+      }
 
       const claimOffers = yield select(getClaimOffers)
       const existingCredential: ClaimOfferPayload = claimOffers[uid]

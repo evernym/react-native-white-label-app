@@ -4,24 +4,31 @@
 
 In order to configure the building of your application for an Android platform, you can either rely on [automatic](#automatic) command which will everything for you, or follow to [manual](#manual) steps.
 
-  * [Automatic](#automatic)
-  * [Manual](#manual)
-  * [Optional](#optional-dependencies)
-  * [Issues](#issues)
+* [Automatic](#automatic)
+* [Manual](#manual)
+* [Optional](#optional-dependencies)
+* [Issues](#issues)
 
 ## Automatic
 
 **Note**: Automatic configuration works only for Unix like OS.
 
 1. Add the following command to your `scripts` section of your app `package.json`:
-
-    ```json
-      "scripts": {
-        ...
-        "evernym-sdk:configure-android": "./node_modules/@dev/react-native-evernym-sdk/configure-android.sh"
-      },
-    ```
-
+    * Linux, Windows:
+      ```json
+        "scripts": {
+          ...
+          "evernym-sdk:configure-android": "./node_modules/@evernym/react-native-white-label-app/files/android/configure-android.sh"
+        },
+      ```
+    * MacOs
+      ```json
+        "scripts": {
+          ...
+          "evernym-sdk:configure-android": "./node_modules/@evernym/react-native-white-label-app/files/android/configure-android-mac.sh"
+        },
+      ```
+      
 1. Run the following command in your project directory:
     ```shell
     yarn evernym-sdk:configure-android
@@ -87,11 +94,13 @@ In order to configure the building of your application for an Android platform, 
        ...
    }
    ```
-   
-1. Replace your `android/app/src/main/AndroidManifest.xml` with [AndroidManifest.xml](files/android/AndroidManifest.xml) and  change placeholders (`react-native-evernym-sdk-placeholder`) in copied `AndroidManifest.xml`:
-    * `package` - your original android package name
-   
-1. Update your `MainActivity` by adding the following code (it's needed to configure your app storage): 
+
+1. Replace your `android/app/src/main/AndroidManifest.xml` with [AndroidManifest.xml](files/android/AndroidManifest.xml) and  change placeholders (`react-native-white-label-app-placeholder`) in copied `AndroidManifest.xml`:
+  * `package` - your original android package name
+
+1. Create `android/app/src/main/res/xml/` folder and copy [file_viewer_provider_paths.xml](files/android/file_viewer_provider_paths.xml) file there.
+
+1. Update your `MainActivity` by adding the following code (it's needed to configure your app storage):
     ```
     import android.content.ContextWrapper;
     import android.system.Os;
@@ -119,9 +128,9 @@ If you wish to use **Push Notifications** strategy you need to set variable `USE
 
 **Official documentation:** https://developer.android.com/guide/topics/ui/notifiers/notifications
 
-1. Put `google-services.json` file into your `android/app` folder. 
-Example file can be found (showing structure) [here](files/android/google-services.json). 
-Note that push notifications will not work if you use this file, to get working notifications you need to provide your own account information.
+1. Put `google-services.json` file into your `android/app` folder.
+   Example file can be found (showing structure) [here](files/android/google-services.json).
+   Note that push notifications will not work if you use this file, to get working notifications you need to provide your own account information.
 
 1. Add `google-services` dependencies into your `android/build.gradle` file.
     ```
@@ -146,12 +155,12 @@ Note that push notifications will not work if you use this file, to get working 
                            BRANCH_TEST_KEY:"key_test_..."]
    ```
 
-* Change placeholders (`react-native-evernym-sdk-placeholder`) for `Branch URI Scheme` and `Branch App Links` in `AndroidManifest.xml`:
+* Change placeholders (`react-native-white-label-app-placeholder`) for `Branch URI Scheme` and `Branch App Links` in `AndroidManifest.xml`:
 
 * Added branch import into your `MainApplication.java`:
     ```
    // branch needs to have a referral in initializing
    import io.branch.referral.Branch;
    ```
-  
+
 ## Issues

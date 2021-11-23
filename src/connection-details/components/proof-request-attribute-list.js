@@ -8,6 +8,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Alert,
 } from 'react-native'
 import { KeyboardAwareFlatList } from 'react-native-keyboard-aware-scroll-view'
 import { moderateScale, verticalScale } from 'react-native-size-matters'
@@ -16,7 +17,15 @@ import type {
   ProofRequestAttributeListAndHeaderProps,
   ProofRequestAttributeListState,
 } from '../../proof-request/type-proof-request'
-import { ATTRIBUTE_TYPE } from '../../proof-request/type-proof-request'
+import {
+  ATTRIBUTE_TYPE,
+  MESSAGE_ATTRIBUTE_RESTRICTIONS_MISMATCH_DESCRIPTION,
+  MESSAGE_ATTRIBUTE_RESTRICTIONS_MISMATCH_TITLE,
+  MESSAGE_MISSING_ATTRIBUTE_DESCRIPTION,
+  MESSAGE_MISSING_ATTRIBUTE_TITLE,
+  MESSAGE_PREDICATE_DESCRIPTION,
+  MESSAGE_PREDICATE_TITLE,
+} from '../../proof-request/type-proof-request'
 import type { Attribute } from '../../push-notification/type-push-notification'
 import type {
   ReactNavigation,
@@ -118,6 +127,42 @@ class ProofRequestAttributeList extends Component<
 
   keyExtractor = (_: Attribute, index: number) => index
 
+  showMissingAttributeModal = (attribute: string) => {
+    Alert.alert(
+      MESSAGE_MISSING_ATTRIBUTE_TITLE,
+      MESSAGE_MISSING_ATTRIBUTE_DESCRIPTION(this.props.institutionalName, attribute),
+      [
+        {
+          text: 'OK',
+        },
+      ]
+    )
+  }
+
+  showNetworkMismatchModal = () => {
+    Alert.alert(
+      MESSAGE_ATTRIBUTE_RESTRICTIONS_MISMATCH_TITLE,
+      MESSAGE_ATTRIBUTE_RESTRICTIONS_MISMATCH_DESCRIPTION(this.props.institutionalName),
+      [
+        {
+          text: 'OK',
+        },
+      ]
+    )
+  }
+
+  showMissingPredicateModal = (attribute: string) => {
+    Alert.alert(
+      MESSAGE_PREDICATE_TITLE,
+      MESSAGE_PREDICATE_DESCRIPTION(this.props.institutionalName, attribute),
+      [
+        {
+          text: 'OK',
+        },
+      ]
+    )
+  }
+
   handleCustomValuesNavigation = (
     label: string,
     adjustedLabel: string,
@@ -155,6 +200,7 @@ class ProofRequestAttributeList extends Component<
     if (keys.length === 1) {
       return navigate(attributeValueRoute, {
         label: keys.join(),
+        sender: this.props.institutionalName,
         customValue: this.state?.[label],
         onTextChange,
         items,
@@ -465,7 +511,14 @@ class ProofRequestAttributeList extends Component<
             </View>
           </View>
           {keyIndex === 0 && (
-            <View style={styles.iconWrapper}>
+            <TouchableOpacity
+              style={[styles.iconWrapper, styles.alertIconWrapper]}
+              onPress={() =>
+                attribute.hasCredentialsWithRequestedAttribute ?
+                  this.showNetworkMismatchModal() :
+                  this.showMissingAttributeModal(label)
+              }
+            >
               <EvaIcon
                 name={ALERT_ICON}
                 color={colors.red}
@@ -473,7 +526,7 @@ class ProofRequestAttributeList extends Component<
                 accessible={true}
                 accessibilityLabel="alert-icon"
               />
-            </View>
+            </TouchableOpacity>
           )}
         </View>
       )
@@ -525,40 +578,38 @@ class ProofRequestAttributeList extends Component<
         <View key={index} style={styles.wrapper}>
           <View style={styles.textAvatarWrapper}>
             <View style={styles.textInnerWrapper}>
-              <View>
-                <View style={styles.textAvatarWrapper}>
-                  <View style={styles.textInnerWrapper}>
-                    {RenderAttachmentIcon(
-                      attribute.label,
-                      `${getPredicateTitle(attribute.p_type)} ${
-                        attribute.p_value
-                      }`,
-                      selectedItem.claimUuid || '',
-                      selectedItem.claimUuid || ''
-                    )}
-                  </View>
-                  <View style={styles.avatarWrapper}>
-                    {logoUrl ? (
-                      <Icon
-                        medium
-                        round
-                        resizeMode="cover"
-                        src={logoUrl}
-                        testID="selected-credential-icon"
-                        accessible={true}
-                        accessibilityLabel="selected-credential-icon"
+              <View style={styles.textAvatarWrapper}>
+                <View style={styles.textInnerWrapper}>
+                  {RenderAttachmentIcon(
+                    attribute.label,
+                    `${getPredicateTitle(attribute.p_type)} ${
+                      attribute.p_value
+                    }`,
+                    selectedItem.claimUuid || '',
+                    selectedItem.claimUuid || ''
+                  )}
+                </View>
+                <View style={styles.avatarWrapper}>
+                  {logoUrl ? (
+                    <Icon
+                      medium
+                      round
+                      resizeMode="cover"
+                      src={logoUrl}
+                      testID="selected-credential-icon"
+                      accessible={true}
+                      accessibilityLabel="selected-credential-icon"
+                    />
+                  ) : (
+                    claim &&
+                    claim.senderName && (
+                      <DefaultLogo
+                        text={claim.senderName}
+                        size={30}
+                        fontSize={18}
                       />
-                    ) : (
-                      claim &&
-                      claim.senderName && (
-                        <DefaultLogo
-                          text={claim.senderName}
-                          size={30}
-                          fontSize={18}
-                        />
-                      )
-                    )}
-                  </View>
+                    )
+                  )}
                 </View>
               </View>
             </View>
@@ -578,20 +629,28 @@ class ProofRequestAttributeList extends Component<
   }
 
   renderDissatisfiedPredicate = ({ attribute, index }: any) => {
+    const title = `${getPredicateTitle(attribute.p_type)} ${attribute.p_value}`
     return (
       <View key={index} style={styles.wrapper}>
         <View style={styles.textAvatarWrapper}>
           <View style={styles.textInnerWrapper}>
             {RenderAttachmentIcon(
               attribute.label,
-              `${getPredicateTitle(attribute.p_type)} ${attribute.p_value}`,
+              title,
               '',
               '',
               undefined,
               { color: colors.red }
             )}
           </View>
-          <View style={styles.iconWrapper}>
+          <TouchableOpacity
+            style={[styles.iconWrapper, styles.alertIconWrapper]}
+            onPress={() =>
+              attribute.hasCredentialsWithRequestedAttribute ?
+                this.showNetworkMismatchModal() :
+                this.showMissingPredicateModal(`${attribute.label} ${title.toLocaleLowerCase()}`)
+            }
+          >
             <EvaIcon
               name={ALERT_ICON}
               color={colors.red}
@@ -599,7 +658,7 @@ class ProofRequestAttributeList extends Component<
               accessible={true}
               accessibilityLabel="alert-icon"
             />
-          </View>
+          </TouchableOpacity>
         </View>
       </View>
     )
@@ -724,6 +783,9 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'flex-end',
   },
+  alertIconWrapper: {
+    marginRight: moderateScale(8),
+  },
   title: {
     fontSize: verticalScale(fontSizes.size6),
     fontWeight: '400',
@@ -765,7 +827,7 @@ const styles = StyleSheet.create({
   },
   keyboardFlatList: {
     paddingLeft: '5%',
-    paddingRight: '5%',
+    paddingRight: 0,
   },
   avatarWrapper: {
     paddingTop: moderateScale(10),

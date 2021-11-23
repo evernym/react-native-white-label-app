@@ -16,11 +16,10 @@ import type {
   NotificationPayloadInfo,
   SelectedAttribute,
 } from '../push-notification/type-push-notification'
-import type { ClaimMap} from '../claim/type-claim'
+import type { ClaimMap } from '../claim/type-claim'
 import { updateAttributeClaim } from '../proof/proof-store'
 import type { LockStore } from '../lock/type-lock'
 import { applyAttributesForPresentationRequest } from './proof-request-store'
-import { getPredicateTitle } from '../connection-details/utils/getPredicateTitle'
 import { appName } from '../external-imports'
 
 export type RequestedAttribute = {|
@@ -195,6 +194,7 @@ export type ProofRequestProps = {
   attachedRequest?: any,
   lock: LockStore,
   canBeIgnored?: boolean,
+  unlockApp: () => void,
 } & ReactNavigation
 
 export type ProofRequestState = {
@@ -425,7 +425,6 @@ export type ProofRequestStore = {
 }
 
 export type QrCodeEphemeralProofRequest = {
-  originalMessage: string,
   ephemeralProofRequest: {
     '@id': string,
     '@type': string,
@@ -469,37 +468,34 @@ export const ERROR_SEND_PROOF = (message: string) => ({
   message: `Error sending proof: ${message}`,
 })
 
-export const MESSAGE_ERROR_DISSATISFIED_ATTRIBUTES_TITLE = 'Missing Credentials'
-export const MESSAGE_ERROR_DISSATISFIED_ATTRIBUTES_DESCRIPTION = (
-  attributes: DissatisfiedAttribute[],
-  connectionName: string
-) => `You are unable to fulfill this request from ${connectionName}. This could be because
+export const MESSAGE_MISSING_ATTRIBUTE_TITLE = 'Missing Attribute'
+export const MESSAGE_MISSING_ATTRIBUTE_DESCRIPTION = (
+  requester: string,
+  attribute: string
+) => `
+  ${requester} is asking you to share ${attribute}, which is not found in your ${appName} wallet.`
 
-- You don’t have the required credentials in your ${appName} wallet
-- ${connectionName} has indicated you may not type your own answers to certain fields in this request
-- Some of the attributes ${connectionName} is requesting come from credentials you own that have been revoked or expired
+export const MESSAGE_ATTRIBUTE_RESTRICTIONS_MISMATCH_TITLE = 'Restrictions Mismatch'
+export const MESSAGE_ATTRIBUTE_RESTRICTIONS_MISMATCH_DESCRIPTION = (
+  requester: string,
+) => `
+  While you have the matching attribute ${requester} is requesting, the credential does not meet the restrictions of this share request`
 
-Specifically, you are missing credentials with the following attributes:
-- ${
-  attributes.map((attribute) =>
-    attribute.type === DISSATISFIED_ATTRIBUTE_TYPE.PREDICATE ?
-      `${attribute.name} ${getPredicateTitle(attribute.p_type || '').toLowerCase()} ${attribute.p_value || ''}`:
-      attribute.name
-  ).join('\n- ')
-}
-
-Contact ${connectionName} for more information.
-
-Closing the dialog will dismiss the request, and allow you to find and fulfill it later when you are able to fulfill this request, and will send no response notification back to ${connectionName}.
-
-Pressing REJECT will notify ${connectionName}. They will not know you are unable to fulfill the request, only that you have rejected it.`
+export const MESSAGE_PREDICATE_TITLE = 'Unfulfilled Predicate'
+export const MESSAGE_PREDICATE_DESCRIPTION = (
+  requester: string,
+  attribute: string
+) => `
+  ${requester} is asking you to prove that ${attribute}, but credential matching to the condition is not found in your Connect.Me wallet.`
 
 export const ATTRIBUTE_TYPE = {
   FILLED_ATTRIBUTE: 'FILLED_ATTRIBUTE',
+  FILLED_ATTRIBUTES_GROUP: 'FILLED_ATTRIBUTES_GROUP',
   SELF_ATTESTED_ATTRIBUTE: 'SELF_ATTESTED_ATTRIBUTE',
   DISSATISFIED_ATTRIBUTE: 'DISSATISFIED_ATTRIBUTE',
   FILLED_PREDICATE: 'FILLED_PREDICATE',
   DISSATISFIED_PREDICATE: 'DISSATISFIED_PREDICATE',
+  RESTRICTIONS_MISMATCH: 'RESTRICTIONS_MISMATCH',
 }
 
 export type AriesPresentationPreviewAttribute = {

@@ -53,7 +53,6 @@ export const DataRenderer = (props: {
       console.log(e.message)
       return <Text style={styles.contentGray}>Error rendering file.</Text>
     }
-    console.log(attachment)
     // Now we know that we have got attachment data, and all fields are present
     // We can render either photo sent inside data, or we can render icon for file
     if (photoMimeTypes.includes(attachment['mime-type'].toLowerCase())) {

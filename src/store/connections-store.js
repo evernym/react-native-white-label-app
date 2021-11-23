@@ -108,7 +108,7 @@ const initialState: ConnectionStore = {
 export const connectionMapper = ({
   logoUrl,
   size = bubbleSize.XL,
-  senderName = 'Unknown',
+  senderName = 'Unnamed Connection',
   ...otherArgs
 }: GenericObject) => ({
   logoUrl,

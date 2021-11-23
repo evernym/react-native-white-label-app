@@ -13,7 +13,7 @@ import type {
 
 import { SCAN_STATUS, QR_CODE_TYPES } from '../type-qr-scanner'
 import type { GenericObject } from '../../../common/type-common'
-import { flatFetch } from '../../../common/flat-fetch'
+import { acceptHeaders, flatFetch } from '../../../common/flat-fetch'
 import { flatJsonParse } from '../../../common/flat-json-parse'
 import { isValidOIDCQrCode } from './qr-code-oidc'
 import {getRequestRedirectionUrl} from '../../../bridge/react-native-cxs/RNCxs'
@@ -23,8 +23,13 @@ import {isEncodedAriesOutOfBandInvitation} from "../../../invitation/kinds/aries
 import { getBase64DecodedInvitation } from "../../../invitation/invitation-helpers";
 import { schemaValidator } from '../../../services/schema-validator'
 import { ephemeralProofRequestSchema } from '../../../proof-request/proof-request-qr-code-reader'
+import { ephemeralCredentialOfferSchema, } from '../../../claim-offer/ephemeral-claim-offer'
 
-export function isValidUrl(urlQrCode: string): Url | false {
+export function isValidUrl(urlQrCode: ?string): Url | false {
+  if (!urlQrCode) {
+    return false
+  }
+
   const parsedUrl = urlParse(urlQrCode, {}, true)
 
   if (!validUrlScheme.includes(parsedUrl.protocol)) {
@@ -50,6 +55,7 @@ export async function getUrlData(
     )
   ]
 > {
+
   // if we get url qr code, then there are three ways as of now that ConnectMe supports
   // to get data from url qr code
 
@@ -80,34 +86,47 @@ export async function getUrlData(
     return [null, outOfBandInvite]
   }
 
+  // didcomm url cannot be requested -> return
+  if (url.startsWith('didcomm:')){
+    return [SCAN_STATUS.INVALID_URL_QR_CODE, null]
+  }
+
   // if there is no data available in url params, then try to download data
   // from the passed url and check if we get data from url
 
   // 4. get URL data. do not follow redirection. just return new url
-  const [, redirectionUrl] = await flattenAsync(getRequestRedirectionUrl)(url)
-  if (redirectionUrl) {
+  let [, redirectionUrl] = await flattenAsync(getRequestRedirectionUrl)(url)
+  const parsedRedirectionUrl = isValidUrl(redirectionUrl || '')
+  if (redirectionUrl && parsedRedirectionUrl) {
     // BCGov links contains message
-    const parts = redirectionUrl.split('?m=')
-    if (parts.length > 1) {
-      const encodedMessage = parts[1]
-      const data = await getBase64DecodedInvitation(encodedMessage)
 
-      // is ephemeral proof request
-      if (schemaValidator.validate(ephemeralProofRequestSchema, data)) {
-        return [null, { type: QR_CODE_TYPES.EPHEMERAL_PROOF_REQUEST_V1, data: data }]
+    if (parsedRedirectionUrl.query){
+      const message = parsedRedirectionUrl.query['m'] || parsedRedirectionUrl.query['d_m']
+      if (message) {
+        const data = await getBase64DecodedInvitation(message)
+
+        // is ephemeral proof request
+        if (schemaValidator.validate(ephemeralProofRequestSchema, data)) {
+          return [null, { type: QR_CODE_TYPES.EPHEMERAL_PROOF_REQUEST_V1, data: data }]
+        }
+
+        // is ephemeral credential offer
+        if (schemaValidator.validate(ephemeralCredentialOfferSchema, data)) {
+          // Ephemeral Credential Offer can be converted into Out-of-Band invitation without handshake
+          // as they have similar meaning / handling flow
+          // so we can easily process it using already implemented functionality
+          return [null, { type: QR_CODE_TYPES.EPHEMERAL_CREDENTIAL_OFFER, data: data }]
+        }
       }
     }
 
     // else handle link again
-    const urlInvitationData = isValidUrl(redirectionUrl)
-    if (urlInvitationData) {
-      // downloaded data contains url - get its data
-      return await getUrlData(urlInvitationData, redirectionUrl)
-    }
+    // downloaded data contains url - get its data
+    return await getUrlData(parsedRedirectionUrl, redirectionUrl)
   }
 
   // 5. download data and get a valid json object
-  const [downloadErr, downloadedData] = await flatFetch(url)
+  const [downloadErr, downloadedData] = await flatFetch(url, undefined, acceptHeaders)
   if (downloadedData) {
     // we are able to get data from url
     // now we need to verify that data is a valid json
@@ -144,4 +163,4 @@ export async function getUrlData(
   return [SCAN_STATUS.INVALID_URL_QR_CODE, null]
 }
 
-export const validUrlScheme = ['https:', 'http:', 'id.streetcred:']
+export const validUrlScheme = ['https:', 'http:', 'id.streetcred:', 'didcomm:']

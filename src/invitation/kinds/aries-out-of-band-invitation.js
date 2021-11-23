@@ -31,7 +31,7 @@ export function isAriesOutOfBandInvitation(
 export async function isEncodedAriesOutOfBandInvitation(
   { query }: Url
 ): Promise<AriesOutOfBandInvite | false> {
-  const body = query.oob || query.c_i || query.d_m
+  const body = query.oob || query.c_i || query.d_m || query.m
   let qrData = await getBase64DecodedInvitation(body)
   if (!qrData) {
     return false
@@ -70,13 +70,13 @@ export async function convertAriesOutOfBandInvitationToAppInvitation(
     senderEndpoint: serviceEntry.serviceEndpoint,
     requestId: payload[ID],
     senderAgentKeyDelegationProof,
-    senderName: payload.label || 'Unknown',
+    senderName: payload.label || 'Unnamed Connection',
     senderDID: publicDID,
     senderLogoUrl: senderLogoUrl,
     senderVerificationKey: serviceEntry.recipientKeys[0],
-    targetName: payload.label || 'Unknown',
+    targetName: payload.label || 'Unnamed Connection',
     senderDetail: {
-      name: payload.label || 'Unknown',
+      name: payload.label || 'Unnamed Connection',
       agentKeyDlgProof: senderAgentKeyDelegationProof,
       DID: publicDID,
       logoUrl: senderLogoUrl,

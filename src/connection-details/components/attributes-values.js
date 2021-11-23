@@ -6,7 +6,6 @@ import {
   View,
   Platform,
   StyleSheet,
-  Text,
   FlatList,
   TouchableOpacity,
 } from 'react-native'
@@ -34,6 +33,10 @@ import { ModalPushLeft } from '../utils/modal-animation'
 import { ExpandableText } from '../../components/expandable-text/expandable-text'
 import { modalOptions } from '../utils/modalOptions'
 import { CustomSelectAttributesValuesModal } from '../../external-imports'
+import {
+  ATTRIBUTE_TYPE,
+} from '../../proof-request/type-proof-request'
+import { MismatchRestrictionsIcon } from '../../components/mismatch-restrictions-icon'
 
 export const keyExtractor = (item: Object) => item.claimUuid.toString()
 
@@ -55,6 +58,7 @@ export const prepareCredentials = (items: any, claimMap: any) => {
       cred_info: item.cred_info,
       key: item.key,
       self_attest_allowed: item.self_attest_allowed,
+      type: item.type,
     }
   })
 }
@@ -80,13 +84,24 @@ const AttributesValues = ({
     goBack(null)
   }, [selectedValueIndex])
 
+  const selectItem = (item: Object, index: number) => {
+    if (item.type !== ATTRIBUTE_TYPE.RESTRICTIONS_MISMATCH) {
+      setSelectedValueIndex(index)
+    }
+  }
+
   const renderItem = ({ item, index }: { item: Object, index: number }) => {
     return (
       <TouchableOpacity
-        onPress={() => setSelectedValueIndex(index)}
+        onPress={() => selectItem(item, index)}
         style={styles.itemContainer}
       >
-        <View style={styles.itemInnerContainer}>
+        <View
+          style={[
+            styles.itemInnerContainer,
+            item.type === ATTRIBUTE_TYPE.RESTRICTIONS_MISMATCH && { opacity: 0.5 }
+          ]}
+        >
           <View style={styles.itemValuesContainer}>
             <View style={styles.avatarSection}>
               {typeof item.logoUrl === 'string' ? (
@@ -118,6 +133,9 @@ const AttributesValues = ({
             ))}
           </View>
         </View>
+        {item.type === ATTRIBUTE_TYPE.RESTRICTIONS_MISMATCH && (
+          <MismatchRestrictionsIcon sender={params.sender}/>
+        )}
         {index === selectedValueIndex && (
           <View style={styles.iconWrapper}>
             <EvaIcon name={CHECKMARK_ICON} color={colors.black} />
@@ -133,14 +151,9 @@ const AttributesValues = ({
         style={styles.descriptionTitle}
         text={
           params?.sender +
-          ' requires following attributes coming from the same credential:'
+          ' requires these attributes to come from the same credential:'
         }
       />
-      <ExpandableText
-        style={styles.labelText}
-        text={params?.label || 'Attribute'}
-      />
-      <Text style={styles.descriptionTitle}>{params.items.length} sources</Text>
     </View>
   )
 

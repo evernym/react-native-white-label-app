@@ -175,6 +175,9 @@ export type LockSelectionProps = {
     poolConfig: string,
     paymentMethod: string
   ) => void,
+  disableTouchIdAction: () => void,
+  enableTouchIdAction: () => void,
+  touchIdActive: boolean | string,
 } & ReactNavigation
 
 export type LockActions =

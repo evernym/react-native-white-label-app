@@ -165,8 +165,9 @@ exports[`Restore screen should render properly and match the snapshot 1`] = `
             }
           }
           accessible={true}
+          collapsable={false}
           focusable={true}
-          isTVSelectable={true}
+          nativeID="animatedComponent"
           onClick={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}

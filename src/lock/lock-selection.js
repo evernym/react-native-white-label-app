@@ -15,7 +15,6 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import ToggleSwitch from 'react-native-flip-toggle-button'
 import { verticalScale, moderateScale } from 'react-native-size-matters'
-
 import type { Store } from '../store/type-store'
 import { Container, CustomText, CustomView } from '../components'
 import {
@@ -43,12 +42,10 @@ import {
 import { safeToDownloadSmsInvitation } from '../sms-pending-invitation/sms-pending-invitation-store'
 import { LockHeader } from '../external-imports'
 import { headerDefaultOptions } from '../navigation/navigation-header-config'
-import { baseUrls, defaultEnvironment } from '../environment'
+import { environments, defaultEnvironment } from '../environment'
 import { changeEnvironment } from '../switch-environment/switсh-environment-store'
 import { SERVER_ENVIRONMENT } from '../switch-environment/type-switch-environment'
-
 const { width, height } = Dimensions.get('screen')
-
 export class LockSelection extends Component<LockSelectionProps, *> {
   constructor(props: LockSelectionProps) {
     super(props)
@@ -56,7 +53,6 @@ export class LockSelection extends Component<LockSelectionProps, *> {
       devMode: false,
     }
   }
-
   goTouchIdSetup = () => {
     if (this.props.navigation.isFocused()) {
       this.props.navigation.navigate(lockTouchIdSetupRoute, {
@@ -65,26 +61,22 @@ export class LockSelection extends Component<LockSelectionProps, *> {
       this.props.safeToDownloadSmsInvitation()
     }
   }
-
   onNoThanks = () => {
     this.props.safeToDownloadSmsInvitation()
     this.props.navigation.navigate(eulaRoute)
   }
-
   _onLongPressButton = () => {
     this.props.longPressedInLockSelectionScreen()
   }
-
   _onTextPressButton = () => {
     this.props.pressedOnOrInLockSelectionScreen()
   }
-
   onDevModeChange = (switchState: boolean) => {
     if (this.state.devMode !== switchState) {
       this.setState({ devMode: switchState }, () => {
         const env = this.state.devMode
-          ? baseUrls[SERVER_ENVIRONMENT.DEMO]
-          : baseUrls[defaultEnvironment]
+          ? environments[SERVER_ENVIRONMENT.DEMO]
+          : environments[defaultEnvironment]
         this.props.changeEnvironment(
           env.agencyUrl,
           env.agencyDID,
@@ -100,7 +92,6 @@ export class LockSelection extends Component<LockSelectionProps, *> {
   componentDidMount() {
     console.log('width:', width, 'height:', height)
   }
-
   render() {
     return (
       <Container tertiary>
@@ -195,7 +186,6 @@ export class LockSelection extends Component<LockSelectionProps, *> {
       </Container>
     )
   }
-
   componentDidUpdate(prevProps: LockSelectionProps) {
     if (
       prevProps.showDevMode !== this.props.showDevMode &&
@@ -220,13 +210,11 @@ export class LockSelection extends Component<LockSelectionProps, *> {
     }
   }
 }
-
 const mapStateToProps = ({ lock }: Store) => {
   return {
     showDevMode: lock.showDevMode,
   }
 }
-
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
@@ -238,7 +226,6 @@ const mapDispatchToProps = (dispatch) =>
     },
     dispatch
   )
-
 export const lockSelectionScreen = {
   routeName: lockSelectionRoute,
   screen: connect(mapStateToProps, mapDispatchToProps)(LockSelection),
@@ -246,16 +233,13 @@ export const lockSelectionScreen = {
     headline: undefined,
     headerHideShadow: true,
     transparent: false,
-  })
+  }),
 }
-
 const marginHorizontalHandler = (curWidth) => {
   if (curWidth >= 411) return OFFSET_3X
   if (curWidth >= 375) return OFFSET_2X
-
   return OFFSET_1X
 }
-
 const style = StyleSheet.create({
   pinSelectionContainer: {
     paddingBottom: isiPhone5 ? OFFSET_1X / 2 : OFFSET_1X,

@@ -10,10 +10,10 @@ import { getScreenStatus } from '../question-store'
 import {
   questionActionButtonDefaultProps,
   questionStyles,
-  disabledStyle,
 } from '../question-screen-style'
 
 import { colors, isSmallWidthDevice } from '../../common/styles'
+import { ModalButtons } from '../../components/buttons/modal-buttons'
 
 export const QuestionActions = ({
   question,
@@ -62,23 +62,18 @@ export const QuestionActions = ({
   )
 
   return (
-    <CustomView style={[questionStyles.actionWrapper]}>
-      <CustomView style={questionStyles.actionButtonContainer}>
-        {shouldRenderSubmitButton ? (
-          <CustomButton
-            {...questionActionButtonDefaultProps}
-            eleventh
-            style={[questionStyles.actionButton, questionStyles.submitButton]}
-            title={submitButtonTitle}
-            disabled={isSubmitDisabled}
-            testID={`${testID}-submit`}
-            onPress={onSubmit}
-            customColor={isSubmitDisabled ? disabledStyle : { backgroundColor: colors.main }}
-          />
-        ) : (
-          responseButtons
-        )}
-      </CustomView>
+    <CustomView style={questionStyles.actionButtonContainer}>
+      {shouldRenderSubmitButton ? (
+        <ModalButtons
+          onPress={onSubmit}
+          acceptBtnText={submitButtonTitle}
+          disableAccept={isSubmitDisabled}
+          colorBackground={colors.main}
+          bottomTestID={`${testID}-submit`}
+        />
+      ) : (
+        responseButtons
+      )}
     </CustomView>
   )
 }
@@ -96,7 +91,7 @@ function QuestionResponseButtons(props: QuestionResponseButtonsProps) {
   const isSingleResponse = responses.length === 1
 
   return (
-    <CustomView>
+    <CustomView style={[questionStyles.actionWrapper]}>
       {responses.map((response: QuestionResponse, index: number) => (
         <QuestionResponseButton
           response={response}
@@ -150,7 +145,7 @@ const QuestionResponseButton = ({
     >
       <CustomButton
         {...questionActionButtonDefaultProps}
-        eleventh={isPrimaryResponse}
+        main={isPrimaryResponse}
         twelfth={!isPrimaryResponse}
         style={[
           questionStyles.actionButton,

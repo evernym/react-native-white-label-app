@@ -29,7 +29,7 @@ export function isAriesInvitation(
 export async function isEncodedAriesConnectionInvitation(
   { query }: Url
 ): Promise<AriesConnectionInvite | false> {
-  const body = query.c_i || query.d_m
+  const body = query.c_i || query.d_m || query.m
   let qrData = await getBase64DecodedInvitation(body)
   if (!qrData) {
     return false
@@ -55,13 +55,13 @@ export function convertAriesInvitationToAppInvitation(
     senderEndpoint: payload.serviceEndpoint,
     requestId: payload[ID],
     senderAgentKeyDelegationProof,
-    senderName: payload.label || 'Unknown',
+    senderName: payload.label || 'Unnamed Connection',
     senderDID: payload.recipientKeys[0],
     senderLogoUrl: senderLogoUrl,
     senderVerificationKey: payload.recipientKeys[0],
-    targetName: payload.label || 'Unknown',
+    targetName: payload.label || 'Unnamed Connection',
     senderDetail: {
-      name: payload.label || 'Unknown',
+      name: payload.label || 'Unnamed Connection',
       agentKeyDlgProof: senderAgentKeyDelegationProof,
       DID: payload.recipientKeys[0],
       logoUrl: senderLogoUrl,

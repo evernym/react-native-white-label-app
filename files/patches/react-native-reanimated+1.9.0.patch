@@ -1,0 +1,12 @@
+diff --git a/node_modules/react-native-reanimated/RNReanimated.podspec b/node_modules/react-native-reanimated/RNReanimated.podspec
+index 30be3ca..1939eb9 100644
+--- a/node_modules/react-native-reanimated/RNReanimated.podspec
++++ b/node_modules/react-native-reanimated/RNReanimated.podspec
+@@ -19,6 +19,6 @@ Pod::Spec.new do |s|
+   s.source_files = "ios/**/*.{h,m}"
+   s.requires_arc = true
+ 
+-  s.dependency "React"
++  s.dependency "React-Core"
+ end
+ 

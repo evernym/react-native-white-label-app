@@ -1,4 +1,4 @@
-## Configuration
+# Configuration
 
 After running `evernym-sdk:configure` command all required modules and assets will set up with default values. 
 
@@ -10,31 +10,37 @@ For more convenience, we grouped all configuration options by files representing
 For example `home.js` contains options for `Home` screen.
 
 **Content:**
-* [Application](#application)
-* [Color theme](#color-theme)
-* [Font](#font)
-* [Environment](#environment)
-* [End User License Agreement](#end-user-license-agreement)
-* [Start up](#start-up)
-* [Lock](#lock)
-* [Navigation Menu](#navigation-menu)
-* [Home](#home)
-* [Connections](#connections)
-* [Credentials](#credentials)
-* [Collecting log information](#collecting-log-information)
-* [Credential Offer](#credential-offer)
-* [Proof Request](#proof-request)
-* [Proof Proposal](#proof-proposal)
-* [Proof](#proof)
-* [Question dialog](#question)
-* [Settings](#settings)
-* [Feedback](#feedback)
-* [Application information](#application-information)
-* [Splash screen and app icon](#splash-screen-and-app-icon)
-* [Credential attachments](#credential-attachments)
-* [Advanced](#advanced)
+- [Configuration](#configuration)
+  - [Application](#application)
+    - [Environment](#environment)
+    - [Receiving Message](#receiving-message)
+    - [Color theme](#color-theme)
+    - [Font](#font)
+    - [End User License Agreement](#end-user-license-agreement)
+    - [Start up](#start-up)
+    - [Lock](#lock)
+    - [Home](#home)
+    - [Connections](#connections)
+    - [Credentials](#credentials)
+    - [Navigation Menu](#navigation-menu)
+    - [Collecting log information](#collecting-log-information)
+    - [Credential Offer](#credential-offer)
+    - [Proof Request](#proof-request)
+    - [Proof Proposal](#proof-proposal)
+    - [Proof](#proof)
+    - [Question](#question)
+    - [Invite Action](#invite-action)
+    - [Settings](#settings)
+    - [Feedback](#feedback)
+    - [Application information](#application-information)
+    - [Splash screen and app icon](#splash-screen-and-app-icon)
+    - [Credential attachments](#credential-attachments)
+  - [Examples](#examples)
+    - [Credential](#credential)
+    - [Proof request](#proof-request-1)
+  - [Advanced](#advanced)
 
-### Application
+## Application
 
 The base application settings should be specified in `app.js` file.
 
@@ -50,7 +56,7 @@ The base application settings should be specified in `app.js` file.
         ```
     * to use custom
         ```javascript
-        export const APP_ICON = require('app_icon.png')
+        export const APP_ICON = require('path/to/app_icon.png')
         ```
 
 * `APP_LOGO` - (image source, Optional) small application logo used on several screens. 
@@ -60,7 +66,7 @@ The base application settings should be specified in `app.js` file.
         ```
     * to use custom
         ```javascript
-        export const APP_LOGO = require('logo_app.png')
+        export const APP_LOGO = require('path/to/logo_app.png')
         ```
 
 * `COMPANY_NAME` - (string, Optional) name of a company built app. 
@@ -80,7 +86,7 @@ The base application settings should be specified in `app.js` file.
          ```
      * to use custom
          ```javascript
-        export const COMPANY_LOGO = require('app_company.png')
+        export const COMPANY_LOGO = require('path/to/app_company.png')
          ```
  
 * `DEFAULT_USER_AVATAR` - (image source, Optional) default user avatar placeholder.
@@ -90,7 +96,7 @@ The base application settings should be specified in `app.js` file.
         ```
     * to use custom
         ```javascript
-        export const DEFAULT_USER_AVATAR = require('user_avatar.png')
+        export const DEFAULT_USER_AVATAR = require('path/to/user_avatar.png')
         ```
  
 * `DEEP_LINK` - (string, Optional) Branch.io Deep link address.
@@ -103,7 +109,93 @@ The base application settings should be specified in `app.js` file.
         export const DEEP_LINK = 'https://address.com'
         ```
 
-#### Receiving Message
+* `PUSH_NOTIFICATION_PERMISSION_SCREEN_IMAGE_IOS` - (image source, Optional) For iOS side we have push notification permission screen with image which simulate ConnectMe notification by default. It's way for customization this screen.
+  * to omit
+      ```javascript
+      export const PUSH_NOTIFICATION_PERMISSION_SCREEN_IMAGE_IOS = null
+      ```
+    * to use custom
+        ```javascript
+        export const PUSH_NOTIFICATION_PERMISSION_SCREEN_IMAGE_IOS = require('iphoneX.png')
+        ```
+
+### Environment
+
+You should set up an environment to be used by your application in the `provision.js` module.
+
+* Application environment
+  * `DEFAULT_SERVER_ENVIRONMENT` - the name of environment to use.
+
+    There are several predefined environments:
+      ```javascript
+      // use default combination - DEMO for debug and PROD for releases builds
+      export const DEFAULT_SERVER_ENVIRONMENT = null 
+    
+      // use Demo env
+      // Agency: `https://agency.pps.evernym.com` and `Sovrin Staging Net`
+      export const DEFAULT_SERVER_ENVIRONMENT = 'DEMO' 
+    
+      // use Production env
+      // Agency: `https://agency.evernym.com` and `Sovrin Live Net`
+      export const DEFAULT_SERVER_ENVIRONMENT = 'PROD' 
+    
+      // use Staging env
+      // Agency: `https://agency.pstg.evernym.com` and `Sovrin Staging Net`
+      export const DEFAULT_SERVER_ENVIRONMENT = 'STAGING' 
+      ```
+
+* `SERVER_ENVIRONMENTS` - (object) additional custom server configurations:
+  * to use default environments
+      ```javascript
+      export const SERVER_ENVIRONMENTS = {}
+      ```
+  * to add custom environment
+      ```javascript
+      export const SERVER_ENVIRONMENTS = {
+        'CUSTOM': {
+          agencyUrl: 'ahency_url',
+          agencyDID: 'did',
+          agencyVerificationKey: 'verkey',
+          poolConfig: [{ key: 'staging', genesis: 'genesis_transactions' }],
+        }
+      }
+      ```
+
+  You can provide and use your custom environment using a combination of `SERVER_ENVIRONMENTS` and `DEFAULT_SERVER_ENVIRONMENT` variables:
+    ```javascript
+      export const SERVER_ENVIRONMENTS = {
+        'CUSTOM': {
+          agencyUrl: 'ahency_url',
+          agencyDID: 'did',
+          agencyVerificationKey: 'verkey',
+          poolConfig: [{ key: 'staging', genesis: 'genesis_transactions' }],
+        }
+      }
+      export const DEFAULT_SERVER_ENVIRONMENT = 'CUSTOM' 
+      ```
+
+* Information used for application provisioning
+  * `GET_PROVISION_TOKEN_FUNC` - function to be called to get provisioning token.
+     ```
+      /// example
+      export const GET_PROVISION_TOKEN_FUNC = async (): [error: string | null, token: string | null]  => {
+        try {
+           const response = fetch_api(your_endpoint)
+           /// process response
+           return [null, response.token]
+        } catch (error) {
+           return [error.message, null]
+        }
+      }
+    ```
+
+  * `SPONSOR_ID` - An ID given to you from Evernym's Support Team after the Sponsor onboarding process is complete.
+
+        ```javascript
+        export const SPONSOR_ID = 'sponsorid'
+        ```
+
+### Receiving Message
 
 There are two strategies regarding receiving messages by an application:
 
@@ -113,10 +205,38 @@ There are two strategies regarding receiving messages by an application:
 
 By default, app uses **Polling** strategy which follows rules:
 
-* Download messages by manual pulling screen down
+*  Download messages every 2 seconds for 60 seconds after the user performs an action like:
+    * Accept a connection invitation
+    * Accept a credential offer
+    * Share a proof 
+    * Answer a question
+* Download messages every 3 seconds for another 2 minutes after first point.
+* Download messages every 15 seconds the all rest time.
 * Download messages when a user navigates to `Home` screen.
-* Download messages every 15 seconds when a user holds on `Home` screen. 
-* Download messages in 30 second after taking some action (accepting Connection Invitation / Credential Offer / Proof Request)
+* Download messages by manual pulling screen down
+
+You can change timeouts by setting up `POOLING_INTERVALS` variable.
+
+* `POOLING_INTERVALS` - (object, Optional) timeouts (in milliseconds) to trigger message downloading.
+  * to use default - 
+      ```
+      {
+        'short': 2000, // 2 seconds
+        'medium': 3000, // 3 seconds
+        'long': 15000, // 15 seconds
+      }
+      ```
+      ```javascript
+      export const POOLING_INTERVALS = null
+      ```
+  * to enable
+      ```javascript
+      export const POOLING_INTERVALS = {
+        'short': 5000, // 5 seconds
+        'medium': 6000, // 6 seconds
+        'long': 30000, // 30 seconds
+      }
+      ```
 
 If you wish to use **Push Notifications** strategy you need to set variable `USE_PUSH_NOTIFICATION` in the `app.js` module:
 * `USE_PUSH_NOTIFICATION` - (boolean, Optional) whether you want to enable push notifications logic.
@@ -133,7 +253,8 @@ If you wish to use **Push Notifications** strategy you need to set variable `USE
 * [Android](./Build-Android.md#push-notifications-configuration)  
 * [iOS](./Build-iOS.md#push-notifications-configuration)  
       
-#### Color theme
+
+### Color theme
 
 Application color theme is set by a group of constants provided in `colors.js` configuration module. 
 It is used throughout the whole application.
@@ -173,7 +294,7 @@ It is used throughout the whole application.
         }
          ```
 
-#### Font
+### Font
 
 You can specify the font which will be used in the app inside the `font.js` module.
 
@@ -218,95 +339,8 @@ You can specify the font which will be used in the app inside the `font.js` modu
           size1: 22,
           ...
         ```
-
-#### Environment
-
-You can configure a server environment used for agent provisioning inside the `provision.js` module.
-
-* `SERVER_ENVIRONMENTS` - (object) additional custom server configurations:
-    * to use default 
-        ```javascript
-        export const SERVER_ENVIRONMENTS = {}
-        ```
-      Default:
-      * Debug - `DEVTEAM1`
-           ```
-            agencyUrl: 'https://agency-team1.pdev.evernym.com',
-            agencyDID: 'TGLBMTcW9fHdkSqown9jD8',
-            agencyVerificationKey: 'FKGV9jKvorzKPtPJPNLZkYPkLhiS1VbxdvBgd1RjcQHR',
-            poolConfig: '{"reqSignature":{},"txn":{"data":{"data":{"alias":"Node1","blskey":"4N8aUNHSgjQVgkpm8nhNEfDf6txHznoYREg9kirmJrkivgL4oSEimFF6nsQ6M41QvhM2Z33nves5vfSn9n1UwNFJBYtWVnHYMATn76vLuL3zU88KyeAYcHfsih3He6UHcXDxcaecHVz6jhCYz1P2UZn2bDVruL5wXpehgBfBaLKm3Ba","blskey_pop":"RahHYiCvoNCtPTrVtP7nMC5eTYrsUA8WjXbdhNc8debh1agE9bGiJxWBXYNFbnJXoXhWFMvyqhqhRoq737YQemH5ik9oL7R4NTTCz2LEZhkgLJzB3QRQqJyBNyv7acbdHrAT8nQ9UkLbaVL9NBpnWXBTw4LEMePaSHEw66RzPNdAX1","client_ip":"54.71.181.31","client_port":9702,"node_ip":"54.71.181.31","node_port":9701,"services":["VALIDATOR"]},"dest":"Gw6pDLhcBcoQesN72qfotTgFa7cbuqZpkX3Xo6pLhPhv"},"metadata":{"from":"Th7MpTaRZVRYnPiabds81Y"},"type":"0"},"txnMetadata":{"seqNo":1,"txnId":"fea82e10e894419fe2bea7d96296a6d46f50f93f9eeda954ec461b2ed2950b62"},"ver":"1"}\n{"reqSignature":{},"txn":{"data":{"data":{"alias":"Node2","blskey":"37rAPpXVoxzKhz7d9gkUe52XuXryuLXoM6P6LbWDB7LSbG62Lsb33sfG7zqS8TK1MXwuCHj1FKNzVpsnafmqLG1vXN88rt38mNFs9TENzm4QHdBzsvCuoBnPH7rpYYDo9DZNJePaDvRvqJKByCabubJz3XXKbEeshzpz4Ma5QYpJqjk","blskey_pop":"Qr658mWZ2YC8JXGXwMDQTzuZCWF7NK9EwxphGmcBvCh6ybUuLxbG65nsX4JvD4SPNtkJ2w9ug1yLTj6fgmuDg41TgECXjLCij3RMsV8CwewBVgVN67wsA45DFWvqvLtu4rjNnE9JbdFTc1Z4WCPA3Xan44K1HoHAq9EVeaRYs8zoF5","client_ip":"54.71.181.31","client_port":9704,"node_ip":"54.71.181.31","node_port":9703,"services":["VALIDATOR"]},"dest":"8ECVSk179mjsjKRLWiQtssMLgp6EPhWXtaYyStWPSGAb"},"metadata":{"from":"EbP4aYNeTHL6q385GuVpRV"},"type":"0"},"txnMetadata":{"seqNo":2,"txnId":"1ac8aece2a18ced660fef8694b61aac3af08ba875ce3026a160acbc3a3af35fc"},"ver":"1"}\n{"reqSignature":{},"txn":{"data":{"data":{"alias":"Node3","blskey":"3WFpdbg7C5cnLYZwFZevJqhubkFALBfCBBok15GdrKMUhUjGsk3jV6QKj6MZgEubF7oqCafxNdkm7eswgA4sdKTRc82tLGzZBd6vNqU8dupzup6uYUf32KTHTPQbuUM8Yk4QFXjEf2Usu2TJcNkdgpyeUSX42u5LqdDDpNSWUK5deC5","blskey_pop":"QwDeb2CkNSx6r8QC8vGQK3GRv7Yndn84TGNijX8YXHPiagXajyfTjoR87rXUu4G4QLk2cF8NNyqWiYMus1623dELWwx57rLCFqGh7N4ZRbGDRP4fnVcaKg1BcUxQ866Ven4gw8y4N56S5HzxXNBZtLYmhGHvDtk6PFkFwCvxYrNYjh","client_ip":"54.71.181.31","client_port":9706,"node_ip":"54.71.181.31","node_port":9705,"services":["VALIDATOR"]},"dest":"DKVxG2fXXTU8yT5N7hGEbXB3dfdAnYv1JczDUHpmDxya"},"metadata":{"from":"4cU41vWW82ArfxJxHkzXPG"},"type":"0"},"txnMetadata":{"seqNo":3,"txnId":"7e9f355dffa78ed24668f0e0e369fd8c224076571c51e2ea8be5f26479edebe4"},"ver":"1"}\n{"reqSignature":{},"txn":{"data":{"data":{"alias":"Node4","blskey":"2zN3bHM1m4rLz54MJHYSwvqzPchYp8jkHswveCLAEJVcX6Mm1wHQD1SkPYMzUDTZvWvhuE6VNAkK3KxVeEmsanSmvjVkReDeBEMxeDaayjcZjFGPydyey1qxBHmTvAnBKoPydvuTAqx5f7YNNRAdeLmUi99gERUU7TD8KfAa6MpQ9bw","blskey_pop":"RPLagxaR5xdimFzwmzYnz4ZhWtYQEj8iR5ZU53T2gitPCyCHQneUn2Huc4oeLd2B2HzkGnjAff4hWTJT6C7qHYB1Mv2wU5iHHGFWkhnTX9WsEAbunJCV2qcaXScKj4tTfvdDKfLiVuU2av6hbsMztirRze7LvYBkRHV3tGwyCptsrP","client_ip":"54.71.181.31","client_port":9708,"node_ip":"54.71.181.31","node_port":9707,"services":["VALIDATOR"]},"dest":"4PS3EDQ3dW1tci1Bp6543CfuuebjFrg36kLAUcskGfaA"},"metadata":{"from":"TWwCRQRZ2ZHMJFn9TzLp7W"},"type":"0"},"txnMetadata":{"seqNo":4,"txnId":"aa5e817d7cc626170eca175822029339a444eb0ee8f0bd20d3b0b76e566fb008"},"ver":"1"}',
-          ```
-      * Production - `PROD`
-          ```
-            agencyUrl: 'https://agency.evernym.com',
-            agencyDID: 'DwXzE7GdE5DNfsrRXJChSD',
-            agencyVerificationKey: '844sJfb2snyeEugKvpY7Y4jZJk9LT6BnS6bnuKoiqbip',
-            poolConfig: '{"reqSignature":{},"txn":{"data":{"data":{"alias":"ev1","client_ip":"54.207.36.81","client_port":"9702","node_ip":"18.231.96.215","node_port":"9701","services":["VALIDATOR"]},"dest":"GWgp6huggos5HrzHVDy5xeBkYHxPvrRZzjPNAyJAqpjA"},"metadata":{"from":"J4N1K1SEB8uY2muwmecY5q"},"type":"0"},"txnMetadata":{"seqNo":1,"txnId":"b0c82a3ade3497964cb8034be915da179459287823d92b5717e6d642784c50e6"},"ver":"1"}\n{"reqSignature":{},"txn":{"data":{"data":{"alias":"zaValidator","client_ip":"154.0.164.39","client_port":"9702","node_ip":"154.0.164.39","node_port":"9701","services":["VALIDATOR"]},"dest":"BnubzSjE3dDVakR77yuJAuDdNajBdsh71ZtWePKhZTWe"},"metadata":{"from":"UoFyxT8BAqotbkhiehxHCn"},"type":"0"},"txnMetadata":{"seqNo":2,"txnId":"d5f775f65e44af60ff69cfbcf4f081cd31a218bf16a941d949339dadd55024d0"},"ver":"1"}\n{"reqSignature":{},"txn":{"data":{"data":{"alias":"danube","client_ip":"128.130.204.35","client_port":"9722","node_ip":"128.130.204.35","node_port":"9721","services":["VALIDATOR"]},"dest":"476kwEjDj5rxH5ZcmTtgnWqDbAnYJAGGMgX7Sq183VED"},"metadata":{"from":"BrYDA5NubejDVHkCYBbpY5"},"type":"0"},"txnMetadata":{"seqNo":3,"txnId":"ebf340b317c044d970fcd0ca018d8903726fa70c8d8854752cd65e29d443686c"},"ver":"1"}\n{"reqSignature":{},"txn":{"data":{"data":{"alias":"royal_sovrin","client_ip":"35.167.133.255","client_port":"9702","node_ip":"35.167.133.255","node_port":"9701","services":["VALIDATOR"]},"dest":"Et6M1U7zXQksf7QM6Y61TtmXF1JU23nsHCwcp1M9S8Ly"},"metadata":{"from":"4ohadAwtb2kfqvXynfmfbq"},"type":"0"},"txnMetadata":{"seqNo":4,"txnId":"24d391604c62e0e142ea51c6527481ae114722102e27f7878144d405d40df88d"},"ver":"1"}\n{"reqSignature":{},"txn":{"data":{"data":{"alias":"digitalbazaar","client_ip":"34.226.105.29","client_port":"9701","node_ip":"34.226.105.29","node_port":"9700","services":["VALIDATOR"]},"dest":"D9oXgXC3b6ms3bXxrUu6KqR65TGhmC1eu7SUUanPoF71"},"metadata":{"from":"rckdVhnC5R5WvdtC83NQp"},"type":"0"},"txnMetadata":{"seqNo":5,"txnId":"56e1af48ef806615659304b1e5cf3ebf87050ad48e6310c5e8a8d9332ac5c0d8"},"ver":"1"}\n{"reqSignature":{},"txn":{"data":{"data":{"alias":"OASFCU","client_ip":"38.70.17.248","client_port":"9702","node_ip":"38.70.17.248","node_port":"9701","services":["VALIDATOR"]},"dest":"8gM8NHpq2cE13rJYF33iDroEGiyU6wWLiU1jd2J4jSBz"},"metadata":{"from":"BFAeui85mkcuNeQQhZfqQY"},"type":"0"},"txnMetadata":{"seqNo":6,"txnId":"825aeaa33bc238449ec9bd58374b2b747a0b4859c5418da0ad201e928c3049ad"},"ver":"1"}\n{"reqSignature":{},"txn":{"data":{"data":{"alias":"BIGAWSUSEAST1-001","client_ip":"34.224.255.108","client_port":"9796","node_ip":"34.224.255.108","node_port":"9769","services":["VALIDATOR"]},"dest":"HMJedzRbFkkuijvijASW2HZvQ93ooEVprxvNhqhCJUti"},"metadata":{"from":"L851TgZcjr6xqh4w6vYa34"},"type":"0"},"txnMetadata":{"seqNo":7,"txnId":"40fceb5fea4dbcadbd270be6d5752980e89692151baf77a6bb64c8ade42ac148"},"ver":"1"}\n{"reqSignature":{},"txn":{"data":{"data":{"alias":"DustStorm","client_ip":"207.224.246.57","client_port":"9712","node_ip":"207.224.246.57","node_port":"9711","services":["VALIDATOR"]},"dest":"8gGDjbrn6wdq6CEjwoVStjQCEj3r7FCxKrA5d3qqXxjm"},"metadata":{"from":"FjuHvTjq76Pr9kdZiDadqq"},"type":"0"},"txnMetadata":{"seqNo":8,"txnId":"6d1ee3eb2057b8435333b23f271ab5c255a598193090452e9767f1edf1b4c72b"},"ver":"1"}\n{"reqSignature":{},"txn":{"data":{"data":{"alias":"prosovitor","client_ip":"138.68.240.143","client_port":"9711","node_ip":"138.68.240.143","node_port":"9710","services":["VALIDATOR"]},"dest":"C8W35r9D2eubcrnAjyb4F3PC3vWQS1BHDg7UvDkvdV6Q"},"metadata":{"from":"Y1ENo59jsXYvTeP378hKWG"},"type":"0"},"txnMetadata":{"seqNo":9,"txnId":"15f22de8c95ef194f6448cfc03e93aeef199b9b1b7075c5ea13cfef71985bd83"},"ver":"1"}\n{"reqSignature":{},"txn":{"data":{"data":{"alias":"iRespond","client_ip":"52.187.10.28","client_port":"9702","node_ip":"52.187.10.28","node_port":"9701","services":["VALIDATOR"]},"dest":"3SD8yyJsK7iKYdesQjwuYbBGCPSs1Y9kYJizdwp2Q1zp"},"metadata":{"from":"JdJi97RRDH7Bx7khr1znAq"},"type":"0"},"txnMetadata":{"seqNo":10,"txnId":"b65ce086b631ed75722a4e1f28fc9cf6119b8bc695bbb77b7bdff53cfe0fc2e2"},"ver":"1"}',
-          ```
-    * to add custom environments
-        ```javascript
-        export const SERVER_ENVIRONMENTS = {
-          'PROD2': {
-            agencyUrl: 'https://agency.app.com',
-            agencyDID: 'did',
-            agencyVerificationKey: 'verkey',
-            poolConfig:
-              '{"reqSignature":{},"txn":{"data": pool config data},"ver":"1"}',
-            paymentMethod: 'sov',
-          },
-          'DEVTEAM2': {
-            agencyUrl: 'https://dev.agency.app.com',
-            agencyDID: 'did',
-            agencyVerificationKey: 'verkey',
-            poolConfig:
-              '{"reqSignature":{},"txn":{"data": pool config data},"ver":"1"}',
-            paymentMethod: 'sov',
-          }
-        }
-        ```
-
-* `DEFAULT_SERVER_ENVIRONMENT` - (string, Optional) the name of environment to use by default.
-    * to use default - (`DEVTEAM1` for development / `PROD` for production)
-        ```javascript
-        export const DEFAULT_SERVER_ENVIRONMENT = null
-        ```
-    * to use custom 
-        ```javascript
-        export const DEFAULT_SERVER_ENVIRONMENT = 'PROD2'
-        ```
-
-* Information used for application provisioning
-    * `GET_PROVISION_TOKEN_FUNC` - function to be called to get provisioning token.
-       ```
-        GET_PROVISION_TOKEN_FUNC = async () -> [error: string | null, token: string | null] 
-        /// example
-        export const GET_PROVISION_TOKEN_FUNC =  () => {
-          try {
-             const response = fetch_api(your_endpoint)
-             /// process response
-             return [null, response.token]
-          } catch (error) {
-             return [error.message, null]
-          }
-        }
-      ```
-       
-    * `VCX_PUSH_TYPE` -  type of push notifications
-        * 1 - push notification to default app
-        * 3 - forwarding
-        * 4 - sponsor configured app
-       
-          ```javascript
-          export const VCX_PUSH_TYPE = 4
-          ```
-        
-    * `SPONSOR_ID` - An ID given to you from Evernym's Support Team after the Sponsor onboarding process is complete.
-
-          ```javascript
-          export const SPONSOR_ID = 'sponsorid'
-          ```
-
-#### End User License Agreement
+  
+### End User License Agreement
 
 You can configure EULA and privacy terms inside the `eula.js` module.
 
@@ -415,7 +449,7 @@ There are two type variables used for specifying documents location:
 
 Note: By default, MSDK tries to use web versions of documents. Local assets will be used when there are connectivity issues.
 
-#### Start up
+### Start up
 
 You can configure application startup wizard which is shown for the newly installed application inside the `startup.js` module. 
 
@@ -426,7 +460,7 @@ You can configure application startup wizard which is shown for the newly instal
         ```
     * to use custom
         ```javascript
-        export const BACKGROUND_IMAGE = require('setup.png')
+        export const BACKGROUND_IMAGE = require('path/to/setup.png')
         ```
   
 * `CustomStartUpScreen` - (React Component) custom component for Start Up screen rendering (instead of predefined one).
@@ -439,7 +473,15 @@ You can configure application startup wizard which is shown for the newly instal
         export const CustomStartUpScreen = () => <Text>Custom Start Up</Text>
         ```  
 
-#### Lock
+* `ANDROID_DEVICE_CHECK_API_KEY` - (Android device verification API key generated from Google cloud console). This SDK also provides option to secure your app such that your app is authorized to run only on non-rooted devices and only on real devices. if you set this key this, SDK will check for device integrity and will show messages as you configure them using below constants. Although the name of variable has Android in it, SDK will run check on both Android and iOS if this key is set. If `null` is passed, then device verification will not be done on both Android and iOS.
+
+* `deviceSecurityCheckFailedMessage` - This message is shown if device is rooted or if release build is running on simulator/emulator.
+
+* `devicePlayServiceUpdateRequiredMessage` - This message is shown only for Android devices. If an Android device has incompatible version or old version of Play Service, then this message will be show to user with an option to update play service.
+
+* `devicePlayServiceRequiredMessage` - This message is shown only for Android devices. If an Android device has play services disabled, then this message will be shown along with an option to enable from `Settings`.
+
+### Lock
 
 You can configure application locking screens (set up / enter / change password) inside the `lock.js` module.
 
@@ -453,7 +495,7 @@ You can configure application locking screens (set up / enter / change password)
         export const LockHeader = () => <Text>Hello</Text>
         ```
 
-#### Home
+### Home
 
 You can configure application `Home` screen inside the `home.js` module.
 
@@ -510,7 +552,7 @@ You can configure application `Home` screen inside the `home.js` module.
       export const CustomHomeScreen = () => <Text>Custom Home</Text>
       ``` 
     
-#### Connections
+### Connections
 
 You can configure application `Connections` screen inside the `connections.js` module.
 
@@ -572,7 +614,7 @@ You can configure application `Connections` screen inside the `connections.js` m
         export const CustomConnectionDetailsScreen = () => <Text>Custom Connection Details</Text>
         ``` 
 
-#### Credentials
+### Credentials
 
 You can configure application `Credentials` screen inside the `credentials.js` module.
 
@@ -678,7 +720,7 @@ You can also configure application `Show Credentail` modal dialog or disable thi
       } 
       ``` 
 
-#### Navigation Menu
+### Navigation Menu
 
 You can configure navigation menu and app navigation inside the `navigator.js` module.
 
@@ -807,7 +849,7 @@ You can configure navigation menu and app navigation inside the `navigator.js` m
         ]
         ```
 
-#### Collecting log information
+### Collecting log information
 
 You can configure data used for logging in the `logs.js` module.
 
@@ -832,7 +874,7 @@ You can receive encrypted log file by email.
     }
     ```
 
-#### Credential Offer
+### Credential Offer
 
 You can customize `Credential Offer` dialog in the `credential-offer.js` module.
 
@@ -892,7 +934,7 @@ You can customize `Credential Offer` dialog in the `credential-offer.js` module.
         }        
        ``` 
 
-#### Proof Request 
+### Proof Request 
 
 You can customize `Proof Request` dialog in the `proof-request.js` module.
 
@@ -978,7 +1020,7 @@ You can customize `Proof Request` dialog in the `proof-request.js` module.
         }         
       ``` 
 
-#### Proof Proposal
+### Proof Proposal
 
 You can customize `Proof Proposal` dialog in the `proof-proposal.js` module.
 
@@ -1025,7 +1067,7 @@ You can customize `Proof Proposal` dialog in the `proof-proposal.js` module.
       } 
       ``` 
 
-#### Proof
+### Proof
 
 You can customize `Shared Proof` and `Received Proof` dialogs in the `proof.js` module.
 
@@ -1075,7 +1117,7 @@ You can customize `Shared Proof` and `Received Proof` dialogs in the `proof.js` 
       } 
       ``` 
 
-#### Question 
+### Question 
 
 You can customize `Question` dialog in the `question-dialog.js` module.
 
@@ -1101,7 +1143,7 @@ You can customize `Question` dialog in the `question-dialog.js` module.
             navigationOptions: {}, // Optional, ModalStack.Screen Options - https://reactnavigation.org/docs/screen-options
         }         
       ``` 
-#### Invite Action
+### Invite Action
 
 You can customize `Invite Action` dialog in the `invite-action.js` module.
 
@@ -1148,7 +1190,7 @@ You can customize `Invite Action` dialog in the `invite-action.js` module.
         }        
       ``` 
       
-#### Settings
+### Settings
 
 You can customize `Settings` view in the `settings.js` module.
 
@@ -1243,7 +1285,7 @@ You can customize `Settings` view in the `settings.js` module.
         export const CustomSettingsScreen = () => <Text>Custom Settings</Text>
         ``` 
 
-#### Feedback
+### Feedback
 
 In order to gather application feedback is used `Apptentive`. 
 You can provide credentials to be used for setting up `Apptentive` module in `feedback.js` file.
@@ -1262,7 +1304,7 @@ export const APPTENTIVE_CREDENTIALS = Platform.select({
 })
 ```
 
-#### Application information
+### Application information
 
 The information about the application which will be shown on `About` screen can be configured in `app.js` file.
 
@@ -1309,7 +1351,7 @@ The information about the application which will be shown on `About` screen can 
         export const CustomAboutAppScreen = () => <Text>Custom About</Text>
         ```
 
-#### Splash screen and app icon
+### Splash screen and app icon
 
 These are configured inside your application for specific platforms.
 
@@ -1340,7 +1382,7 @@ These are configured inside your application for specific platforms.
     
 * iOS: TODO
 
-#### Credential attachments
+### Credential attachments
 
 When app gets an attribute with `_link` postfix (example `Photo_link`), it tries to render its value as attachment according to defined mime type.
 
@@ -1383,9 +1425,9 @@ When app gets an attribute with `_link` postfix (example `Photo_link`), it tries
   * `audio/mp3`
   * `video/mp4`
 
-### Examples
+## Examples
 
-#### Credential
+### Credential
 
 Credential containing attachments:
 
@@ -1399,7 +1441,7 @@ Credential containing attachments:
 } 
 ```
 
-#### Proof request
+### Proof request
 
 Proof Request containing attachments:
 
@@ -1416,6 +1458,6 @@ Proof Request containing attachments:
 }
 ```
 
-#### Advanced
+## Advanced
 
 For advanced customizations, you can refer to this [document](./Advanced.md) describing MSDK internals.

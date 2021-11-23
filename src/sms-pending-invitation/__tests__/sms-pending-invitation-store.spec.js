@@ -1,5 +1,5 @@
 // @flow
-import { call, select, put, take } from 'redux-saga/effects'
+import { call, select, take } from 'redux-saga/effects'
 import {
   getAgencyUrl,
   getCurrentScreen,
@@ -10,7 +10,7 @@ import smsPendingInvitationReducer, {
   smsPendingInvitationFail,
   smsPendingInvitationReceived,
   getSmsPendingInvitation,
-  smsPendingInvitationSeen,
+  smsPendingInvitationSeen, handleDeepLinkError,
 } from '../sms-pending-invitation-store'
 import { SAFE_TO_DOWNLOAD_SMS_INVITATION } from '../type-sms-pending-invitation'
 import { getInvitationLink } from '../../api/api'
@@ -182,7 +182,7 @@ describe('SMS Connection Request store', () => {
     )
 
     expect(gen.throw(new Error(JSON.stringify(error))).value).toEqual(
-      put(smsPendingInvitationFail(smsToken, error))
+      call(handleDeepLinkError, smsToken, new Error(JSON.stringify(error)))
     )
 
     expect(gen.next().done).toBe(true)

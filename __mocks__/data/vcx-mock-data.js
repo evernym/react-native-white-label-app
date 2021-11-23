@@ -46,7 +46,7 @@ export const vcxClaimOffer = {
   version: '1.0.0',
   to_did: '8XFh8yBzrpJQmNyZzgoTqB',
   from_did: 'ha66899sadfjZJGINKN0770',
-  libindy_offer: '',
+  libindy_offer: '{}',
   cred_def_id: 'cred_def_id',
   credential_attrs: {
     ['Address 1']: ['Address Address Address'],

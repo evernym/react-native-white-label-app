@@ -28,6 +28,7 @@ export const CLAIM_OFFER_STATUS = {
   DELETED: 'DELETED',
   FAILED: 'FAILED',
 }
+
 export const VCX_CLAIM_OFFER_STATE = {
   NONE: 0,
   INITIALIZED: 1,
@@ -94,9 +95,9 @@ export type ClaimOfferRejectedAction = {
   uid: string,
 }
 
-export const DELETE_OUTOFBAND_CLAIM_OFFER = 'DELETE_OUTOFBAND_CLAIM_OFFER'
-export type DeleteOutofbandClaimOfferAction = {
-  type: typeof DELETE_OUTOFBAND_CLAIM_OFFER,
+export const DENY_OUTOFBAND_CLAIM_OFFER = 'DENY_OUTOFBAND_CLAIM_OFFER'
+export type DenyOutofbandClaimOfferAction = {
+  type: typeof DENY_OUTOFBAND_CLAIM_OFFER,
   uid: string,
 }
 
@@ -143,6 +144,9 @@ export type ClaimRequestSuccessAction = {
   type: typeof CLAIM_REQUEST_SUCCESS,
   uid: string,
   issueDate: number,
+  colorTheme: string,
+  claimId: string,
+  caseInsensitiveAttributes: string,
 }
 
 export const INSUFFICIENT_BALANCE = 'INSUFFICIENT_BALANCE'
@@ -215,18 +219,18 @@ export type ConnectionHistoryBackedUpAction = {
   type: typeof CONNECTION_HISTORY_BACKED_UP,
 }
 
-export const DELETE_CLAIM_OFFER = 'DELETE_CLAIM_OFFER'
-export type DeleteClaimOfferAction = {
-  type: typeof DELETE_CLAIM_OFFER,
-  uid: string,
-  userDID: string,
+export const DELETE_CLAIM = 'DELETE_CLAIM'
+export type DeleteClaimAction = {
+  type: typeof DELETE_CLAIM,
+  uuid: string,
 }
 
-export const CLAIM_OFFER_DELETED = 'CLAIM_OFFER_DELETED'
-export type ClaimOfferDeletedAction = {
-  type: typeof CLAIM_OFFER_DELETED,
+export const DELETE_CLAIM_SUCCESS = 'DELETE_CLAIM_SUCCESS'
+export type DeleteClaimSuccessAction = {
+  type: typeof DELETE_CLAIM_SUCCESS,
+  messageId: string,
   uid: string,
-  vcxSerializedClaimOffers: SerializedClaimOffers,
+  pwDid: string,
 }
 
 export type ClaimOfferAction =
@@ -250,7 +254,8 @@ export type ClaimOfferAction =
   | ResetClaimRequestStatusAction
   | SendClaimRequestSuccessAction
   | SendClaimRequestFailAction
-  | ClaimOfferDeletedAction
+  | DeleteClaimAction
+  | DeleteClaimSuccessAction
 
 export type CredentialOffer = {
   '@id': string,
@@ -271,6 +276,10 @@ export type CredentialOffer = {
       base64: string,
     },
   }>,
+  '~alias': ?{
+    imageUrl?: string,
+    label?: string,
+  },
 }
 
 export type ClaimOfferPayload = AdditionalDataPayload & {
@@ -282,6 +291,9 @@ export type ClaimOfferPayload = AdditionalDataPayload & {
   payTokenValue?: string,
   issueDate?: number,
   colorTheme?: string,
+  ephemeralClaimOffer?: any,
+  claimId?: string,
+  caseInsensitiveAttributes?: GenericObject,
 }
 
 export type SerializedClaimOffer = {

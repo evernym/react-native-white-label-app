@@ -36,7 +36,7 @@ import {
   claimOfferShowStart,
   resetClaimRequestStatus,
   denyClaimOffer,
-  deleteOutOfBandClaimOffer,
+  denyOutOfBandClaimOffer,
 } from '../../claim-offer/claim-offer-store'
 import { txnAuthorAgreementRoute } from '../../common'
 import {
@@ -55,6 +55,7 @@ import {
   credentialOfferHeadline,
   CustomCredentialOfferModal,
 } from '../../external-imports'
+import { unlockApp } from '../../lock/lock-store'
 
 export class ClaimOfferModal extends Component<any, *> {
   constructor(props: any) {
@@ -237,7 +238,7 @@ export class ClaimOfferModal extends Component<any, *> {
 
   componentWillUnmount() {
     if (this.state.scheduledDeletion) {
-      this.props.deleteOutOfBandClaimOffer(this.props.uid)
+      this.props.denyOutOfBandClaimOffer(this.props.uid)
       return
     }
 
@@ -281,6 +282,7 @@ export class ClaimOfferModal extends Component<any, *> {
         lock: this.props.lock,
         navigation: this.props.navigation,
         onSuccess: this.onDenyAuthSuccess,
+        unlockApp: this.props.unlockApp,
       })
     }
   }
@@ -305,6 +307,7 @@ export class ClaimOfferModal extends Component<any, *> {
       lock: this.props.lock,
       navigation: this.props.navigation,
       onSuccess: this.onAcceptAuthSuccess,
+      unlockApp: this.props.unlockApp,
     })
   }
 
@@ -435,7 +438,8 @@ const mapDispatchToProps = (dispatch) =>
       resetClaimRequestStatus,
       newConnectionSeen,
       denyClaimOffer,
-      deleteOutOfBandClaimOffer,
+      denyOutOfBandClaimOffer,
+      unlockApp,
     },
     dispatch
   )

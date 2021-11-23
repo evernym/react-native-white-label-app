@@ -1,13 +1,7 @@
 // @flow
 import React, { useCallback, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  View,
-  StyleSheet,
-  StatusBar,
-  ScrollView,
-  FlatList,
-} from 'react-native'
+import { View, StyleSheet, StatusBar, ScrollView, FlatList } from 'react-native'
 import { verticalScale, moderateScale } from 'react-native-size-matters'
 import { homeDrawerRoute, homeRoute, proofProposalRoute } from '../common'
 import type { ReactNavigation } from '../common/type-common'
@@ -30,6 +24,7 @@ import {
   proofProposalAcceptButtonText,
   proofProposalDenyButtonText,
 } from '../external-imports'
+import { unlockApp } from '../lock/lock-store'
 
 export type ProofProposalProps = {
   backRedirectRoute?: string | null,
@@ -39,17 +34,24 @@ export type ProofProposalProps = {
 }
 
 export const ProofProposalComponent = ({
-                                         navigation,
-                                         route: { params },
-                                       }: ReactNavigation) => {
-  const { uid, backRedirectRoute, senderName, invitationPayload }: ProofProposalProps = params
+  navigation,
+  route: { params },
+}: ReactNavigation) => {
+  const {
+    uid,
+    backRedirectRoute,
+    senderName,
+    invitationPayload,
+  }: ProofProposalProps = params
 
   const dispatch = useDispatch()
 
-  const verifier = useSelector(state => getVerifier(state, uid))
+  const verifier = useSelector((state) => getVerifier(state, uid))
   const lock = useSelector(getLockStore)
 
-  const presentationProposal = useMemo(() => verifier.presentationProposal, [verifier])
+  const presentationProposal = useMemo(() => verifier.presentationProposal, [
+    verifier,
+  ])
 
   const onAcceptAuthSuccess = useCallback(() => {
     if (invitationPayload.type === CONNECTION_INVITE_TYPES.ARIES_OUT_OF_BAND) {
@@ -68,6 +70,7 @@ export const ProofProposalComponent = ({
       lock,
       navigation,
       onSuccess: onAcceptAuthSuccess,
+      unlockApp: () => dispatch(unlockApp()),
     })
   }, [onAcceptAuthSuccess])
 
@@ -81,20 +84,25 @@ export const ProofProposalComponent = ({
 
   const keyExtractor = (_: any, index: number) => index.toString()
 
-  const renderItem = (attribute: AriesPresentationPreviewAttribute) =>
+  const renderItem = (attribute: AriesPresentationPreviewAttribute) => (
     <View style={styles.attributeWrapper}>
-      <ExpandableText text={attribute.name} style={styles.attribute}/>
+      <ExpandableText text={attribute.name} style={styles.attribute} />
     </View>
+  )
 
   const acceptBtnText = proofProposalAcceptButtonText || 'Accept'
   const denyButtonText = proofProposalDenyButtonText || 'Cancel'
 
-  return !presentationProposal ?
-    <Loader/> :
+  return !presentationProposal ? (
+    <Loader />
+  ) : (
     <>
       <View style={styles.contentWrapper}>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <StatusBar backgroundColor={colors.black} barStyle={'light-content'}/>
+          <StatusBar
+            backgroundColor={colors.black}
+            barStyle={'light-content'}
+          />
           <ModalHeader
             institutionalName={senderName}
             credentialName={presentationProposal.comment || 'Proof Proposal'}
@@ -117,16 +125,17 @@ export const ProofProposalComponent = ({
         secondColorBackground={colors.red}
       />
     </>
+  )
 }
 
 const screen =
-  CustomProofProposalModal && CustomProofProposalModal.screen ||
+  (CustomProofProposalModal && CustomProofProposalModal.screen) ||
   ProofProposalComponent
 
 const headline = proofProposalHeadline || 'Proof Proposal'
 
 const navigationOptions =
-  CustomProofProposalModal && CustomProofProposalModal.navigationOptions ||
+  (CustomProofProposalModal && CustomProofProposalModal.navigationOptions) ||
   modalOptions(headline, 'CloseIcon')
 
 export const ProofProposalModal = {

@@ -16,20 +16,21 @@ import { addPendingRedirection } from '../lock/lock-store'
 import type { SplashScreenProps } from './type-splash-screen'
 import { isLocalBackupsEnabled } from '../settings/settings-utils'
 import { useEffect } from 'react'
-import { getIsEulaAccepted, getIsInitialized, getLockStore } from '../store/store-selector'
+import {
+  getIsEulaAccepted,
+  getIsInitialized,
+  getLockStore,
+} from '../store/store-selector'
 import { useSelector } from 'react-redux'
-
 export const SplashScreenView = (props: SplashScreenProps) => {
   const isInitialized = useSelector(getIsInitialized)
   const isEulaAccept = useSelector(getIsEulaAccepted)
   const lock = useSelector(getLockStore)
-
   useEffect(() => {
     if (isInitialized) {
       onAppInitialized()
     }
   }, [isInitialized])
-
   const onAppInitialized = () => {
     SplashScreen.hide()
     // now we can safely check value of isAlreadyInstalled
@@ -53,25 +54,21 @@ export const SplashScreenView = (props: SplashScreenProps) => {
     const initialRoute = lock.isTouchIdEnabled
       ? lockEnterFingerprintRoute
       : lockEnterPinRoute
-
     props.navigation.navigate(initialRoute)
   }
-
   return isInitialized ? null : (
     <Container center>
-      <Loader/>
+      <Loader />
     </Container>
   )
 }
-
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       addPendingRedirection,
     },
-    dispatch,
+    dispatch
   )
-
 export const splashScreenScreen = {
   routeName: splashScreenRoute,
   screen: connect(null, mapDispatchToProps)(SplashScreenView),

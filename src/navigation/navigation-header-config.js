@@ -61,7 +61,12 @@ export const headerDefaultOptionsOld = ({
       </Text>
     ),
     headerLeft: () => (
-      <TouchableOpacity testID="left-icon" accessible={true} accessibilityLabel="left-icon" onPress={() => navigation.goBack()}>
+      <TouchableOpacity
+        testID="left-icon"
+        accessible={true}
+        accessibilityLabel="left-icon"
+        onPress={() => navigation.goBack()}
+      >
         <EvaIcon
           name={
             Platform.OS === 'ios'
@@ -89,17 +94,15 @@ export const headerDefaultOptions = ({
 }: {
   headline?: string,
   headerHideShadow: boolean,
-  transparent: boolean,
+  transparent?: boolean,
   headerStyles?: any,
   arrowColor?: any,
   additionalActionOnBackPress?: () => void,
 }) => ({ navigation }: { navigation: Navigation }) => {
-
   const onBackPress = () => {
     navigation.goBack()
     additionalActionOnBackPress && additionalActionOnBackPress()
   }
-
 
   return {
     headerStyle: transparent
@@ -113,7 +116,12 @@ export const headerDefaultOptions = ({
       </Text>
     ),
     headerLeft: () => (
-      <TouchableOpacity testID="left-icon" accessible={true} accessibilityLabel="left-icon" onPress={onBackPress}>
+      <TouchableOpacity
+        testID="left-icon"
+        accessible={true}
+        accessibilityLabel="left-icon"
+        onPress={onBackPress}
+      >
         <EvaIcon
           name={
             Platform.OS === 'ios'

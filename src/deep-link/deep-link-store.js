@@ -48,6 +48,9 @@ export default function deepLinkReducer(
 ) {
   switch (action.type) {
     case DEEP_LINK_DATA:
+      if (state.tokens[action.data]) {
+        return state
+      }
       return {
         ...state,
         isLoading: false,

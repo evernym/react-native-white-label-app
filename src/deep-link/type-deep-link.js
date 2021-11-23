@@ -60,6 +60,7 @@ export type DeepLinkBundle = {
     t: string,
     '+non_branch_link': string,
   },
+  uri?: ?string,
 }
 
 export type DeepLinkProps = {
@@ -73,3 +74,5 @@ export type DeepLinkProps = {
   navigateToRoute: any,
   addPendingRedirection: typeof addPendingRedirection,
 }
+
+export const DEEP_LINK_PROCESSED_ERROR = 'Deep link has already been processed'

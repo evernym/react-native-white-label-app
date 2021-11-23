@@ -9,15 +9,11 @@ import { createNativeStackNavigator } from 'react-native-screens/native-stack'
 import {
   createDrawerNavigator,
   DrawerItemList,
-  DrawerItem,
 } from '@react-navigation/drawer'
 import { enableScreens } from 'react-native-screens'
 import VersionNumber from 'react-native-version-number'
-import { useDispatch } from 'react-redux'
 
-import {
-  headerOptionForDrawerStack,
-} from './navigation-header-config'
+import { headerOptionForDrawerStack } from './navigation-header-config'
 
 import { aboutAppScreen } from '../about-app/about-app'
 import { homeScreen, headlineForHomeRoute } from '../home/home'
@@ -39,9 +35,15 @@ import { questionScreen } from '../question/question-screen'
 import { txnAuthorAgreementScreen } from '../txn-author-agreement/txn-author-agreement-screen'
 import { lockEnterPinScreen } from '../lock/lock-enter-pin-code'
 import { lockTouchIdSetupScreen } from '../lock/lock-fingerprint-setup'
-import { lockPinSetupScreen, lockPinSetupScreenOptions } from '../lock/lock-pin-code-setup'
+import {
+  lockPinSetupScreen,
+  lockPinSetupScreenOptions,
+} from '../lock/lock-pin-code-setup'
 import { lockSetupSuccessScreen } from '../lock/lock-setup-success'
-import { lockEnterFingerprintScreen, lockEnterFingerprintOptions } from '../lock/lock-enter-fingerprint'
+import {
+  lockEnterFingerprintScreen,
+  lockEnterFingerprintOptions,
+} from '../lock/lock-enter-fingerprint'
 import { claimOfferScreen } from '../connection-details/components/claim-offer-modal'
 import { proofRequestScreen } from '../connection-details/components/proof-request-modal'
 import { fulfilledMessageScreen } from '../connection-details/components/modal'
@@ -66,11 +68,10 @@ import { eulaScreen } from '../eula/eula'
 import { restoreWaitRouteScreen } from '../restore/restore-wait'
 import { openIdConnectScreen } from '../open-id-connect/open-id-connect-screen'
 import { designStyleGuideScreen } from '../design-styleguide/design-styleguide'
-import { onfidoScreen } from '../onfido/onfido'
 import { restorePassphraseScreen } from '../restore/restore-passphrase'
 import {
   privacyTNCScreen,
-  options as privacyTNCScreenOptions
+  options as privacyTNCScreenOptions,
 } from '../privacy-tnc/privacy-tnc-screen'
 import { connectionHistoryScreen } from '../connection-details/connection-details'
 import { credentialDetailsScreen } from '../credential-details/credential-details'
@@ -124,10 +125,9 @@ import {
   usePushNotifications,
 } from '../external-imports'
 import { inviteActionScreen } from '../invite-action/invite-action-screen'
-import { ShowCredentialScreen } from "../show-credential/show-credential-modal";
-import { ProofProposalModal } from "../verifier/proof-proposal-modal";
+import { ShowCredentialScreen } from '../show-credential/show-credential-modal'
+import { ProofProposalModal } from '../verifier/proof-proposal-modal'
 import { ReceivedProofScreen } from '../verifier/received-proof-modal'
-import { SETTINGS_MENU_BUTTON } from '../feedback/log-to-apptentive'
 
 enableScreens()
 
@@ -136,15 +136,8 @@ const { width } = Dimensions.get('screen')
 const footerIcon = appIcon
 const builtBy = companyName
 
-const drawerComponent = (props: Object, dispatch) => {
+const drawerComponent = (props: Object) => {
   const { state, ...rest } = props
-  const newState = { ...state }
-  newState.routes = newState.routes.filter((item) => item.name !== SETTINGS)
-
-  const withLogOnSettingPress = () => {
-    dispatch(SETTINGS_MENU_BUTTON)
-    props.navigation.navigate(settingsDrawerRoute)
-  }
 
   return (
     <SafeAreaView
@@ -168,12 +161,7 @@ const drawerComponent = (props: Object, dispatch) => {
           testID: 'user-avatar',
         })}
       </View>
-      <DrawerItemList state={newState} {...rest} />
-      <DrawerItem
-        label={drawerItemLabel(defaultDrawerItemOptions[SETTINGS].label)}
-        icon={drawerIcon(defaultDrawerItemOptions[SETTINGS].icon)}
-        onPress={withLogOnSettingPress}
-      />
+      <DrawerItemList state={state} {...rest} />
       <View style={styles.drawerFooterContainer}>
         <View style={styles.drawerFooter}>
           {CustomDrawerFooterContent ? (
@@ -287,8 +275,6 @@ const extraScreens = customExtraScreens || []
 const extraModals = customExtraModals || []
 
 function AppDrawer(navigation) {
-  const dispatch = useDispatch()
-
   const tabs = menuNavigationOptions.map((option) => {
     const defaultOption = defaultDrawerItemOptions[option.name] || {}
 
@@ -311,7 +297,7 @@ function AppDrawer(navigation) {
 
   return (
     <Drawer.Navigator
-      drawerContent={(props) => drawerComponent(props, dispatch)}
+      drawerContent={(props) => drawerComponent(props)}
       drawerContentOptions={drawerContentOptions}
       drawerStyle={drawerStyle}
       initialRouteName={homeDrawerRoute}
@@ -383,6 +369,7 @@ function CardStackScreen() {
       <CardStack.Screen
         name={waitForInvitationScreen.routeName}
         component={waitForInvitationScreen.screen}
+        options={waitForInvitationScreen.options}
       />
       <CardStack.Screen
         name={switchEnvironmentScreen.routeName}
@@ -442,11 +429,6 @@ function CardStackScreen() {
         options={aboutAppScreen.options}
       />
       <CardStack.Screen
-        name={onfidoScreen.routeName}
-        component={onfidoScreen.screen}
-        options={onfidoScreen.options}
-      />
-      <CardStack.Screen
         name={backupCompleteScreen.routeName}
         component={backupCompleteScreen.screen}
       />
@@ -493,6 +475,7 @@ function CardStackScreen() {
       <CardStack.Screen
         name={restorePassphraseScreen.routeName}
         component={restorePassphraseScreen.screen}
+        options={restorePassphraseScreen.options}
       />
       <CardStack.Screen
         name={selectRestoreMethodScreen.routeName}

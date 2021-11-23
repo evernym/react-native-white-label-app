@@ -38,6 +38,7 @@ export default class CustomButton extends PureComponent<*, void> {
       ninth,
       eleventh,
       twelfth,
+      main,
     } = this.props
     const buttonStyles = this.props.style || empty
     const style = [
@@ -63,6 +64,8 @@ export default class CustomButton extends PureComponent<*, void> {
       ? 'eleventh'
       : twelfth
       ? 'twelfth'
+      : main
+      ? 'main'
       : 'fifth'
     const buttonProps = {
       ...getButtonProps(buttonType),

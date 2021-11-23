@@ -11,7 +11,6 @@ import claimOfferStore, {
   addSerializedClaimOffer,
   hydrateClaimOffers,
   saveClaimOffersSaga,
-  removePersistedSerializedClaimOffersSaga,
   hydrateClaimOffersSaga,
   saveSerializedClaimOffer,
   claimOfferAccepted,
@@ -24,7 +23,6 @@ import {
   SAVE_CLAIM_OFFERS_SUCCESS,
   SAVE_CLAIM_OFFERS_FAIL,
   ERROR_SAVE_CLAIM_OFFERS,
-  REMOVE_SERIALIZED_CLAIM_OFFERS_SUCCESS,
 } from '../type-claim-offer'
 import { getConnectionHistory } from '../../store/store-selector'
 import {
@@ -45,13 +43,15 @@ import {
   serializedClaimOffer,
   vcxSerializedConnection,
   connectionHistory,
+  colorTheme,
+  claimUUID,
+  caseInsensitiveAttributes,
 } from '../../../__mocks__/static-data'
 import { expectSaga } from 'redux-saga-test-plan'
 import * as matchers from 'redux-saga-test-plan/matchers'
 import { throwError } from 'redux-saga-test-plan/providers'
 import {
   secureSet,
-  secureDelete,
   getHydrationItem,
 } from '../../services/storage'
 import {
@@ -118,7 +118,13 @@ describe('claim offer store', () => {
   })
 
   it('claim request is success', () => {
-    newState = claimOfferStore(newState, claimRequestSuccess(uid, issueDate))
+    newState = claimOfferStore(newState, claimRequestSuccess(
+      uid,
+      issueDate,
+      colorTheme,
+      claimUUID,
+      caseInsensitiveAttributes,
+    ))
     expect(newState).toMatchSnapshot()
   })
 
@@ -220,15 +226,6 @@ describe('claim offer store', () => {
       .run()
   })
 
-  it('saga: removePersistedSerializedClaimOffersSaga, success', () => {
-    return expectSaga(removePersistedSerializedClaimOffersSaga)
-      .call(secureDelete, CLAIM_OFFERS)
-      .put({
-        type: REMOVE_SERIALIZED_CLAIM_OFFERS_SUCCESS,
-      })
-      .run()
-  })
-
   it('saga: hydrateClaimOffersSaga, success', () => {
     const history = {
       data: {
@@ -244,6 +241,8 @@ describe('claim offer store', () => {
         uid: 'uid',
         remotePairwiseDID: 'remotePairwiseDID',
         senderLogoUrl: 'senderLogoUrl',
+        claimId: claimUUID,
+        caseInsensitiveAttributes: caseInsensitiveAttributes,
       },
     }
 
@@ -271,7 +270,7 @@ describe('claim offer store', () => {
       .run()
   })
 
-  it('saga: claimOfferAccepted, success', () => {
+  xit('saga: claimOfferAccepted, success', () => {
     const claimOfferPayload = {
       ...claimOffer.payload,
       ...claimOffer.payloadInfo,
