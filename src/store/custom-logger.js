@@ -3,7 +3,6 @@ import RNFetchBlob from 'rn-fetch-blob'
 import uniqueId from 'react-native-unique-id'
 import _flatten from 'lodash.flatten'
 import _merge from 'lodash.merge'
-import { NativeModules } from 'react-native'
 
 import type { Store } from '../store/type-store'
 import {
@@ -124,7 +123,7 @@ import {
 import { appName, CustomLogUtils } from '../external-imports'
 import { SERVER_ENVIRONMENT_CHANGED, SWITCH_ENVIRONMENT } from '../switch-environment/type-switch-environment'
 
-import { Logger } from 'react-native-vcx-wrapper'
+import { Logger } from '@evernym/react-native-sdk'
 
 export async function setVcxLogger(
   logLevel: string,

@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
     width: '100%',
     maxWidth: '100%',
     padding: moderateScale(15),
-    paddingBottom: moderateScale(3),
+    paddingBottom: moderateScale(10),
     flexDirection: 'column',
   },
   buttonParentWrapper: {

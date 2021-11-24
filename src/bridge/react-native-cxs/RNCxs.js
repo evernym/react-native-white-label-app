@@ -14,17 +14,15 @@ import type {
   WalletTokenInfo,
   PaymentAddress,
   SignDataResponse,
-  CxsPoolConfig,
-  VcxPoolInitConfig,
+  WalletPoolName,
 } from './type-cxs'
 import { signDataResponseSchema, smallDeviceMemory } from './type-cxs'
 import type { AriesOutOfBandInvite, InvitationPayload } from '../../invitation/type-invitation'
 import type { CredentialOffer } from '../../claim-offer/type-claim-offer'
 import {
+  addAttestation,
   convertAgencyConfigToVcxProvision,
-  convertAriesCredentialOfferToCxsClaimOffer,
   convertCxsInitToVcxInit,
-  convertCxsPoolInitToVcxPoolInit,
   convertCxsPushConfigToVcxPushTokenConfig,
   convertInvitationToVcxConnectionCreate,
   convertVcxConnectionToCxsConnection,
@@ -33,7 +31,7 @@ import {
   paymentHandle,
 } from './vcx-transformers'
 import type { UserOneTimeInfo } from '../../store/user/type-user-store'
-import type { AgencyPoolConfig, MessagePaymentDetails } from '../../store/type-config-store'
+import type { AgencyPoolConfig, MessagePaymentDetails, PoolConfig } from '../../store/type-config-store'
 import { __uniqueId } from '../../store/type-config-store'
 import type { ClaimPushPayload, GetClaimVcxResult } from '../../push-notification/type-push-notification'
 import type { WalletHistoryEvent } from '../../wallet/type-wallet'
@@ -49,7 +47,7 @@ import {
 } from '../../sovrin-token/sovrin-token-converter'
 import type { GenericObject } from '../../common/type-common'
 import type { PairwiseAgent } from '../../store/type-connection-store'
-import { uuid } from "../../services/uuid";
+import { uuid } from '../../services/uuid'
 
 import {
   Agent,
@@ -61,9 +59,23 @@ import {
   Utils,
   Verifier,
   Wallet,
-} from 'react-native-vcx-wrapper'
+} from '@evernym/react-native-sdk'
+import { WALLET_ITEM_NOT_FOUND } from './error-cxs'
 
 const { RNUtils } = NativeModules
+
+export function resetBackgroundTimeout() {
+  if (Platform.OS === 'android') {
+    return RNUtils.resetTimeout()
+  }
+}
+
+export async function watchApplicationInactivity() {
+  if (Platform.OS === 'android') {
+    RNUtils.watchApplicationInactivity()
+  }
+}
+
 
 /*
  * Agent API
@@ -95,8 +107,8 @@ export async function createOneTimeInfo(
 
 export async function getProvisionToken(
   agencyConfig: AgencyPoolConfig,
-  comMethod: { type: number, id: string, value: string },
-  sponsorId: string
+  sponseeId: string,
+  sponsorId: string,
 ): Promise<[null | string, null | string]> {
   try {
     const walletPoolName = await getWalletPoolName()
@@ -122,17 +134,18 @@ export async function getProvisionToken(
 
 export async function createOneTimeInfoWithToken(
   agencyConfig: AgencyPoolConfig,
-  token: string
+  token: string,
 ): Promise<[null | string, null | UserOneTimeInfo]> {
   try {
     const walletPoolName = await getWalletPoolName()
     const vcxProvisionConfig: VcxProvision = await convertAgencyConfigToVcxProvision(
       agencyConfig,
-      walletPoolName
+      walletPoolName,
     )
+    const tokenWithAttestation = await addAttestation(token)
     const provisionVcxResult: string = await Agent.provisionWithToken({
       agencyConfig: JSON.stringify(vcxProvisionConfig),
-      token,
+      token: tokenWithAttestation,
     })
     const provisionResult: VcxProvisionResult = JSON.parse(provisionVcxResult)
     return [null, convertVcxProvisionResultToUserOneTimeInfo(provisionResult)]
@@ -237,10 +250,24 @@ export async function acceptInvitationVcx(
 ): Promise<GenericObject> {
   const connectionOption = agentInfo ? { pairwise_agent_info: agentInfo } : {}
 
-  const invitation = await Connection.connect({
-    handle: connectionHandle,
-    options: JSON.stringify(connectionOption),
-  })
+  let invitation
+
+  try {
+    invitation = await Connection.connect({
+      handle: connectionHandle,
+      options: JSON.stringify(connectionOption),
+    })
+  } catch (error) {
+    if (error.code === WALLET_ITEM_NOT_FOUND) {
+      // pairwise agent info not found in the wallet -> try to accept connection again but without predefined agent
+      invitation = await Connection.connect({
+        handle: connectionHandle,
+        options: '{}',
+      })
+    } else {
+      throw error
+    }
+  }
   const serializedConnection: string = await serializeConnection(connectionHandle)
 
   const {
@@ -262,6 +289,7 @@ export async function acceptInvitationVcx(
     serializedConnection,
     invitation,
   }
+
 }
 
 export async function deleteConnection(connectionHandle: number) {
@@ -294,14 +322,14 @@ export async function createConnectionWithAriesOutOfBandInvite(
 ): Promise<number> {
   return await Connection.createWithOutofbandInvitation({
     sourceID: invitation.requestId,
-    invitation: invitation.original
+    invitation: invitation.original,
   })
 }
 
 export async function serializeConnection(
   handle: number,
 ): Promise<string> {
-  return await Connection.serialize({
+  return Connection.serialize({
     handle,
   })
 }
@@ -371,24 +399,6 @@ export async function connectionSignData(
     // if data is not as per our expectation from external API
     // then we raise invalid data error
     throw new Error(`Invalid data received`)
-  }
-
-  return response
-}
-
-export async function connectionVerifySignature(
-  handle: number,
-  data: string,
-  signature: string,
-): Promise<boolean> {
-  const response: boolean = await Connection.verifySignature({
-    handle,
-    data,
-    signature,
-  })
-
-  if (typeof response !== 'boolean') {
-    throw new Error(`Expected response type was boolean but got ${response}`)
   }
 
   return response
@@ -493,7 +503,7 @@ export async function credentialCreateWithOffer(
 export async function serializeClaimOffer(
   handle: number,
 ): Promise<string> {
-  return await Credential.serialize({
+  return Credential.serialize({
     handle,
   })
 }
@@ -508,8 +518,8 @@ export const getClaimHandleBySerializedClaimOffer = memoize(async function(
 
 export async function sendClaimRequest(
   handle: number,
-  connectionHandle: number,
-  paymentHandle: number,
+  connectionHandle: number = 0,
+  paymentHandle: number = 0,
 ): Promise<void> {
   return await Credential.sendRequest({
     handle,
@@ -519,7 +529,7 @@ export async function sendClaimRequest(
 }
 
 export async function updateClaimOfferState(handle: number) {
-  return await Credential.updateState({
+  return Credential.updateState({
     handle,
   })
 }
@@ -634,7 +644,7 @@ export async function createCredentialWithAriesOfferObject(
 ): Promise<CxsCredentialOfferResult> {
   return await credentialCreateWithOffer(
     sourceId,
-    JSON.stringify(credentialOffer)
+    JSON.stringify(credentialOffer),
   )
 }
 
@@ -644,7 +654,7 @@ export async function createCredentialWithAriesOfferObject(
  */
 export async function vcxShutdown(deleteWallet: boolean): Promise<boolean> {
   await Library.shutdown({
-    deleteWallet
+    deleteWallet,
   })
 
   return true
@@ -661,27 +671,40 @@ export async function init(config: CxsInitConfig): Promise<boolean> {
   })
 }
 
-export async function initPool(
-  config: CxsPoolConfig,
-  fileName: string,
-): Promise<boolean> {
-  const genesis_path: string = await RNUtils.getGenesisPathWithConfig(
-    config.poolConfig,
-    fileName,
-  )
+async function preparePoolConfig(config: PoolConfig) {
+  let walletPoolName: WalletPoolName = await getWalletPoolName()
+  const genesisPath: string = await RNUtils.getGenesisPathWithConfig(config.genesis, config.key)
+  return {
+    genesis_path: genesisPath,
+    pool_name: walletPoolName.poolName + config.key,
+  }
+}
 
-  const initConfig = {
-    ...config,
-    genesis_path,
+
+export async function initPool(
+  poolConfig: string | Array<PoolConfig>,
+): Promise<boolean> {
+  let vcxInitPoolConfig = []
+
+  if (Array.isArray(poolConfig)) {
+    for (const config: PoolConfig of poolConfig) {
+      vcxInitPoolConfig.push(
+        await preparePoolConfig(config),
+      )
+    }
   }
 
-  const walletPoolName = await getWalletPoolName()
-  const vcxInitPoolConfig: VcxPoolInitConfig = await convertCxsPoolInitToVcxPoolInit(
-    initConfig,
-    walletPoolName,
-  )
+  if (typeof poolConfig === 'string') {
+    vcxInitPoolConfig.push(
+      await preparePoolConfig({
+        key: '',
+        genesis: poolConfig,
+      }),
+    )
+  }
+
   return await Library.initPool({
-    config: JSON.stringify(vcxInitPoolConfig)
+    config: JSON.stringify(vcxInitPoolConfig),
   })
 }
 
@@ -694,7 +717,7 @@ export async function simpleInit(): Promise<boolean> {
     wallet_key,
   }
   return await Library.init({
-    config: JSON.stringify(initConfig)
+    config: JSON.stringify(initConfig),
   })
 }
 
@@ -705,7 +728,7 @@ export async function getMatchingCredentials(
   handle: number,
 ): Promise<string> {
   return await DisclosedProof.getCredentialsForProofRequest({
-    handle
+    handle,
   })
 }
 
@@ -727,18 +750,22 @@ export async function sendProof(
 ): Promise<void> {
   return await DisclosedProof.sendProof({
     handle,
-    connectionHandle
+    connectionHandle,
   })
 }
 
 export async function proofCreateWithRequest(
+  sourceId: string,
   proofRequest: string,
+): Promise<number> {
   return await DisclosedProof.createWithRequest({
     sourceID: sourceId,
-    proofRequest
+    proofRequest,
   })
+}
+
 export async function proofSerialize(handle: number): Promise<string> {
-  return await DisclosedProof.serialize({
+  return DisclosedProof.serialize({
     handle,
   })
 }
@@ -747,7 +774,7 @@ export async function proofDeserialize(
   serialized: string,
 ): Promise<number> {
   return await DisclosedProof.deserialize({
-    serialized
+    serialized,
   })
 }
 
@@ -758,6 +785,14 @@ export async function proofReject(
   return DisclosedProof.reject({
     handle,
     connectionHandle,
+  })
+}
+
+export async function proofGetState(
+  handle: number,
+): Promise<number> {
+  return await DisclosedProof.getState({
+    handle,
   })
 }
 
@@ -775,7 +810,7 @@ export async function createProofVerifierWithProposal(presentationProposal: stri
 export async function proofVerifierSendRequest(handle: number, connectionHandle: number): Promise<null> {
   return Verifier.sendProofRequest({
     handle,
-    connectionHandle
+    connectionHandle,
   })
 }
 
@@ -787,7 +822,7 @@ export async function proofVerifierSerialize(handle: number): Promise<string> {
 
 export async function proofVerifierDeserialize(serialized: number): Promise<number> {
   return Verifier.deserialize({
-    serialized
+    serialized,
   })
 }
 
@@ -800,13 +835,13 @@ export async function proofVerifierUpdateStateWithMessage(handle: number, messag
 
 export async function proofVerifierGetProofMessage(handle: number): Promise<any> {
   return Verifier.getProofMessage({
-    handle
+    handle,
   })
 }
 
 export async function proofVerifierGetProofRequest(handle: number): Promise<string> {
   return Verifier.getProofRequestMessage({
-    handle
+    handle,
   })
 }
 
@@ -827,7 +862,7 @@ export async function decryptWalletFile(
     backup_key: decryptionKey,
   })
   return await Wallet.import({
-    config
+    config,
   })
 }
 
@@ -859,14 +894,14 @@ export async function encryptWallet({
 export async function getWalletTokenInfo(): Promise<WalletTokenInfo> {
   const paymentHandle = 0
   const tokenInfo: string = await Wallet.getTokenInfo({
-    paymentHandle
+    paymentHandle,
   })
   return JSON.parse(tokenInfo)
 }
 
 export async function createPaymentAddress(seed: ?string) {
   return await Wallet.createPaymentAddress({
-    seed
+    seed,
   })
 }
 

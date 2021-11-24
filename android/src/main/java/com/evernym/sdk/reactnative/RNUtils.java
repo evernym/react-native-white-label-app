@@ -28,6 +28,7 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.WritableArray;
+import com.facebook.react.bridge.NativeModule;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -62,6 +63,9 @@ public class RNUtils extends ReactContextBaseJavaModule {
     private static ReactApplicationContext reactContext = null;
     private static final int BUFFER = 2048;
     public static final int REQUEST_WRITE_EXTERNAL_STORAGE = 501;
+
+    private Thread t = null;
+    private int TwoMinutes = 2 * 60 * 1000;
 
     public RNUtils(ReactApplicationContext context) {
         super(context);
@@ -272,5 +276,35 @@ public class RNUtils extends ReactContextBaseJavaModule {
             promise.reject("IOException", e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    @ReactMethod
+    public void resetTimeout() {
+      if(t != null) {
+        if(t.isAlive()) {
+          t.interrupt();
+          try {
+            t.join();
+          } catch (InterruptedException e) {
+            e.printStackTrace();
+          }
+        }
+        t = null;
+      }
+    }
+
+    @ReactMethod
+    public void watchApplicationInactivity() {
+      t = new Thread() {
+        public void run() {
+          try {
+            sleep(TwoMinutes);
+            System.exit(0);
+          } catch (InterruptedException e) {
+            e.printStackTrace();
+          }
+        }
+      };
+      t.start();
     }
 }

@@ -10,15 +10,13 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
 import com.facebook.react.bridge.JavaScriptModule;
 
-import com.evernym.sdk.reactnative.rnindy.RNIndyModule;
-import com.evernym.sdk.reactnative.helpers.Helpers;
+import com.evernym.sdk.reactnative.rnindy.RNUtils;
 
 public class EvernymSdkPackage implements ReactPackage {
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
         return Arrays.<NativeModule>asList(new NativeModule[]{
-          new RNIndyModule(reactContext),
-          new Helpers(reactContext),
+          new RNUtils(reactContext),
         });
     }
 

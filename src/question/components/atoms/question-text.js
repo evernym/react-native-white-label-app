@@ -15,6 +15,9 @@ const QuestionText = (props: { text: ?string, questionStyles: any }) => {
       <ExpandableText
         text={props.text}
         style={styles.text}
+        testID={`question-description`}
+        accessible={true}
+        accessibilityLabel={`question-description`}
       />
     </View>
   )
