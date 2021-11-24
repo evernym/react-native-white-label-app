@@ -201,6 +201,8 @@ export class ClaimOfferModal extends Component<any, *> {
               denyButtonText={denyButtonText}
               acceptBtnText={acceptButtonText}
               svgIcon="Download"
+              disableAccept={this.props.isOffline}
+              disableDeny={!this.props.canBeIgnored && this.props.isOffline}
             >
               <CredentialPriceInfo price={payTokenValue || ''} />
             </ModalButtons>
@@ -391,7 +393,7 @@ const mapStateToProps = (
   state: Store,
   { route: { params } }: ClaimProofNavigation
 ) => {
-  const { claimOffer, lock } = state
+  const { claimOffer, lock, offline } = state
   const { uid } = params || { uid: '' }
   const claimOfferData = params.claimOfferData || claimOffer[uid]
   const logo =
@@ -425,6 +427,7 @@ const mapStateToProps = (
     claimPrice,
     lock,
     canBeIgnored,
+    isOffline: offline.offline
   }
 }
 

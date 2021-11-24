@@ -20,6 +20,7 @@ export const QuestionActions = ({
   selectedResponse,
   onSelectResponseAndSubmit,
   onSubmit,
+  isOffline,
 }: QuestionActionProps) => {
   const testID = 'question-action'
 
@@ -58,6 +59,7 @@ export const QuestionActions = ({
     <QuestionResponseButtons
       responses={responses}
       onPress={onSelectResponseAndSubmit}
+      disabled={isOffline}
     />
   )
 
@@ -67,7 +69,7 @@ export const QuestionActions = ({
         <ModalButtons
           onPress={onSubmit}
           acceptBtnText={submitButtonTitle}
-          disableAccept={isSubmitDisabled}
+          disableAccept={isSubmitDisabled || isOffline}
           colorBackground={colors.main}
           bottomTestID={`${testID}-submit`}
         />
@@ -79,7 +81,7 @@ export const QuestionActions = ({
 }
 
 function QuestionResponseButtons(props: QuestionResponseButtonsProps) {
-  const { responses, onPress } = props
+  const { responses, onPress, disabled } = props
 
   if (responses.length === 0 || responses.length > 2) {
     return null
@@ -105,6 +107,7 @@ function QuestionResponseButtons(props: QuestionResponseButtonsProps) {
           testID={response.text}
           accessible={true}
           accessibilityLabel={response.text}
+          disabled={disabled}
         />
       ))}
     </CustomView>
@@ -116,6 +119,7 @@ const QuestionResponseButton = ({
   isPrimaryResponse,
   isSingleResponse,
   onPress,
+  disabled = false
 }: QuestionResponseButtonProps) => {
   const onResponse = useCallback(() => {
     onPress(response)
@@ -144,6 +148,7 @@ const QuestionResponseButton = ({
       ]}
     >
       <CustomButton
+        disabled={disabled}
         {...questionActionButtonDefaultProps}
         main={isPrimaryResponse}
         twelfth={!isPrimaryResponse}
@@ -181,11 +186,13 @@ export type QuestionActionProps = {
   onSubmit: () => void,
   onSelectResponseAndSubmit: (response: QuestionResponse) => void,
   question?: QuestionStoreMessage,
+  isOffline: boolean
 }
 
 type QuestionResponseButtonsProps = {
   responses: Array<QuestionResponse>,
   onPress: (response: QuestionResponse) => void,
+  disabled: boolean,
 }
 
 type QuestionResponseButtonProps = {
@@ -193,4 +200,5 @@ type QuestionResponseButtonProps = {
   onPress: (response: QuestionResponse) => void,
   isPrimaryResponse: boolean,
   isSingleResponse: boolean,
+  disabled: boolean,
 }
