@@ -30,7 +30,11 @@ import type {
   PushNotificationPermissionProps,
   PushNotificationPermissionState,
 } from './type-push-notification-permission'
-import { appName, usePushNotifications, pushNotificationPermissionImage } from '../../external-imports'
+import {
+  appName,
+  usePushNotifications,
+  pushNotificationPermissionImage,
+} from '../../external-imports'
 
 const pushNotificationsAuthorizationStatus = async () =>
   usePushNotifications ? await messaging().hasPermission() : 0
@@ -55,7 +59,7 @@ export const getPushNotificationAuthorizationStatus = async () => {
 class PushNotificationPermission extends Component<
   PushNotificationPermissionProps,
   PushNotificationPermissionState
-  > {
+> {
   state = {
     appState: AppState.currentState,
     isPushNotificationsAuthorized: -1,
@@ -72,7 +76,7 @@ class PushNotificationPermission extends Component<
   componentDidUpdate(prevProps) {
     if (
       this.props.isAllowedPushNotification !==
-      prevProps.isAllowedPushNotification &&
+        prevProps.isAllowedPushNotification &&
       this.props.isAllowedPushNotification === true
     ) {
       this.props.navigation.navigate(
@@ -87,7 +91,7 @@ class PushNotificationPermission extends Component<
           attachedRequest: this.props.route.params?.intendedPayload
             ?.attachedRequest,
           senderName: this.props.route.params?.intendedPayload?.senderName,
-          hidden: this.props.route.params?.intendedPayload?.hidden
+          hidden: this.props.route.params?.intendedPayload?.hidden,
         }
       )
     }
@@ -114,7 +118,7 @@ class PushNotificationPermission extends Component<
             attachedRequest: this.props.route.params?.intendedPayload
               ?.attachedRequest,
             senderName: this.props.route.params?.intendedPayload?.senderName,
-            hidden: this.props.route.params?.intendedPayload?.hidden
+            hidden: this.props.route.params?.intendedPayload?.hidden,
           }
         )
         this.props.allowPushNotifications()
@@ -165,7 +169,7 @@ class PushNotificationPermission extends Component<
           You have disabled push notifications.
         </Text>
       )
-    } else return <Text style={styles.emptyWarningText}/>
+    } else return <Text style={styles.emptyWarningText} />
   }
 
   renderCorrectButton = () => {
@@ -213,7 +217,7 @@ class PushNotificationPermission extends Component<
       attachedRequest: this.props.route.params?.intendedPayload
         ?.attachedRequest,
       senderName: this.props.route.params?.intendedPayload?.senderName,
-      hidden: this.props.route.params?.intendedPayload?.hidden
+      hidden: this.props.route.params?.intendedPayload?.hidden,
     })
 
     setTimeout(() => pushNotificationPermissionAction(false), 100)
@@ -238,7 +242,7 @@ class PushNotificationPermission extends Component<
       attachedRequest: this.props.route.params?.intendedPayload
         ?.attachedRequest,
       senderName: this.props.route.params?.intendedPayload?.senderName,
-      hidden: this.props.route.params?.intendedPayload?.hidden
+      hidden: this.props.route.params?.intendedPayload?.hidden,
     })
 
     allowPushNotifications()
@@ -257,7 +261,11 @@ class PushNotificationPermission extends Component<
             style={styles.image}
             source={pushNotificationPermissionImage}
           />
-          <View style={styles.buttonsSection} accessible={false} accessibilityLabel="push-notifications-buttons-container">
+          <View
+            style={styles.buttonsSection}
+            accessible={false}
+            accessibilityLabel="push-notifications-buttons-container"
+          >
             {this.renderCorrectButton()}
             <TouchableOpacity
               style={styles.redButton}
@@ -364,6 +372,7 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 10,
     backgroundColor: colors.white,
+    marginBottom: moderateScale(10),
   },
   greenButtonText: {
     fontFamily: fontFamily,
@@ -398,8 +407,8 @@ export const pushNotificationPermissionScreen = {
 }
 
 pushNotificationPermissionScreen.screen.navigationOptions = ({
-                                                               navigation: { goBack, isFocused },
-                                                             }) => ({
+  navigation: { goBack, isFocused },
+}) => ({
   safeAreaInsets: { top: isFocused() ? verticalScale(85) : verticalScale(100) },
   cardStyle: {
     marginLeft: '2.5%',

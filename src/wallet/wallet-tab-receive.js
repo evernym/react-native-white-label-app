@@ -1,22 +1,17 @@
 // @flow
 
 import React, { PureComponent } from 'react'
-import { StyleSheet, Clipboard, ScrollView, Platform } from 'react-native'
+import { Clipboard, Platform } from 'react-native'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import {
   Container,
-  CustomView,
-  CustomText,
-  CustomButton,
-  Loader,
 } from '../components'
 import type {
   WalletTabReceiveProps,
   WalletTabReceiveState,
 } from './type-wallet'
 import type { Store } from '../store/type-store'
-import customStyles from './styles'
 import { getWalletAddresses } from '../store/store-selector'
 import { refreshWalletAddresses } from './wallet-store'
 import { promptBackupBanner } from '../backup/backup-store'
@@ -97,10 +92,6 @@ export class WalletTabReceive extends PureComponent<
   }
 
   render() {
-    const { walletAddresses, addressStatus } = this.props
-    const isLoading =
-      addressStatus === STORE_STATUS.IN_PROGRESS && walletAddresses.length === 0
-
     return (
       <Container>
         {/* <Container>
@@ -157,35 +148,6 @@ export class WalletTabReceive extends PureComponent<
     )
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    marginTop: 38,
-  },
-  heading: {
-    lineHeight: 18,
-    letterSpacing: -0.38,
-    marginBottom: 20,
-    paddingHorizontal: 16,
-  },
-  paymentAddress: {
-    marginTop: 5,
-    paddingTop: 16,
-    paddingBottom: 16,
-    paddingLeft: 13,
-    paddingRight: 13,
-    marginLeft: 19,
-    marginRight: 19,
-    fontSize: 18,
-    lineHeight: 24,
-    letterSpacing: -0.45,
-  },
-  alignItemsCenter: {
-    marginBottom: 6,
-    marginLeft: '5%',
-    marginRight: '5%',
-  },
-})
 
 const mapStateToProps = (state: Store) => {
   return {

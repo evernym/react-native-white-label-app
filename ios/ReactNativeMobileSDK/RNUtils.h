@@ -18,10 +18,6 @@
 #import “React/RCTEventEmitter.h” // Required when used as a Pod in a Swift project
 #endif
 
-@interface RNIndy : RCTEventEmitter <RCTBridgeModule>
-
-+ (void) writeToVcxLogFile:(NSString*)logFilePath
-              withLevelName:(NSString*)levelName
-               withMessage:(NSString*)message;
+@interface RNUtils : RCTEventEmitter <RCTBridgeModule>
 
 @end

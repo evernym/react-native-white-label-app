@@ -269,6 +269,11 @@ By default ios app uses `System` font which is usually `San Francisco` on ios. I
                         config.build_settings['ENABLE_BITCODE'] = 'NO'
                     end
                 end
+                if target.name == "evernym-react-native-sdk"
+                    target.build_configurations.each do |config|
+                        config.build_settings['ENABLE_BITCODE'] = 'NO'
+                    end
+                end
                 if target.name == "vcx"
                     target.build_configurations.each do |config|
                         config.build_settings['ENABLE_BITCODE'] = 'NO'

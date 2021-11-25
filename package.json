@@ -14,7 +14,7 @@
     "files"
   ],
   "scripts": {
-    "test": "jest --detectOpenHandles --forceExit",
+    "test": "jest --u --detectOpenHandles --forceExit",
     "lint": "flow stop && flow && eslint src",
     "configure": "chmod +x files/configure.sh && ./files/configure.sh"
   },
@@ -35,6 +35,7 @@
   "license": "SEE LICENSE IN LICENSE.txt",
   "readmeFilename": "README.md",
   "peerDependencies": {
+    "@evernym/react-native-sdk": "https://gitlab.com/evernym/mobile/mobile-sdk/-/package_files/22365953/download",
     "@react-native-community/async-storage": "^1.11.0",
     "@react-native-community/blur": "^3.6.0",
     "@react-native-community/masked-view": "^0.1.10",
@@ -125,7 +126,7 @@
     "validator": "^13.1.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.9",
+    "@babel/core": "^7.6.2",
     "@babel/plugin-proposal-decorators": "7.7.0",
     "babel-eslint": "10.0.3",
     "copyfiles": "^2.3.0",
@@ -173,7 +174,9 @@
   "husky": {
     "hooks": {
       "post-checkout": "yarnhook",
-      "post-merge": "yarnhook"
+      "post-merge": "yarnhook",
+      "pre-commit": "yarn run lint-staged",
+      "pre-push": "onerror \"npm test && npm run lint\" -t \"Push Failed\" -s Purr"
     }
   }
 }

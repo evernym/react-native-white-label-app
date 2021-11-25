@@ -136,13 +136,13 @@ describe.skip('<App/>', () => {
     it('user should exit from app if back button pressed twice with less than 2000 milliseconds gap', async () => {
       let instance = tree && tree.root && tree.root.instance
       const spy = jest.spyOn(ToastAndroid, 'show')
-      const { RNIndy } = NativeModules
+      const { RNUtils } = NativeModules
       instance && instance.onBackPressExit()
       expect(spy).toHaveBeenCalled()
       await delay(1000)
       instance && instance.onBackPressExit()
-      expect(RNIndy.exitAppAndroid).toHaveBeenCalled()
-      RNIndy.exitAppAndroid.mockClear()
+      expect(RNUtils.exitAppAndroid).toHaveBeenCalled()
+      RNUtils.exitAppAndroid.mockClear()
       spy.mockReset()
       spy.mockRestore()
     })

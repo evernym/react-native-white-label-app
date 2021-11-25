@@ -59,7 +59,7 @@ const headline = 'My Credential'
 const screen = CustomCredentialModal || CredentialModal
 const navigationOptions = CustomCredentialModal
   ? null
-  : modalOptions(headline, 'Arrow')
+  : modalOptions(headline, 'CloseIcon')
 
 export const fulfilledMessageScreen = {
   routeName: modalScreenRoute,

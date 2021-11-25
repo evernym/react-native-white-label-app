@@ -20,7 +20,7 @@ exports[`<QuestionActions /> when more than two responses are present match snap
           "flexDirection": "column",
           "maxWidth": "100%",
           "padding": 14.357142857142858,
-          "paddingBottom": 2.8714285714285714,
+          "paddingBottom": 9.571428571428571,
           "width": "100%",
         },
         undefined,
@@ -121,7 +121,7 @@ exports[`<QuestionActions /> when more than two responses are present match snap
           "flexDirection": "column",
           "maxWidth": "100%",
           "padding": 14.357142857142858,
-          "paddingBottom": 2.8714285714285714,
+          "paddingBottom": 9.571428571428571,
           "width": "100%",
         },
         undefined,
@@ -222,7 +222,7 @@ exports[`<QuestionActions /> when more than two responses are present render Ign
           "flexDirection": "column",
           "maxWidth": "100%",
           "padding": 14.357142857142858,
-          "paddingBottom": 2.8714285714285714,
+          "paddingBottom": 9.571428571428571,
           "width": "100%",
         },
         undefined,
@@ -323,7 +323,7 @@ exports[`<QuestionActions /> when one response is present match snapshot if in e
           "flexDirection": "column",
           "maxWidth": "100%",
           "padding": 14.357142857142858,
-          "paddingBottom": 2.8714285714285714,
+          "paddingBottom": 9.571428571428571,
           "width": "100%",
         },
         undefined,
@@ -424,7 +424,7 @@ exports[`<QuestionActions /> when one response is present match snapshot if in s
           "flexDirection": "column",
           "maxWidth": "100%",
           "padding": 14.357142857142858,
-          "paddingBottom": 2.8714285714285714,
+          "paddingBottom": 9.571428571428571,
           "width": "100%",
         },
         undefined,
@@ -520,6 +520,7 @@ exports[`<QuestionActions /> when one response is present render Ignore and resp
   <View
     style={
       Object {
+        "marginBottom": 9.571428571428571,
         "marginLeft": "3%",
         "width": "94%",
       }
@@ -637,7 +638,7 @@ exports[`<QuestionActions /> when two responses are present match snapshot if in
           "flexDirection": "column",
           "maxWidth": "100%",
           "padding": 14.357142857142858,
-          "paddingBottom": 2.8714285714285714,
+          "paddingBottom": 9.571428571428571,
           "width": "100%",
         },
         undefined,
@@ -738,7 +739,7 @@ exports[`<QuestionActions /> when two responses are present match snapshot if in
           "flexDirection": "column",
           "maxWidth": "100%",
           "padding": 14.357142857142858,
-          "paddingBottom": 2.8714285714285714,
+          "paddingBottom": 9.571428571428571,
           "width": "100%",
         },
         undefined,
@@ -834,6 +835,7 @@ exports[`<QuestionActions /> when two responses are present render both response
   <View
     style={
       Object {
+        "marginBottom": 9.571428571428571,
         "marginLeft": "3%",
         "width": "94%",
       }
@@ -1249,7 +1251,7 @@ exports[`<QuestionScreen /> should match error snapshot 1`] = `
             "flexDirection": "column",
             "maxWidth": "100%",
             "padding": 14.357142857142858,
-            "paddingBottom": 2.8714285714285714,
+            "paddingBottom": 9.571428571428571,
             "width": "100%",
           },
           undefined,
@@ -1498,6 +1500,8 @@ exports[`<QuestionScreen /> should match idle state snapshot 1`] = `
             }
           >
             <Text
+              accessibilityLabel="question-description"
+              accessible={true}
               ellipsizeMode="tail"
               numberOfLines={2}
               onTextLayout={[Function]}
@@ -1507,6 +1511,7 @@ exports[`<QuestionScreen /> should match idle state snapshot 1`] = `
                   "fontSize": 17,
                 }
               }
+              testID="question-description"
             >
               Hi User,
             </Text>
@@ -2001,7 +2006,7 @@ exports[`<QuestionScreen /> should match idle state snapshot 1`] = `
             "flexDirection": "column",
             "maxWidth": "100%",
             "padding": 14.357142857142858,
-            "paddingBottom": 2.8714285714285714,
+            "paddingBottom": 9.571428571428571,
             "width": "100%",
           },
           undefined,
@@ -2251,6 +2256,8 @@ exports[`<QuestionScreen /> should match invalid data 1`] = `
             }
           >
             <Text
+              accessibilityLabel="question-description"
+              accessible={true}
               ellipsizeMode="tail"
               numberOfLines={2}
               onTextLayout={[Function]}
@@ -2260,6 +2267,7 @@ exports[`<QuestionScreen /> should match invalid data 1`] = `
                   "fontSize": 17,
                 }
               }
+              testID="question-description"
             >
               Hi User,
             </Text>

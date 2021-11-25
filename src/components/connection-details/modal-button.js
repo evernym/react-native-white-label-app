@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
     width: '100%',
     padding: moderateScale(15),
     paddingBottom: moderateScale(1),
+    marginBottom: moderateScale(10),
   },
   innerWrapper: {
     width: '100%',

@@ -33,31 +33,33 @@ const ProofRequestModal = ({
   }, [])
 
   return (
-    <View style={styles.modalWrapper}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <StatusBar backgroundColor={colors.black} barStyle={'light-content'}/>
-        <ModalHeader
-          institutionalName={data.senderName}
-          credentialName={data.name}
-          credentialText={'You shared this information'}
-          imageUrl={data.senderLogoUrl}
-          colorBackground={colorBackground}
-          {...{
-            isMissingFieldsShowing,
-            toggleMissingFields,
-            showToggleMenu: isToggleMenuShowing,
-          }}
-        />
-        <View style={styles.outerModalWrapper}>
-          <View style={styles.innerModalWrapper}>
-            <CustomListProofRequest
-              items={data.data}
-              claimMap={claimMap}
-              isMissingFieldsShowing={isMissingFieldsShowing}
-            />
+    <View  style={styles.modalWrapper}>
+      <View style={styles.modalInnerWrapper}>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <StatusBar backgroundColor={colors.black} barStyle={'light-content'}/>
+          <ModalHeader
+            institutionalName={data.senderName}
+            credentialName={data.name}
+            credentialText={'You shared this information'}
+            imageUrl={data.senderLogoUrl}
+            colorBackground={colorBackground}
+            {...{
+              isMissingFieldsShowing,
+              toggleMissingFields,
+              showToggleMenu: isToggleMenuShowing,
+            }}
+          />
+          <View style={styles.outerModalWrapper}>
+            <View style={styles.innerModalWrapper}>
+              <CustomListProofRequest
+                items={data.data}
+                claimMap={claimMap}
+                isMissingFieldsShowing={isMissingFieldsShowing}
+              />
+            </View>
           </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </View>
       <ModalButton
         onClose={hideModal}
         colorBackground={colorBackground}
@@ -85,6 +87,9 @@ proofScreen.screen.navigationOptions = navigationOptions
 
 const styles = StyleSheet.create({
   modalWrapper: {
+    flex: 1,
+  },
+  modalInnerWrapper: {
     flex: 1,
     paddingLeft: '5%',
     paddingRight: '5%',
