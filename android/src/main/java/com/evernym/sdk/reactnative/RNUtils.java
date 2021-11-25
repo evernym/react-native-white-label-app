@@ -58,11 +58,27 @@ import java.net.URL;
 
 import javax.annotation.Nullable;
 
+import androidx.annotation.NonNull;
+
+import android.content.pm.ApplicationInfo;
+import android.content.Intent;
+import android.provider.Settings;
+
+import com.google.android.gms.safetynet.SafetyNet;
+import com.google.android.gms.safetynet.SafetyNetApi;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+
+import java.lang.IllegalArgumentException;
+
 public class RNUtils extends ReactContextBaseJavaModule {
     public static final String REACT_CLASS = "RNUtils";
     private static ReactApplicationContext reactContext = null;
     private static final int BUFFER = 2048;
     public static final int REQUEST_WRITE_EXTERNAL_STORAGE = 501;
+    private boolean isGmsEnabled;
 
     private Thread t = null;
     private int TwoMinutes = 2 * 60 * 1000;
@@ -71,6 +87,7 @@ public class RNUtils extends ReactContextBaseJavaModule {
         super(context);
 
         reactContext = context;
+        this.initializeGMSStatus();
     }
 
     @Override
@@ -306,5 +323,120 @@ public class RNUtils extends ReactContextBaseJavaModule {
         }
       };
       t.start();
+    }
+
+    @ReactMethod
+    public void createWalletKey(int lengthOfKey, Promise promise) {
+        try {
+            SecureRandom random = new SecureRandom();
+            byte bytes[] = new byte[lengthOfKey];
+            random.nextBytes(bytes);
+            promise.resolve(Base64.encodeToString(bytes, Base64.NO_WRAP));
+        } catch (Exception e) {
+            e.printStackTrace();
+            promise.reject("Exception", e.getMessage());
+        }
+    }
+
+    private void initializeGMSStatus() {
+        try {
+            ApplicationInfo gmsInfo = reactContext.getPackageManager()
+                    .getApplicationInfo(GoogleApiAvailability.GOOGLE_PLAY_SERVICES_PACKAGE, 0);
+            isGmsEnabled = gmsInfo.enabled;
+        } catch (PackageManager.NameNotFoundException e) {
+            isGmsEnabled = false;
+        }
+    }
+
+    @ReactMethod
+    public void getGooglePlayServicesStatus(final Promise promise) {
+        if (!isGmsEnabled) {
+            promise.resolve(GooglePlayServicesStatus.GMS_DISABLED.getStatus());
+        }
+
+        int result = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(reactContext);
+        if (result != ConnectionResult.SUCCESS) {
+            promise.resolve(GooglePlayServicesStatus.GMS_NEED_UPDATE.getStatus());
+        }
+
+        promise.resolve(GooglePlayServicesStatus.AVAILABLE.getStatus());
+    }
+
+    private void runActivity(Intent intent) {
+        Activity currentActivity = reactContext.getCurrentActivity();
+        if (currentActivity == null) {
+            throw new NullPointerException();
+        }
+        currentActivity.startActivity(intent);
+    }
+
+    @ReactMethod
+    public void goToGooglePlayServicesSetting() {
+        Uri uri = Uri.parse("package:" + GoogleApiAvailability.GOOGLE_PLAY_SERVICES_PACKAGE);
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        intent.setData(uri);
+
+        this.runActivity(intent);
+    }
+
+    @ReactMethod
+    public void goToGooglePlayServicesMarketLink() {
+        Uri uri = Uri.parse(
+                "http://play.google.com/store/apps/details?id=" + GoogleApiAvailability.GOOGLE_PLAY_SERVICES_PACKAGE);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+        this.runActivity(intent);
+    }
+
+    @ReactMethod
+    public void generateNonce(int length, final Promise promise) {
+        this.createWalletKey(length, promise);
+    }
+
+    @ReactMethod
+    public void sendAttestationRequest(String nonceString, String apiKey, final Promise promise) {
+        byte[] nonce;
+        Activity activity;
+        nonce = stringToBytes(nonceString);
+        activity = reactContext.getCurrentActivity();
+        SafetyNet.getClient(this.getReactApplicationContext()).attest(nonce, apiKey)
+                .addOnSuccessListener(activity, new OnSuccessListener<SafetyNetApi.AttestationResponse>() {
+                    @Override
+                    public void onSuccess(SafetyNetApi.AttestationResponse response) {
+                        String result = response.getJwsResult();
+                        promise.resolve(result);
+                    }
+                }).addOnFailureListener(activity, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        promise.reject(e);
+                    }
+                });
+    }
+
+    private byte[] stringToBytes(String string) {
+        byte[] bytes;
+        bytes = null;
+        try {
+            bytes = Base64.decode(string, Base64.DEFAULT);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+        return bytes;
+    }
+}
+
+enum GooglePlayServicesStatus {
+    AVAILABLE(10), GMS_DISABLED(20), GMS_NEED_UPDATE(21), INVALID(30);
+
+    private int status;
+
+    GooglePlayServicesStatus(int i) {
+        this.status = i;
+    }
+
+    public int getStatus() {
+        return this.status;
     }
 }

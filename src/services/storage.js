@@ -1,5 +1,4 @@
 // @flow
-import { NativeModules } from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage'
 import memoize from 'lodash.memoize'
 import RNSensitiveInfo from 'react-native-sensitive-info'
@@ -9,12 +8,14 @@ import { IN_RECOVERY } from '../lock/type-lock'
 import { noop } from '../common'
 import { WALLET_KEY } from '../common/secure-storage-constants'
 
-const { RNIndy } = NativeModules
+import { Wallet } from '@evernym/react-native-sdk'
 
 const storageName = {
   sharedPreferencesName: 'ConnectMeSharedPref',
   keychainService: 'ConnectMeKeyChain',
 }
+
+const recordType = 'record_type'
 
 // SECURE STORAGE
 export const secureSet = (key: string, data: string) =>
@@ -139,11 +140,19 @@ export async function setWalletItem(
   key: string,
   value: string
 ): Promise<number> {
-  return await RNIndy.setWalletItem(key, value)
+  return Wallet.addRecord({
+    type: recordType,
+    key,
+    value
+  })
 }
 
 export async function getWalletItem(key: string): Promise<string> {
-  const response: string = await RNIndy.getWalletItem(key)
+  const response: string = await Wallet.getRecord({
+    type: recordType,
+    key
+  })
+
   if (response) {
     const itemValue = JSON.parse(response)
     const { value } = itemValue
@@ -159,14 +168,21 @@ export async function getWalletItem(key: string): Promise<string> {
 }
 
 export async function deleteWalletItem(key: string): Promise<number> {
-  return await RNIndy.deleteWalletItem(key)
+  return Wallet.deleteRecord({
+    type: recordType,
+    key
+  })
 }
 
 export async function updateWalletItem(
   key: string,
-  data: string
+  value: string
 ): Promise<number> {
-  return await RNIndy.updateWalletItem(key, data)
+  return Wallet.updateRecord({
+    type: recordType,
+    key,
+    value
+  })
 }
 
 export const getWalletKey = memoize(async function (): Promise<string> {
@@ -177,8 +193,10 @@ export const getWalletKey = memoize(async function (): Promise<string> {
     }
 
     const lengthOfKey = 64
-    walletKey = await RNIndy.createWalletKey(lengthOfKey)
-    // createWalletKey sometimes returns with a whitespace character at the end so we need to trim it
+    walletKey = await Wallet.creatKey({
+      lengthOfKey
+    })
+// createWalletKey sometimes returns with a whitespace character at the end so we need to trim it
     walletKey = walletKey.trim()
 
     await secureSet(WALLET_KEY, walletKey)
