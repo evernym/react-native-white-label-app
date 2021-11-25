@@ -88,6 +88,9 @@ describe('<Invitation />', () => {
       isTouchIdEnabled: false,
     },
     smsPendingInvitation: {},
+    offline: {
+      offline: false
+    }
   })
 
   beforeEach(() => {
