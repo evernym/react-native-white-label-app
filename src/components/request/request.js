@@ -11,6 +11,8 @@ import { colors } from '../../common/styles'
 import { CONNECT, DENY } from '../../common'
 import { StyleSheet } from 'react-native'
 import { moderateScale } from 'react-native-size-matters'
+import { useSelector } from 'react-redux'
+import { getOfflineStatus } from '../../store/store-selector'
 
 export const Request = ({
   title,
@@ -21,6 +23,8 @@ export const Request = ({
   senderName,
   testID,
 }: RequestProps) => {
+  const isOffline = useSelector(getOfflineStatus)
+
   const [disableActions, setDisableActions] = useState(false)
 
   const onAccept = useCallback(() => {
@@ -61,7 +65,7 @@ export const Request = ({
         denyButtonText={DENY}
         acceptBtnText={CONNECT}
         disableDeny={disableActions}
-        disableAccept={disableActions}
+        disableAccept={disableActions || isOffline}
         topTestID={`${testID}-deny`}
         bottomTestID={`${testID}-accept`}
         containerStyles={styles.container}
