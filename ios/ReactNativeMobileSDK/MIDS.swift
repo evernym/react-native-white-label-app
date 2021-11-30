@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 import MIDSAssistSDK
 
 
@@ -18,6 +19,8 @@ class MIDSDocumentVerification: NSObject {
   var reject: RCTResponseSenderBlock!
   var currentScanView: MIDSCustomScanViewController?
   var verifyInfoView : ConfirmScannedImageView!
+  // Swift doesn't have synthesize, so we are writing it here directly as variable
+  var bridge: RCTBridge!
   
   static func getEnrollmentManagerInstance() -> MIDSEnrollmentManager {
       if enrollmentManagerInstance == nil {
@@ -79,6 +82,10 @@ class MIDSDocumentVerification: NSObject {
       MIDSDocumentVerification.enrollmentManager.startScan(document: documentType, privacyPolicyVersion: version, userBiometricConsent: true)
     }
   }
+    
+    @objc func dispatchEvent( eventName: String ) {
+        self.bridge.eventDispatcher.sendAppEventWithName( eventName, body: "" )
+    }
 
   func getDataCenter(dataCenter: String) -> MIDSDataCenter {
     switch dataCenter {
@@ -103,6 +110,12 @@ class MIDSDocumentVerification: NSObject {
       }
     }
   }
+    
+    func terminate() {
+        if MIDSDocumentVerification.enrollmentManager.isMIDSVerifySDKInitialized() {
+          MIDSDocumentVerification.enrollmentManager.terminateSDK()
+        }
+    }
 }
 
 extension MIDSDocumentVerification: MIDSEnrollmentDelegate {
@@ -125,16 +138,47 @@ extension MIDSDocumentVerification: MIDSEnrollmentDelegate {
   
   func midsEnrollmentManager(didDetermineNextScanViewController scanViewController: MIDSCustomScanViewController, isFallback: Bool) {
     self.currentScanView = scanViewController
+  // disable swipe down
+  scanViewController.customScanViewController?.isModalInPresentation = true
+      // Add close button
+      // Create UIButton
+      let myButton = UIButton(type: .close)
+      
+      // Position Button
+      myButton.frame = CGRect(x: 20, y: 20, width: 100, height: 50)
+      // Set text on button
+      myButton.setTitle("X", for: .normal)
+      // Set button background color
+      myButton.backgroundColor = UIColor.lightGray
+      
+      // Set button action
+       myButton.addTarget(self, action: #selector(resetScanner(_:)), for: .touchUpInside)
+      
+      // TODO:KS figure out the position handling
+      // we need to use SwiftUI or UIKit alignment
+      // this is the hard part
+      scanViewController.customScanViewController?.addSubview(myButton)
+
     if  scanViewController.customScanViewController?.currentScanMode() == .faceCapture || scanViewController.customScanViewController?.currentScanMode() == .faceIProov {
       UIApplication.shared.windows.first?.rootViewController?.dismiss(animated: true, completion:{ () -> Void in
         UIApplication.shared.windows.first?.rootViewController?.present(scanViewController, animated: true)
       })
+        
       return
     }
 
     UIApplication.shared.windows.first?.rootViewController?.dismiss(animated: false)
     UIApplication.shared.windows.first?.rootViewController?.present(scanViewController, animated: false)
   }
+    
+    @objc func resetScanner(_ sender:UIButton!)
+    {
+        // terminate SDK
+        terminate()
+        // raise event to react-native
+        dispatchEvent(eventName: "DESTROY")
+    }
+
 
   func midsEnrollmentManager(didFinishScanningWith reference: String, accountID: String?, authenticationResult: Bool?)  {
     MIDSDocumentVerification.enrollmentManager.terminateSDK()

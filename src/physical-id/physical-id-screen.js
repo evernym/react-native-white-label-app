@@ -25,7 +25,8 @@ import type {
 
 import { Container, CustomView, Loader } from '../components'
 import {
-  launchPhysicalIdSDK, physicalIdConnectionStart,
+  launchPhysicalIdSDK,
+  physicalIdConnectionStart,
   physicalIdSdkInit,
   stopPhysicalId,
 } from './physical-id-store'
@@ -40,7 +41,7 @@ import { ModalButtons } from '../components/buttons/modal-buttons'
 import { countryDocumentsMap, documentTypesMap } from './physical-id-constants'
 
 // import { physicalIdHeadline } from '../external-imports'
-import { requestCameraPermissions } from "../permissions/permissions";
+import { requestCameraPermissions } from '../permissions/permissions'
 
 const documentVerificationImage = require('../images/physicalId.png')
 
@@ -76,15 +77,14 @@ function PhysicalId() {
       DeviceEventEmitter.addListener('FACE_SCAN', () => {
         setLoaderText(LOADER_TEXT.finish)
       })
-      DeviceEventEmitter.addListener('DESTROY', () => {
-        resetComponentState()
-        dispatch(stopPhysicalId())
-      })
     }
+    DeviceEventEmitter.addListener('DESTROY', () => {
+      resetComponentState()
+      dispatch(stopPhysicalId())
+    })
+
     return () => {
-      if (Platform.OS === 'android') {
-        DeviceEventEmitter.removeAllListeners()
-      }
+      DeviceEventEmitter.removeAllListeners()
     }
   }, [])
 
@@ -96,8 +96,8 @@ function PhysicalId() {
 
   const onStartDocumentVerification = async () => {
     requestCameraPermissions(
-      "Application need to access the Camera to scan document",
-      onCameraPermissionsGranted,
+      'Application need to access the Camera to scan document',
+      onCameraPermissionsGranted
     )
   }
 
@@ -208,12 +208,8 @@ const LoaderVisiblePhysicalIdStates = [
   physicalIdProcessStatus.SDK_SCAN_START,
 ]
 
-function isLoaderVisible(
-  status: PhysicalIdProcessStatus,
-) {
-  return (
-    LoaderVisiblePhysicalIdStates.includes(status)
-  )
+function isLoaderVisible(status: PhysicalIdProcessStatus) {
+  return LoaderVisiblePhysicalIdStates.includes(status)
 }
 
 function getLoaderMessageText(status: PhysicalIdProcessStatus) {
@@ -291,13 +287,13 @@ function getErrorConnectionText(connectionStatus: PhysicalIdConnectionStatus) {
 }
 
 const PhysicalIdDefault = ({
-                             country,
-                             countryName,
-                             setDocument,
-                             onCountrySelect,
-                             countryPickerVisible,
-                             setCountryPickerVisible,
-                           }) => {
+  country,
+  countryName,
+  setDocument,
+  onCountrySelect,
+  countryPickerVisible,
+  setCountryPickerVisible,
+}) => {
   const data = useMemo(() => {
     const documents = country ? countryDocumentsMap[country] || [] : []
     return documents.map((document) => ({
