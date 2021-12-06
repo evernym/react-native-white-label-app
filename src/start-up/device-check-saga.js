@@ -7,7 +7,7 @@ import jwtDecode from 'jwt-decode'
 import { flattenAsync } from '../common/flatten-async'
 import { androidDeviceCheckApiKey } from '../external-imports'
 
-const { RNIndy } = NativeModules
+const { RNUtils } = NativeModules
 
 function* checkDeviceSecurityWorker() {
   if (__DEV__ || !androidDeviceCheckApiKey) {
@@ -23,7 +23,7 @@ function* checkDeviceSecurityWorker() {
 
   if (Platform.OS === 'android') {
     const [playServiceError, playServiceStatus] = yield call(
-      flattenAsync(RNIndy.getGooglePlayServicesStatus)
+      flattenAsync(RNUtils.getGooglePlayServicesStatus)
     )
     if (
       playServiceError ||
@@ -41,7 +41,7 @@ function* checkDeviceSecurityWorker() {
 
     // generate nonce
     const [nonceError, nonce] = yield call(
-      flattenAsync(RNIndy.generateNonce),
+      flattenAsync(RNUtils.generateNonce),
       NONCE_LENGTH
     )
     if (nonceError) {
@@ -50,7 +50,7 @@ function* checkDeviceSecurityWorker() {
     }
 
     const [attestError, attestJws] = yield call(
-      flattenAsync(RNIndy.sendAttestationRequest),
+      flattenAsync(RNUtils.sendAttestationRequest),
       nonce,
       androidDeviceCheckApiKey
     )
@@ -71,7 +71,7 @@ function* checkDeviceSecurityWorker() {
 
   if (Platform.OS === 'ios') {
     const [deviceCheckTokenError] = yield call(
-      flattenAsync(NativeModules.RNIndy.getDeviceCheckToken)
+      flattenAsync(NativeModules.RNUtils.getDeviceCheckToken)
     )
 
     if (deviceCheckTokenError) {
@@ -92,7 +92,7 @@ export async function getDeviceAttestation(
 ): Promise<null | string> {
   if (Platform.OS === 'android') {
     const [androidTokenError, androidToken] = await flattenAsync(
-      RNIndy.sendAttestationRequest
+      RNUtils.sendAttestationRequest
     )(nonce, androidDeviceCheckApiKey)
     if (androidTokenError) {
       return null
@@ -103,7 +103,7 @@ export async function getDeviceAttestation(
 
   if (Platform.OS === 'ios') {
     const [iosTokenError, iosToken] = await flattenAsync(
-      NativeModules.RNIndy.getDeviceCheckToken
+      NativeModules.RNUtils.getDeviceCheckToken
     )
     if (iosTokenError) {
       return null

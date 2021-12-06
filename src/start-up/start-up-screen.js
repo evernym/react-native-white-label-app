@@ -72,7 +72,7 @@ function StartUpScreen(props: { navigation: Function }) {
             text: 'Update',
             onPress: async () => {
               if (Platform.OS === 'android') {
-                await NativeModules.RNIndy.goToGooglePlayServicesMarketLink()
+                await NativeModules.RNUtils.goToGooglePlayServicesMarketLink()
               }
             },
           },
@@ -86,7 +86,7 @@ function StartUpScreen(props: { navigation: Function }) {
           text: 'Settings',
           onPress: async () => {
             if (Platform.OS === 'android') {
-              await NativeModules.RNIndy.goToGooglePlayServicesSetting()
+              await NativeModules.RNUtils.goToGooglePlayServicesSetting()
             }
           },
         },

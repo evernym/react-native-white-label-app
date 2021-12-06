@@ -31,16 +31,16 @@
         * release build for devices only (`arm64`):
 
            ```ruby
-            pod 'vcx', '0.0.215'
+            pod 'vcx', '0.0.219'
            ```
 
         * debug build for simulators
 
            ```ruby
-                pod 'vcx', '0.0.216'
+                pod 'vcx', '0.0.220'
            ```
 
-      * **Note** that currently recommended VCX versions are `215/216`.
+      * **Note** that currently recommended VCX versions are `219/220`.
 
       * Add below lines inside your `target` in Podfile
   
@@ -51,7 +51,7 @@
 
 4. Add apptentive. You are not required to use this library. As of now we have a dependency on this library. We will make this optional in future. Add below dependency in `Podfile`
   
-    `pod 'apptentive-ios', '5.2.2'`
+    `pod 'apptentive-ios'`
 
 5. Run `pod install`
 
@@ -265,6 +265,11 @@ By default ios app uses `System` font which is usually `San Francisco` on ios. I
             end
             installer.pods_project.targets.each do |target|
                 if target.name == "react-native-white-label-app"
+                    target.build_configurations.each do |config|
+                        config.build_settings['ENABLE_BITCODE'] = 'NO'
+                    end
+                end
+                if target.name == "evernym-react-native-sdk"
                     target.build_configurations.each do |config|
                         config.build_settings['ENABLE_BITCODE'] = 'NO'
                     end

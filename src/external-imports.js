@@ -9,6 +9,7 @@ import {
   STORAGE_KEY,
   DEEP_LINK,
   PUSH_NOTIFICATION_PERMISSION_SCREEN_IMAGE_IOS,
+  POOLING_INTERVALS,
 } from '../../../../app/evernym-sdk/app'
 
 export {
@@ -172,3 +173,8 @@ export const deepLinkAddress = DEEP_LINK || null
 export const pushNotificationPermissionImage =
   PUSH_NOTIFICATION_PERMISSION_SCREEN_IMAGE_IOS ||
   require('./images/iphoneX.png')
+export const pollingIntervals = POOLING_INTERVALS || {
+  short: 2000,
+  medium: 3000,
+  long: 15000,
+}

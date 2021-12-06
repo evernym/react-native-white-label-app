@@ -3,7 +3,6 @@ import RNFetchBlob from 'rn-fetch-blob'
 import uniqueId from 'react-native-unique-id'
 import _flatten from 'lodash.flatten'
 import _merge from 'lodash.merge'
-import { NativeModules } from 'react-native'
 
 import type { Store } from '../store/type-store'
 import {
@@ -127,14 +126,18 @@ import {
   SWITCH_ENVIRONMENT,
 } from '../switch-environment/type-switch-environment'
 
-const { RNIndy } = NativeModules
+import { Logger } from '@evernym/react-native-sdk'
 
 export async function setVcxLogger(
   logLevel: string,
   uniqueId: string,
   MAX_ALLOWED_FILE_BYTES: number
 ): Promise<string> {
-  return await RNIndy.setVcxLogger(logLevel, uniqueId, MAX_ALLOWED_FILE_BYTES)
+  return await Logger.setLogger({
+    logLevel,
+    uniqueIdentifier: uniqueId,
+    maxAllowedFileBytes: MAX_ALLOWED_FILE_BYTES,
+  })
 }
 
 export async function writeToVcxLog(
@@ -143,19 +146,22 @@ export async function writeToVcxLog(
   logMessage: string,
   logFilePath: string
 ): Promise<void> {
-  return await RNIndy.writeToVcxLog(
+  return await Logger.writeToLog({
     loggerName,
-    levelName,
-    logMessage,
-    logFilePath
-  )
+    logLevel: levelName,
+    message: logMessage,
+    logFilePath,
+  })
 }
 
-export async function encryptVcxLog(
+export async function encryptLog(
   logFilePath: string,
-  encryptionKey: string
+  key: string
 ): Promise<string> {
-  return await RNIndy.encryptVcxLog(logFilePath, encryptionKey)
+  return await Logger.encryptLog({
+    logFilePath,
+    key,
+  })
 }
 
 export const customLogger = {
@@ -371,7 +377,7 @@ export const customLogger = {
 
   encryptLogFile: async function () {
     const rotatingLog = this.getVcxLogFile()
-    this.encryptedLogFile = await encryptVcxLog(
+    this.encryptedLogFile = await encryptLog(
       rotatingLog,
       CustomLogUtils.encryptionKey ?? ''
     )

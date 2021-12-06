@@ -284,7 +284,8 @@ class ModalContentProof extends Component<
       this.props.proofGenerationError ||
       !this.state.allMissingAttributesFilled ||
       (this.props.dissatisfiedAttributes &&
-        this.props.dissatisfiedAttributes.length > 0)
+        this.props.dissatisfiedAttributes.length > 0) ||
+      this.props.isOffline
 
     let acceptButtonText = proofRequestAcceptButtonText || PRIMARY_ACTION_SEND
     let denyButtonText =
@@ -329,6 +330,7 @@ class ModalContentProof extends Component<
           svgIcon="Send"
           colorBackground={colors.main}
           {...{ secondColorBackground }}
+          disableDeny={!this.props.canBeIgnored && this.props.isOffline}
         />
       </View>
     )
@@ -336,7 +338,7 @@ class ModalContentProof extends Component<
 }
 
 const mapStateToProps = (state: Store, mergeProps) => {
-  const { proofRequest, lock } = state
+  const { proofRequest, lock, offline } = state
   const uid = mergeProps.uid
   const proofRequestData = proofRequest[uid] || {}
   const {
@@ -362,6 +364,7 @@ const mapStateToProps = (state: Store, mergeProps) => {
     dissatisfiedAttributes,
     lock,
     canBeIgnored,
+    isOffline: offline.offline,
   }
 }
 

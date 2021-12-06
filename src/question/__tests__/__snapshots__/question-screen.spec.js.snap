@@ -231,7 +231,7 @@ exports[`<QuestionScreen /> should match error snapshot 1`] = `
             "flexDirection": "column",
             "maxWidth": "100%",
             "padding": 14.357142857142858,
-            "paddingBottom": 2.8714285714285714,
+            "paddingBottom": 9.571428571428571,
             "width": "100%",
           },
           undefined,
@@ -480,6 +480,8 @@ exports[`<QuestionScreen /> should match idle state snapshot 1`] = `
             }
           >
             <Text
+              accessibilityLabel="question-description"
+              accessible={true}
               ellipsizeMode="tail"
               numberOfLines={2}
               onTextLayout={[Function]}
@@ -489,6 +491,7 @@ exports[`<QuestionScreen /> should match idle state snapshot 1`] = `
                   "fontSize": 17,
                 }
               }
+              testID="question-description"
             >
               Hi User,
             </Text>
@@ -983,7 +986,7 @@ exports[`<QuestionScreen /> should match idle state snapshot 1`] = `
             "flexDirection": "column",
             "maxWidth": "100%",
             "padding": 14.357142857142858,
-            "paddingBottom": 2.8714285714285714,
+            "paddingBottom": 9.571428571428571,
             "width": "100%",
           },
           undefined,
@@ -1233,6 +1236,8 @@ exports[`<QuestionScreen /> should match invalid data 1`] = `
             }
           >
             <Text
+              accessibilityLabel="question-description"
+              accessible={true}
               ellipsizeMode="tail"
               numberOfLines={2}
               onTextLayout={[Function]}
@@ -1242,6 +1247,7 @@ exports[`<QuestionScreen /> should match invalid data 1`] = `
                   "fontSize": 17,
                 }
               }
+              testID="question-description"
             >
               Hi User,
             </Text>

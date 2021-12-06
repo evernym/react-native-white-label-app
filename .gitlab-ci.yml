@@ -97,7 +97,6 @@ yarn-test:
   tags:
     - docker-machine
 
-
 #connectme-check-test:
 #  stage: test
 #  variables:

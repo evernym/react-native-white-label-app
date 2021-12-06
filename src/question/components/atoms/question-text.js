@@ -2,7 +2,7 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { color, fontSizes as fonts } from '../../../common/styles'
-import { ExpandableText }  from '../../../components/expandable-text/expandable-text'
+import { ExpandableText } from '../../../components/expandable-text/expandable-text'
 import { moderateScale } from 'react-native-size-matters'
 
 const QuestionText = (props: { text: ?string, questionStyles: any }) => {
@@ -15,6 +15,9 @@ const QuestionText = (props: { text: ?string, questionStyles: any }) => {
       <ExpandableText
         text={props.text}
         style={styles.text}
+        testID={`question-description`}
+        accessible={true}
+        accessibilityLabel={`question-description`}
       />
     </View>
   )
@@ -26,9 +29,8 @@ const styles = StyleSheet.create({
     fontSize: fonts.size4,
   },
   textContainer: {
-    marginBottom: moderateScale(10)
-  }
+    marginBottom: moderateScale(10),
+  },
 })
-
 
 export default QuestionText

@@ -12,20 +12,29 @@ import { moderateScale } from 'react-native-size-matters'
 import { colors } from '../../common/styles/constant'
 import type { ReactNavigation } from '../../common/type-common'
 import { modalOptions } from '../utils/modalOptions'
-import { CustomSharedProofModal, sharedProofHeadline } from '../../external-imports'
-import { checkProofForEmptyFields, showMissingField, showToggleMenu } from '../utils/checkForEmptyAttributes'
+import {
+  CustomSharedProofModal,
+  sharedProofHeadline,
+} from '../../external-imports'
+import {
+  checkProofForEmptyFields,
+  showMissingField,
+  showToggleMenu,
+} from '../utils/checkForEmptyAttributes'
 
 type ProofRequestModalProps = {} & ReactNavigation
 
-const ProofRequestModal = ({
-                             navigation,
-                             route,
-                           }: ProofRequestModalProps) => {
+const ProofRequestModal = ({ navigation, route }: ProofRequestModalProps) => {
   const { data, colorBackground } = route.params
 
   const claimMap = useSelector(getClaimMap)
-  const { hasEmpty, allEmpty } = useMemo(() => checkProofForEmptyFields(data.data), [data])
-  const [isMissingFieldsShowing, toggleMissingFields] = useState(showMissingField(hasEmpty, allEmpty))
+  const { hasEmpty, allEmpty } = useMemo(
+    () => checkProofForEmptyFields(data.data),
+    [data]
+  )
+  const [isMissingFieldsShowing, toggleMissingFields] = useState(
+    showMissingField(hasEmpty, allEmpty)
+  )
   const isToggleMenuShowing = showToggleMenu(hasEmpty, allEmpty)
 
   const hideModal = useCallback(() => {
@@ -34,46 +43,47 @@ const ProofRequestModal = ({
 
   return (
     <View style={styles.modalWrapper}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <StatusBar backgroundColor={colors.black} barStyle={'light-content'}/>
-        <ModalHeader
-          institutionalName={data.senderName}
-          credentialName={data.name}
-          credentialText={'You shared this information'}
-          imageUrl={data.senderLogoUrl}
-          colorBackground={colorBackground}
-          {...{
-            isMissingFieldsShowing,
-            toggleMissingFields,
-            showToggleMenu: isToggleMenuShowing,
-          }}
-        />
-        <View style={styles.outerModalWrapper}>
-          <View style={styles.innerModalWrapper}>
-            <CustomListProofRequest
-              items={data.data}
-              claimMap={claimMap}
-              isMissingFieldsShowing={isMissingFieldsShowing}
-            />
+      <View style={styles.modalInnerWrapper}>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <StatusBar
+            backgroundColor={colors.black}
+            barStyle={'light-content'}
+          />
+          <ModalHeader
+            institutionalName={data.senderName}
+            credentialName={data.name}
+            credentialText={'You shared this information'}
+            imageUrl={data.senderLogoUrl}
+            colorBackground={colorBackground}
+            {...{
+              isMissingFieldsShowing,
+              toggleMissingFields,
+              showToggleMenu: isToggleMenuShowing,
+            }}
+          />
+          <View style={styles.outerModalWrapper}>
+            <View style={styles.innerModalWrapper}>
+              <CustomListProofRequest
+                items={data.data}
+                claimMap={claimMap}
+                isMissingFieldsShowing={isMissingFieldsShowing}
+              />
+            </View>
           </View>
-        </View>
-      </ScrollView>
-      <ModalButton
-        onClose={hideModal}
-        colorBackground={colorBackground}
-      />
+        </ScrollView>
+      </View>
+      <ModalButton onClose={hideModal} colorBackground={colorBackground} />
     </View>
   )
 }
 
 const screen =
-  CustomSharedProofModal && CustomSharedProofModal.screen ||
-  ProofRequestModal
+  (CustomSharedProofModal && CustomSharedProofModal.screen) || ProofRequestModal
 
 const headline = sharedProofHeadline || 'Proof'
 
 const navigationOptions =
-  CustomSharedProofModal && CustomSharedProofModal.navigationOptions ||
+  (CustomSharedProofModal && CustomSharedProofModal.navigationOptions) ||
   modalOptions(headline, 'CloseIcon')
 
 export const proofScreen = {
@@ -85,6 +95,9 @@ proofScreen.screen.navigationOptions = navigationOptions
 
 const styles = StyleSheet.create({
   modalWrapper: {
+    flex: 1,
+  },
+  modalInnerWrapper: {
     flex: 1,
     paddingLeft: '5%',
     paddingRight: '5%',

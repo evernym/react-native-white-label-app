@@ -216,10 +216,38 @@ There are two strategies regarding receiving messages by an application:
 
 By default, app uses **Polling** strategy which follows rules:
 
-* Download messages by manual pulling screen down
+*  Download messages every 2 seconds for 60 seconds after the user performs an action like:
+    * Accept a connection invitation
+    * Accept a credential offer
+    * Share a proof 
+    * Answer a question
+* Download messages every 3 seconds for another 2 minutes after first point.
+* Download messages every 15 seconds the all rest time.
 * Download messages when a user navigates to `Home` screen.
-* Download messages every 15 seconds when a user holds on `Home` screen. 
-* Download messages in 30 second after taking some action (accepting Connection Invitation / Credential Offer / Proof Request)
+* Download messages by manual pulling screen down
+
+You can change timeouts by setting up `POOLING_INTERVALS` variable.
+
+* `POOLING_INTERVALS` - (object, Optional) timeouts (in milliseconds) to trigger message downloading.
+  * to use default - 
+      ```
+      {
+        'short': 2000, // 2 seconds
+        'medium': 3000, // 3 seconds
+        'long': 15000, // 15 seconds
+      }
+      ```
+      ```javascript
+      export const POOLING_INTERVALS = null
+      ```
+  * to enable
+      ```javascript
+      export const POOLING_INTERVALS = {
+        'short': 5000, // 5 seconds
+        'medium': 6000, // 6 seconds
+        'long': 30000, // 30 seconds
+      }
+      ```
 
 If you wish to use **Push Notifications** strategy you need to set variable `USE_PUSH_NOTIFICATION` in the `app.js` module:
 * `USE_PUSH_NOTIFICATION` - (boolean, Optional) whether you want to enable push notifications logic.
@@ -236,6 +264,7 @@ If you wish to use **Push Notifications** strategy you need to set variable `USE
 * [Android](./Build-Android.md#push-notifications-configuration)  
 * [iOS](./Build-iOS.md#push-notifications-configuration)  
       
+
 ### Color theme
 
 Application color theme is set by a group of constants provided in `colors.js` configuration module. 
