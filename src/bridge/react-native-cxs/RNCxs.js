@@ -487,6 +487,24 @@ export async function createOutOfBandConnectionInvitation(
   }
 }
 
+export async function connectionNeedUpgrade(
+  serialized: string,
+): Promise<boolean> {
+  return await Connection.needUpgrade({
+    serialized,
+  })
+}
+
+export async function connectionUpgrade(
+  handle: number,
+  data?: ?string,
+): Promise<void> {
+  return await Connection.upgrade({
+    handle,
+    data,
+  })
+}
+
 /*
  * Credential API
  */

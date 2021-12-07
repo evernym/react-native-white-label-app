@@ -61,6 +61,7 @@ export type ConnectionStore = {
   data: ?Connections,
   oneTimeConnections?: ?Connections,
   pairwiseAgent?: PairwiseAgent | null,
+  locked?: boolean,
 }
 
 export const DELETE_CONNECTION_SUCCESS = 'DELETE_CONNECTION_SUCCESS'
@@ -195,6 +196,24 @@ export const DELETE_ONE_TIME_CONNECTION_SUCCESS = 'DELETE_ONE_TIME_CONNECTION_SU
 export type DeleteOneTimeConnectionSuccessAction = {
   type: typeof DELETE_ONE_TIME_CONNECTION_SUCCESS,
   identifier: string,
+}
+
+export const LOCK_CONNECTIONS = 'LOCK_CONNECTIONS'
+export type LockConnectionsAction = {
+  type: typeof LOCK_CONNECTIONS,
+  identifier: string,
+}
+
+export const UNLOCK_CONNECTIONS = 'UNLOCK_CONNECTIONS'
+export type UnlockConnectionsAction = {
+  type: typeof UNLOCK_CONNECTIONS,
+  identifier: string,
+}
+
+export const CONNECTION_UPGRADED = 'CONNECTION_UPGRADED'
+export type ConnectionUpgradedAction = {
+  type: typeof CONNECTION_UPGRADED,
+  connection: Connection,
 }
 
 /*

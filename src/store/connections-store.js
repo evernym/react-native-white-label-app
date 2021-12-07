@@ -1,5 +1,5 @@
 // @flow
-import { all, call, put, select, takeEvery, takeLatest } from 'redux-saga/effects'
+import { all, call, put, select, takeEvery, takeLatest, take } from 'redux-saga/effects'
 import { getHydrationItem, secureDelete, secureSet } from '../services/storage'
 import { CONNECTIONS } from '../common'
 import {
@@ -8,6 +8,7 @@ import {
   getConnection as getConnectionBySenderDid,
   getConnection,
   getConnectionPairwiseAgentInfo,
+  getIsConnectionsLocked,
   getThemes,
 } from './store-selector'
 import { color } from '../common/styles/constant'
@@ -34,6 +35,9 @@ import type {
   SendConnectionRedirectAction,
   SendConnectionReuseAction,
   UpdateConnectionSerializedStateAction,
+  ConnectionUpgradedAction,
+  LockConnectionsAction,
+  UnlockConnectionsAction,
 } from './type-connection-store'
 import {
   CONNECTION_ATTACH_REQUEST,
@@ -65,6 +69,9 @@ import {
   UPDATE_CONNECTION_SERIALIZED_STATE,
   UPDATE_CONNECTION_THEME,
   UPDATE_STATUS_BAR_THEME,
+  CONNECTION_UPGRADED,
+  LOCK_CONNECTIONS,
+  UNLOCK_CONNECTIONS,
 } from './type-connection-store'
 import type { AriesOutOfBandInvite, InvitationPayload } from '../invitation/type-invitation'
 import {
@@ -74,6 +81,8 @@ import {
   deleteConnection,
   getHandleBySerializedConnection,
   createPairwiseAgent,
+  connectionNeedUpgrade,
+  connectionUpgrade,
 } from '../bridge/react-native-cxs/RNCxs'
 import { promptBackupBanner } from '../backup/backup-store'
 import { HYDRATED } from './type-config-store'
@@ -82,7 +91,11 @@ import { customLogger } from '../store/custom-logger'
 import { ensureVcxInitSuccess } from './route-store'
 import moment from 'moment'
 import { retrySaga } from '../api/api-utils'
-import { CLOUD_AGENT_UNAVAILABLE } from '../bridge/react-native-cxs/error-cxs'
+import {
+  ACTION_IS_NOT_SUPPORTED,
+  CLOUD_AGENT_UNAVAILABLE, CONNECTION_UPGRADE_NOT_NEEDED,
+  INVALID_AGENCY_RESPONSE, NOT_READY,
+} from '../bridge/react-native-cxs/error-cxs'
 
 const initialState: ConnectionStore = {
   data: {},
@@ -574,6 +587,83 @@ export function* hydratePairwiseAgentSaga(): Generator<*, *, *> {
   }
 }
 
+export const lockConnections = (): LockConnectionsAction => ({
+  type: LOCK_CONNECTIONS,
+})
+
+export const unlockConnections = (): UnlockConnectionsAction => ({
+  type: UNLOCK_CONNECTIONS,
+})
+
+export const connectionUpgraded = (connection: Connection): ConnectionUpgradedAction => ({
+  type: CONNECTION_UPGRADED,
+  connection,
+})
+
+export function* upgradeLegacyConnections(): Generator<*, *, *> {
+  try {
+    // iterate over all existing connection and try to upgrade
+    const connections = yield select(getAllConnection)
+    for (const connection: any of Object.values(connections)) {
+      // check if connection is of legacy format and need to be upgraded
+      const needUpgrade = yield call(connectionNeedUpgrade, connection.vcxSerializedConnection)
+      if (needUpgrade) {
+        // try to upgrade connection
+        yield put(lockConnections())
+        yield call(upgradeLegacyConnection, connection, null)
+      }
+    }
+  } catch (e) {
+    customLogger.log(`upgradeConnections error: ${e}`)
+  } finally {
+    yield put(unlockConnections())
+  }
+}
+
+export function* handleUpgradeConnectionMessage(connection: Connection, data: ?string): Generator<*, *, *> {
+  try {
+    yield put(lockConnections())
+    yield call(upgradeLegacyConnection, connection, data)
+  } catch (e) {
+    customLogger.log(`handleUpgradeConnectionMessage error: ${e}`)
+  } finally {
+    yield put(unlockConnections())
+  }
+}
+
+export function* upgradeLegacyConnection(connection: Connection, data: ?string): Generator<*, *, *> {
+  try {
+    // migrate connection state object
+    const handle = yield call(getHandleBySerializedConnection, connection.vcxSerializedConnection)
+    const vcxSerializedConnection = yield call(connectionUpgrade, handle, data)
+
+    // update connection in the store
+    yield put(connectionUpgraded({
+      ...connection,
+      vcxSerializedConnection,
+    }))
+    yield* persistConnections()
+  } catch (e) {
+    // one of expected errors if Agent has not been migrated yet
+    if (e.code === INVALID_AGENCY_RESPONSE ||
+      e.code === ACTION_IS_NOT_SUPPORTED ||
+      e.code === NOT_READY ||
+      e.code === CONNECTION_UPGRADE_NOT_NEEDED) {
+      // nothing to do, return null
+      return null
+    } else {
+      throw e
+    }
+  }
+}
+
+export function* ensureConnectionsSync(): Generator<*, *, *> {
+  const isConnectionsLocked = yield select(getIsConnectionsLocked)
+  if (isConnectionsLocked) {
+    yield take(UNLOCK_CONNECTIONS)
+  }
+}
+
 export function* watchPersistPairwiseAgent(): any {
   yield takeEvery(
     [
@@ -615,6 +705,7 @@ export default function connections(
     | UpdateConnectionSerializedStateAction
     | ConnectionAttachRequestAction
     | ConnectionDeleteAttachedRequestAction
+    | ConnectionsUpgradedAction
 ) {
   switch (action.type) {
     case UPDATE_CONNECTION_THEME:
@@ -819,6 +910,24 @@ export default function connections(
         return state
       }
     }
+    case CONNECTION_UPGRADED:
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          [action.identifier]: action.connection,
+        },
+      }
+    case LOCK_CONNECTIONS:
+      return {
+        ...state,
+        locked: true,
+      }
+    case UNLOCK_CONNECTIONS:
+      return {
+        ...state,
+        locked: false,
+      }
     case RESET_PAIRWISE_AGENT:
       return {
         ...state,

@@ -127,6 +127,7 @@ import { presentationProposalSchema } from '../proof-request/proof-request-qr-co
 import {
   deleteOneTimeConnection,
   deleteOneTimeConnectionOccurredSaga,
+  handleUpgradeConnectionMessage,
 } from './connections-store'
 import { getAttachedRequestData } from '../invitation/invitation-helpers'
 import { environments, defaultEnvironment } from '../environment'
@@ -535,7 +536,7 @@ export function* processMessages(
   for (let i = 0; i < messages.length; i++) {
     try {
       const isDecryptedPayload = !!messages[i]?.decryptedPayload
-      
+
       if (isDecryptedPayload) {
         let pairwiseDID = messages[i].pairwiseDID || ''
 
@@ -775,6 +776,10 @@ function* handleProprietaryMessage(
         senderDID,
         senderName
       )
+    }
+
+    if (type === MESSAGE_TYPE.UPGRADE) {
+      yield call(handleUpgradeConnectionMessage, connection, message)
     }
 
     if (!additionalData) {
