@@ -89,3 +89,11 @@ export const ERROR_CLAIM_HYDRATE_FAIL = {
   message: 'Failed to hydrate claim map',
   code: 'CL-001',
 }
+
+export type ClaimInfo = {
+  referent: string,
+  schema_id: string,
+  attrs: {
+    [attrName: string] : string
+  },
+}

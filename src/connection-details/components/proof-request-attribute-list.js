@@ -435,6 +435,9 @@ class ProofRequestAttributeList extends Component<
                   <ExpandableText style={styles.title} text={label} />
                   <ExpandableText style={styles.contentInput} text={value} />
                 </View>
+                <View style={[styles.avatarWrapper, { paddingLeft: 4 }]}>
+                  {renderUserAvatar({ size: 'superSmall' })}
+                </View>
                 <View style={styles.iconWrapper}>
                   <EvaIcon
                     name={ARROW_FORWARD_ICON}

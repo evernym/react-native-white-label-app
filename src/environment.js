@@ -37,7 +37,7 @@ export const environments = {
     agencyDID: 'dTLdJqRZLwMuWSogcKfBT',
     agencyVerificationKey: 'LsPQTDHi294TexkFmZK9Q9vW4YGtQRuLV8wuyZi94yH',
     poolConfig: [
-      { key: 'training', genesis: sovrinTrainingGenesisTransactions },
+      { key: 'training', genesis: sovrinTrainingGenesisTransactions, namespace_list: ['training'] },
     ],
     paymentMethod: 'sov',
   },
@@ -46,7 +46,7 @@ export const environments = {
     agencyDID: 'Nv9oqGX57gy15kPSJzo2i4',
     agencyVerificationKey: 'CwpcjCc6MtVNdQgwoonNMFoR6dhzmRXHHaUCRSrjh8gj',
     poolConfig: [
-      { key: 'training', genesis: sovrinTrainingGenesisTransactions },
+      { key: 'training', genesis: sovrinTrainingGenesisTransactions, namespace_list: ['training'] },
     ],
     paymentMethod: 'sov',
   },
@@ -55,7 +55,7 @@ export const environments = {
     agencyDID: 'LqnB96M6wBALqRZsrTTwda',
     agencyVerificationKey: 'BpDPZHLbJFu67sWujecoreojiWZbi2dgf4xnYemUzFvB',
     poolConfig: [
-      { key: 'staging', genesis: sovrinStagingGenesisTransactions },
+      { key: 'staging', genesis: sovrinStagingGenesisTransactions, namespace_list: ['staging'] },
     ],
     paymentMethod: 'sov',
   },
@@ -64,7 +64,7 @@ export const environments = {
     agencyDID: '3mbwr7i85JNSL3LoNQecaW',
     agencyVerificationKey: '2WXxo6y1FJvXWgZnoYUP5BJej2mceFrqBDNPE3p6HDPf',
     poolConfig: [
-      { key: 'staging', genesis: sovrinStagingGenesisTransactions },
+      { key: 'staging', genesis: sovrinStagingGenesisTransactions, namespace_list: ['staging'] },
     ],
     paymentMethod: 'sov',
   },
@@ -73,7 +73,7 @@ export const environments = {
     agencyDID: 'L1gaixoxvbVg97HYnrr6rG',
     agencyVerificationKey: 'BMzy1cEuSFvnKYjjBxY4jC2gQbNmaVX3Kg5zJJiXAwq8',
     poolConfig: [
-      { key: 'training', genesis: sovrinTrainingGenesisTransactions },
+      { key: 'training', genesis: sovrinTrainingGenesisTransactions, namespace_list: ['training'] },
     ],
     paymentMethod: 'sov',
   },
@@ -82,7 +82,7 @@ export const environments = {
     agencyDID: 'LhiSANFohRXBWaKSZDvTH5',
     agencyVerificationKey: 'BjpTLofEbVYJ8xxXQxScbmubHsgpHY5uvScfXqW9B1vB',
     poolConfig: [
-      { key: 'training', genesis: sovrinTrainingGenesisTransactions },
+      { key: 'training', genesis: sovrinTrainingGenesisTransactions, namespace_list: ['training'] },
     ],
     paymentMethod: 'sov',
   },
@@ -91,7 +91,7 @@ export const environments = {
     agencyDID: 'LiLBGgFarh954ZtTByLM1C',
     agencyVerificationKey: 'Bk9wFrud3rz8v3nAFKGib6sQs8zHWzZxfst7Wh3Mbc9W',
     poolConfig: [
-      { key: 'staging', genesis: sovrinStagingGenesisTransactions },
+      { key: 'staging', genesis: sovrinStagingGenesisTransactions, namespace_list: ['staging'] },
     ],
     paymentMethod: 'sov',
   },
@@ -100,7 +100,7 @@ export const environments = {
     agencyDID: 'TGLBMTcW9fHdkSqown9jD8',
     agencyVerificationKey: 'FKGV9jKvorzKPtPJPNLZkYPkLhiS1VbxdvBgd1RjcQHR',
     poolConfig: [
-      { key: 'training', genesis: sovrinTrainingGenesisTransactions },
+      { key: 'training', genesis: sovrinTrainingGenesisTransactions, namespace_list: ['training'] },
     ],
     paymentMethod: 'sov',
   },
@@ -109,7 +109,7 @@ export const environments = {
     agencyDID: 'TGLBMTcW9fHdkSqown9jD8',
     agencyVerificationKey: 'FKGV9jKvorzKPtPJPNLZkYPkLhiS1VbxdvBgd1RjcQHR',
     poolConfig: [
-      { key: 'training', genesis: sovrinTrainingGenesisTransactions },
+      { key: 'training', genesis: sovrinTrainingGenesisTransactions, namespace_list: ['training'] },
     ],
     paymentMethod: 'sov',
   },
@@ -118,7 +118,7 @@ export const environments = {
     agencyDID: 'TGLBMTcW9fHdkSqown9jD8',
     agencyVerificationKey: 'FKGV9jKvorzKPtPJPNLZkYPkLhiS1VbxdvBgd1RjcQHR',
     poolConfig: [
-      { key: 'training', genesis: sovrinTrainingGenesisTransactions },
+      { key: 'training', genesis: sovrinTrainingGenesisTransactions, namespace_list: ['training'] },
     ],
     paymentMethod: 'sov',
   },
@@ -127,10 +127,10 @@ export const environments = {
     agencyDID: 'DwXzE7GdE5DNfsrRXJChSD',
     agencyVerificationKey: '844sJfb2snyeEugKvpY7Y4jZJk9LT6BnS6bnuKoiqbip',
     poolConfig: [
-      { key: 'sovrin_live', genesis: sovrinLiveGenesisTransactions },
-      { key: 'sovrin_staging', genesis: sovrinStagingGenesisTransactions },
-      { key: 'sovrin_builder', genesis: sovrinBuilderGenesisTransactions },
-      { key: 'idunion', genesis: idunionGenesisTransactions },
+      { key: 'sovrin_live', genesis: sovrinLiveGenesisTransactions, namespace_list: ['sov', 'live'] },
+      { key: 'sovrin_staging', genesis: sovrinStagingGenesisTransactions, namespace_list: ['staging'] },
+      { key: 'sovrin_builder', genesis: sovrinBuilderGenesisTransactions, namespace_list: ['builder'] },
+      { key: 'idunion', genesis: idunionGenesisTransactions, namespace_list: ['idunion'] },
     ],
     paymentMethod: 'sov',
   },

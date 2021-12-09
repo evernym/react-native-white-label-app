@@ -86,7 +86,7 @@ import { isConnectionCompleted } from '../store/store-utils'
 import { outofbandProofProposalAccepted, proofProposalAccepted } from '../verifier/verifier-store'
 import { watchHandleInvitation } from './invitation-handler'
 import { showSnackError } from '../store/config-store'
-import { getAttachedRequestId } from './invitation-helpers'
+import { getThreadId } from './invitation-helpers'
 
 export const invitationInitialState = {}
 
@@ -568,7 +568,7 @@ function* outOfBandInvitationAccepted(
     }
 
     const type_ = invitationPayload.attachedRequest[TYPE]
-    const id = getAttachedRequestId(invitationPayload.attachedRequest)
+    const id = getThreadId(invitationPayload.attachedRequest)
 
     if (type_.endsWith('offer-credential')) {
       yield put(
@@ -599,7 +599,7 @@ export function* processAttachedRequest(connection: GenericObject): Generator<*,
   if (!attachedRequest) {
     return
   }
-  const uid = getAttachedRequestId(attachedRequest)
+  const uid = getThreadId(attachedRequest)
   const type_ = attachedRequest[TYPE]
   if (type_.endsWith('offer-credential')) {
     const claimHandle = yield call(
