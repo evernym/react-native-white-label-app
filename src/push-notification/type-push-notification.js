@@ -272,11 +272,6 @@ export type updatePayloadToRelevantStoreAction = {
   notification: DownloadedNotification,
 }
 
-export type GetClaimVcxResult = {
-  claimUuid: string,
-  claim: ClaimPushPayload,
-}
-
 export type NotificationOpenOptions = {
   uid: string,
 }

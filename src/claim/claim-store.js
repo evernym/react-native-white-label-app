@@ -3,7 +3,7 @@ import { call, fork, put, select, spawn, takeEvery } from 'redux-saga/effects'
 import moment from 'moment'
 import type {
   Claim,
-  ClaimAction,
+  ClaimAction, ClaimInfo,
   ClaimMap,
   ClaimReceivedAction,
   ClaimStorageFailAction,
@@ -20,13 +20,12 @@ import {
   HYDRATE_CLAIM_MAP_FAIL,
   MAP_CLAIM_TO_SENDER,
 } from './type-claim'
-import type { GetClaimVcxResult } from '../push-notification/type-push-notification'
 import type { CustomError, GenericObject } from '../common/type-common'
 import { RESET } from '../common/type-common'
 import {
   fetchPublicEntitiesForCredentials,
   getClaimHandleBySerializedClaimOffer,
-  getClaimVcx,
+  getCredentialInfo,
   updateClaimOfferState,
   updateClaimOfferStateWithMessage,
 } from '../bridge/react-native-cxs/RNCxs'
@@ -268,7 +267,7 @@ export function* checkForClaim(
       // once we know that this claim offer state was updated to accepted
       // that means that we downloaded the claim for this claim offer
       // and saved to wallet, now we need to know claim uuid and exact claim
-      const vcxClaim: GetClaimVcxResult = yield call(getClaimVcx, claimHandle)
+      const vcxClaim: ClaimInfo = yield call(getCredentialInfo, claimHandle)
       const connection: ?Connection = yield select(
         getConnectionByUserDid,
         userDID
@@ -279,7 +278,7 @@ export function* checkForClaim(
       if (connection) {
         yield put(
           mapClaimToSender(
-            vcxClaim.claimUuid,
+            vcxClaim.referent,
             connection.senderDID,
             userDID,
             connection.logoUrl,
@@ -290,7 +289,7 @@ export function* checkForClaim(
         )
       }
 
-      yield put(claimStorageSuccess(serializedClaimOffer.messageId, vcxClaim.claimUuid, issueDate))
+      yield put(claimStorageSuccess(serializedClaimOffer.messageId, vcxClaim.referent, issueDate))
       yield* updateMessageStatus([
         {
           pairwiseDID: userDID,

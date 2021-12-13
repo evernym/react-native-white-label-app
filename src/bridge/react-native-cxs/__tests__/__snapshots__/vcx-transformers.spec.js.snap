@@ -7,7 +7,7 @@ Object {
   "agency_verkey": "VCNhKASjLU5tVWnZpjcyEsoV1QC3adrPVMCCjeKMobn",
   "agent_seed": null,
   "enterprise_seed": null,
-  "protocol_type": "3.0",
+  "protocol_type": "4.0",
   "wallet_key": "walletKey",
   "wallet_name": "walletName",
 }
@@ -22,7 +22,7 @@ Object {
   "institution_logo_url": "https://try.connect.me/img/CMicon@3x.png",
   "institution_name": "test-name",
   "institution_verkey": "oneTimeAgencyVerKey",
-  "protocol_type": "3.0",
+  "protocol_type": "4.0",
   "remote_to_sdk_did": "myOneTimeAgentDid",
   "remote_to_sdk_verkey": "myOneTimeAgentVerificationKey",
   "sdk_to_remote_did": "myOneTimeDid",

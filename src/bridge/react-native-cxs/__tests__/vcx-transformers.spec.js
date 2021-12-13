@@ -5,7 +5,7 @@ import {
   convertVcxProvisionResultToUserOneTimeInfo,
   convertCxsInitToVcxInit,
   convertInvitationToVcxConnectionCreate,
-  convertVcxCredentialOfferToCxsClaimOffer,
+  convertLegacyClaimOfferToAppClaimOffer,
 } from '../vcx-transformers'
 import {
   vcxProvisionResult,
@@ -93,7 +93,7 @@ describe('transformer:VCX', () => {
 
   it('convertVcxCredentialOfferToCxsClaimOffer', () => {
     expect(
-      convertVcxCredentialOfferToCxsClaimOffer(vcxClaimOffer)
+      convertLegacyClaimOfferToAppClaimOffer(vcxClaimOffer)
     ).toMatchSnapshot()
   })
 })
