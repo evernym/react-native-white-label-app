@@ -236,6 +236,13 @@ function* launchPhysicalIdSDKSaga(
     flattenAsync(midsScanStart),
     document
   )
+
+  if (Platform.OS === 'ios' && workflowId === 'DESTROY') {
+    yield call(flattenAsync(terminateSDK))
+    yield put(stopPhysicalId())
+    return
+  }
+
   if (workflowIdError || !workflowId) {
     yield put(updatePhysicalIdStatus(physicalIdProcessStatus.SDK_SCAN_FAIL))
     return
