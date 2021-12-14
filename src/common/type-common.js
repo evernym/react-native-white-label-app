@@ -162,6 +162,9 @@ export type MatchingCredential = {
     to?: number,
     from?: number,
   },
+  requested_attributes?: {
+    [attributeName: string]: string
+  }
 }
 
 export type Dispatch = (action: { type: string }) => any

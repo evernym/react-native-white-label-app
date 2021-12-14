@@ -9,12 +9,10 @@ import type {
   VcxInitConfig,
   CxsPushTokenConfig,
   VcxCredentialOffer,
-  VcxClaimInfo,
   VcxConnectionConnectResult,
   WalletTokenInfo,
   PaymentAddress,
   SignDataResponse,
-  WalletPoolName,
 } from './type-cxs'
 import { signDataResponseSchema, smallDeviceMemory } from './type-cxs'
 import type { AriesOutOfBandInvite, InvitationPayload } from '../../invitation/type-invitation'
@@ -25,15 +23,14 @@ import {
   convertCxsInitToVcxInit,
   convertCxsPushConfigToVcxPushTokenConfig,
   convertInvitationToVcxConnectionCreate,
-  convertVcxConnectionToCxsConnection,
-  convertVcxCredentialOfferToCxsClaimOffer,
+  convertVcxConnectionToAppConnection,
+  convertLegacyClaimOfferToAppClaimOffer,
   convertVcxProvisionResultToUserOneTimeInfo,
   paymentHandle,
 } from './vcx-transformers'
 import type { UserOneTimeInfo } from '../../store/user/type-user-store'
 import type { AgencyPoolConfig, MessagePaymentDetails, PoolConfig } from '../../store/type-config-store'
 import { __uniqueId } from '../../store/type-config-store'
-import type { ClaimPushPayload, GetClaimVcxResult } from '../../push-notification/type-push-notification'
 import type { WalletHistoryEvent } from '../../wallet/type-wallet'
 import type { Passphrase } from '../../backup/type-backup'
 import uniqueId from 'react-native-unique-id'
@@ -61,6 +58,7 @@ import {
   Wallet,
 } from '@evernym/react-native-sdk'
 import { WALLET_ITEM_NOT_FOUND } from './error-cxs'
+import type { ClaimInfo } from '../../claim/type-claim'
 
 const { RNUtils } = NativeModules
 
@@ -285,7 +283,7 @@ export async function acceptInvitationVcx(
   // }
 
   return {
-    connection: convertVcxConnectionToCxsConnection(data),
+    connection: convertVcxConnectionToAppConnection(data),
     serializedConnection,
     invitation,
   }
@@ -568,24 +566,13 @@ export async function getClaimOfferState(handle: number): Promise<number> {
   })
 }
 
-export async function getClaimVcx(
+export async function getCredentialInfo(
   handle: number,
-): Promise<GetClaimVcxResult> {
-  const vcxClaimResult: string = await Credential.getCredentialMessage({
+): Promise<ClaimInfo> {
+  const info: string = await Credential.getInfo({
     handle,
   })
-  const vcxClaim: VcxClaimInfo = JSON.parse(vcxClaimResult)
-  const { credential, credential_id } = vcxClaim
-
-  if (!credential || !credential_id) {
-    throw new Error('credential not found in vcx')
-  }
-
-  const credentialPayload: ClaimPushPayload = JSON.parse(credential)
-  return {
-    claimUuid: credential_id,
-    claim: credentialPayload,
-  }
+  return JSON.parse(info)
 }
 
 export async function deleteCredential(handle: number) {
@@ -635,25 +622,17 @@ export async function createCredentialWithProprietaryOffer(
 
   return {
     claimHandle: credential_handle,
-    claimOffer: convertVcxCredentialOfferToCxsClaimOffer(vcxCredentialOffer),
+    claimOffer: convertLegacyClaimOfferToAppClaimOffer(vcxCredentialOffer),
   }
 }
 
 export async function createCredentialWithAriesOffer(
-  sourceId: string,
   credentialOffer: string,
 ): Promise<CxsCredentialOfferResult> {
-  const credential_handle = await credentialCreateWithOffer(
-    sourceId,
+  return credentialCreateWithOffer(
+    uuid(),
     credentialOffer,
   )
-
-  const [vcxCredentialOffer]: [VcxCredentialOffer] = JSON.parse(credentialOffer)
-
-  return {
-    claimHandle: credential_handle,
-    claimOffer: convertVcxCredentialOfferToCxsClaimOffer(vcxCredentialOffer),
-  }
 }
 
 export async function createCredentialWithAriesOfferObject(
@@ -690,11 +669,10 @@ export async function init(config: CxsInitConfig): Promise<boolean> {
 }
 
 async function preparePoolConfig(config: PoolConfig) {
-  let walletPoolName: WalletPoolName = await getWalletPoolName()
   const genesisPath: string = await RNUtils.getGenesisPathWithConfig(config.genesis, config.key)
   return {
     genesis_path: genesisPath,
-    pool_name: walletPoolName.poolName + config.key,
+    namespace_list: config.namespace_list,
   }
 }
 
@@ -717,6 +695,7 @@ export async function initPool(
       await preparePoolConfig({
         key: '',
         genesis: poolConfig,
+        namespace_list: ['sov']
       }),
     )
   }

@@ -146,7 +146,7 @@ export async function getAttachedRequest(
   return getAttachedRequestData(requests[0].data)
 }
 
-export const getAttachedRequestId = (attachedRequest: AttachedRequestType) =>
-  attachedRequest['~thread'] && attachedRequest['~thread'].thid ?
+export const getThreadId = (attachedRequest: AttachedRequestType) =>
+  attachedRequest && attachedRequest['~thread'] && attachedRequest['~thread'].thid ?
     attachedRequest['~thread'].thid :
     attachedRequest[ID]

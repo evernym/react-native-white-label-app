@@ -361,7 +361,6 @@ export function* proofRequestReceivedSaga(
       yield call(autoAcceptProofRequest, action)
     }
   } catch (e) {
-    customLogger.log(`proofRequestReceivedSaga ${e}`)
     captureError(e)
   }
 }
