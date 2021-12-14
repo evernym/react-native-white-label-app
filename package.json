@@ -35,7 +35,7 @@
   "license": "SEE LICENSE IN LICENSE.txt",
   "readmeFilename": "README.md",
   "peerDependencies": {
-    "@evernym/react-native-sdk": "https://gitlab.com/evernym/mobile/mobile-sdk/-/package_files/23995131/download",
+    "@evernym/react-native-sdk": "https://gitlab.com/evernym/mobile/mobile-sdk/-/package_files/24037467/download",
     "@react-native-community/async-storage": "^1.11.0",
     "@react-native-community/blur": "^3.6.0",
     "@react-native-community/masked-view": "^0.1.10",
