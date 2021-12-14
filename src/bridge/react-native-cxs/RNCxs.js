@@ -490,7 +490,7 @@ export async function createOutOfBandConnectionInvitation(
 export async function connectionNeedUpgrade(
   serialized: string,
 ): Promise<boolean> {
-  return await Connection.needUpgrade({
+  return await Connection.connectionNeedUpgrade({
     serialized,
   })
 }
