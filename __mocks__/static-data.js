@@ -618,205 +618,329 @@ export const selfAttestedAttributes = {
 }
 
 export const preparedProof = {
-  attrs: {
-    attr1_uuid: [
-      {
-        cred_info: {
-          referent: 'claim::ea03d8ca-eeb4-4944-b7d6-5abcf4503d73',
-          attrs: { name: 'Alex', sex: 'male' },
-          cred_def_id: 'V4SGRU86Z58d6TV7PBUe6f:3:CL:24:tag1',
-          schema_id: 'V4SGRU86Z58d6TV7Pf:2:slKljrSQ80tCQ40F:33089',
+  attributes: {
+    attr1_uuid: {
+      credentials: [
+        {
+          cred_info: {
+            referent: 'claim::ea03d8ca-eeb4-4944-b7d6-5abcf4503d73',
+            attrs: { name: 'Alex', sex: 'male' },
+            cred_def_id: 'V4SGRU86Z58d6TV7PBUe6f:3:CL:24:tag1',
+            schema_id: 'V4SGRU86Z58d6TV7Pf:2:slKljrSQ80tCQ40F:33089',
+          },
+          requested_attributes: {
+            name: 'Alex'
+          }
         },
-      },
-    ],
-    attr2_uuid: [
-      {
-        cred_info: {
-          referent: 'claim::6a0f42b4-1210-4bdb-ad53-10ed765276b5',
-          attrs: { height: '150' },
-          cred_def_id: 'V4SGRU86Z58d6TV7PBUe6f:3:CL:24:tag1',
-          schema_id: 'V4SGRU86Z58d6TV7Pf:2:slKljrSQ80tCQ40F:33089',
+      ],
+      missing: false,
+      self_attest_allowed: true,
+      name: "name"
+    },
+    attr2_uuid: {
+      credentials: [
+        {
+          cred_info: {
+            referent: 'claim::6a0f42b4-1210-4bdb-ad53-10ed765276b5',
+            attrs: { height: '150' },
+            cred_def_id: 'V4SGRU86Z58d6TV7PBUe6f:3:CL:24:tag1',
+            schema_id: 'V4SGRU86Z58d6TV7Pf:2:slKljrSQ80tCQ40F:33089',
+          },
+          requested_attributes: {
+            height: '150'
+          }
         },
-      },
-    ],
+      ],
+      missing: false,
+      self_attest_allowed: true,
+      name: "height"
+    }
   },
   predicates: {},
 }
 
 export const homeAddressPreparedProof = {
-  attrs: {
-    attr1_uuid: [
-      {
-        cred_info: {
-          referent: 'claim::ea03d8ca-eeb4-4944-b7d6-5abcf4503d73',
-          attrs: { ['Address 1']: 'Address 1' },
-          cred_def_id: 'V4SGRU86Z58d6TV7PBUe6f:3:CL:24:tag1',
-          schema_id: 'V4SGRU86Z58d6TV7Pf:2:slKljrSQ80tCQ40F:33089',
+  attributes: {
+    attr1_uuid: {
+      credentials: [
+        {
+          cred_info: {
+            referent: 'claim::ea03d8ca-eeb4-4944-b7d6-5abcf4503d73',
+            attrs: { ['Address 1']: 'Address 1' },
+            cred_def_id: 'V4SGRU86Z58d6TV7PBUe6f:3:CL:24:tag1',
+            schema_id: 'V4SGRU86Z58d6TV7Pf:2:slKljrSQ80tCQ40F:33089',
+          },
+          requested_attributes: {
+            'Address 1': 'Address 1'
+          }
         },
-      },
-    ],
-    attr2_uuid: [
-      {
-        cred_info: {
-          referent: 'claim::6a0f42b4-1210-4bdb-ad53-10ed765276b5',
-          attrs: { ['Address 2']: 'Address 2' },
-          cred_def_id: 'V4SGRU86Z58d6TV7PBUe6f:3:CL:24:tag1',
-          schema_id: 'V4SGRU86Z58d6TV7Pf:2:slKljrSQ80tCQ40F:33089',
+      ],
+      missing: false,
+      self_attest_allowed: true,
+      name: "Address 1"
+    },
+    attr2_uuid: {
+      credentials: [
+        {
+          cred_info: {
+            referent: 'claim::6a0f42b4-1210-4bdb-ad53-10ed765276b5',
+            attrs: { ['Address 2']: 'Address 2' },
+            cred_def_id: 'V4SGRU86Z58d6TV7PBUe6f:3:CL:24:tag1',
+            schema_id: 'V4SGRU86Z58d6TV7Pf:2:slKljrSQ80tCQ40F:33089',
+          },
+          requested_attributes: {
+            'Address 2': 'Address 2'
+          }
         },
-      },
-    ],
+      ],
+      missing: false,
+      self_attest_allowed: true,
+      name: "Address 2"
+    },
   },
   predicates: {},
 }
 
 export const homeAddressPreparedProofMultipleCreds = {
-  attrs: {
-    attr1_uuid: [
-      {
-        cred_info: {
-          referent: 'claim::ea03d8ca-eeb4-4944-b7d6-5abcf4503d73',
-          attrs: { ['Address 1']: 'Address 1' },
-          cred_def_id: 'V4SGRU86Z58d6TV7PBUe6f:3:CL:24:tag1',
-          schema_id: 'V4SGRU86Z58d6TV7Pf:2:slKljrSQ80tCQ40F:33089',
+  attributes: {
+    attr1_uuid: {
+      credentials: [
+        {
+          cred_info: {
+            referent: 'claim::ea03d8ca-eeb4-4944-b7d6-5abcf4503d73',
+            attrs: { ['Address 1']: 'Address 1' },
+            cred_def_id: 'V4SGRU86Z58d6TV7PBUe6f:3:CL:24:tag1',
+            schema_id: 'V4SGRU86Z58d6TV7Pf:2:slKljrSQ80tCQ40F:33089',
+          },
+          requested_attributes: {
+            'Address 2': 'Address 2'
+          }
         },
-      },
-      {
-        cred_info: {
-          referent: 'claim::ea03d8ca-eeb4-4944-b7d6-5abcf4503d86',
-          attrs: { ['Address 1']: 'Address 1 reverse' },
-          cred_def_id: 'V4SGRU86Z58d6TV7PBUe7f:3:CL:24:tag1',
-          schema_id: 'V4SGRU86Z58d6TV7Pf:2:slKljrSQ80tCQ40F:33089',
+        {
+          cred_info: {
+            referent: 'claim::ea03d8ca-eeb4-4944-b7d6-5abcf4503d86',
+            attrs: { ['Address 1']: 'Address 1 reverse' },
+            cred_def_id: 'V4SGRU86Z58d6TV7PBUe7f:3:CL:24:tag1',
+            schema_id: 'V4SGRU86Z58d6TV7Pf:2:slKljrSQ80tCQ40F:33089',
+          },
+          requested_attributes: {
+            'Address 1': 'Address 1 reverse'
+          }
         },
-      },
-    ],
-    attr2_uuid: [
-      {
-        cred_info: {
-          referent: 'claim::6a0f42b4-1210-4bdb-ad53-10ed765276b',
-          attrs: { ['Address 2']: 'Address 2' },
-          cred_def_id: 'V4SGRU86Z58d6TV7PBUe6f:3:CL:24:tag1',
-          schema_id: 'V4SGRU86Z58d6TV7Pf:2:slKljrSQ80tCQ40F:33089',
+      ],
+      missing: false,
+      self_attest_allowed: true,
+      name: "Address 1"
+    },
+    attr2_uuid: {
+      credentials: [
+        {
+          cred_info: {
+            referent: 'claim::6a0f42b4-1210-4bdb-ad53-10ed765276b',
+            attrs: { ['Address 2']: 'Address 2' },
+            cred_def_id: 'V4SGRU86Z58d6TV7PBUe6f:3:CL:24:tag1',
+            schema_id: 'V4SGRU86Z58d6TV7Pf:2:slKljrSQ80tCQ40F:33089',
+          },
+          requested_attributes: {
+            'Address 2': 'Address 2'
+          }
         },
-      },
-      {
-        cred_info: {
-          referent: 'claim::6a0f42b4-1210-4bdb-ad53-10ed7652767',
-          attrs: { ['Address 2']: 'Address 2 reverse' },
-          cred_def_id: 'V4SGRU86Z58d6TV7PBUe6f:3:CL:24:tag1',
-          schema_id: 'V4SGRU86Z58d6TV7Pf:2:slKljrSQ80tCQ40F:33089',
+        {
+          cred_info: {
+            referent: 'claim::6a0f42b4-1210-4bdb-ad53-10ed7652767',
+            attrs: { ['Address 2']: 'Address 2 reverse' },
+            cred_def_id: 'V4SGRU86Z58d6TV7PBUe6f:3:CL:24:tag1',
+            schema_id: 'V4SGRU86Z58d6TV7Pf:2:slKljrSQ80tCQ40F:33089',
+          },
+          requested_attributes: {
+            'Address 2': 'Address 2 reverse'
+          }
         },
-      },
-    ],
+      ],
+      missing: false,
+      self_attest_allowed: true,
+      name: "Address 2"
+    },
   },
   predicates: {},
 }
 
 export const preparedProofWithMissingAttribute = {
-  attrs: {
-    attr1_uuid: [
-      {
-        cred_info: {
-          referent: 'claim::ea03d8ca-eeb4-4944-b7d6-5abcf4503d73',
-          attrs: { name: 'Alex', sex: 'male' },
-          cred_def_id: 'V4SGRU86Z58d6TV7PBUe6f:3:CL:24:tag1',
-          schema_id: 'V4SGRU86Z58d6TV7Pf:2:slKljrSQ80tCQ40F:33089',
+  attributes: {
+    attr1_uuid: {
+      credentials: [
+        {
+          cred_info: {
+            referent: 'claim::ea03d8ca-eeb4-4944-b7d6-5abcf4503d73',
+            attrs: { name: 'Alex', sex: 'male' },
+            cred_def_id: 'V4SGRU86Z58d6TV7PBUe6f:3:CL:24:tag1',
+            schema_id: 'V4SGRU86Z58d6TV7Pf:2:slKljrSQ80tCQ40F:33089',
+          },
+          requested_attributes: {
+            'name': 'Alex'
+          }
         },
-      },
-    ],
-    attr3_uuid: [
-      {
-        cred_info: {
-          referent: 'claim::6a0f42b4-1210-4bdb-ad53-10ed765276b5',
-          attrs: { height: '150' },
-          cred_def_id: 'V4SGRU86Z58d6TV7PBUe6f:3:CL:24:tag1',
-          schema_id: 'V4SGRU86Z58d6TV7Pf:2:slKljrSQ80tCQ40F:33089',
+      ],
+      missing: false,
+      self_attest_allowed: true,
+      name: "name"
+    },
+    attr3_uuid: {
+      credentials: [
+        {
+          cred_info: {
+            referent: 'claim::6a0f42b4-1210-4bdb-ad53-10ed765276b5',
+            attrs: { height: '150' },
+            cred_def_id: 'V4SGRU86Z58d6TV7PBUe6f:3:CL:24:tag1',
+            schema_id: 'V4SGRU86Z58d6TV7Pf:2:slKljrSQ80tCQ40F:33089',
+          },
+          requested_attributes: {
+            'height': '150'
+          }
         },
-      },
-    ],
+      ],
+      missing: false,
+      self_attest_allowed: true,
+      name: "height"
+    },
     [missingAttributes[0].key]: [null],
   },
   predicates: {},
 }
 
 export const homeAddressPreparedProofWithMissingAttribute = {
-  attrs: {
-    attr1_uuid: [
-      {
-        cred_info: {
-          referent: 'claim::ea03d8ca-eeb4-4944-b7d6-5abcf4503d73',
-          attrs: { ['Address 1']: 'Evernym Ltd, Hyd.' },
-          cred_def_id: 'V4SGRU86Z58d6TV7PBUe6f:3:CL:24:tag1',
-          schema_id: 'V4SGRU86Z58d6TV7Pf:2:slKljrSQ80tCQ40F:33089',
+  attributes: {
+    attr1_uuid: {
+      credentials: [
+        {
+          cred_info: {
+            referent: 'claim::ea03d8ca-eeb4-4944-b7d6-5abcf4503d73',
+            attrs: { ['Address 1']: 'Evernym Ltd, Hyd.' },
+            cred_def_id: 'V4SGRU86Z58d6TV7PBUe6f:3:CL:24:tag1',
+            schema_id: 'V4SGRU86Z58d6TV7Pf:2:slKljrSQ80tCQ40F:33089',
+          },
+          requested_attributes: {
+            'Address 1': 'Evernym Ltd, Hyd.'
+          }
         },
-      },
-      {
-        cred_info: {
-          referent: 'claim::ea03d8ca-eeb4-4944-b7d6-5abcf4503d73',
-          attrs: { ['Address 1']: 'Sovrin Ltd, Utah.' },
-          cred_def_id: 'V4SGRU86Z58d6TV7PBUe6f:3:CL:24:tag2',
-          schema_id: 'V4SGRU86Z58d6TV7P:3:slKljrSQ80tCQ40F:33089',
+        {
+          cred_info: {
+            referent: 'claim::ea03d8ca-eeb4-4944-b7d6-5abcf4503d73',
+            attrs: { ['Address 1']: 'Sovrin Ltd, Utah.' },
+            cred_def_id: 'V4SGRU86Z58d6TV7PBUe6f:3:CL:24:tag2',
+            schema_id: 'V4SGRU86Z58d6TV7P:3:slKljrSQ80tCQ40F:33089',
+          },
+          requested_attributes: {
+            'Address 1': 'Sovrin Ltd, Utah.'
+          }
         },
-      },
-    ],
-    attr3_uuid: [
-      {
-        cred_info: {
-          referent: 'claim::6a0f42b4-1210-4bdb-ad53-10ed765276b5',
-          attrs: { ['Address 2']: 'Address 2' },
-          cred_def_id: 'V4SGRU86Z58d6TV7PBUe6f:3:CL:24:tag2',
-          schema_id: 'V4SGRU86Z58d6TV7P:3:slKljrSQ80tCQ40F:33089',
+      ],
+      missing: false,
+      self_attest_allowed: true,
+      name: "Address 1"
+    },
+    attr3_uuid: {
+      credentials: [
+        {
+          cred_info: {
+            referent: 'claim::6a0f42b4-1210-4bdb-ad53-10ed765276b5',
+            attrs: { ['Address 2']: 'Address 2' },
+            cred_def_id: 'V4SGRU86Z58d6TV7PBUe6f:3:CL:24:tag2',
+            schema_id: 'V4SGRU86Z58d6TV7P:3:slKljrSQ80tCQ40F:33089',
+          },
+          requested_attributes: {
+            'Address 2': 'Address 2'
+          }
         },
-      },
-    ],
+      ],
+      missing: false,
+      self_attest_allowed: true,
+      name: "Address 2"
+    },
     [missingAttributes[0].key]: [null],
   },
   predicates: {},
 }
 
 export const homeAddressAndAgePreparedProof = {
-  attrs: {
-    attr1_uuid: [
-      {
-        cred_info: {
-          referent: 'claim::ea03d8ca-eeb4-4944-b7d6-5abcf4503d73',
-          attrs: { ['Address 1']: 'Address 1' },
-          cred_def_id: 'V4SGRU86Z58d6TV7PBUe6f:3:CL:24:tag1',
-          schema_id: 'V4SGRU86Z58d6TV7Pf:2:slKljrSQ80tCQ40F:33089',
+  attributes: {
+    attr1_uuid: {
+      credentials: [
+        {
+          cred_info: {
+            referent: 'claim::ea03d8ca-eeb4-4944-b7d6-5abcf4503d73',
+            attrs: { ['Address 1']: 'Address 1' },
+            cred_def_id: 'V4SGRU86Z58d6TV7PBUe6f:3:CL:24:tag1',
+            schema_id: 'V4SGRU86Z58d6TV7Pf:2:slKljrSQ80tCQ40F:33089',
+          },
+          requested_attributes: {
+            'Address 1': 'Address 1'
+          }
         },
-      },
-    ],
-    attr2_uuid: [
-      {
-        cred_info: {
-          referent: 'claim::6a0f42b4-1210-4bdb-ad53-10ed765276b5',
-          attrs: { ['Address 2']: 'Address 2' },
-          cred_def_id: 'V4SGRU86Z58d6TV7PBUe6f:3:CL:24:tag1',
-          schema_id: 'V4SGRU86Z58d6TV7Pf:2:slKljrSQ80tCQ40F:33089',
+      ],
+      missing: false,
+      self_attest_allowed: true,
+      name: "Address 1"
+    },
+    attr2_uuid: {
+      credentials: [
+        {
+          cred_info: {
+            referent: 'claim::6a0f42b4-1210-4bdb-ad53-10ed765276b5',
+            attrs: { ['Address 2']: 'Address 2' },
+            cred_def_id: 'V4SGRU86Z58d6TV7PBUe6f:3:CL:24:tag1',
+            schema_id: 'V4SGRU86Z58d6TV7Pf:2:slKljrSQ80tCQ40F:33089',
+          },
+          requested_attributes: {
+            'Address 2': 'Address 2'
+          }
         },
-      },
-    ],
-    predicate1_uuid: [
-      {
-        cred_info: {
-          referent: 'claim::6a0f42b4-1210-4bdb-ad53-10ed765276ca',
-          attrs: { ['Age 1']: '20' },
-          cred_def_id: 'V4SGRU86Z58d6TV7PBUe6f:3:CL:24:tag1',
-          schema_id: 'V4SGRU86Z58d6TV7Pf:2:slKljrSQ80tCQ40F:33089',
-        },
-      },
-    ],
-    predicate2_uuid: [
-      {
-        cred_info: {
-          referent: 'claim::110f42b4-1210-4bdb-ad53-10ed765276ca',
-          attrs: { ['Age 2']: '22' },
-          cred_def_id: 'V4SGRU86Z58d6TV7PBUe6f:3:CL:24:tag1',
-          schema_id: 'V4SGRU86Z58d6TV7Pf:2:slKljrSQ80tCQ40F:33089',
-        },
-      },
-    ],
+      ],
+      missing: false,
+      self_attest_allowed: true,
+      name: "Address 2"
+    },
   },
-  predicates: {},
+  predicates: {
+    predicate1_uuid: {
+      credentials: [
+        {
+          cred_info: {
+            referent: 'claim::6a0f42b4-1210-4bdb-ad53-10ed765276ca',
+            attrs: { ['Age 1']: '20' },
+            cred_def_id: 'V4SGRU86Z58d6TV7PBUe6f:3:CL:24:tag1',
+            schema_id: 'V4SGRU86Z58d6TV7Pf:2:slKljrSQ80tCQ40F:33089',
+          },
+          requested_attributes: {
+            'Age 1': '20'
+          }
+        },
+      ],
+      missing: false,
+      name: "Age 1",
+      p_type: ">=",
+      p_value: 20
+    },
+    predicate2_uuid: {
+      credentials: [
+        {
+          cred_info: {
+            referent: 'claim::110f42b4-1210-4bdb-ad53-10ed765276ca',
+            attrs: { ['Age 2']: '22' },
+            cred_def_id: 'V4SGRU86Z58d6TV7PBUe6f:3:CL:24:tag1',
+            schema_id: 'V4SGRU86Z58d6TV7Pf:2:slKljrSQ80tCQ40F:33089',
+          },
+          requested_attributes: {
+            'Age 2': '22'
+          }
+        },
+      ],
+      missing: false,
+      name: "Age 2",
+      p_type: ">=",
+      p_value: 20
+    },
+  },
 }
 
 // Fix `any` return. This is not important here because of following reasons

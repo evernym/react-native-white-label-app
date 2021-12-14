@@ -56,7 +56,6 @@ import {
 } from './type-claim-offer'
 import type {
   AdditionalDataPayload,
-  GetClaimVcxResult,
   NotificationPayloadInfo,
 } from '../push-notification/type-push-notification'
 import type { CustomError, GenericObject } from '../common/type-common'
@@ -76,13 +75,14 @@ import {
   deleteCredential,
   getClaimHandleBySerializedClaimOffer,
   getClaimOfferState,
-  getClaimVcx,
+  getCredentialInfo,
   getHandleBySerializedConnection,
   getLedgerFees,
   sendClaimRequest as sendClaimRequestApi,
   serializeClaimOffer,
 } from '../bridge/react-native-cxs/RNCxs'
 import type {
+  ClaimInfo,
   ClaimStorageFailAction,
   ClaimStorageSuccessAction,
 } from '../claim/type-claim'
@@ -387,12 +387,12 @@ export function* acceptEphemeralClaimOffer(
 
     const state = yield call(getClaimOfferState, claimHandle)
     if (state === VCX_CLAIM_OFFER_STATE.ACCEPTED) {
-      const vcxClaim: GetClaimVcxResult = yield call(getClaimVcx, claimHandle)
+      const vcxClaim: ClaimInfo = yield call(getCredentialInfo, claimHandle)
       const issueDate = moment().unix()
 
       yield put(
         mapClaimToSender(
-          vcxClaim.claimUuid,
+          vcxClaim.referent,
           action.remoteDid,
           action.remoteDid,
           claimOfferPayload.senderLogoUrl || '',
@@ -401,7 +401,7 @@ export function* acceptEphemeralClaimOffer(
           claimOfferPayload.issuer.name
         )
       )
-      yield put(claimStorageSuccess(action.uid, vcxClaim.claimUuid, issueDate))
+      yield put(claimStorageSuccess(action.uid, vcxClaim.referent, issueDate))
     }
     if (state === VCX_CLAIM_OFFER_STATE.NONE) {
       yield call(showSnackError, 'Failed to accept credential')

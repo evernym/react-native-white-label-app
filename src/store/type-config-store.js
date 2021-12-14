@@ -123,6 +123,7 @@ export type VcxPoolInitializationState =
 export type PoolConfig = {
   key: string,
   genesis: string,
+  namespace_list: [string]
 }
 
 export type AgencyPoolConfig = {

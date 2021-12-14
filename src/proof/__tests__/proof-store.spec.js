@@ -36,7 +36,6 @@ import {
   selfAttestedAttributes,
   originalProofRequestDataWithSpaces,
   originalProofRequestDataWithAttributesAndPredicates,
-  originalProofRequestDataWithPredicates,
   homeAddressAndAgePreparedProof,
   proofRequestWithPredicates,
   claimOfferPayload,
@@ -67,38 +66,87 @@ describe('Proof Store', () => {
 
   it('fn:findMissingRequestedAttributes', () => {
     expect(
-      findMissingRequestedAttributes(preparedProof, originalProofRequestData)
+      findMissingRequestedAttributes(
+        preparedProof,
+      )
     ).toMatchSnapshot()
 
     // find one missing attribute
     expect(
       findMissingRequestedAttributes(
         {
-          attrs: {
-            attr1_uuid: preparedProof.attrs.attr1_uuid,
+          attributes: {
+            attr1_uuid: {
+              ...preparedProof.attributes.attr1_uuid,
+              credentials: [],
+            },
           },
-        },
-        originalProofRequestData
+        }
       )
     ).toMatchSnapshot()
 
     // should find two predicates
+    const preparedProofWithMissingPredicates = {
+      attributes: {},
+      predicates: {
+        predicate_uuid_1: {
+          credentials: [],
+          name: 'Age 1',
+          p_type: '>',
+          p_value: 20,
+          missing: true
+        },
+        predicate_uuid_2: {
+          credentials: [],
+          name: 'Age 2',
+          p_type: '>',
+          p_value: 20,
+          missing: true
+        },
+      },
+    }
     expect(
       findMissingRequestedAttributes(
-        {
-          attrs: {},
-        },
-        originalProofRequestDataWithPredicates
+        preparedProofWithMissingPredicates
       )
     ).toMatchSnapshot()
 
     // find two missing attribute and two predicates
+    const preparedProofWithMissingAttributesAndPredicates = {
+      attributes: {
+        attr1_uuid: {
+          credentials: [],
+          name: 'Address 1',
+          missing: false,
+          self_attest_allowed: true
+        },
+        attr2_uuid: {
+          credentials: [],
+          name: 'Address 2',
+          missing: false,
+          self_attest_allowed: true
+        },
+      },
+      predicates: {
+        predicate_uuid_1: {
+          credentials: [],
+          name: 'Age 1',
+          p_type: '>',
+          p_value: 20,
+          missing: true
+        },
+        predicate_uuid_2: {
+          credentials: [],
+          name: 'Age 2',
+          p_type: '>',
+          p_value: 20,
+          missing: true
+        },
+      },
+    }
     expect(
       findMissingRequestedAttributes(
-        {
-          attrs: {},
-        },
-        originalProofRequestDataWithAttributesAndPredicates
+        preparedProofWithMissingAttributesAndPredicates
       )
     ).toMatchSnapshot()
   })
@@ -107,29 +155,34 @@ describe('Proof Store', () => {
     expect(
       findMissingRequestedAttributes(
         preparedProofWithMissingAttribute,
-        originalProofRequestDataMissingAttribute
       )
     ).toMatchSnapshot()
   })
 
   it('should find one missing and one dissatisfied attribute', () => {
-    const proof = {
-      attrs: {},
-    }
-
-    const proofRequest = {
-      ...originalProofRequestData,
-      requested_attributes: {
-        ...originalProofRequestData.requested_attributes,
-        attr2_uuid: {
-          name: 'Address 2',
-          restrictions: { issuer_did: 'did' },
+    const preparedProof = {
+      attributes: {
+        attr1_uuid: {
+          credentials: [],
+          name: 'Address 1',
+          missing: false,
+          self_attest_allowed: true
         },
+        attr2_uuid: {
+          credentials: [],
+          name: 'Address 2',
+          missing: true,
+          self_attest_allowed: true
+        },
+      },
+      predicates: {
       },
     }
 
     expect(
-      findMissingRequestedAttributes(proof, proofRequest)
+      findMissingRequestedAttributes(
+        preparedProof,
+      )
     ).toMatchSnapshot()
   })
 
@@ -149,9 +202,51 @@ describe('Proof Store', () => {
       )
     ).toMatchSnapshot()
 
+    const proofCase2 = {
+      attributes: {
+        attr1_uuid: {
+          credentials: [
+            {
+              cred_info: {
+                referent: 'claim::ea03d8ca-eeb4-4944-b7d6-5abcf4503d73',
+                attrs: { ['Address 1']: 'Address 1' },
+                cred_def_id: 'V4SGRU86Z58d6TV7PBUe6f:3:CL:24:tag1',
+                schema_id: 'V4SGRU86Z58d6TV7Pf:2:slKljrSQ80tCQ40F:33089',
+              },
+              requested_attributes: {
+                'A d d r e s s    1': 'Address 1'
+              }
+            },
+          ],
+          missing: false,
+          self_attest_allowed: true,
+          name: "A d d r e s s    1"
+        },
+        attr2_uuid: {
+          credentials: [
+            {
+              cred_info: {
+                referent: 'claim::6a0f42b4-1210-4bdb-ad53-10ed765276b5',
+                attrs: { ['Address 2']: 'Address 2' },
+                cred_def_id: 'V4SGRU86Z58d6TV7PBUe6f:3:CL:24:tag1',
+                schema_id: 'V4SGRU86Z58d6TV7Pf:2:slKljrSQ80tCQ40F:33089',
+              },
+              requested_attributes: {
+                '  Ad  dress 2 ': 'Address 2'
+              }
+            },
+          ],
+          missing: false,
+          self_attest_allowed: true,
+          name: "  Ad  dress 2 "
+        },
+      },
+      predicates: {},
+    }
+
     expect(
       convertIndyPreparedProofToAttributes(
-        homeAddressPreparedProof,
+        proofCase2,
         [],
         originalProofRequestDataWithSpaces.requested_attributes
       )
@@ -163,7 +258,7 @@ describe('Proof Store', () => {
         homeAddressAndAgePreparedProof,
         [],
         originalProofRequestDataWithAttributesAndPredicates.requested_attributes,
-        originalProofRequestDataWithAttributesAndPredicates.requested_predicates
+        originalProofRequestDataWithAttributesAndPredicates.requested_predicates,
       )
     ).toMatchSnapshot()
   })
@@ -204,7 +299,7 @@ describe('Proof Store', () => {
           },
         },
       },
-      claimOffer: {},
+      claimOffer: {}
     }
     const requestedAttributes = convertIndyPreparedProofToAttributes(
       {
@@ -212,7 +307,7 @@ describe('Proof Store', () => {
       },
       [],
       originalProofRequestData.requested_attributes,
-      originalProofRequestData.requested_predicates
+      originalProofRequestData.requested_predicates,
     )
 
     return expectSaga(generateProofSaga, getProof(uid))
@@ -273,7 +368,7 @@ describe('Proof Store', () => {
           },
         },
       },
-      claimOffer: {},
+      claimOffer: {}
     }
     const requestedAttributes = convertIndyPreparedProofToAttributes(
       {
@@ -281,7 +376,7 @@ describe('Proof Store', () => {
       },
       [],
       originalProofRequestDataWithAttributesAndPredicates.requested_attributes,
-      originalProofRequestDataWithAttributesAndPredicates.requested_predicates
+      originalProofRequestDataWithAttributesAndPredicates.requested_predicates,
     )
 
     return expectSaga(generateProofSaga, getProof(uid))
@@ -337,13 +432,13 @@ describe('Proof Store', () => {
           },
         },
       },
-      claimOffer: {},
+      claimOffer: {}
     }
     const copyHomeAddressPreparedProofMultipleCreds: typeof homeAddressPreparedProofMultipleCreds = JSON.parse(
       JSON.stringify(homeAddressPreparedProofMultipleCreds)
     )
-    copyHomeAddressPreparedProofMultipleCreds.attrs.attr1_uuid.reverse()
-    copyHomeAddressPreparedProofMultipleCreds.attrs.attr2_uuid.reverse()
+    copyHomeAddressPreparedProofMultipleCreds.attributes.attr1_uuid.credentials.reverse()
+    copyHomeAddressPreparedProofMultipleCreds.attributes.attr2_uuid.credentials.reverse()
     const requestedAttributes = convertIndyPreparedProofToAttributes(
       {
         ...copyHomeAddressPreparedProofMultipleCreds,
@@ -396,7 +491,6 @@ describe('Proof Store', () => {
       self_attested_attributes: {},
       requested_attrs: findMissingRequestedAttributes(
         homeAddressPreparedProof,
-        originalProofRequestData
       )[0],
       requested_predicates: {},
     }
@@ -445,9 +539,10 @@ describe('Proof Store', () => {
     const preparedProofJson = JSON.stringify(
       homeAddressPreparedProofWithMissingAttribute
     )
-    const [missingAttributes] = findMissingRequestedAttributes(
+    const [
+      missingAttributes,
+    ] = findMissingRequestedAttributes(
       homeAddressPreparedProofWithMissingAttribute,
-      originalProofRequestDataMissingAttribute
     )
 
     expect(gen.next(preparedProofJson).value).toEqual(
@@ -502,7 +597,7 @@ describe('Proof Store', () => {
   })
 
   it('should find existing credentials which cannot be used for proving', () => {
-    let storedCredentials = [claimOfferPayload]
+    let storedCredentials = [ claimOfferPayload ]
     let attribute = { name: 'Address 1' }
     let usedCredentials = []
 
@@ -516,7 +611,7 @@ describe('Proof Store', () => {
   })
 
   it('should find existing credentials which cannot be used for proving', () => {
-    let storedCredentials = [claimOfferPayload]
+    let storedCredentials = [ claimOfferPayload ]
     let attribute = { name: 'Address 1' }
     let usedCredentials = [claimOfferPayload.claimId]
 
@@ -530,7 +625,7 @@ describe('Proof Store', () => {
   })
 
   it('should find existing credentials which cannot be used for proving', () => {
-    let storedCredentials = [claimOfferPayload]
+    let storedCredentials = [ claimOfferPayload ]
     let attribute = { name: 'No Address' }
     let usedCredentials = [claimUUID]
 

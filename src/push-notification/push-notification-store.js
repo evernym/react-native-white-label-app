@@ -177,8 +177,8 @@ export function* onPushTokenUpdate(
 }
 
 export function convertClaimOfferPushPayloadToAppClaimOffer(
-  pushPayload: ClaimOfferPushPayload,
-  extraPayload: { remotePairwiseDID: string }
+  claimOffer: ClaimOfferPushPayload,
+  remotePairwiseDID: string
 ): AdditionalDataPayload {
   /**
    * Below expression Converts this format
@@ -192,9 +192,9 @@ export function convertClaimOfferPushPayloadToAppClaimOffer(
    *  {label: "height", data: "170"},
    * ]
    */
-  const revealedAttributes = Object.keys(pushPayload.claim).map(
+  const revealedAttributes = Object.keys(claimOffer.claim).map(
     (attributeName) => {
-      let attributeValue = pushPayload.claim[attributeName]
+      let attributeValue = claimOffer.claim[attributeName]
       if (Array.isArray(attributeValue)) {
         attributeValue = attributeValue[0]
       }
@@ -208,18 +208,18 @@ export function convertClaimOfferPushPayloadToAppClaimOffer(
 
   return {
     issuer: {
-      name: pushPayload.issuer_name || pushPayload.remoteName,
-      did: pushPayload.issuer_did || extraPayload.remotePairwiseDID,
+      name: claimOffer.issuer_name || claimOffer.remoteName,
+      did: claimOffer.issuer_did || remotePairwiseDID,
     },
     data: {
-      name: pushPayload.claim_name,
-      version: pushPayload.version,
+      name: claimOffer.claim_name,
+      version: claimOffer.version,
       revealedAttributes,
-      claimDefinitionSchemaSequenceNumber: pushPayload.schema_seq_no,
-      claimDefinitionId: pushPayload.claim_def_id,
+      claimDefinitionSchemaSequenceNumber: claimOffer.schema_seq_no,
+      claimDefinitionId: claimOffer.claim_def_id,
     },
-    payTokenValue: pushPayload.price,
-    ephemeralClaimOffer: pushPayload.ephemeralClaimOffer,
+    payTokenValue: claimOffer.price,
+    ephemeralClaimOffer: claimOffer.ephemeralClaimOffer,
   }
 }
 
@@ -239,7 +239,6 @@ export function convertProofRequestPushPayloadToAppProofRequest(
     version,
     requested_predicates,
   } = proof_request_data
-
   const requestedAttributes = []
   Object.keys(requested_attributes).forEach((attributeKey) => {
     let attribute = requested_attributes[attributeKey]
@@ -285,7 +284,6 @@ export function convertProofRequestPushPayloadToAppProofRequest(
       }
     })
   }
-
   return {
     data: {
       name,
@@ -594,9 +592,7 @@ export function* updatePayloadToRelevantStoreSaga(
       case MESSAGE_TYPE.CLAIM_OFFER:
         yield put(
           claimOfferReceived(
-            convertClaimOfferPushPayloadToAppClaimOffer(additionalData, {
-              remotePairwiseDID,
-            }),
+            additionalData,
             {
               uid,
               senderLogoUrl,
@@ -609,7 +605,7 @@ export function* updatePayloadToRelevantStoreSaga(
       case MESSAGE_TYPE.PROOF_REQUEST:
         yield put(
           proofRequestReceived(
-            convertProofRequestPushPayloadToAppProofRequest(additionalData),
+            additionalData,
             {
               uid,
               senderLogoUrl,

@@ -97,10 +97,23 @@ export type RetrySendProofAction = {
 }
 
 export type IndyPreparedProof = {
-  attrs: {
-    [attributeName: string]: ?Array<MatchingCredential | null>,
+  attributes: {
+    [attributeName: string]: {
+      credentials: ?Array<MatchingCredential | null>,
+      self_attest_allowed: boolean,
+      missing: boolean,
+      name: string,
+    },
   },
-  predicates?: {},
+  predicates?: {
+    [attributeName: string]: {
+      credentials: ?Array<MatchingCredential | null>,
+      name: string,
+      p_type: string,
+      p_value: number,
+      missing: boolean,
+    },
+  },
   self_attested_attrs?: {},
 }
 

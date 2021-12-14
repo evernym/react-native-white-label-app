@@ -3,7 +3,7 @@ import { call, fork, put, select, spawn, takeEvery } from 'redux-saga/effects'
 import moment from 'moment'
 import type {
   Claim,
-  ClaimAction,
+  ClaimAction, ClaimInfo,
   ClaimMap,
   ClaimReceivedAction,
   ClaimStorageFailAction,
@@ -20,13 +20,12 @@ import {
   HYDRATE_CLAIM_MAP_FAIL,
   MAP_CLAIM_TO_SENDER,
 } from './type-claim'
-import type { GetClaimVcxResult } from '../push-notification/type-push-notification'
 import type { CustomError, GenericObject } from '../common/type-common'
 import { RESET } from '../common/type-common'
 import {
   fetchPublicEntitiesForCredentials,
   getClaimHandleBySerializedClaimOffer,
-  getClaimVcx,
+  getCredentialInfo,
   updateClaimOfferState,
   updateClaimOfferStateWithMessage,
 } from '../bridge/react-native-cxs/RNCxs'
@@ -46,10 +45,7 @@ import { getHydrationItem, secureSet } from '../services/storage'
 import { CLAIM_MAP } from '../common/secure-storage-constants'
 import { updateMessageStatus } from '../store/config-store'
 import { ensureVcxInitAndPoolConnectSuccess } from '../store/route-store'
-import type {
-  ClaimOfferPayload,
-  SerializedClaimOffer,
-} from '../claim-offer/type-claim-offer'
+import type { ClaimOfferPayload, SerializedClaimOffer } from '../claim-offer/type-claim-offer'
 import { VCX_CLAIM_OFFER_STATE } from '../claim-offer/type-claim-offer'
 import { saveSerializedClaimOffer } from '../claim-offer/claim-offer-store'
 import type { Connection } from '../store/type-connection-store'
@@ -57,7 +53,9 @@ import { promptBackupBanner } from '../backup/backup-store'
 import { captureError } from '../services/error/error-handler'
 import { customLogger } from '../store/custom-logger'
 
-export const claimReceived = (claim: Claim): ClaimReceivedAction => ({
+export const claimReceived = (
+  claim: Claim
+): ClaimReceivedAction => ({
   type: CLAIM_RECEIVED,
   claim,
 })
@@ -136,7 +134,7 @@ export function* hydrateClaimMapSaga(): Generator<*, *, *> {
         if (claimMap.hasOwnProperty(key) && !claimMap[key].name) {
           const event = connectionHistory.data.connections[
             claimMap[key].senderDID
-          ].data.find(
+            ].data.find(
             (event) =>
               event.originalPayload.type === CLAIM_STORAGE_SUCCESS &&
               claimMap[key].issueDate === event.originalPayload.issueDate
@@ -186,11 +184,11 @@ export function* claimReceivedSaga(
 
     // try to find correspondent Credential Offer using ~thread_id
     // it works for Aries protocol only
-    if (message['~thread']) {
-      const offerId = message['~thread']['thid']
+    if (message["~thread"]) {
+      const offerId = message["~thread"]["thid"]
       const serializedClaimOffer = serializedClaimOffers[offerId]
 
-      if (serializedClaimOffer) {
+      if (serializedClaimOffer){
         yield call(
           checkForClaim,
           serializedClaimOffer,
@@ -233,7 +231,7 @@ export function* checkForClaim(
   userDID: string,
   uid: string,
   offerId: string,
-  credentialMessage: ?string
+  credentialMessage: ?string,
 ): Generator<*, *, *> {
   if (serializedClaimOffer.state === VCX_CLAIM_OFFER_STATE.ACCEPTED) {
     // if claim offer is already in accepted state, then we don't want to update state
@@ -264,11 +262,12 @@ export function* checkForClaim(
       )
     }
 
+
     if (vcxClaimOfferState === VCX_CLAIM_OFFER_STATE.ACCEPTED) {
       // once we know that this claim offer state was updated to accepted
       // that means that we downloaded the claim for this claim offer
       // and saved to wallet, now we need to know claim uuid and exact claim
-      const vcxClaim: GetClaimVcxResult = yield call(getClaimVcx, claimHandle)
+      const vcxClaim: ClaimInfo = yield call(getCredentialInfo, claimHandle)
       const connection: ?Connection = yield select(
         getConnectionByUserDid,
         userDID
@@ -279,7 +278,7 @@ export function* checkForClaim(
       if (connection) {
         yield put(
           mapClaimToSender(
-            vcxClaim.claimUuid,
+            vcxClaim.referent,
             connection.senderDID,
             userDID,
             connection.logoUrl,
@@ -290,13 +289,7 @@ export function* checkForClaim(
         )
       }
 
-      yield put(
-        claimStorageSuccess(
-          serializedClaimOffer.messageId,
-          vcxClaim.claimUuid,
-          issueDate
-        )
-      )
+      yield put(claimStorageSuccess(serializedClaimOffer.messageId, vcxClaim.referent, issueDate))
       yield* updateMessageStatus([
         {
           pairwiseDID: userDID,
@@ -348,15 +341,12 @@ export function* saveClaimUuidMap(): Generator<*, *, *> {
 export function* getClaim(claimOfferUuid: string): Generator<*, *, *> {
   const claimOffers = yield select(getClaimOffers)
   const claimOffer: ClaimOfferPayload = claimOffers[claimOfferUuid]
-  if (!claimOffer) {
+  if (!claimOffer){
     return
   }
 
-  const { claimUuid, claim }: GenericObject = yield select(
-    getClaimForOffer,
-    claimOffer
-  )
-  if (!claim || !claimUuid) {
+  const { claimUuid, claim }: GenericObject = yield select(getClaimForOffer, claimOffer)
+  if (!claim || !claimUuid){
     return
   }
 
@@ -376,7 +366,7 @@ export function* getClaim(claimOfferUuid: string): Generator<*, *, *> {
     claim,
     claimUuid,
     handle: claimHandle,
-    vcxSerializedClaimOffer,
+    vcxSerializedClaimOffer
   }
 }
 

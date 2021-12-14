@@ -2,7 +2,7 @@ import type { AdditionalDataPayload } from '../push-notification/type-push-notif
 import { schemaValidator } from '../services/schema-validator'
 import { flattenAsync } from '../common/flatten-async'
 import { convertClaimOfferPushPayloadToAppClaimOffer } from '../push-notification/push-notification-store'
-import { convertAriesCredentialOfferToCxsClaimOffer } from '../bridge/react-native-cxs/vcx-transformers'
+import { convertAriesCredentialOfferToAppClaimOffer } from '../bridge/react-native-cxs/vcx-transformers'
 import { QR_CODE_TYPES } from '../components/qr-scanner/type-qr-scanner'
 
 export async function validateEphemeralClaimOffer(
@@ -22,7 +22,7 @@ export async function validateEphemeralClaimOffer(
   }
 
   const [decodedCredentialOfferError, decodedCredentialOffer] = await flattenAsync(
-    convertAriesCredentialOfferToCxsClaimOffer,
+    convertAriesCredentialOfferToAppClaimOffer,
   )(qrCode)
   if (decodedCredentialOfferError || decodedCredentialOffer === null) {
     return ['ECO-002::credential offer format.', null]
@@ -35,9 +35,7 @@ export async function validateEphemeralClaimOffer(
       remoteName: qrCode.comment || qrCode['~alias']?.label || 'Unnamed Connection',
       ephemeralClaimOffer: JSON.stringify(qrCode),
     },
-    {
-      remotePairwiseDID: qrCode['~service'].recipientKeys[0],
-    },
+    qrCode['~service'].recipientKeys[0],
   )
 
   return [

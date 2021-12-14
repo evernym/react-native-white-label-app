@@ -21,7 +21,6 @@ import {
 } from '../common'
 import { deepLinkProcessed } from '../deep-link/deep-link-store'
 import { TYPE } from '../common/type-common'
-import { convertAriesCredentialOfferToCxsClaimOffer } from '../bridge/react-native-cxs/vcx-transformers'
 import {
   getAllDid,
   getAllPublicDid,
@@ -49,7 +48,7 @@ import { usePushNotifications } from '../external-imports'
 import {
   getExistingConnection,
   shouldSendRedirectMessage,
-  getAttachedRequestId,
+  getThreadId,
 } from './invitation-helpers'
 import { invitationReceived } from './invitation-store'
 import { showSnackError } from '../store/config-store'
@@ -59,6 +58,7 @@ import {
   sendConnectionReuse,
 } from '../store/connections-store'
 import Snackbar from 'react-native-snackbar'
+import { convertAriesCredentialOfferToAppClaimOffer } from '../bridge/react-native-cxs/vcx-transformers'
 
 function* checkExistingConnectionAndRedirect(
   invitation: InvitationPayload
@@ -225,11 +225,11 @@ function* onAriesOutOfBandInviteRead(
       return
     }
 
-    const uid = getAttachedRequestId(invitation.attachedRequest)
+    const uid = getThreadId(invitation.attachedRequest)
     const type_ = invitation.attachedRequest[TYPE]
 
     if (type_.endsWith('offer-credential')) {
-      const claimOffer = yield call(convertAriesCredentialOfferToCxsClaimOffer,
+      const claimOffer = yield call(convertAriesCredentialOfferToAppClaimOffer,
         invitation.attachedRequest
       )
       if (!claimOffer) {
@@ -270,12 +270,8 @@ function* onAriesOutOfBandInviteRead(
               ...claimOffer,
               remoteName: invitation.senderName,
               issuer_did: invitation.senderDID,
-              from_did: invitation.senderDID,
-              to_did: '',
             },
-            {
-              remotePairwiseDID: invitation.senderDID,
-            }
+            invitation.senderDID
           ),
           {
             uid,

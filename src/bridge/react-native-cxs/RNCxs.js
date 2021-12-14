@@ -9,18 +9,13 @@ import type {
   VcxInitConfig,
   CxsPushTokenConfig,
   VcxCredentialOffer,
-  VcxClaimInfo,
   VcxConnectionConnectResult,
   WalletTokenInfo,
   PaymentAddress,
   SignDataResponse,
-  WalletPoolName,
 } from './type-cxs'
 import { signDataResponseSchema, smallDeviceMemory } from './type-cxs'
-import type {
-  AriesOutOfBandInvite,
-  InvitationPayload,
-} from '../../invitation/type-invitation'
+import type { AriesOutOfBandInvite, InvitationPayload } from '../../invitation/type-invitation'
 import type { CredentialOffer } from '../../claim-offer/type-claim-offer'
 import {
   addAttestation,
@@ -28,22 +23,14 @@ import {
   convertCxsInitToVcxInit,
   convertCxsPushConfigToVcxPushTokenConfig,
   convertInvitationToVcxConnectionCreate,
-  convertVcxConnectionToCxsConnection,
-  convertVcxCredentialOfferToCxsClaimOffer,
+  convertVcxConnectionToAppConnection,
+  convertLegacyClaimOfferToAppClaimOffer,
   convertVcxProvisionResultToUserOneTimeInfo,
   paymentHandle,
 } from './vcx-transformers'
 import type { UserOneTimeInfo } from '../../store/user/type-user-store'
-import type {
-  AgencyPoolConfig,
-  MessagePaymentDetails,
-  PoolConfig,
-} from '../../store/type-config-store'
+import type { AgencyPoolConfig, MessagePaymentDetails, PoolConfig } from '../../store/type-config-store'
 import { __uniqueId } from '../../store/type-config-store'
-import type {
-  ClaimPushPayload,
-  GetClaimVcxResult,
-} from '../../push-notification/type-push-notification'
 import type { WalletHistoryEvent } from '../../wallet/type-wallet'
 import type { Passphrase } from '../../backup/type-backup'
 import uniqueId from 'react-native-unique-id'
@@ -71,6 +58,7 @@ import {
   Wallet,
 } from '@evernym/react-native-sdk'
 import { WALLET_ITEM_NOT_FOUND } from './error-cxs'
+import type { ClaimInfo } from '../../claim/type-claim'
 
 const { RNUtils } = NativeModules
 
@@ -86,25 +74,24 @@ export async function watchApplicationInactivity() {
   }
 }
 
+
 /*
  * Agent API
  */
 export async function updatePushTokenVcx(pushTokenConfig: CxsPushTokenConfig) {
   return await Agent.updateInfo({
-    config: JSON.stringify(
-      convertCxsPushConfigToVcxPushTokenConfig(pushTokenConfig)
-    ),
+    config: JSON.stringify(convertCxsPushConfigToVcxPushTokenConfig(pushTokenConfig)),
   })
 }
 
 export async function createOneTimeInfo(
-  agencyConfig: AgencyPoolConfig
+  agencyConfig: AgencyPoolConfig,
 ): Promise<[null | string, null | UserOneTimeInfo]> {
   try {
     const walletPoolName = await getWalletPoolName()
     const vcxProvisionConfig: VcxProvision = await convertAgencyConfigToVcxProvision(
       agencyConfig,
-      walletPoolName
+      walletPoolName,
     )
     const provisionVcxResult: string = await Agent.provision({
       agencyConfig: JSON.stringify(vcxProvisionConfig),
@@ -119,19 +106,18 @@ export async function createOneTimeInfo(
 export async function getProvisionToken(
   agencyConfig: AgencyPoolConfig,
   sponseeId: string,
-  sponsorId: string
+  sponsorId: string,
 ): Promise<[null | string, null | string]> {
   try {
     const walletPoolName = await getWalletPoolName()
     const vcxConfig: VcxProvision = await convertAgencyConfigToVcxProvision(
       agencyConfig,
-      walletPoolName
+      walletPoolName,
     )
     const vcxProvisionConfig = {
       vcx_config: vcxConfig,
       source_id: 'someSourceId',
-      com_method: comMethod,
-      sponsee_id: comMethod.id,
+      sponsee_id: sponseeId,
       sponsor_id: sponsorId,
     }
     let provisionToken: string = await Agent.getProvisionToken({
@@ -146,13 +132,13 @@ export async function getProvisionToken(
 
 export async function createOneTimeInfoWithToken(
   agencyConfig: AgencyPoolConfig,
-  token: string
+  token: string,
 ): Promise<[null | string, null | UserOneTimeInfo]> {
   try {
     const walletPoolName = await getWalletPoolName()
     const vcxProvisionConfig: VcxProvision = await convertAgencyConfigToVcxProvision(
       agencyConfig,
-      walletPoolName
+      walletPoolName,
     )
     const tokenWithAttestation = await addAttestation(token)
     const provisionVcxResult: string = await Agent.provisionWithToken({
@@ -169,7 +155,7 @@ export async function createOneTimeInfoWithToken(
 export async function downloadMessages(
   messageStatus: string,
   uid_s: ?string,
-  pwdids: string
+  pwdids: string,
 ): Promise<string> {
   return await Agent.downloadMessages({
     messageStatus,
@@ -180,7 +166,7 @@ export async function downloadMessages(
 
 export async function vcxGetAgentMessages(
   messageStatus: string,
-  uid_s: ?string
+  uid_s: ?string,
 ): Promise<string> {
   return await Agent.downloadAgentMessages({
     messageStatus,
@@ -190,7 +176,7 @@ export async function vcxGetAgentMessages(
 
 export async function updateMessages(
   messageStatus: string,
-  pwdidsJson: string
+  pwdidsJson: string,
 ): Promise<number> {
   return await Agent.updateMessages({
     messageStatus,
@@ -208,7 +194,7 @@ export async function createPairwiseAgent(): Promise<string> {
  */
 export async function restoreWallet(
   walletPath: string,
-  decryptionKey: string
+  decryptionKey: string,
 ): Promise<number> {
   const { walletName } = await getWalletPoolName()
   const wallet_key = await getWalletKey()
@@ -225,7 +211,7 @@ export async function restoreWallet(
 
 export async function createWalletBackup(
   sourceID: string,
-  backupKey: string
+  backupKey: string,
 ): Promise<number> {
   return await CloudWalletBackup.create({
     sourceID,
@@ -235,7 +221,7 @@ export async function createWalletBackup(
 
 export async function backupWalletBackup(
   walletBackupHandle: number,
-  path: string
+  path: string,
 ): Promise<number> {
   return await CloudWalletBackup.send({
     handle: walletBackupHandle,
@@ -245,7 +231,7 @@ export async function backupWalletBackup(
 
 export async function updateWalletBackupStateWithMessage(
   handle: number,
-  message: string
+  message: string,
 ): Promise<number> {
   return await CloudWalletBackup.updateStateWithMessage({
     handle,
@@ -258,7 +244,7 @@ export async function updateWalletBackupStateWithMessage(
  */
 export async function acceptInvitationVcx(
   connectionHandle: number,
-  agentInfo: PairwiseAgent | null
+  agentInfo: PairwiseAgent | null,
 ): Promise<GenericObject> {
   const connectionOption = agentInfo ? { pairwise_agent_info: agentInfo } : {}
 
@@ -280,9 +266,7 @@ export async function acceptInvitationVcx(
       throw error
     }
   }
-  const serializedConnection: string = await serializeConnection(
-    connectionHandle
-  )
+  const serializedConnection: string = await serializeConnection(connectionHandle)
 
   const {
     data,
@@ -299,10 +283,11 @@ export async function acceptInvitationVcx(
   // }
 
   return {
-    connection: convertVcxConnectionToCxsConnection(data),
+    connection: convertVcxConnectionToAppConnection(data),
     serializedConnection,
     invitation,
   }
+
 }
 
 export async function deleteConnection(connectionHandle: number) {
@@ -312,7 +297,7 @@ export async function deleteConnection(connectionHandle: number) {
 }
 
 export async function createConnectionWithInvite(
-  invitation: InvitationPayload
+  invitation: InvitationPayload,
 ): Promise<number> {
   const { invite_details } = convertInvitationToVcxConnectionCreate(invitation)
   return await Connection.createWithInvitation({
@@ -322,7 +307,7 @@ export async function createConnectionWithInvite(
 }
 
 export async function createConnectionWithAriesInvite(
-  invitation: InvitationPayload
+  invitation: InvitationPayload,
 ): Promise<number> {
   return await Connection.createWithInvitation({
     sourceID: invitation.requestId,
@@ -331,7 +316,7 @@ export async function createConnectionWithAriesInvite(
 }
 
 export async function createConnectionWithAriesOutOfBandInvite(
-  invitation: InvitationPayload
+  invitation: InvitationPayload,
 ): Promise<number> {
   return await Connection.createWithOutofbandInvitation({
     sourceID: invitation.requestId,
@@ -339,15 +324,17 @@ export async function createConnectionWithAriesOutOfBandInvite(
   })
 }
 
-export async function serializeConnection(handle: number): Promise<string> {
+export async function serializeConnection(
+  handle: number,
+): Promise<string> {
   return Connection.serialize({
     handle,
   })
 }
 
 // cache Promise of serializedString so that we don't call Bridge method again
-export const getHandleBySerializedConnection = memoize(async function (
-  serialized: string
+export const getHandleBySerializedConnection = memoize(async function(
+  serialized: string,
 ): Promise<number> {
   return await Connection.deserialize({
     serialized,
@@ -361,7 +348,7 @@ export async function connectionSendMessage(
     messageType: string,
     messageTitle: string,
     refMessageId?: string,
-  }
+  },
 ): Promise<string> {
   const sendMessageOptions = JSON.stringify({
     msg_type: options.messageType,
@@ -381,11 +368,11 @@ export async function connectionSendMessage(
   // the data that we are receiving is the data that we need
   if (isAries && typeof msgId !== 'string') {
     throw new Error(
-      `Invalid data received from wrapper. Excepted msgId, got ${msgId}`
+      `Invalid data received from wrapper. Excepted msgId, got ${msgId}`,
     )
   } else if (!isAries && (typeof msgId !== 'string' || msgId.length === 0)) {
     throw new Error(
-      `Invalid data received from wrapper. Excepted msgId, got ${msgId}`
+      `Invalid data received from wrapper. Excepted msgId, got ${msgId}`,
     )
   }
 
@@ -396,7 +383,7 @@ export async function connectionSignData(
   connectionHandle: number,
   data: string,
   base64EncodingOption: string = 'NO_WRAP',
-  encodeBeforeSigning: boolean = true
+  encodeBeforeSigning: boolean = true,
 ): Promise<SignDataResponse> {
   const response: SignDataResponse = await Connection.signData({
     handle: connectionHandle,
@@ -417,7 +404,7 @@ export async function connectionSignData(
 
 export async function connectionRedirect(
   redirectConnectionHandle: number,
-  connectionHandle: number
+  connectionHandle: number,
 ): Promise<void> {
   return Connection.redirect({
     handle: redirectConnectionHandle,
@@ -427,7 +414,7 @@ export async function connectionRedirect(
 
 export async function connectionReuse(
   connectionHandle: number,
-  invite: AriesOutOfBandInvite
+  invite: AriesOutOfBandInvite,
 ): Promise<void> {
   return Connection.reuse({
     handle: connectionHandle,
@@ -436,7 +423,7 @@ export async function connectionReuse(
 }
 
 export async function connectionGetState(
-  connectionHandle: number
+  connectionHandle: number,
 ): Promise<number> {
   return Connection.getState({
     handle: connectionHandle,
@@ -451,7 +438,7 @@ export async function connectionUpdateState(connectionHandle: number) {
 
 export async function connectionUpdateStateWithMessage(
   connectionHandle: number,
-  message: string
+  message: string,
 ) {
   return Connection.updateStateWithMessage({
     handle: connectionHandle,
@@ -462,7 +449,7 @@ export async function connectionUpdateStateWithMessage(
 export async function connectionSendAnswer(
   handle: number,
   question: string,
-  answer: string
+  answer: string,
 ): Promise<void> {
   return await Connection.sendAnswer({
     handle,
@@ -475,17 +462,15 @@ export async function createOutOfBandConnectionInvitation(
   goal: string,
   handshake?: boolean,
   attachment?: string | null,
-  agentInfo: PairwiseAgent | null
+  agentInfo: PairwiseAgent | null,
 ): Promise<GenericObject> {
-  const connectionHandle = await Connection.createOutOfBandConnectionInvitation(
-    {
-      sourceID: uuid(),
-      goal,
-      goalCode: '',
-      handshake,
-      attachment,
-    }
-  )
+  const connectionHandle = await Connection.createOutOfBandConnectionInvitation({
+    sourceID: uuid(),
+    goal,
+    goalCode: '',
+    handshake,
+    attachment,
+  })
 
   let {
     connection: pairwiseInfo,
@@ -505,7 +490,7 @@ export async function createOutOfBandConnectionInvitation(
  */
 export async function credentialCreateWithOffer(
   sourceId: string,
-  offer: string
+  offer: string,
 ): Promise<number> {
   return await Credential.createWithOffer({
     sourceID: sourceId,
@@ -513,14 +498,16 @@ export async function credentialCreateWithOffer(
   })
 }
 
-export async function serializeClaimOffer(handle: number): Promise<string> {
+export async function serializeClaimOffer(
+  handle: number,
+): Promise<string> {
   return Credential.serialize({
     handle,
   })
 }
 
-export const getClaimHandleBySerializedClaimOffer = memoize(async function (
-  serialized: string
+export const getClaimHandleBySerializedClaimOffer = memoize(async function(
+  serialized: string,
 ): Promise<number> {
   return await Credential.deserialize({
     serialized,
@@ -530,7 +517,7 @@ export const getClaimHandleBySerializedClaimOffer = memoize(async function (
 export async function sendClaimRequest(
   handle: number,
   connectionHandle: number = 0,
-  paymentHandle: number = 0
+  paymentHandle: number = 0,
 ): Promise<void> {
   return await Credential.sendRequest({
     handle,
@@ -547,7 +534,7 @@ export async function updateClaimOfferState(handle: number) {
 
 export async function updateClaimOfferStateWithMessage(
   handle: number,
-  message: string
+  message: string,
 ) {
   return await Credential.updateStateWithMessage({
     handle,
@@ -561,22 +548,13 @@ export async function getClaimOfferState(handle: number): Promise<number> {
   })
 }
 
-export async function getClaimVcx(handle: number): Promise<GetClaimVcxResult> {
-  const vcxClaimResult: string = await Credential.getCredentialMessage({
+export async function getCredentialInfo(
+  handle: number,
+): Promise<ClaimInfo> {
+  const info: string = await Credential.getInfo({
     handle,
   })
-  const vcxClaim: VcxClaimInfo = JSON.parse(vcxClaimResult)
-  const { credential, credential_id } = vcxClaim
-
-  if (!credential || !credential_id) {
-    throw new Error('credential not found in vcx')
-  }
-
-  const credentialPayload: ClaimPushPayload = JSON.parse(credential)
-  return {
-    claimUuid: credential_id,
-    claim: credentialPayload,
-  }
+  return JSON.parse(info)
 }
 
 export async function deleteCredential(handle: number) {
@@ -588,7 +566,7 @@ export async function deleteCredential(handle: number) {
 export async function credentialReject(
   handle: number,
   connectionHandle: number,
-  comment: string
+  comment: string,
 ): Promise<void> {
   return Credential.reject({
     handle,
@@ -598,7 +576,7 @@ export async function credentialReject(
 }
 
 export async function credentialGetPresentationProposal(
-  handle: number
+  handle: number,
 ): Promise<string> {
   return Credential.getPresentationProposalMessage({
     handle,
@@ -607,11 +585,11 @@ export async function credentialGetPresentationProposal(
 
 export async function createCredentialWithProprietaryOffer(
   sourceId: string,
-  credentialOffer: string
+  credentialOffer: string,
 ): Promise<CxsCredentialOfferResult> {
   const credential_handle = await credentialCreateWithOffer(
     sourceId,
-    credentialOffer
+    credentialOffer,
   )
 
   const [vcxCredentialOffer, paymentDetails]: [
@@ -626,36 +604,29 @@ export async function createCredentialWithProprietaryOffer(
 
   return {
     claimHandle: credential_handle,
-    claimOffer: convertVcxCredentialOfferToCxsClaimOffer(vcxCredentialOffer),
+    claimOffer: convertLegacyClaimOfferToAppClaimOffer(vcxCredentialOffer),
   }
 }
 
 export async function createCredentialWithAriesOffer(
-  sourceId: string,
-  credentialOffer: string
+  credentialOffer: string,
 ): Promise<CxsCredentialOfferResult> {
-  const credential_handle = await credentialCreateWithOffer(
-    sourceId,
-    credentialOffer
+  return credentialCreateWithOffer(
+    uuid(),
+    credentialOffer,
   )
-
-  const [vcxCredentialOffer]: [VcxCredentialOffer] = JSON.parse(credentialOffer)
-
-  return {
-    claimHandle: credential_handle,
-    claimOffer: convertVcxCredentialOfferToCxsClaimOffer(vcxCredentialOffer),
-  }
 }
 
 export async function createCredentialWithAriesOfferObject(
   sourceId: string,
-  credentialOffer: CredentialOffer
+  credentialOffer: CredentialOffer,
 ): Promise<CxsCredentialOfferResult> {
   return await credentialCreateWithOffer(
     sourceId,
-    JSON.stringify(credentialOffer)
+    JSON.stringify(credentialOffer),
   )
 }
+
 
 /*
  * Library API
@@ -672,7 +643,7 @@ export async function init(config: CxsInitConfig): Promise<boolean> {
   const walletPoolName = await getWalletPoolName()
   const vcxInitConfig: VcxInitConfig = await convertCxsInitToVcxInit(
     config,
-    walletPoolName
+    walletPoolName,
   )
   return await Library.init({
     config: JSON.stringify(vcxInitConfig),
@@ -680,25 +651,24 @@ export async function init(config: CxsInitConfig): Promise<boolean> {
 }
 
 async function preparePoolConfig(config: PoolConfig) {
-  let walletPoolName: WalletPoolName = await getWalletPoolName()
-  const genesisPath: string = await RNUtils.getGenesisPathWithConfig(
-    config.genesis,
-    config.key
-  )
+  const genesisPath: string = await RNUtils.getGenesisPathWithConfig(config.genesis, config.key)
   return {
     genesis_path: genesisPath,
-    pool_name: walletPoolName.poolName + config.key,
+    namespace_list: config.namespace_list,
   }
 }
 
+
 export async function initPool(
-  poolConfig: string | Array<PoolConfig>
+  poolConfig: string | Array<PoolConfig>,
 ): Promise<boolean> {
   let vcxInitPoolConfig = []
 
   if (Array.isArray(poolConfig)) {
     for (const config: PoolConfig of poolConfig) {
-      vcxInitPoolConfig.push(await preparePoolConfig(config))
+      vcxInitPoolConfig.push(
+        await preparePoolConfig(config),
+      )
     }
   }
 
@@ -707,7 +677,8 @@ export async function initPool(
       await preparePoolConfig({
         key: '',
         genesis: poolConfig,
-      })
+        namespace_list: ['sov']
+      }),
     )
   }
 
@@ -732,7 +703,9 @@ export async function simpleInit(): Promise<boolean> {
 /*
  * Proof
  */
-export async function getMatchingCredentials(handle: number): Promise<string> {
+export async function getMatchingCredentials(
+  handle: number,
+): Promise<string> {
   return await DisclosedProof.getCredentialsForProofRequest({
     handle,
   })
@@ -741,7 +714,7 @@ export async function getMatchingCredentials(handle: number): Promise<string> {
 export async function generateProof(
   handle: number,
   selectedCredentials: string,
-  selfAttestedAttributes: string
+  selfAttestedAttributes: string,
 ): Promise<void> {
   return await DisclosedProof.generateProof({
     handle,
@@ -752,7 +725,7 @@ export async function generateProof(
 
 export async function sendProof(
   handle: number,
-  connectionHandle: number
+  connectionHandle: number,
 ): Promise<void> {
   return await DisclosedProof.sendProof({
     handle,
@@ -762,7 +735,7 @@ export async function sendProof(
 
 export async function proofCreateWithRequest(
   sourceId: string,
-  proofRequest: string
+  proofRequest: string,
 ): Promise<number> {
   return await DisclosedProof.createWithRequest({
     sourceID: sourceId,
@@ -776,7 +749,9 @@ export async function proofSerialize(handle: number): Promise<string> {
   })
 }
 
-export async function proofDeserialize(serialized: string): Promise<number> {
+export async function proofDeserialize(
+  serialized: string,
+): Promise<number> {
   return await DisclosedProof.deserialize({
     serialized,
   })
@@ -784,7 +759,7 @@ export async function proofDeserialize(serialized: string): Promise<number> {
 
 export async function proofReject(
   handle: number,
-  connectionHandle: number
+  connectionHandle: number,
 ): Promise<void> {
   return DisclosedProof.reject({
     handle,
@@ -792,7 +767,9 @@ export async function proofReject(
   })
 }
 
-export async function proofGetState(handle: number): Promise<number> {
+export async function proofGetState(
+  handle: number,
+): Promise<number> {
   return await DisclosedProof.getState({
     handle,
   })
@@ -801,10 +778,7 @@ export async function proofGetState(handle: number): Promise<number> {
 /*
  * Proof Verifier API
  */
-export async function createProofVerifierWithProposal(
-  presentationProposal: string,
-  name: string
-): Promise<string> {
+export async function createProofVerifierWithProposal(presentationProposal: string, name: string): Promise<string> {
   return Verifier.createWithProposal({
     sourceID: uuid(),
     presentationProposal,
@@ -812,10 +786,7 @@ export async function createProofVerifierWithProposal(
   })
 }
 
-export async function proofVerifierSendRequest(
-  handle: number,
-  connectionHandle: number
-): Promise<null> {
+export async function proofVerifierSendRequest(handle: number, connectionHandle: number): Promise<null> {
   return Verifier.sendProofRequest({
     handle,
     connectionHandle,
@@ -828,35 +799,26 @@ export async function proofVerifierSerialize(handle: number): Promise<string> {
   })
 }
 
-export async function proofVerifierDeserialize(
-  serialized: number
-): Promise<number> {
+export async function proofVerifierDeserialize(serialized: number): Promise<number> {
   return Verifier.deserialize({
     serialized,
   })
 }
 
-export async function proofVerifierUpdateStateWithMessage(
-  handle: number,
-  message: number
-): Promise<number> {
+export async function proofVerifierUpdateStateWithMessage(handle: number, message: number): Promise<number> {
   return Verifier.updateStateWithMessage({
     handle,
     message,
   })
 }
 
-export async function proofVerifierGetProofMessage(
-  handle: number
-): Promise<any> {
+export async function proofVerifierGetProofMessage(handle: number): Promise<any> {
   return Verifier.getProofMessage({
     handle,
   })
 }
 
-export async function proofVerifierGetProofRequest(
-  handle: number
-): Promise<string> {
+export async function proofVerifierGetProofRequest(handle: number): Promise<string> {
   return Verifier.getProofRequestMessage({
     handle,
   })
@@ -867,7 +829,7 @@ export async function proofVerifierGetProofRequest(
  */
 export async function decryptWalletFile(
   walletPath: string,
-  decryptionKey: string
+  decryptionKey: string,
 ): Promise<number> {
   const { walletName } = await getWalletPoolName()
   const wallet_key = await getWalletKey()
@@ -885,7 +847,7 @@ export async function decryptWalletFile(
 
 export async function sendTokenAmount(
   tokenAmount: string,
-  recipientWalletAddress: string
+  recipientWalletAddress: string,
 ): Promise<boolean> {
   const sovrinAtoms = convertSovrinTokensToSovrinAtoms(tokenAmount)
   return Wallet.sendTokens({
@@ -896,9 +858,9 @@ export async function sendTokenAmount(
 }
 
 export async function encryptWallet({
-  encryptedFileLocation,
-  recoveryPassphrase,
-}: {
+                                      encryptedFileLocation,
+                                      recoveryPassphrase,
+                                    }: {
   encryptedFileLocation: string,
   recoveryPassphrase: Passphrase,
 }): Promise<number> {
@@ -922,7 +884,7 @@ export async function createPaymentAddress(seed: ?string) {
   })
 }
 
-export const getWalletPoolName = memoize(async function () {
+export const getWalletPoolName = memoize(async function() {
   const appUniqueId = await uniqueId()
   await secureSet(__uniqueId, appUniqueId)
   const walletName = `${appUniqueId}-cm-wallet`
@@ -981,7 +943,7 @@ export async function getWalletHistory(): Promise<WalletHistoryEvent[]> {
  */
 export async function copyToPath(
   uri: string,
-  destPath: string
+  destPath: string,
 ): Promise<number> {
   return await RNUtils.copyToPath(uri, destPath)
 }
@@ -1017,21 +979,21 @@ export async function getBiometricError(): Promise<string> {
 
 export async function toBase64FromUtf8(
   data: string,
-  base64EncodingOption: string = 'NO_WRAP'
+  base64EncodingOption: string = 'NO_WRAP',
 ) {
   return RNUtils.toBase64FromUtf8(data, base64EncodingOption)
 }
 
 export async function toUtf8FromBase64(
   data: string,
-  base64EncodingOption: string = 'NO_WRAP'
+  base64EncodingOption: string = 'NO_WRAP',
 ) {
   return await RNUtils.toUtf8FromBase64(data, base64EncodingOption)
 }
 
 export async function generateThumbprint(
   data: string,
-  base64EncodingOption: string = 'NO_WRAP'
+  base64EncodingOption: string = 'NO_WRAP',
 ) {
   return RNUtils.generateThumbprint(data, base64EncodingOption)
 }
@@ -1045,7 +1007,7 @@ export async function setActiveTxnAuthorAgreementMeta(
   version: string,
   hash: string | typeof undefined,
   accMechType: string,
-  timeOfAcceptance: number
+  timeOfAcceptance: number,
 ): Promise<string> {
   return Utils.setActiveTxnAuthorAgreement({
     text,
@@ -1060,6 +1022,8 @@ export async function fetchPublicEntitiesForCredentials(): Promise<void> {
   return await Utils.fetchPublicEntities()
 }
 
-export async function getRequestRedirectionUrl(url: string): Promise<string> {
+export async function getRequestRedirectionUrl(
+  url: string,
+): Promise<string> {
   return RNUtils.getRequestRedirectionUrl(url)
 }

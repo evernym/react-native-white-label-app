@@ -65,12 +65,7 @@ import {
   updateProofHandle,
   dissatisfiedAttributesFound,
 } from '../proof-request/proof-request-store'
-import {
-  getProofRequest,
-  getClaimMap,
-  getProofData,
-  getReceivedCredentials,
-} from '../store/store-selector'
+import { getProofRequest, getClaimMap, getProofData, getReceivedCredentials } from '../store/store-selector'
 import type { Attribute } from '../push-notification/type-push-notification'
 import { RESET } from '../common/type-common'
 import {
@@ -82,10 +77,7 @@ import {
   NO_CRED_NO_SELF_ATTEST,
   DISSATISFIED_ATTRIBUTE_TYPE,
 } from '../proof-request/type-proof-request'
-import {
-  ensureVcxInitAndPoolConnectSuccess,
-  ensureVcxInitSuccess,
-} from '../store/route-store'
+import { ensureVcxInitAndPoolConnectSuccess, ensureVcxInitSuccess } from '../store/route-store'
 import { customLogger } from '../store/custom-logger'
 import { showSnackError } from '../store/config-store'
 import {
@@ -100,7 +92,7 @@ export const updateAttributeClaim = (
   uid: string,
   remoteDid: string,
   requestedAttrsJson: RequestedAttrsJson,
-  selfAttestedAttrs: SelfAttestedAttributes
+  selfAttestedAttrs: SelfAttestedAttributes,
 ): UpdateAttributeClaimAction => ({
   type: UPDATE_ATTRIBUTE_CLAIM,
   uid,
@@ -116,7 +108,7 @@ export const getProof = (uid: string) => ({
 
 export const proofSuccess = (
   proof: Proof,
-  uid: string
+  uid: string,
 ): ProofSuccessAction => ({
   type: PROOF_SUCCESS,
   proof,
@@ -125,7 +117,7 @@ export const proofSuccess = (
 
 export const proofFail = (
   uid: string,
-  error: CustomError
+  error: CustomError,
 ): ProofFailAction => ({
   type: PROOF_FAIL,
   uid,
@@ -146,7 +138,7 @@ export const resetTempProofData = (uid: string) => ({
 export const errorSendProofFail = (
   uid: string,
   remoteDid: string,
-  error: CustomError
+  error: CustomError,
 ) => ({
   type: ERROR_SEND_PROOF,
   uid,
@@ -159,106 +151,82 @@ export const clearSendProofFail = (uid: string) => ({
   uid,
 })
 
-function isDissatisfiedAttribute(attribute: RequestedAttribute): boolean {
-  // cases:
-  // 1. self_attest_allowed: false
-  // 2. restrictions != {}
-  // 3. restrictions != [] and != [{}] and != [{},{},....]
-  // 4. specified group of attributes `names`
-
-  return (
-    (typeof attribute.self_attest_allowed === 'boolean' &&
-      attribute.self_attest_allowed === false) ||
-    (typeof attribute.restrictions === 'object' &&
-      Object.keys(attribute.restrictions).length > 0) ||
-    (Array.isArray(attribute.restrictions) &&
-      attribute.restrictions.filter(
-        (restriction) => Object.keys(restriction).length > 0
-      ).length > 0) ||
-    (attribute.names ? attribute.names.length > 0 : false)
-  )
-}
-
 export function findMissingRequestedAttributes(
   preparedProof: IndyPreparedProof,
-  proofRequest: ProofRequestData
 ): [MissingAttribute[], DissatisfiedAttribute[]] {
   // apart from conversion, it finds attributes that are not in any claim
 
   const missingAttributes: MissingAttribute[] = []
   const dissatisfiedAttributes: DissatisfiedAttribute[] = []
 
-  Object.keys(proofRequest.requested_attributes).forEach((attrKey) => {
-    const credentialData = preparedProof.attrs[attrKey]
-    if (!credentialData || !credentialData[0]) {
-      const requestedAttribute = proofRequest.requested_attributes[attrKey]
-      if (isDissatisfiedAttribute(requestedAttribute)) {
-        // dissatisfied attribute
-        if (requestedAttribute.name) {
-          dissatisfiedAttributes.push({
-            name: requestedAttribute.name,
-            reason: NO_SELF_ATTEST,
-            type: DISSATISFIED_ATTRIBUTE_TYPE.ATTRIBUTE,
-          })
-        } else if (requestedAttribute.names) {
-          dissatisfiedAttributes.push({
-            name: requestedAttribute.names.join(','),
-            reason: NO_SELF_ATTEST,
-            type: DISSATISFIED_ATTRIBUTE_TYPE.ATTRIBUTE,
+  Object.keys(preparedProof.attributes)
+    .forEach((attrKey) => {
+      const requestedAttribute = preparedProof.attributes[attrKey]
+      if (!requestedAttribute.credentials || !requestedAttribute.credentials[0]) {
+        if (requestedAttribute.missing) {
+          // dissatisfied attribute
+          if (requestedAttribute.name) {
+            dissatisfiedAttributes.push({
+              name: requestedAttribute.name,
+              reason: NO_SELF_ATTEST,
+              type: DISSATISFIED_ATTRIBUTE_TYPE.ATTRIBUTE,
+            })
+          } else if (requestedAttribute.names) {
+            dissatisfiedAttributes.push({
+              name: requestedAttribute.names.join(','),
+              reason: NO_SELF_ATTEST,
+              type: DISSATISFIED_ATTRIBUTE_TYPE.ATTRIBUTE,
+            })
+          }
+        } else {
+          // self-attested attribute
+          missingAttributes.push({
+            key: attrKey,
+            name: requestedAttribute.name || '',
           })
         }
-      } else {
-        // self-attested attribute
-        missingAttributes.push({
-          key: attrKey,
-          name: requestedAttribute.name || '',
-        })
-      }
-    }
-  })
-
-  if (proofRequest.requested_predicates) {
-    Object.keys(proofRequest.requested_predicates).forEach((attrKey) => {
-      const predicateClaimData = preparedProof.attrs[attrKey]
-      if (
-        (!predicateClaimData || !predicateClaimData[0]) &&
-        proofRequest.requested_predicates
-      ) {
-        const requestedPredicate = proofRequest.requested_predicates[attrKey]
-        dissatisfiedAttributes.push({
-          name: requestedPredicate.name,
-          p_type: requestedPredicate.p_type,
-          p_value: requestedPredicate.p_value,
-          reason: NO_CRED_NO_SELF_ATTEST,
-          type: DISSATISFIED_ATTRIBUTE_TYPE.PREDICATE,
-        })
       }
     })
+
+  if (preparedProof.predicates) {
+    Object.keys(preparedProof.predicates)
+      .forEach((attrKey) => {
+        const requestedPredicate = preparedProof.predicates[attrKey]
+        if (requestedPredicate.missing) {
+          dissatisfiedAttributes.push({
+            name: requestedPredicate.name,
+            p_type: requestedPredicate.p_type,
+            p_value: requestedPredicate.p_value,
+            reason: NO_CRED_NO_SELF_ATTEST,
+            type: DISSATISFIED_ATTRIBUTE_TYPE.PREDICATE,
+          })
+        }
+      })
   }
 
   return [missingAttributes, dissatisfiedAttributes]
 }
 
 function buildCaseInsensitiveMap(attrs: GenericObject) {
-  return Object.keys(attrs).reduce(
+  return Object.keys(
+    attrs,
+  ).reduce(
     (acc, attributeName) => ({
       ...acc,
       [caseInsensitive(attributeName)]: attributeName,
     }),
-    {}
+    {},
   )
 }
 
 function findCredentialAttribute(credential: ClaimOfferPayload, label: string) {
-  return credential.data.revealedAttributes.find(
-    (attribute) => attribute.label === label
-  )
+  return credential.data.revealedAttributes.find(attribute => attribute.label === label)
 }
 
 export function findCredentialsExcludedByAttributeRestrictions(
   storedCredentials: Array<ClaimOfferPayload>,
   attribute: RequestedAttribute,
-  usedCredentials: Array<?string>
+  usedCredentials: Array<?string>,
 ) {
   let credentialsExcludedByRestrictions = []
   for (let credential of storedCredentials) {
@@ -270,10 +238,7 @@ export function findCredentialsExcludedByAttributeRestrictions(
       for (let label of attribute.names) {
         let attributeName = credentialAttributes[caseInsensitive(label)]
         if (attributeName) {
-          const credentialAttribute = findCredentialAttribute(
-            credential,
-            attributeName
-          )
+          const credentialAttribute = findCredentialAttribute(credential, attributeName)
           if (credentialAttribute) {
             credentialWithRequestedAttributes[label] = credentialAttribute.data
           }
@@ -296,13 +261,9 @@ export function findCredentialsExcludedByAttributeRestrictions(
 
     // single requested attribute
     if (attribute.name && !usedCredentials.includes(credential.claimId)) {
-      let attributeName =
-        credentialAttributes[caseInsensitive(attribute.name || '')]
+      let attributeName = credentialAttributes[caseInsensitive(attribute.name || '')]
       if (attributeName) {
-        const credentialAttribute = findCredentialAttribute(
-          credential,
-          attributeName
-        )
+        const credentialAttribute = findCredentialAttribute(credential, attributeName)
         if (credentialAttribute) {
           credentialsExcludedByRestrictions.push({
             label: attribute.name,
@@ -320,17 +281,14 @@ export function findCredentialsExcludedByAttributeRestrictions(
 export function findCredentialsExcludedByPredicateRestrictions(
   storedCredentials: Array<ClaimOfferPayload>,
   predicate: RequestedPredicates,
-  usedCredentials: Array<?string>
+  usedCredentials: Array<?string>,
 ) {
   const credentialsExcludedByRestrictions = []
   for (let credential of storedCredentials) {
     let credentialAttributes = credential.caseInsensitiveAttributes || {}
     let attributeName = credentialAttributes[caseInsensitive(predicate.name)]
     if (attributeName && !usedCredentials.includes(credential.claimId)) {
-      const credentialAttribute = findCredentialAttribute(
-        credential,
-        predicate.name
-      )
+      const credentialAttribute = findCredentialAttribute(credential, predicate.name)
       if (credentialAttribute) {
         credentialsExcludedByRestrictions.push({
           label: predicate.name,
@@ -348,167 +306,138 @@ export function convertIndyPreparedProofToAttributes(
   preparedProof: IndyPreparedProof,
   storedCredentials: Array<ClaimOfferPayload>,
   requestedAttributes: ProofRequestedAttributes,
-  requestedPredicates: ?ProofRequestedPredicates
+  requestedPredicates: ?ProofRequestedPredicates,
 ): Array<Attribute> {
   let attributes = []
-  Object.keys(requestedAttributes).forEach((attributeKey) => {
-    const attribute = requestedAttributes[attributeKey]
-    const labels: Array<string> = attribute.names
-      ? attribute.names
-      : attribute.name
-      ? [attribute.name]
-      : []
-    const label = labels.join()
+  Object.keys(requestedAttributes)
+    .forEach((attributeKey) => {
+      const attribute = requestedAttributes[attributeKey]
+      const labels: Array<string> =
+        attribute.names ?
+          attribute.names :
+          attribute.name ?
+            [attribute.name]:
+            []
+      const label = labels.join()
 
-    const revealedAttributes = preparedProof.attrs[attributeKey]
+      const requestedAttribute = preparedProof.attributes[attributeKey] || {self_attest_allowed: true}
+      const credentialsForAttribute = requestedAttribute.credentials
 
-    if (revealedAttributes && revealedAttributes.length > 0) {
-      let usedCredentials = []
+      if (credentialsForAttribute && credentialsForAttribute.length > 0) {
+        let usedCredentials = []
 
-      const credentialsCanBeUsed = revealedAttributes.map(
-        (revealedAttribute) => {
-          // convert attrs props to lowercase
-          // maintain a mapping that will map case insensitive name to actual name in `attrs`
-          let caseInsensitiveMap = null
-          let values = {}
-          if (revealedAttribute) {
-            caseInsensitiveMap = buildCaseInsensitiveMap(
-              revealedAttribute.cred_info.attrs
-            )
-
-            values = labels.reduce((acc, attributeLabel) => {
-              if (caseInsensitiveMap) {
-                const key = caseInsensitiveMap[caseInsensitive(attributeLabel)]
-                return {
-                  ...acc,
-                  [attributeLabel]: revealedAttribute.cred_info.attrs[key],
-                }
+        const credentialsCanBeUsed =
+          credentialsForAttribute.map((revealedAttribute) => {
+            const values = labels.reduce((acc, attributeLabel) => {
+              return {
+                ...acc,
+                [attributeLabel]: revealedAttribute.requested_attributes[attributeLabel],
               }
             }, {})
-          }
-          usedCredentials.push(revealedAttribute?.cred_info?.referent)
-          return {
+            usedCredentials.push(revealedAttribute?.cred_info?.referent)
+            return {
+              label,
+              key: attributeKey,
+              data: revealedAttribute.requested_attributes[attribute.name],
+              values: values,
+              claimUuid: revealedAttribute.cred_info.referent,
+              cred_info: revealedAttribute,
+              self_attest_allowed: requestedAttribute.self_attest_allowed,
+              type: ATTRIBUTE_TYPE.FILLED_ATTRIBUTE,
+            }
+          })
+
+        // find credentials which contain requested attribute but cannot be used due to requested restrictions
+        const credentialsExcludedByRestrictions =
+          findCredentialsExcludedByAttributeRestrictions(
+            storedCredentials,
+            attribute,
+            usedCredentials,
+          )
+        attributes.push(
+          credentialsCanBeUsed.concat(credentialsExcludedByRestrictions),
+        )
+      } else {
+        // find credentials which has requested attribute but cannot be used due to requested restrictions
+        const hasCredentialsWithRequestedAttribute =
+          findCredentialsExcludedByAttributeRestrictions(
+            storedCredentials,
+            attribute,
+            [],
+          ).length > 0
+
+        attributes.push([
+          {
             label,
             key: attributeKey,
-            data:
-              revealedAttribute &&
-              caseInsensitiveMap &&
-              revealedAttribute.cred_info.attrs[
-                caseInsensitiveMap[caseInsensitive(label)]
-              ],
-            values: values,
-            claimUuid:
-              revealedAttribute && revealedAttribute.cred_info.referent,
-            cred_info: revealedAttribute ? revealedAttribute : null,
-            self_attest_allowed: !isDissatisfiedAttribute(attribute),
-            type: ATTRIBUTE_TYPE.FILLED_ATTRIBUTE,
-          }
-        }
-      )
-
-      // find credentials which contain requested attribute but cannot be used due to requested restrictions
-      const credentialsExcludedByRestrictions = findCredentialsExcludedByAttributeRestrictions(
-        storedCredentials,
-        attribute,
-        usedCredentials
-      )
-      attributes.push(
-        credentialsCanBeUsed.concat(credentialsExcludedByRestrictions)
-      )
-    } else {
-      const dissatisfied = isDissatisfiedAttribute(attribute)
-
-      // find credentials which has requested attribute but cannot be used due to requested restrictions
-      const hasCredentialsWithRequestedAttribute =
-        dissatisfied &&
-        findCredentialsExcludedByAttributeRestrictions(
-          storedCredentials,
-          attribute,
-          []
-        ).length > 0
-
-      attributes.push([
-        {
-          label,
-          key: attributeKey,
-          data: undefined,
-          values: {
-            [label]: undefined,
+            data: undefined,
+            values: {
+              [label]: undefined,
+            },
+            self_attest_allowed: requestedAttribute.self_attest_allowed,
+            type: requestedAttribute.missing
+              ? ATTRIBUTE_TYPE.DISSATISFIED_ATTRIBUTE
+              : ATTRIBUTE_TYPE.SELF_ATTESTED_ATTRIBUTE,
+            hasCredentialsWithRequestedAttribute,
           },
-          self_attest_allowed: !dissatisfied,
-          type: dissatisfied
-            ? ATTRIBUTE_TYPE.DISSATISFIED_ATTRIBUTE
-            : ATTRIBUTE_TYPE.SELF_ATTESTED_ATTRIBUTE,
-          hasCredentialsWithRequestedAttribute,
-        },
-      ])
-    }
-  })
+        ])
+      }
+    })
 
   if (requestedPredicates) {
     Object.keys(requestedPredicates).forEach((attributeKey) => {
-      let predicate = requestedPredicates[attributeKey]
-      let usedCredentials = []
-      const matchingCredentials = preparedProof.attrs[attributeKey]
-      if (matchingCredentials && matchingCredentials.length > 0) {
-        const credentialsCanBeUsed = matchingCredentials.map(
-          (matchingCredential) => {
-            // convert attrs props to lowercase
-            // maintain a mapping that will map case insensitive name to actual name in `predicates`
-            let caseInsensitiveMap = null
-            if (matchingCredential) {
-              caseInsensitiveMap = buildCaseInsensitiveMap(
-                matchingCredential.cred_info.attrs
-              )
-            }
+      const usedCredentials = []
+
+      const predicate = requestedPredicates[attributeKey]
+      const credentialsForPredicate = preparedProof.predicates[attributeKey].credentials
+
+      if (credentialsForPredicate && credentialsForPredicate.length > 0) {
+        const credentialsCanBeUsed =
+          credentialsForPredicate.map((matchingCredential) => {
             usedCredentials.push(matchingCredential?.cred_info?.referent)
             return {
               label: predicate.name,
               p_type: predicate.p_type,
               p_value: predicate.p_value,
               key: attributeKey,
-              data:
-                matchingCredential &&
-                caseInsensitiveMap &&
-                matchingCredential.cred_info.attrs[
-                  caseInsensitiveMap[caseInsensitive(predicate.name)]
-                ],
-              claimUuid:
-                matchingCredential && matchingCredential.cred_info.referent,
+              data: matchingCredential.requested_attributes[predicate.name],
+              claimUuid: matchingCredential && matchingCredential.cred_info.referent,
               cred_info: matchingCredential ? matchingCredential : null,
               type: ATTRIBUTE_TYPE.FILLED_PREDICATE,
             }
-          }
-        )
+          })
 
-        const credentialsExcludedByRestrictions = findCredentialsExcludedByPredicateRestrictions(
-          storedCredentials,
-          predicate,
-          usedCredentials
-        )
+        const credentialsExcludedByRestrictions =
+          findCredentialsExcludedByPredicateRestrictions(
+            storedCredentials,
+            predicate,
+            usedCredentials,
+          )
 
         attributes.push(
-          credentialsCanBeUsed.concat(credentialsExcludedByRestrictions)
+          credentialsCanBeUsed.concat(credentialsExcludedByRestrictions),
         )
       } else {
         const hasCredentialsWithRequestedAttribute =
           findCredentialsExcludedByPredicateRestrictions(
             storedCredentials,
             predicate,
-            usedCredentials
+            usedCredentials,
           ).length > 0
 
-        attributes.push([
-          {
-            label: predicate.name,
-            p_type: predicate.p_type,
-            p_value: predicate.p_value,
-            key: attributeKey,
-            data: undefined,
-            type: ATTRIBUTE_TYPE.DISSATISFIED_PREDICATE,
-            hasCredentialsWithRequestedAttribute,
-          },
-        ])
+        attributes.push(
+          [
+            {
+              label: predicate.name,
+              p_type: predicate.p_type,
+              p_value: predicate.p_value,
+              key: attributeKey,
+              data: undefined,
+              type: ATTRIBUTE_TYPE.DISSATISFIED_PREDICATE,
+              hasCredentialsWithRequestedAttribute,
+            },
+          ],
+        )
       }
     })
   }
@@ -518,22 +447,17 @@ export function convertIndyPreparedProofToAttributes(
 }
 
 export function convertUserSelectedCredentialToVcxSelectedCredentials(
-  userSelectedCredentials: IndyRequestedAttributes
+  userSelectedCredentials: IndyRequestedAttributes,
 ): VcxSelectedCredentials {
   const attrs = Object.keys(userSelectedCredentials).reduce(
     (acc, attributeKey) => ({
       ...acc,
       [attributeKey]: {
         credential: userSelectedCredentials[attributeKey][2],
-        tails_file: null,
       },
     }),
-    {}
+    {},
   )
-
-  if (Object.keys(attrs).length === 0) {
-    return {}
-  }
 
   return {
     attrs,
@@ -542,7 +466,7 @@ export function convertUserSelectedCredentialToVcxSelectedCredentials(
 
 export function convertSelectedCredentialAttributesToIndyProof(
   userSelectedCredentials: IndyRequestedAttributes,
-  proofRequest: ProofRequestData
+  proofRequest: ProofRequestData,
 ) {
   let revealedAttributes = {}
   let revealedGroupAttributes = {}
@@ -553,9 +477,7 @@ export function convertSelectedCredentialAttributesToIndyProof(
     const selectedAttribute = userSelectedCredentials[attributeKey]
     if (selectedAttribute) {
       const selectedCredentialAttributes = selectedAttribute[2].cred_info.attrs
-      const caseInsensitiveMap = buildCaseInsensitiveMap(
-        selectedCredentialAttributes
-      )
+      const caseInsensitiveMap = buildCaseInsensitiveMap(selectedCredentialAttributes)
 
       // in case of single attribute we fill usual revealed_attrs structure
       if (attribute.name) {
@@ -563,7 +485,7 @@ export function convertSelectedCredentialAttributesToIndyProof(
           selectedAttribute[0],
           selectedCredentialAttributes[
             caseInsensitiveMap[attribute.name.toLowerCase().replace(/ /g, '')]
-          ],
+            ],
         ]
       }
 
@@ -575,9 +497,9 @@ export function convertSelectedCredentialAttributesToIndyProof(
             [name]:
               selectedCredentialAttributes[
                 caseInsensitiveMap[name.toLowerCase().replace(/ /g, '')]
-              ],
+                ],
           }),
-          {}
+          {},
         )
         revealedGroupAttributes[attributeKey] = {
           claimUuid: selectedAttribute[0],
@@ -594,15 +516,13 @@ export function convertSelectedCredentialAttributesToIndyProof(
         const credential = userSelectedCredentials[attributeKey]
         if (credential) {
           const selectedCredentialAttributes = credential[2].cred_info.attrs
-          const caseInsensitiveMap = buildCaseInsensitiveMap(
-            selectedCredentialAttributes
-          )
+          const caseInsensitiveMap = buildCaseInsensitiveMap(selectedCredentialAttributes)
 
           revealedPredicates[attributeKey] = [
             credential[0],
             selectedCredentialAttributes[
               caseInsensitiveMap[predicate.name.toLowerCase().replace(/ /g, '')]
-            ],
+              ],
           ]
         }
       }
@@ -617,20 +537,26 @@ export function convertSelectedCredentialAttributesToIndyProof(
 }
 
 export function* sortCredentials(
-  matchingCredentialsJson: string
+  matchingCredentialsJson: string,
 ): Generator<*, *, *> {
-  const matchingCredentials: IndyPreparedProof = JSON.parse(
-    matchingCredentialsJson
-  )
+  const matchingCredentials: IndyPreparedProof = JSON.parse(matchingCredentialsJson)
+  yield call(sortMatchedCredentials, matchingCredentials, 'attributes')
+  yield call(sortMatchedCredentials, matchingCredentials, 'predicates')
+  return matchingCredentials
+}
 
+export function* sortMatchedCredentials(
+  matchingCredentials: IndyPreparedProof,
+  kind: string,
+): Generator<*, *, *> {
   const claimMap: ClaimMap = yield select(getClaimMap)
 
-  for (const key in matchingCredentials.attrs) {
+  for (const key in matchingCredentials[kind]) {
     if (
-      matchingCredentials.attrs.hasOwnProperty(key) &&
-      Array.isArray(matchingCredentials.attrs[key])
+      matchingCredentials[kind].hasOwnProperty(key) &&
+      Array.isArray(matchingCredentials[kind][key].credentials)
     ) {
-      matchingCredentials.attrs[key].sort((credA, credB) => {
+      matchingCredentials[kind][key].credentials.sort((credA, credB) => {
         if (!credA) {
           return -1
         }
@@ -653,7 +579,6 @@ export function* sortCredentials(
       })
     }
   }
-  return matchingCredentials
 }
 
 export function* generateProofSaga(action: GenerateProofAction): any {
@@ -661,9 +586,8 @@ export function* generateProofSaga(action: GenerateProofAction): any {
     const { uid } = action
     const proofRequestPayload: ProofRequestPayload = yield select(
       getProofRequest,
-      uid
+      uid,
     )
-
     const proofRequestData = proofRequestPayload.originalProofRequestData
     let {
       proofHandle,
@@ -707,7 +631,7 @@ export function* generateProofSaga(action: GenerateProofAction): any {
         yield put(updateProofHandle(proofHandle, uid))
         matchingCredentialsJson = yield call(
           getMatchingCredentials,
-          proofHandle
+          proofHandle,
         )
       }
     }
@@ -716,14 +640,12 @@ export function* generateProofSaga(action: GenerateProofAction): any {
       throw new Error('No matching credential json result')
     }
 
-    const matchingCredentials: IndyPreparedProof = yield* sortCredentials(
-      matchingCredentialsJson
-    )
+    const matchingCredentials: IndyPreparedProof = yield* sortCredentials(matchingCredentialsJson)
 
     const [
       missingAttributes,
       dissatisfiedAttributes,
-    ] = findMissingRequestedAttributes(matchingCredentials, proofRequestData)
+    ] = findMissingRequestedAttributes(matchingCredentials)
 
     if (dissatisfiedAttributes.length > 0) {
       // if we find that there are some attributes that are not available
@@ -734,14 +656,12 @@ export function* generateProofSaga(action: GenerateProofAction): any {
       yield put(dissatisfiedAttributesFound(dissatisfiedAttributes, uid))
     }
 
-    const storedCredentials: Array<ClaimOfferPayload> = yield select(
-      getReceivedCredentials
-    )
+    const storedCredentials: Array<ClaimOfferPayload> = yield select(getReceivedCredentials)
     const requestedAttributes = convertIndyPreparedProofToAttributes(
       matchingCredentials,
       storedCredentials,
       proofRequestData.requested_attributes,
-      proofRequestData.requested_predicates
+      proofRequestData.requested_predicates,
     )
 
     yield put(proofRequestAutoFill(uid, requestedAttributes))
@@ -765,7 +685,7 @@ export function* connectToPoolAndRegenerateProof(
   action: UpdateAttributeClaimAction,
   proofRequestPayload: ProofRequestPayload,
   selectedCredentials: VcxSelectedCredentials,
-  selfAttestedAttributes: SelfAttestedAttributes
+  selfAttestedAttributes: SelfAttestedAttributes,
 ): Generator<*, *, *> {
   const vcxResult = yield* ensureVcxInitAndPoolConnectSuccess()
   if (vcxResult && vcxResult.fail) {
@@ -779,41 +699,36 @@ export function* connectToPoolAndRegenerateProof(
 
   const proofHandle = yield call(
     proofDeserialize,
-    proofRequestPayload.vcxSerializedProofRequest
+    proofRequestPayload.vcxSerializedProofRequest,
   )
   yield call(
     generateProof,
     proofHandle,
     JSON.stringify(selectedCredentials),
-    JSON.stringify(selfAttestedAttributes)
+    JSON.stringify(selfAttestedAttributes),
   )
   yield put(updateProofHandle(proofHandle, action.uid))
 }
 
 export function* updateAttributeClaimAndSendProof(
-  action: UpdateAttributeClaimAction
+  action: UpdateAttributeClaimAction,
 ): Generator<*, *, *> {
   try {
     const vcxResult = yield* ensureVcxInitSuccess()
     if (vcxResult && vcxResult.fail) {
-      yield put(
-        errorSendProofFail(action.uid, action.remoteDid, vcxResult.fail)
-      )
+      yield put(errorSendProofFail(action.uid, action.remoteDid, vcxResult.fail))
       return
     }
     // restore VCX object for proof generation
     const proofRequestPayload: ProofRequestPayload = yield select(
       getProofRequest,
-      action.uid
+      action.uid,
     )
     let { proofHandle } = yield select(getProofData, action.uid)
     if (!proofHandle && proofRequestPayload.vcxSerializedProofRequest) {
       // it might happen that we won't have serialized proof request
       // so we guard against it and let fail
-      proofHandle = yield call(
-        proofDeserialize,
-        proofRequestPayload.vcxSerializedProofRequest
-      )
+      proofHandle = yield call(proofDeserialize, proofRequestPayload.vcxSerializedProofRequest)
       yield put(updateProofHandle(proofHandle, action.uid))
     }
 
@@ -824,7 +739,7 @@ export function* updateAttributeClaimAndSendProof(
     yield put(sendProof(action.uid))
 
     const selectedCredentials = convertUserSelectedCredentialToVcxSelectedCredentials(
-      requestedAttrsJson
+      requestedAttrsJson,
     )
 
     try {
@@ -832,7 +747,7 @@ export function* updateAttributeClaimAndSendProof(
         generateProof,
         proofHandle,
         JSON.stringify(selectedCredentials),
-        JSON.stringify(selfAttestedAttributes)
+        JSON.stringify(selfAttestedAttributes),
       )
 
       const proofState: number = yield call(proofGetState, proofHandle)
@@ -843,22 +758,18 @@ export function* updateAttributeClaimAndSendProof(
           action,
           proofRequestPayload,
           selectedCredentials,
-          selfAttestedAttributes
+          selfAttestedAttributes,
         )
       }
     } catch (e) {
-      if (
-        e.code === NO_POOL_OPEN ||
-        e.code === CREDENTIAL_SCHEMA_NOT_FOUND ||
-        e.code === CREDENTIAL_DEFINITION_NOT_FOUND
-      ) {
+      if (e.code === NO_POOL_OPEN || e.code === CREDENTIAL_SCHEMA_NOT_FOUND || e.code === CREDENTIAL_DEFINITION_NOT_FOUND) {
         // if proof generation failed -> connect to pool ledger and retry (fetch fresh schema and cred def)
         yield call(
           connectToPoolAndRegenerateProof,
           action,
           proofRequestPayload,
           selectedCredentials,
-          selfAttestedAttributes
+          selfAttestedAttributes,
         )
       } else {
         throw e
@@ -874,7 +785,7 @@ export function* updateAttributeClaimAndSendProof(
       revealedPredicates,
     } = convertSelectedCredentialAttributesToIndyProof(
       requestedAttrsJson,
-      proofRequest
+      proofRequest,
     )
     // create a proof object so that history store and others that depend on proof
     // can use this proof object, previously proof object was generated with libIndy
@@ -899,11 +810,9 @@ export function* updateAttributeClaimAndSendProof(
 }
 
 export const reTrySendProof = (
-  selfAttestedAttributes: $PropertyType<
-    RetrySendProofAction,
-    'selfAttestedAttributes'
-  >,
-  updateAttributeClaimAction: UpdateAttributeClaimAction
+  selfAttestedAttributes: $PropertyType<RetrySendProofAction,
+    'selfAttestedAttributes'>,
+  updateAttributeClaimAction: UpdateAttributeClaimAction,
 ) => ({
   type: RETRY_SEND_PROOF,
   selfAttestedAttributes,
@@ -923,22 +832,22 @@ function* reTrySendProofSaga(action: RetrySendProofAction): Generator<*, *, *> {
     take(
       (missingAttributeAction) =>
         missingAttributeAction.type === MISSING_ATTRIBUTES_FOUND &&
-        missingAttributeAction.uid === uid
+        missingAttributeAction.uid === uid,
     ),
     take(
       (proofRequestAutofillAction) =>
         proofRequestAutofillAction.type === PROOF_REQUEST_AUTO_FILL &&
-        proofRequestAutofillAction.uid === uid
+        proofRequestAutofillAction.uid === uid,
     ),
   ])
 
   yield take(
     (proofRequestDataStoreAction) =>
       proofRequestDataStoreAction.type === PROOF_REQUEST_SEND_PROOF_HANDLE &&
-      proofRequestDataStoreAction.uid === uid
+      proofRequestDataStoreAction.uid === uid,
   )
   yield put(
-    updateAttributeClaim(uid, remoteDid, requestedAttrsJson, selfAttestedAttrs)
+    updateAttributeClaim(uid, remoteDid, requestedAttrsJson, selfAttestedAttrs),
   )
 }
 
@@ -956,7 +865,7 @@ const initialState = {}
 
 export default function proofReducer(
   state: ProofStore = initialState,
-  action: ProofAction
+  action: ProofAction,
 ) {
   switch (action.type) {
     case PROOF_SUCCESS: {
@@ -1026,7 +935,7 @@ export default function proofReducer(
         [action.uid]: {
           ...state[action.uid],
           proofData: {
-            ...(state[action.uid] ? state[action.uid].proofData : undefined),
+            ...state[action.uid] ? state[action.uid].proofData : undefined,
             error: null,
           },
         },
