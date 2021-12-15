@@ -196,6 +196,7 @@ exports[`<LockPinCodeEnter /> redirect to home screen is app is locked and there
               },
             ]
           }
+          suppressHighlighting={true}
         >
           Please enter your current 
           AppName
@@ -569,6 +570,7 @@ exports[`<LockPinCodeEnter /> redirect to home screen is app is locked and there
               },
             ]
           }
+          suppressHighlighting={true}
           testID="set-up-new-passcode-recovery"
         >
           Or Set Up New Passcode
@@ -775,6 +777,7 @@ exports[`<LockPinCodeEnter /> should render pin code box 1`] = `
               },
             ]
           }
+          suppressHighlighting={true}
         >
           Please enter your current 
           AppName
@@ -1148,6 +1151,7 @@ exports[`<LockPinCodeEnter /> should render pin code box 1`] = `
               },
             ]
           }
+          suppressHighlighting={true}
           testID="set-up-new-passcode-recovery"
         >
           Or Set Up New Passcode
@@ -1354,6 +1358,7 @@ exports[`<LockPinCodeEnter /> should show 'Enter passcode' message if there is n
               },
             ]
           }
+          suppressHighlighting={true}
         >
           Please enter your current 
           AppName
@@ -1727,6 +1732,7 @@ exports[`<LockPinCodeEnter /> should show 'Enter passcode' message if there is n
               },
             ]
           }
+          suppressHighlighting={true}
           testID="set-up-new-passcode-recovery"
         >
           Or Set Up New Passcode
@@ -1933,6 +1939,7 @@ exports[`<LockPinCodeEnter /> should show UNLOCKING_APP_WAIT_MESSAGE  1`] = `
               },
             ]
           }
+          suppressHighlighting={true}
         >
           Please enter your current 
           AppName
@@ -2306,6 +2313,7 @@ exports[`<LockPinCodeEnter /> should show UNLOCKING_APP_WAIT_MESSAGE  1`] = `
               },
             ]
           }
+          suppressHighlighting={true}
           testID="set-up-new-passcode-recovery"
         >
           Or Set Up New Passcode

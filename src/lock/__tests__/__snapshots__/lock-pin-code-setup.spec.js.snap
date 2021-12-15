@@ -356,6 +356,7 @@ exports[`<LockPinCodeSetup /> should render pin code box 1`] = `
                               },
                             ]
                           }
+                          suppressHighlighting={true}
                         >
                           Set a passcode to secure this app
                         </Text>
@@ -401,6 +402,7 @@ exports[`<LockPinCodeSetup /> should render pin code box 1`] = `
                               },
                             ]
                           }
+                          suppressHighlighting={true}
                         />
                         <View
                           center={true}
@@ -1086,6 +1088,7 @@ exports[`<LockPinCodeSetup /> should set pinSetupState and pinReEnterSuccessPin 
                               },
                             ]
                           }
+                          suppressHighlighting={true}
                         >
                           Re-enter passcode
                         </Text>
@@ -1131,6 +1134,7 @@ exports[`<LockPinCodeSetup /> should set pinSetupState and pinReEnterSuccessPin 
                               },
                             ]
                           }
+                          suppressHighlighting={true}
                         />
                         <View
                           center={true}
@@ -1816,6 +1820,7 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
                               },
                             ]
                           }
+                          suppressHighlighting={true}
                         >
                           Set a passcode to secure this app
                         </Text>
@@ -1861,6 +1866,7 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
                               },
                             ]
                           }
+                          suppressHighlighting={true}
                         >
                           Your passcodes do not match
                         </Text>
@@ -2548,6 +2554,7 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
                               },
                             ]
                           }
+                          suppressHighlighting={true}
                         >
                           Set a passcode to secure this app
                         </Text>
@@ -2593,6 +2600,7 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
                               },
                             ]
                           }
+                          suppressHighlighting={true}
                         />
                         <View
                           center={true}
@@ -3278,6 +3286,7 @@ exports[`<LockPinCodeSetup /> should show re enter pass code after first entry 1
                               },
                             ]
                           }
+                          suppressHighlighting={true}
                         >
                           Re-enter passcode
                         </Text>
@@ -3323,6 +3332,7 @@ exports[`<LockPinCodeSetup /> should show re enter pass code after first entry 1
                               },
                             ]
                           }
+                          suppressHighlighting={true}
                         />
                         <View
                           center={true}

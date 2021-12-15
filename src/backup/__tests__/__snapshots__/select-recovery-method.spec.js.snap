@@ -63,6 +63,7 @@ exports[`<SelectRecoveryMethod /> should match snapshot 1`] = `
           },
         ]
       }
+      suppressHighlighting={true}
     >
       Select your backup method
     </Text>
@@ -194,6 +195,7 @@ exports[`<SelectRecoveryMethod /> should match snapshot 1`] = `
             },
           ]
         }
+        suppressHighlighting={true}
       >
         Cloud Backup
       </Text>
@@ -228,6 +230,7 @@ exports[`<SelectRecoveryMethod /> should match snapshot 1`] = `
             null,
           ]
         }
+        suppressHighlighting={true}
       >
         Store an encrypted, anonymous backup of 
         AppName
@@ -287,6 +290,7 @@ exports[`<SelectRecoveryMethod /> should match snapshot 1`] = `
             },
           ]
         }
+        suppressHighlighting={true}
       >
         or
       </Text>
@@ -409,6 +413,7 @@ exports[`<SelectRecoveryMethod /> should match snapshot 1`] = `
             },
           ]
         }
+        suppressHighlighting={true}
       >
         Downloaded .zip Backup
       </Text>
@@ -446,6 +451,7 @@ exports[`<SelectRecoveryMethod /> should match snapshot 1`] = `
             },
           ]
         }
+        suppressHighlighting={true}
       >
         Manually choose where to store your backup file. You will need your Recovery Phrase, a fresh install of 
         AppName

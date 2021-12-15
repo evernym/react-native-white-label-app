@@ -59,6 +59,7 @@ exports[`<QuestionExternalLinks /> should render MAX_EXTERNAL_LINKS_TO_SHOW link
             },
           ]
         }
+        suppressHighlighting={true}
       >
         An external link
       </Text>
@@ -119,6 +120,7 @@ exports[`<QuestionExternalLinks /> should render MAX_EXTERNAL_LINKS_TO_SHOW link
             },
           ]
         }
+        suppressHighlighting={true}
       >
         An external link
       </Text>
@@ -179,6 +181,7 @@ exports[`<QuestionExternalLinks /> should render MAX_EXTERNAL_LINKS_TO_SHOW link
             },
           ]
         }
+        suppressHighlighting={true}
       >
         An external link
       </Text>
@@ -239,6 +242,7 @@ exports[`<QuestionExternalLinks /> should render MAX_EXTERNAL_LINKS_TO_SHOW link
             },
           ]
         }
+        suppressHighlighting={true}
       >
         An external link
       </Text>
@@ -299,6 +303,7 @@ exports[`<QuestionExternalLinks /> should render MAX_EXTERNAL_LINKS_TO_SHOW link
             },
           ]
         }
+        suppressHighlighting={true}
       >
         An external link
       </Text>
@@ -359,6 +364,7 @@ exports[`<QuestionExternalLinks /> should render MAX_EXTERNAL_LINKS_TO_SHOW link
             },
           ]
         }
+        suppressHighlighting={true}
       >
         An external link
       </Text>
@@ -419,6 +425,7 @@ exports[`<QuestionExternalLinks /> should render MAX_EXTERNAL_LINKS_TO_SHOW link
             },
           ]
         }
+        suppressHighlighting={true}
       >
         An external link
       </Text>
@@ -479,6 +486,7 @@ exports[`<QuestionExternalLinks /> should render MAX_EXTERNAL_LINKS_TO_SHOW link
             },
           ]
         }
+        suppressHighlighting={true}
       >
         An external link
       </Text>
@@ -539,6 +547,7 @@ exports[`<QuestionExternalLinks /> should render MAX_EXTERNAL_LINKS_TO_SHOW link
             },
           ]
         }
+        suppressHighlighting={true}
       >
         An external link
       </Text>
@@ -599,6 +608,7 @@ exports[`<QuestionExternalLinks /> should render MAX_EXTERNAL_LINKS_TO_SHOW link
             },
           ]
         }
+        suppressHighlighting={true}
       >
         An external link
       </Text>
@@ -659,6 +669,7 @@ exports[`<QuestionExternalLinks /> should render MAX_EXTERNAL_LINKS_TO_SHOW link
             },
           ]
         }
+        suppressHighlighting={true}
       >
         An external link
       </Text>
@@ -719,6 +730,7 @@ exports[`<QuestionExternalLinks /> should render MAX_EXTERNAL_LINKS_TO_SHOW link
             },
           ]
         }
+        suppressHighlighting={true}
       >
         An external link
       </Text>
@@ -779,6 +791,7 @@ exports[`<QuestionExternalLinks /> should render MAX_EXTERNAL_LINKS_TO_SHOW link
             },
           ]
         }
+        suppressHighlighting={true}
       >
         An external link
       </Text>
@@ -839,6 +852,7 @@ exports[`<QuestionExternalLinks /> should render MAX_EXTERNAL_LINKS_TO_SHOW link
             },
           ]
         }
+        suppressHighlighting={true}
       >
         An external link
       </Text>
@@ -899,6 +913,7 @@ exports[`<QuestionExternalLinks /> should render MAX_EXTERNAL_LINKS_TO_SHOW link
             },
           ]
         }
+        suppressHighlighting={true}
       >
         An external link
       </Text>
@@ -959,6 +974,7 @@ exports[`<QuestionExternalLinks /> should render MAX_EXTERNAL_LINKS_TO_SHOW link
             },
           ]
         }
+        suppressHighlighting={true}
       >
         An external link
       </Text>
@@ -1019,6 +1035,7 @@ exports[`<QuestionExternalLinks /> should render MAX_EXTERNAL_LINKS_TO_SHOW link
             },
           ]
         }
+        suppressHighlighting={true}
       >
         An external link
       </Text>
@@ -1079,6 +1096,7 @@ exports[`<QuestionExternalLinks /> should render MAX_EXTERNAL_LINKS_TO_SHOW link
             },
           ]
         }
+        suppressHighlighting={true}
       >
         An external link
       </Text>
@@ -1139,6 +1157,7 @@ exports[`<QuestionExternalLinks /> should render MAX_EXTERNAL_LINKS_TO_SHOW link
             },
           ]
         }
+        suppressHighlighting={true}
       >
         An external link
       </Text>
@@ -1199,6 +1218,7 @@ exports[`<QuestionExternalLinks /> should render MAX_EXTERNAL_LINKS_TO_SHOW link
             },
           ]
         }
+        suppressHighlighting={true}
       >
         An external link
       </Text>
@@ -1266,6 +1286,7 @@ exports[`<QuestionExternalLinks /> should render links if links are passed 1`] =
             },
           ]
         }
+        suppressHighlighting={true}
       >
         An external link
       </Text>
@@ -1326,6 +1347,7 @@ exports[`<QuestionExternalLinks /> should render links if links are passed 1`] =
             },
           ]
         }
+        suppressHighlighting={true}
       >
         https://secondlink.com/external
       </Text>
@@ -1373,6 +1395,7 @@ exports[`<QuestionExternalLinks /> should render validation error if wrong data 
         },
       ]
     }
+    suppressHighlighting={true}
   >
     Invalid external link. Error: CM-QUE-011
   </Text>
