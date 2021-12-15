@@ -85,6 +85,7 @@ exports[`<ClaimRequestStatusModal /> should hideModal if continue is clicked 1`]
             },
           ]
         }
+        suppressHighlighting={true}
         testID="claim-request-message"
       >
         
@@ -246,6 +247,7 @@ exports[`<ClaimRequestStatusModal /> should match paid credential success, if se
             },
           ]
         }
+        suppressHighlighting={true}
         testID="claim-request-message"
       >
         Paying...
@@ -391,6 +393,7 @@ exports[`<ClaimRequestStatusModal /> should match snapshot when pending popOver 
             },
           ]
         }
+        suppressHighlighting={true}
       >
         
       </Text>
@@ -453,6 +456,7 @@ exports[`<ClaimRequestStatusModal /> should match snapshot when pending popOver 
               },
             ]
           }
+          suppressHighlighting={true}
         >
           Please wait…
         </Text>
@@ -547,6 +551,7 @@ exports[`<ClaimRequestStatusModal /> should show arrow right and accepting text,
             },
           ]
         }
+        suppressHighlighting={true}
         testID="claim-request-message"
       >
         Accepting...
@@ -690,6 +695,7 @@ exports[`<ClaimRequestStatusModal /> should show arrow right and only Paying tex
             },
           ]
         }
+        suppressHighlighting={true}
       >
         Paying...
       </Text>
@@ -752,6 +758,7 @@ exports[`<ClaimRequestStatusModal /> should show arrow right and only Paying tex
               },
             ]
           }
+          suppressHighlighting={true}
         >
           Please wait…
         </Text>
@@ -846,6 +853,7 @@ exports[`<ClaimRequestStatusModal /> should show check mark, token amount, if pa
             },
           ]
         }
+        suppressHighlighting={true}
         testID="claim-request-message"
       >
         
@@ -1007,6 +1015,7 @@ exports[`<ClaimRequestStatusModal /> should show check mark, you accepted text, 
             },
           ]
         }
+        suppressHighlighting={true}
         testID="claim-request-message"
       >
         

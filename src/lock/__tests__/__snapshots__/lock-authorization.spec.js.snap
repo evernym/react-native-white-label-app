@@ -110,6 +110,7 @@ exports[`<LockAuthorization /> should match snapshot 1`] = `
               },
             ]
           }
+          suppressHighlighting={true}
           testID="pass-code-input-text"
         >
           Enter your passcode

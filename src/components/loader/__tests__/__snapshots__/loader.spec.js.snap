@@ -60,6 +60,7 @@ exports[`<Loader /> should check that custom message works 1`] = `
         },
       ]
     }
+    suppressHighlighting={true}
   >
     sovrin is cool
   </Text>
@@ -186,6 +187,7 @@ exports[`<Loader /> should check that showMessage works as expected when true 1`
         },
       ]
     }
+    suppressHighlighting={true}
   >
     show me
   </Text>
@@ -252,6 +254,7 @@ exports[`<Loader /> should render properly and match the snapshot 1`] = `
         },
       ]
     }
+    suppressHighlighting={true}
   >
     test
   </Text>

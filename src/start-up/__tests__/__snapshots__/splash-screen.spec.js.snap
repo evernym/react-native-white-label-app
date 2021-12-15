@@ -70,6 +70,7 @@ exports[`<SplashScreen /> should match snapshot 1`] = `
           },
         ]
       }
+      suppressHighlighting={true}
     >
       Please wait…
     </Text>

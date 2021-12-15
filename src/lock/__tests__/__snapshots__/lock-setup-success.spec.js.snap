@@ -147,6 +147,7 @@ exports[`<LockSetupSuccess /> should display Loading while fetching the invitati
           },
         ]
       }
+      suppressHighlighting={true}
     >
       Loading please wait...
     </Text>
@@ -186,6 +187,7 @@ exports[`<LockSetupSuccess /> should display Loading while fetching the invitati
           },
         ]
       }
+      suppressHighlighting={true}
     >
        
     </Text>
@@ -419,6 +421,7 @@ exports[`<LockSetupSuccess /> should render Lock setup success Screen 1`] = `
           },
         ]
       }
+      suppressHighlighting={true}
     >
       Your AppName app is now secured
     </Text>
@@ -458,6 +461,7 @@ exports[`<LockSetupSuccess /> should render Lock setup success Screen 1`] = `
           },
         ]
       }
+      suppressHighlighting={true}
     >
        
     </Text>

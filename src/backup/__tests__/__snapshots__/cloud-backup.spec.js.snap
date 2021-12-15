@@ -216,6 +216,7 @@ exports[`<CloudBackup /> should match snapshot 1`] = `
                   },
                 ]
               }
+              suppressHighlighting={true}
             >
               Cloud Backup
             </Text>
@@ -295,6 +296,7 @@ exports[`<CloudBackup /> should match snapshot 1`] = `
                 },
               ]
             }
+            suppressHighlighting={true}
           >
             Enable Automatic Backups?
           </Text>
@@ -325,6 +327,7 @@ exports[`<CloudBackup /> should match snapshot 1`] = `
                 },
               ]
             }
+            suppressHighlighting={true}
           >
             When enabled, any changes to your 
             AppName
@@ -364,6 +367,7 @@ exports[`<CloudBackup /> should match snapshot 1`] = `
                   },
                 ]
               }
+              suppressHighlighting={true}
             >
               All 
               AppName

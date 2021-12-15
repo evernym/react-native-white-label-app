@@ -109,6 +109,7 @@ exports[`<WalletTabSendDetails /> should render properly and match the snapshot 
               },
             ]
           }
+          suppressHighlighting={true}
         >
           To:
         </Text>
@@ -235,6 +236,7 @@ exports[`<WalletTabSendDetails /> should render properly and match the snapshot 
               },
             ]
           }
+          suppressHighlighting={true}
         >
           For:
         </Text>
@@ -337,6 +339,7 @@ exports[`<WalletTabSendDetails /> should render properly and match the snapshot 
           },
         ]
       }
+      suppressHighlighting={true}
     >
       12,345
     </Text>
@@ -385,6 +388,7 @@ exports[`<WalletTabSendDetails /> should render properly and match the snapshot 
           },
         ]
       }
+      suppressHighlighting={true}
     >
       SOVRIN TOKENS
     </Text>
@@ -447,6 +451,7 @@ exports[`<WalletTabSendDetails /> should render properly and match the snapshot 
             },
           ]
         }
+        suppressHighlighting={true}
       >
         You are sending
          
@@ -483,6 +488,7 @@ exports[`<WalletTabSendDetails /> should render properly and match the snapshot 
               null,
             ]
           }
+          suppressHighlighting={true}
         >
           12,345
         </Text>
@@ -543,6 +549,7 @@ exports[`<WalletTabSendDetails /> should render properly and match the snapshot 
           },
         ]
       }
+      suppressHighlighting={true}
     >
       pay:sov:somepaymentaddress
     </Text>
