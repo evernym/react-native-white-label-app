@@ -31,6 +31,5 @@ Pod::Spec.new do |s|
   s.dependency "JumioMobileSDK/NetverifyFace+Zoom", '~>3.9.0'
   s.dependency "JumioMobileSDK/DocumentVerification", '~>3.9.0'
   s.dependency "JumioMobileSDK/BAMCheckout", '~>3.9.0'
-  s.dependency "Gifu"
 
 end
