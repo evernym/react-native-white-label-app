@@ -56,6 +56,7 @@ import { customLogger } from '../store/custom-logger'
 
 // utils
 import { retrySaga } from '../api/api-utils'
+import { ensureConnectionsSync } from '../store/connections-store'
 
 export function* watchInviteAction(): any {
   yield all([
@@ -187,6 +188,8 @@ export function* finalizeAction(
     )
     return
   }
+
+  yield call(ensureConnectionsSync)
 
   try {
     const inviteActionState: InviteActionPayload = yield select(

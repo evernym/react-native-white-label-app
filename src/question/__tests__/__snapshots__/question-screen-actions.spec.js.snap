@@ -93,6 +93,7 @@ exports[`<QuestionActions /> when more than two responses are present match snap
             null,
           ]
         }
+        suppressHighlighting={true}
       >
         Try Again
       </Text>
@@ -194,6 +195,7 @@ exports[`<QuestionActions /> when more than two responses are present match snap
             null,
           ]
         }
+        suppressHighlighting={true}
       >
         OK
       </Text>
@@ -295,6 +297,7 @@ exports[`<QuestionActions /> when more than two responses are present render Ign
             null,
           ]
         }
+        suppressHighlighting={true}
       >
         Submit
       </Text>
@@ -396,6 +399,7 @@ exports[`<QuestionActions /> when one response is present match snapshot if in e
             null,
           ]
         }
+        suppressHighlighting={true}
       >
         Try Again
       </Text>
@@ -497,6 +501,7 @@ exports[`<QuestionActions /> when one response is present match snapshot if in s
             null,
           ]
         }
+        suppressHighlighting={true}
       >
         OK
       </Text>
@@ -711,6 +716,7 @@ exports[`<QuestionActions /> when two responses are present match snapshot if in
             null,
           ]
         }
+        suppressHighlighting={true}
       >
         Try Again
       </Text>
@@ -812,6 +818,7 @@ exports[`<QuestionActions /> when two responses are present match snapshot if in
             null,
           ]
         }
+        suppressHighlighting={true}
       >
         OK
       </Text>
@@ -1133,6 +1140,7 @@ exports[`<QuestionScreen /> should match error snapshot 1`] = `
                 },
               ]
             }
+            suppressHighlighting={true}
             testID="question-sender-namr"
           >
             sender1
@@ -1225,6 +1233,7 @@ exports[`<QuestionScreen /> should match error snapshot 1`] = `
                 },
               ]
             }
+            suppressHighlighting={true}
           >
             Error occurred
           </Text>
@@ -1324,6 +1333,7 @@ exports[`<QuestionScreen /> should match error snapshot 1`] = `
               null,
             ]
           }
+          suppressHighlighting={true}
         >
           Try Again
         </Text>
@@ -1446,6 +1456,7 @@ exports[`<QuestionScreen /> should match idle state snapshot 1`] = `
                 },
               ]
             }
+            suppressHighlighting={true}
             testID="question-sender-namr"
           >
             sender1
@@ -1917,6 +1928,7 @@ exports[`<QuestionScreen /> should match idle state snapshot 1`] = `
                       },
                     ]
                   }
+                  suppressHighlighting={true}
                 >
                   An external link
                 </Text>
@@ -1977,6 +1989,7 @@ exports[`<QuestionScreen /> should match idle state snapshot 1`] = `
                       },
                     ]
                   }
+                  suppressHighlighting={true}
                 >
                   https://secondlink.com/external
                 </Text>
@@ -2079,6 +2092,7 @@ exports[`<QuestionScreen /> should match idle state snapshot 1`] = `
               null,
             ]
           }
+          suppressHighlighting={true}
         >
           Submit
         </Text>
@@ -2202,6 +2216,7 @@ exports[`<QuestionScreen /> should match invalid data 1`] = `
                 },
               ]
             }
+            suppressHighlighting={true}
             testID="question-sender-namr"
           >
             sender1
@@ -2330,6 +2345,7 @@ exports[`<QuestionScreen /> should match invalid data 1`] = `
                       },
                     ]
                   }
+                  suppressHighlighting={true}
                 >
                   An external link
                 </Text>
@@ -2390,6 +2406,7 @@ exports[`<QuestionScreen /> should match invalid data 1`] = `
                       },
                     ]
                   }
+                  suppressHighlighting={true}
                 >
                   https://secondlink.com/external
                 </Text>
@@ -2447,6 +2464,7 @@ exports[`<QuestionScreen /> should match invalid data 1`] = `
                 },
               ]
             }
+            suppressHighlighting={true}
           >
             Invalid data. Validation error code: CM-QUE-005
           </Text>
@@ -2570,6 +2588,7 @@ exports[`<QuestionScreen /> should match loading snapshot 1`] = `
                 },
               ]
             }
+            suppressHighlighting={true}
             testID="question-sender-namr"
           >
             sender1
@@ -2649,6 +2668,7 @@ exports[`<QuestionScreen /> should match loading snapshot 1`] = `
                   },
                 ]
               }
+              suppressHighlighting={true}
             >
               Sending...
             </Text>
@@ -2773,6 +2793,7 @@ exports[`<QuestionScreen /> should match success snapshot 1`] = `
                 },
               ]
             }
+            suppressHighlighting={true}
             testID="question-sender-namr"
           >
             sender1
@@ -2865,6 +2886,7 @@ exports[`<QuestionScreen /> should match success snapshot 1`] = `
                 },
               ]
             }
+            suppressHighlighting={true}
           >
             Sent
           </Text>

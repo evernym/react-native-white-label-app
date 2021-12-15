@@ -14,6 +14,7 @@ import {
   hydrateConnectionSaga,
   hydratePairwiseAgentSaga,
   createPairwiseAgentSaga,
+  upgradeLegacyConnections,
 } from '../store/connections-store'
 import { hydrateClaimMapSaga } from '../claim/claim-store'
 import {
@@ -309,6 +310,8 @@ export function* hydrate(): any {
       yield put(safeToDownloadSmsInvitation())
 
       yield* ensureVcxInitSuccess()
+
+      yield* upgradeLegacyConnections()
 
       // create pairwise agent to use for next connection establishing if it is empty
       const pairwiseAgent = yield select(getConnectionPairwiseAgentInfo)

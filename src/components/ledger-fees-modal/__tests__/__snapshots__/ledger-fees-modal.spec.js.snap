@@ -124,6 +124,7 @@ exports[`<LedgerFeesModalComponent /> show error if fetching fees failed, show r
           },
         ]
       }
+      suppressHighlighting={true}
       testID="ledger-fees-modal-content"
     >
       There was a problem checking transaction fees. Retry?
@@ -391,6 +392,7 @@ exports[`<LedgerFeesModalComponent /> show loader, loading text, no buttons, if 
           },
         ]
       }
+      suppressHighlighting={true}
       testID="ledger-fees-modal-content"
     >
       Getting fees...
@@ -525,6 +527,7 @@ exports[`<LedgerFeesModalComponent /> show text passed by consumer of component,
           },
         ]
       }
+      suppressHighlighting={true}
       testID="ledger-fees-modal-title"
     >
       0.01
@@ -569,6 +572,7 @@ exports[`<LedgerFeesModalComponent /> show text passed by consumer of component,
           },
         ]
       }
+      suppressHighlighting={true}
       testID="ledger-fees-modal-title"
     >
       Transaction fee
@@ -611,6 +615,7 @@ exports[`<LedgerFeesModalComponent /> show text passed by consumer of component,
           },
         ]
       }
+      suppressHighlighting={true}
       testID="ledger-fees-modal-content"
     >
       Passed message 
@@ -909,6 +914,7 @@ exports[`<LedgerFeesModalComponent /> show transfer fees, Yes & No buttons, if f
           },
         ]
       }
+      suppressHighlighting={true}
       testID="ledger-fees-modal-title"
     >
       0.01
@@ -953,6 +959,7 @@ exports[`<LedgerFeesModalComponent /> show transfer fees, Yes & No buttons, if f
           },
         ]
       }
+      suppressHighlighting={true}
       testID="ledger-fees-modal-title"
     >
       Transaction fee
@@ -995,6 +1002,7 @@ exports[`<LedgerFeesModalComponent /> show transfer fees, Yes & No buttons, if f
           },
         ]
       }
+      suppressHighlighting={true}
       testID="ledger-fees-modal-content"
     >
       This transaction will cost you
@@ -1039,6 +1047,7 @@ exports[`<LedgerFeesModalComponent /> show transfer fees, Yes & No buttons, if f
             },
           ]
         }
+        suppressHighlighting={true}
         testID="ledger-fees-modal-content"
       >
         0.01
@@ -1309,6 +1318,7 @@ exports[`<LedgerFeesModalComponent /> trigger getLedgerFees to start fetching le
           },
         ]
       }
+      suppressHighlighting={true}
       testID="ledger-fees-modal-content"
     >
       Getting fees...

@@ -37,6 +37,7 @@ export const MESSAGE_TYPE = {
   INVITE_ACTION: 'inviteAction',
   PRESENTATION_PROPOSAL: 'presentationProposal',
   PROBLEM_REPORT: 'PROBLEM_REPORT'
+  UPGRADE: 'upgrade',
 }
 
 export const ERROR_PENDING_INVITATION_RESPONSE_PARSE_CODE = 'RN-101'

@@ -63,6 +63,7 @@ import { secureSet, getHydrationItem } from '../services/storage'
 import { retrySaga } from '../api/api-utils'
 import { uuid } from '../services/uuid'
 import { customLogger } from '../store/custom-logger'
+import { ensureConnectionsSync } from '../store/connections-store'
 
 export function* watchQuestion(): any {
   yield all([
@@ -101,6 +102,8 @@ export function* answerToQuestionSaga(
     )
     return
   }
+
+  yield call(ensureConnectionsSync)
 
   try {
     const question: QuestionPayload = yield select(selectQuestion, uid)

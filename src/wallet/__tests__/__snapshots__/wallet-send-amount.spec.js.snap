@@ -54,6 +54,7 @@ exports[`<WalletSendAmount /> should render properly and match the snapshot 1`] 
           null,
         ]
       }
+      suppressHighlighting={true}
     >
       Please first accept the Transaction Author Agreement (TAA)!
     </Text>

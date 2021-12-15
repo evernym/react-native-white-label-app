@@ -129,6 +129,7 @@ import { presentationProposalSchema } from '../proof-request/proof-request-qr-co
 import {
   deleteOneTimeConnection,
   deleteOneTimeConnectionOccurredSaga,
+  handleUpgradeConnectionMessage,
 } from './connections-store'
 import { getAttachedRequestData, getThreadId } from '../invitation/invitation-helpers'
 import { environments, defaultEnvironment } from '../environment'
@@ -791,6 +792,10 @@ function* handleProprietaryMessage(
         senderDID,
         senderName,
       )
+    }
+
+    if (type === MESSAGE_TYPE.UPGRADE) {
+      yield call(handleUpgradeConnectionMessage, connection, message)
     }
 
     if (!additionalData) {

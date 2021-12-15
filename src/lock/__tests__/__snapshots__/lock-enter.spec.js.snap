@@ -101,6 +101,7 @@ exports[`<LockEnter /> should match snapshot 1`] = `
             },
           ]
         }
+        suppressHighlighting={true}
         testID="pass-code-input-text"
       >
         Enter your passcode
@@ -633,6 +634,7 @@ exports[`<LockEnter /> should match snapshot for recovery flow 1`] = `
             },
           ]
         }
+        suppressHighlighting={true}
       >
         Please enter your current 
         AppName
@@ -1005,6 +1007,7 @@ exports[`<LockEnter /> should match snapshot for recovery flow 1`] = `
             },
           ]
         }
+        suppressHighlighting={true}
         testID="set-up-new-passcode-recovery"
       >
         Or Set Up New Passcode

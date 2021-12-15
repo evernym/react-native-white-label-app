@@ -321,6 +321,7 @@ Array [
             null,
           ]
         }
+        suppressHighlighting={true}
       >
         Accept
       </Text>
@@ -402,6 +403,7 @@ Array [
               null,
             ]
           }
+          suppressHighlighting={true}
         >
           Cancel
         </Text>

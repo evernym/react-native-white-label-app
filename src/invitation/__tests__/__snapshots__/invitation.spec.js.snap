@@ -95,6 +95,7 @@ exports[`<Invitation /> should match snapshot 1`] = `
                     },
                   ]
                 }
+                suppressHighlighting={true}
                 testID="invitation-text-title"
               >
                 Hi
@@ -368,6 +369,7 @@ exports[`<Invitation /> should match snapshot 1`] = `
               null,
             ]
           }
+          suppressHighlighting={true}
         >
           Connect
         </Text>
@@ -450,6 +452,7 @@ exports[`<Invitation /> should match snapshot 1`] = `
                 null,
               ]
             }
+            suppressHighlighting={true}
           >
             Deny
           </Text>

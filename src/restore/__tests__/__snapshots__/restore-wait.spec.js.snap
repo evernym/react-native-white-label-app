@@ -148,6 +148,7 @@ exports[`RestoreWait screen should render properly and match the snapshot 1`] = 
             },
           ]
         }
+        suppressHighlighting={true}
       >
         Please wait while your data is restored.
       </Text>
