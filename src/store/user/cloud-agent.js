@@ -42,21 +42,20 @@ export function* registerCloudAgentWithToken(
   } else {
     // call function to get token
     for (let i = 0; i < 2; i++) {
-      // default function to get provision token twice
-      ;[provisionTokenError, provisionToken] = yield call(
-        getProvisionToken,
-        agencyConfig,
-        {
+      // call function to get token
+      for (let i=0; i<2; i++){
+        // default function to get provision token twice
+        [provisionTokenError, provisionToken] = yield call(
+          getProvisionToken,
+          agencyConfig,
           id,
-          type: vcxPushType,
-          value: `FCM:mock_value_just_to_register`,
-        },
-        sponsorId
-      )
-      if (provisionToken) {
-        provisionTokenError = null
-        break
-      }
+          sponsorId
+        )
+        if (provisionToken){
+          provisionTokenError = null
+          break
+        }
+      } 
     }
   }
 

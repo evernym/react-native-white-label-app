@@ -725,6 +725,7 @@ export function* initPhysicalIdSdkSaga(): Generator<*, *, *> {
     sdkToken,
     apiDataCenter
   )
+  console.log(555555, midsSdkInitError);
   if (midsSdkInitError) {
     yield put(updateSdkInitStatus(sdkStatus.SDK_INIT_FAIL))
     return
@@ -747,12 +748,16 @@ export function* getSdkTokenSaga(): Generator<*, *, *> {
     domainDID,
     verityFlowBaseUrl
   )
+
+  console.log(123213213213213, error, response);
   if (error || !response) {
     yield put(updateSdkInitStatus(sdkStatus.SDK_INIT_FAIL))
     return [sdkStatus.SDK_INIT_FAIL, null]
   }
 
   const [tokenParseError, token] = flatJsonParse(response.result)
+  console.log(123213213213213, error, response);
+
   if (tokenParseError || !token) {
     yield put(updateSdkInitStatus(sdkStatus.SDK_INIT_FAIL))
     return [sdkStatus.SDK_INIT_FAIL, null]
