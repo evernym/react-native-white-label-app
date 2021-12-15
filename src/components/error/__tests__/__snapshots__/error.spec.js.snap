@@ -87,6 +87,7 @@ exports[`<Error /> should render errorText 1`] = `
         },
       ]
     }
+    suppressHighlighting={true}
   >
     Some error
   </Text>

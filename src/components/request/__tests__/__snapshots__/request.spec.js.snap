@@ -88,6 +88,7 @@ exports[`<Request /> should match snapshot 1`] = `
                   },
                 ]
               }
+              suppressHighlighting={true}
               testID="request-text-title"
             >
               Hi Test User
@@ -361,6 +362,7 @@ exports[`<Request /> should match snapshot 1`] = `
             null,
           ]
         }
+        suppressHighlighting={true}
       >
         Connect
       </Text>
@@ -443,6 +445,7 @@ exports[`<Request /> should match snapshot 1`] = `
               null,
             ]
           }
+          suppressHighlighting={true}
         >
           Deny
         </Text>

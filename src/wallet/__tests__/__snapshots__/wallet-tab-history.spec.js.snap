@@ -51,6 +51,7 @@ exports[`<WalletTabHistory /> should render no history view properly and match t
           },
         ]
       }
+      suppressHighlighting={true}
     >
       No history to show
     </Text>
@@ -251,6 +252,7 @@ exports[`<WalletTabHistory /> should render properly and match the snapshot 1`] 
                           },
                         ]
                       }
+                      suppressHighlighting={true}
                     >
                       sov:senderAddress
                     </Text>
@@ -291,6 +293,7 @@ exports[`<WalletTabHistory /> should render properly and match the snapshot 1`] 
                           },
                         ]
                       }
+                      suppressHighlighting={true}
                     >
                       Withdraw
                     </Text>
@@ -328,6 +331,7 @@ exports[`<WalletTabHistory /> should render properly and match the snapshot 1`] 
                         },
                       ]
                     }
+                    suppressHighlighting={true}
                   >
                     2018-01-10T04:32:43+05:30
                   </Text>
@@ -375,6 +379,7 @@ exports[`<WalletTabHistory /> should render properly and match the snapshot 1`] 
                         },
                       ]
                     }
+                    suppressHighlighting={true}
                   >
                     -
                   </Text>
@@ -414,6 +419,7 @@ exports[`<WalletTabHistory /> should render properly and match the snapshot 1`] 
                         },
                       ]
                     }
+                    suppressHighlighting={true}
                   >
                     5,656
                   </Text>
@@ -597,6 +603,7 @@ exports[`<WalletTabHistory /> should render properly and match the snapshot 1`] 
                           },
                         ]
                       }
+                      suppressHighlighting={true}
                     >
                       senderName
                     </Text>
@@ -637,6 +644,7 @@ exports[`<WalletTabHistory /> should render properly and match the snapshot 1`] 
                           },
                         ]
                       }
+                      suppressHighlighting={true}
                     >
                       Purchase
                     </Text>
@@ -674,6 +682,7 @@ exports[`<WalletTabHistory /> should render properly and match the snapshot 1`] 
                         },
                       ]
                     }
+                    suppressHighlighting={true}
                   >
                     2018-01-10T04:32:43+05:30
                   </Text>
@@ -721,6 +730,7 @@ exports[`<WalletTabHistory /> should render properly and match the snapshot 1`] 
                         },
                       ]
                     }
+                    suppressHighlighting={true}
                   >
                     +
                   </Text>
@@ -760,6 +770,7 @@ exports[`<WalletTabHistory /> should render properly and match the snapshot 1`] 
                         },
                       ]
                     }
+                    suppressHighlighting={true}
                   >
                     10,000
                   </Text>

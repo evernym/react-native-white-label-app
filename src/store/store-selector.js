@@ -276,6 +276,8 @@ export const getUserPairwiseDid = (state: Store, senderDID: string) => {
   return null
 }
 
+export const getIsConnectionsLocked = (state: Store) => state.connections.locked
+
 /*
  * Selectors related to Deep Link Store
  * */

@@ -111,6 +111,7 @@ import { pickAndroidColor, pickIosColor } from '../my-credentials/cards/utils'
 import { showSnackError } from '../store/config-store'
 import { uuid } from '../services/uuid'
 import { claimStorageSuccess, getClaim, mapClaimToSender } from '../claim/claim-store'
+import { ensureConnectionsSync } from '../store/connections-store'
 
 const claimOfferInitialState = {
   vcxSerializedClaimOffers: {},
@@ -271,6 +272,8 @@ export function* denyClaimOfferSaga(
   const claimOffer = yield select(getClaimOffer, uid)
   const remoteDid: string = claimOffer.remotePairwiseDID
 
+  yield call(ensureConnectionsSync)
+
   const [connection]: Connection[] = yield select(getConnection, remoteDid)
   if (!connection) {
     captureError(new Error(ERROR_NO_SERIALIZED_CLAIM_OFFER(uid)))
@@ -402,6 +405,8 @@ export function* claimOfferAccepted(
     yield put(sendClaimRequestFail(action.uid, action.remoteDid))
     return
   }
+
+  yield call(ensureConnectionsSync)
 
   const messageId = action.uid
   const claimOfferPayload: ClaimOfferPayload = yield select(

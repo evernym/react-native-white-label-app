@@ -75,6 +75,7 @@ exports[`<GenerateRecoveryPhrase /> should match snapshot 1`] = `
             },
           ]
         }
+        suppressHighlighting={true}
       >
         Recovery Phrase generated
       </Text>
@@ -129,6 +130,7 @@ exports[`<GenerateRecoveryPhrase /> should match snapshot 1`] = `
             },
           ]
         }
+        suppressHighlighting={true}
       >
         This is your Recovery Phrase. Write it down, and don't share it with anyone.
       </Text>
@@ -211,6 +213,7 @@ exports[`<GenerateRecoveryPhrase /> should match snapshot 1`] = `
               },
             ]
           }
+          suppressHighlighting={true}
           testID="show-recovery-passphrase"
         >
           hello some passphrase
@@ -266,6 +269,7 @@ exports[`<GenerateRecoveryPhrase /> should match snapshot 1`] = `
             },
           ]
         }
+        suppressHighlighting={true}
       >
         You will need this Recovery Phrase to restore from a backup. Keep it safe.
       </Text>
@@ -322,6 +326,7 @@ exports[`<GenerateRecoveryPhrase /> should match snapshot 1`] = `
             },
           ]
         }
+        suppressHighlighting={true}
       >
         Are you sure you wrote it down?
       </Text>
@@ -452,6 +457,7 @@ exports[`<GenerateRecoveryPhrase /> should match snapshot for error state 1`] = 
             },
           ]
         }
+        suppressHighlighting={true}
       >
         Recovery Phrase generated
       </Text>
@@ -506,6 +512,7 @@ exports[`<GenerateRecoveryPhrase /> should match snapshot for error state 1`] = 
             },
           ]
         }
+        suppressHighlighting={true}
       >
         This is your Recovery Phrase. Write it down, and don't share it with anyone.
       </Text>
@@ -582,6 +589,7 @@ exports[`<GenerateRecoveryPhrase /> should match snapshot for error state 1`] = 
               null,
             ]
           }
+          suppressHighlighting={true}
         >
           Uh oh... Looks like something went wrong.
         </Text>
@@ -636,6 +644,7 @@ exports[`<GenerateRecoveryPhrase /> should match snapshot for error state 1`] = 
             },
           ]
         }
+        suppressHighlighting={true}
       >
         You will need this Recovery Phrase to restore from a backup. Keep it safe.
       </Text>
@@ -692,6 +701,7 @@ exports[`<GenerateRecoveryPhrase /> should match snapshot for error state 1`] = 
             },
           ]
         }
+        suppressHighlighting={true}
       >
         Are you sure you wrote it down?
       </Text>
@@ -822,6 +832,7 @@ exports[`<GenerateRecoveryPhrase /> should match snapshot for loading state 1`] 
             },
           ]
         }
+        suppressHighlighting={true}
       >
         Recovery Phrase generated
       </Text>
@@ -876,6 +887,7 @@ exports[`<GenerateRecoveryPhrase /> should match snapshot for loading state 1`] 
             },
           ]
         }
+        suppressHighlighting={true}
       >
         This is your Recovery Phrase. Write it down, and don't share it with anyone.
       </Text>
@@ -965,6 +977,7 @@ exports[`<GenerateRecoveryPhrase /> should match snapshot for loading state 1`] 
             },
           ]
         }
+        suppressHighlighting={true}
       >
         You will need this Recovery Phrase to restore from a backup. Keep it safe.
       </Text>
@@ -1021,6 +1034,7 @@ exports[`<GenerateRecoveryPhrase /> should match snapshot for loading state 1`] 
             },
           ]
         }
+        suppressHighlighting={true}
       >
         Are you sure you wrote it down?
       </Text>
