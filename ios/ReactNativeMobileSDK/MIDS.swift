@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import MIDSAssistSDK
 
-
+    
 @objc(MIDSDocumentVerification)
 class MIDSDocumentVerification: NSObject {
   static var enrollmentManagerInstance: MIDSEnrollmentManager!
@@ -18,10 +18,12 @@ class MIDSDocumentVerification: NSObject {
   var resolve: RCTResponseSenderBlock!
   var reject: RCTResponseSenderBlock!
   var currentScanView: MIDSCustomScanViewController?
-  var verifyInfoView : ConfirmScannedImageView!
+  var verifyInfoView: ConfirmScannedView!
+  var loader: LoaderView!
+
   // Swift doesn't have synthesize, so we are writing it here directly as variable
   var bridge: RCTBridge!
-  
+    
   static func getEnrollmentManagerInstance() -> MIDSEnrollmentManager {
       if enrollmentManagerInstance == nil {
           enrollmentManagerInstance = MIDSEnrollmentManager.shared()
@@ -83,10 +85,10 @@ class MIDSDocumentVerification: NSObject {
     }
   }
     
-    @objc func dispatchEvent( eventName: String ) {
-        self.bridge.eventDispatcher.sendAppEventWithName( eventName, body: "" )
-    }
-
+  @objc func dispatchEvent( eventName: String ) {
+   self.bridge.eventDispatcher().sendAppEvent( withName: eventName, body: "" )
+  }
+    
   func getDataCenter(dataCenter: String) -> MIDSDataCenter {
     switch dataCenter {
     case "SG":
@@ -113,7 +115,7 @@ class MIDSDocumentVerification: NSObject {
     
     func terminate() {
         if MIDSDocumentVerification.enrollmentManager.isMIDSVerifySDKInitialized() {
-          MIDSDocumentVerification.enrollmentManager.terminateSDK()
+            MIDSDocumentVerification.enrollmentManager.terminateSDK()
         }
     }
 }
@@ -138,26 +140,27 @@ extension MIDSDocumentVerification: MIDSEnrollmentDelegate {
   
   func midsEnrollmentManager(didDetermineNextScanViewController scanViewController: MIDSCustomScanViewController, isFallback: Bool) {
     self.currentScanView = scanViewController
-    // disable swipe down
-    scanViewController.customScanViewController?.isModalInPresentation = true
-    // Add close button
-    // Create UIButton
-    let myButton = UIButton(type: .close)
     
+    scanViewController.modalPresentationStyle = .fullScreen
+    scanViewController.customScanViewController?.modalPresentationStyle = .fullScreen
+
+    let myButton = UIButton(type: .roundedRect)
     // Position Button
-    myButton.frame = CGRect(x: 20, y: 20, width: 100, height: 50)
+    myButton.frame = CGRect(x: (UIApplication.shared.keyWindow?.bounds.width)! - 100, y: 60, width: 100, height: 50)
     // Set text on button
-    myButton.setTitle("X", for: .normal)
+    myButton.setTitle("×", for: .normal)
+    myButton.setTitleColor(UIColor.gray, for: .normal)
+    myButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 50)
     // Set button background color
-    myButton.backgroundColor = UIColor.lightGray
-    
+    myButton.backgroundColor = UIColor.white.withAlphaComponent(0)
+
     // Set button action
-      myButton.addTarget(self, action: #selector(resetScanner(_:)), for: .touchUpInside)
-    
+    myButton.addTarget(self, action: #selector(resetScanner(_:)), for: UIControl.Event.touchUpInside)
+
     // TODO:KS figure out the position handling
     // we need to use SwiftUI or UIKit alignment
     // this is the hard part
-    scanViewController.customScanViewController?.addSubview(myButton)
+    scanViewController.customScanViewController?.view.addSubview(myButton)
 
     if  scanViewController.customScanViewController?.currentScanMode() == .faceCapture || scanViewController.customScanViewController?.currentScanMode() == .faceIProov {
       UIApplication.shared.windows.first?.rootViewController?.dismiss(animated: true, completion:{ () -> Void in
@@ -171,23 +174,23 @@ extension MIDSDocumentVerification: MIDSEnrollmentDelegate {
     UIApplication.shared.windows.first?.rootViewController?.present(scanViewController, animated: false)
   }
     
-    @objc func resetScanner(_ sender:UIButton!)
-    {
-        // terminate SDK
-        terminate()
-        // raise event to react-native
-        dispatchEvent(eventName: "DESTROY")
+    @objc func resetScanner(_ sender:UIButton!) {
+        currentScanView?.dismiss(animated: true, completion: {
+          self.resolve(["DESTROY"])
+          self.resolve = nil
+          self.reject = nil
+        })
     }
-
-
+    
   func midsEnrollmentManager(didFinishScanningWith reference: String, accountID: String?, authenticationResult: Bool?)  {
-    MIDSDocumentVerification.enrollmentManager.terminateSDK()
-    if self.resolve != nil {
-      self.resolve([reference])
-      self.resolve = nil
-      self.reject = nil
-      UIApplication.shared.windows.first?.rootViewController?.dismiss(animated: true)
-    }
+    UIApplication.shared.windows.first?.rootViewController?.dismiss(animated: true, completion: {
+        MIDSDocumentVerification.enrollmentManager.terminateSDK()
+        if self.resolve != nil {
+          self.resolve([reference])
+          self.resolve = nil
+          self.reject = nil
+        }
+    })
   }
 
   func midsEnrollmentManager(didCancelWithError error: MIDSVerifyError) {
@@ -204,50 +207,48 @@ extension MIDSDocumentVerification: MIDSEnrollmentDelegate {
         if (verifyInfoView != nil){
             self.verifyInfoView.removeFromSuperview()
         }
-        verifyInfoView = Bundle.main.loadNibNamed(ConfirmScannedImage.identifier,
-                                                  owner: self,
-                                                  options: nil)?.first as? ConfirmScannedImageView
+
+        verifyInfoView = ConfirmScannedView()
+        verifyInfoView.inflate()
         
+        view.center = CGPoint(x: verifyInfoView.getView().frame.size.width  / 2,
+                              y: verifyInfoView.getView().frame.size.height / 2)
+        verifyInfoView.getView().addSubview(view)
         
-        currentScanView?.view.addSubview(verifyInfoView)
-        verifyInfoView.scannedImagePreviewView.addSubview(view)
-        verifyInfoView.backgroundColor = UIColor.white
-        
-        
-        if let frame = currentScanView?.view.bounds {
-            verifyInfoView.frame = frame
-        }
         verifyInfoView.addConfirmationHandler(action: confirmation, confirm: confirmEnabled)
         verifyInfoView.addRetakeHandler(action: retake, retake: retryEnabled)
-        verifyInfoView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[view]|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: nil, views: ["view":view]))
-        verifyInfoView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[view]|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: nil, views: ["view":view]))
+
+        if let frame = currentScanView?.view.bounds {
+            view.frame = frame
+        }
+        
+        verifyInfoView.getView().addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[view]|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: nil, views: ["view":view]))
+        verifyInfoView.getView().addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[view]|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: nil, views: ["view":view]))
+        
+        currentScanView?.view.addSubview(verifyInfoView.getView())
     }
   }
-  
+    
   func midsEnrollmentManager(didStartBiometricAnalysis scanViewController: MIDSCustomScanViewController) {}
   
   func midsEnrollmentManager(customScanViewControllerWillPresentIProovController scanViewController: MIDSCustomScanViewController) {}
   
   func midsEnrollmentManager(customScanViewControllerWillPrepareIProovController scanViewController: MIDSCustomScanViewController) {
-      // add loading logic here
-      DispatchQueue.main.async {
-          guard let appDelegate = UIApplication.shared.delegate,
-              let window = appDelegate.window else {
-                  return
-          }
-          let loadingView = LoadingView(frame: window!.frame)
-          loadingView.tag  = LoadingViewConstants.tag
-          // we can set a message as well, but for now, we are just showing loader
-          // so we show view without the message
-          loadingView.loadingWithoutMessageView.isHidden = false
-          loadingView.loaderImageView.prepareForAnimation(withGIFNamed: LoadingViewConstants.imageName)
-          loadingView.loaderImageView.startAnimatingGIF()
-          if let view = scanViewController.customOverlayLayer {
-              view.addSubview(loadingView)
-          } else {
-              window?.addSubview(loadingView)
-          }
-      }
+    DispatchQueue.main.async {
+        guard let appDelegate = UIApplication.shared.delegate,
+            let window = appDelegate.window else {
+            return
+        }
+
+        self.loader = LoaderView()
+        self.loader.inflate()
+
+        if let view = scanViewController.customOverlayLayer {
+            view.addSubview(self.loader.getView())
+        } else {
+            window?.addSubview(self.loader.getView())
+        }
+    }
   }
   
   func midsEnrollmentManager(didCaptureAllParts status: Bool) {

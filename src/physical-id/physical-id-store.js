@@ -285,14 +285,14 @@ function* launchPhysicalIdSDKSaga(
   let platformJWT = ''
   if (Platform.OS === 'android') {
     hardwareToken = yield call(
-      NativeModules.RNIndy.sendAttestationRequest,
+      NativeModules.RNUtils.sendAttestationRequest,
       uuid(),
       androidDeviceCheckApiKey
     )
   }
 
   if (Platform.OS === 'ios') {
-    hardwareToken = yield call(NativeModules.RNIndy.getDeviceCheckToken)
+    hardwareToken = yield call(NativeModules.RNUtils.getDeviceCheckToken)
     try {
       // putting try catch here because host app
       // might not be returning the correct data type from the calling code

@@ -8,13 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		07B5B59425386BD80062AC4E /* ReactNativeMobileSDK.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B5B59025386BD80062AC4E /* ReactNativeMobileSDK.m */; };
+		42BD94DB2768EDC0006F6E96 /* ConfirmScannedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42BD94DA2768EDC0006F6E96 /* ConfirmScannedView.swift */; };
+		42BD94DD2768EDD4006F6E96 /* LoaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42BD94DC2768EDD4006F6E96 /* LoaderView.swift */; };
 		7C29EC5512172124ADDE5A90 /* Pods_ReactNativeMobileSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DD590E93EF00459971B85C0 /* Pods_ReactNativeMobileSDK.framework */; };
-		DD18329B2745190500A4142D /* LoadingView.xib in CopyFiles */ = {isa = PBXBuildFile; fileRef = DDAB42FD273E9FBE00746392 /* LoadingView.xib */; };
-		DD18329C2745190500A4142D /* ConfirmScannedImageView.xib in CopyFiles */ = {isa = PBXBuildFile; fileRef = DD70345B272C1B8300CA2B3C /* ConfirmScannedImageView.xib */; };
-		DD70345E272C1B8300CA2B3C /* ConfirmScannedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD70345A272C1B8300CA2B3C /* ConfirmScannedImageView.swift */; };
 		DD70345F272C1B8300CA2B3C /* MIDS.m in Sources */ = {isa = PBXBuildFile; fileRef = DD70345C272C1B8300CA2B3C /* MIDS.m */; };
-		DD703460272C1B8300CA2B3C /* MIDS.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD70345D272C1B8300CA2B3C /* MIDS.swift */; };
-		DDAB42FF273E9FBE00746392 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDAB42FE273E9FBE00746392 /* LoadingView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -24,8 +21,6 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
-				DD18329B2745190500A4142D /* LoadingView.xib in CopyFiles */,
-				DD18329C2745190500A4142D /* ConfirmScannedImageView.xib in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -36,16 +31,12 @@
 		07B5B57925386A750062AC4E /* libReactNativeMobileSDK.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libReactNativeMobileSDK.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		07B5B59025386BD80062AC4E /* ReactNativeMobileSDK.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactNativeMobileSDK.m; sourceTree = "<group>"; };
 		07B5B59225386BD80062AC4E /* ReactNativeMobileSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactNativeMobileSDK.h; sourceTree = "<group>"; };
+		42BD94DA2768EDC0006F6E96 /* ConfirmScannedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmScannedView.swift; sourceTree = "<group>"; };
+		42BD94DC2768EDD4006F6E96 /* LoaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoaderView.swift; sourceTree = "<group>"; };
 		45E1C5759FA9B22E25963AEC /* Pods-ReactNativeMobileSDK.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactNativeMobileSDK.release.xcconfig"; path = "Target Support Files/Pods-ReactNativeMobileSDK/Pods-ReactNativeMobileSDK.release.xcconfig"; sourceTree = "<group>"; };
 		9DD590E93EF00459971B85C0 /* Pods_ReactNativeMobileSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ReactNativeMobileSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		DD18329F2747D2C800A4142D /* spinner.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = spinner.gif; sourceTree = "<group>"; };
-		DD703458272C1B8300CA2B3C /* ReactNativeMobileSDK-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ReactNativeMobileSDK-Bridging-Header.h"; sourceTree = "<group>"; };
-		DD70345A272C1B8300CA2B3C /* ConfirmScannedImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfirmScannedImageView.swift; sourceTree = "<group>"; };
-		DD70345B272C1B8300CA2B3C /* ConfirmScannedImageView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ConfirmScannedImageView.xib; sourceTree = "<group>"; };
 		DD70345C272C1B8300CA2B3C /* MIDS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MIDS.m; sourceTree = "<group>"; };
 		DD70345D272C1B8300CA2B3C /* MIDS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MIDS.swift; sourceTree = "<group>"; };
-		DDAB42FD273E9FBE00746392 /* LoadingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingView.xib; sourceTree = "<group>"; };
-		DDAB42FE273E9FBE00746392 /* LoadingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,13 +72,12 @@
 		07B5B58E25386BC80062AC4E /* ReactNativeMobileSDK */ = {
 			isa = PBXGroup;
 			children = (
-				DDAB4302273EA64A00746392 /* Resources */,
-				DDAB42FC273E9FBD00746392 /* Loading */,
-				DD703459272C1B8300CA2B3C /* ConfirmScannedImageView */,
 				DD70345C272C1B8300CA2B3C /* MIDS.m */,
 				DD70345D272C1B8300CA2B3C /* MIDS.swift */,
 				07B5B59225386BD80062AC4E /* ReactNativeMobileSDK.h */,
 				07B5B59025386BD80062AC4E /* ReactNativeMobileSDK.m */,
+				42BD94DA2768EDC0006F6E96 /* ConfirmScannedView.swift */,
+				42BD94DC2768EDD4006F6E96 /* LoaderView.swift */,
 			);
 			path = ReactNativeMobileSDK;
 			sourceTree = "<group>";
@@ -98,32 +88,6 @@
 				9DD590E93EF00459971B85C0 /* Pods_ReactNativeMobileSDK.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		DD703459272C1B8300CA2B3C /* ConfirmScannedImageView */ = {
-			isa = PBXGroup;
-			children = (
-				DD70345A272C1B8300CA2B3C /* ConfirmScannedImageView.swift */,
-				DD70345B272C1B8300CA2B3C /* ConfirmScannedImageView.xib */,
-			);
-			path = ConfirmScannedImageView;
-			sourceTree = "<group>";
-		};
-		DDAB42FC273E9FBD00746392 /* Loading */ = {
-			isa = PBXGroup;
-			children = (
-				DDAB42FD273E9FBE00746392 /* LoadingView.xib */,
-				DDAB42FE273E9FBE00746392 /* LoadingView.swift */,
-			);
-			path = Loading;
-			sourceTree = "<group>";
-		};
-		DDAB4302273EA64A00746392 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				DD18329F2747D2C800A4142D /* spinner.gif */,
-			);
-			path = Resources;
 			sourceTree = "<group>";
 		};
 		F13509C223E14B373B1D58CD /* Pods */ = {
@@ -218,10 +182,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				42BD94DB2768EDC0006F6E96 /* ConfirmScannedView.swift in Sources */,
+				42BD94DD2768EDD4006F6E96 /* LoaderView.swift in Sources */,
 				07B5B59425386BD80062AC4E /* ReactNativeMobileSDK.m in Sources */,
 				DD70345F272C1B8300CA2B3C /* MIDS.m in Sources */,
-				DD70345E272C1B8300CA2B3C /* ConfirmScannedImageView.swift in Sources */,
-				DDAB42FF273E9FBE00746392 /* LoadingView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
