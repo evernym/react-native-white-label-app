@@ -1389,28 +1389,7 @@ Flow:
 5. Scan User face.
 6. After the document processing, User will receive Credential Offer from Evernym's Issuer Service.
 
-Additional customization for this feature, can be done in `physical-document-verification.js` file.
-
-Following are the available options:
-* `DOCUMENT_VERIFICATION_HEADLINE` - (string, Optional) the text which will be used for the header.
-  * to use default - `show`
-      ```javascript
-      export const DOCUMENT_VERIFICATION_HEADLINE = null
-      ```
-  * to use custom
-      ```javascript
-      export const DOCUMENT_VERIFICATION_HEADLINE = 'Custom Header'
-      ```
-
-* `CustomDocumentVerificationScreen` - (React Component) custom component for Document Verification screen rendering (instead of predefined one).
-  * to use default
-      ```javascript
-      export const CustomDocumentVerificationScreen = null
-      ```    
-  * to use custom
-      ```javascript
-      export const CustomDocumentVerificationScreen = () => <Text>Custom Header</Text>
-      ```
+Additional configuration for this feature, can be done in `physical-document-verification.js` file.
 
 * `IOS_GET_DEVICE_CHECK_JWT` - Function that would be called to verify device check token of ios app. Below are the details to fulfill this functionality:
   * Generate an API Key from developer.apple.com which only has access to call Device Check APIs

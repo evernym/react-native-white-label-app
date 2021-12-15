@@ -1,7 +1,5 @@
 // @flow
 
-// Change title of screen. Also changes left side drawer menu label
-export const DOCUMENT_VERIFICATION_HEADLINE = null
-
-// Add a custom react component as a screen for physical Id
-export const CustomDocumentVerificationScreen = null
+// function to get JWT token for verifying the hardware token for ios apps
+// Signature: IOS_GET_DEVICE_CHECK_JWT () -> [error: string | null, jwt: string | null]
+export const IOS_GET_DEVICE_CHECK_JWT = null

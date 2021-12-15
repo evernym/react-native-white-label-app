@@ -153,12 +153,8 @@ export {
   CustomProofProposalModal,
 } from '../../../../app/evernym-sdk/proof-proposal'
 
-export {
-  DOCUMENT_VERIFICATION_HEADLINE as documentVerificationHeadline,
-  CustomDocumentVerificationScreen as documentVerificationScreen,
-} from '../../../../app/evernym-sdk/physical-document-verification'
+export { IOS_GET_DEVICE_CHECK_JWT as iosGetDeviceCheckJWT } from '../../../../app/evernym-sdk/physical-document-verification'
 
-export { IOS_GET_DEVICE_CHECK_JWT as iosGetDeviceCheckJWT } from '../../../../app/evernym-sdk/physical-id'
 
 export const appName = APP_NAME || 'appName'
 export const appLogo = APP_LOGO
