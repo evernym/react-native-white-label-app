@@ -14,7 +14,7 @@
     "files"
   ],
   "scripts": {
-    "test": "jest --u --detectOpenHandles --forceExit",
+    "test": "jest --detectOpenHandles --forceExit",
     "lint": "flow stop && flow && eslint src",
     "configure": "chmod +x files/configure.sh && ./files/configure.sh"
   },

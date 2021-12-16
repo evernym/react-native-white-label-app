@@ -106,6 +106,9 @@ In order to configure the building of your application for an Android platform, 
             maven {
                 url 'https://evernym.mycloudrepo.io/public/repositories/libvcx-android'
             }
+            maven {
+                url 'https://evernym.mycloudrepo.io/public/repositories/evernym'
+            }
             maven { url 'http://mobile-sdk.jumio.com' }
         }
     }
