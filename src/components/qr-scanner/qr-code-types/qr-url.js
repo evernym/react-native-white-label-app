@@ -16,14 +16,14 @@ import type { GenericObject } from '../../../common/type-common'
 import { acceptHeaders, flatFetch } from '../../../common/flat-fetch'
 import { flatJsonParse } from '../../../common/flat-json-parse'
 import { isValidOIDCQrCode } from './qr-code-oidc'
-import {getRequestRedirectionUrl} from '../../../bridge/react-native-cxs/RNCxs'
+import { getRequestRedirectionUrl } from '../../../bridge/react-native-cxs/RNCxs'
 import { flattenAsync } from '../../../common/flatten-async'
-import {isEncodedAriesConnectionInvitation} from "../../../invitation/kinds/aries-connection-invitation";
-import {isEncodedAriesOutOfBandInvitation} from "../../../invitation/kinds/aries-out-of-band-invitation";
-import { getBase64DecodedInvitation } from "../../../invitation/invitation-helpers";
+import { isEncodedAriesConnectionInvitation } from '../../../invitation/kinds/aries-connection-invitation'
+import { isEncodedAriesOutOfBandInvitation } from '../../../invitation/kinds/aries-out-of-band-invitation'
+import { getBase64DecodedInvitation } from '../../../invitation/invitation-helpers'
 import { schemaValidator } from '../../../services/schema-validator'
 import { ephemeralProofRequestSchema } from '../../../proof-request/proof-request-qr-code-reader'
-import { ephemeralCredentialOfferSchema, } from '../../../claim-offer/ephemeral-claim-offer'
+import { ephemeralCredentialOfferSchema } from '../../../claim-offer/ephemeral-claim-offer'
 
 export function isValidUrl(urlQrCode: ?string): Url | false {
   if (!urlQrCode) {
@@ -55,14 +55,15 @@ export async function getUrlData(
     )
   ]
 > {
-
   // if we get url qr code, then there are three ways as of now that ConnectMe supports
   // to get data from url qr code
 
   // Three ways are to get data directly from URL query params
 
   // 1. get aries invitation data using url qr code
-  const ariesConnectionInvite = await isEncodedAriesConnectionInvitation(parsedUrl)
+  const ariesConnectionInvite = await isEncodedAriesConnectionInvitation(
+    parsedUrl
+  )
   if (ariesConnectionInvite) {
     return [null, ariesConnectionInvite]
   }
@@ -87,7 +88,7 @@ export async function getUrlData(
   }
 
   // didcomm url cannot be requested -> return
-  if (url.startsWith('didcomm:')){
+  if (url.startsWith('didcomm:')) {
     return [SCAN_STATUS.INVALID_URL_QR_CODE, null]
   }
 
@@ -100,14 +101,18 @@ export async function getUrlData(
   if (redirectionUrl && parsedRedirectionUrl) {
     // BCGov links contains message
 
-    if (parsedRedirectionUrl.query){
-      const message = parsedRedirectionUrl.query['m'] || parsedRedirectionUrl.query['d_m']
+    if (parsedRedirectionUrl.query) {
+      const message =
+        parsedRedirectionUrl.query['m'] || parsedRedirectionUrl.query['d_m']
       if (message) {
         const data = await getBase64DecodedInvitation(message)
 
         // is ephemeral proof request
         if (schemaValidator.validate(ephemeralProofRequestSchema, data)) {
-          return [null, { type: QR_CODE_TYPES.EPHEMERAL_PROOF_REQUEST_V1, data: data }]
+          return [
+            null,
+            { type: QR_CODE_TYPES.EPHEMERAL_PROOF_REQUEST_V1, data: data },
+          ]
         }
 
         // is ephemeral credential offer
@@ -115,7 +120,10 @@ export async function getUrlData(
           // Ephemeral Credential Offer can be converted into Out-of-Band invitation without handshake
           // as they have similar meaning / handling flow
           // so we can easily process it using already implemented functionality
-          return [null, { type: QR_CODE_TYPES.EPHEMERAL_CREDENTIAL_OFFER, data: data }]
+          return [
+            null,
+            { type: QR_CODE_TYPES.EPHEMERAL_CREDENTIAL_OFFER, data: data },
+          ]
         }
       }
     }
@@ -126,7 +134,11 @@ export async function getUrlData(
   }
 
   // 5. download data and get a valid json object
-  const [downloadErr, downloadedData] = await flatFetch(url, undefined, acceptHeaders)
+  const [downloadErr, downloadedData] = await flatFetch(
+    url,
+    undefined,
+    acceptHeaders
+  )
   if (downloadedData) {
     // we are able to get data from url
     // now we need to verify that data is a valid json

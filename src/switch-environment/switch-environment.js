@@ -15,7 +15,7 @@ import type {
 } from './type-switch-environment'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { withStatusBar } from '../components/status-bar/status-bar'
-import { environments} from '../environment'
+import { environments } from '../environment'
 import { changeEnvironment } from './switсh-environment-store'
 import { SERVER_ENVIRONMENT } from './type-switch-environment'
 
@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginHorizontal: OFFSET_1X,
     marginBottom: OFFSET_2X,
+    color: 'gray',
   },
   label: {
     marginHorizontal: OFFSET_1X,
@@ -42,6 +43,11 @@ class SwitchEnvironment extends Component<
     agencyUrl: '',
     poolConfig: '',
     paymentMethod: '',
+    domainDID: '',
+    verityFlowBaseUrl: '',
+    identityCardCredDefId: '',
+    drivingLicenseCredDefId: '',
+    passportCredDefId: '',
   }
 
   onSave = () => {
@@ -51,6 +57,11 @@ class SwitchEnvironment extends Component<
       agencyUrl,
       poolConfig,
       paymentMethod,
+      domainDID,
+      verityFlowBaseUrl,
+      identityCardCredDefId,
+      drivingLicenseCredDefId,
+      passportCredDefId,
     } = this.state
 
     this.props.changeEnvironment(
@@ -58,7 +69,12 @@ class SwitchEnvironment extends Component<
       agencyDID,
       agencyVerificationKey,
       poolConfig,
-      paymentMethod
+      paymentMethod,
+      domainDID,
+      verityFlowBaseUrl,
+      identityCardCredDefId,
+      drivingLicenseCredDefId,
+      passportCredDefId
     )
     this.props.navigation.goBack()
   }
@@ -70,13 +86,23 @@ class SwitchEnvironment extends Component<
       agencyUrl,
       poolConfig,
       paymentMethod,
+      domainDID,
+      verityFlowBaseUrl,
+      identityCardCredDefId,
+      drivingLicenseCredDefId,
+      passportCredDefId,
     } = this.state
     this.props.changeEnvironment(
       agencyUrl,
       agencyDID,
       agencyVerificationKey,
       poolConfig,
-      paymentMethod
+      paymentMethod,
+      domainDID,
+      verityFlowBaseUrl,
+      identityCardCredDefId,
+      drivingLicenseCredDefId,
+      passportCredDefId
     )
     this.props.navigation.navigate(selectRestoreMethodRoute)
   }
@@ -93,6 +119,11 @@ class SwitchEnvironment extends Component<
       disableDevMode,
       poolConfig,
       paymentMethod,
+      domainDID,
+      verityFlowBaseUrl,
+      identityCardCredDefId,
+      drivingLicenseCredDefId,
+      passportCredDefId,
     } = this.props
     disableDevMode()
     this.setState({
@@ -101,6 +132,11 @@ class SwitchEnvironment extends Component<
       agencyVerificationKey,
       poolConfig,
       paymentMethod,
+      domainDID,
+      verityFlowBaseUrl,
+      identityCardCredDefId,
+      drivingLicenseCredDefId,
+      passportCredDefId,
     })
   }
 
@@ -286,6 +322,104 @@ class SwitchEnvironment extends Component<
               autoCorrect={false}
               underlineColorAndroid="transparent"
             />
+            <CustomText
+              h7
+              uppercase
+              bold
+              bg="tertiary"
+              transparentBg
+              style={styles.label}
+            >
+              {'Domain DID'}
+            </CustomText>
+            <TextInput
+              style={styles.TextInput}
+              onChangeText={(domainDID) => this.setState({ domainDID })}
+              value={this.state.domainDID}
+              testID="text-input-domainDID"
+              autoCorrect={false}
+              underlineColorAndroid="transparent"
+            />
+            <CustomText
+              h7
+              uppercase
+              bold
+              bg="tertiary"
+              transparentBg
+              style={styles.label}
+            >
+              {'Verity Flow Backend URL'}
+            </CustomText>
+            <TextInput
+              style={styles.TextInput}
+              onChangeText={(verityFlowBaseUrl) =>
+                this.setState({ verityFlowBaseUrl })
+              }
+              value={this.state.verityFlowBaseUrl}
+              testID="text-input-verityFlowBaseUrl"
+              autoCorrect={false}
+              underlineColorAndroid="transparent"
+            />
+            <CustomText
+              h7
+              uppercase
+              bold
+              bg="tertiary"
+              transparentBg
+              style={styles.label}
+            >
+              {'Identity Card Cred Def Id'}
+            </CustomText>
+            <TextInput
+              style={styles.TextInput}
+              onChangeText={(identityCardCredDefId) =>
+                this.setState({ identityCardCredDefId })
+              }
+              value={this.state.identityCardCredDefId}
+              testID="text-input-identityCardCredDefId"
+              autoCorrect={false}
+              underlineColorAndroid="transparent"
+            />
+            <CustomText
+              h7
+              uppercase
+              bold
+              bg="tertiary"
+              transparentBg
+              style={styles.label}
+            >
+              {'Driving License Cred Def Id'}
+            </CustomText>
+            <TextInput
+              style={styles.TextInput}
+              onChangeText={(drivingLicenseCredDefId) =>
+                this.setState({ drivingLicenseCredDefId })
+              }
+              value={this.state.drivingLicenseCredDefId}
+              testID="text-input-drivingLicenseCredDefId"
+              autoCorrect={false}
+              underlineColorAndroid="transparent"
+            />
+            <CustomText
+              h7
+              uppercase
+              bold
+              bg="tertiary"
+              transparentBg
+              style={styles.label}
+            >
+              {'Passport Cred Def Id'}
+            </CustomText>
+            <TextInput
+              style={styles.TextInput}
+              onChangeText={(passportCredDefId) =>
+                this.setState({ passportCredDefId })
+              }
+              value={this.state.passportCredDefId}
+              testID="text-input-passportCredDefId"
+              autoCorrect={false}
+              underlineColorAndroid="transparent"
+            />
           </KeyboardAwareScrollView>
         </Container>
         <FooterActions
@@ -307,6 +441,11 @@ const mapStateToProps = ({ config }: Store) => {
     agencyVerificationKey: config.agencyVerificationKey,
     poolConfig: config.poolConfig,
     paymentMethod: config.paymentMethod,
+    domainDID: config.domainDID,
+    verityFlowBaseUrl: config.verityFlowBaseUrl,
+    identityCardCredDefId: config.identityCardCredDefId,
+    drivingLicenseCredDefId: config.drivingLicenseCredDefId,
+    passportCredDefId: config.passportCredDefId,
   }
 }
 

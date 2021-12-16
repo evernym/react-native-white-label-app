@@ -5,10 +5,7 @@ import { bindActionCreators } from 'redux'
 
 import type { Store } from '../store/type-store'
 import type { ResponseTypes } from '../components/request/type-request'
-import type {
-  InvitationProps,
-  InvitationNavigation,
-} from './type-invitation'
+import type { InvitationProps, InvitationNavigation } from './type-invitation'
 
 import { Container } from '../components'
 import { homeDrawerRoute, homeRoute, invitationRoute } from '../common'

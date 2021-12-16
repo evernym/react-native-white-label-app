@@ -109,6 +109,7 @@ exports[`<RecentCard /> should render RecentCard component and match snapshot 1`
           "fontSize": 6.352941176470588,
           "fontStyle": "italic",
           "fontWeight": "normal",
+          "textAlign": "right",
         }
       }
     >

@@ -10,6 +10,7 @@ For more convenience, we grouped all configuration options by files representing
 For example `home.js` contains options for `Home` screen.
 
 **Content:**
+
 - [Configuration](#configuration)
   - [Application](#application)
     - [Environment](#environment)
@@ -33,6 +34,7 @@ For example `home.js` contains options for `Home` screen.
     - [Settings](#settings)
     - [Feedback](#feedback)
     - [Application information](#application-information)
+    - [Physical Document Verification](#physical-document-verification)
     - [Splash screen and app icon](#splash-screen-and-app-icon)
     - [Credential attachments](#credential-attachments)
   - [Examples](#examples)
@@ -44,17 +46,22 @@ For example `home.js` contains options for `Home` screen.
 
 The base application settings should be specified in `app.js` file.
 
-* `APP_NAME` - (string, Mandatory) name of the application 
+* `APP_NAME` - (string, Mandatory) name of the application
+
     ```javascript
     export const APP_NAME = 'AppName'
     ```
 
-* `APP_ICON` - (image source, Optional) application icon 
+* `APP_ICON` - (image source, Optional) application icon
+
     * to use default MSDK icon
+
         ```javascript
         export const APP_ICON = null
         ```
+
     * to use custom
+
         ```javascript
         export const APP_ICON = require('path/to/app_icon.png')
         ```
@@ -100,14 +107,18 @@ The base application settings should be specified in `app.js` file.
         ```
  
 * `DEEP_LINK` - (string, Optional) Branch.io Deep link address.
+
   * to omit
-      ```javascript
-      export const DEEP_LINK = null
-      ```
-    * to use custom
-        ```javascript
-        export const DEEP_LINK = 'https://address.com'
-        ```
+
+    ```javascript
+    export const DEEP_LINK = null
+    ```
+
+  * to use custom
+
+    ```javascript
+    export const DEEP_LINK = 'https://address.com'
+    ```
 
 * `PUSH_NOTIFICATION_PERMISSION_SCREEN_IMAGE_IOS` - (image source, Optional) For iOS side we have push notification permission screen with image which simulate ConnectMe notification by default. It's way for customization this screen.
   * to omit
@@ -1350,6 +1361,102 @@ The information about the application which will be shown on `About` screen can 
         ```javascript
         export const CustomAboutAppScreen = () => <Text>Custom About</Text>
         ```
+
+### Physical Document Verification
+
+This feature allows users to get a verifiable credential after scanning and processing physical documents.
+
+Three kinds of documents are currently supported (vary depending on the selected country):
+* Passport
+* Driver License
+* Identity card
+
+In order to enable **Physical Document Verification** feature you need to add `PhysicalDocumentVerification` item into `MENU_NAVIGATION_OPTIONS` (inside the `navigator.js` module).
+  ```javascript
+  export const MENU_NAVIGATION_OPTIONS = [
+    // other options
+    {
+      name: 'PhysicalDocumentVerification',
+    }
+  ]     
+  ```
+
+Flow:
+1. At the start, User will be requested for giving **Camera** permissions.
+2. User select country document belongs to.
+3. User select document type.
+4. Scan document (for some documents two sides need to be scanned).
+5. Scan User face.
+6. After the document processing, User will receive Credential Offer from Evernym's Issuer Service.
+
+Additional configuration for this feature, can be done in `physical-document-verification.js` file.
+
+* `IOS_GET_DEVICE_CHECK_JWT` - Function that would be called to verify device check token of ios app. Below are the details to fulfill this functionality:
+  * Generate an API Key from developer.apple.com which only has access to call Device Check APIs
+    * In your developer account, go to Certificates, Identifiers & Profiles.
+    * Under Keys, select All and click the Add button (+) in the upper-right corner.
+    * Under Key Description, enter a unique name for the signing key.
+    * Under Key Services, select the Device Check, then click Continue.
+    * Review the key configuration, then click Confirm.
+    * Take note of key id.
+    * Click Download to generate and download the key now. If you download the key, it is saved as a text file with a .p8 file extension. Save the file in a secure place because the key is not saved in your developer account and you won’t be able to download it again.
+    * Click Done.
+  * On server side below code can be used to generate JWT. Note: The below functionality can be done inside the app itself. For example: when you are in development phase. But, we would recommend to do it on server side. You can use your sponsor provision backend to add one more API endpoint to generate ios specific JWT. 
+    ```javascript
+        // server side api.js, function to get JWT
+        const { getToken } = require('@sagi.io/workers-jwt')
+        // team id or issuer-id
+        const iss = ''
+        // key-id
+        const kid = ''
+        const privateKeyPEM = ''
+
+        const jwtPayload = {
+            iss,
+            iat: Math.floor(Date.now() / 1000)
+        }
+
+        const jwt = await getToken({
+            privateKeyPEM,
+            payload: jwtPayload,
+            alg: 'ES256',
+            headerAdditions: {
+                kid
+            }
+        })
+    ```
+  * Mobile app can call above API via http method and get the JWT. Make sure to add proper Authorization/Authentication as per your own app logic for above API call
+    ```javascript
+        export const IOS_GET_DEVICE_CHECK_JWT = async function getDeviceCheckJwt(): Promise<[typeof Error | null, string | null]> {
+            try {
+                // call your backend api to get ios platform jwt, this API call is the one that contains above server side code
+                const response = await fetch(`<your-app-backend-url>/get-ios-jwt`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer <your own auth strategy>'
+                    },
+                    body: '{}',
+                })
+
+                let responseText = await response.json()
+                if (!response.ok) {
+                    return [
+                        responseText.errorMessage ||
+                            responseText.message ||
+                            responseText,
+                        null,
+                    ]
+                }
+                // please ensure that response from this function is an array which has first value as Error or null and second value as jwt or null
+                // assuming that your API call response was JSON and had a property `jwt` which contains jwt token
+                return [null, responseText.jwt]
+            } catch (e) {
+                return [e, null]
+            }
+        }
+    ```
+  * The function that call above API is the same function that we need to pass to `IOS_GET_DEVICE_CHECK_JWT`
 
 ### Splash screen and app icon
 

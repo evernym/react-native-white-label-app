@@ -135,7 +135,7 @@ export class CloudRestoreModal extends Component<CloudBackupScreenProps, void> {
                 bg="tertiary"
                 style={[questionStyles.questionLoaderContainer]}
               >
-                <ActivityIndicator size="large" />
+                <ActivityIndicator size="large" color={colors.gray3} />
                 <CustomText center bg={false}>
                   {this.props.message}
                 </CustomText>

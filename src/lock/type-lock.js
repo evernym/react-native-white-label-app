@@ -173,7 +173,12 @@ export type LockSelectionProps = {
     agencyDID: string,
     agencyVerificationKey: string,
     poolConfig: string,
-    paymentMethod: string
+    paymentMethod: string,
+    domainDID: string,
+    verityFlowBaseUrl: string,
+    identityCardCredDefId: string,
+    drivingLicenseCredDefId: string,
+    passportCredDefId: string
   ) => void,
   disableTouchIdAction: () => void,
   enableTouchIdAction: () => void,

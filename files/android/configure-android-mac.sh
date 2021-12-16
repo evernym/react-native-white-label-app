@@ -6,13 +6,17 @@ echo 'org.gradle.jvmargs=-Xmx4608m -XX:MaxPermSize=512m -XX:+HeapDumpOnOutOfMemo
 echo "2. Updating minimum supported SDK version to ${minVersion} "
 minVersion=23
 sed -ri '' "s|minSdkVersion = [0-9]*|minSdkVersion = ${minVersion}|" android/build.gradle
-echo "3. Adding the source repository for VCX library"
+echo "3. Adding the source repository for VCX and Jumio libraries"
 repository="
 allprojects {
     repositories {
         maven {
             url 'https://evernym.mycloudrepo.io/public/repositories/libvcx-android'
         }
+        maven {
+            url 'https://evernym.mycloudrepo.io/public/repositories/evernym'
+        }
+        maven { url 'http://mobile-sdk.jumio.com' }
     }
 }"
 cat <<EOT >> android/build.gradle
@@ -78,4 +82,33 @@ method='\
     } \
     '
 sed -i '' "/.*MainActivity.*/a ${method}" ${filepath}
+
+echo "9. Add blacklist to gradle.properties"
+blacklist="
+android.jetifier.blacklist=bcprov
+"
+cat <<EOT >> android/gradle.properties
+$blacklist
+EOT
+
+echo "10. Add kotlin dependence"
+dependencies="
+dependencies {
+    implementation \"org.jetbrains.kotlin:kotlin-stdlib:1.4.20\"
+}
+"
+cat <<EOT >> android/app/build.gradle
+$dependencies
+EOT
+sed -i "s/classpath 'com.android.tools.build:gradle:[0-9]\.[0-9]\.[0-9]'/classpath 'com.android.tools.build:gradle:4.2.1'\n\t\tclasspath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.20'/g" android/build.gradle
+sed -i "s/classpath(\"com.android.tools.build:gradle:[0-9]\.[0-9]\.[0-9]\")/classpath(\"com.android.tools.build:gradle:4.2.1\")\n\t\tclasspath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.20'/g" android/build.gradle
+
+echo "11. Apply fonts"
+fonts="
+apply from: \"../../node_modules/react-native-vector-icons/fonts.gradle\"
+"
+cat <<EOT >> android/app/build.gradle
+$fonts
+EOT
+
 echo "Completed!"

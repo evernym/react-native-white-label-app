@@ -121,7 +121,10 @@ import {
   SMS_PENDING_INVITATION_SEEN,
 } from '../sms-pending-invitation/type-sms-pending-invitation'
 import { appName, CustomLogUtils } from '../external-imports'
-import { SERVER_ENVIRONMENT_CHANGED, SWITCH_ENVIRONMENT } from '../switch-environment/type-switch-environment'
+import {
+  SERVER_ENVIRONMENT_CHANGED,
+  SWITCH_ENVIRONMENT,
+} from '../switch-environment/type-switch-environment'
 
 import { Logger } from '@evernym/react-native-sdk'
 
@@ -133,7 +136,7 @@ export async function setVcxLogger(
   return await Logger.setLogger({
     logLevel,
     uniqueIdentifier: uniqueId,
-    maxAllowedFileBytes: MAX_ALLOWED_FILE_BYTES
+    maxAllowedFileBytes: MAX_ALLOWED_FILE_BYTES,
   })
 }
 
@@ -147,7 +150,7 @@ export async function writeToVcxLog(
     loggerName,
     logLevel: levelName,
     message: logMessage,
-    logFilePath
+    logFilePath,
   })
 }
 
@@ -157,7 +160,7 @@ export async function encryptLog(
 ): Promise<string> {
   return await Logger.encryptLog({
     logFilePath,
-    key
+    key,
   })
 }
 
@@ -604,6 +607,10 @@ export function PiiHiddenActionTransformer(action: any) {
       'agencyUrl',
       'agencyDID',
       'agencyVerificationKey',
+      'domainDID',
+      'identityCardCredDefId',
+      'drivingLicenseCredDefId',
+      'passportCredDefId',
     ],
 
     [REFRESH_WALLET_BALANCE]: ['walletBalance'],

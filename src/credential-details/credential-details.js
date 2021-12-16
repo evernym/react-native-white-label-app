@@ -4,7 +4,10 @@ import { Text, View, ScrollView, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import { verticalScale, moderateScale } from 'react-native-size-matters'
 import { colors, fontFamily, fontSizes } from '../common/styles/constant'
-import { credentialDetailsRoute, showCredentialRoute } from '../common/route-constants'
+import {
+  credentialDetailsRoute,
+  showCredentialRoute,
+} from '../common/route-constants'
 import type { CredentialDetailsProps } from './type-credential-details'
 import { Avatar } from '../components/avatar/avatar'
 import { DefaultLogo } from '../components/default-logo/default-logo'
@@ -14,7 +17,10 @@ import { ExpandableText } from '../components/expandable-text/expandable-text'
 import { bindActionCreators } from 'redux'
 import { InteractionManager } from 'react-native'
 import { ViewPushLeft } from '../connection-details/utils/modal-animation'
-import { CustomCredentialDetailsScreen, showCredential } from '../external-imports'
+import {
+  CustomCredentialDetailsScreen,
+  showCredential,
+} from '../external-imports'
 import ToggleFields from '../components/toggle-fields/toggle-fields'
 import {
   checkCredentialForEmptyFields,
@@ -26,9 +32,7 @@ import { GRID_ICON } from '../common/icons'
 import { deleteClaim } from '../claim-offer/claim-offer-store'
 
 const useShowCredentialFeature =
-  typeof showCredential === 'boolean'
-    ? showCredential
-    : true
+  typeof showCredential === 'boolean' ? showCredential : true
 
 const CredentialDetails = (props: CredentialDetailsProps) => {
   const {
@@ -93,7 +97,7 @@ const CredentialDetails = (props: CredentialDetailsProps) => {
         route={props.route}
       />
       {loading ? (
-        <Loader/>
+        <Loader />
       ) : (
         <>
           <ScrollView>
@@ -101,7 +105,7 @@ const CredentialDetails = (props: CredentialDetailsProps) => {
               <Text style={styles.headerSubText}>
                 {date ? 'Issued by' : 'Offered by'}
               </Text>
-              <ExpandableText style={styles.headerText} text={issuerName}/>
+              <ExpandableText style={styles.headerText} text={issuerName} />
               <View style={styles.avatarSection}>
                 {typeof logoUrl === 'string' ? (
                   <Avatar
@@ -110,7 +114,7 @@ const CredentialDetails = (props: CredentialDetailsProps) => {
                     testID={`sender-avatar`}
                   />
                 ) : (
-                  <DefaultLogo text={issuerName} size={96} fontSize={48}/>
+                  <DefaultLogo text={issuerName} size={96} fontSize={48} />
                 )}
               </View>
               <View style={styles.contentWrapper}>
@@ -140,13 +144,9 @@ const CredentialDetails = (props: CredentialDetailsProps) => {
               />
             </View>
           </ScrollView>
-          {useShowCredentialFeature &&
-          <Button
-            onPress={show}
-            label="Show"
-            evaIcon={GRID_ICON}
-          />
-          }
+          {useShowCredentialFeature && (
+            <Button onPress={show} label="Show" evaIcon={GRID_ICON} />
+          )}
         </>
       )}
     </View>

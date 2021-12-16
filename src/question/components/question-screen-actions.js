@@ -119,7 +119,7 @@ const QuestionResponseButton = ({
   isPrimaryResponse,
   isSingleResponse,
   onPress,
-  disabled = false
+  disabled = false,
 }: QuestionResponseButtonProps) => {
   const onResponse = useCallback(() => {
     onPress(response)
@@ -186,7 +186,7 @@ export type QuestionActionProps = {
   onSubmit: () => void,
   onSelectResponseAndSubmit: (response: QuestionResponse) => void,
   question?: QuestionStoreMessage,
-  isOffline: boolean
+  isOffline: boolean,
 }
 
 type QuestionResponseButtonsProps = {

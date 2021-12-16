@@ -107,15 +107,19 @@ const AttributeValues = ({
           selectItem(item, index)
         }}
       >
-        <View style={[
-          styles.itemInnerContainer,
-          item.type === ATTRIBUTE_TYPE.RESTRICTIONS_MISMATCH && { opacity: 0.5 }
-        ]}>
+        <View
+          style={[
+            styles.itemInnerContainer,
+            item.type === ATTRIBUTE_TYPE.RESTRICTIONS_MISMATCH && {
+              opacity: 0.5,
+            },
+          ]}
+        >
           <View style={styles.avatarSection}>
             {typeof item.logoUrl === 'string' ? (
-              <Avatar radius={18} src={{ uri: item.logoUrl }}/>
+              <Avatar radius={18} src={{ uri: item.logoUrl }} />
             ) : (
-              <DefaultLogo text={item.senderName} size={32} fontSize={17}/>
+              <DefaultLogo text={item.senderName} size={32} fontSize={17} />
             )}
           </View>
           <View style={styles.infoSection}>
@@ -129,7 +133,9 @@ const AttributeValues = ({
                   style={styles.credentialNameText}
                   text={
                     attributeWithAttachment
-                      ? `${getFileExtensionLabel(JSON.parse(item.data)['mime-type'])}`
+                      ? `${getFileExtensionLabel(
+                          JSON.parse(item.data)['mime-type']
+                        )}`
                       : item.data
                   }
                   lines={1}
@@ -158,11 +164,11 @@ const AttributeValues = ({
           </View>
         </View>
         {item.type === ATTRIBUTE_TYPE.RESTRICTIONS_MISMATCH && (
-          <MismatchRestrictionsIcon sender={params.sender}/>
+          <MismatchRestrictionsIcon sender={params.sender} />
         )}
         {index === selectedValueIndex && (
           <View style={styles.iconWrapper}>
-            <EvaIcon name={CHECKMARK_ICON} color={colors.black}/>
+            <EvaIcon name={CHECKMARK_ICON} color={colors.black} />
           </View>
         )}
       </TouchableOpacity>
@@ -171,7 +177,7 @@ const AttributeValues = ({
 
   const renderHeader = () => (
     <>
-      <StatusBar backgroundColor={colors.black} barStyle={'light-content'}/>
+      <StatusBar backgroundColor={colors.black} barStyle={'light-content'} />
       <View style={styles.descriptionWrapper}>
         <ExpandableText
           style={styles.labelText}
@@ -212,7 +218,7 @@ const AttributeValues = ({
           </View>
           {selectedValueIndex === -1 && (
             <View style={styles.iconWrapper}>
-              <EvaIcon name={CHECKMARK_ICON} color={colors.black}/>
+              <EvaIcon name={CHECKMARK_ICON} color={colors.black} />
             </View>
           )}
         </TouchableOpacity>
@@ -220,7 +226,7 @@ const AttributeValues = ({
       {!self_attest_allowed && params.onTextChange && (
         <View style={[styles.itemContainer]}>
           <View style={styles.inputAvatarSection}>
-            <EvaIcon name={ALERT_ICON} color={colors.red}/>
+            <EvaIcon name={ALERT_ICON} color={colors.red} />
           </View>
           <Text style={styles.descriptionTitle} numberOfLines={2}>
             Manual input is disabled for this attribute.

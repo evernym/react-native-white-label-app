@@ -66,7 +66,7 @@ export type DeepLinkBundle = {
 export type DeepLinkProps = {
   deepLinkData: (token: string) => void,
   deepLinkEmpty: () => void,
-  deepLinkError: string => void,
+  deepLinkError: (string) => void,
   tokens: {
     [string]: Token,
   },

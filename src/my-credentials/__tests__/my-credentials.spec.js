@@ -57,7 +57,7 @@ describe('my credentials screen', () => {
       },
       environmentName: defaultEnvironment,
       route: {},
-      showUnreadMessagesBadge: {SHOW_UNREAD_MESSAGES_BADGE_NEAR_WITH_MENU}
+      showUnreadMessagesBadge: { SHOW_UNREAD_MESSAGES_BADGE_NEAR_WITH_MENU },
     }
   }
 

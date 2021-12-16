@@ -1,13 +1,6 @@
 // @flow
 
-import {
-  all,
-  put,
-  race,
-  take,
-  call,
-  takeLatest,
-} from 'redux-saga/effects'
+import { all, put, race, take, call, takeLatest } from 'redux-saga/effects'
 import delay from '@redux-saga/delay-p'
 import { AppState } from 'react-native'
 import { eventChannel } from 'redux-saga'

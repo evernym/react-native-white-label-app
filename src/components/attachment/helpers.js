@@ -36,7 +36,7 @@ export const getFileExtensionName = (mimeType: string) => {
       .includes(mimeType):
       return 'JPG'
     case photoMimeTypes.includes(mimeType):
-      return 'PDF'
+      return 'PNG'
     default:
       return 'unknown'
   }

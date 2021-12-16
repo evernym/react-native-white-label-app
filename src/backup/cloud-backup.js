@@ -300,7 +300,7 @@ export class CloudBackup extends Component<CloudBackupScreenProps, void> {
 function QuestionLoader() {
   return (
     <CustomView bg="tertiary" style={[questionStyles.questionLoaderContainer]}>
-      <ActivityIndicator size="large" />
+      <ActivityIndicator size="large" color={colors.gray3} />
       <CustomText center bg={false}>
         Creating Backup
       </CustomText>

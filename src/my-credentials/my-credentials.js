@@ -30,8 +30,8 @@ const MyCredentialsScreen = ({ route, navigation }: MyCredentialsProps) => {
   const receivedCredentials = useSelector(getReceivedCredentials)
 
   const credentials = useMemo(() => {
-    const credentials: Array<CredentialItem> =
-      receivedCredentials.map((credential) => ({
+    const credentials: Array<CredentialItem> = receivedCredentials.map(
+      (credential) => ({
         claimOfferUuid: credential.uid,
         credentialName: credential.data.name,
         issuerName: credential.issuer.name,
@@ -41,7 +41,8 @@ const MyCredentialsScreen = ({ route, navigation }: MyCredentialsProps) => {
         remoteDid: credential.remotePairwiseDID,
         colorTheme: credential.colorTheme,
         claimDefinitionId: credential.data.claimDefinitionId,
-      }))
+      })
+    )
 
     credentials.sort((a, b) => a.credentialName.localeCompare(b.credentialName))
 

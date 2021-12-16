@@ -23,6 +23,7 @@ const CardStack = (props: CardStackProps) => {
     setActiveStack,
     isHidden,
     enabledCardGesture,
+    isNeedMargin,
   } = props
   const credsToDisplay = isExpanded ? credentials : credentials.slice(0, 3)
   const credCount = credsToDisplay.length
@@ -55,6 +56,7 @@ const CardStack = (props: CardStackProps) => {
         height: hiddenHeight,
         opacity: hiddenOpacity,
         marginBottom: extraMargin,
+        marginTop: isNeedMargin ? CARD_MARGIN : 0,
       }}
     >
       <>

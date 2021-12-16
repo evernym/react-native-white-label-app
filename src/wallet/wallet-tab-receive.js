@@ -4,9 +4,7 @@ import React, { PureComponent } from 'react'
 import { Clipboard, Platform } from 'react-native'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import {
-  Container,
-} from '../components'
+import { Container } from '../components'
 import type {
   WalletTabReceiveProps,
   WalletTabReceiveState,

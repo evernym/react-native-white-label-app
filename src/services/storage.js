@@ -10,6 +10,10 @@ import { WALLET_KEY } from '../common/secure-storage-constants'
 
 import { Wallet } from '@evernym/react-native-sdk'
 
+// IMPORTANT NOTE: If the value changes for storageName,
+// then this value also needs to be changed in
+// ConnectMe repo app/evernym-sdk/physical-id.js
+// and other apps dependent on this white label app
 const storageName = {
   sharedPreferencesName: 'ConnectMeSharedPref',
   keychainService: 'ConnectMeKeyChain',
@@ -143,14 +147,14 @@ export async function setWalletItem(
   return Wallet.addRecord({
     type: recordType,
     key,
-    value
+    value,
   })
 }
 
 export async function getWalletItem(key: string): Promise<string> {
   const response: string = await Wallet.getRecord({
     type: recordType,
-    key
+    key,
   })
 
   if (response) {
@@ -170,7 +174,7 @@ export async function getWalletItem(key: string): Promise<string> {
 export async function deleteWalletItem(key: string): Promise<number> {
   return Wallet.deleteRecord({
     type: recordType,
-    key
+    key,
   })
 }
 
@@ -181,7 +185,7 @@ export async function updateWalletItem(
   return Wallet.updateRecord({
     type: recordType,
     key,
-    value
+    value,
   })
 }
 
@@ -194,9 +198,9 @@ export const getWalletKey = memoize(async function (): Promise<string> {
 
     const lengthOfKey = 64
     walletKey = await Wallet.creatKey({
-      lengthOfKey
+      lengthOfKey,
     })
-// createWalletKey sometimes returns with a whitespace character at the end so we need to trim it
+    // createWalletKey sometimes returns with a whitespace character at the end so we need to trim it
     walletKey = walletKey.trim()
 
     await secureSet(WALLET_KEY, walletKey)

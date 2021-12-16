@@ -1,10 +1,16 @@
-import type {Url} from "url-parse";
-import type {AriesConnectionInvite, InvitationPayload} from "../type-invitation";
-import {CONNECTION_INVITE_TYPES} from "../type-invitation";
-import {getBase64DecodedInvitation, getConnectionLogoUrl} from "../invitation-helpers";
-import isUrl from "validator/lib/isURL";
-import {ID, TYPE} from "../../common/type-common";
-import {schemaValidator} from "../../services/schema-validator";
+import type { Url } from 'url-parse'
+import type {
+  AriesConnectionInvite,
+  InvitationPayload,
+} from '../type-invitation'
+import { CONNECTION_INVITE_TYPES } from '../type-invitation'
+import {
+  getBase64DecodedInvitation,
+  getConnectionLogoUrl,
+} from '../invitation-helpers'
+import isUrl from 'validator/lib/isURL'
+import { ID, TYPE } from '../../common/type-common'
+import { schemaValidator } from '../../services/schema-validator'
 
 export function isAriesInvitation(
   payload: any,
@@ -26,9 +32,9 @@ export function isAriesInvitation(
   }
 }
 
-export async function isEncodedAriesConnectionInvitation(
-  { query }: Url
-): Promise<AriesConnectionInvite | false> {
+export async function isEncodedAriesConnectionInvitation({
+  query,
+}: Url): Promise<AriesConnectionInvite | false> {
   const body = query.c_i || query.d_m || query.m
   let qrData = await getBase64DecodedInvitation(body)
   if (!qrData) {
@@ -41,7 +47,7 @@ export async function isEncodedAriesConnectionInvitation(
 export function convertAriesInvitationToAppInvitation(
   ariesConnectionInvite: AriesConnectionInvite
 ): InvitationPayload {
-  const {payload, original} = ariesConnectionInvite
+  const { payload, original } = ariesConnectionInvite
 
   const senderAgentKeyDelegationProof = {
     agentDID: payload.recipientKeys[0],
@@ -82,22 +88,22 @@ export function convertAriesInvitationToAppInvitation(
 export const ariesConnectionInviteQrSchema = {
   type: 'object',
   properties: {
-    [ID]: {type: 'string'},
-    [TYPE]: {type: 'string'},
-    label: {type: ['null', 'string']},
+    [ID]: { type: 'string' },
+    [TYPE]: { type: 'string' },
+    label: { type: ['null', 'string'] },
     recipientKeys: {
       type: 'array',
-      items: [{type: 'string'}],
+      items: [{ type: 'string' }],
       minItems: 1,
     },
     routingKeys: {
       type: ['null', 'array'],
-      items: [{type: 'string'}],
+      items: [{ type: 'string' }],
       minItems: 0,
     },
-    serviceEndpoint: {type: 'string'},
-    profileUrl: {type: ['null', 'string']},
-    imageUrl: {type: ['null', 'string']},
+    serviceEndpoint: { type: 'string' },
+    profileUrl: { type: ['null', 'string'] },
+    imageUrl: { type: ['null', 'string'] },
   },
   required: [ID, TYPE, 'recipientKeys', 'serviceEndpoint'],
 }

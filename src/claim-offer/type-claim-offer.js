@@ -417,7 +417,7 @@ export const ERROR_SEND_CLAIM_REQUEST = (message: string) => ({
 
 export const ERROR_RECEIVE_CLAIM = (sender: string) => ({
   code: 'CO-006',
-  message: `Failed to accept credential from ${sender}. ${sender} does not reply. You can try again later.`,
+  message: `Failed to accept credential from ${sender}. ${sender} did not reply. You can try again later.`,
 })
 
 export const CLAIM_REQUEST_STATUS = {

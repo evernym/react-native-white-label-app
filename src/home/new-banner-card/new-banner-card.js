@@ -17,7 +17,7 @@ import { removeEvent } from '../../connection-history/connection-history-store'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { renderUserAvatar } from "../../components/user-avatar/user-avatar";
-import { formatTimestamp } from '../../utils/datetime'
+import { EventTimestamp } from '../../components/event-timestamp/event-timestamp'
 
 const NewBannerCardComponent = (props: NewBannerCardProps) => {
   const onDelete = useCallback(() => {
@@ -74,7 +74,7 @@ const NewBannerCardComponent = (props: NewBannerCardProps) => {
             </View>
           </View>
           <View style={styles.textDateSection}>
-            <Text style={styles.dateText}>{formatTimestamp(props.timestamp)}</Text>
+            <EventTimestamp timestamp={props.timestamp} customStyles={styles.dateText}/>
           </View>
         </TouchableOpacity>
       </View>

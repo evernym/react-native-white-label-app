@@ -6,10 +6,7 @@ import {
   TransitionPresets,
 } from '@react-navigation/stack'
 import { createNativeStackNavigator } from 'react-native-screens/native-stack'
-import {
-  createDrawerNavigator,
-  DrawerItemList,
-} from '@react-navigation/drawer'
+import { createDrawerNavigator, DrawerItemList } from '@react-navigation/drawer'
 import { enableScreens } from 'react-native-screens'
 import VersionNumber from 'react-native-version-number'
 
@@ -110,6 +107,8 @@ import {
   CREDENTIALS_LABEL,
   DRAWER_ICON_HEIGHT,
   DRAWER_ICON_WIDTH,
+  PHYSICAL_DOCUMENT_VERIFICATION,
+  PHYSICAL_DOCUMENT_VERIFICATION_LABEL,
   SETTINGS,
   SETTINGS_LABEL,
 } from './navigator-constants'
@@ -128,6 +127,9 @@ import { inviteActionScreen } from '../invite-action/invite-action-screen'
 import { ShowCredentialScreen } from '../show-credential/show-credential-modal'
 import { ProofProposalModal } from '../verifier/proof-proposal-modal'
 import { ReceivedProofScreen } from '../verifier/received-proof-modal'
+import { physicalIdScreen } from '../physical-id/physical-id-screen'
+import { problemModalReport } from '../physical-id/problem-modal-report'
+import { physicalIdSuccessScreen } from '../physical-id/physical-id-success-screen'
 
 enableScreens()
 
@@ -257,6 +259,14 @@ const defaultDrawerItemOptions = {
     label: CREDENTIALS_LABEL,
     headline: headlineForCredentialRoute,
   },
+  [PHYSICAL_DOCUMENT_VERIFICATION]: {
+    route: physicalIdScreen.routeName,
+    component: physicalIdScreen.screen,
+    // TODO:KS Get an icon for Physical ID
+    icon: drawerSvgIcon('DocumentVerification'),
+    label: PHYSICAL_DOCUMENT_VERIFICATION_LABEL,
+    headline: physicalIdScreen.headline,
+  },
   [SETTINGS]: {
     route: settingsDrawerRoute,
     component: SettingsScreen,
@@ -269,6 +279,7 @@ const defaultDrawerItemOptions = {
 const menuNavigationOptions = customMenuNavigationOptions || [
   { name: CONNECTIONS },
   { name: CREDENTIALS },
+  { name: PHYSICAL_DOCUMENT_VERIFICATION },
   { name: SETTINGS },
 ]
 const extraScreens = customExtraScreens || []
@@ -563,6 +574,11 @@ export function MSDKAppNavigator() {
         options={questionScreen.screen.navigationOptions}
       />
       <ModalStack.Screen
+        name={problemModalReport.routeName}
+        component={problemModalReport.screen}
+        options={problemModalReport.screen.navigationOptions}
+      />
+      <ModalStack.Screen
         name={txnAuthorAgreementScreen.routeName}
         component={txnAuthorAgreementScreen.screen}
         options={{ safeAreaInsets: { top: 0 } }}
@@ -596,6 +612,11 @@ export function MSDKAppNavigator() {
         name={inviteActionScreen.routeName}
         component={inviteActionScreen.screen}
         options={inviteActionScreen.screen.navigationOptions}
+      />
+      <ModalStack.Screen
+        name={physicalIdSuccessScreen.routeName}
+        component={physicalIdSuccessScreen.screen}
+        options={physicalIdSuccessScreen.navigationOptions}
       />
       <CardStack.Screen
         name={ShowCredentialScreen.routeName}

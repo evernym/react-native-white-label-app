@@ -33,9 +33,7 @@ import { ModalPushLeft } from '../utils/modal-animation'
 import { ExpandableText } from '../../components/expandable-text/expandable-text'
 import { modalOptions } from '../utils/modalOptions'
 import { CustomSelectAttributesValuesModal } from '../../external-imports'
-import {
-  ATTRIBUTE_TYPE,
-} from '../../proof-request/type-proof-request'
+import { ATTRIBUTE_TYPE } from '../../proof-request/type-proof-request'
 import { MismatchRestrictionsIcon } from '../../components/mismatch-restrictions-icon'
 
 export const keyExtractor = (item: Object) => item.claimUuid.toString()
@@ -99,7 +97,9 @@ const AttributesValues = ({
         <View
           style={[
             styles.itemInnerContainer,
-            item.type === ATTRIBUTE_TYPE.RESTRICTIONS_MISMATCH && { opacity: 0.5 }
+            item.type === ATTRIBUTE_TYPE.RESTRICTIONS_MISMATCH && {
+              opacity: 0.5,
+            },
           ]}
         >
           <View style={styles.itemValuesContainer}>
@@ -134,7 +134,7 @@ const AttributesValues = ({
           </View>
         </View>
         {item.type === ATTRIBUTE_TYPE.RESTRICTIONS_MISMATCH && (
-          <MismatchRestrictionsIcon sender={params.sender}/>
+          <MismatchRestrictionsIcon sender={params.sender} />
         )}
         {index === selectedValueIndex && (
           <View style={styles.iconWrapper}>

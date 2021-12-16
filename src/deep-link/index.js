@@ -13,10 +13,12 @@ import { getDeepLinks } from '../store/store-selector'
 import { DEEP_LINK_STATUS } from './type-deep-link'
 
 export const DeepLink = (props: DeepLinkProps) => {
-  const handledLinks = useSelector(state => getDeepLinks(state))
+  const handledLinks = useSelector((state) => getDeepLinks(state))
 
   const linkIsNew = (link: string) =>
-    !handledLinks || !handledLinks[link] || handledLinks[link].status !== DEEP_LINK_STATUS.PROCESSED
+    !handledLinks ||
+    !handledLinks[link] ||
+    handledLinks[link].status !== DEEP_LINK_STATUS.PROCESSED
 
   const redirect = (props: DeepLinkProps, route: string, params?: any) => {
     if (props.isAppLocked === false) {
@@ -76,7 +78,7 @@ export const DeepLink = (props: DeepLinkProps) => {
 
       Object.keys(props.tokens).length === 0 && props.deepLinkEmpty()
     },
-    500,
+    500
   )
 
   // Branch only caches a deeplink for 5 seconds by default, if app loads slower it is deleted before used.
@@ -99,7 +101,7 @@ const mapDispatchToProps = (dispatch) =>
       deepLinkError,
       addPendingRedirection,
     },
-    dispatch,
+    dispatch
   )
 
 const DeepLinkConnected = connect(mapStateToProps, mapDispatchToProps)(DeepLink)

@@ -89,8 +89,8 @@ describe('<Invitation />', () => {
     },
     smsPendingInvitation: {},
     offline: {
-      offline: false
-    }
+      offline: false,
+    },
   })
 
   beforeEach(() => {

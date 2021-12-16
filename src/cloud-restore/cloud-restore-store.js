@@ -20,9 +20,7 @@ import { hydrate, hydrateNonReduxData } from '../store/hydration-store'
 import { enablePushNotificationsSaga } from '../push-notification/push-notification-store'
 import { customLogger } from '../store/custom-logger'
 import { restoreStatus } from '../restore/restore-store'
-import {
-  initVcx,
-} from '../store/config-store'
+import { initVcx } from '../store/config-store'
 import type { ConfigStore } from '../store/type-config-store'
 import { environments, cloudBackupEnvironments } from '../environment'
 import { changeEnvironment } from '../switch-environment/switсh-environment-store'
@@ -46,7 +44,12 @@ function* findWalletInCloud(
         environments[key].agencyDID,
         environments[key].agencyVerificationKey,
         environments[key].poolConfig,
-        environments[key].paymentMethod
+        environments[key].paymentMethod,
+        environments[key].domainDID,
+        environments[key].verityFlowBaseUrl,
+        environments[key].identityCardCredDefId,
+        environments[key].drivingLicenseCredDefId,
+        environments[key].passportCredDefId
       )
     )
   }
@@ -138,7 +141,6 @@ export function* cloudRestore(
       // so after push token update
       // we need to do requestPermission or else push notifications won't come
       yield call(enablePushNotificationsSaga, true)
-
     } catch (e) {
       // even if we user does not give permission for push notification
       // we should not be stopping from restore success event

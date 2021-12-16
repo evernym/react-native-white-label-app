@@ -130,7 +130,10 @@ class ProofRequestAttributeList extends Component<
   showMissingAttributeModal = (attribute: string) => {
     Alert.alert(
       MESSAGE_MISSING_ATTRIBUTE_TITLE,
-      MESSAGE_MISSING_ATTRIBUTE_DESCRIPTION(this.props.institutionalName, attribute),
+      MESSAGE_MISSING_ATTRIBUTE_DESCRIPTION(
+        this.props.institutionalName,
+        attribute
+      ),
       [
         {
           text: 'OK',
@@ -142,7 +145,9 @@ class ProofRequestAttributeList extends Component<
   showNetworkMismatchModal = () => {
     Alert.alert(
       MESSAGE_ATTRIBUTE_RESTRICTIONS_MISMATCH_TITLE,
-      MESSAGE_ATTRIBUTE_RESTRICTIONS_MISMATCH_DESCRIPTION(this.props.institutionalName),
+      MESSAGE_ATTRIBUTE_RESTRICTIONS_MISMATCH_DESCRIPTION(
+        this.props.institutionalName
+      ),
       [
         {
           text: 'OK',
@@ -517,9 +522,9 @@ class ProofRequestAttributeList extends Component<
             <TouchableOpacity
               style={[styles.iconWrapper, styles.alertIconWrapper]}
               onPress={() =>
-                attribute.hasCredentialsWithRequestedAttribute ?
-                  this.showNetworkMismatchModal() :
-                  this.showMissingAttributeModal(label)
+                attribute.hasCredentialsWithRequestedAttribute
+                  ? this.showNetworkMismatchModal()
+                  : this.showMissingAttributeModal(label)
               }
             >
               <EvaIcon
@@ -637,21 +642,18 @@ class ProofRequestAttributeList extends Component<
       <View key={index} style={styles.wrapper}>
         <View style={styles.textAvatarWrapper}>
           <View style={styles.textInnerWrapper}>
-            {RenderAttachmentIcon(
-              attribute.label,
-              title,
-              '',
-              '',
-              undefined,
-              { color: colors.red }
-            )}
+            {RenderAttachmentIcon(attribute.label, title, '', '', undefined, {
+              color: colors.red,
+            })}
           </View>
           <TouchableOpacity
             style={[styles.iconWrapper, styles.alertIconWrapper]}
             onPress={() =>
-              attribute.hasCredentialsWithRequestedAttribute ?
-                this.showNetworkMismatchModal() :
-                this.showMissingPredicateModal(`${attribute.label} ${title.toLocaleLowerCase()}`)
+              attribute.hasCredentialsWithRequestedAttribute
+                ? this.showNetworkMismatchModal()
+                : this.showMissingPredicateModal(
+                    `${attribute.label} ${title.toLocaleLowerCase()}`
+                  )
             }
           >
             <EvaIcon

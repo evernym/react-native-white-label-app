@@ -1,7 +1,7 @@
 // @flow
-import {all, call, put, select, take, takeEvery} from 'redux-saga/effects'
-import type {CustomError} from '../common/type-common'
-import {RESET} from '../common/type-common'
+import { all, call, put, select, take, takeEvery } from 'redux-saga/effects'
+import type { CustomError } from '../common/type-common'
+import { RESET } from '../common/type-common'
 import type {
   SMSPendingInvitationAction,
   SMSPendingInvitationRequestAction,
@@ -16,19 +16,31 @@ import {
   SMSPendingInvitationStatus,
 } from './type-sms-pending-invitation'
 import type { InvitationPayload } from '../invitation/type-invitation'
-import {getInvitationLink} from '../api/api'
+import { getInvitationLink } from '../api/api'
 import {
   ERROR_PENDING_INVITATION_RESPONSE_PARSE,
   ERROR_PENDING_INVITATION_RESPONSE_PARSE_CODE,
 } from '../api/api-constants'
-import {getAgencyUrl, getCurrentScreen, getHydrationState,} from '../store/store-selector'
-import {HYDRATED, UNSAFE_SCREENS_TO_DOWNLOAD_SMS,} from '../store/type-config-store'
-import {captureError} from '../services/error/error-handler'
-import {isValidInvitationUrl} from './sms-invitation-validator'
-import {getUrlData, isValidUrl,} from '../components/qr-scanner/qr-code-types/qr-url'
 import {
-  convertProprietaryInvitationToAppInvitation, convertShortProprietaryInvitationToAppInvitation,
-  isProprietaryInvitation, isShortProprietaryInvitation,
+  getAgencyUrl,
+  getCurrentScreen,
+  getHydrationState,
+} from '../store/store-selector'
+import {
+  HYDRATED,
+  UNSAFE_SCREENS_TO_DOWNLOAD_SMS,
+} from '../store/type-config-store'
+import { captureError } from '../services/error/error-handler'
+import { isValidInvitationUrl } from './sms-invitation-validator'
+import {
+  getUrlData,
+  isValidUrl,
+} from '../components/qr-scanner/qr-code-types/qr-url'
+import {
+  convertProprietaryInvitationToAppInvitation,
+  convertShortProprietaryInvitationToAppInvitation,
+  isProprietaryInvitation,
+  isShortProprietaryInvitation,
 } from '../invitation/kinds/proprietary-connection-invitation'
 import {
   convertAriesInvitationToAppInvitation,
@@ -38,7 +50,7 @@ import {
   convertAriesOutOfBandInvitationToAppInvitation,
   isAriesOutOfBandInvitation,
 } from '../invitation/kinds/aries-out-of-band-invitation'
-import type { Url } from "url-parse";
+import type { Url } from 'url-parse'
 
 const initialState = {}
 
@@ -77,10 +89,7 @@ export const safeToDownloadSmsInvitation = () => ({
   type: SAFE_TO_DOWNLOAD_SMS_INVITATION,
 })
 
-export function* handleDeepLinkError(
-  smsToken: string,
-  e: any,
-): any {
+export function* handleDeepLinkError(smsToken: string, e: any): any {
   let error: CustomError = {
     code: ERROR_PENDING_INVITATION_RESPONSE_PARSE_CODE,
     message: `${ERROR_PENDING_INVITATION_RESPONSE_PARSE}: ${e.message}`,
@@ -92,7 +101,6 @@ export function* handleDeepLinkError(
       code: parsedError.code || parsedError.statusCode || error.code,
       message: parsedError.message || parsedError.statusMsg || error.message,
     }
-
   } catch (e) {}
   captureError(e)
   yield put(smsPendingInvitationFail(smsToken, error))
@@ -113,29 +121,62 @@ export function* handleDeepLink(
       throw new Error(urlError)
     }
 
-    const proprietaryInvitation = isProprietaryInvitation(pendingInvitationPayload)
+    const proprietaryInvitation = isProprietaryInvitation(
+      pendingInvitationPayload
+    )
     if (proprietaryInvitation) {
-      yield put(smsPendingInvitationReceived(smsToken, convertProprietaryInvitationToAppInvitation(proprietaryInvitation)))
+      yield put(
+        smsPendingInvitationReceived(
+          smsToken,
+          convertProprietaryInvitationToAppInvitation(proprietaryInvitation)
+        )
+      )
       return
     }
 
-    const proprietaryShortInvitation = isShortProprietaryInvitation(pendingInvitationPayload)
+    const proprietaryShortInvitation = isShortProprietaryInvitation(
+      pendingInvitationPayload
+    )
     if (proprietaryShortInvitation) {
-      yield put(smsPendingInvitationReceived(smsToken, convertShortProprietaryInvitationToAppInvitation(proprietaryShortInvitation)))
+      yield put(
+        smsPendingInvitationReceived(
+          smsToken,
+          convertShortProprietaryInvitationToAppInvitation(
+            proprietaryShortInvitation
+          )
+        )
+      )
       return
     }
 
-    const ariesInvitationData = pendingInvitationPayload.payload || pendingInvitationPayload
-    const ariesV1Invite = isAriesInvitation(ariesInvitationData, JSON.stringify(ariesInvitationData))
+    const ariesInvitationData =
+      pendingInvitationPayload.payload || pendingInvitationPayload
+    const ariesV1Invite = isAriesInvitation(
+      ariesInvitationData,
+      JSON.stringify(ariesInvitationData)
+    )
     if (ariesV1Invite) {
-      yield put(smsPendingInvitationReceived(smsToken, convertAriesInvitationToAppInvitation(ariesV1Invite)))
+      yield put(
+        smsPendingInvitationReceived(
+          smsToken,
+          convertAriesInvitationToAppInvitation(ariesV1Invite)
+        )
+      )
       return
     }
 
-    const ariesV1OutOfBandInvite = isAriesOutOfBandInvitation(pendingInvitationPayload)
+    const ariesV1OutOfBandInvite = isAriesOutOfBandInvitation(
+      pendingInvitationPayload
+    )
     if (ariesV1OutOfBandInvite) {
       yield put(
-        smsPendingInvitationReceived(smsToken, yield call(convertAriesOutOfBandInvitationToAppInvitation,ariesV1OutOfBandInvite))
+        smsPendingInvitationReceived(
+          smsToken,
+          yield call(
+            convertAriesOutOfBandInvitationToAppInvitation,
+            ariesV1OutOfBandInvite
+          )
+        )
       )
       return
     }
@@ -203,12 +244,7 @@ export function* callSmsPendingInvitationRequest(
     const urlInvitationData = isValidUrl(smsToken)
     if (urlInvitationData) {
       // token is already valid link
-      yield call(
-        handleDeepLink,
-        smsToken,
-        urlInvitationData,
-        smsToken,
-      )
+      yield call(handleDeepLink, smsToken, urlInvitationData, smsToken)
     } else {
       // we need query for received token
       let invitationLink = {
@@ -238,7 +274,7 @@ export function* callSmsPendingInvitationRequest(
         handleDeepLink,
         smsToken,
         urlInvitationData,
-        invitationLink.url,
+        invitationLink.url
       )
     }
   } catch (e) {

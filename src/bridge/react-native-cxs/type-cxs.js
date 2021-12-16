@@ -3,7 +3,7 @@
 import type { UserOneTimeInfo } from '../../store/user/type-user-store'
 import type { AgencyPoolConfig } from '../../store/type-config-store'
 import type { ClaimOfferPushPayload } from '../../push-notification/type-push-notification'
-import type {ProprietaryConnectionInvitation} from "../../invitation/type-invitation";
+import type { ProprietaryConnectionInvitation } from '../../invitation/type-invitation'
 
 export type AriesProtocolConfig = {
   protocol_type: string,

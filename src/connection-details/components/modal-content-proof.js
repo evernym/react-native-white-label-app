@@ -285,7 +285,7 @@ class ModalContentProof extends Component<
       !this.state.allMissingAttributesFilled ||
       (this.props.dissatisfiedAttributes &&
         this.props.dissatisfiedAttributes.length > 0) ||
-        this.props.isOffline
+      this.props.isOffline
 
     let acceptButtonText = proofRequestAcceptButtonText || PRIMARY_ACTION_SEND
     let denyButtonText =
@@ -364,7 +364,7 @@ const mapStateToProps = (state: Store, mergeProps) => {
     dissatisfiedAttributes,
     lock,
     canBeIgnored,
-    isOffline: offline.offline
+    isOffline: offline.offline,
   }
 }
 

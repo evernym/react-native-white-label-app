@@ -5,6 +5,7 @@ import merge from 'lodash.merge'
 import {
   claimOfferRoute,
   inviteActionRoute,
+  problemReportModalRoute,
   proofRequestRoute,
   questionRoute,
 } from '../common'
@@ -62,9 +63,7 @@ import type {
   OutofbandClaimOfferAcceptedAction,
   DeleteClaimSuccessAction,
 } from '../claim-offer/type-claim-offer'
-import type {
-  ClaimStorageSuccessAction,
-} from '../claim/type-claim'
+import type { ClaimStorageSuccessAction } from '../claim/type-claim'
 import type {
   Proof,
   UpdateAttributeClaimAction,
@@ -125,9 +124,7 @@ import {
   getConnection,
   getVerifier,
 } from '../store/store-selector'
-import {
-  CLAIM_STORAGE_SUCCESS,
-} from '../claim/type-claim'
+import { CLAIM_STORAGE_SUCCESS } from '../claim/type-claim'
 import { RESET } from '../common/type-common'
 import {
   CLAIM_OFFER_RECEIVED,
@@ -191,6 +188,15 @@ import type {
   ProofVerificationFailedAction,
   ProofVerifiedAction,
 } from '../verifier/type-verifier'
+import {
+  PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED,
+  PHYSICAL_ID_DOCUMENT_SUBMITTED,
+} from '../physical-id/physical-id-type'
+import type {
+  PhysicalIdDocumentIssuanceFailedAction,
+  PhysicalIdDocumentSubmittedAction,
+} from '../physical-id/physical-id-type'
+import { selectPhysicalIdDid } from '../physical-id/physical-id-store'
 
 const initialState = {
   error: null,
@@ -1062,7 +1068,7 @@ export function convertPresentationProposalReceivedToHistoryEvent(
 
 export function convertPresentationProposalAcceptedToHistoryEvent(
   action: ProofProposalAcceptedAction,
-  event: ConnectionHistoryEvent,
+  event: ConnectionHistoryEvent
 ): ConnectionHistoryEvent {
   return {
     action: HISTORY_EVENT_STATUS[PROOF_PROPOSAL_ACCEPTED],
@@ -1083,7 +1089,7 @@ export function convertPresentationProposalAcceptedToHistoryEvent(
 
 export function convertPresentationRequestSentToHistoryEvent(
   action: ProofRequestSentAction,
-  event: ConnectionHistoryEvent,
+  event: ConnectionHistoryEvent
 ): ConnectionHistoryEvent {
   return {
     action: HISTORY_EVENT_STATUS[PROOF_REQUEST_SENT],
@@ -1104,7 +1110,7 @@ export function convertPresentationRequestSentToHistoryEvent(
 
 export function convertPresentationVerifiedToHistoryEvent(
   action: ProofVerifiedAction,
-  event: ConnectionHistoryEvent,
+  event: ConnectionHistoryEvent
 ): ConnectionHistoryEvent {
   return {
     action: HISTORY_EVENT_STATUS[PROOF_VERIFIED],
@@ -1125,7 +1131,7 @@ export function convertPresentationVerifiedToHistoryEvent(
 
 export function convertPresentationVerificationFailedToHistoryEvent(
   action: ProofVerificationFailedAction,
-  event: ConnectionHistoryEvent,
+  event: ConnectionHistoryEvent
 ): ConnectionHistoryEvent {
   return {
     action: HISTORY_EVENT_STATUS[PROOF_VERIFICATION_FAILED],
@@ -1141,6 +1147,51 @@ export function convertPresentationVerificationFailedToHistoryEvent(
     showBadge: false,
     senderName: event.senderName,
     senderLogoUrl: event.senderLogoUrl,
+  }
+}
+
+// physical ID Document Submitted
+export function convertPhysicalIdDocumentSubmittedActionEvent(
+  action: PhysicalIdDocumentSubmittedAction,
+  connection: Connection,
+): ConnectionHistoryEvent {
+  return {
+    action: HISTORY_EVENT_STATUS[PHYSICAL_ID_DOCUMENT_SUBMITTED],
+    data: {},
+    id: uuid(),
+    name: connection.senderName || 'Unknown',
+    status: HISTORY_EVENT_STATUS[PHYSICAL_ID_DOCUMENT_SUBMITTED],
+    timestamp: moment().format(),
+    type: HISTORY_EVENT_TYPE.PHYSICAL_ID,
+    remoteDid: connection.senderDID,
+    originalPayload: action,
+    senderName: connection.senderName || 'Unknown',
+    senderLogoUrl: connection.logoUrl,
+  }
+}
+
+// physical ID Document Issuance Failed
+export function convertPhysicalIdDocumentIssuanceFailedEvent(
+  action: PhysicalIdDocumentIssuanceFailedAction,
+  documentSubmittedEvent: ConnectionHistoryEvent
+): ConnectionHistoryEvent {
+  return {
+    action: HISTORY_EVENT_STATUS[PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED],
+    // $FlowFixMe
+    data: { uid: action.uid, error: action.error },
+    id: uuid(),
+    name: documentSubmittedEvent.name,
+    status: HISTORY_EVENT_STATUS[PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED],
+    timestamp: moment().format(),
+    type: HISTORY_EVENT_TYPE.PHYSICAL_ID,
+    remoteDid: documentSubmittedEvent.remoteDid,
+    originalPayload: {
+      type: PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED,
+      payloadInfo : { ...action }
+    },
+    senderName: documentSubmittedEvent.senderName,
+    senderLogoUrl: documentSubmittedEvent.senderLogoUrl,
+    showBadge: true,
   }
 }
 
@@ -1669,7 +1720,8 @@ export function* historyEventOccurredSaga(
         event.remoteDid,
         UPDATE_ATTRIBUTE_CLAIM
       )
-      const oldHistoryEvent = storedProofReceivedEvent || storedUpdateAttributeEvent
+      const oldHistoryEvent =
+        storedProofReceivedEvent || storedUpdateAttributeEvent
       const errorSendProofEvent = convertErrorSendProofToHistoryEvent(
         event,
         oldHistoryEvent
@@ -1698,7 +1750,8 @@ export function* historyEventOccurredSaga(
         proofRequest.remotePairwiseDID,
         UPDATE_ATTRIBUTE_CLAIM
       )
-      const oldHistoryEvent = storedProofReceivedEvent || storedUpdateAttributeClaimEvent
+      const oldHistoryEvent =
+        storedProofReceivedEvent || storedUpdateAttributeClaimEvent
       historyEvent = convertProofSendToHistoryEvent(
         event,
         proofRequest,
@@ -1876,7 +1929,10 @@ export function* historyEventOccurredSaga(
       if (existingEvent) historyEvent = null
     }
 
-      if (event.type === PROOF_PROPOSAL_ACCEPTED || event.type === OUTOFBAND_PROOF_PROPOSAL_ACCEPTED) {
+    if (
+      event.type === PROOF_PROPOSAL_ACCEPTED ||
+      event.type === OUTOFBAND_PROOF_PROPOSAL_ACCEPTED
+    ) {
       const verifier = yield select(getVerifier, event.uid)
 
       const storedPresentationProposalReceivedEvent = yield select(
@@ -1890,7 +1946,7 @@ export function* historyEventOccurredSaga(
       if (oldHistoryEvent) {
         const presentationProposalAcceptedEvent = convertPresentationProposalAcceptedToHistoryEvent(
           event,
-          oldHistoryEvent,
+          oldHistoryEvent
         )
         yield put(deleteHistoryEvent(oldHistoryEvent))
         historyEvent = presentationProposalAcceptedEvent
@@ -1915,11 +1971,12 @@ export function* historyEventOccurredSaga(
       )
 
       const oldHistoryEvent =
-        storedPresentationProposalAcceptedEvent || storedOutofbandPresentationProposalAcceptedEvent
+        storedPresentationProposalAcceptedEvent ||
+        storedOutofbandPresentationProposalAcceptedEvent
 
       const presentationRequestSentEvent = convertPresentationRequestSentToHistoryEvent(
         event,
-        oldHistoryEvent,
+        oldHistoryEvent
       )
       if (oldHistoryEvent) {
         yield put(deleteHistoryEvent(oldHistoryEvent))
@@ -1964,7 +2021,8 @@ export function* historyEventOccurredSaga(
         PROOF_REQUEST_SENT
       )
       const oldHistoryEvent =
-        storedPresentationProposalAcceptedEvent ||  storedPresentationRequestSentEvent
+        storedPresentationProposalAcceptedEvent ||
+        storedPresentationRequestSentEvent
 
       const errorSendProofEvent = convertPresentationVerificationFailedToHistoryEvent(
         event,
@@ -1974,6 +2032,34 @@ export function* historyEventOccurredSaga(
         yield put(deleteHistoryEvent(oldHistoryEvent))
       }
       historyEvent = errorSendProofEvent
+    }
+
+    if (event.type === PHYSICAL_ID_DOCUMENT_SUBMITTED) {
+      let physicalIdDid = yield select(selectPhysicalIdDid)
+      let [connection] = yield select(getConnection, physicalIdDid)
+      if (!connection) {
+        return
+      }
+      historyEvent = convertPhysicalIdDocumentSubmittedActionEvent(event, connection)
+    }
+
+    if (event.type === PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED) {
+      let physicalIdDid = yield select(selectPhysicalIdDid)
+      const existingPhysicalIdDocumentIssuanceFailedEvent = yield select(
+        getPendingHistory,
+        event.uid,
+        physicalIdDid,
+        PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED
+      )
+      const documentSubmittedEvent = yield select(
+        getPendingHistory,
+        event.uid,
+        physicalIdDid,
+        PHYSICAL_ID_DOCUMENT_SUBMITTED
+      )
+      if (!existingPhysicalIdDocumentIssuanceFailedEvent) {
+        historyEvent = convertPhysicalIdDocumentIssuanceFailedEvent(event, documentSubmittedEvent)
+      }
     }
 
     if (historyEvent) {
@@ -2021,6 +2107,10 @@ export function* removeEventSaga(
     )
     eventType = MESSAGE_TYPE.INVITE_ACTION
     remotePairwiseDID = inviteActionPayload.remotePairwiseDID
+  } else if (action.navigationRoute === problemReportModalRoute) {
+    const physicalIdDid = yield select(selectPhysicalIdDid)
+    eventType = PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED
+    remotePairwiseDID = physicalIdDid
   }
 
   if (eventType && remotePairwiseDID) {
@@ -2031,12 +2121,22 @@ export function* removeEventSaga(
       eventType
     )
 
-    if (event) yield put(deleteHistoryEvent(event))
+    if (event) {
+      if (action.navigationRoute === problemReportModalRoute) {
+        yield put(updateHistoryEvent({
+            ...event,
+            showBadge: false,
+        }))
+      } else {
+        yield put(deleteHistoryEvent(event))
+
+      }
+    }
   }
 }
 
 export function* watchRecordHistoryEvent(): any {
-  yield takeEvery([RECORD_HISTORY_EVENT, DELETE_HISTORY_EVENT], persistHistory)
+  yield takeEvery([RECORD_HISTORY_EVENT, DELETE_HISTORY_EVENT, UPDATE_HISTORY_EVENT], persistHistory)
 }
 
 export function* watchNewConnectionSeen(): any {

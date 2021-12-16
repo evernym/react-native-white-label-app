@@ -8,8 +8,8 @@ import {
   CLAIM_OFFER_STATUS,
   CLAIM_REQUEST_STATUS,
 } from '../src/claim-offer/type-claim-offer'
-import { invitationAccepted, } from '../src/invitation/invitation-store'
-import { sendClaimRequestSuccess, } from '../src/claim-offer/claim-offer-store'
+import { invitationAccepted } from '../src/invitation/invitation-store'
+import { sendClaimRequestSuccess } from '../src/claim-offer/claim-offer-store'
 import { claimStorageSuccess } from '../src/claim/claim-store'
 import {
   proofRequestReceived,
@@ -192,15 +192,15 @@ export const claimOfferId = 'usd123'
 export const claimOfferIssueDate = 123456789
 export const claimUUID = 'claimUUID'
 export const colorTheme = '#86B93B'
-  export const claimDefinitionSchemaSequenceNumber = 36
+export const claimDefinitionSchemaSequenceNumber = 36
 const issuerDid = 'issuerDid'
 export const senderLogoUrl = 'http://testissuer.com/logoUrl.png'
 
 export const caseInsensitiveAttributes = [
   {
-    'address1': 'Address 1',
-    'address2': 'Address 2',
-  }
+    address1: 'Address 1',
+    address2: 'Address 2',
+  },
 ]
 
 const requestedAttributes = [
@@ -374,9 +374,9 @@ export const claimOfferPayload = {
   claimRequestStatus: 'CLAIM_REQUEST_SUCCESS',
   claimId: claimUUID,
   caseInsensitiveAttributes: {
-    'address1': 'Address 1',
-    'address2': 'Address 2',
-  }
+    address1: 'Address 1',
+    address2: 'Address 2',
+  },
 }
 
 export const pendingClaimHistory = {

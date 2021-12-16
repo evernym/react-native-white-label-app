@@ -1,7 +1,13 @@
 import { HISTORY_EVENT_STATUS } from '../connection-history/type-connection-history'
 import { PAID_CREDENTIAL_REQUEST_FAIL, SEND_CLAIM_REQUEST_FAIL } from '../claim-offer/type-claim-offer'
 import { ERROR_SEND_PROOF, UPDATE_ATTRIBUTE_CLAIM } from '../proof/type-proof'
-import { claimOfferRoute, inviteActionRoute, proofRequestRoute, questionRoute } from '../common'
+import {
+  claimOfferRoute,
+  inviteActionRoute,
+  problemReportModalRoute,
+  proofRequestRoute,
+  questionRoute
+} from '../common'
 
 export const getEventMessage = (item: Object) => {
   const status = item.action
@@ -67,6 +73,10 @@ export const getEventMessage = (item: Object) => {
     return `"${action}" proof verification passed`
   } else if (status === HISTORY_EVENT_STATUS.PROOF_VERIFICATION_FAILED) {
     return `"${action}" proof verification failed`
+  } else if (status === HISTORY_EVENT_STATUS.PHYSICAL_ID_DOCUMENT_SUBMITTED) {
+    return `You submitted ID documents`
+  } else if (status === HISTORY_EVENT_STATUS.PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED) {
+    return `ID verification failed: ${item && item.data && item.data.error ? item.data.error : ''}`
   } else {
     return null
   }
@@ -82,5 +92,7 @@ export const getEventRedirectionRoute = (item: Object) => {
       return questionRoute
     case HISTORY_EVENT_STATUS.INVITE_ACTION_RECEIVED:
       return inviteActionRoute
+    case HISTORY_EVENT_STATUS.PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED:
+      return problemReportModalRoute
   }
 }

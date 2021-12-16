@@ -93,6 +93,7 @@ export const CredentialsCards = (props: CredentialsCardsProps) => {
                 setActiveStack={updateActiveStack}
                 stackCredentialName={stackCredential}
                 isHidden={isHidden}
+                isNeedMargin={index === 0}
               />
             )
           }

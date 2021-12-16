@@ -427,7 +427,7 @@ const mapStateToProps = (
     claimPrice,
     lock,
     canBeIgnored,
-    isOffline: offline.offline
+    isOffline: offline.offline,
   }
 }
 

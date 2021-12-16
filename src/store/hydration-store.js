@@ -35,7 +35,10 @@ import {
 } from '../common'
 import { STORAGE_KEY_USER_ONE_TIME_INFO } from '../store/user/type-user-store'
 import { CLAIM_OFFERS } from '../claim-offer/type-claim-offer'
-import { STORAGE_KEY_PAIRWISE_AGENT, STORAGE_KEY_THEMES } from '../store/type-connection-store'
+import {
+  STORAGE_KEY_PAIRWISE_AGENT,
+  STORAGE_KEY_THEMES,
+} from '../store/type-connection-store'
 import { HISTORY_EVENT_STORAGE_KEY } from '../connection-history/type-connection-history'
 import {
   TOUCH_ID_STORAGE_KEY,
@@ -64,12 +67,11 @@ import {
   retryInterruptedActionsSaga,
 } from '../connection-history/connection-history-store'
 import { IS_ALREADY_INSTALLED } from '../common'
+import { alreadyInstalledAction, hydrated, initialized } from './config-store'
 import {
-  alreadyInstalledAction,
-  hydrated,
-  initialized,
-} from './config-store'
-import { ensureVcxInitAndPoolConnectSuccess, ensureVcxInitSuccess } from './route-store'
+  ensureVcxInitAndPoolConnectSuccess,
+  ensureVcxInitSuccess,
+} from './route-store'
 import {
   lockEnable,
   enableTouchIdAction,
@@ -94,6 +96,7 @@ import { hydrateInviteActionSaga } from '../invite-action/invite-action-store'
 import { hydrateVerifierSaga } from '../verifier/verifier-store'
 import { getConnectionPairwiseAgentInfo } from './store-selector'
 import { hydrateSwitchedEnvironmentDetails } from '../switch-environment/switсh-environment-store'
+import { hydratePhysicalIdDidSaga } from '../physical-id/physical-id-store'
 
 export function* deleteDeviceSpecificData(): Generator<*, *, *> {
   try {
@@ -289,6 +292,7 @@ export function* hydrate(): any {
       yield* hydrateInviteActionSaga()
       yield* hydrateVerifierSaga()
       yield* hydratePairwiseAgentSaga()
+      yield* hydratePhysicalIdDidSaga()
       // find and try to retry actions which was interrupted by closing the app
       yield* retryInterruptedActionsSaga()
 

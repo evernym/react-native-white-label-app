@@ -13,12 +13,23 @@ Pod::Spec.new do |s|
   s.authors      = { "Evernym Inc." => "info@evernym.com" }
   s.platforms    = { :ios => "11.0" }
   s.source       = { :git => "https://gitlab.com/evernym/mobile/react-native-white-label-app.git", :tag => "#{s.version}" }
-  s.swift_version = '4.0'
+  s.swift_version = '5.0'
 
   s.source_files = "ios/**/*.{h,c,m,swift}"
   s.requires_arc = true
 
+  s.vendored_frameworks = 'ios/Frameworks/MIDSAssistSDK.xcframework', 'ios/Frameworks/MIDSVerificationSDK.xcframework'
+
   s.dependency "React-Core"
   s.dependency "vcx"
+  s.dependency "JumioMobileSDK", '~>3.9.0'
+  s.dependency "JumioMobileSDK/Netverify", '~>3.9.0'
+  s.dependency "JumioMobileSDK/NetverifyBase", '~>3.9.0'
+  s.dependency "JumioMobileSDK/NetverifyNFC", '~>3.9.0'
+  s.dependency "JumioMobileSDK/NetverifyBarcode", '~>3.9.0'
+  s.dependency "JumioMobileSDK/NetverifyFace+iProov", '~>3.9.0'
+  s.dependency "JumioMobileSDK/NetverifyFace+Zoom", '~>3.9.0'
+  s.dependency "JumioMobileSDK/DocumentVerification", '~>3.9.0'
+  s.dependency "JumioMobileSDK/BAMCheckout", '~>3.9.0'
 
 end

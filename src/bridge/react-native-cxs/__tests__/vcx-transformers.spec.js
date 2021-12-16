@@ -41,7 +41,7 @@ const walletPoolName = {
 jest.mock('react-native-device-info', () => {
   return {
     getDeviceName: () => 'test-name',
-    getModel: () => 'test-model'
+    getModel: () => 'test-model',
   }
 })
 

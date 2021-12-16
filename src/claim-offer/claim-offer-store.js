@@ -9,7 +9,10 @@ import type {
   ClaimOfferPayload,
   ClaimOfferReceivedAction,
   ClaimOfferStore,
-  ClaimRequestSuccessAction, DeleteClaimAction, DeleteClaimSuccessAction, DenyOutofbandClaimOfferAction,
+  ClaimRequestSuccessAction,
+  DeleteClaimAction,
+  DeleteClaimSuccessAction,
+  DenyOutofbandClaimOfferAction,
   SerializedClaimOffer,
 } from './type-claim-offer'
 import {
@@ -24,7 +27,9 @@ import {
   CLAIM_OFFERS,
   CLAIM_REQUEST_FAIL,
   CLAIM_REQUEST_STATUS,
-  CLAIM_REQUEST_SUCCESS, DELETE_CLAIM, DELETE_CLAIM_SUCCESS,
+  CLAIM_REQUEST_SUCCESS,
+  DELETE_CLAIM,
+  DELETE_CLAIM_SUCCESS,
   DENY_CLAIM_OFFER,
   DENY_CLAIM_OFFER_FAIL,
   DENY_CLAIM_OFFER_SUCCESS,
@@ -91,7 +96,10 @@ import type { LedgerFeesData } from '../ledger/type-ledger-store'
 import moment from 'moment'
 import { captureError } from '../services/error/error-handler'
 import { retrySaga } from '../api/api-utils'
-import { ensureVcxInitAndPoolConnectSuccess, ensureVcxInitSuccess } from '../store/route-store'
+import {
+  ensureVcxInitAndPoolConnectSuccess,
+  ensureVcxInitSuccess,
+} from '../store/route-store'
 import {
   ACTION_IS_NOT_SUPPORTED,
   CREDENTIAL_DEFINITION_NOT_FOUND,
@@ -187,7 +195,7 @@ export const claimRequestSuccess = (
   issueDate: number,
   colorTheme: string,
   claimId: string,
-  caseInsensitiveAttributes: any,
+  caseInsensitiveAttributes: any
 ): ClaimRequestSuccessAction => ({
   type: CLAIM_REQUEST_SUCCESS,
   uid,
@@ -234,21 +242,25 @@ export const acceptClaimOffer = (uid: string, remoteDid: string) => ({
   remoteDid,
 })
 
-export const acceptOutofbandClaimOffer = (uid: string, remoteDid: string, show: boolean) => ({
+export const acceptOutofbandClaimOffer = (
+  uid: string,
+  remoteDid: string,
+  show: boolean
+) => ({
   type: OUTOFBAND_CLAIM_OFFER_ACCEPTED,
   uid,
   remoteDid,
   show,
 })
 
-export const denyOutOfBandClaimOffer = (uid: string): DenyOutofbandClaimOfferAction => ({
+export const denyOutOfBandClaimOffer = (
+  uid: string
+): DenyOutofbandClaimOfferAction => ({
   type: DENY_OUTOFBAND_CLAIM_OFFER,
   uid,
 })
 
-export function* getColorTheme(
-  senderLogoUrl: any
-): Generator<*, *, *> {
+export function* getColorTheme(senderLogoUrl: any): Generator<*, *, *> {
   if (!senderLogoUrl) {
     return colors.main
   }
@@ -353,13 +365,15 @@ export function* acceptEphemeralClaimOffer(
     }
 
     const offer = JSON.parse(claimOfferPayload.ephemeralClaimOffer)
-    const claimHandle = yield call(createCredentialWithAriesOfferObject, uuid(), offer)
+    const claimHandle = yield call(
+      createCredentialWithAriesOfferObject,
+      uuid(),
+      offer
+    )
 
     yield put(sendClaimRequest(action.uid, claimOfferPayload))
 
-    yield* retrySaga(
-      call(sendClaimRequestApi, claimHandle)
-    )
+    yield* retrySaga(call(sendClaimRequestApi, claimHandle))
 
     yield call(
       saveSerializedClaimOffer,
@@ -389,7 +403,7 @@ export function* acceptEphemeralClaimOffer(
       yield put(claimStorageSuccess(action.uid, vcxClaim.referent, issueDate))
     }
     if (state === VCX_CLAIM_OFFER_STATE.NONE) {
-      yield call(showSnackError, "Failed to accept credential")
+      yield call(showSnackError, 'Failed to accept credential')
       yield put(sendClaimRequestFail(action.uid, action.remoteDid))
     }
   } catch (error) {
@@ -415,11 +429,7 @@ export function* claimOfferAccepted(
   )
 
   if (claimOfferPayload.ephemeralClaimOffer) {
-    yield call(
-      acceptEphemeralClaimOffer,
-      action,
-      claimOfferPayload
-    )
+    yield call(acceptEphemeralClaimOffer, action, claimOfferPayload)
     return
   }
 
@@ -452,7 +462,6 @@ export function* claimOfferAccepted(
   }
 
   try {
-
     if (isPaidCredential) {
       yield put(sendPaidCredentialRequest(messageId, claimOfferPayload))
 
@@ -497,9 +506,7 @@ export function* claimOfferAccepted(
     ])
 
     try {
-      yield* retrySaga(
-        call(sendClaimRequestApi, claimHandle, connectionHandle)
-      )
+      yield* retrySaga(call(sendClaimRequestApi, claimHandle, connectionHandle))
     } catch (error) {
       yield call(handleClaimErrors, action, error)
       return
@@ -550,28 +557,28 @@ export function* checkCredentialStatus(
   senderName: string,
   remoteDID: string
 ): Generator<*, *, *> {
-  yield spawn(
-    checkProtocolStatus,
-    {
-      identifier: identifier,
-      getObjectFunc: getClaimOffer,
-      isCompletedFunc: isIssuanceCompleted,
-      error: ERROR_RECEIVE_CLAIM(senderName),
-      onErrorEvent: sendClaimRequestFail(identifier, remoteDID),
-    }
-  )
+  yield spawn(checkProtocolStatus, {
+    identifier: identifier,
+    getObjectFunc: getClaimOffer,
+    isCompletedFunc: isIssuanceCompleted,
+    error: ERROR_RECEIVE_CLAIM(senderName),
+    onErrorEvent: sendClaimRequestFail(identifier, remoteDID),
+  })
 }
 
-export const caseInsensitive = (attr: string) => attr.toLowerCase().replace(/ /g, '')
+export const caseInsensitive = (attr: string) =>
+  attr.toLowerCase().replace(/ /g, '')
 
-const buildCredentialCaseInsensitiveAttributes = (claimOfferPayload: ClaimOfferPayload) => {
-  return claimOfferPayload.data.revealedAttributes
-    .reduce(
-      (acc, attribute) => ({
-        ...acc,
-        [caseInsensitive(attribute.label)]: attribute.label
-      }), {})
-
+const buildCredentialCaseInsensitiveAttributes = (
+  claimOfferPayload: ClaimOfferPayload
+) => {
+  return claimOfferPayload.data.revealedAttributes.reduce(
+    (acc, attribute) => ({
+      ...acc,
+      [caseInsensitive(attribute.label)]: attribute.label,
+    }),
+    {}
+  )
 }
 
 function* claimStorageSuccessSaga(
@@ -581,9 +588,19 @@ function* claimStorageSuccessSaga(
 
   const claimOfferPayload = yield select(getClaimOffer, messageId)
   const colorTheme = yield call(getColorTheme, claimOfferPayload.senderLogoUrl)
-  const caseInsensitiveAttributes = buildCredentialCaseInsensitiveAttributes(claimOfferPayload)
+  const caseInsensitiveAttributes = buildCredentialCaseInsensitiveAttributes(
+    claimOfferPayload
+  )
 
-  yield put(claimRequestSuccess(messageId, issueDate, colorTheme, action.claimId, caseInsensitiveAttributes))
+  yield put(
+    claimRequestSuccess(
+      messageId,
+      issueDate,
+      colorTheme,
+      action.claimId,
+      caseInsensitiveAttributes
+    )
+  )
 }
 
 export function* watchClaimStorageSuccess(): any {
@@ -718,7 +735,8 @@ export function* hydrateClaimOffersSaga(): Generator<*, *, *> {
         // 2. set missing data
         if (!offer.issueDate) {
           const historyEvent = storageSuccessHistory.find(
-            (event) => event.originalPayload && event.originalPayload.messageId === uid
+            (event) =>
+              event.originalPayload && event.originalPayload.messageId === uid
           )
           if (historyEvent) {
             offer.issueDate = historyEvent.originalPayload.issueDate
@@ -739,7 +757,9 @@ export function* hydrateClaimOffersSaga(): Generator<*, *, *> {
         }
 
         if (!offer.caseInsensitiveAttributes) {
-          offer.caseInsensitiveAttributes = buildCredentialCaseInsensitiveAttributes(offer)
+          offer.caseInsensitiveAttributes = buildCredentialCaseInsensitiveAttributes(
+            offer
+          )
         }
 
         if (offer.data && offer.issuer && !offer.data.claimDefinitionId) {
@@ -773,7 +793,7 @@ export const deleteClaim = (uuid: string): DeleteClaimAction => ({
 export const deleteClaimSuccess = (
   messageId: string,
   uid: string,
-  pwDid: string,
+  pwDid: string
 ): DeleteClaimSuccessAction => ({
   type: DELETE_CLAIM_SUCCESS,
   messageId,
@@ -782,7 +802,7 @@ export const deleteClaimSuccess = (
 })
 
 export function* deleteClaimSaga(
-  action: DeleteClaimAction,
+  action: DeleteClaimAction
 ): Generator<*, *, *> {
   try {
     const claim = yield call(getClaim, action.uuid)
@@ -790,7 +810,13 @@ export function* deleteClaimSaga(
       return
     }
     yield call(deleteCredential, claim.handle)
-    yield put(deleteClaimSuccess(claim.vcxSerializedClaimOffer.messageId, action.uuid, claim.claim.myPairwiseDID))
+    yield put(
+      deleteClaimSuccess(
+        claim.vcxSerializedClaimOffer.messageId,
+        action.uuid,
+        claim.claim.myPairwiseDID
+      )
+    )
   } catch (e) {
     captureError(e)
   }

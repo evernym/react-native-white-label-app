@@ -26,7 +26,8 @@ import smsPendingInvitation, {
 } from '../sms-pending-invitation/sms-pending-invitation-store'
 import claimOffer, {
   watchClaimOffer,
-  watchClaimOfferDeny, watchDeleteClaim,
+  watchClaimOfferDeny,
+  watchDeleteClaim,
 } from '../claim-offer/claim-offer-store'
 import proofRequest, {
   watchProofRequestAccepted,
@@ -72,9 +73,14 @@ import { watchLongPollingHome } from '../home/long-polling-home'
 import inviteAction, {
   watchInviteAction,
 } from '../invite-action/invite-action-store'
-import showCredential, { watchShowCredentialStore } from '../show-credential/show-credential-store'
-import verifier, { watchVerifier } from "../verifier/verifier-store"
-import logToApptentiveMiddleware, { isLogToApptentive } from '../feedback/log-to-apptentive'
+import showCredential, {
+  watchShowCredentialStore,
+} from '../show-credential/show-credential-store'
+import verifier, { watchVerifier } from '../verifier/verifier-store'
+import logToApptentiveMiddleware, {
+  isLogToApptentive,
+} from '../feedback/log-to-apptentive'
+import physicalId, { watchPhysicalId } from '../physical-id/physical-id-store'
 
 const sagaMiddleware = createSagaMiddleware()
 
@@ -107,6 +113,7 @@ const appReducer = combineReducers({
   inviteAction,
   showCredential,
   verifier,
+  physicalId,
 })
 
 let middlewares = [historyRecorder]
@@ -185,6 +192,7 @@ sagaMiddleware.run(function* (): Generator<*, *, *> {
     watchLongPollingHome(),
     watchInviteAction(),
     watchVerifier(),
+    watchPhysicalId(),
   ])
 })
 

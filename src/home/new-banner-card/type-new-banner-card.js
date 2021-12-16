@@ -1,5 +1,6 @@
 // @flow
 import { removeEvent } from '../../connection-history/connection-history-store'
+import type { ConnectionHistoryEvent } from '../../connection-history/type-connection-history'
 
 export type NewBannerCardProps = {
   navigation: Object,

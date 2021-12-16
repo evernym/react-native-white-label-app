@@ -77,6 +77,7 @@ export const Request = ({
 const styles = StyleSheet.create({
   container: {
     padding: moderateScale(15),
-    paddingBottom: Platform.OS === 'ios' ? moderateScale(30) : moderateScale(10),
+    paddingBottom:
+      Platform.OS === 'ios' ? moderateScale(30) : moderateScale(10),
   },
 })

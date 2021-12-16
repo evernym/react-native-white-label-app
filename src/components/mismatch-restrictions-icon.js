@@ -14,7 +14,9 @@ type MismatchRestrictionsIconProps = {
   sender: string,
 }
 
-export const MismatchRestrictionsIcon = (props: MismatchRestrictionsIconProps) => {
+export const MismatchRestrictionsIcon = (
+  props: MismatchRestrictionsIconProps
+) => {
   const showNetworkMismatchModal = () => {
     Alert.alert(
       MESSAGE_ATTRIBUTE_RESTRICTIONS_MISMATCH_TITLE,
@@ -23,7 +25,7 @@ export const MismatchRestrictionsIcon = (props: MismatchRestrictionsIconProps) =
         {
           text: 'OK',
         },
-      ],
+      ]
     )
   }
 
@@ -32,7 +34,7 @@ export const MismatchRestrictionsIcon = (props: MismatchRestrictionsIconProps) =
       style={styles.iconWrapper}
       onPress={showNetworkMismatchModal}
     >
-      <EvaIcon name={ALERT_ICON} color={colors.red}/>
+      <EvaIcon name={ALERT_ICON} color={colors.red} />
     </TouchableOpacity>
   )
 }

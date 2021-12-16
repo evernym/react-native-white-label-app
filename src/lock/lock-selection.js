@@ -82,7 +82,12 @@ export class LockSelection extends Component<LockSelectionProps, *> {
           env.agencyDID,
           env.agencyVerificationKey,
           env.poolConfig,
-          env.paymentMethod
+          env.paymentMethod,
+          env.domainDID,
+          env.verityFlowBaseUrl,
+          env.identityCardCredDefId,
+          env.drivingLicenseCredDefId,
+          env.passportCredDefId
         )
       })
     }

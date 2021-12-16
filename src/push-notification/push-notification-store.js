@@ -76,6 +76,8 @@ import {
   homeRoute,
   inviteActionRoute,
   proofProposalRoute,
+  physicalIdRoute,
+  problemReportModalRoute,
 } from '../common'
 import type { NavigationParams, GenericObject } from '../common/type-common'
 
@@ -116,8 +118,9 @@ import RNFetchBlob from 'rn-fetch-blob'
 import { ATTRIBUTE_TYPE } from '../proof-request/type-proof-request'
 import { flattenAsync } from '../common/flatten-async'
 import { Platform } from 'react-native'
-import {usePushNotifications, vcxPushType} from '../external-imports'
+import { usePushNotifications, vcxPushType } from '../external-imports'
 import { inviteActionReceived } from '../invite-action/invite-action-store'
+import { physicalIdDocumentIssuanceFailedAction } from '../physical-id/physical-id-store'
 
 const blackListedRoute = {
   [proofRequestRoute]: proofRequestRoute,
@@ -131,6 +134,7 @@ const blackListedRoute = {
   [invitationRoute]: invitationRoute,
   [questionRoute]: questionRoute,
   [inviteActionRoute]: inviteActionRoute,
+  [physicalIdRoute]: physicalIdRoute,
 }
 
 const initialState = {
@@ -159,7 +163,7 @@ export function* onPushTokenUpdate(
   action: PushNotificationUpdateTokenAction
 ): Generator<*, *, *> {
   try {
-    const pushToken = vcxPushType === 1 ? `FCM:${action.token}`: action.token
+    const pushToken = vcxPushType === 1 ? `FCM:${action.token}` : action.token
     const id = yield uniqueId()
     const vcxResult = yield* ensureVcxInitSuccess()
     if (vcxResult && vcxResult.fail) {
@@ -630,6 +634,14 @@ export function* updatePayloadToRelevantStoreSaga(
       case MESSAGE_TYPE.INVITE_ACTION:
         yield put(inviteActionReceived(additionalData))
         break
+
+      case MESSAGE_TYPE.PROBLEM_REPORT:
+      case MESSAGE_TYPE.PROBLEM_REPORT.toLowerCase():
+        yield put(physicalIdDocumentIssuanceFailedAction(
+          additionalData.uid,
+          additionalData.error
+        ))
+        break
     }
   }
 }
@@ -671,29 +683,28 @@ function* redirectToRelevantScreen(notification: RedirectToRelevantScreen) {
       case MESSAGE_TYPE.PRESENTATION_PROPOSAL.toLowerCase():
         routeToDirect = proofProposalRoute
         break
+
+      case MESSAGE_TYPE.PROBLEM_REPORT:
+      case MESSAGE_TYPE.PROBLEM_REPORT.toLowerCase():
+        routeToDirect = problemReportModalRoute
+        break
     }
 
     if (routeToDirect) {
-      yield handleRedirection(
-        routeToDirect,
-        {
-          uid,
-          notificationOpenOptions,
-          senderDID: remotePairwiseDID,
-          image: additionalData.senderLogoUrl,
-          senderName: additionalData.remoteName,
-          messageType: type,
-          identifier: forDID,
-        }
-      )
+      yield handleRedirection(routeToDirect, {
+        uid,
+        notificationOpenOptions,
+        senderDID: remotePairwiseDID,
+        image: additionalData.senderLogoUrl,
+        senderName: additionalData.remoteName,
+        messageType: type,
+        identifier: forDID,
+      })
     }
   }
 }
 
-function* handleRedirection(
-  routeName: string,
-  params: NavigationParams,
-): any {
+function* handleRedirection(routeName: string, params: NavigationParams): any {
   const isAppLocked: boolean = yield select(getIsAppLocked)
   if (isAppLocked) {
     yield put(

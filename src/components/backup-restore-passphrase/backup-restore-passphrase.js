@@ -14,7 +14,7 @@ import {
 import type { BackupRestorePassphraseProps } from './type-backup-restore-passphrase'
 import ErrorBanner from '../banner/banner-danger'
 import { verticalScale } from 'react-native-size-matters'
-import { environments} from '../../environment'
+import { environments } from '../../environment'
 import { changeEnvironment } from '../../switch-environment/switсh-environment-store'
 
 export class BackupRestorePassphrase extends Component<
@@ -43,7 +43,12 @@ export class BackupRestorePassphrase extends Component<
         environments[selectedEnv].agencyDID,
         environments[selectedEnv].agencyVerificationKey,
         environments[selectedEnv].poolConfig,
-        environments[selectedEnv].paymentMethod
+        environments[selectedEnv].paymentMethod,
+        environments[selectedEnv].domainDID,
+        environments[selectedEnv].verityFlowBaseUrl,
+        environments[selectedEnv].identityCardCredDefId,
+        environments[selectedEnv].drivingLicenseCredDefId,
+        environments[selectedEnv].passportCredDefId
       )
     }
     this.props.onSubmit(passphrase)

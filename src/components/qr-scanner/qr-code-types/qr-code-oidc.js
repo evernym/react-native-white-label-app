@@ -4,7 +4,11 @@ import { type Url } from 'url-parse'
 import isUrl from 'validator/lib/isURL'
 import { stringify } from 'query-string'
 
-import type { QrCodeOIDC, JWTAuthenticationRequest, QR_SCAN_STATUS } from '../type-qr-scanner'
+import type {
+  QrCodeOIDC,
+  JWTAuthenticationRequest,
+  QR_SCAN_STATUS,
+} from '../type-qr-scanner'
 
 import { QR_CODE_TYPES, SCAN_STATUS } from '../type-qr-scanner'
 import { acceptHeaders, flatFetch } from '../../../common/flat-fetch'
@@ -24,7 +28,7 @@ export function isValidOIDCQrCode(parsedUrl: Url): QrCodeOIDC | false {
     return false
   }
 
-  if (!deepLinkAddress ||  deepLinkAddress !== hostname) {
+  if (!deepLinkAddress || deepLinkAddress !== hostname) {
     return false
   }
 
@@ -218,10 +222,10 @@ export function isValidOpenIDLink(data: string): boolean {
   return data.startsWith(domain)
 }
 
-export async function getOpenidLinkData(link: string):  Promise<
-  [null | QR_SCAN_STATUS, GenericObject | null]> {
-
-  if (!link.includes(query_param)){
+export async function getOpenidLinkData(
+  link: string
+): Promise<[null | QR_SCAN_STATUS, GenericObject | null]> {
+  if (!link.includes(query_param)) {
     return [SCAN_STATUS.INVALID_OPENID_QR_LINK, null]
   }
 
@@ -231,8 +235,12 @@ export async function getOpenidLinkData(link: string):  Promise<
     return [SCAN_STATUS.INVALID_OPENID_QR_LINK, null]
   }
 
-  const [, downloadedData] = await flatFetch(requestUri, undefined, acceptHeaders)
-  if (!downloadedData){
+  const [, downloadedData] = await flatFetch(
+    requestUri,
+    undefined,
+    acceptHeaders
+  )
+  if (!downloadedData) {
     return [SCAN_STATUS.INVALID_OPENID_QR_LINK, null]
   }
 
