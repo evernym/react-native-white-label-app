@@ -457,7 +457,7 @@ const styles = StyleSheet.create({
     borderRadius: 7,
     flexDirection: 'row',
     paddingHorizontal: 15,
-    paddingVertical: 5,
+    paddingVertical: 10,
   },
   countryNameContainer: {
     flex: 6,

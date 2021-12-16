@@ -109,7 +109,6 @@ connectme-check-test:
     # check merge-request functionality
     - merge_requests
 
-
 nodejs-publish:
   stage: publish
   image: ${CI_REGISTRY_IMAGE}/ubuntu18:${CI_COMMIT_REF_SLUG}
