@@ -279,7 +279,7 @@ function getErrorConnectionText(connectionStatus: PhysicalIdConnectionStatus) {
     case physicalIdConnectionStatus.CONNECTION_DETAIL_FETCH_ERROR:
     case physicalIdConnectionStatus.CONNECTION_DETAIL_INVALID_ERROR:
     case physicalIdConnectionStatus.CONNECTION_FAIL:
-      return 'Error establishing Sovrin connection with issuer. Please try again.'
+      return 'Error establishing connection with issuer. Please try again.'
 
     default:
       return null
