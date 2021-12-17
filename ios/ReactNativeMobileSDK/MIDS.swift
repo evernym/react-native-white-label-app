@@ -211,19 +211,26 @@ extension MIDSDocumentVerification: MIDSEnrollmentDelegate {
         verifyInfoView = ConfirmScannedView()
         verifyInfoView.inflate()
         
-        view.center = CGPoint(x: verifyInfoView.getView().frame.size.width  / 2,
-                              y: verifyInfoView.getView().frame.size.height / 2)
+        if let frame = currentScanView?.view.bounds {
+            view.frame = CGRect(x: 0,
+                                y: 0,
+                                width: frame.size.width * 0.9,
+                                height: frame.size.height * 0.4)
+        }
+        view.center = verifyInfoView.getView().center
         verifyInfoView.getView().addSubview(view)
         
         verifyInfoView.addConfirmationHandler(action: confirmation, confirm: confirmEnabled)
         verifyInfoView.addRetakeHandler(action: retake, retake: retryEnabled)
 
-        if let frame = currentScanView?.view.bounds {
-            view.frame = frame
-        }
-        
-        verifyInfoView.getView().addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[view]|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: nil, views: ["view":view]))
-        verifyInfoView.getView().addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[view]|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: nil, views: ["view":view]))
+        let myButton = UIButton(type: .roundedRect)
+        myButton.frame = CGRect(x: (UIApplication.shared.keyWindow?.bounds.width)! - 100, y: 30, width: 100, height: 50)
+        myButton.setTitle("×", for: .normal)
+        myButton.setTitleColor(UIColor.gray, for: .normal)
+        myButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 50)
+        myButton.backgroundColor = UIColor.white.withAlphaComponent(0)
+        myButton.addTarget(self, action: #selector(resetScanner(_:)), for: UIControl.Event.touchUpInside)
+        verifyInfoView.getView().addSubview(myButton)
         
         currentScanView?.view.addSubview(verifyInfoView.getView())
     }
