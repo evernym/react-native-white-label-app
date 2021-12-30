@@ -1007,6 +1007,10 @@ function* handleAriesMessage(
       yield call(updateVerifierState, payloadMessage)
     }
 
+    if (payloadMessageType && payloadMessageType.endsWith('UPGRADE_INFO')) {
+      yield call(handleUpgradeConnectionMessage, connection, payloadMessage)
+    }
+
     if (
       payloadMessageType &&
       payloadMessageType.includes('connections') &&
