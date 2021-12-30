@@ -1,7 +1,11 @@
 // @flow
 import React from 'react'
 import { Text, Animated, StyleSheet } from 'react-native'
-import { color, fontFamily, fontSizes as fonts } from '../common/styles/constant'
+import {
+  color,
+  fontFamily,
+  fontSizes as fonts,
+} from '../common/styles/constant'
 import debounce from 'lodash.debounce'
 import type { GenericObject } from '../common/type-common'
 
@@ -128,7 +132,7 @@ class CustomText extends React.Component<GenericObject, void> {
       secondaryColor ? styles.greyColor : null,
       darkgray ? styles.darkgray : null,
       underline ? styles.underline : null,
-      horizontalSpaced ? styles.horizontalSpaced : null
+      horizontalSpaced ? styles.horizontalSpaced : null,
     ]
     if (Array.isArray(style) && style.length) {
       // style does exist, is an array, and is not empty
@@ -195,7 +199,11 @@ class CustomText extends React.Component<GenericObject, void> {
     }
 
     return (
-      <TextComponent style={textStyles} {...filteredProps}>
+      <TextComponent
+        style={textStyles}
+        {...filteredProps}
+        suppressHighlighting={true}
+      >
         {textChild}
       </TextComponent>
     )
@@ -331,7 +339,7 @@ export const styles = StyleSheet.create({
     color: color.textColor.darkgray,
   },
   underline: {
-    textDecorationLine: 'underline'
+    textDecorationLine: 'underline',
   },
   horizontalSpaced: {
     marginHorizontal: 20,

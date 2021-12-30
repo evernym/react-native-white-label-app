@@ -3,7 +3,6 @@
 import { expectSaga } from 'redux-saga-test-plan'
 import * as matchers from 'redux-saga-test-plan/matchers'
 
-import { onfidoRoute } from '../../../common'
 import {
   registerCloudAgentWithToken,
   previousChoiceStorageKey,
@@ -21,6 +20,7 @@ import {
   createOneTimeInfoWithToken,
 } from '../../../bridge/react-native-cxs/RNCxs'
 import { safeDelete } from '../../../services/storage'
+import { lockEnterPinScreen } from "../../../lock/lock-enter-pin-code";
 
 describe('cloud-agent:saga', () => {
   const agencyConfig = {
@@ -32,7 +32,7 @@ describe('cloud-agent:saga', () => {
   }
   const unlockedState = {
     route: {
-      currentScreen: onfidoRoute,
+      currentScreen: lockEnterPinScreen,
     },
     lock: {
       isAppLocked: false,

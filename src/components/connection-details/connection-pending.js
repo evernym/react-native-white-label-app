@@ -12,27 +12,23 @@ type ConnectionPendingProps = {
 }
 
 export const ConnectionPending = ({
-                                    date,
-                                    title,
-                                    content,
-                                  }: ConnectionPendingProps) => {
+  date,
+  title,
+  content,
+}: ConnectionPendingProps) => {
   return (
     <View style={styles.container}>
       <Text style={styles.date}>{date}</Text>
       <View style={styles.innerWrapper}>
-        <View style={styles.spinerWrapper}>
+        <View style={styles.spinnerWrapper}>
           <Image
-            style={styles.spiner}
-            source={require('../../images/spiner.gif')}
+            style={styles.spinner}
+            source={require('../../images/spinner.gif')}
           />
-          <View style={styles.absolute}/>
+          <View style={styles.absolute} />
         </View>
         <View style={styles.textWrapper}>
-          <ExpandableText
-            text={title}
-            style={styles.title}
-            lines={1}
-          />
+          <ExpandableText text={title} style={styles.title} lines={1} />
           <Text style={styles.content}>{content}</Text>
         </View>
       </View>
@@ -66,10 +62,10 @@ const styles = StyleSheet.create({
     fontFamily: fontFamily,
     paddingBottom: moderateScale(8),
   },
-  spinerWrapper: {
+  spinnerWrapper: {
     position: 'relative',
   },
-  spiner: {
+  spinner: {
     width: moderateScale(24),
     height: moderateScale(24),
   },
@@ -80,7 +76,7 @@ const styles = StyleSheet.create({
     borderRadius: 7,
     position: 'absolute',
   },
-  spinerWrapper: {
+  spinnerWrapper: {
     alignItems: 'center',
     justifyContent: 'center',
   },

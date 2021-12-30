@@ -14,13 +14,11 @@ import { convertProofRequestPushPayloadToAppProofRequest } from '../push-notific
 import { flatJsonParse } from '../common/flat-json-parse'
 
 export async function validateEphemeralProofQrCode(
-  qrCode: Object
-): Promise<
-  [
+  qrCode: Object,
+): Promise<[
     null | string,
     null | { type: string, proofRequest: QrCodeEphemeralProofRequest }
-  ]
-> {
+]> {
   // MSDK supports three types of data for ephemeral proof request
   // 1. Url that returns an ephemeral proof request
   // 2. base64 encoded ephemeral proof request
@@ -42,7 +40,7 @@ export async function validateEphemeralProofQrCode(
   if (
     !schemaValidator.validate(
       ephemeralProofRequestSchema,
-      ephemeralProofRequest
+      ephemeralProofRequest,
     )
   ) {
     return ['EPR-002::Invalid data.', null]
@@ -52,7 +50,7 @@ export async function validateEphemeralProofQrCode(
 
   // we still need to get data from base64
   const [decodeProofRequestError, decodedProofRequest] = await flattenAsync(
-    toUtf8FromBase64
+    toUtf8FromBase64,
   )(ephemeralProofRequest['request_presentations~attach'][0].data.base64)
   if (decodeProofRequestError || decodedProofRequest === null) {
     return ['EPR-003::Invalid proof request.', null]
@@ -60,7 +58,7 @@ export async function validateEphemeralProofQrCode(
 
   // check whether decoded data is valid json or not
   const [parseProofRequestError, parsedProofRequest] = flatJsonParse(
-    decodedProofRequest
+    decodedProofRequest,
   )
   if (parseProofRequestError || parsedProofRequest === null) {
     return ['EPR-004::Invalid proof request format.', null]
@@ -76,7 +74,6 @@ export async function validateEphemeralProofQrCode(
     {
       type: QR_CODE_TYPES.EPHEMERAL_PROOF_REQUEST_V1,
       proofRequest: {
-        originalMessage,
         ephemeralProofRequest,
         proofRequestPayload: convertProofRequestPushPayloadToAppProofRequest({
           proof_request_data: {
@@ -84,7 +81,7 @@ export async function validateEphemeralProofQrCode(
           },
           '@topic': { mid: 0, tid: 0 },
           '@type': { name: 'proof_request', version: '0.1' },
-          remoteName: ephemeralProofRequest.comment || 'Unknown',
+          remoteName: ephemeralProofRequest.comment || 'Unnamed Connection',
           proofHandle: 0,
           ephemeralProofRequest: originalMessage,
         }),
@@ -127,7 +124,7 @@ export async function validateOutofbandProofRequestQrCode(
       },
       '@topic': { mid: 0, tid: 0 },
       '@type': { name: 'proof_request', version: '0.1' },
-      remoteName: senderName || presentationRequest.comment || 'Unknown',
+      remoteName: senderName || presentationRequest.comment || 'Verification Request',
       proofHandle: 0,
       outofbandProofRequest: JSON.stringify(presentationRequest),
     }),

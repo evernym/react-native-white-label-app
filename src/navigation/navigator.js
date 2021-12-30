@@ -6,14 +6,9 @@ import {
   TransitionPresets,
 } from '@react-navigation/stack'
 import { createNativeStackNavigator } from 'react-native-screens/native-stack'
-import {
-  createDrawerNavigator,
-  DrawerItemList,
-  DrawerItem,
-} from '@react-navigation/drawer'
+import { createDrawerNavigator, DrawerItemList } from '@react-navigation/drawer'
 import { enableScreens } from 'react-native-screens'
 import VersionNumber from 'react-native-version-number'
-import { useDispatch } from 'react-redux'
 
 import { headerOptionForDrawerStack } from './navigation-header-config'
 
@@ -70,7 +65,6 @@ import { eulaScreen } from '../eula/eula'
 import { restoreWaitRouteScreen } from '../restore/restore-wait'
 import { openIdConnectScreen } from '../open-id-connect/open-id-connect-screen'
 import { designStyleGuideScreen } from '../design-styleguide/design-styleguide'
-import { onfidoScreen } from '../onfido/onfido'
 import { restorePassphraseScreen } from '../restore/restore-passphrase'
 import {
   privacyTNCScreen,
@@ -113,6 +107,8 @@ import {
   CREDENTIALS_LABEL,
   DRAWER_ICON_HEIGHT,
   DRAWER_ICON_WIDTH,
+  PHYSICAL_DOCUMENT_VERIFICATION,
+  PHYSICAL_DOCUMENT_VERIFICATION_LABEL,
   SETTINGS,
   SETTINGS_LABEL,
 } from './navigator-constants'
@@ -131,7 +127,9 @@ import { inviteActionScreen } from '../invite-action/invite-action-screen'
 import { ShowCredentialScreen } from '../show-credential/show-credential-modal'
 import { ProofProposalModal } from '../verifier/proof-proposal-modal'
 import { ReceivedProofScreen } from '../verifier/received-proof-modal'
-import { SETTINGS_MENU_BUTTON } from '../feedback/log-to-apptentive'
+import { physicalIdScreen } from '../physical-id/physical-id-screen'
+import { problemModalReport } from '../physical-id/problem-modal-report'
+import { physicalIdSuccessScreen } from '../physical-id/physical-id-success-screen'
 
 enableScreens()
 
@@ -140,15 +138,8 @@ const { width } = Dimensions.get('screen')
 const footerIcon = appIcon
 const builtBy = companyName
 
-const drawerComponent = (props: Object, dispatch) => {
+const drawerComponent = (props: Object) => {
   const { state, ...rest } = props
-  const newState = { ...state }
-  newState.routes = newState.routes.filter((item) => item.name !== SETTINGS)
-
-  const withLogOnSettingPress = () => {
-    dispatch(SETTINGS_MENU_BUTTON)
-    props.navigation.navigate(settingsDrawerRoute)
-  }
 
   return (
     <SafeAreaView
@@ -172,12 +163,7 @@ const drawerComponent = (props: Object, dispatch) => {
           testID: 'user-avatar',
         })}
       </View>
-      <DrawerItemList state={newState} {...rest} />
-      <DrawerItem
-        label={drawerItemLabel(defaultDrawerItemOptions[SETTINGS].label)}
-        icon={drawerIcon(defaultDrawerItemOptions[SETTINGS].icon)}
-        onPress={withLogOnSettingPress}
-      />
+      <DrawerItemList state={state} {...rest} />
       <View style={styles.drawerFooterContainer}>
         <View style={styles.drawerFooter}>
           {CustomDrawerFooterContent ? (
@@ -273,6 +259,14 @@ const defaultDrawerItemOptions = {
     label: CREDENTIALS_LABEL,
     headline: headlineForCredentialRoute,
   },
+  [PHYSICAL_DOCUMENT_VERIFICATION]: {
+    route: physicalIdScreen.routeName,
+    component: physicalIdScreen.screen,
+    // TODO:KS Get an icon for Physical ID
+    icon: drawerSvgIcon('DocumentVerification'),
+    label: PHYSICAL_DOCUMENT_VERIFICATION_LABEL,
+    headline: physicalIdScreen.headline,
+  },
   [SETTINGS]: {
     route: settingsDrawerRoute,
     component: SettingsScreen,
@@ -285,14 +279,13 @@ const defaultDrawerItemOptions = {
 const menuNavigationOptions = customMenuNavigationOptions || [
   { name: CONNECTIONS },
   { name: CREDENTIALS },
+  { name: PHYSICAL_DOCUMENT_VERIFICATION },
   { name: SETTINGS },
 ]
 const extraScreens = customExtraScreens || []
 const extraModals = customExtraModals || []
 
 function AppDrawer(navigation) {
-  const dispatch = useDispatch()
-
   const tabs = menuNavigationOptions.map((option) => {
     const defaultOption = defaultDrawerItemOptions[option.name] || {}
 
@@ -315,7 +308,7 @@ function AppDrawer(navigation) {
 
   return (
     <Drawer.Navigator
-      drawerContent={(props) => drawerComponent(props, dispatch)}
+      drawerContent={(props) => drawerComponent(props)}
       drawerContentOptions={drawerContentOptions}
       drawerStyle={drawerStyle}
       initialRouteName={homeDrawerRoute}
@@ -387,6 +380,7 @@ function CardStackScreen() {
       <CardStack.Screen
         name={waitForInvitationScreen.routeName}
         component={waitForInvitationScreen.screen}
+        options={waitForInvitationScreen.options}
       />
       <CardStack.Screen
         name={switchEnvironmentScreen.routeName}
@@ -444,11 +438,6 @@ function CardStackScreen() {
         name={aboutAppScreen.routeName}
         component={aboutAppScreen.screen}
         options={aboutAppScreen.options}
-      />
-      <CardStack.Screen
-        name={onfidoScreen.routeName}
-        component={onfidoScreen.screen}
-        options={onfidoScreen.options}
       />
       <CardStack.Screen
         name={backupCompleteScreen.routeName}
@@ -585,6 +574,11 @@ export function MSDKAppNavigator() {
         options={questionScreen.screen.navigationOptions}
       />
       <ModalStack.Screen
+        name={problemModalReport.routeName}
+        component={problemModalReport.screen}
+        options={problemModalReport.screen.navigationOptions}
+      />
+      <ModalStack.Screen
         name={txnAuthorAgreementScreen.routeName}
         component={txnAuthorAgreementScreen.screen}
         options={{ safeAreaInsets: { top: 0 } }}
@@ -618,6 +612,11 @@ export function MSDKAppNavigator() {
         name={inviteActionScreen.routeName}
         component={inviteActionScreen.screen}
         options={inviteActionScreen.screen.navigationOptions}
+      />
+      <ModalStack.Screen
+        name={physicalIdSuccessScreen.routeName}
+        component={physicalIdSuccessScreen.screen}
+        options={physicalIdSuccessScreen.navigationOptions}
       />
       <CardStack.Screen
         name={ShowCredentialScreen.routeName}

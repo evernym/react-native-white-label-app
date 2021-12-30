@@ -86,7 +86,7 @@ import { secureSet, getHydrationItem } from '../services/storage'
 import { retrySaga } from '../api/api-utils'
 import { ensureVcxInitSuccess } from '../store/route-store'
 import { PROOF_FAIL } from '../proof/type-proof'
-import { getConnectionHandle } from '../store/connections-store'
+import { ensureConnectionsSync, getConnectionHandle } from '../store/connections-store'
 import { credentialPresentationSent } from '../show-credential/show-credential-store'
 
 const proofRequestInitialState = {}
@@ -244,6 +244,9 @@ export function* proofAccepted(
     getProofRequest,
     uid
   )
+
+  yield call(ensureConnectionsSync)
+
   const {
     proofHandle,
     ephemeralProofRequest,
@@ -358,7 +361,6 @@ export function* proofRequestReceivedSaga(
       yield call(autoAcceptProofRequest, action)
     }
   } catch (e) {
-    customLogger.log(`proofRequestReceivedSaga ${e}`)
     captureError(e)
   }
 }
@@ -379,6 +381,8 @@ function* denyProofRequestSaga(
       yield put(denyProofRequestFail(uid))
       return
     }
+
+    yield call(ensureConnectionsSync)
 
     const proofRequestPayload: ProofRequestPayload = yield select(
       getProofRequest,

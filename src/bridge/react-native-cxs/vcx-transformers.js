@@ -13,8 +13,6 @@ import type {
   VcxConnectionConnectResult,
   VcxCredentialOffer,
   WalletPoolName,
-  VcxPoolInitConfig,
-  CxsPoolConfigWithGenesisPath,
 } from './type-cxs'
 import type { UserOneTimeInfo } from '../../store/user/type-user-store'
 import type { InvitationPayload } from '../../invitation/type-invitation'
@@ -28,15 +26,18 @@ import { flattenAsync } from '../../common/flatten-async'
 import { Platform } from 'react-native'
 import { getDeviceAttestation } from '../../start-up/device-check-saga'
 import { flatJsonParse } from '../../common/flat-json-parse'
+import { toUtf8FromBase64 } from './RNCxs'
+import type { AdditionalProofDataPayload, AriesPresentationRequest } from '../../proof-request/type-proof-request'
+import { convertProofRequestPushPayloadToAppProofRequest } from '../../push-notification/push-notification-store'
 
 export const paymentHandle = 0
 const commonConfigParams = {
-  protocol_type: '3.0',
+  protocol_type: '4.0',
 }
 
 export async function convertAgencyConfigToVcxProvision(
   config: AgencyPoolConfig,
-  walletPoolName: WalletPoolName
+  walletPoolName: WalletPoolName,
 ): Promise<VcxProvision> {
   const wallet_key = await getWalletKey()
 
@@ -48,7 +49,6 @@ export async function convertAgencyConfigToVcxProvision(
     wallet_key,
     agent_seed: null,
     enterprise_seed: null,
-    payment_method: config.paymentMethod,
     ...commonConfigParams,
   }
 }
@@ -60,7 +60,7 @@ export async function addAttestation(token: string) {
   }
 
   const [attestationError, attestationSignature] = await flattenAsync(
-    getDeviceAttestation
+    getDeviceAttestation,
   )(parsedToken.nonce)
   if (attestationError || !attestationSignature) {
     return token
@@ -74,7 +74,7 @@ export async function addAttestation(token: string) {
 }
 
 export function convertVcxProvisionResultToUserOneTimeInfo(
-  provision: VcxProvisionResult
+  provision: VcxProvisionResult,
 ): UserOneTimeInfo {
   return {
     oneTimeAgencyDid: provision.institution_did,
@@ -88,7 +88,7 @@ export function convertVcxProvisionResultToUserOneTimeInfo(
 
 export async function convertCxsInitToVcxInit(
   init: CxsInitConfig,
-  walletPoolName: WalletPoolName
+  walletPoolName: WalletPoolName,
 ): Promise<VcxInitConfig> {
   const wallet_key = await getWalletKey()
   const [, deviceName] = await flattenAsync(DeviceInfo.getDeviceName)()
@@ -108,23 +108,12 @@ export async function convertCxsInitToVcxInit(
     institution_logo_url: 'https://try.connect.me/img/CMicon@3x.png',
     institution_did: init.oneTimeAgencyDid,
     institution_verkey: init.oneTimeAgencyVerificationKey,
-    payment_method: init.paymentMethod,
     ...commonConfigParams,
   }
 }
 
-export async function convertCxsPoolInitToVcxPoolInit(
-  init: CxsPoolConfigWithGenesisPath,
-  walletPoolName: WalletPoolName
-): Promise<VcxPoolInitConfig> {
-  return {
-    genesis_path: init.genesis_path,
-    pool_name: walletPoolName.poolName,
-  }
-}
-
 export function convertCxsPushConfigToVcxPushTokenConfig(
-  pushConfig: CxsPushTokenConfig
+  pushConfig: CxsPushTokenConfig,
 ): VcxPushTokenConfig {
   return {
     type: vcxPushType,
@@ -134,7 +123,7 @@ export function convertCxsPushConfigToVcxPushTokenConfig(
 }
 
 export function convertInvitationToVcxConnectionCreate(
-  invitation: InvitationPayload
+  invitation: InvitationPayload,
 ): VcxCreateConnection {
   return {
     source_id: invitation.requestId,
@@ -154,8 +143,8 @@ export function convertInvitationToVcxConnectionCreate(
   }
 }
 
-export function convertVcxConnectionToCxsConnection(
-  vcxConnection: VcxConnectionConnectResult
+export function convertVcxConnectionToAppConnection(
+  vcxConnection: VcxConnectionConnectResult,
 ): MyPairwiseInfo {
   return {
     myPairwiseDid: vcxConnection.pw_did,
@@ -167,8 +156,8 @@ export function convertVcxConnectionToCxsConnection(
   }
 }
 
-export function convertVcxCredentialOfferToCxsClaimOffer(
-  vcxCredentialOffer: VcxCredentialOffer
+export function convertLegacyClaimOfferToAppClaimOffer(
+  vcxCredentialOffer: VcxCredentialOffer,
 ): ClaimOfferPushPayload {
   return {
     msg_type: vcxCredentialOffer.msg_type,
@@ -176,7 +165,8 @@ export function convertVcxCredentialOfferToCxsClaimOffer(
     to_did: vcxCredentialOffer.to_did,
     from_did: vcxCredentialOffer.from_did,
     claim: vcxCredentialOffer.credential_attrs,
-    claim_name: vcxCredentialOffer.claim_name || 'Unknown',
+    claim_name: vcxCredentialOffer.claim_name || 'Credential',
+    claim_def_id: extractCredDefIdFromIndyCredentialOffer(vcxCredentialOffer.libindy_offer),
     schema_seq_no: vcxCredentialOffer.schema_seq_no,
     issuer_did: vcxCredentialOffer.from_did,
     // should override it when generating claim offer object
@@ -185,10 +175,26 @@ export function convertVcxCredentialOfferToCxsClaimOffer(
   }
 }
 
-export function convertAriesCredentialOfferToCxsClaimOffer(
-  credentialOffer: CredentialOffer
-): ClaimOfferPushPayload {
+export async function convertAriesCredentialOfferToAppClaimOffer(
+  credentialOffer: CredentialOffer,
+) {
   let claim: GenericObject = {}
+
+  // check whether data is valid base64 string
+  const [decodedCredentialOfferError, decodedCredentialOffer] = await flattenAsync(
+    toUtf8FromBase64,
+  )(credentialOffer['offers~attach'][0].data.base64)
+  if (decodedCredentialOfferError || decodedCredentialOffer === null) {
+    return null
+  }
+
+  // check whether decoded data is valid json or not
+  const [parseCredentialOfferError, parsedCredentialOffer] = flatJsonParse(
+    decodedCredentialOffer,
+  )
+  if (parseCredentialOfferError || parsedCredentialOffer === null) {
+    return null
+  }
 
   for (const a of credentialOffer.credential_preview.attributes) {
     claim[a.name] = a.value
@@ -200,10 +206,77 @@ export function convertAriesCredentialOfferToCxsClaimOffer(
     to_did: '',
     from_did: '',
     claim: claim,
-    claim_name: credentialOffer.comment || 'Unknown',
+    claim_name:
+      extractCredentialNameFromSchemaId(parsedCredentialOffer['schema_id']) ||
+      credentialOffer['~alias']?.label ||
+      credentialOffer.comment ||
+      'Credential',
+    claim_def_id: parsedCredentialOffer['cred_def_id'],
     schema_seq_no: 0,
     issuer_did: '',
-    // should override it when generating claim offer object
-    remoteName: '',
+    remoteName: credentialOffer.comment || credentialOffer['~alias']?.label || 'Unnamed Connection',
   }
+}
+
+export async function convertAriesProofRequestToCxsProofRequest(
+  presentationRequest: AriesPresentationRequest,
+  senderName?: string,
+): Promise<null | AdditionalProofDataPayload> {
+  // we still need to get data from base64
+  const [decodeProofRequestError, decodedProofRequest] = await flattenAsync(
+    toUtf8FromBase64,
+  )(presentationRequest['request_presentations~attach'][0].data.base64)
+  if (decodeProofRequestError || decodedProofRequest === null) {
+    return null
+  }
+
+  // check whether decoded data is valid json or not
+  const [parseProofRequestError, parsedProofRequest] = flatJsonParse(
+    decodedProofRequest,
+  )
+  if (parseProofRequestError || parsedProofRequest === null) {
+    return null
+  }
+
+  return convertProofRequestPushPayloadToAppProofRequest({
+    proof_request_data: {
+      ...parsedProofRequest,
+    },
+    '@topic': { mid: 0, tid: 0 },
+    '@type': { name: 'proof_request', version: '0.1' },
+    remoteName: senderName || presentationRequest.comment || 'Verification Request',
+    proofHandle: 0,
+  })
+}
+
+const extractCredDefIdFromIndyCredentialOffer = (offer: string | null) => {
+  try {
+    if (!offer) {
+      return null
+    }
+    const parsed = JSON.parse(offer)
+    return parsed['cred_def_id']
+  } catch (e) {
+    return null
+  }
+}
+
+export const extractCredentialNameFromSchemaId = (schemaId: string | null): string | null => {
+  if (!schemaId) {
+    return null
+  }
+  const parts = schemaId.split(':')
+  if (parts.length === 4) {
+    // regular schema id
+    return parts[2]
+  }
+  if (parts.length === 6) {
+    // fully-qualified schema id
+    return parts[4]
+  }
+  if (parts.length === 8) {
+    // fully-qualified schema id
+    return parts[6]
+  }
+  return null
 }

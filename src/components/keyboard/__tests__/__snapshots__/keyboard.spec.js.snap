@@ -43,6 +43,8 @@ exports[`<Keyboard /> should render properly and match the snapshot 1`] = `
     >
       <Text
         allowFontScaling={true}
+        collapsable={false}
+        nativeID="animatedComponent"
         style={
           Object {
             "backgroundColor": "transparent",
@@ -53,6 +55,7 @@ exports[`<Keyboard /> should render properly and match the snapshot 1`] = `
             "textAlign": "center",
           }
         }
+        suppressHighlighting={true}
       >
         1
       </Text>
@@ -80,6 +83,8 @@ exports[`<Keyboard /> should render properly and match the snapshot 1`] = `
     >
       <Text
         allowFontScaling={true}
+        collapsable={false}
+        nativeID="animatedComponent"
         style={
           Object {
             "backgroundColor": "transparent",
@@ -90,6 +95,7 @@ exports[`<Keyboard /> should render properly and match the snapshot 1`] = `
             "textAlign": "center",
           }
         }
+        suppressHighlighting={true}
       >
         2
       </Text>
@@ -117,6 +123,8 @@ exports[`<Keyboard /> should render properly and match the snapshot 1`] = `
     >
       <Text
         allowFontScaling={true}
+        collapsable={false}
+        nativeID="animatedComponent"
         style={
           Object {
             "backgroundColor": "transparent",
@@ -127,6 +135,7 @@ exports[`<Keyboard /> should render properly and match the snapshot 1`] = `
             "textAlign": "center",
           }
         }
+        suppressHighlighting={true}
       >
         3
       </Text>
@@ -165,6 +174,8 @@ exports[`<Keyboard /> should render properly and match the snapshot 1`] = `
     >
       <Text
         allowFontScaling={true}
+        collapsable={false}
+        nativeID="animatedComponent"
         style={
           Object {
             "backgroundColor": "transparent",
@@ -175,6 +186,7 @@ exports[`<Keyboard /> should render properly and match the snapshot 1`] = `
             "textAlign": "center",
           }
         }
+        suppressHighlighting={true}
       >
         4
       </Text>
@@ -202,6 +214,8 @@ exports[`<Keyboard /> should render properly and match the snapshot 1`] = `
     >
       <Text
         allowFontScaling={true}
+        collapsable={false}
+        nativeID="animatedComponent"
         style={
           Object {
             "backgroundColor": "transparent",
@@ -212,6 +226,7 @@ exports[`<Keyboard /> should render properly and match the snapshot 1`] = `
             "textAlign": "center",
           }
         }
+        suppressHighlighting={true}
       >
         5
       </Text>
@@ -239,6 +254,8 @@ exports[`<Keyboard /> should render properly and match the snapshot 1`] = `
     >
       <Text
         allowFontScaling={true}
+        collapsable={false}
+        nativeID="animatedComponent"
         style={
           Object {
             "backgroundColor": "transparent",
@@ -249,6 +266,7 @@ exports[`<Keyboard /> should render properly and match the snapshot 1`] = `
             "textAlign": "center",
           }
         }
+        suppressHighlighting={true}
       >
         6
       </Text>
@@ -287,6 +305,8 @@ exports[`<Keyboard /> should render properly and match the snapshot 1`] = `
     >
       <Text
         allowFontScaling={true}
+        collapsable={false}
+        nativeID="animatedComponent"
         style={
           Object {
             "backgroundColor": "transparent",
@@ -297,6 +317,7 @@ exports[`<Keyboard /> should render properly and match the snapshot 1`] = `
             "textAlign": "center",
           }
         }
+        suppressHighlighting={true}
       >
         7
       </Text>
@@ -324,6 +345,8 @@ exports[`<Keyboard /> should render properly and match the snapshot 1`] = `
     >
       <Text
         allowFontScaling={true}
+        collapsable={false}
+        nativeID="animatedComponent"
         style={
           Object {
             "backgroundColor": "transparent",
@@ -334,6 +357,7 @@ exports[`<Keyboard /> should render properly and match the snapshot 1`] = `
             "textAlign": "center",
           }
         }
+        suppressHighlighting={true}
       >
         8
       </Text>
@@ -361,6 +385,8 @@ exports[`<Keyboard /> should render properly and match the snapshot 1`] = `
     >
       <Text
         allowFontScaling={true}
+        collapsable={false}
+        nativeID="animatedComponent"
         style={
           Object {
             "backgroundColor": "transparent",
@@ -371,6 +397,7 @@ exports[`<Keyboard /> should render properly and match the snapshot 1`] = `
             "textAlign": "center",
           }
         }
+        suppressHighlighting={true}
       >
         9
       </Text>
@@ -409,6 +436,8 @@ exports[`<Keyboard /> should render properly and match the snapshot 1`] = `
     >
       <Text
         allowFontScaling={true}
+        collapsable={false}
+        nativeID="animatedComponent"
         style={
           Object {
             "backgroundColor": "transparent",
@@ -419,6 +448,7 @@ exports[`<Keyboard /> should render properly and match the snapshot 1`] = `
             "textAlign": "center",
           }
         }
+        suppressHighlighting={true}
       >
         .
       </Text>
@@ -446,6 +476,8 @@ exports[`<Keyboard /> should render properly and match the snapshot 1`] = `
     >
       <Text
         allowFontScaling={true}
+        collapsable={false}
+        nativeID="animatedComponent"
         style={
           Object {
             "backgroundColor": "transparent",
@@ -456,6 +488,7 @@ exports[`<Keyboard /> should render properly and match the snapshot 1`] = `
             "textAlign": "center",
           }
         }
+        suppressHighlighting={true}
       >
         0
       </Text>
@@ -491,6 +524,8 @@ exports[`<Keyboard /> should render properly and match the snapshot 1`] = `
     >
       <Text
         allowFontScaling={true}
+        collapsable={false}
+        nativeID="animatedComponent"
         style={
           Object {
             "backgroundColor": "transparent",
@@ -501,6 +536,7 @@ exports[`<Keyboard /> should render properly and match the snapshot 1`] = `
             "textAlign": "center",
           }
         }
+        suppressHighlighting={true}
       >
         &lt;
       </Text>

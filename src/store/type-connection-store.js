@@ -1,5 +1,9 @@
 // @flow
-import type { AriesAttachedRequest, AriesOutOfBandInvite, InvitationPayload } from '../invitation/type-invitation'
+import type {
+  AriesAttachedRequest,
+  AriesOutOfBandInvite,
+  InvitationPayload,
+} from '../invitation/type-invitation'
 import type { CustomError, GenericObject } from '../common/type-common'
 
 export const UPDATE_CONNECTION_THEME = 'UPDATE_CONNECTION_THEME'
@@ -61,6 +65,7 @@ export type ConnectionStore = {
   data: ?Connections,
   oneTimeConnections?: ?Connections,
   pairwiseAgent?: PairwiseAgent | null,
+  locked?: boolean,
 }
 
 export const DELETE_CONNECTION_SUCCESS = 'DELETE_CONNECTION_SUCCESS'
@@ -159,7 +164,7 @@ export type ConnectionFailAction = {
 
 export const ERROR_CONNECTION = (name: string) => ({
   code: 'CONNECTION-001',
-  message: `Failed to establish connection with ${name}. ${name} does not reply. You can try again later.`,
+  message: `Failed to establish connection with ${name}. ${name} did not reply. You can try again later.`,
 })
 
 export const CONNECTION_ATTACH_REQUEST = 'CONNECTION_ATTACH_REQUEST'
@@ -191,15 +196,34 @@ export type DeleteOneTimeConnectionAction = {
   identifier: string,
 }
 
-export const DELETE_ONE_TIME_CONNECTION_SUCCESS = 'DELETE_ONE_TIME_CONNECTION_SUCCESS'
+export const DELETE_ONE_TIME_CONNECTION_SUCCESS =
+  'DELETE_ONE_TIME_CONNECTION_SUCCESS'
 export type DeleteOneTimeConnectionSuccessAction = {
   type: typeof DELETE_ONE_TIME_CONNECTION_SUCCESS,
   identifier: string,
 }
 
+export const LOCK_CONNECTIONS = 'LOCK_CONNECTIONS'
+export type LockConnectionsAction = {
+  type: typeof LOCK_CONNECTIONS,
+  identifier: string,
+}
+
+export const UNLOCK_CONNECTIONS = 'UNLOCK_CONNECTIONS'
+export type UnlockConnectionsAction = {
+  type: typeof UNLOCK_CONNECTIONS,
+  identifier: string,
+}
+
+export const CONNECTION_UPGRADED = 'CONNECTION_UPGRADED'
+export type ConnectionUpgradedAction = {
+  type: typeof CONNECTION_UPGRADED,
+  connection: Connection,
+}
+
 /*
-* Pairwise Agent
-* */
+ * Pairwise Agent
+ * */
 
 export const STORAGE_KEY_PAIRWISE_AGENT = 'STORAGE_KEY_PAIRWISE_AGENT'
 

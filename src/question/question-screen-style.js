@@ -10,6 +10,7 @@ import {
   deviceHeight,
   colors,
 } from '../common/styles'
+import { moderateScale } from 'react-native-size-matters'
 
 const QUESTION_SENDER_LOGO_DIMENSION = 100
 const questionScreenSpacing = '5%'
@@ -108,6 +109,7 @@ export const getQuestionStylesObject = (
   actionWrapper: {
     width: '94%',
     marginLeft: '3%',
+    marginBottom: moderateScale(10),
   },
   actionButtonContainer: {
     marginTop: 15,

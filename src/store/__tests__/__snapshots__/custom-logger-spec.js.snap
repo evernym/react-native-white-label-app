@@ -152,13 +152,6 @@ Object {
   "offline": Object {
     "offline": false,
   },
-  "onfido": Object {
-    "applicantId": null,
-    "error": null,
-    "onfidoConnectionStatus": "IDLE",
-    "onfidoDid": null,
-    "status": "IDLE",
-  },
   "openIdConnect": "****",
   "proof": "****",
   "proofRequest": "****",

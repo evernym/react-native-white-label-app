@@ -43,7 +43,7 @@ export const ModalHeader = ({
           <View style={styles.issuerAndInfoSection}>
             <Text style={styles.infoText}>{credentialText}</Text>
             <ExpandableText
-              text={institutionalName || 'Unknown'}
+              text={institutionalName || 'Unnamed Connection'}
               style={styles.issuerNameText}
             />
           </View>

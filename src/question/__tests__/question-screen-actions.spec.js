@@ -148,6 +148,7 @@ describe('<QuestionActions />', () => {
 
 function getProps(extraProps: ?GenericObject = {}) {
   return {
+    isOffline: false,
     selectedResponse: null,
     onSubmit: jest.fn(),
     onCancel: jest.fn(),

@@ -108,6 +108,8 @@ exports[`<LockPinCodeSetup /> should render pin code box 1`] = `
               <Text
                 accessibilityRole="header"
                 aria-level="1"
+                collapsable={false}
+                nativeID="animatedComponent"
                 numberOfLines={1}
                 onLayout={[Function]}
                 style={
@@ -125,7 +127,7 @@ exports[`<LockPinCodeSetup /> should render pin code box 1`] = `
         </View>
       </View>
     </View>
-    <View
+    <RNSScreenContainer
       onLayout={[Function]}
       style={
         Object {
@@ -133,7 +135,9 @@ exports[`<LockPinCodeSetup /> should render pin code box 1`] = `
         }
       }
     >
-      <View
+      <RNSScreen
+        activityState={2}
+        forwardedRef={[Function]}
         pointerEvents="box-none"
         style={
           Object {
@@ -202,6 +206,8 @@ exports[`<LockPinCodeSetup /> should render pin code box 1`] = `
           }
         >
           <View
+            collapsable={false}
+            nativeID="animatedComponent"
             needsOffscreenAlphaCompositing={false}
             pointerEvents="box-none"
             style={
@@ -350,6 +356,7 @@ exports[`<LockPinCodeSetup /> should render pin code box 1`] = `
                               },
                             ]
                           }
+                          suppressHighlighting={true}
                         >
                           Set a passcode to secure this app
                         </Text>
@@ -395,6 +402,7 @@ exports[`<LockPinCodeSetup /> should render pin code box 1`] = `
                               },
                             ]
                           }
+                          suppressHighlighting={true}
                         />
                         <View
                           center={true}
@@ -689,7 +697,6 @@ exports[`<LockPinCodeSetup /> should render pin code box 1`] = `
                             <TextInput
                               accessibilityLabel="pin-code-input-box"
                               accessible={true}
-                              allowFontScaling={true}
                               autoCorrect={false}
                               blurOnSubmit={false}
                               editable={true}
@@ -698,7 +705,6 @@ exports[`<LockPinCodeSetup /> should render pin code box 1`] = `
                               keyboardType="number-pad"
                               maxLength={6}
                               onChangeText={[Function]}
-                              rejectResponderTermination={true}
                               style={
                                 Object {
                                   "height": 0,
@@ -708,7 +714,6 @@ exports[`<LockPinCodeSetup /> should render pin code box 1`] = `
                                 }
                               }
                               testID="pin-code-input-box"
-                              underlineColorAndroid="transparent"
                               value=""
                             />
                           </View>
@@ -721,8 +726,8 @@ exports[`<LockPinCodeSetup /> should render pin code box 1`] = `
             </View>
           </View>
         </View>
-      </View>
-    </View>
+      </RNSScreen>
+    </RNSScreenContainer>
   </RNCSafeAreaProvider>
 </View>
 `;
@@ -835,6 +840,8 @@ exports[`<LockPinCodeSetup /> should set pinSetupState and pinReEnterSuccessPin 
               <Text
                 accessibilityRole="header"
                 aria-level="1"
+                collapsable={false}
+                nativeID="animatedComponent"
                 numberOfLines={1}
                 onLayout={[Function]}
                 style={
@@ -852,7 +859,7 @@ exports[`<LockPinCodeSetup /> should set pinSetupState and pinReEnterSuccessPin 
         </View>
       </View>
     </View>
-    <View
+    <RNSScreenContainer
       onLayout={[Function]}
       style={
         Object {
@@ -860,7 +867,9 @@ exports[`<LockPinCodeSetup /> should set pinSetupState and pinReEnterSuccessPin 
         }
       }
     >
-      <View
+      <RNSScreen
+        activityState={2}
+        forwardedRef={[Function]}
         pointerEvents="box-none"
         style={
           Object {
@@ -929,6 +938,8 @@ exports[`<LockPinCodeSetup /> should set pinSetupState and pinReEnterSuccessPin 
           }
         >
           <View
+            collapsable={false}
+            nativeID="animatedComponent"
             needsOffscreenAlphaCompositing={false}
             pointerEvents="box-none"
             style={
@@ -1077,6 +1088,7 @@ exports[`<LockPinCodeSetup /> should set pinSetupState and pinReEnterSuccessPin 
                               },
                             ]
                           }
+                          suppressHighlighting={true}
                         >
                           Re-enter passcode
                         </Text>
@@ -1122,6 +1134,7 @@ exports[`<LockPinCodeSetup /> should set pinSetupState and pinReEnterSuccessPin 
                               },
                             ]
                           }
+                          suppressHighlighting={true}
                         />
                         <View
                           center={true}
@@ -1416,7 +1429,6 @@ exports[`<LockPinCodeSetup /> should set pinSetupState and pinReEnterSuccessPin 
                             <TextInput
                               accessibilityLabel="pin-code-input-box"
                               accessible={true}
-                              allowFontScaling={true}
                               autoCorrect={false}
                               blurOnSubmit={false}
                               editable={true}
@@ -1425,7 +1437,6 @@ exports[`<LockPinCodeSetup /> should set pinSetupState and pinReEnterSuccessPin 
                               keyboardType="number-pad"
                               maxLength={6}
                               onChangeText={[Function]}
-                              rejectResponderTermination={true}
                               style={
                                 Object {
                                   "height": 0,
@@ -1435,7 +1446,6 @@ exports[`<LockPinCodeSetup /> should set pinSetupState and pinReEnterSuccessPin 
                                 }
                               }
                               testID="pin-code-input-box"
-                              underlineColorAndroid="transparent"
                               value=""
                             />
                           </View>
@@ -1448,8 +1458,8 @@ exports[`<LockPinCodeSetup /> should set pinSetupState and pinReEnterSuccessPin 
             </View>
           </View>
         </View>
-      </View>
-    </View>
+      </RNSScreen>
+    </RNSScreenContainer>
   </RNCSafeAreaProvider>
 </View>
 `;
@@ -1562,6 +1572,8 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
               <Text
                 accessibilityRole="header"
                 aria-level="1"
+                collapsable={false}
+                nativeID="animatedComponent"
                 numberOfLines={1}
                 onLayout={[Function]}
                 style={
@@ -1579,7 +1591,7 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
         </View>
       </View>
     </View>
-    <View
+    <RNSScreenContainer
       onLayout={[Function]}
       style={
         Object {
@@ -1587,7 +1599,9 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
         }
       }
     >
-      <View
+      <RNSScreen
+        activityState={2}
+        forwardedRef={[Function]}
         pointerEvents="box-none"
         style={
           Object {
@@ -1656,6 +1670,8 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
           }
         >
           <View
+            collapsable={false}
+            nativeID="animatedComponent"
             needsOffscreenAlphaCompositing={false}
             pointerEvents="box-none"
             style={
@@ -1804,6 +1820,7 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
                               },
                             ]
                           }
+                          suppressHighlighting={true}
                         >
                           Set a passcode to secure this app
                         </Text>
@@ -1849,6 +1866,7 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
                               },
                             ]
                           }
+                          suppressHighlighting={true}
                         >
                           Your passcodes do not match
                         </Text>
@@ -2145,7 +2163,6 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
                             <TextInput
                               accessibilityLabel="pin-code-input-box"
                               accessible={true}
-                              allowFontScaling={true}
                               autoCorrect={false}
                               blurOnSubmit={false}
                               editable={true}
@@ -2154,7 +2171,6 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
                               keyboardType="number-pad"
                               maxLength={6}
                               onChangeText={[Function]}
-                              rejectResponderTermination={true}
                               style={
                                 Object {
                                   "height": 0,
@@ -2164,7 +2180,6 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
                                 }
                               }
                               testID="pin-code-input-box"
-                              underlineColorAndroid="transparent"
                               value=""
                             />
                           </View>
@@ -2177,8 +2192,8 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
             </View>
           </View>
         </View>
-      </View>
-    </View>
+      </RNSScreen>
+    </RNSScreenContainer>
   </RNCSafeAreaProvider>
 </View>
 `;
@@ -2291,6 +2306,8 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
               <Text
                 accessibilityRole="header"
                 aria-level="1"
+                collapsable={false}
+                nativeID="animatedComponent"
                 numberOfLines={1}
                 onLayout={[Function]}
                 style={
@@ -2308,7 +2325,7 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
         </View>
       </View>
     </View>
-    <View
+    <RNSScreenContainer
       onLayout={[Function]}
       style={
         Object {
@@ -2316,7 +2333,9 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
         }
       }
     >
-      <View
+      <RNSScreen
+        activityState={2}
+        forwardedRef={[Function]}
         pointerEvents="box-none"
         style={
           Object {
@@ -2385,6 +2404,8 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
           }
         >
           <View
+            collapsable={false}
+            nativeID="animatedComponent"
             needsOffscreenAlphaCompositing={false}
             pointerEvents="box-none"
             style={
@@ -2533,6 +2554,7 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
                               },
                             ]
                           }
+                          suppressHighlighting={true}
                         >
                           Set a passcode to secure this app
                         </Text>
@@ -2578,6 +2600,7 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
                               },
                             ]
                           }
+                          suppressHighlighting={true}
                         />
                         <View
                           center={true}
@@ -2872,7 +2895,6 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
                             <TextInput
                               accessibilityLabel="pin-code-input-box"
                               accessible={true}
-                              allowFontScaling={true}
                               autoCorrect={false}
                               blurOnSubmit={false}
                               editable={true}
@@ -2881,7 +2903,6 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
                               keyboardType="number-pad"
                               maxLength={6}
                               onChangeText={[Function]}
-                              rejectResponderTermination={true}
                               style={
                                 Object {
                                   "height": 0,
@@ -2891,7 +2912,6 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
                                 }
                               }
                               testID="pin-code-input-box"
-                              underlineColorAndroid="transparent"
                               value=""
                             />
                           </View>
@@ -2904,8 +2924,8 @@ exports[`<LockPinCodeSetup /> should show "pass code mismatch ..." message and r
             </View>
           </View>
         </View>
-      </View>
-    </View>
+      </RNSScreen>
+    </RNSScreenContainer>
   </RNCSafeAreaProvider>
 </View>
 `;
@@ -3018,6 +3038,8 @@ exports[`<LockPinCodeSetup /> should show re enter pass code after first entry 1
               <Text
                 accessibilityRole="header"
                 aria-level="1"
+                collapsable={false}
+                nativeID="animatedComponent"
                 numberOfLines={1}
                 onLayout={[Function]}
                 style={
@@ -3035,7 +3057,7 @@ exports[`<LockPinCodeSetup /> should show re enter pass code after first entry 1
         </View>
       </View>
     </View>
-    <View
+    <RNSScreenContainer
       onLayout={[Function]}
       style={
         Object {
@@ -3043,7 +3065,9 @@ exports[`<LockPinCodeSetup /> should show re enter pass code after first entry 1
         }
       }
     >
-      <View
+      <RNSScreen
+        activityState={2}
+        forwardedRef={[Function]}
         pointerEvents="box-none"
         style={
           Object {
@@ -3112,6 +3136,8 @@ exports[`<LockPinCodeSetup /> should show re enter pass code after first entry 1
           }
         >
           <View
+            collapsable={false}
+            nativeID="animatedComponent"
             needsOffscreenAlphaCompositing={false}
             pointerEvents="box-none"
             style={
@@ -3260,6 +3286,7 @@ exports[`<LockPinCodeSetup /> should show re enter pass code after first entry 1
                               },
                             ]
                           }
+                          suppressHighlighting={true}
                         >
                           Re-enter passcode
                         </Text>
@@ -3305,6 +3332,7 @@ exports[`<LockPinCodeSetup /> should show re enter pass code after first entry 1
                               },
                             ]
                           }
+                          suppressHighlighting={true}
                         />
                         <View
                           center={true}
@@ -3599,7 +3627,6 @@ exports[`<LockPinCodeSetup /> should show re enter pass code after first entry 1
                             <TextInput
                               accessibilityLabel="pin-code-input-box"
                               accessible={true}
-                              allowFontScaling={true}
                               autoCorrect={false}
                               blurOnSubmit={false}
                               editable={true}
@@ -3608,7 +3635,6 @@ exports[`<LockPinCodeSetup /> should show re enter pass code after first entry 1
                               keyboardType="number-pad"
                               maxLength={6}
                               onChangeText={[Function]}
-                              rejectResponderTermination={true}
                               style={
                                 Object {
                                   "height": 0,
@@ -3618,7 +3644,6 @@ exports[`<LockPinCodeSetup /> should show re enter pass code after first entry 1
                                 }
                               }
                               testID="pin-code-input-box"
-                              underlineColorAndroid="transparent"
                               value=""
                             />
                           </View>
@@ -3631,8 +3656,8 @@ exports[`<LockPinCodeSetup /> should show re enter pass code after first entry 1
             </View>
           </View>
         </View>
-      </View>
-    </View>
+      </RNSScreen>
+    </RNSScreenContainer>
   </RNCSafeAreaProvider>
 </View>
 `;

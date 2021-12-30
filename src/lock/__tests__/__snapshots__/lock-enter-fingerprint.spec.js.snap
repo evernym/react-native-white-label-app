@@ -46,6 +46,7 @@ exports[`app lock selection page should in case of fetching invitation show mess
         null,
       ]
     }
+    suppressHighlighting={true}
   >
     Loading please wait...
   </Text>
@@ -98,6 +99,7 @@ exports[`app lock selection page should render properly 1`] = `
         null,
       ]
     }
+    suppressHighlighting={true}
   />
   <View
     style={
@@ -118,8 +120,9 @@ exports[`app lock selection page should render properly 1`] = `
         }
       }
       accessible={true}
+      collapsable={false}
       focusable={true}
-      isTVSelectable={true}
+      nativeID="animatedComponent"
       onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}

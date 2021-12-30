@@ -77,6 +77,7 @@ exports[`app lock selection page should render properly 1`] = `
               },
             ]
           }
+          suppressHighlighting={true}
         >
           Biometrics are faster.
         </Text>
@@ -151,13 +152,15 @@ exports[`app lock selection page should render properly 1`] = `
               },
             ]
           }
+          suppressHighlighting={true}
         >
           You can use your face or finger to unlock this app. Your passcode will still be required if biometrics fail.
         </Text>
         <View
           accessible={true}
+          collapsable={false}
           focusable={true}
-          isTVSelectable={true}
+          nativeID="animatedComponent"
           onClick={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
@@ -224,6 +227,7 @@ exports[`app lock selection page should render properly 1`] = `
                 null,
               ]
             }
+            suppressHighlighting={true}
           >
             Use biometrics
           </Text>
@@ -266,6 +270,7 @@ exports[`app lock selection page should render properly 1`] = `
               },
             ]
           }
+          suppressHighlighting={true}
         >
           No thanks
         </Text>
@@ -331,6 +336,7 @@ exports[`app lock selection page should render properly 1`] = `
                     null,
                   ]
                 }
+                suppressHighlighting={true}
               >
                 Use Staging Net
               </Text>
@@ -363,6 +369,7 @@ exports[`app lock selection page should render properly 1`] = `
                     null,
                   ]
                 }
+                suppressHighlighting={true}
               >
                 An alternative network for app developers
               </Text>
@@ -376,7 +383,7 @@ exports[`app lock selection page should render properly 1`] = `
               tertiary={true}
             >
               <RCTSwitch
-                accessibilityRole="button"
+                accessibilityRole="switch"
                 onChange={[Function]}
                 onResponderTerminationRequest={[Function]}
                 onStartShouldSetResponder={[Function]}

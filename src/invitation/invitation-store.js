@@ -1,5 +1,13 @@
 // @flow
-import { all, call, put, select, spawn, takeEvery, takeLatest } from 'redux-saga/effects'
+import {
+  all,
+  call,
+  put,
+  select,
+  spawn,
+  takeEvery,
+  takeLatest,
+} from 'redux-saga/effects'
 import type {
   AriesOutOfBandInvite,
   Invitation,
@@ -62,7 +70,11 @@ import { RESET, TYPE } from '../common/type-common'
 import { captureError } from '../services/error/error-handler'
 import { ensureVcxInitSuccess } from '../store/route-store'
 import type { Connection } from '../store/type-connection-store'
-import { connectionFail, connectionSuccess, ERROR_CONNECTION } from '../store/type-connection-store'
+import {
+  connectionFail,
+  connectionSuccess,
+  ERROR_CONNECTION,
+} from '../store/type-connection-store'
 import {
   acceptClaimOffer,
   acceptOutofbandClaimOffer,
@@ -83,10 +95,13 @@ import { customLogger } from '../store/custom-logger'
 import { retrySaga } from '../api/api-utils'
 import { checkProtocolStatus } from '../store/protocol-status'
 import { isConnectionCompleted } from '../store/store-utils'
-import { outofbandProofProposalAccepted, proofProposalAccepted } from '../verifier/verifier-store'
+import {
+  outofbandProofProposalAccepted,
+  proofProposalAccepted,
+} from '../verifier/verifier-store'
 import { watchHandleInvitation } from './invitation-handler'
 import { showSnackError } from '../store/config-store'
-import { getAttachedRequestId } from './invitation-helpers'
+import { getThreadId } from './invitation-helpers'
 
 export const invitationInitialState = {}
 
@@ -108,7 +123,7 @@ export const handleInvitation = (invitation: any, token?: string): any => ({
 
 export const invitationAccepted = (
   senderDID: string,
-  payload: InvitationPayload,
+  payload: InvitationPayload
 ) => ({
   type: INVITATION_ACCEPTED,
   senderDID,
@@ -132,7 +147,7 @@ export const invitationRejected = (senderDID: string) => ({
 })
 
 export const acceptOutOfBandInvitation = (
-  invitationPayload: InvitationPayload,
+  invitationPayload: InvitationPayload
 ): OutOfBandInvitationAcceptedAction => ({
   type: OUT_OF_BAND_INVITATION_ACCEPTED,
   invitationPayload,
@@ -144,7 +159,7 @@ export const hydrateInvitations = (invitations: { +[string]: Invitation }) => ({
 })
 
 export function* savePendingConnection(
-  payload: InvitationPayload,
+  payload: InvitationPayload
 ): Generator<*, *, *> {
   try {
     yield put(invitationAccepted(payload.senderDID, payload))
@@ -170,17 +185,12 @@ export function* savePendingConnection(
   }
 }
 
-export function* makeConnection(
-  connectionHandle: number,
-): Generator<*, *, *> {
+export function* makeConnection(connectionHandle: number): Generator<*, *, *> {
   const agentInfo = yield select(getConnectionPairwiseAgentInfo)
 
-  const {
-    connection,
-    serializedConnection,
-  } = yield* retrySaga(
+  const { connection, serializedConnection } = yield* retrySaga(
     call(acceptInvitationVcx, connectionHandle, agentInfo),
-    CLOUD_AGENT_UNAVAILABLE,
+    CLOUD_AGENT_UNAVAILABLE
   )
 
   // create new pairwise agent
@@ -195,7 +205,7 @@ export function* makeConnection(
 export function* checkConnectionStatus(
   identifier: string,
   senderName: string,
-  senderDID: string,
+  senderDID: string
 ): Generator<*, *, *> {
   const error = ERROR_CONNECTION(senderName)
   const failAction = connectionFail(error, senderDID)
@@ -210,19 +220,19 @@ export function* checkConnectionStatus(
 }
 
 export function* sendResponse(
-  action: InvitationResponseSendAction,
+  action: InvitationResponseSendAction
 ): Generator<*, *, *> {
   const { senderDID } = action.data
 
   const payload: InvitationPayload = yield select(
     getInvitationPayload,
-    senderDID,
+    senderDID
   )
 
   const connection = yield select(getConnection, senderDID)
 
   // connections exists + it is not completed
-  // we are truing to establish it again
+  // we are trying to establish it again
   // as new pairwise keys will be generated we need to remove the old one
   if (connection && connection.length > 0 && !connection[0].isCompleted) {
     yield put(deletePendingConnection(connection[0].identifier))
@@ -252,18 +262,17 @@ export function* sendResponse(
 }
 
 export function* sendResponseOnProprietaryConnectionInvitation(
-  payload: InvitationPayload,
+  payload: InvitationPayload
 ): Generator<*, *, *> {
   try {
     const connectionHandle: number = yield call(
       createConnectionWithInvite,
-      payload,
+      payload
     )
 
-    const {
-      pairwiseInfo,
-      vcxSerializedConnection,
-    } = yield* retrySaga(call(makeConnection, connectionHandle))
+    const { pairwiseInfo, vcxSerializedConnection } = yield* retrySaga(
+      call(makeConnection, connectionHandle)
+    )
 
     const connection = {
       identifier: pairwiseInfo.myPairwiseDid,
@@ -291,18 +300,17 @@ export function* sendResponseOnProprietaryConnectionInvitation(
 }
 
 export function* sendResponseOnAriesConnectionInvitation(
-  payload: InvitationPayload,
+  payload: InvitationPayload
 ): Generator<*, *, *> {
   try {
     const connectionHandle: number = yield call(
       createConnectionWithAriesInvite,
-      payload,
+      payload
     )
 
-    const {
-      pairwiseInfo,
-      vcxSerializedConnection,
-    } = yield* retrySaga(call(makeConnection, connectionHandle))
+    const { pairwiseInfo, vcxSerializedConnection } = yield* retrySaga(
+      call(makeConnection, connectionHandle)
+    )
 
     const connection = {
       identifier: pairwiseInfo.myPairwiseDid,
@@ -325,7 +333,7 @@ export function* sendResponseOnAriesConnectionInvitation(
       checkConnectionStatus,
       connection.identifier,
       connection.senderName,
-      connection.senderDID,
+      connection.senderDID
     )
   } catch (e) {
     yield call(handleConnectionError, e, payload.senderDID)
@@ -333,7 +341,7 @@ export function* sendResponseOnAriesConnectionInvitation(
 }
 
 export function* sendResponseOnAriesOutOfBandInvitation(
-  payload: InvitationPayload,
+  payload: InvitationPayload
 ): Generator<*, *, *> {
   if (!payload.originalObject) {
     return
@@ -350,18 +358,17 @@ export function* sendResponseOnAriesOutOfBandInvitation(
 }
 
 export function* sendResponseOnAriesOutOfBandInvitationWithHandshake(
-  payload: InvitationPayload,
+  payload: InvitationPayload
 ): Generator<*, *, *> {
   try {
     const connectionHandle: number = yield call(
       createConnectionWithAriesOutOfBandInvite,
-      payload,
+      payload
     )
 
-    const {
-      pairwiseInfo,
-      vcxSerializedConnection,
-    } = yield* retrySaga(call(makeConnection, connectionHandle))
+    const { pairwiseInfo, vcxSerializedConnection } = yield* retrySaga(
+      call(makeConnection, connectionHandle)
+    )
 
     const connection = {
       identifier: pairwiseInfo.myPairwiseDid,
@@ -386,12 +393,12 @@ export function* sendResponseOnAriesOutOfBandInvitationWithHandshake(
 }
 
 export function* sendResponseOnAriesOutOfBandInvitationWithoutHandshake(
-  payload: InvitationPayload,
+  payload: InvitationPayload
 ): Generator<*, *, *> {
   try {
     const connectionHandle: number = yield call(
       createConnectionWithAriesOutOfBandInvite,
-      payload,
+      payload
     )
 
     let pairwiseInfo = {}
@@ -399,8 +406,11 @@ export function* sendResponseOnAriesOutOfBandInvitationWithoutHandshake(
 
     const attachedRequest = payload.attachedRequest
 
-    if (attachedRequest &&
-      (attachedRequest[TYPE].endsWith('offer-credential') || attachedRequest[TYPE].endsWith('propose-presentation'))) {
+    if (
+      attachedRequest &&
+      (attachedRequest[TYPE].endsWith('offer-credential') ||
+        attachedRequest[TYPE].endsWith('propose-presentation'))
+    ) {
       // for these message we need to create pairwise agent to use service decorator
       const data = yield* retrySaga(call(makeConnection, connectionHandle))
       pairwiseInfo = data.pairwiseInfo
@@ -408,7 +418,7 @@ export function* sendResponseOnAriesOutOfBandInvitationWithoutHandshake(
     } else {
       vcxSerializedConnection = yield call(
         serializeConnection,
-        connectionHandle,
+        connectionHandle
       )
     }
 
@@ -443,31 +453,31 @@ export function* sendResponseOnAriesOutOfBandInvitationWithoutHandshake(
 export function* updateAriesConnectionState(
   identifier: string,
   vcxSerializedConnection: string,
-  message: string,
+  message: string
 ): Generator<*, *, *> {
   const connection = yield select(getConnectionByUserDid, identifier)
 
   try {
     const connectionHandle = yield call(
       getHandleBySerializedConnection,
-      vcxSerializedConnection,
+      vcxSerializedConnection
     )
 
     yield* retrySaga(
       call(connectionUpdateStateWithMessage, connectionHandle, message),
-      CLOUD_AGENT_UNAVAILABLE,
+      CLOUD_AGENT_UNAVAILABLE
     )
 
     const connectionState: number = yield call(
       connectionGetState,
-      connectionHandle,
+      connectionHandle
     )
 
     // we need to take serialized connection state again
     // and update serialized state on MSDK side
     const updateVcxSerializedConnection = yield call(
       serializeConnection,
-      connectionHandle,
+      connectionHandle
     )
 
     if (connectionState === 0) {
@@ -476,7 +486,7 @@ export function* updateAriesConnectionState(
       yield call(
         handleConnectionError,
         Error(ERROR_INVITATION_RESPONSE_FAILED),
-        connection.senderDID,
+        connection.senderDID
       )
       return
     }
@@ -488,7 +498,7 @@ export function* updateAriesConnectionState(
         identifier: identifier,
         vcxSerializedConnection: updateVcxSerializedConnection,
         isCompleted: isCompleted,
-      }),
+      })
     )
 
     if (isCompleted) {
@@ -502,13 +512,13 @@ export function* updateAriesConnectionState(
 
 export function* handleConnectionError(
   e: CustomError,
-  senderDID: string,
+  senderDID: string
 ): Generator<*, *, *> {
   captureError(new Error(e.message))
   let message
   if (e.code === CONNECTION_ALREADY_EXISTS) {
     yield put(
-      invitationFail(ERROR_INVITATION_ALREADY_ACCEPTED(e.message), senderDID),
+      invitationFail(ERROR_INVITATION_ALREADY_ACCEPTED(e.message), senderDID)
     )
     message = CONNECTION_ALREADY_EXISTS_MESSAGE
   } else {
@@ -520,35 +530,40 @@ export function* handleConnectionError(
 }
 
 function* outOfBandInvitationAccepted(
-  action: OutOfBandInvitationAcceptedAction,
+  action: OutOfBandInvitationAcceptedAction
 ): Generator<*, *, *> {
   const { invitationPayload } = action
 
   const connectionExists = yield select(
     getConnectionExists,
-    action.invitationPayload.senderDID,
+    action.invitationPayload.senderDID
   )
   if (!connectionExists) {
     yield put(
       invitationReceived({
         payload: invitationPayload,
-      }),
+      })
     )
 
     yield put(
       sendInvitationResponse({
         response: ResponseType.accepted,
         senderDID: invitationPayload.senderDID,
-      }),
+      })
     )
   } else {
     const [connection]: Connection[] = yield select(
       getConnection,
-      action.invitationPayload.senderDID,
+      action.invitationPayload.senderDID
     )
 
     if (invitationPayload.attachedRequest) {
-      yield put(connectionAttachRequest(connection.identifier, invitationPayload.attachedRequest))
+      yield put(
+        connectionAttachRequest(
+          connection.identifier,
+          invitationPayload.attachedRequest
+        )
+      )
     }
 
     if (!invitationPayload.originalObject) {
@@ -560,7 +575,7 @@ function* outOfBandInvitationAccepted(
     yield put(
       sendConnectionReuse(invitation, {
         senderDID: action.invitationPayload.senderDID,
-      }),
+      })
     )
 
     if (!invitationPayload.attachedRequest) {
@@ -568,51 +583,51 @@ function* outOfBandInvitationAccepted(
     }
 
     const type_ = invitationPayload.attachedRequest[TYPE]
-    const id = getAttachedRequestId(invitationPayload.attachedRequest)
+    const id = getThreadId(invitationPayload.attachedRequest)
 
     if (type_.endsWith('offer-credential')) {
       yield put(
         acceptOutofbandClaimOffer(
           id,
           action.invitationPayload.senderDID,
-          connectionExists,
-        ),
+          connectionExists
+        )
       )
     } else if (type_.endsWith('request-presentation')) {
       yield put(
         acceptOutofbandPresentationRequest(
           id,
           action.invitationPayload.senderDID,
-          connectionExists,
-        ),
+          connectionExists
+        )
       )
     } else if (type_.endsWith('propose-presentation')) {
-      yield put(
-        outofbandProofProposalAccepted(id),
-      )
+      yield put(outofbandProofProposalAccepted(id))
     }
   }
 }
 
-export function* processAttachedRequest(connection: GenericObject): Generator<*, *, *> {
+export function* processAttachedRequest(
+  connection: GenericObject
+): Generator<*, *, *> {
   const attachedRequest = connection.attachedRequest
   if (!attachedRequest) {
     return
   }
-  const uid = getAttachedRequestId(attachedRequest)
+  const uid = getThreadId(attachedRequest)
   const type_ = attachedRequest[TYPE]
   if (type_.endsWith('offer-credential')) {
-    const { claimHandle } = yield call(
+    const claimHandle = yield call(
       createCredentialWithAriesOfferObject,
       uid,
-      attachedRequest,
+      attachedRequest
     )
 
     yield call(
       saveSerializedClaimOffer,
       claimHandle,
       connection.identifier,
-      uid,
+      uid
     )
     yield put(acceptClaimOffer(uid, connection.senderDID))
   } else if (type_.endsWith('request-presentation')) {
@@ -655,7 +670,7 @@ function* watchInvitationReceived(): any {
       INVITATION_RESPONSE_FAIL,
       INVITATION_REJECTED,
     ],
-    persistInvitations,
+    persistInvitations
   )
 }
 
@@ -666,7 +681,6 @@ function* watchOutOfBandInvitationAccepted(): any {
 function* watchSendInvitationResponse(): any {
   yield takeLatest(INVITATION_RESPONSE_SEND, sendResponse)
 }
-
 
 export function* watchInvitation(): any {
   yield all([
@@ -679,7 +693,7 @@ export function* watchInvitation(): any {
 
 export default function invitationReducer(
   state: InvitationStore = invitationInitialState,
-  action: InvitationAction,
+  action: InvitationAction
 ) {
   switch (action.type) {
     case INVITATION_RECEIVED:

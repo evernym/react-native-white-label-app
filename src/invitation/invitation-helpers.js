@@ -15,14 +15,19 @@ export async function getBase64DecodedInvitation(
     return false
   }
 
-  const parsedInviteUrlSafe = await getBase64DecodedData(encodedData, 'NO_WRAP')
+  const parsedInviteUrlSafe = await getBase64DecodedData(encodedData, 'URL_SAFE')
   if (parsedInviteUrlSafe) {
     return parsedInviteUrlSafe
   }
 
-  const parsedInviteNoWrap = await getBase64DecodedData(encodedData, 'URL_SAFE')
+  const parsedInviteNoWrap = await getBase64DecodedData(encodedData, 'NO_WRAP')
   if (parsedInviteNoWrap) {
     return parsedInviteNoWrap
+  }
+
+  const parsedInviteNoWrapWithExtraPadding = await getBase64DecodedData(encodedData + '==', 'NO_WRAP')
+  if (parsedInviteNoWrapWithExtraPadding) {
+    return parsedInviteNoWrapWithExtraPadding
   }
 
   return false
@@ -141,7 +146,7 @@ export async function getAttachedRequest(
   return getAttachedRequestData(requests[0].data)
 }
 
-export const getAttachedRequestId = (attachedRequest: AttachedRequestType) =>
-  attachedRequest['~thread'] && attachedRequest['~thread'].thid ?
+export const getThreadId = (attachedRequest: AttachedRequestType) =>
+  attachedRequest && attachedRequest['~thread'] && attachedRequest['~thread'].thid ?
     attachedRequest['~thread'].thid :
     attachedRequest[ID]

@@ -7,13 +7,23 @@ export type SwitchEnvironmentProps = {
     agencyDID: string,
     agencyVerificationKey: string,
     poolConfig: string,
-    paymentMethod: string
+    paymentMethod: string,
+    domainDID: string,
+    verityFlowBaseUrl: string,
+    identityCardCredDefId: string,
+    drivingLicenseCredDefId: string,
+    passportCredDefId: string
   ) => void,
   agencyDID: string,
   agencyVerificationKey: string,
   agencyUrl: string,
   poolConfig: string,
   paymentMethod: string,
+  domainDID: string,
+  verityFlowBaseUrl: string,
+  identityCardCredDefId: string,
+  drivingLicenseCredDefId: string,
+  passportCredDefId: string,
   disableDevMode: () => void,
 } & ReactNavigation
 
@@ -23,6 +33,11 @@ export type SwitchEnvironmentState = {
   agencyUrl: string,
   poolConfig: string,
   paymentMethod: string,
+  domainDID: string,
+  verityFlowBaseUrl: string,
+  identityCardCredDefId: string,
+  drivingLicenseCredDefId: string,
+  passportCredDefId: string,
 }
 
 export const SERVER_ENVIRONMENT = {
@@ -37,7 +52,6 @@ export const SERVER_ENVIRONMENT = {
   DEVTEAM2: 'DEVTEAM2',
   DEVTEAM3: 'DEVTEAM3',
   PROD: 'PROD',
-  BCOVRIN_TEST: 'BCOVRIN_TEST',
 }
 
 export type ServerEnvironment = $Keys<typeof SERVER_ENVIRONMENT>
@@ -57,6 +71,11 @@ export type ChangeEnvironment = {
   agencyDID: string,
   agencyVerificationKey: string,
   paymentMethod: string,
+  domainDID: string,
+  verityFlowBaseUrl: string,
+  identityCardCredDefId: string,
+  drivingLicenseCredDefId: string,
+  passportCredDefId: string,
 }
 
 export type SwitchEnvironmentAction = {

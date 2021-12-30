@@ -33,7 +33,11 @@ import {
   QR_CODE_TYPES,
 } from './type-qr-scanner'
 import { isValidUrl, getUrlData } from './qr-code-types/qr-url'
-import { fetchValidateJWT } from './qr-code-types/qr-code-oidc'
+import {
+  fetchValidateJWT,
+  getOpenidLinkData,
+  isValidOpenIDLink,
+} from './qr-code-types/qr-code-oidc'
 import { uuid } from '../../services/uuid'
 import {
   MESSAGE_NO_CAMERA_PERMISSION,
@@ -51,6 +55,7 @@ import {
 } from '../../invitation/kinds/proprietary-connection-invitation'
 import { isAriesInvitation } from '../../invitation/kinds/aries-connection-invitation'
 import { isAriesOutOfBandInvitation } from '../../invitation/kinds/aries-out-of-band-invitation'
+import { validateEphemeralClaimOffer } from '../../claim-offer/ephemeral-claim-offer'
 
 export default class QRScanner extends PureComponent<
   QrScannerProps,
@@ -64,7 +69,7 @@ export default class QRScanner extends PureComponent<
   // on state being updated immediately
   // so, while state being updated by react asynchronously,
   // onRead can be called multiple times and we don't want it
-  isScanning = false
+  isScanning: boolean = false
 
   // we queue few async tasks by assuming that camera might still be active
   // however, if this component is unmounted before we could call timers
@@ -103,7 +108,9 @@ export default class QRScanner extends PureComponent<
     this.timers = []
   }
 
-  onRead = async (event: {| data: string |}) => {
+  onRead: ({| data: string |}) => Promise<boolean | void> = async (event: {|
+    data: string,
+  |}) => {
     if (this.isScanning) {
       return false
     }
@@ -123,6 +130,17 @@ export default class QRScanner extends PureComponent<
       // we have different url type qr codes as well,
       // identify which type of url qr it is and get a json object from url
       const [urlError, urlData] = await getUrlData(urlQrCode, event.data)
+      if (urlError) {
+        // we could not get data from url, show error to user
+        return this.showError(urlError)
+      }
+
+      qrData = urlData
+    }
+
+    const openidLinkQrCode = isValidOpenIDLink(event.data)
+    if (openidLinkQrCode) {
+      const [urlError, urlData] = await getOpenidLinkData(event.data)
       if (urlError) {
         // we could not get data from url, show error to user
         return this.showError(urlError)
@@ -226,6 +244,22 @@ export default class QRScanner extends PureComponent<
       return this.props.onEphemeralProofRequest(
         ephemeralProofRequest.proofRequest
       )
+    }
+
+    // check if ephemeral claim offer
+    if (
+      qrData.type === QR_CODE_TYPES.EPHEMERAL_CREDENTIAL_OFFER &&
+      qrData.data
+    ) {
+      const [, ephemeralCredentialOffer] = await validateEphemeralClaimOffer(
+        qrData.data
+      )
+      if (ephemeralCredentialOffer) {
+        this.setState({ scanStatus: SCAN_STATUS.SCANNING })
+        return this.props.onEphemeralCredentialOffer(
+          ephemeralCredentialOffer.credentialOffer
+        )
+      }
     }
 
     const outOfBandInvite = isAriesOutOfBandInvitation(qrData)

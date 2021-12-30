@@ -27,6 +27,7 @@ import smsPendingInvitation, {
 import claimOffer, {
   watchClaimOffer,
   watchClaimOfferDeny,
+  watchDeleteClaim,
 } from '../claim-offer/claim-offer-store'
 import proofRequest, {
   watchProofRequestAccepted,
@@ -37,8 +38,8 @@ import proofRequest, {
 } from '../proof-request/proof-request-store'
 import invitation, { watchInvitation } from '../invitation/invitation-store'
 import claim, {
-  watchClaim,
-  watchDeleteClaim,
+  watchClaimReceived,
+  watchClaimStored,
 } from '../claim/claim-store'
 import question, { watchQuestion } from '../question/question-store'
 import txnAuthorAgreement, {
@@ -57,7 +58,6 @@ import cloudRestore, {
 } from '../cloud-restore/cloud-restore-store'
 import backup, { watchBackup } from '../backup/backup-store'
 import sendlogs, { watchSendLogs } from '../send-logs/send-logs-store'
-import onfido, { watchOnfido } from '../onfido/onfido-store'
 import offline, { watchOffline } from '../offline/offline-store'
 import { hydrate } from './hydration-store'
 import {
@@ -73,9 +73,14 @@ import { watchLongPollingHome } from '../home/long-polling-home'
 import inviteAction, {
   watchInviteAction,
 } from '../invite-action/invite-action-store'
-import showCredential, { watchShowCredentialStore } from '../show-credential/show-credential-store'
-import verifier, { watchVerifier } from "../verifier/verifier-store"
-import logToApptentiveMiddleware, { isLogToApptentive } from '../feedback/log-to-apptentive'
+import showCredential, {
+  watchShowCredentialStore,
+} from '../show-credential/show-credential-store'
+import verifier, { watchVerifier } from '../verifier/verifier-store'
+import logToApptentiveMiddleware, {
+  isLogToApptentive,
+} from '../feedback/log-to-apptentive'
+import physicalId, { watchPhysicalId } from '../physical-id/physical-id-store'
 
 const sagaMiddleware = createSagaMiddleware()
 
@@ -102,13 +107,13 @@ const appReducer = combineReducers({
   sendlogs,
   ledger,
   offline,
-  onfido,
   question,
   txnAuthorAgreement,
   openIdConnect: openIdConnectReducer,
   inviteAction,
   showCredential,
   verifier,
+  physicalId,
 })
 
 let middlewares = [historyRecorder]
@@ -155,8 +160,9 @@ sagaMiddleware.run(function* (): Generator<*, *, *> {
     watchClaimOfferDeny(),
     watchPushNotification(),
     watchInvitation(),
-    watchClaim(),
+    watchClaimReceived(),
     watchDeleteClaim(),
+    watchClaimStored(),
     watchShowCredentialStore(),
     watchPressEventInLockSelectionScreen(),
     watchEnableTouchId(),
@@ -177,7 +183,6 @@ sagaMiddleware.run(function* (): Generator<*, *, *> {
     watchProofRequestReceived(),
     watchLedgerStore(),
     watchOffline(),
-    watchOnfido(),
     watchQuestion(),
     watchTxnAuthorAgreement(),
     watchOpenIdConnectStore(),
@@ -187,6 +192,7 @@ sagaMiddleware.run(function* (): Generator<*, *, *> {
     watchLongPollingHome(),
     watchInviteAction(),
     watchVerifier(),
+    watchPhysicalId(),
   ])
 })
 

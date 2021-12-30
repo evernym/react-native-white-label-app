@@ -120,12 +120,26 @@ export type VcxPoolInitializationState =
   | typeof VCX_INIT_POOL_SUCCESS
   | typeof VCX_INIT_POOL_FAIL
 
+export type PoolConfig = {
+  key: string,
+  genesis: string,
+  namespace_list: [string]
+}
+
 export type AgencyPoolConfig = {
   agencyUrl: string,
   agencyDID: string,
   agencyVerificationKey: string,
-  poolConfig: string,
+  poolConfig: string | Array<PoolConfig>,
   paymentMethod: string,
+}
+
+export type VerityFlowConfig = {
+  domainDID: string,
+  verityFlowBaseUrl: string,
+  identityCardCredDefId: string,
+  drivingLicenseCredDefId: string,
+  passportCredDefId: string,
 }
 
 export type ConfigStore = {
@@ -143,13 +157,17 @@ export type ConfigStore = {
   isVcxPoolInitFailed: boolean,
   isVcxInitFailed: boolean,
   isGetMessagesFailed: boolean,
-} & AgencyPoolConfig
+} & AgencyPoolConfig &
+  VerityFlowConfig
 
 export type MessageDownloadStatus =
   | typeof GET_MESSAGES_LOADING
   | typeof GET_MESSAGES_FAIL
   | typeof GET_MESSAGES_SUCCESS
 
+// IMPORTANT NOTE: If this key value changes,
+// then it would need to be changed in ConnectMe app/evernym-sdk/physical-id.js
+// and other repos that we have based out of this white label app
 export const STORAGE_KEY_SWITCHED_ENVIRONMENT_DETAIL =
   'STORAGE_KEY_SWITCHED_ENVIRONMENT_DETAIL'
 

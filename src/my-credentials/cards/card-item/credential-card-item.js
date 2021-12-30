@@ -41,7 +41,6 @@ import {
   MESSAGE_DELETE_CLAIM_TITLE,
 } from '../../type-my-credentials'
 import { DELETE_ICON, EvaIcon } from '../../../common/icons'
-import { deleteClaim } from '../../../claim/claim-store'
 import {
   CARD_HEIGHT,
   CARD_MARGIN,
@@ -53,6 +52,7 @@ import {
 import { brightnessByColor } from '../utils'
 
 import { TAPPING_ON_A_CREDENTIAL } from '../../../feedback/log-to-apptentive'
+import { deleteClaim } from '../../../claim-offer/claim-offer-store'
 
 const textColor = colors.white
 
@@ -73,6 +73,7 @@ const CredentialCard = ({
     attributes,
     claimOfferUuid,
     colorTheme,
+    claimDefinitionId,
   } = item
   const [isOpen, setIsOpen] = useState(false)
   const [shouldRemove, setShouldRemove] = useState(false)
@@ -149,7 +150,7 @@ const CredentialCard = ({
       }
     } else {
       if (setActiveStack !== undefined) {
-        setActiveStack(credentialName)
+        setActiveStack(claimDefinitionId || null)
       }
     }
   }

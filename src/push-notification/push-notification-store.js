@@ -47,7 +47,6 @@ import type {
   PushNotificationStore,
   DownloadedNotification,
   ClaimOfferPushPayload,
-  ClaimPushPayload,
   HydratePushTokenAction,
   updatePayloadToRelevantStoreAndRedirectAction,
   RedirectToRelevantScreen,
@@ -70,7 +69,6 @@ import type {
   ProofRequestPushPayload,
   AdditionalProofDataPayload,
 } from '../proof-request/type-proof-request'
-import type { Claim } from '../claim/type-claim'
 import { safeGet, safeSet, walletSet } from '../services/storage'
 import {
   PUSH_COM_METHOD,
@@ -78,6 +76,8 @@ import {
   homeRoute,
   inviteActionRoute,
   proofProposalRoute,
+  physicalIdRoute,
+  problemReportModalRoute,
 } from '../common'
 import type { NavigationParams, GenericObject } from '../common/type-common'
 
@@ -98,7 +98,7 @@ import {
   lockAuthorizationHomeRoute,
   questionRoute,
 } from '../common'
-import { claimReceivedVcx } from '../claim/claim-store'
+import { claimReceived } from '../claim/claim-store'
 import { questionReceived } from '../question/question-store'
 import { customLogger } from '../store/custom-logger'
 import {
@@ -118,8 +118,9 @@ import RNFetchBlob from 'rn-fetch-blob'
 import { ATTRIBUTE_TYPE } from '../proof-request/type-proof-request'
 import { flattenAsync } from '../common/flatten-async'
 import { Platform } from 'react-native'
-import {usePushNotifications, vcxPushType} from '../external-imports'
+import { usePushNotifications, vcxPushType } from '../external-imports'
 import { inviteActionReceived } from '../invite-action/invite-action-store'
+import { physicalIdDocumentIssuanceFailedAction } from '../physical-id/physical-id-store'
 
 const blackListedRoute = {
   [proofRequestRoute]: proofRequestRoute,
@@ -133,6 +134,7 @@ const blackListedRoute = {
   [invitationRoute]: invitationRoute,
   [questionRoute]: questionRoute,
   [inviteActionRoute]: inviteActionRoute,
+  [physicalIdRoute]: physicalIdRoute,
 }
 
 const initialState = {
@@ -161,7 +163,7 @@ export function* onPushTokenUpdate(
   action: PushNotificationUpdateTokenAction
 ): Generator<*, *, *> {
   try {
-    const pushToken = vcxPushType === 1 ? `FCM:${action.token}`: action.token
+    const pushToken = vcxPushType === 1 ? `FCM:${action.token}` : action.token
     const id = yield uniqueId()
     const vcxResult = yield* ensureVcxInitSuccess()
     if (vcxResult && vcxResult.fail) {
@@ -175,8 +177,8 @@ export function* onPushTokenUpdate(
 }
 
 export function convertClaimOfferPushPayloadToAppClaimOffer(
-  pushPayload: ClaimOfferPushPayload,
-  extraPayload: { remotePairwiseDID: string }
+  claimOffer: ClaimOfferPushPayload,
+  remotePairwiseDID: string
 ): AdditionalDataPayload {
   /**
    * Below expression Converts this format
@@ -190,9 +192,9 @@ export function convertClaimOfferPushPayloadToAppClaimOffer(
    *  {label: "height", data: "170"},
    * ]
    */
-  const revealedAttributes = Object.keys(pushPayload.claim).map(
+  const revealedAttributes = Object.keys(claimOffer.claim).map(
     (attributeName) => {
-      let attributeValue = pushPayload.claim[attributeName]
+      let attributeValue = claimOffer.claim[attributeName]
       if (Array.isArray(attributeValue)) {
         attributeValue = attributeValue[0]
       }
@@ -206,16 +208,18 @@ export function convertClaimOfferPushPayloadToAppClaimOffer(
 
   return {
     issuer: {
-      name: pushPayload.issuer_name || pushPayload.remoteName,
-      did: pushPayload.issuer_did || extraPayload.remotePairwiseDID,
+      name: claimOffer.issuer_name || claimOffer.remoteName,
+      did: claimOffer.issuer_did || remotePairwiseDID,
     },
     data: {
-      name: pushPayload.claim_name,
-      version: pushPayload.version,
+      name: claimOffer.claim_name,
+      version: claimOffer.version,
       revealedAttributes,
-      claimDefinitionSchemaSequenceNumber: pushPayload.schema_seq_no,
+      claimDefinitionSchemaSequenceNumber: claimOffer.schema_seq_no,
+      claimDefinitionId: claimOffer.claim_def_id,
     },
-    payTokenValue: pushPayload.price,
+    payTokenValue: claimOffer.price,
+    ephemeralClaimOffer: claimOffer.ephemeralClaimOffer,
   }
 }
 
@@ -235,7 +239,6 @@ export function convertProofRequestPushPayloadToAppProofRequest(
     version,
     requested_predicates,
   } = proof_request_data
-
   const requestedAttributes = []
   Object.keys(requested_attributes).forEach((attributeKey) => {
     let attribute = requested_attributes[attributeKey]
@@ -281,7 +284,6 @@ export function convertProofRequestPushPayloadToAppProofRequest(
       }
     })
   }
-
   return {
     data: {
       name,
@@ -295,20 +297,6 @@ export function convertProofRequestPushPayloadToAppProofRequest(
     proofHandle,
     ephemeralProofRequest,
     outofbandProofRequest,
-  }
-}
-
-export function convertClaimPushPayloadToAppClaim(
-  pushPayload: ClaimPushPayload,
-  uid: string,
-  forDID: string
-): Claim {
-  return {
-    ...pushPayload,
-    messageId: pushPayload.claim_offer_id,
-    remoteDid: pushPayload.from_did,
-    uid,
-    forDID,
   }
 }
 
@@ -604,9 +592,7 @@ export function* updatePayloadToRelevantStoreSaga(
       case MESSAGE_TYPE.CLAIM_OFFER:
         yield put(
           claimOfferReceived(
-            convertClaimOfferPushPayloadToAppClaimOffer(additionalData, {
-              remotePairwiseDID,
-            }),
+            additionalData,
             {
               uid,
               senderLogoUrl,
@@ -619,7 +605,7 @@ export function* updatePayloadToRelevantStoreSaga(
       case MESSAGE_TYPE.PROOF_REQUEST:
         yield put(
           proofRequestReceived(
-            convertProofRequestPushPayloadToAppProofRequest(additionalData),
+            additionalData,
             {
               uid,
               senderLogoUrl,
@@ -631,7 +617,7 @@ export function* updatePayloadToRelevantStoreSaga(
         break
       case MESSAGE_TYPE.CLAIM:
         yield put(
-          claimReceivedVcx({
+          claimReceived({
             connectionHandle: additionalData.connectionHandle,
             uid,
             type,
@@ -647,6 +633,14 @@ export function* updatePayloadToRelevantStoreSaga(
         break
       case MESSAGE_TYPE.INVITE_ACTION:
         yield put(inviteActionReceived(additionalData))
+        break
+
+      case MESSAGE_TYPE.PROBLEM_REPORT:
+      case MESSAGE_TYPE.PROBLEM_REPORT.toLowerCase():
+        yield put(physicalIdDocumentIssuanceFailedAction(
+          additionalData.uid,
+          additionalData.error
+        ))
         break
     }
   }
@@ -689,29 +683,28 @@ function* redirectToRelevantScreen(notification: RedirectToRelevantScreen) {
       case MESSAGE_TYPE.PRESENTATION_PROPOSAL.toLowerCase():
         routeToDirect = proofProposalRoute
         break
+
+      case MESSAGE_TYPE.PROBLEM_REPORT:
+      case MESSAGE_TYPE.PROBLEM_REPORT.toLowerCase():
+        routeToDirect = problemReportModalRoute
+        break
     }
 
     if (routeToDirect) {
-      yield handleRedirection(
-        routeToDirect,
-        {
-          uid,
-          notificationOpenOptions,
-          senderDID: remotePairwiseDID,
-          image: additionalData.senderLogoUrl,
-          senderName: additionalData.remoteName,
-          messageType: type,
-          identifier: forDID,
-        }
-      )
+      yield handleRedirection(routeToDirect, {
+        uid,
+        notificationOpenOptions,
+        senderDID: remotePairwiseDID,
+        image: additionalData.senderLogoUrl,
+        senderName: additionalData.remoteName,
+        messageType: type,
+        identifier: forDID,
+      })
     }
   }
 }
 
-function* handleRedirection(
-  routeName: string,
-  params: NavigationParams,
-): any {
+function* handleRedirection(routeName: string, params: NavigationParams): any {
   const isAppLocked: boolean = yield select(getIsAppLocked)
   if (isAppLocked) {
     yield put(

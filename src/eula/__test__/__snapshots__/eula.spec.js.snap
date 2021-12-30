@@ -12,8 +12,9 @@ exports[`Eula screen should render properly and snapshot should match 1`] = `
 >
   <View
     accessible={true}
+    collapsable={false}
     focusable={true}
-    isTVSelectable={true}
+    nativeID="animatedComponent"
     onClick={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
@@ -33,6 +34,8 @@ exports[`Eula screen should render properly and snapshot should match 1`] = `
     }
   >
     <View
+      collapsable={false}
+      nativeID="animatedComponent"
       style={
         Object {
           "transform": Array [
@@ -151,8 +154,9 @@ exports[`Eula screen should render properly and snapshot should match 1`] = `
                 }
               }
               accessible={true}
+              collapsable={false}
               focusable={true}
-              isTVSelectable={true}
+              nativeID="animatedComponent"
               onClick={[Function]}
               onResponderGrant={[Function]}
               onResponderMove={[Function]}
@@ -228,8 +232,9 @@ exports[`Eula screen should render properly and snapshot should match 1`] = `
                 }
               }
               accessible={true}
+              collapsable={false}
               focusable={true}
-              isTVSelectable={true}
+              nativeID="animatedComponent"
               onClick={[Function]}
               onResponderGrant={[Function]}
               onResponderMove={[Function]}

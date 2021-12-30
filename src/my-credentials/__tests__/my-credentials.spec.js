@@ -30,7 +30,6 @@ describe('my credentials screen', () => {
       },
       offers: {
         offer_uuid_1: {
-          uid: 'offer_uuid_1',
           remotePairwiseDID: 'senderDID_1',
           status: 'RECEIVED',
           claimRequestStatus: 'CLAIM_REQUEST_SUCCESS',
@@ -58,7 +57,7 @@ describe('my credentials screen', () => {
       },
       environmentName: defaultEnvironment,
       route: {},
-      showUnreadMessagesBadge: {SHOW_UNREAD_MESSAGES_BADGE_NEAR_WITH_MENU}
+      showUnreadMessagesBadge: { SHOW_UNREAD_MESSAGES_BADGE_NEAR_WITH_MENU },
     }
   }
 

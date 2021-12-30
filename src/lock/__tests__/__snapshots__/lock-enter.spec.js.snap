@@ -101,6 +101,7 @@ exports[`<LockEnter /> should match snapshot 1`] = `
             },
           ]
         }
+        suppressHighlighting={true}
         testID="pass-code-input-text"
       >
         Enter your passcode
@@ -421,7 +422,6 @@ exports[`<LockEnter /> should match snapshot 1`] = `
         <TextInput
           accessibilityLabel="pin-code-input-box"
           accessible={true}
-          allowFontScaling={true}
           autoCorrect={false}
           blurOnSubmit={false}
           editable={true}
@@ -430,7 +430,6 @@ exports[`<LockEnter /> should match snapshot 1`] = `
           keyboardType="number-pad"
           maxLength={6}
           onChangeText={[Function]}
-          rejectResponderTermination={true}
           style={
             Object {
               "height": 0,
@@ -440,7 +439,6 @@ exports[`<LockEnter /> should match snapshot 1`] = `
             }
           }
           testID="pin-code-input-box"
-          underlineColorAndroid="transparent"
           value=""
         />
       </View>
@@ -636,6 +634,7 @@ exports[`<LockEnter /> should match snapshot for recovery flow 1`] = `
             },
           ]
         }
+        suppressHighlighting={true}
       >
         Please enter your current 
         AppName
@@ -935,7 +934,6 @@ exports[`<LockEnter /> should match snapshot for recovery flow 1`] = `
         <TextInput
           accessibilityLabel="pin-code-input-box"
           accessible={true}
-          allowFontScaling={true}
           autoCorrect={false}
           blurOnSubmit={false}
           editable={true}
@@ -944,7 +942,6 @@ exports[`<LockEnter /> should match snapshot for recovery flow 1`] = `
           keyboardType="number-pad"
           maxLength={6}
           onChangeText={[Function]}
-          rejectResponderTermination={true}
           style={
             Object {
               "height": 0,
@@ -954,7 +951,6 @@ exports[`<LockEnter /> should match snapshot for recovery flow 1`] = `
             }
           }
           testID="pin-code-input-box"
-          underlineColorAndroid="transparent"
           value=""
         />
       </View>
@@ -1011,6 +1007,7 @@ exports[`<LockEnter /> should match snapshot for recovery flow 1`] = `
             },
           ]
         }
+        suppressHighlighting={true}
         testID="set-up-new-passcode-recovery"
       >
         Or Set Up New Passcode

@@ -37,6 +37,7 @@ export type SettingsProps = {
   giveAppFeedbackButtonInSetting: () => void,
   disableTouchIdAction: () => void,
   enableTouchIdAction: () => void,
+  onSettingPress: () => any,
 } & ReactNavigation
 
 export type SettingsState = {

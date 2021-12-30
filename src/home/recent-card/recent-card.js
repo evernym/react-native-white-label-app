@@ -45,7 +45,8 @@ import { deleteConnectionAction } from '../../store/connections-store'
 import { LOADING_ACTIONS } from '../../connection-history/type-connection-history'
 import { PROOF_VERIFICATION_FAILED } from '../../verifier/type-verifier'
 import { renderUserAvatar } from '../../components/user-avatar/user-avatar'
-import { formatTimestamp } from '../../utils/datetime'
+import { EventTimestamp } from '../../components/event-timestamp/event-timestamp'
+import { PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED } from '../../physical-id/physical-id-type'
 
 class RecentCardComponent extends React.Component<RecentCardProps, void> {
   render() {
@@ -99,11 +100,9 @@ class RecentCardComponent extends React.Component<RecentCardProps, void> {
               Tap to retry
             </Text>
           ) : isLoading ? (
-            <ActivityIndicator size="small" />
+            <ActivityIndicator size="small" color={colors.gray3} />
           ) : (
-            <Text style={styles.textDate}>
-              {formatTimestamp(props.timestamp)}
-            </Text>
+            <EventTimestamp timestamp={props.timestamp}/>
           )}
         </View>
       </View>
@@ -216,6 +215,7 @@ export const FAILED_ACTIONS = [
   ERROR_SEND_PROOF,
   DENY_PROOF_REQUEST_FAIL,
   PROOF_VERIFICATION_FAILED,
+  PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED,
 ]
 
 function getRetryStatus(event: *): boolean {

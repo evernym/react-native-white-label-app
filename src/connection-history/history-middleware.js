@@ -9,12 +9,10 @@ import {
   DENY_CLAIM_OFFER_FAIL,
   DENY_CLAIM_OFFER_SUCCESS,
   OUTOFBAND_CLAIM_OFFER_ACCEPTED,
-  DELETE_OUTOFBAND_CLAIM_OFFER,
-} from '../claim-offer/type-claim-offer'
-import {
-  CLAIM_STORAGE_SUCCESS,
+  DENY_OUTOFBAND_CLAIM_OFFER,
   DELETE_CLAIM_SUCCESS,
-} from '../claim/type-claim'
+} from '../claim-offer/type-claim-offer'
+import { CLAIM_STORAGE_SUCCESS } from '../claim/type-claim'
 import {
   PROOF_REQUEST_RECEIVED,
   SEND_PROOF_SUCCESS,
@@ -49,6 +47,10 @@ import {
   PROOF_VERIFICATION_FAILED,
   PROOF_VERIFIED,
 } from '../verifier/type-verifier'
+import {
+  PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED,
+  PHYSICAL_ID_DOCUMENT_SUBMITTED,
+} from '../physical-id/physical-id-type'
 
 const actionToRecord = [
   // removing invitation received from record array
@@ -72,7 +74,7 @@ const actionToRecord = [
   DENY_PROOF_REQUEST_SUCCESS,
   CLAIM_OFFER_ACCEPTED,
   OUTOFBAND_CLAIM_OFFER_ACCEPTED,
-  DELETE_OUTOFBAND_CLAIM_OFFER,
+  DENY_OUTOFBAND_CLAIM_OFFER,
   SEND_CLAIM_REQUEST_FAIL,
   PAID_CREDENTIAL_REQUEST_FAIL,
   UPDATE_ATTRIBUTE_CLAIM,
@@ -93,6 +95,8 @@ const actionToRecord = [
   PROOF_REQUEST_SENT,
   PROOF_VERIFIED,
   PROOF_VERIFICATION_FAILED,
+  PHYSICAL_ID_DOCUMENT_SUBMITTED,
+  PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED,
 ]
 
 // TODO:KS Fix any type using `redux` provided Generic Types

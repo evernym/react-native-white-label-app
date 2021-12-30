@@ -2,7 +2,6 @@
 
 exports[`<LoadingIndicator /> should render properly and match the snapshot 1`] = `
 <ActivityIndicator
-  animating={true}
   color="#777777"
   hidesWhenStopped={true}
   size="large"

@@ -12,7 +12,6 @@ import {
   settingsRoute,
   genRecoveryPhraseRoute,
   aboutAppRoute,
-  onfidoRoute,
   lockAuthorizationHomeRoute,
 } from '../../common'
 import * as feedback from '../../feedback'
@@ -60,6 +59,7 @@ describe('user settings screen', () => {
       giveAppFeedbackButtonInSetting: jest.fn(),
       disableTouchIdAction: jest.fn(),
       enableTouchIdAction: jest.fn(),
+      onSettingPress: jest.fn(),
     }
   }
 
@@ -178,33 +178,6 @@ describe('user settings screen', () => {
     componentInstance.openAboutApp()
     expect(navigation.navigate).toHaveBeenCalledWith(aboutAppRoute, {})
   })
-
-  xit('should navigate to onfido screen', () => {
-    // skip this test, somehow react-navigation v5 is not working correctly with jest on Android
-    // have NativeModules.I18nManager.localeIdentifier(android) set to 'en_US'
-    // in setup.js which is valid location and onfido should navigate
-    Platform.OS = 'android'
-    const { props } = setup()
-    const { navigation } = props
-    const { wrapper } = render(props)
-    const componentInstance = wrapper.root.findByType(Settings).instance
-    componentInstance.openOnfido()
-    expect(navigation.navigate).toHaveBeenCalledWith(onfidoRoute, {})
-    Platform.OS = 'ios'
-  })
-
-  // it('should not navigate to onfido screen', () => {
-  //   // have NativeModules.SettingsManager.settings.AppleLocale(ios) set to 'en_XX'
-  //   // in setup.js which is NOT a valid location and onfido should NOT navigate
-  //   Platform.OS = 'ios'
-  //   spyOn(RNLocalize, 'getLocales').and.returnValue([{ countryCode: 'IN' }])
-  //   const { props } = setup()
-  //   const { navigation } = props
-  //   const { wrapper } = render(props)
-  //   const componentInstance = wrapper.root.findByType(Settings).instance
-  //   componentInstance.openOnfido()
-  //   expect(navigation.navigate).not.toBeCalled()
-  // })
 
   it('should invoke Apptentive message center', async () => {
     const { componentInstance } = render()

@@ -19,8 +19,10 @@ import type {
 } from '../../proof-request/type-proof-request'
 import {
   ATTRIBUTE_TYPE,
-  MESSAGE_ATTRIBUTE_DESCRIPTION,
-  MESSAGE_ATTRIBUTE_TITLE,
+  MESSAGE_ATTRIBUTE_RESTRICTIONS_MISMATCH_DESCRIPTION,
+  MESSAGE_ATTRIBUTE_RESTRICTIONS_MISMATCH_TITLE,
+  MESSAGE_MISSING_ATTRIBUTE_DESCRIPTION,
+  MESSAGE_MISSING_ATTRIBUTE_TITLE,
   MESSAGE_PREDICATE_DESCRIPTION,
   MESSAGE_PREDICATE_TITLE,
 } from '../../proof-request/type-proof-request'
@@ -127,8 +129,25 @@ class ProofRequestAttributeList extends Component<
 
   showMissingAttributeModal = (attribute: string) => {
     Alert.alert(
-      MESSAGE_ATTRIBUTE_TITLE,
-      MESSAGE_ATTRIBUTE_DESCRIPTION(this.props.institutionalName, attribute),
+      MESSAGE_MISSING_ATTRIBUTE_TITLE,
+      MESSAGE_MISSING_ATTRIBUTE_DESCRIPTION(
+        this.props.institutionalName,
+        attribute
+      ),
+      [
+        {
+          text: 'OK',
+        },
+      ]
+    )
+  }
+
+  showNetworkMismatchModal = () => {
+    Alert.alert(
+      MESSAGE_ATTRIBUTE_RESTRICTIONS_MISMATCH_TITLE,
+      MESSAGE_ATTRIBUTE_RESTRICTIONS_MISMATCH_DESCRIPTION(
+        this.props.institutionalName
+      ),
       [
         {
           text: 'OK',
@@ -186,6 +205,7 @@ class ProofRequestAttributeList extends Component<
     if (keys.length === 1) {
       return navigate(attributeValueRoute, {
         label: keys.join(),
+        sender: this.props.institutionalName,
         customValue: this.state?.[label],
         onTextChange,
         items,
@@ -420,6 +440,9 @@ class ProofRequestAttributeList extends Component<
                   <ExpandableText style={styles.title} text={label} />
                   <ExpandableText style={styles.contentInput} text={value} />
                 </View>
+                <View style={[styles.avatarWrapper, { paddingLeft: 4 }]}>
+                  {renderUserAvatar({ size: 'superSmall' })}
+                </View>
                 <View style={styles.iconWrapper}>
                   <EvaIcon
                     name={ARROW_FORWARD_ICON}
@@ -498,7 +521,11 @@ class ProofRequestAttributeList extends Component<
           {keyIndex === 0 && (
             <TouchableOpacity
               style={[styles.iconWrapper, styles.alertIconWrapper]}
-              onPress={() => this.showMissingAttributeModal(label)}
+              onPress={() =>
+                attribute.hasCredentialsWithRequestedAttribute
+                  ? this.showNetworkMismatchModal()
+                  : this.showMissingAttributeModal(label)
+              }
             >
               <EvaIcon
                 name={ALERT_ICON}
@@ -615,18 +642,19 @@ class ProofRequestAttributeList extends Component<
       <View key={index} style={styles.wrapper}>
         <View style={styles.textAvatarWrapper}>
           <View style={styles.textInnerWrapper}>
-            {RenderAttachmentIcon(
-              attribute.label,
-              title,
-              '',
-              '',
-              undefined,
-              { color: colors.red }
-            )}
+            {RenderAttachmentIcon(attribute.label, title, '', '', undefined, {
+              color: colors.red,
+            })}
           </View>
           <TouchableOpacity
             style={[styles.iconWrapper, styles.alertIconWrapper]}
-            onPress={() => this.showMissingPredicateModal(`${attribute.label} ${title.toLocaleLowerCase()}`)}
+            onPress={() =>
+              attribute.hasCredentialsWithRequestedAttribute
+                ? this.showNetworkMismatchModal()
+                : this.showMissingPredicateModal(
+                    `${attribute.label} ${title.toLocaleLowerCase()}`
+                  )
+            }
           >
             <EvaIcon
               name={ALERT_ICON}

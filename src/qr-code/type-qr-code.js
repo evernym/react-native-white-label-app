@@ -5,6 +5,7 @@ import type { InvitationPayload } from '../invitation/type-invitation'
 import { handleInvitation } from '../invitation/invitation-store'
 import { openIdConnectUpdateStatus } from '../open-id-connect/open-id-connect-actions'
 import { changeEnvironmentUrl } from '../switch-environment/switсh-environment-store'
+import { claimOfferReceived } from '../claim-offer/claim-offer-store'
 
 export type QRCodeScannerScreenState = {
   isCameraEnabled: boolean,
@@ -18,6 +19,7 @@ export type QRCodeScannerScreenProps = {
   changeEnvironmentUrl: typeof changeEnvironmentUrl,
   handleInvitation: typeof handleInvitation,
   proofRequestReceived: typeof proofRequestReceived,
+  claimOfferReceived: typeof claimOfferReceived,
   scanQrClose: () => void
 } & ReactNavigation
 

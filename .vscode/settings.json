@@ -1,16 +1,15 @@
 {
-  "flow.useNPMPackagedFlow": false,
+  "flow.useNPMPackagedFlow": true,
   "javascript.validate.enable": false,
   "cSpell.words": [
     "IPHONEXSMAX",
     "OIDC",
-    "Onfido",
     "checkmark",
     "connectme",
     "ellipsize",
     "jwks"
   ],
-  "flow.useLSP": false,
+  "flow.useLSP": true,
   "gitlab.instanceUrl": "https://gitlab.corp.evernym.com",
   "workbench.colorCustomizations": {
     "activityBar.background": "#8a2ca2",
@@ -26,7 +25,13 @@
     "titleBar.inactiveForeground": "#e7e7e799",
     "statusBar.background": "#68217a",
     "statusBarItem.hoverBackground": "#8a2ca2",
-    "statusBar.foreground": "#e7e7e7"
+    "statusBar.foreground": "#e7e7e7",
+    "editorGroup.border": "#8a2ca2",
+    "panel.border": "#8a2ca2",
+    "sash.hoverBorder": "#8a2ca2",
+    "sideBar.border": "#8a2ca2",
+    "statusBarItem.remoteBackground": "#68217a",
+    "statusBarItem.remoteForeground": "#e7e7e7"
   },
   "peacock.color": "#68217A",
   "java.configuration.updateBuildConfiguration": "disabled"

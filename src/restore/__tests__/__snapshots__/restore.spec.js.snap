@@ -107,6 +107,7 @@ exports[`Restore screen should render properly and match the snapshot 1`] = `
               },
             ]
           }
+          suppressHighlighting={true}
         >
           You can restore from a backup or start with a brand new install.
         </Text>
@@ -146,6 +147,7 @@ exports[`Restore screen should render properly and match the snapshot 1`] = `
               },
             ]
           }
+          suppressHighlighting={true}
         >
           How would you like to proceed?
         </Text>
@@ -161,8 +163,9 @@ exports[`Restore screen should render properly and match the snapshot 1`] = `
       >
         <View
           accessible={true}
+          collapsable={false}
           focusable={true}
-          isTVSelectable={true}
+          nativeID="animatedComponent"
           onClick={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
@@ -207,8 +210,9 @@ exports[`Restore screen should render properly and match the snapshot 1`] = `
         </View>
         <View
           accessible={true}
+          collapsable={false}
           focusable={true}
-          isTVSelectable={true}
+          nativeID="animatedComponent"
           onClick={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}

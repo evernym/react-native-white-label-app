@@ -95,6 +95,7 @@ exports[`<Invitation /> should match snapshot 1`] = `
                     },
                   ]
                 }
+                suppressHighlighting={true}
                 testID="invitation-text-title"
               >
                 Hi
@@ -292,7 +293,7 @@ exports[`<Invitation /> should match snapshot 1`] = `
             "flexDirection": "column",
             "maxWidth": "100%",
             "padding": 14.357142857142858,
-            "paddingBottom": 2.8714285714285714,
+            "paddingBottom": 9.571428571428571,
             "width": "100%",
           },
           Object {
@@ -305,8 +306,9 @@ exports[`<Invitation /> should match snapshot 1`] = `
       <View
         accessibilityLabel="invitation-accept"
         accessible={true}
+        collapsable={false}
         focusable={true}
-        isTVSelectable={true}
+        nativeID="animatedComponent"
         onClick={[Function]}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -367,6 +369,7 @@ exports[`<Invitation /> should match snapshot 1`] = `
               null,
             ]
           }
+          suppressHighlighting={true}
         >
           Connect
         </Text>
@@ -374,8 +377,9 @@ exports[`<Invitation /> should match snapshot 1`] = `
       <View
         accessibilityLabel="invitation-deny"
         accessible={true}
+        collapsable={false}
         focusable={true}
-        isTVSelectable={true}
+        nativeID="animatedComponent"
         onClick={[Function]}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -448,6 +452,7 @@ exports[`<Invitation /> should match snapshot 1`] = `
                 null,
               ]
             }
+            suppressHighlighting={true}
           >
             Deny
           </Text>

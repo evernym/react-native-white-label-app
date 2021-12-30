@@ -109,6 +109,7 @@ exports[`<WalletTabSendDetails /> should render properly and match the snapshot 
               },
             ]
           }
+          suppressHighlighting={true}
         >
           To:
         </Text>
@@ -131,7 +132,6 @@ exports[`<WalletTabSendDetails /> should render properly and match the snapshot 
         <TextInput
           accessibilityLabel="To-token-send-details-label"
           accessible={true}
-          allowFontScaling={true}
           autoCapitalize="none"
           autoCorrect={false}
           autoFocus={true}
@@ -139,7 +139,6 @@ exports[`<WalletTabSendDetails /> should render properly and match the snapshot 
           multiline={false}
           onChangeText={[Function]}
           placeholder="Enter Payee wallet address"
-          rejectResponderTermination={true}
           style={
             Array [
               Object {
@@ -237,6 +236,7 @@ exports[`<WalletTabSendDetails /> should render properly and match the snapshot 
               },
             ]
           }
+          suppressHighlighting={true}
         >
           For:
         </Text>
@@ -259,12 +259,10 @@ exports[`<WalletTabSendDetails /> should render properly and match the snapshot 
         <TextInput
           accessibilityLabel="For-token-send-details-label"
           accessible={true}
-          allowFontScaling={true}
           maxLength={80}
           multiline={true}
           onChangeText={[Function]}
           placeholder="credential, gift, etc."
-          rejectResponderTermination={true}
           style={
             Array [
               Object {
@@ -341,6 +339,7 @@ exports[`<WalletTabSendDetails /> should render properly and match the snapshot 
           },
         ]
       }
+      suppressHighlighting={true}
     >
       12,345
     </Text>
@@ -389,6 +388,7 @@ exports[`<WalletTabSendDetails /> should render properly and match the snapshot 
           },
         ]
       }
+      suppressHighlighting={true}
     >
       SOVRIN TOKENS
     </Text>
@@ -451,6 +451,7 @@ exports[`<WalletTabSendDetails /> should render properly and match the snapshot 
             },
           ]
         }
+        suppressHighlighting={true}
       >
         You are sending
          
@@ -487,6 +488,7 @@ exports[`<WalletTabSendDetails /> should render properly and match the snapshot 
               null,
             ]
           }
+          suppressHighlighting={true}
         >
           12,345
         </Text>
@@ -547,6 +549,7 @@ exports[`<WalletTabSendDetails /> should render properly and match the snapshot 
           },
         ]
       }
+      suppressHighlighting={true}
     >
       pay:sov:somepaymentaddress
     </Text>

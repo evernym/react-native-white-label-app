@@ -162,6 +162,9 @@ export type MatchingCredential = {
     to?: number,
     from?: number,
   },
+  requested_attributes?: {
+    [attributeName: string]: string
+  }
 }
 
 export type Dispatch = (action: { type: string }) => any
@@ -172,3 +175,5 @@ export type ReduxConnect = {
 
 export const ID = '@id'
 export const TYPE = '@type'
+
+export const MAX_QR_SIZE = 1817

@@ -14,6 +14,7 @@ import {
   hydrateConnectionSaga,
   hydratePairwiseAgentSaga,
   createPairwiseAgentSaga,
+  upgradeLegacyConnections,
 } from '../store/connections-store'
 import { hydrateClaimMapSaga } from '../claim/claim-store'
 import {
@@ -34,7 +35,10 @@ import {
 } from '../common'
 import { STORAGE_KEY_USER_ONE_TIME_INFO } from '../store/user/type-user-store'
 import { CLAIM_OFFERS } from '../claim-offer/type-claim-offer'
-import { STORAGE_KEY_PAIRWISE_AGENT, STORAGE_KEY_THEMES } from '../store/type-connection-store'
+import {
+  STORAGE_KEY_PAIRWISE_AGENT,
+  STORAGE_KEY_THEMES,
+} from '../store/type-connection-store'
 import { HISTORY_EVENT_STORAGE_KEY } from '../connection-history/type-connection-history'
 import {
   TOUCH_ID_STORAGE_KEY,
@@ -63,12 +67,11 @@ import {
   retryInterruptedActionsSaga,
 } from '../connection-history/connection-history-store'
 import { IS_ALREADY_INSTALLED } from '../common'
+import { alreadyInstalledAction, hydrated, initialized } from './config-store'
 import {
-  alreadyInstalledAction,
-  hydrated,
-  initialized,
-} from './config-store'
-import { ensureVcxInitSuccess } from './route-store'
+  ensureVcxInitAndPoolConnectSuccess,
+  ensureVcxInitSuccess,
+} from './route-store'
 import {
   lockEnable,
   enableTouchIdAction,
@@ -82,10 +85,6 @@ import { safeToDownloadSmsInvitation } from '../sms-pending-invitation/sms-pendi
 import { hydrateProofRequestsSaga } from './../proof-request/proof-request-store'
 import RNFetchBlob from 'rn-fetch-blob'
 import { customLogger } from '../store/custom-logger'
-import {
-  removePersistedOnfidoApplicantIdSaga,
-  removePersistedOnfidoDidSaga,
-} from '../onfido/onfido-store'
 import { hydrateQuestionSaga } from '../question/question-store'
 import { QUESTION_STORAGE_KEY } from '../question/type-question'
 import {
@@ -97,6 +96,7 @@ import { hydrateInviteActionSaga } from '../invite-action/invite-action-store'
 import { hydrateVerifierSaga } from '../verifier/verifier-store'
 import { getConnectionPairwiseAgentInfo } from './store-selector'
 import { hydrateSwitchedEnvironmentDetails } from '../switch-environment/switсh-environment-store'
+import { hydratePhysicalIdDidSaga } from '../physical-id/physical-id-store'
 
 export function* deleteDeviceSpecificData(): Generator<*, *, *> {
   try {
@@ -149,8 +149,6 @@ function* deleteSecureStorageData(): Generator<*, *, *> {
       // not waiting for one delete operation to finish
       deleteOperations.push(call(secureDelete, secureKey))
     }
-    deleteOperations.push(call(removePersistedOnfidoApplicantIdSaga))
-    deleteOperations.push(call(removePersistedOnfidoDidSaga))
     // wait till all delete operations are done in parallel
     yield all(deleteOperations)
   } catch (e) {
@@ -288,12 +286,13 @@ export function* hydrate(): any {
       // as hydrateClaimOffersSaga uses connection history store to restore issue date of claim offers if required
       // as hydrateClaimMapSaga uses connection history store to restore credential name if required
       yield* loadHistorySaga()
-      yield* hydrateClaimOffersSaga()
       yield* hydrateClaimMapSaga()
+      yield* hydrateClaimOffersSaga()
       yield* hydrateQuestionSaga()
       yield* hydrateInviteActionSaga()
       yield* hydrateVerifierSaga()
       yield* hydratePairwiseAgentSaga()
+      yield* hydratePhysicalIdDidSaga()
       // find and try to retry actions which was interrupted by closing the app
       yield* retryInterruptedActionsSaga()
 
@@ -312,11 +311,15 @@ export function* hydrate(): any {
 
       yield* ensureVcxInitSuccess()
 
+      yield* upgradeLegacyConnections()
+
       // create pairwise agent to use for next connection establishing if it is empty
       const pairwiseAgent = yield select(getConnectionPairwiseAgentInfo)
       if (!pairwiseAgent) {
         yield spawn(createPairwiseAgentSaga)
       }
+
+      yield* ensureVcxInitAndPoolConnectSuccess()
 
       // NOTE: This will be changed when the TAA flow changes.
       // yield* hydrateTxnAuthorAgreementSaga()

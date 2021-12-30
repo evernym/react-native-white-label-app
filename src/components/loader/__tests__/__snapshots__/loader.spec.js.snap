@@ -13,7 +13,6 @@ exports[`<Loader /> should check that custom message works 1`] = `
   }
 >
   <ActivityIndicator
-    animating={true}
     color="#777777"
     hidesWhenStopped={true}
     size="large"
@@ -61,6 +60,7 @@ exports[`<Loader /> should check that custom message works 1`] = `
         },
       ]
     }
+    suppressHighlighting={true}
   >
     sovrin is cool
   </Text>
@@ -80,7 +80,6 @@ exports[`<Loader /> should check that dark type works 1`] = `
   }
 >
   <ActivityIndicator
-    animating={true}
     color="#777777"
     hidesWhenStopped={true}
     size="large"
@@ -101,7 +100,6 @@ exports[`<Loader /> should check that light type works 1`] = `
   }
 >
   <ActivityIndicator
-    animating={true}
     color="#ffffff"
     hidesWhenStopped={true}
     size="large"
@@ -122,7 +120,6 @@ exports[`<Loader /> should check that showMessage works as expected when false 1
   }
 >
   <ActivityIndicator
-    animating={true}
     color="#777777"
     hidesWhenStopped={true}
     size="large"
@@ -143,7 +140,6 @@ exports[`<Loader /> should check that showMessage works as expected when true 1`
   }
 >
   <ActivityIndicator
-    animating={true}
     color="#777777"
     hidesWhenStopped={true}
     size="large"
@@ -191,6 +187,7 @@ exports[`<Loader /> should check that showMessage works as expected when true 1`
         },
       ]
     }
+    suppressHighlighting={true}
   >
     show me
   </Text>
@@ -210,7 +207,6 @@ exports[`<Loader /> should render properly and match the snapshot 1`] = `
   }
 >
   <ActivityIndicator
-    animating={true}
     color="#777777"
     hidesWhenStopped={true}
     size="large"
@@ -258,6 +254,7 @@ exports[`<Loader /> should render properly and match the snapshot 1`] = `
         },
       ]
     }
+    suppressHighlighting={true}
   >
     test
   </Text>

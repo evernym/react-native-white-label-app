@@ -88,6 +88,7 @@ export class Question extends Component<
             onCancel={this.onCancel}
             onSelectResponseAndSubmit={this.onSelectResponseAndSubmit}
             question={this.props.question}
+            isOffline={this.props.isOffline}
           />
         )}
       </SafeAreaView>
@@ -304,6 +305,7 @@ const mapStateToProps = (state: Store, { route }: QuestionScreenNavigation) => {
     question,
     senderLogoUrl,
     senderName,
+    isOffline: state.offline.offline,
   }
 }
 

@@ -19,7 +19,6 @@ import type { SendLogsStore } from '../send-logs/type-send-logs'
 import type { RestoreStore } from '../restore/type-restore'
 import type { LedgerStore } from '../ledger/type-ledger-store'
 import type { OfflineStore } from '../offline/type-offline'
-import type { OnfidoStore } from '../onfido/type-onfido'
 import type { QuestionStore } from '../question/type-question'
 import type { CloudRestoreStore } from '../cloud-restore/type-cloud-restore'
 import type { PushNotificationStore } from '../push-notification/type-push-notification'
@@ -27,7 +26,8 @@ import type { TxnAuthorAgreementStore } from '../txn-author-agreement/type-txn-a
 import type { OpenIdConnectStore } from '../open-id-connect/open-id-connect-actions'
 import type { InviteActionStore } from '../invite-action/type-invite-action'
 import type { ShowCredentialStore } from '../show-credential/type-show-credential'
-import type { VerifierStore } from "../verifier/type-verifier";
+import type { VerifierStore } from '../verifier/type-verifier'
+import type { PhysicalIdStore } from '../physical-id/physical-id-type'
 
 export type RouteStore = {
   currentScreen: string,
@@ -56,7 +56,6 @@ export type Store = {
   restore: RestoreStore,
   ledger: LedgerStore,
   offline: OfflineStore,
-  onfido: OnfidoStore,
   question: QuestionStore,
   txnAuthorAgreement: TxnAuthorAgreementStore,
   cloudRestore: CloudRestoreStore,
@@ -64,4 +63,5 @@ export type Store = {
   inviteAction: InviteActionStore,
   showCredential: ShowCredentialStore,
   verifier: VerifierStore,
+  physicalId: PhysicalIdStore,
 }

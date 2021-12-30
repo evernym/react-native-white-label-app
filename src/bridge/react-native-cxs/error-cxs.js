@@ -5,8 +5,12 @@ export const SCHEMA_NOT_FOUND = '1040'
 export const INVALID_CREDENTIAL_OFFER = '1043'
 export const ACTION_IS_NOT_SUPPORTED = '1103'
 export const CLOUD_AGENT_UNAVAILABLE = '1010'
+export const NO_POOL_OPEN = '1030'
 export const CREDENTIAL_SCHEMA_NOT_FOUND = '1031'
 export const WALLET_ITEM_NOT_FOUND = '1073'
+export const INVALID_AGENCY_RESPONSE = '1020'
+export const NOT_READY = '1005'
+export const CONNECTION_UPGRADE_NOT_NEEDED = '1065'
 
 export const CONNECTION_ALREADY_EXISTS_MESSAGE =
   'The connection invitation has already been accepted. ' +

@@ -10,7 +10,6 @@ import { CLAIM_OFFER_STATUS, ClaimOfferPayload, ClaimOfferStore } from '../claim
 import { QuestionStoreData } from '../question/type-question'
 import { HISTORY_EVENT_STATUS } from '../connection-history/type-connection-history'
 
-
 export const isConnectionCompleted = (connection: Connection) => !connection.isFetching
 
 export const isIssuanceCompleted = (offer: ClaimOfferPayload) => offer.status !== CLAIM_OFFER_STATUS.ACCEPTED
@@ -52,7 +51,8 @@ export const isNewEvent = (status: string, show?: boolean) => {
     (status === HISTORY_EVENT_STATUS.CLAIM_OFFER_RECEIVED ||
       status === HISTORY_EVENT_STATUS.PROOF_REQUEST_RECEIVED ||
       status === HISTORY_EVENT_STATUS.QUESTION_RECEIVED ||
-      status === HISTORY_EVENT_STATUS.INVITE_ACTION_RECEIVED) &&
+      status === HISTORY_EVENT_STATUS.INVITE_ACTION_RECEIVED ||
+      status === HISTORY_EVENT_STATUS.PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED) &&
     show
   ) {
     return true

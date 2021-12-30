@@ -2,7 +2,7 @@
 import type { ReactNavigation } from '../common/type-common'
 import type { ClaimOfferPayload } from '../claim-offer/type-claim-offer'
 import type { Attribute } from '../push-notification/type-push-notification'
-import { deleteClaim } from '../claim/claim-store'
+import { deleteClaim } from '../claim-offer/claim-offer-store'
 
 export type MyCredentialsProps = {
   offers: ClaimOffers,
@@ -34,6 +34,7 @@ export type CredentialItem = {
   logoUrl?: ?string,
   remoteDid: string,
   colorTheme?: string,
+  claimDefinitionId?: ?string,
 }
 
 export type ClaimOffers = {
@@ -46,6 +47,7 @@ export type CardStackProps = {
   isHidden: boolean,
   setActiveStack: (stackName: string | null) => void,
   enabledCardGesture?: boolean,
+  isNeedMargin?: boolean,
 }
 
 export const MESSAGE_DELETE_CLAIM_TITLE = 'Delete credential?'

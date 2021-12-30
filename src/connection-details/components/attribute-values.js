@@ -32,7 +32,7 @@ import { Avatar, UserAvatar } from '../../components'
 import { DefaultLogo } from '../../components/default-logo/default-logo'
 import { ALERT_ICON, CHECKMARK_ICON, EvaIcon } from '../../common/icons'
 import { DataRenderer } from '../../components/attachment/data-renderer'
-import { getFileExtensionName } from '../../components/attachment/helpers'
+import { getFileExtensionLabel } from '../../components/attachment/helpers'
 import {
   isSelected,
   keyExtractor,
@@ -43,6 +43,8 @@ import { ExpandableText } from '../../components/expandable-text/expandable-text
 import { BLANK_ATTRIBUTE_DATA_TEXT } from '../type-connection-details'
 import { modalOptions } from '../utils/modalOptions'
 import { CustomSelectAttributeValueModal } from '../../external-imports'
+import { ATTRIBUTE_TYPE } from '../../proof-request/type-proof-request'
+import { MismatchRestrictionsIcon } from '../../components/mismatch-restrictions-icon'
 
 export const renderAvatarWithSource = (avatarSource: number | ImageSource) => {
   return <Avatar radius={18} src={avatarSource} />
@@ -90,71 +92,85 @@ const AttributeValues = ({
     })
   }
 
+  const selectItem = (item: Object, index: number) => {
+    if (item.type !== ATTRIBUTE_TYPE.RESTRICTIONS_MISMATCH) {
+      setSelectedValueIndex(index)
+    }
+  }
+
   const renderItem = ({ item, index }: { item: Object, index: number }) => {
+    const attributeWithAttachment = item.label.toLowerCase().endsWith('_link')
     return (
       <TouchableOpacity
+        style={styles.itemContainer}
         onPress={() => {
-          setSelectedValueIndex(index)
+          selectItem(item, index)
         }}
       >
-        <View style={styles.itemContainer}>
-          <View style={styles.itemInnerContainer}>
-            <View style={styles.avatarSection}>
-              {typeof item.logoUrl === 'string' ? (
-                <Avatar radius={18} src={{ uri: item.logoUrl }} />
-              ) : (
-                <DefaultLogo text={item.senderName} size={32} fontSize={17} />
-              )}
-            </View>
-            <View style={styles.infoSection}>
-              <View style={styles.infoSection}>
-                {!item.data || item.data === '' ? (
-                  <Text style={styles.contentGray}>
-                    {BLANK_ATTRIBUTE_DATA_TEXT}
-                  </Text>
-                ) : (
-                  <ExpandableText
-                    style={styles.credentialNameText}
-                    text={
-                      item.label.toLowerCase().endsWith('_link')
-                        ? `${getFileExtensionName(
-                            JSON.parse(item.data)['mime-type']
-                          )} file`
-                        : item.data
-                    }
-                    lines={1}
-                  />
-                )}
-              </View>
-              <View style={styles.infoSection}>
-                <View style={styles.attributesSection}>
-                  <ExpandableText
-                    style={styles.attributesText}
-                    text={item.credentialName}
-                    lines={1}
-                  />
-                </View>
-              </View>
-              {item.label.toLowerCase().endsWith('_link') && (
-                <View style={styles.attachmentWrapper}>
-                  <DataRenderer
-                    {...{
-                      label: item.label,
-                      data: item.data,
-                      uid: item.claimUuid || '',
-                      remotePairwiseDID: item.claimUuid || '',
-                    }}
-                  />
-                </View>
-              )}
-            </View>
+        <View
+          style={[
+            styles.itemInnerContainer,
+            item.type === ATTRIBUTE_TYPE.RESTRICTIONS_MISMATCH && {
+              opacity: 0.5,
+            },
+          ]}
+        >
+          <View style={styles.avatarSection}>
+            {typeof item.logoUrl === 'string' ? (
+              <Avatar radius={18} src={{ uri: item.logoUrl }} />
+            ) : (
+              <DefaultLogo text={item.senderName} size={32} fontSize={17} />
+            )}
           </View>
-          {index === selectedValueIndex && (
-            <View style={styles.iconWrapper}>
-              <EvaIcon name={CHECKMARK_ICON} color={colors.black} />
+          <View style={styles.infoSection}>
+            <View style={styles.infoSection}>
+              {!item.data || item.data === '' ? (
+                <Text style={styles.contentGray}>
+                  {BLANK_ATTRIBUTE_DATA_TEXT}
+                </Text>
+              ) : (
+                <ExpandableText
+                  style={styles.credentialNameText}
+                  text={
+                    attributeWithAttachment
+                      ? `${getFileExtensionLabel(
+                          JSON.parse(item.data)['mime-type']
+                        )}`
+                      : item.data
+                  }
+                  lines={1}
+                />
+              )}
             </View>
-          )}
+            <View style={[styles.infoSection, styles.attributesSection]}>
+              <ExpandableText
+                style={styles.attributesText}
+                text={item.credentialName}
+                lines={1}
+              />
+            </View>
+            {attributeWithAttachment && (
+              <View style={styles.attachmentWrapper}>
+                <DataRenderer
+                  {...{
+                    label: item.label,
+                    data: item.data,
+                    uid: item.claimUuid || '',
+                    remotePairwiseDID: item.claimUuid || '',
+                  }}
+                />
+              </View>
+            )}
+          </View>
         </View>
+        {item.type === ATTRIBUTE_TYPE.RESTRICTIONS_MISMATCH && (
+          <MismatchRestrictionsIcon sender={params.sender} />
+        )}
+        {index === selectedValueIndex && (
+          <View style={styles.iconWrapper}>
+            <EvaIcon name={CHECKMARK_ICON} color={colors.black} />
+          </View>
+        )}
       </TouchableOpacity>
     )
   }
@@ -173,41 +189,38 @@ const AttributeValues = ({
       </View>
       {self_attest_allowed && params.onTextChange && (
         <TouchableOpacity
+          style={styles.itemContainer}
           onPress={() => {
             handleCustomValuesNavigation()
           }}
         >
-          <View style={styles.itemContainer}>
-            <View style={styles.inputContainer}>
-              <View style={styles.inputAvatarSection}>
-                <UserAvatar>{renderAvatarWithSource}</UserAvatar>
-              </View>
-              <View style={styles.infoSection}>
-                <TextInput
-                  style={styles.contentInput}
-                  autoCorrect={false}
-                  blurOnSubmit={true}
-                  clearButtonMode="always"
-                  numberOfLines={3}
-                  multiline={true}
-                  maxLength={200}
-                  defaultValue={customValue || 'Default'}
-                  placeholder={`Enter`}
-                  returnKeyType="done"
-                  accessible={true}
-                  underlineColorAndroid="transparent"
-                  editable={false}
-                  pointerEvents="none"
-                />
-                <Text style={styles.attributesText}>Manual input value</Text>
-              </View>
-              {selectedValueIndex === -1 && (
-                <View style={styles.iconWrapper}>
-                  <EvaIcon name={CHECKMARK_ICON} color={colors.black} />
-                </View>
-              )}
-            </View>
+          <View style={styles.inputAvatarSection}>
+            <UserAvatar>{renderAvatarWithSource}</UserAvatar>
           </View>
+          <View style={styles.infoSection}>
+            <TextInput
+              style={styles.contentInput}
+              autoCorrect={false}
+              blurOnSubmit={true}
+              clearButtonMode="always"
+              numberOfLines={3}
+              multiline={true}
+              maxLength={200}
+              defaultValue={customValue || 'Default'}
+              placeholder={`Enter`}
+              returnKeyType="done"
+              accessible={true}
+              underlineColorAndroid="transparent"
+              editable={false}
+              pointerEvents="none"
+            />
+            <Text style={styles.attributesText}>Manual input value</Text>
+          </View>
+          {selectedValueIndex === -1 && (
+            <View style={styles.iconWrapper}>
+              <EvaIcon name={CHECKMARK_ICON} color={colors.black} />
+            </View>
+          )}
         </TouchableOpacity>
       )}
       {!self_attest_allowed && params.onTextChange && (

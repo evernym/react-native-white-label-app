@@ -1,6 +1,15 @@
 // @flow
 import { Platform } from 'react-native'
-import { all, call, fork, put, race, select, take, takeLeading } from 'redux-saga/effects'
+import {
+  all,
+  call,
+  fork,
+  put,
+  race,
+  select,
+  take,
+  takeLeading,
+} from 'redux-saga/effects'
 import delay from '@redux-saga/delay-p'
 import PushNotificationIOS from '@react-native-community/push-notification-ios'
 import {
@@ -70,39 +79,60 @@ import {
 } from '../bridge/react-native-cxs/RNCxs'
 import type { Connection } from './type-connection-store'
 import {
+  convertClaimOfferPushPayloadToAppClaimOffer,
+  convertProofRequestPushPayloadToAppProofRequest,
   fetchAdditionalDataError,
   setFetchAdditionalDataPendingKeys,
   updatePayloadToRelevantStoreAndRedirect,
   updatePayloadToRelevantStoreSaga,
 } from '../push-notification/push-notification-store'
-import type { CxsPoolConfig } from '../bridge/react-native-cxs/type-cxs'
 import type { UserOneTimeInfo } from './user/type-user-store'
 import { connectRegisterCreateAgentDone } from './user/user-store'
 import findKey from 'lodash.findkey'
 import { SAFE_TO_DOWNLOAD_SMS_INVITATION } from '../sms-pending-invitation/type-sms-pending-invitation'
 import { GENESIS_FILE_NAME, MESSAGE_TYPE } from '../api/api-constants'
-import type { ClaimOfferMessagePayload, ClaimPushPayload } from './../push-notification/type-push-notification'
+import type { ClaimOfferMessagePayload } from './../push-notification/type-push-notification'
 import type { ProofRequestPushPayload } from '../proof-request/type-proof-request'
-import type { ClaimPushPayloadVcx } from './../claim/type-claim'
+import type { ClaimPushPayload } from './../claim/type-claim'
 import type { QuestionPayload } from './../question/type-question'
 import { saveSerializedClaimOffer } from './../claim-offer/claim-offer-store'
-import { getAllConnections, getPendingFetchAdditionalDataKey } from './store-selector'
+import {
+  getAllConnections,
+  getPendingFetchAdditionalDataKey,
+} from './store-selector'
 import { captureError } from '../services/error/error-handler'
 import { customLogger } from '../store/custom-logger'
 import { ensureVcxInitSuccess } from './route-store'
-import { registerCloudAgentWithoutToken, registerCloudAgentWithToken } from './user/cloud-agent'
-import { processAttachedRequest, updateAriesConnectionState } from '../invitation/invitation-store'
-import { COMMITEDANSWER_PROTOCOL, QUESTIONANSWER_PROTOCOL } from '../question/type-question'
+import {
+  registerCloudAgentWithoutToken,
+  registerCloudAgentWithToken,
+} from './user/cloud-agent'
+import {
+  processAttachedRequest,
+  updateAriesConnectionState,
+} from '../invitation/invitation-store'
+import {
+  COMMITEDANSWER_PROTOCOL,
+  QUESTIONANSWER_PROTOCOL,
+} from '../question/type-question'
 import { autoAcceptCredentialPresentationRequest } from '../external-imports'
-import type { InviteActionData, InviteActionPayload, InviteActionRequest } from '../invite-action/type-invite-action'
+import type {
+  InviteActionData,
+  InviteActionPayload,
+  InviteActionRequest,
+} from '../invite-action/type-invite-action'
 import { INVITE_ACTION_PROTOCOL } from '../invite-action/type-invite-action'
 import { retrySaga } from '../api/api-utils'
 import { CLOUD_AGENT_UNAVAILABLE } from '../bridge/react-native-cxs/error-cxs'
 import { updateVerifierState } from '../verifier/verifier-store'
 import { presentationProposalSchema } from '../proof-request/proof-request-qr-code-reader'
-import { deleteOneTimeConnection, deleteOneTimeConnectionOccurredSaga } from './connections-store'
-import { getAttachedRequestData } from '../invitation/invitation-helpers'
-import { baseUrls, defaultEnvironment } from '../environment'
+import {
+  deleteOneTimeConnection,
+  deleteOneTimeConnectionOccurredSaga,
+  handleUpgradeConnectionMessage,
+} from './connections-store'
+import { getAttachedRequestData, getThreadId } from '../invitation/invitation-helpers'
+import { environments, defaultEnvironment } from '../environment'
 import {
   persistEnvironmentDetails,
   watchChangeEnvironmentUrl,
@@ -113,9 +143,13 @@ import {
   SWITCH_ENVIRONMENT,
   SWITCH_ERROR_ALERTS,
 } from '../switch-environment/type-switch-environment'
+import {
+  convertAriesCredentialOfferToAppClaimOffer,
+  convertAriesProofRequestToCxsProofRequest,
+} from '../bridge/react-native-cxs/vcx-transformers'
 
 const initialState: ConfigStore = {
-  ...baseUrls[defaultEnvironment],
+  ...environments[defaultEnvironment],
   isAlreadyInstalled: false,
   // this flag is used to identify if we got the already stored data
   // from the phone and loaded in app
@@ -327,14 +361,10 @@ export function* initVcx(findingWallet?: any): Generator<*, *, *> {
   let lastInitException = new Error('')
   while (retryCount < 4) {
     try {
-      yield call(
-        init,
-        {
-          ...userOneTimeInfo,
-          ...agencyConfig,
-        },
-        getGenesisFileName(agencyUrl),
-      )
+      yield call(init, {
+        ...userOneTimeInfo,
+        ...agencyConfig,
+      })
       if (findingWallet !== true) {
         yield put(vcxInitSuccess())
       }
@@ -355,18 +385,24 @@ export function* initVcx(findingWallet?: any): Generator<*, *, *> {
 }
 
 export function* connectToPool(): Generator<*, *, *> {
-  const { agencyUrl, poolConfig }: ConfigStore = yield select(getConfig)
+  const { agencyUrl }: ConfigStore = yield select(getConfig)
 
-  const config: CxsPoolConfig = {
-    poolConfig: poolConfig,
+  const configName = getConfigName(agencyUrl)
+  const environment = environments[configName]
+  if (!environment) {
+    yield put(
+      vcxInitPoolFail(
+        ERROR_VCX_INIT_FAIL('Cannot find requested configuration'),
+      ),
+    )
+    return
   }
-  const genesisFileName = getGenesisFileName(agencyUrl)
 
   // re-try init pool 2 times, if it does not get success, raise fail
   let lastInitException = new Error('')
   for (let i = 0; i < 2; i++) {
     try {
-      yield call(initPool, config, genesisFileName)
+      yield call(initPool, environment.poolConfig)
       yield put(vcxInitPoolSuccess())
       return
     } catch (e) {
@@ -383,11 +419,18 @@ export function* connectToPool(): Generator<*, *, *> {
 export const ERROR_POOL_INIT_FAIL =
   'Unable to connect to pool ledger. Check your internet connection or try to restart app.'
 
+export const getConfigName = (agencyUrl: string) => {
+  return findKey(
+    environments,
+    (environment) => environment.agencyUrl === agencyUrl,
+  )
+}
+
 export const getGenesisFileName = (agencyUrl: string) => {
   return (
     GENESIS_FILE_NAME +
     '_' +
-    findKey(baseUrls, (environment) => environment.agencyUrl === agencyUrl)
+    findKey(environments, (environment) => environment.agencyUrl === agencyUrl)
   )
 }
 
@@ -417,6 +460,12 @@ export function* getMessagesSaga(
   params: ?GetUnacknowledgedMessagesAction,
 ): Generator<*, *, *> {
   try {
+    const userOneTimeInfo = yield select(getUserOneTimeInfo)
+    if (!userOneTimeInfo) {
+      // agent has not been provisioned yet
+      return
+    }
+
     //make sure vcx is initialized
     const vcxResult = yield* ensureVcxInitSuccess()
     if (vcxResult && vcxResult.fail) {
@@ -492,25 +541,29 @@ export function* processMessages(
 
   for (let i = 0; i < messages.length; i++) {
     try {
-      let pairwiseDID = messages[i].pairwiseDID || ''
+      const isDecryptedPayload = !!messages[i]?.decryptedPayload
 
-      if (
-        !(
-          dataAlreadyExists &&
-          dataAlreadyExists[`${messages[i].uid}-${pairwiseDID}`]
-        )
-      ) {
-        yield put(
-          setFetchAdditionalDataPendingKeys(messages[i].uid, pairwiseDID),
-        )
+      if (isDecryptedPayload) {
+        let pairwiseDID = messages[i].pairwiseDID || ''
 
-        // get message type
-        let isAries = messages[i].type === MESSAGE_TYPE.ARIES
+        if (
+          !(
+            dataAlreadyExists &&
+            dataAlreadyExists[`${messages[i].uid}-${pairwiseDID}`]
+          )
+        ) {
+          yield put(
+            setFetchAdditionalDataPendingKeys(messages[i].uid, pairwiseDID),
+          )
 
-        if (isAries) {
-          yield fork(handleAriesMessage, messages[i])
-        } else {
-          yield fork(handleProprietaryMessage, messages[i])
+          // get message type
+          const isAries = messages[i].type === MESSAGE_TYPE.ARIES
+
+          if (isAries) {
+            yield fork(handleAriesMessage, messages[i])
+          } else {
+            yield fork(handleProprietaryMessage, messages[i])
+          }
         }
       }
     } catch (e) {
@@ -525,7 +578,7 @@ export const convertToAriesProofRequest = async (message: GenericObject) =>
   JSON.stringify({
     '@type': 'https://didcomm.org/present-proof/1.0/request-presentation',
     '@id': message['thread_id'],
-    comment: 'Proof Request',
+    comment: 'Verification Request',
     'request_presentations~attach': [
       {
         '@id': 'libindy-request-presentation-0',
@@ -558,7 +611,10 @@ export const convertDecryptedPayloadToQuestion = (
     question_detail: parsedMsg.question_detail,
     valid_responses: parsedMsg.valid_responses,
     nonce: protocol === QUESTIONANSWER_PROTOCOL ? parsedMsg.nonce : undefined,
-    timing: protocol === QUESTIONANSWER_PROTOCOL ? parsedMsg['~timing'] : parsedMsg['@timing'],
+    timing:
+      protocol === QUESTIONANSWER_PROTOCOL
+        ? parsedMsg['~timing']
+        : parsedMsg['@timing'],
     issuer_did: senderDID,
     remoteDid: '',
     uid,
@@ -658,7 +714,7 @@ function* handleProprietaryMessage(
       | ClaimOfferMessagePayload
       | ProofRequestPushPayload
       | ClaimPushPayload
-      | ClaimPushPayloadVcx
+      | ClaimPushPayload
       | QuestionPayload
       | null = null
 
@@ -684,17 +740,19 @@ function* handleProprietaryMessage(
       const { claimHandle, claimOffer } = yield call(
         createCredentialWithProprietaryOffer,
         uid,
-        message,
+        message
       )
+
       yield fork(saveSerializedClaimOffer, claimHandle, forDID, uid)
 
-      additionalData = {
-        ...claimOffer,
-        remoteName: senderName,
-        issuer_did: senderDID,
-        from_did: senderDID,
-        to_did: forDID,
-      }
+      additionalData = convertClaimOfferPushPayloadToAppClaimOffer(
+        {
+          ...claimOffer,
+          remoteName: senderName,
+          issuer_did: senderDID,
+        },
+        remotePairwiseDID
+      )
     }
 
     // proprietary credential
@@ -712,8 +770,15 @@ function* handleProprietaryMessage(
 
       const proofHandle = yield call(proofCreateWithRequest, uid, message)
 
+      const appProofRequest =
+        convertProofRequestPushPayloadToAppProofRequest(
+          {
+            ...JSON.parse(message),
+            remoteName: senderName,
+          })
+
       additionalData = {
-        ...JSON.parse(message),
+        ...appProofRequest,
         proofHandle,
       }
     }
@@ -727,6 +792,10 @@ function* handleProprietaryMessage(
         senderDID,
         senderName,
       )
+    }
+
+    if (type === MESSAGE_TYPE.UPGRADE) {
+      yield call(handleUpgradeConnectionMessage, connection, message)
     }
 
     if (!additionalData) {
@@ -761,7 +830,9 @@ function* handleProprietaryMessage(
   }
 }
 
-function* handleAriesMessage(downloadMessage: DownloadedMessage): Generator<*, *, *> {
+function* handleAriesMessage(
+  downloadMessage: DownloadedMessage,
+): Generator<*, *, *> {
   let { uid, type, decryptedPayload, pairwiseDID } = downloadMessage
 
   const connections = yield select(getAllConnections)
@@ -780,11 +851,14 @@ function* handleAriesMessage(downloadMessage: DownloadedMessage): Generator<*, *
 
   const payload = JSON.parse(decryptedPayload)
   const payloadType = payload['@type']
-  let message = payload['@msg']
-  if (!message) {
+  let payloadMessage = payload['@msg']
+  if (!payloadMessage) {
     // received message doesn't contain any payload, so just return
     return
   }
+  const parsedMessage = JSON.parse(payloadMessage)
+  const payloadMessageType = parsedMessage ? parsedMessage['@type'] : null
+  const threadId = getThreadId(parsedMessage)
 
   const {
     identifier: forDID,
@@ -804,7 +878,6 @@ function* handleAriesMessage(downloadMessage: DownloadedMessage): Generator<*, *
       | ClaimOfferMessagePayload
       | ProofRequestPushPayload
       | ClaimPushPayload
-      | ClaimPushPayloadVcx
       | QuestionPayload
       | null = null
 
@@ -812,67 +885,69 @@ function* handleAriesMessage(downloadMessage: DownloadedMessage): Generator<*, *
     let redirectToScreen = true
 
     if (payloadType.name === 'credential-offer') {
-      const parseMessage = JSON.parse(message)
-      if (parseMessage && parseMessage[0]) {
-        uid = parseMessage[0]['thread_id']
-      }
+      uid = threadId
 
       // update type so that messages can be processed and added
       messageType = MESSAGE_TYPE.CLAIM_OFFER
 
-      const { claimHandle, claimOffer } = yield call(
+      const appClaimOffer = yield call(convertAriesCredentialOfferToAppClaimOffer, parsedMessage)
+
+      const claimHandle = yield call(
         createCredentialWithAriesOffer,
-        uid,
-        message,
+        payloadMessage,
       )
       yield fork(saveSerializedClaimOffer, claimHandle, forDID, uid)
 
-      additionalData = {
-        ...claimOffer,
-        remoteName: senderName,
-        issuer_did: senderDID,
-        from_did: senderDID,
-        to_did: forDID,
-      }
+      additionalData = convertClaimOfferPushPayloadToAppClaimOffer(
+        {
+          ...appClaimOffer,
+          remoteName: senderName,
+          issuer_did: senderDID,
+        },
+        remotePairwiseDID
+      )
     }
 
     if (payloadType.name === 'credential') {
       messageType = MESSAGE_TYPE.CLAIM
       additionalData = {
         connectionHandle,
-        message,
+        message: payloadMessage,
       }
     }
 
     if (payloadType.name === 'presentation-request') {
       messageType = MESSAGE_TYPE.PROOF_REQUEST
-      let proofRequest = JSON.parse(message)
 
-      if (proofRequest['~service']) {
-        // Aries Proof Request
-        message = yield call(convertToAriesProofRequest, proofRequest)
-      }
+      const appProofRequest = yield call(
+        convertAriesProofRequestToCxsProofRequest,
+        parsedMessage,
+        senderName,
+      )
 
-      const proofHandle = yield call(proofCreateWithRequest, uid, message)
+      const proofHandle = yield call(proofCreateWithRequest, uid, payloadMessage)
 
       additionalData = {
-        ...proofRequest,
+        ...appProofRequest,
         proofHandle,
-        identifier: forDID,
       }
 
-      if (proofRequest['thread_id'] && attachedRequest) {
+      if (attachedRequest) {
         const data = yield call(getAttachedRequestData, attachedRequest.data)
 
         if (
           data &&
           schemaValidator.validate(presentationProposalSchema, data) &&
-          data['@id'] === proofRequest['thread_id']
+          data['@id'] === threadId
         ) {
-          yield fork(deleteOneTimeConnectionOccurredSaga, deleteOneTimeConnection(forDID))
-          additionalData.ephemeralProofRequest = proofRequest['~service']
-            ? message
+          yield fork(
+            deleteOneTimeConnectionOccurredSaga,
+            deleteOneTimeConnection(forDID),
+          )
+          additionalData.ephemeralProofRequest = parsedMessage['~service']
+            ? payloadMessage
             : undefined
+
           if (autoAcceptCredentialPresentationRequest) {
             additionalData.additionalPayloadInfo = {
               hidden: true,
@@ -891,7 +966,7 @@ function* handleAriesMessage(downloadMessage: DownloadedMessage): Generator<*, *
     if (payloadType.name === 'committed-question') {
       additionalData = convertDecryptedPayloadToQuestion(
         connectionHandle,
-        message,
+        payloadMessage,
         uid,
         forDID,
         senderDID,
@@ -903,7 +978,7 @@ function* handleAriesMessage(downloadMessage: DownloadedMessage): Generator<*, *
     if (payloadType.name === 'question') {
       additionalData = convertDecryptedPayloadToQuestion(
         connectionHandle,
-        message,
+        payloadMessage,
         uid,
         forDID,
         senderDID,
@@ -915,7 +990,7 @@ function* handleAriesMessage(downloadMessage: DownloadedMessage): Generator<*, *
     if (payloadType.name === 'invite-action') {
       additionalData = convertDecryptedPayloadToInviteAction(
         connectionHandle,
-        message,
+        payloadMessage,
         uid,
         forDID,
         senderDID,
@@ -925,39 +1000,36 @@ function* handleAriesMessage(downloadMessage: DownloadedMessage): Generator<*, *
     }
 
     if (payloadType.name === 'presentation') {
-      yield call(updateVerifierState, message)
+      yield call(updateVerifierState, payloadMessage)
     }
 
-    if (payloadType.name === 'problem-report') {
-      const payloadMessageType = JSON.parse(message)['@type']
-      if (payloadMessageType && payloadMessageType.includes('present-proof')) {
-        yield call(updateVerifierState, message)
-      }
+    if (payloadType.name === 'problem-report' && payloadMessageType && payloadMessageType.includes('present-proof')) {
+      yield call(updateVerifierState, payloadMessage)
     }
 
-    if (payloadType && payloadType.name === 'aries' && message) {
-      const payloadMessageType = JSON.parse(message)['@type']
+    if (payloadMessageType && payloadMessageType.endsWith('UPGRADE_INFO')) {
+      yield call(handleUpgradeConnectionMessage, connection, payloadMessage)
+    }
 
-      if (
-        payloadMessageType &&
-        payloadMessageType.includes('connections') &&
-        (payloadMessageType.endsWith('response') ||
-          payloadMessageType.endsWith('problem_report'))
-      ) {
-        // if we receive connection response message or connection problem report
-        // we need to update state of related corresponding connection object
-        yield call(
-          updateAriesConnectionState,
-          forDID,
-          vcxSerializedConnection,
-          message,
-        )
-      }
+    if (
+      payloadMessageType &&
+      payloadMessageType.includes('connections') &&
+      (payloadMessageType.endsWith('response') ||
+        payloadMessageType.endsWith('problem_report'))
+    ) {
+      // if we receive connection response message or connection problem report
+      // we need to update state of related corresponding connection object
+      yield call(
+        updateAriesConnectionState,
+        forDID,
+        vcxSerializedConnection,
+        payloadMessage,
+      )
+    }
 
-      if (payloadMessageType && payloadMessageType.endsWith('ack')) {
-        // if we have just ack data then for now send acknowledge to server
-        // so that we don't download it again
-      }
+    if (payloadMessageType && payloadMessageType.endsWith('ack')) {
+      // if we have just ack data then for now send acknowledge to server
+      // so that we don't download it again
     }
 
     if (!additionalData) {
@@ -1002,11 +1074,11 @@ export function* acknowledgeServer(
   let tempData = data
   if (Array.isArray(tempData) && tempData.length > 0) {
     let acknowledgeServerData: AcknowledgeServerData = []
-    tempData.forEach(msgData => {
+    tempData.forEach((msgData) => {
       const uids = msgData.msgs
         // We need to omit proprietary CLAIM message. We update it only after actual processing
-        .filter(msg => msg.type !== MESSAGE_TYPE.CLAIM)
-        .map(msg => msg.uid)
+        .filter((msg) => msg.type !== MESSAGE_TYPE.CLAIM)
+        .map((msg) => msg.uid)
       if (uids.length > 0)
         acknowledgeServerData.push({
           pairwiseDID: msgData.pairwiseDID,
@@ -1092,7 +1164,7 @@ export default function configReducer(
 ) {
   switch (action.type) {
     case SERVER_ENVIRONMENT_CHANGED:
-      const urls = baseUrls[action.serverEnvironment]
+      const urls = environments[action.serverEnvironment]
       return {
         ...state,
         ...urls,
@@ -1130,6 +1202,11 @@ export default function configReducer(
         agencyVerificationKey: action.agencyVerificationKey,
         agencyUrl: action.agencyUrl,
         paymentMethod: action.paymentMethod,
+        domainDID: action.domainDID,
+        verityFlowBaseUrl: action.verityFlowBaseUrl,
+        identityCardCredDefId: action.identityCardCredDefId,
+        drivingLicenseCredDefId: action.drivingLicenseCredDefId,
+        passportCredDefId: action.passportCredDefId,
       }
     case VCX_INIT_NOT_STARTED:
       return {

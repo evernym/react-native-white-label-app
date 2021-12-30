@@ -3,7 +3,15 @@
 exports[`claim offer store action: ADD_SERIALIZED_CLAIM_OFFER 1`] = `
 Object {
   "usd123": Object {
+    "caseInsensitiveAttributes": Array [
+      Object {
+        "address1": "Address 1",
+        "address2": "Address 2",
+      },
+    ],
+    "claimId": "claimUUID",
     "claimRequestStatus": "CLAIM_REQUEST_FAIL",
+    "colorTheme": "#86B93B",
     "data": Object {
       "claimDefinitionSchemaSequenceNumber": 36,
       "name": "Home Address",
@@ -46,7 +54,15 @@ Object {
 exports[`claim offer store action: CLAIM_OFFER_SHOW_START 1`] = `
 Object {
   "usd123": Object {
+    "caseInsensitiveAttributes": Array [
+      Object {
+        "address1": "Address 1",
+        "address2": "Address 2",
+      },
+    ],
+    "claimId": "claimUUID",
     "claimRequestStatus": "NONE",
+    "colorTheme": "#86B93B",
     "data": Object {
       "claimDefinitionSchemaSequenceNumber": 36,
       "name": "Home Address",
@@ -97,7 +113,15 @@ Object {
 exports[`claim offer store action: RESET_CLAIM_REQUEST_STATUS 1`] = `
 Object {
   "usd123": Object {
+    "caseInsensitiveAttributes": Array [
+      Object {
+        "address1": "Address 1",
+        "address2": "Address 2",
+      },
+    ],
+    "claimId": "claimUUID",
     "claimRequestStatus": "NONE",
+    "colorTheme": "#86B93B",
     "data": Object {
       "claimDefinitionSchemaSequenceNumber": 36,
       "name": "Home Address",
@@ -310,7 +334,15 @@ Object {
 exports[`claim offer store claim request is fail 1`] = `
 Object {
   "usd123": Object {
+    "caseInsensitiveAttributes": Array [
+      Object {
+        "address1": "Address 1",
+        "address2": "Address 2",
+      },
+    ],
+    "claimId": "claimUUID",
     "claimRequestStatus": "CLAIM_REQUEST_FAIL",
+    "colorTheme": "#86B93B",
     "data": Object {
       "claimDefinitionSchemaSequenceNumber": 36,
       "name": "Home Address",
@@ -379,7 +411,15 @@ Object {
 exports[`claim offer store claim request is success 1`] = `
 Object {
   "usd123": Object {
+    "caseInsensitiveAttributes": Array [
+      Object {
+        "address1": "Address 1",
+        "address2": "Address 2",
+      },
+    ],
+    "claimId": "claimUUID",
     "claimRequestStatus": "CLAIM_REQUEST_SUCCESS",
+    "colorTheme": "#86B93B",
     "data": Object {
       "claimDefinitionSchemaSequenceNumber": 36,
       "name": "Home Address",

@@ -14,6 +14,9 @@ Array [
           "referent": "claim::ea03d8ca-eeb4-4944-b7d6-5abcf4503d73",
           "schema_id": "V4SGRU86Z58d6TV7Pf:2:slKljrSQ80tCQ40F:33089",
         },
+        "requested_attributes": Object {
+          "Address 1": "Address 1",
+        },
       },
       "data": "Address 1",
       "key": "attr1_uuid",
@@ -36,6 +39,9 @@ Array [
           "cred_def_id": "V4SGRU86Z58d6TV7PBUe6f:3:CL:24:tag1",
           "referent": "claim::6a0f42b4-1210-4bdb-ad53-10ed765276b5",
           "schema_id": "V4SGRU86Z58d6TV7Pf:2:slKljrSQ80tCQ40F:33089",
+        },
+        "requested_attributes": Object {
+          "Address 2": "Address 2",
         },
       },
       "data": "Address 2",
@@ -65,6 +71,9 @@ Array [
           "referent": "claim::ea03d8ca-eeb4-4944-b7d6-5abcf4503d73",
           "schema_id": "V4SGRU86Z58d6TV7Pf:2:slKljrSQ80tCQ40F:33089",
         },
+        "requested_attributes": Object {
+          "Address 1": "Address 1",
+        },
       },
       "data": "Address 1",
       "key": "attr1_uuid",
@@ -88,6 +97,9 @@ Array [
           "referent": "claim::6a0f42b4-1210-4bdb-ad53-10ed765276b5",
           "schema_id": "V4SGRU86Z58d6TV7Pf:2:slKljrSQ80tCQ40F:33089",
         },
+        "requested_attributes": Object {
+          "Address 2": "Address 2",
+        },
       },
       "data": "Address 2",
       "key": "attr2_uuid",
@@ -102,6 +114,7 @@ Array [
   Array [
     Object {
       "data": undefined,
+      "hasCredentialsWithRequestedAttribute": false,
       "key": "attr3_uuid",
       "label": "Address 3",
       "self_attest_allowed": true,
@@ -114,6 +127,7 @@ Array [
   Array [
     Object {
       "data": undefined,
+      "hasCredentialsWithRequestedAttribute": false,
       "key": "attr4_uuid",
       "label": "Address 4",
       "self_attest_allowed": true,
@@ -126,6 +140,7 @@ Array [
   Array [
     Object {
       "data": undefined,
+      "hasCredentialsWithRequestedAttribute": false,
       "key": "attr5_uuid",
       "label": "Address 5",
       "self_attest_allowed": true,
@@ -138,6 +153,7 @@ Array [
   Array [
     Object {
       "data": undefined,
+      "hasCredentialsWithRequestedAttribute": false,
       "key": "attr6_uuid",
       "label": "Address 6",
       "self_attest_allowed": true,
@@ -150,6 +166,7 @@ Array [
   Array [
     Object {
       "data": undefined,
+      "hasCredentialsWithRequestedAttribute": false,
       "key": "attr7_uuid",
       "label": "Address 7",
       "self_attest_allowed": true,
@@ -162,6 +179,7 @@ Array [
   Array [
     Object {
       "data": undefined,
+      "hasCredentialsWithRequestedAttribute": false,
       "key": "attr8_uuid",
       "label": "Address 8",
       "self_attest_allowed": true,
@@ -174,6 +192,7 @@ Array [
   Array [
     Object {
       "data": undefined,
+      "hasCredentialsWithRequestedAttribute": false,
       "key": "attr9_uuid",
       "label": "Address 9",
       "self_attest_allowed": true,
@@ -186,6 +205,7 @@ Array [
   Array [
     Object {
       "data": undefined,
+      "hasCredentialsWithRequestedAttribute": false,
       "key": "attr10_uuid",
       "label": "Address 10",
       "self_attest_allowed": true,
@@ -212,6 +232,9 @@ Array [
           "referent": "claim::ea03d8ca-eeb4-4944-b7d6-5abcf4503d73",
           "schema_id": "V4SGRU86Z58d6TV7Pf:2:slKljrSQ80tCQ40F:33089",
         },
+        "requested_attributes": Object {
+          "A d d r e s s    1": "Address 1",
+        },
       },
       "data": "Address 1",
       "key": "attr1_uuid",
@@ -234,6 +257,9 @@ Array [
           "cred_def_id": "V4SGRU86Z58d6TV7PBUe6f:3:CL:24:tag1",
           "referent": "claim::6a0f42b4-1210-4bdb-ad53-10ed765276b5",
           "schema_id": "V4SGRU86Z58d6TV7Pf:2:slKljrSQ80tCQ40F:33089",
+        },
+        "requested_attributes": Object {
+          "  Ad  dress 2 ": "Address 2",
         },
       },
       "data": "Address 2",
@@ -263,6 +289,9 @@ Array [
           "referent": "claim::ea03d8ca-eeb4-4944-b7d6-5abcf4503d73",
           "schema_id": "V4SGRU86Z58d6TV7Pf:2:slKljrSQ80tCQ40F:33089",
         },
+        "requested_attributes": Object {
+          "Address 1": "Address 1",
+        },
       },
       "data": "Address 1",
       "key": "attr1_uuid",
@@ -285,6 +314,9 @@ Array [
           "cred_def_id": "V4SGRU86Z58d6TV7PBUe6f:3:CL:24:tag1",
           "referent": "claim::6a0f42b4-1210-4bdb-ad53-10ed765276b5",
           "schema_id": "V4SGRU86Z58d6TV7Pf:2:slKljrSQ80tCQ40F:33089",
+        },
+        "requested_attributes": Object {
+          "Address 2": "Address 2",
         },
       },
       "data": "Address 2",
@@ -309,6 +341,9 @@ Array [
           "referent": "claim::6a0f42b4-1210-4bdb-ad53-10ed765276ca",
           "schema_id": "V4SGRU86Z58d6TV7Pf:2:slKljrSQ80tCQ40F:33089",
         },
+        "requested_attributes": Object {
+          "Age 1": "20",
+        },
       },
       "data": "20",
       "key": "predicate1_uuid",
@@ -330,6 +365,9 @@ Array [
           "referent": "claim::110f42b4-1210-4bdb-ad53-10ed765276ca",
           "schema_id": "V4SGRU86Z58d6TV7Pf:2:slKljrSQ80tCQ40F:33089",
         },
+        "requested_attributes": Object {
+          "Age 2": "22",
+        },
       },
       "data": "22",
       "key": "predicate2_uuid",
@@ -342,20 +380,9 @@ Array [
 ]
 `;
 
-exports[`Proof Store proof store should reset for a given proof request if PROOF_REQUEST_SHOW_START is raised 1`] = `
-Object {
-  "pid123": undefined,
-}
-`;
-
-exports[`Proof Store should find missing attributes if any missing 1`] = `
+exports[`Proof Store fn:findMissingRequestedAttributes 1`] = `
 Array [
-  Array [
-    Object {
-      "key": "attr2_uuid",
-      "name": "address2",
-    },
-  ],
+  Array [],
   Array [],
 ]
 `;
@@ -364,11 +391,33 @@ exports[`Proof Store fn:findMissingRequestedAttributes 2`] = `
 Array [
   Array [
     Object {
-      "key": "attr2_uuid",
-      "name": "Address 2",
+      "key": "attr1_uuid",
+      "name": "name",
     },
   ],
   Array [],
+]
+`;
+
+exports[`Proof Store fn:findMissingRequestedAttributes 3`] = `
+Array [
+  Array [],
+  Array [
+    Object {
+      "name": "Age 1",
+      "p_type": ">",
+      "p_value": 20,
+      "reason": "NO_CRED_NO_SELF_ATTEST",
+      "type": "PREDICATE",
+    },
+    Object {
+      "name": "Age 2",
+      "p_type": ">",
+      "p_value": 20,
+      "reason": "NO_CRED_NO_SELF_ATTEST",
+      "type": "PREDICATE",
+    },
+  ],
 ]
 `;
 
@@ -403,25 +452,36 @@ Array [
 ]
 `;
 
-exports[`Proof Store fn:findMissingRequestedAttributes 3`] = `
+exports[`Proof Store proof store should reset for a given proof request if PROOF_REQUEST_SHOW_START is raised 1`] = `
+Object {
+  "pid123": undefined,
+}
+`;
+
+exports[`Proof Store should find existing credentials which cannot be used for proving 1`] = `
 Array [
-  Array [],
+  Object {
+    "claimUuid": "claimUUID",
+    "data": "Address Address Address",
+    "label": "Address 1",
+    "type": "RESTRICTIONS_MISMATCH",
+  },
+]
+`;
+
+exports[`Proof Store should find existing credentials which cannot be used for proving 2`] = `Array []`;
+
+exports[`Proof Store should find existing credentials which cannot be used for proving 3`] = `Array []`;
+
+exports[`Proof Store should find missing attributes if any missing 1`] = `
+Array [
   Array [
     Object {
-      "name": "Age 1",
-      "p_type": ">",
-      "p_value": 20,
-      "reason": "NO_CRED_NO_SELF_ATTEST",
-      "type": "PREDICATE",
-    },
-    Object {
-      "name": "Age 2",
-      "p_type": ">",
-      "p_value": 20,
-      "reason": "NO_CRED_NO_SELF_ATTEST",
-      "type": "PREDICATE",
+      "key": "attr2_uuid",
+      "name": "",
     },
   ],
+  Array [],
 ]
 `;
 
@@ -497,13 +557,6 @@ Object {
     },
   },
 }
-`;
-
-exports[`Proof Store fn:findMissingRequestedAttributes 1`] = `
-Array [
-  Array [],
-  Array [],
-]
 `;
 
 exports[`Proof Store should reset proof store, if RESET action is raised 1`] = `Object {}`;

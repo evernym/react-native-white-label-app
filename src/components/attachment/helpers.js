@@ -14,6 +14,9 @@ const {
   photoMimeTypes,
 } = attachMimeTypes
 
+export const getFileExtensionLabel = (mimeType: string) =>
+  `${getFileExtensionName(mimeType)} file`
+
 export const getFileExtensionName = (mimeType: string) => {
   switch (true) {
     case docMimeTypes.includes(mimeType):
@@ -33,7 +36,7 @@ export const getFileExtensionName = (mimeType: string) => {
       .includes(mimeType):
       return 'JPG'
     case photoMimeTypes.includes(mimeType):
-      return 'PDF'
+      return 'PNG'
     default:
       return 'unknown'
   }

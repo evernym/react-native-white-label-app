@@ -36,7 +36,7 @@ import {
   claimOfferShowStart,
   resetClaimRequestStatus,
   denyClaimOffer,
-  deleteOutOfBandClaimOffer,
+  denyOutOfBandClaimOffer,
 } from '../../claim-offer/claim-offer-store'
 import { txnAuthorAgreementRoute } from '../../common'
 import {
@@ -201,6 +201,8 @@ export class ClaimOfferModal extends Component<any, *> {
               denyButtonText={denyButtonText}
               acceptBtnText={acceptButtonText}
               svgIcon="Download"
+              disableAccept={this.props.isOffline}
+              disableDeny={!this.props.canBeIgnored && this.props.isOffline}
             >
               <CredentialPriceInfo price={payTokenValue || ''} />
             </ModalButtons>
@@ -238,7 +240,7 @@ export class ClaimOfferModal extends Component<any, *> {
 
   componentWillUnmount() {
     if (this.state.scheduledDeletion) {
-      this.props.deleteOutOfBandClaimOffer(this.props.uid)
+      this.props.denyOutOfBandClaimOffer(this.props.uid)
       return
     }
 
@@ -391,7 +393,7 @@ const mapStateToProps = (
   state: Store,
   { route: { params } }: ClaimProofNavigation
 ) => {
-  const { claimOffer, lock } = state
+  const { claimOffer, lock, offline } = state
   const { uid } = params || { uid: '' }
   const claimOfferData = params.claimOfferData || claimOffer[uid]
   const logo =
@@ -425,6 +427,7 @@ const mapStateToProps = (
     claimPrice,
     lock,
     canBeIgnored,
+    isOffline: offline.offline,
   }
 }
 
@@ -438,7 +441,7 @@ const mapDispatchToProps = (dispatch) =>
       resetClaimRequestStatus,
       newConnectionSeen,
       denyClaimOffer,
-      deleteOutOfBandClaimOffer,
+      denyOutOfBandClaimOffer,
       unlockApp,
     },
     dispatch

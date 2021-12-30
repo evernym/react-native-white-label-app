@@ -4,9 +4,10 @@ import React, { useMemo } from 'react'
 import { FlatList, SafeAreaView, StatusBar } from 'react-native'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import { useSelector } from 'react-redux'
 
 // selectors
-import { getConnection } from '../store/store-selector'
+import { getConnection, getOfflineStatus } from '../store/store-selector'
 
 // store
 import {
@@ -46,6 +47,8 @@ export const InviteActionComponent = ({
   initiateFinalizedAction,
   navigation,
 }: InviteActionScreenProps) => {
+  const isOffline = useSelector(getOfflineStatus)
+
   const handleInviteAction = (args: string) => {
     initiateFinalizedAction(inviteAction.payload.uid, args)
     navigation.navigate(homeDrawerRoute)
@@ -92,6 +95,8 @@ export const InviteActionComponent = ({
           acceptBtnText={buttonAcceptText}
           colorBackground={colors.main}
           secondColorBackground={colors.red}
+          disableAccept={isOffline}
+          disableDeny={isOffline}
         />
       </>
     </SafeAreaView>
