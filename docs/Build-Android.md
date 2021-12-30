@@ -35,36 +35,6 @@ In order to configure the building of your application for an Android platform, 
         yarn evernym-sdk:configure-android
     ```
 
-1. Enable MultiDex in build.gradle
-
-    ```groovy
-        android {
-            ...
-            defaultConfig {
-                ...
-                multiDexEnabled true
-            }
-        }
-    ```
-
-1. Create `android/app/libs` directory if not already exists
-1. Copy mids_sdk.aar and mids_verification.aar files to this directory
-1. Add `implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')` to `android/app/build.gradle` dependencies section
-
-1. Add the Jumio Mobile SDK repository
-
-    ```groovy
-        repositories {  
-            maven { url 'https://mobile-sdk.jumio.com' }
-        }
-    ```
-
-1. Use Kotlin version `ext.kotlinVersion = '1.4.21'`
-
-1. Add `android.jetifier.blacklist=bcprov` to gradle.properties file
-
-1. Add `tools:replace="android:label,android:allowBackup"` to your `AndroidManifest.xml` file's `<application ... />` tag
-
 ## Manual
 
 1. To build app with SDK, you need to increase the available jvm memory in `android/gradle.properties`
@@ -82,7 +52,7 @@ In order to configure the building of your application for an Android platform, 
 1. Set distribution url in your `android/gradle/wrapper/gradle-wrapper.properties`
 
     ```properties
-    distributionUrl='https\://services.gradle.org/distributions/gradle-6.5-bin.zip
+    distributionUrl='https\://services.gradle.org/distributions/gradle-6.9-bin.zip
     ```
 
 1. Set the minimum supported SDK version in your `android/build.gradle`:
@@ -118,7 +88,7 @@ In order to configure the building of your application for an Android platform, 
 
     ```groovy
    dependencies {
-        classpath 'com.android.tools.build:gradle:3.4.2'
+        classpath 'com.android.tools.build:gradle:4.2.1'
         classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.20'
         ...
    }

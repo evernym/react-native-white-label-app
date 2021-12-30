@@ -31,16 +31,16 @@
         * release build for devices only (`arm64`):
 
            ```ruby
-            pod 'vcx', '0.0.219'
+            pod 'vcx', '0.0.223'
            ```
 
         * debug build for simulators
 
            ```ruby
-                pod 'vcx', '0.0.220'
+                pod 'vcx', '0.0.224'
            ```
 
-      * **Note** that currently recommended VCX versions are `219/220`.
+      * **Note** that currently recommended VCX versions are `223/224`.
 
       * Add below lines inside your `target` in Podfile
   
