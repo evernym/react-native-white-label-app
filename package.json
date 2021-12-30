@@ -1,7 +1,7 @@
 {
   "name": "@evernym/react-native-white-label-app",
   "title": "Evernym React Native white label app",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "The official Evernym white label application which can be easily customized for company branding",
   "main": "src/index.js",
   "files": [
