@@ -1,7 +1,7 @@
 import moment from 'moment'
 
 export const formatTimestamp = (timestamp: string) => {
-  const now = moment().valueOf()
+  const now = moment()?.valueOf()
   let formattedTimestamp = moment(timestamp).valueOf()
   let minutes = Math.floor((now - formattedTimestamp) / 1000 / 60)
 
