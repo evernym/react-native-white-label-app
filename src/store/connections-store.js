@@ -915,7 +915,7 @@ export default function connections(
         ...state,
         data: {
           ...state.data,
-          [action.identifier]: action.connection,
+          [action.connection.identifier]: action.connection,
         },
       }
     case LOCK_CONNECTIONS:
