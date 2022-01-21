@@ -1,5 +1,10 @@
 # Changelog
 
+# Release notes - React Native MSDK 1.1.1 - Jan 21 2022
+
+## Features
+* [MSDK-574] -  Connections created with the usage of the 1.0.0 app version become invalid after the app upgrade.
+
 # Release notes - React Native MSDK 1.1.0 - Dec 30 2021
 
 ## Features
