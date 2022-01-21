@@ -1,7 +1,7 @@
 {
   "name": "@evernym/react-native-white-label-app",
   "title": "Evernym React Native white label app",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "The official Evernym white label application which can be easily customized for company branding",
   "main": "src/index.js",
   "files": [
@@ -35,7 +35,7 @@
   "license": "SEE LICENSE IN LICENSE.txt",
   "readmeFilename": "README.md",
   "peerDependencies": {
-    "@evernym/react-native-sdk": "https://gitlab.com/evernym/mobile/mobile-sdk/-/package_files/25057901/download",
+    "@evernym/react-native-sdk": "https://gitlab.com/evernym/mobile/mobile-sdk/-/package_files/26742620/download",
     "@react-native-community/async-storage": "^1.11.0",
     "@react-native-community/blur": "^3.6.0",
     "@react-native-community/masked-view": "^0.1.10",
