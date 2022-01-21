@@ -3,11 +3,10 @@
 import React, { Component } from 'react'
 import {StyleSheet, Platform, Alert, PermissionsAndroid, Linking} from 'react-native'
 import { connect } from 'react-redux'
-import DeviceInfo from 'react-native-device-info';
+
 import type { SendLogsProps } from './type-send-logs'
 import type { Store } from '../store/type-store'
 import type { ReactNavigation } from '../common/type-common'
-import IntentLauncher, { IntentConstant } from 'react-native-intent-launcher'
 
 import { headerDefaultOptions } from '../navigation/navigation-header-config'
 import { Container, CustomView, CustomText, CustomButton } from '../components'
