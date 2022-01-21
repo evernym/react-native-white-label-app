@@ -1,12 +1,13 @@
 // @flow
 
 import React, { Component } from 'react'
-import { StyleSheet, Platform, Alert, PermissionsAndroid } from 'react-native'
+import {StyleSheet, Platform, Alert, PermissionsAndroid, Linking} from 'react-native'
 import { connect } from 'react-redux'
-
+import DeviceInfo from 'react-native-device-info';
 import type { SendLogsProps } from './type-send-logs'
 import type { Store } from '../store/type-store'
 import type { ReactNavigation } from '../common/type-common'
+import IntentLauncher, { IntentConstant } from 'react-native-intent-launcher'
 
 import { headerDefaultOptions } from '../navigation/navigation-header-config'
 import { Container, CustomView, CustomText, CustomButton } from '../components'
@@ -122,11 +123,31 @@ export class SendLogs extends Component<SendLogsProps, any> {
         }
         const notAvailableMsg =
           'Unable to send error report. Sending error logs requires you to be signed into at least one email account on the default mail app which came with the phone out of the factory (the "native" mail app). Please sign into an email account from the default email app that came with the phone out of the factory and try again.'
+        const notAvailableButton = {
+          text: 'Setup',
+          onPress: () => {
+            Linking.canOpenURL('App-Prefs:MAIL').then(supported => {
+              if (!supported) {
+                Linking.canOpenURL('app-settings:').then(supported => {
+                  if (!supported) {
+                    console.log('Links is not support')
+                  } else {
+                    return Linking.openURL('app-settings:');
+                  }
+                })
+                } else {
+                return Linking.openURL('App-Prefs:MAIL');
+              }
+            }).catch(err => console.log('An error occurred', err));
+          },
+        }
+
         const cancelSendMsg = 'You did not send error logs to Evernym.'
         let alertMsg = event
         let alertButton = cancelButton
         if ('not_available' === error) {
           alertMsg = notAvailableMsg
+          alertButton = Platform.OS === 'ios' ? notAvailableButton : cancelButton
         } else if ('cancelled' === event) {
           alertMsg = cancelSendMsg
         } else if ('sent' === event) {
