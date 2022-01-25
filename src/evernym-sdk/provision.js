@@ -18,3 +18,6 @@ export const DEFAULT_SERVER_ENVIRONMENT = null
  * Signature: GET_PROVISION_TOKEN_FUNC() -> [error: string | null, token: string | null]
  * */
 export const GET_PROVISION_TOKEN_FUNC = null
+
+export const VCX_PUSH_TYPE = 3
+
