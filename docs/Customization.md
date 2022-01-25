@@ -259,7 +259,33 @@ If you wish to use **Push Notifications** strategy you need to set variable `USE
         ```javascript
         export const USE_PUSH_NOTIFICATION = true
         ```
-      
+
+* `VCX_PUSH_TYPE` - (number) type of push communication method to use.
+
+    ```javascript
+    export const VCX_PUSH_TYPE = 3
+   ```
+
+  * Type 3 - Forward Push
+
+      >  This method is used when the sponsor wants to handle sending of actual push notifications.
+      >
+      >  Mobile app is supposed to register its own push notification details.
+      >
+      >  Associated sponsor’s configuration should have been already configured with an endpoint.
+      >
+      >  In this case, Verity will use the associated sponsor’s configured endpoint and send the meta data (msg type, sponsee details, recipient DID etc.) to the associated sponsor’s endpoint. The sponsor is supposed to notify the mobile app about the message, and then, the mobile app is supposed to download the message from its agent by calling the relevant api.
+  
+  * Type 4 - Sponsor Push
+
+      >  If using this method, Verity will handle sending of actual push notifications.
+      >
+      >  Associated sponsor’s configuration should have been already configured with an endpoint.
+      >
+      >  Verity will use the associated sponsor’s configured push notification account detail instead of Evernym’s push notification account detail.
+      >
+      >  Currently, only Firebase Cloud Messaging is supported.
+ 
 **NOTE** that if you decided to enable Push Notifications you **MUST** configure Firebase for target build platforms!
 * [Android](./Build-Android.md#push-notifications-configuration)  
 * [iOS](./Build-iOS.md#push-notifications-configuration)  
