@@ -1,0 +1,13 @@
+diff --git a/node_modules/react-native-camera/src/RNCamera.js b/node_modules/react-native-camera/src/RNCamera.js
+index b7a271a..ad26664 100644
+--- a/node_modules/react-native-camera/src/RNCamera.js
++++ b/node_modules/react-native-camera/src/RNCamera.js
+@@ -36,7 +36,7 @@ const requestPermissions = async (
+   if (Platform.OS === 'ios') {
+     hasCameraPermissions = await CameraManager.checkVideoAuthorizationStatus();
+   } else if (Platform.OS === 'android') {
+-    const cameraPermissionResult = await PermissionsAndroid.request(
++    const cameraPermissionResult = await PermissionsAndroid.check(
+       PermissionsAndroid.PERMISSIONS.CAMERA,
+       androidCameraPermissionOptions,
+     );
