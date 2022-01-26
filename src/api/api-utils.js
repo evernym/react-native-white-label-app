@@ -6,6 +6,7 @@ import type { CustomError } from '../common/type-common'
 import type { ApiData, BackendError } from './type-api'
 
 import { SERVER_ERROR_CODE, SERVER_API_CALL_ERROR } from './api-constants'
+import VersionNumber from 'react-native-version-number'
 
 export function* retrySaga(callEffect: any, retryWithError: ?string = undefined): Generator<*, *, *> {
   let result: any // --> Only for structured messages.
@@ -38,6 +39,7 @@ export const options = (
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
+      'User-Agent': `Evernym-Connect.me/${VersionNumber.appVersion}`,
     },
   }
 
