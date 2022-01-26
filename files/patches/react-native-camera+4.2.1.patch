@@ -1,3 +1,9 @@
+We request of permission in react-native-white-label-app before it's call
+in react-native-camera package. So we need to call check.
+In other case we will get white screen.
+
+See the ticket https://evernym.atlassian.net/browse/CM-2970.
+
 diff --git a/node_modules/react-native-camera/src/RNCamera.js b/node_modules/react-native-camera/src/RNCamera.js
 index b7a271a..ad26664 100644
 --- a/node_modules/react-native-camera/src/RNCamera.js
