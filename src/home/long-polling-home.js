@@ -74,12 +74,12 @@ function appStateSource() {
       }
       currentState = nextAppState
     }
-    AppState.addEventListener('change', _stateChangeListener)
+    const subscription = AppState.addEventListener('change', _stateChangeListener)
 
     // return an unsubscribe function
     return () => {
       // remove listeners
-      AppState.removeEventListener('change', _stateChangeListener)
+      subscription.remove()
     }
   })
 }
