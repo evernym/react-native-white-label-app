@@ -65,12 +65,14 @@ class PushNotificationPermission extends Component<
     isPushNotificationsAuthorized: -1,
   }
 
+  subscription = null;
+
   async componentDidMount() {
     const isPushNotificationsAuthorized: number = await pushNotificationsAuthorizationStatus()
 
     this.setState({ isPushNotificationsAuthorized })
 
-    AppState.addEventListener('change', this.handleAppStateChange)
+    this.subscription = AppState.addEventListener('change', this.handleAppStateChange)
   }
 
   componentDidUpdate(prevProps) {
@@ -128,7 +130,7 @@ class PushNotificationPermission extends Component<
   }
 
   componentWillUnmount() {
-    AppState.removeEventListener('change', this.handleAppStateChange)
+    this.subscription.remove()
   }
 
   openSettings = async () => {
