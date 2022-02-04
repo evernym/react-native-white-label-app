@@ -291,6 +291,7 @@ export type GetUnacknowledgedMessagesAction = {
   type: typeof GET_UN_ACKNOWLEDGED_MESSAGES,
   uid?: string,
   forDid?: string,
+  hideLoader?: boolean,
 }
 export type GetMessagesLoadingAction = {
   type: typeof GET_MESSAGES_LOADING,

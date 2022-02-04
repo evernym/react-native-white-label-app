@@ -155,6 +155,7 @@ const initialState: ConfigStore = {
   // from the phone and loaded in app
   isHydrated: false,
   // configurable error alert messages
+  // configurable error alert messages
   showErrorAlerts: false,
   // used to track if vcx is initialized successfully
   // if vcx is not initialized, then we won't be able
@@ -480,7 +481,9 @@ export function* getMessagesSaga(
       yield put(getMessagesSuccess())
       return
     }
-    yield put(getMessagesLoading())
+    if (!params.hideLoader) {
+      yield put(getMessagesLoading())
+    }
     const data = yield* retrySaga(
       call(
         downloadMessages,
@@ -1119,10 +1122,12 @@ export function* watchGetMessagesSaga(): any {
 export const getUnacknowledgedMessages = (
   uid?: string,
   forDid?: string,
+  hideLoader?: boolean,
 ): GetUnacknowledgedMessagesAction => ({
   type: GET_UN_ACKNOWLEDGED_MESSAGES,
   uid,
   forDid,
+  hideLoader,
 })
 export const getMessagesLoading = (): GetMessagesLoadingAction => ({
   type: GET_MESSAGES_LOADING,

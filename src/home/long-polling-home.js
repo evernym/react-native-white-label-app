@@ -38,7 +38,7 @@ function* poll(interval: number): any {
     if (timeToRefresh) {
       console.log(`refresh after ${interval} seconds`)
       // if interval seconds are done, then start downloading messages
-      yield put(getUnacknowledgedMessages())
+      yield put(getUnacknowledgedMessages(null, null, true))
     }
   }
 }
@@ -74,12 +74,12 @@ function appStateSource() {
       }
       currentState = nextAppState
     }
-    AppState.addEventListener('change', _stateChangeListener)
+    const subscription = AppState.addEventListener('change', _stateChangeListener)
 
     // return an unsubscribe function
     return () => {
       // remove listeners
-      AppState.removeEventListener('change', _stateChangeListener)
+      subscription.remove()
     }
   })
 }
