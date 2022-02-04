@@ -125,3 +125,4 @@ nodejs-publish:
     refs:
       - stable@evernym/mobile/react-native-white-label-app
       - main@evernym/mobile/react-native-white-label-app
+
