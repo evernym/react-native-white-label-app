@@ -38,7 +38,7 @@ function* poll(interval: number): any {
     if (timeToRefresh) {
       console.log(`refresh after ${interval} seconds`)
       // if interval seconds are done, then start downloading messages
-      yield put(getUnacknowledgedMessages())
+      yield put(getUnacknowledgedMessages(null, null, true))
     }
   }
 }
