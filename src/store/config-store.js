@@ -131,7 +131,10 @@ import {
   deleteOneTimeConnectionOccurredSaga,
   handleUpgradeConnectionMessage,
 } from './connections-store'
-import { getAttachedRequestData, getThreadId } from '../invitation/invitation-helpers'
+import {
+  getAttachedRequestData,
+  getThreadId,
+} from '../invitation/invitation-helpers'
 import { environments, defaultEnvironment } from '../environment'
 import {
   persistEnvironmentDetails,
@@ -393,8 +396,8 @@ export function* connectToPool(): Generator<*, *, *> {
   if (!environment) {
     yield put(
       vcxInitPoolFail(
-        ERROR_VCX_INIT_FAIL('Cannot find requested configuration'),
-      ),
+        ERROR_VCX_INIT_FAIL('Cannot find requested configuration')
+      )
     )
     return
   }
@@ -423,7 +426,7 @@ export const ERROR_POOL_INIT_FAIL =
 export const getConfigName = (agencyUrl: string) => {
   return findKey(
     environments,
-    (environment) => environment.agencyUrl === agencyUrl,
+    (environment) => environment.agencyUrl === agencyUrl
   )
 }
 
@@ -458,7 +461,7 @@ export function* watchVcxInitPoolStart(): any {
 }
 
 export function* getMessagesSaga(
-  params: ?GetUnacknowledgedMessagesAction,
+  params: ?GetUnacknowledgedMessagesAction
 ): Generator<*, *, *> {
   try {
     const userOneTimeInfo = yield select(getUserOneTimeInfo)
@@ -473,7 +476,7 @@ export function* getMessagesSaga(
       yield take(VCX_INIT_SUCCESS)
     }
     const allConnectionsPairwiseDids = yield select(
-      getAllConnectionsPairwiseDid,
+      getAllConnectionsPairwiseDid
     )
     // we don't have any connections.
     // So, we don't need to query Agent for new messages
@@ -481,7 +484,7 @@ export function* getMessagesSaga(
       yield put(getMessagesSuccess())
       return
     }
-    if (!params.hideLoader) {
+    if (!params || !params.hideLoader) {
       yield put(getMessagesLoading())
     }
     const data = yield* retrySaga(
@@ -489,9 +492,9 @@ export function* getMessagesSaga(
         downloadMessages,
         MESSAGE_RESPONSE_CODE.MESSAGE_PENDING,
         params?.uid || null,
-        params?.forDid || allConnectionsPairwiseDids.join(','),
+        params?.forDid || allConnectionsPairwiseDids.join(',')
       ),
-      CLOUD_AGENT_UNAVAILABLE,
+      CLOUD_AGENT_UNAVAILABLE
     )
     if (data && data.length > 0) {
       try {
@@ -516,7 +519,7 @@ export function* getMessagesSaga(
 }
 
 export const traverseAndGetAllMessages = (
-  data: DownloadedConnectionsWithMessages,
+  data: DownloadedConnectionsWithMessages
 ): Array<DownloadedMessage> => {
   let messages: Array<DownloadedMessage> = []
   if (Array.isArray(data)) {
@@ -526,7 +529,7 @@ export const traverseAndGetAllMessages = (
         connection.msgs &&
         connection.msgs.map((message) => {
           messages.push({ ...message, pairwiseDID: connection.pairwiseDID })
-        }),
+        })
     )
   } else {
     return []
@@ -535,7 +538,7 @@ export const traverseAndGetAllMessages = (
 }
 
 export function* processMessages(
-  data: DownloadedConnectionsWithMessages,
+  data: DownloadedConnectionsWithMessages
 ): Generator<*, *, *> {
   // send each message in data to handleMessage
   // additional data will be fetched and passed to relevant( claim, claimOffer, proofRequest,etc )store.
@@ -556,7 +559,7 @@ export function* processMessages(
           )
         ) {
           yield put(
-            setFetchAdditionalDataPendingKeys(messages[i].uid, pairwiseDID),
+            setFetchAdditionalDataPendingKeys(messages[i].uid, pairwiseDID)
           )
 
           // get message type
@@ -588,7 +591,7 @@ export const convertToAriesProofRequest = async (message: GenericObject) =>
         'mime-type': 'application/json',
         data: {
           base64: await toBase64FromUtf8(
-            JSON.stringify(message['proof_request_data']),
+            JSON.stringify(message['proof_request_data'])
           ),
         },
       },
@@ -602,7 +605,7 @@ export const convertDecryptedPayloadToQuestion = (
   uid: string,
   forDID: string,
   senderDID: string,
-  protocol: string,
+  protocol: string
 ): QuestionPayload => {
   const parsedMsg = JSON.parse(message)
 
@@ -638,7 +641,7 @@ export const convertDecryptedPayloadToInviteAction = (
   uid: string,
   forDID: string,
   senderDID: string,
-  remoteName: string,
+  remoteName: string
 ): InviteActionPayload => {
   const parsedMsg: InviteActionRequest = JSON.parse(message)
 
@@ -651,16 +654,15 @@ export const convertDecryptedPayloadToInviteAction = (
     if (parsedGoalCode.hasOwnProperty('invite_action_meta_data')) {
       parsedGoalCode = {
         inviteActionTitle:
-        parsedGoalCode.invite_action_meta_data.invite_action_title,
+          parsedGoalCode.invite_action_meta_data.invite_action_title,
         inviteActionDetails:
-        parsedGoalCode.invite_action_meta_data.invite_action_detail,
+          parsedGoalCode.invite_action_meta_data.invite_action_detail,
         acceptText: parsedGoalCode.invite_action_meta_data.accept_text,
         denyText: parsedGoalCode.invite_action_meta_data.deny_text,
         token: parsedGoalCode.invite_action_meta_data.id_pal_token,
       }
     }
-  } catch (e) {
-  }
+  } catch (e) {}
 
   return {
     '@type': parsedMsg['@type'],
@@ -685,7 +687,7 @@ export const convertDecryptedPayloadToInviteAction = (
 }
 
 function* handleProprietaryMessage(
-  downloadedMessage: DownloadedMessage,
+  downloadedMessage: DownloadedMessage
 ): Generator<*, *, *> {
   const { senderDID, uid, type, decryptedPayload } = downloadedMessage
   const remotePairwiseDID = senderDID
@@ -698,7 +700,7 @@ function* handleProprietaryMessage(
   }: Connection = connection[0]
   const connectionHandle = yield call(
     getHandleBySerializedConnection,
-    vcxSerializedConnection,
+    vcxSerializedConnection
   )
 
   try {
@@ -731,7 +733,7 @@ function* handleProprietaryMessage(
         uid,
         forDID,
         senderDID,
-        COMMITEDANSWER_PROTOCOL,
+        COMMITEDANSWER_PROTOCOL
       )
     }
 
@@ -773,12 +775,10 @@ function* handleProprietaryMessage(
 
       const proofHandle = yield call(proofCreateWithRequest, uid, message)
 
-      const appProofRequest =
-        convertProofRequestPushPayloadToAppProofRequest(
-          {
-            ...JSON.parse(message),
-            remoteName: senderName,
-          })
+      const appProofRequest = convertProofRequestPushPayloadToAppProofRequest({
+        ...JSON.parse(message),
+        remoteName: senderName,
+      })
 
       additionalData = {
         ...appProofRequest,
@@ -793,7 +793,7 @@ function* handleProprietaryMessage(
         uid,
         forDID,
         senderDID,
-        senderName,
+        senderName
       )
     }
 
@@ -828,13 +828,13 @@ function* handleProprietaryMessage(
       fetchAdditionalDataError({
         code: 'OCS-000',
         message: `Invalid additional data: ${e}`,
-      }),
+      })
     )
   }
 }
 
 function* handleAriesMessage(
-  downloadMessage: DownloadedMessage,
+  downloadMessage: DownloadedMessage
 ): Generator<*, *, *> {
   let { uid, type, decryptedPayload, pairwiseDID } = downloadMessage
 
@@ -873,7 +873,7 @@ function* handleAriesMessage(
 
   const connectionHandle = yield call(
     getHandleBySerializedConnection,
-    vcxSerializedConnection,
+    vcxSerializedConnection
   )
 
   try {
@@ -893,11 +893,14 @@ function* handleAriesMessage(
       // update type so that messages can be processed and added
       messageType = MESSAGE_TYPE.CLAIM_OFFER
 
-      const appClaimOffer = yield call(convertAriesCredentialOfferToAppClaimOffer, parsedMessage)
+      const appClaimOffer = yield call(
+        convertAriesCredentialOfferToAppClaimOffer,
+        parsedMessage
+      )
 
       const claimHandle = yield call(
         createCredentialWithAriesOffer,
-        payloadMessage,
+        payloadMessage
       )
       yield fork(saveSerializedClaimOffer, claimHandle, forDID, uid)
 
@@ -925,10 +928,14 @@ function* handleAriesMessage(
       const appProofRequest = yield call(
         convertAriesProofRequestToCxsProofRequest,
         parsedMessage,
-        senderName,
+        senderName
       )
 
-      const proofHandle = yield call(proofCreateWithRequest, uid, payloadMessage)
+      const proofHandle = yield call(
+        proofCreateWithRequest,
+        uid,
+        payloadMessage
+      )
 
       additionalData = {
         ...appProofRequest,
@@ -945,7 +952,7 @@ function* handleAriesMessage(
         ) {
           yield fork(
             deleteOneTimeConnectionOccurredSaga,
-            deleteOneTimeConnection(forDID),
+            deleteOneTimeConnection(forDID)
           )
           additionalData.ephemeralProofRequest = parsedMessage['~service']
             ? payloadMessage
@@ -973,7 +980,7 @@ function* handleAriesMessage(
         uid,
         forDID,
         senderDID,
-        COMMITEDANSWER_PROTOCOL,
+        COMMITEDANSWER_PROTOCOL
       )
       messageType = MESSAGE_TYPE.QUESTION
     }
@@ -985,7 +992,7 @@ function* handleAriesMessage(
         uid,
         forDID,
         senderDID,
-        QUESTIONANSWER_PROTOCOL,
+        QUESTIONANSWER_PROTOCOL
       )
       messageType = MESSAGE_TYPE.QUESTION
     }
@@ -997,7 +1004,7 @@ function* handleAriesMessage(
         uid,
         forDID,
         senderDID,
-        senderName,
+        senderName
       )
       messageType = MESSAGE_TYPE.INVITE_ACTION
     }
@@ -1006,7 +1013,11 @@ function* handleAriesMessage(
       yield call(updateVerifierState, payloadMessage)
     }
 
-    if (payloadType.name === 'problem-report' && payloadMessageType && payloadMessageType.includes('present-proof')) {
+    if (
+      payloadType.name === 'problem-report' &&
+      payloadMessageType &&
+      payloadMessageType.includes('present-proof')
+    ) {
       yield call(updateVerifierState, payloadMessage)
     }
 
@@ -1026,7 +1037,7 @@ function* handleAriesMessage(
         updateAriesConnectionState,
         forDID,
         vcxSerializedConnection,
-        payloadMessage,
+        payloadMessage
       )
     }
 
@@ -1066,13 +1077,13 @@ function* handleAriesMessage(
       fetchAdditionalDataError({
         code: 'OCS-000',
         message: `Invalid additional data: ${e}`,
-      }),
+      })
     )
   }
 }
 
 export function* acknowledgeServer(
-  data: Array<DownloadedConnectionMessages>,
+  data: Array<DownloadedConnectionMessages>
 ): Generator<*, *, *> {
   let tempData = data
   if (Array.isArray(tempData) && tempData.length > 0) {
@@ -1095,7 +1106,7 @@ export function* acknowledgeServer(
 }
 
 export function* updateMessageStatus(
-  acknowledgeServerData: AcknowledgeServerData,
+  acknowledgeServerData: AcknowledgeServerData
 ): Generator<*, *, *> {
   if (!Array.isArray(acknowledgeServerData)) {
     yield put(acknowledgeMessagesFail('Empty Array'))
@@ -1107,7 +1118,7 @@ export function* updateMessageStatus(
   } catch (e) {
     captureError(e)
     yield put(
-      acknowledgeMessagesFail(`failed at updateMessages api, ${e.message}`),
+      acknowledgeMessagesFail(`failed at updateMessages api, ${e.message}`)
     )
   }
 }
@@ -1115,14 +1126,14 @@ export function* updateMessageStatus(
 export function* watchGetMessagesSaga(): any {
   yield takeLeading(
     [VCX_INIT_SUCCESS, GET_UN_ACKNOWLEDGED_MESSAGES],
-    getMessagesSaga,
+    getMessagesSaga
   )
 }
 
 export const getUnacknowledgedMessages = (
   uid?: string,
   forDid?: string,
-  hideLoader?: boolean,
+  hideLoader?: boolean
 ): GetUnacknowledgedMessagesAction => ({
   type: GET_UN_ACKNOWLEDGED_MESSAGES,
   uid,
@@ -1146,7 +1157,7 @@ export const getMessagesFail = (): GetMessagesFailAction => ({
 })
 
 export const acknowledgeMessagesFail = (
-  message: string,
+  message: string
 ): AcknowledgeMessagesFailAction => ({
   type: ACKNOWLEDGE_MESSAGES_FAIL,
   error: message,
@@ -1165,7 +1176,7 @@ export function* watchConfig(): any {
 
 export default function configReducer(
   state: ConfigStore = initialState,
-  action: ConfigAction,
+  action: ConfigAction
 ) {
   switch (action.type) {
     case SERVER_ENVIRONMENT_CHANGED:

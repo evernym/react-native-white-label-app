@@ -174,7 +174,9 @@
   "husky": {
     "hooks": {
       "post-checkout": "yarnhook",
-      "post-merge": "yarnhook"
+      "post-merge": "yarnhook",
+      "pre-commit": "lint-staged",
+      "pre-push": "onerror \"npm test && npm run lint\" -t \"Push Failed\" -s Purr"
     }
   }
 }
