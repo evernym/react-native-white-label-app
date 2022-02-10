@@ -20,6 +20,7 @@ import type { QuestionStoreMessage } from '../question/type-question'
 import { QUESTION_STATUS } from '../question/type-question'
 import { DEEP_LINK_STATUS } from '../deep-link/type-deep-link'
 import { environments } from '../environment'
+import { customLogger } from './custom-logger'
 
 /*
  * Selectors related to Config Store
@@ -393,6 +394,9 @@ export const getReceivedCredentials = (state: Store) => {
     vcxSerializedClaimOffers: serializedOffers,
     ...offers
   } = state.claimOffer
+
+  customLogger.log('Claim offers state', state.claimOffer)
+
   const credentials: Array<ClaimOfferPayload> = []
   Object.keys(offers).forEach((uid) => {
     const offer: ClaimOfferPayload = offers[uid]

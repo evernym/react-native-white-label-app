@@ -18,6 +18,7 @@ import {
   MyCredentialsViewEmptyState,
 } from '../external-imports'
 import { deleteClaim } from '../claim-offer/claim-offer-store'
+import { customLogger } from '../store/custom-logger'
 
 export const headlineForCredentialRoute =
   credentialsHeadline || 'MY Credentials'
@@ -28,6 +29,8 @@ const showCameraButton =
 
 const MyCredentialsScreen = ({ route, navigation }: MyCredentialsProps) => {
   const receivedCredentials = useSelector(getReceivedCredentials)
+
+  customLogger.log('ReceivedCredentials', receivedCredentials)
 
   const credentials = useMemo(() => {
     const credentials: Array<CredentialItem> = receivedCredentials.map(
