@@ -11,32 +11,6 @@ import {
   OUTOFBAND_CLAIM_OFFER_ACCEPTED,
   DENY_OUTOFBAND_CLAIM_OFFER,
   DELETE_CLAIM_SUCCESS,
-  CLAIM_REQUEST_SUCCESS,
-  SEND_CLAIM_REQUEST,
-  HYDRATE_CLAIM_OFFERS_SUCCESS,
-  ADD_SERIALIZED_CLAIM_OFFER,
-  SAVE_CLAIM_OFFERS_SUCCESS,
-  SAVE_CLAIM_OFFERS_FAIL,
-  PAID_CREDENTIAL_REQUEST_SUCCESS,
-  RESET_CLAIM_REQUEST_STATUS,
-  VCX_CLAIM_OFFER_STATE,
-  SEND_PAID_CREDENTIAL_REQUEST,
-  HYDRATE_CLAIM_OFFERS_FAIL,
-  INSUFFICIENT_BALANCE,
-  ERROR_SEND_CLAIM_REQUEST,
-  ERROR_SAVE_CLAIM_OFFERS,
-  ERROR_RECEIVE_CLAIM,
-  ERROR_NO_SERIALIZED_CLAIM_OFFER,
-  ERROR_HYDRATE_CLAIM_OFFERS,
-  DELETE_CLAIM,
-  CLAIM_OFFER_IGNORED,
-  CLAIM_OFFER_REJECTED,
-  CLAIM_OFFER_SHOW_START,
-  CLAIM_OFFER_SHOWN,
-  CLAIM_OFFER_STATUS,
-  CLAIM_OFFERS,
-  CLAIM_REQUEST_FAIL,
-  CLAIM_REQUEST_STATUS,
 } from '../claim-offer/type-claim-offer'
 import { CLAIM_STORAGE_SUCCESS } from '../claim/type-claim'
 import {
@@ -77,47 +51,7 @@ import {
   PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED,
   PHYSICAL_ID_DOCUMENT_SUBMITTED,
 } from '../physical-id/physical-id-type'
-import { customLogger } from '../store/custom-logger'
 
-const actionForDebugLogger = [
-  ADD_SERIALIZED_CLAIM_OFFER,
-  CLAIM_OFFER_ACCEPTED,
-  CLAIM_OFFER_IGNORED,
-  CLAIM_OFFER_RECEIVED,
-  CLAIM_OFFER_REJECTED,
-  CLAIM_OFFER_SHOW_START,
-  CLAIM_OFFER_SHOWN,
-  CLAIM_OFFER_STATUS,
-  CLAIM_OFFERS,
-  CLAIM_REQUEST_FAIL,
-  CLAIM_REQUEST_STATUS,
-  CLAIM_REQUEST_SUCCESS,
-  DELETE_CLAIM,
-  DELETE_CLAIM_SUCCESS,
-  DENY_CLAIM_OFFER,
-  DENY_CLAIM_OFFER_FAIL,
-  DENY_CLAIM_OFFER_SUCCESS,
-  DENY_OUTOFBAND_CLAIM_OFFER,
-  ERROR_HYDRATE_CLAIM_OFFERS,
-  ERROR_NO_SERIALIZED_CLAIM_OFFER,
-  ERROR_RECEIVE_CLAIM,
-  ERROR_SAVE_CLAIM_OFFERS,
-  ERROR_SEND_CLAIM_REQUEST,
-  HYDRATE_CLAIM_OFFERS_FAIL,
-  HYDRATE_CLAIM_OFFERS_SUCCESS,
-  INSUFFICIENT_BALANCE,
-  OUTOFBAND_CLAIM_OFFER_ACCEPTED,
-  PAID_CREDENTIAL_REQUEST_FAIL,
-  PAID_CREDENTIAL_REQUEST_SUCCESS,
-  RESET_CLAIM_REQUEST_STATUS,
-  SAVE_CLAIM_OFFERS_FAIL,
-  SAVE_CLAIM_OFFERS_SUCCESS,
-  SEND_CLAIM_REQUEST,
-  SEND_CLAIM_REQUEST_FAIL,
-  SEND_CLAIM_REQUEST_SUCCESS,
-  SEND_PAID_CREDENTIAL_REQUEST,
-  VCX_CLAIM_OFFER_STATE,
-]
 const actionToRecord = [
   // removing invitation received from record array
   // because anyway we will not show this event in history view
@@ -169,13 +103,6 @@ const actionToRecord = [
 const history = (store: any) => (next: any) => (action: any) => {
   // pass on the action first to other middleware in line
   const nextState = next(action)
-
-  if (actionForDebugLogger.indexOf(action.type) > -1) {
-    // we got an action that needs to be recorded
-    // dispatch an action, that starts from beginning of middleware chain
-    // we are dispatching a new action here
-    customLogger.log(action.type, action)
-  }
 
   // now go for our own history recorder
   if (actionToRecord.indexOf(action.type) > -1) {
