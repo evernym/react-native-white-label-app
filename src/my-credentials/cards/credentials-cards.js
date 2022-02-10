@@ -10,6 +10,7 @@ import { colors, fontFamily } from '../../common/styles'
 import CardStack from './card-stack'
 import { ScrollView } from 'react-native-gesture-handler'
 import { CARD_HEIGHT } from './credentials-constants'
+import { customLogger } from '../../store/custom-logger'
 
 export const CredentialsCards = (props: CredentialsCardsProps) => {
   const { credentials } = props
@@ -36,6 +37,8 @@ export const CredentialsCards = (props: CredentialsCardsProps) => {
     } else {
       acc[credential.claimDefinitionId] = [credential]
     }
+
+    customLogger.log('GroupedCredentials', groupedCredentials)
     return acc
   }, {})
 
