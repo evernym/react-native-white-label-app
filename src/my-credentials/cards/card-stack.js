@@ -22,7 +22,6 @@ const CardStack = (props: CardStackProps) => {
     isExpanded,
     setActiveStack,
     isHidden,
-    enabledCardGesture,
     isNeedMargin,
   } = props
   const credsToDisplay = isExpanded ? credentials : credentials.slice(0, 3)
@@ -75,6 +74,7 @@ const CardStack = (props: CardStackProps) => {
             }
 
             const marginTopDefault = index === 0 ? -CARD_MARGIN : 0
+            const marginTopIsExpanded = index === 0 ? 0 : CARD_MARGIN
 
             return (
               <Animated.View
@@ -82,7 +82,9 @@ const CardStack = (props: CardStackProps) => {
                 style={{
                   zIndex: credCount - index,
                   transform: [{ scaleX }, { translateY }],
-                  marginTop: isExpanded ? CARD_MARGIN : marginTopDefault,
+                  marginTop: isExpanded
+                    ? marginTopIsExpanded
+                    : marginTopDefault,
                   marginBottom: isExpanded ? -CARD_MARGIN : undefined,
                 }}
               >
@@ -91,7 +93,7 @@ const CardStack = (props: CardStackProps) => {
                   isExpanded={isExpanded}
                   setActiveStack={setActiveStack}
                   elevation={credCount - index}
-                  enabled={enabledCardGesture}
+                  enabled={isExpanded}
                   isNeedMargin={isExpanded && index !== 0}
                 />
               </Animated.View>

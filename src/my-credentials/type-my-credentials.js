@@ -46,7 +46,6 @@ export type CardStackProps = {
   isExpanded: boolean,
   isHidden: boolean,
   setActiveStack: (stackName: string | null) => void,
-  enabledCardGesture?: boolean,
   isNeedMargin?: boolean,
 }
 
