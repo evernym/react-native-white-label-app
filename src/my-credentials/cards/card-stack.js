@@ -55,7 +55,7 @@ const CardStack = (props: CardStackProps) => {
         height: hiddenHeight,
         opacity: hiddenOpacity,
         marginBottom: extraMargin,
-        marginTop: isNeedMargin ? CARD_MARGIN : 0,
+        marginTop: isNeedMargin || isExpanded ? CARD_MARGIN : 0,
       }}
     >
       <>
@@ -74,7 +74,7 @@ const CardStack = (props: CardStackProps) => {
             }
 
             const marginTopDefault = index === 0 ? -CARD_MARGIN : 0
-            const marginTopIsExpanded = index === 0 ? 0 : CARD_MARGIN
+            const marginTopIsExpanded = index === 0 ? -CARD_MARGIN : CARD_MARGIN
 
             return (
               <Animated.View
