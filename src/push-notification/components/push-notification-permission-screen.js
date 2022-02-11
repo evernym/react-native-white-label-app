@@ -65,14 +65,17 @@ class PushNotificationPermission extends Component<
     isPushNotificationsAuthorized: -1,
   }
 
-  subscription = null;
+  subscription = null
 
   async componentDidMount() {
     const isPushNotificationsAuthorized: number = await pushNotificationsAuthorizationStatus()
 
     this.setState({ isPushNotificationsAuthorized })
 
-    this.subscription = AppState.addEventListener('change', this.handleAppStateChange)
+    this.subscription = AppState.addEventListener(
+      'change',
+      this.handleAppStateChange
+    )
   }
 
   componentDidUpdate(prevProps) {
@@ -205,11 +208,11 @@ class PushNotificationPermission extends Component<
       route: {
         params: { senderDID },
       },
-      navigation: { navigate },
+      navigation: { replace },
       pushNotificationPermissionAction,
     } = this.props
 
-    navigate(this.props.route.params.intendedRoute || invitationRoute, {
+    replace(this.props.route.params.intendedRoute || invitationRoute, {
       senderDID,
       backRedirectRoute: this.props.route.params?.intendedPayload
         ?.backRedirectRoute,
@@ -230,11 +233,11 @@ class PushNotificationPermission extends Component<
       route: {
         params: { senderDID },
       },
-      navigation: { navigate },
+      navigation: { replace },
       allowPushNotifications,
     } = this.props
 
-    navigate(this.props.route.params.intendedRoute || invitationRoute, {
+    replace(this.props.route.params.intendedRoute || invitationRoute, {
       senderDID,
       backRedirectRoute: this.props.route.params?.intendedPayload
         ?.backRedirectRoute,

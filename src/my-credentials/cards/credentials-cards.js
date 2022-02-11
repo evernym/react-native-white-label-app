@@ -85,6 +85,7 @@ export const CredentialsCards = (props: CredentialsCardsProps) => {
             )
           } else {
             const isExpanded = stackCredential === activeStack
+
             return (
               <CardStack
                 credentials={credentialGroup}
