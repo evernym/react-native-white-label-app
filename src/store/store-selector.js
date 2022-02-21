@@ -397,7 +397,7 @@ export const getReceivedCredentials = (state: Store) => {
   Object.keys(offers).forEach((uid) => {
     const offer: ClaimOfferPayload = offers[uid]
     if (
-      offer.claimRequestStatus === CLAIM_REQUEST_STATUS.CLAIM_REQUEST_SUCCESS
+      [CLAIM_REQUEST_STATUS.CLAIM_REQUEST_SUCCESS].includes(offer.claimRequestStatus)
     ) {
       credentials.push(offer)
     }

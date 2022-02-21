@@ -677,6 +677,7 @@ export function* watchAddSerializedClaimOffer(): any {
       DELETE_CLAIM_SUCCESS,
       CLAIM_STORAGE_SUCCESS,
       SEND_CLAIM_REQUEST_FAIL,
+      CLAIM_REQUEST_SUCCESS
     ],
     saveClaimOffersSaga
   )
@@ -1005,17 +1006,31 @@ export default function claimOfferReducer(
     case HYDRATE_CLAIM_OFFERS_SUCCESS:
       return action.claimOffers
 
-    case CLAIM_OFFER_SHOW_START:
-      return {
-        ...state,
-        [action.uid]: {
-          ...state[action.uid],
-          status: CLAIM_OFFER_STATUS.RECEIVED,
-          claimRequestStatus: CLAIM_REQUEST_STATUS.NONE,
-        },
+    case CLAIM_OFFER_SHOW_START: {
+      if ([CLAIM_REQUEST_STATUS.SEND_CLAIM_REQUEST_SUCCESS, CLAIM_REQUEST_STATUS.CLAIM_REQUEST_SUCCESS].includes(state[action.uid].claimRequestStatus)) {
+        // if credential offer is already accepted, then we should not reset the state
+        // it can happen that even after accepting the state, we get another event which reset the state 
+        // and we don't see it in accepted credentials
+        return state
       }
 
-    case RESET_CLAIM_REQUEST_STATUS:
+      return {
+        ...state,
+        [action.uid]: {
+          ...state[action.uid],
+          status: CLAIM_OFFER_STATUS.RECEIVED,
+          claimRequestStatus: CLAIM_REQUEST_STATUS.NONE,
+        },
+      }
+    }
+
+    case RESET_CLAIM_REQUEST_STATUS: {
+      if ([CLAIM_REQUEST_STATUS.SEND_CLAIM_REQUEST_SUCCESS, CLAIM_REQUEST_STATUS.CLAIM_REQUEST_SUCCESS].includes(state[action.uid].claimRequestStatus)) {
+        // if credential offer is already accepted, then we should not reset the state
+        // it can happen that even after accepting the state, we get another event which reset the state 
+        // and we don't see it in accepted credentials
+        return state
+      }
       return {
         ...state,
         [action.uid]: {
@@ -1024,6 +1039,7 @@ export default function claimOfferReducer(
           status: CLAIM_OFFER_STATUS.RECEIVED,
         },
       }
+    }
 
     case SEND_CLAIM_REQUEST_SUCCESS:
       return {

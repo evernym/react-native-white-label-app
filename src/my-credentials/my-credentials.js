@@ -1,8 +1,8 @@
 // @flow
-import React, { useMemo } from 'react'
+import React, { useMemo, useCallback } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { bindActionCreators } from 'redux'
-import { connect, useSelector } from 'react-redux'
+import { connect, useSelector, useDispatch } from 'react-redux'
 import type { MyCredentialsProps, CredentialItem } from './type-my-credentials'
 
 import { CameraButton } from '../components'
@@ -28,6 +28,11 @@ const showCameraButton =
 
 const MyCredentialsScreen = ({ route, navigation }: MyCredentialsProps) => {
   const receivedCredentials = useSelector(getReceivedCredentials)
+  const dispatch = useDispatch()
+  const deleteCredential = useCallback(
+    (uuid: string) => dispatch(deleteClaim(uuid)),
+    [dispatch]
+  )
 
   const credentials = useMemo(() => {
     const credentials: Array<CredentialItem> = receivedCredentials.map(
@@ -49,9 +54,7 @@ const MyCredentialsScreen = ({ route, navigation }: MyCredentialsProps) => {
     return credentials
   }, [receivedCredentials])
 
-  const hasNoCredentials = useMemo(() => credentials.length === 0, [
-    credentials,
-  ])
+  const hasNoCredentials = credentials.length === 0
 
   return (
     <View style={styles.outerContainer}>
@@ -65,7 +68,7 @@ const MyCredentialsScreen = ({ route, navigation }: MyCredentialsProps) => {
         {!hasNoCredentials && (
           <CredentialsCards
             credentials={credentials}
-            deleteClaim={deleteClaim}
+            deleteClaim={deleteCredential}
             navigation={navigation}
             route={route}
           />
@@ -81,12 +84,7 @@ const MyCredentialsScreen = ({ route, navigation }: MyCredentialsProps) => {
   )
 }
 
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators({ deleteClaim }, dispatch)
-
-const screen = CustomMyCredentialsScreen || MyCredentialsScreen
-
-export const MyCredentials = connect(null, mapDispatchToProps)(screen)
+export const MyCredentials = CustomMyCredentialsScreen || MyCredentialsScreen
 
 export const myCredentialsScreen = {
   routeName: myCredentialsRoute,
