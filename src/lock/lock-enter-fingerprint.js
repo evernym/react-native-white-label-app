@@ -157,12 +157,15 @@ export class LockEnterFingerprint extends Component<
         <CustomText bg="tertiary" h5 tertiary demiBold center transparentBg>
           {errorMessage}
         </CustomText>
-        <CustomButton
-          primary
-          style={[style.tryAgainButton]}
-          title={'Try again'}
-          onPress={this.retryAuth}
-        />
+        {
+          errorMessage ? 
+          (<CustomButton
+            primary
+            style={[style.tryAgainButton]}
+            title={'Try again'}
+            onPress={this.retryAuth}
+          />) : null
+        }
       </Container>
     )
   }
