@@ -97,6 +97,7 @@ import { hydrateVerifierSaga } from '../verifier/verifier-store'
 import { getConnectionPairwiseAgentInfo } from './store-selector'
 import { hydrateSwitchedEnvironmentDetails } from '../switch-environment/switсh-environment-store'
 import { hydratePhysicalIdDidSaga } from '../physical-id/physical-id-store'
+import { ensureAppActive } from '../home/long-polling-home'
 
 export function* deleteDeviceSpecificData(): Generator<*, *, *> {
   try {
@@ -209,6 +210,7 @@ export function* confirmFirstInstallationWithWallet(): Generator<*, *, *> {
 }
 
 export function* hydrate(): any {
+  yield* ensureAppActive()
   try {
     let isAlreadyInstalled = yield call(safeGet, IS_ALREADY_INSTALLED)
     let inRecovery = yield call(safeGet, IN_RECOVERY)
@@ -272,6 +274,8 @@ export function* hydrate(): any {
       // so we are raising this action which tells splash screen that we have values
       // for all three flags and redirection logic can move forward
       yield put(initialized())
+
+      yield* ensureAppActive()
 
       yield* hydrateSwitchedEnvironmentDetails()
       yield* hydratePushTokenSaga()
