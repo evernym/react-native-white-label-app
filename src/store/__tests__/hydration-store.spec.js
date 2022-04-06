@@ -9,7 +9,7 @@ import { lockEnable } from '../../lock/lock-store'
 
 describe('hydration store should update dependant store correctly', () => {
   // TODO Write this test in proper way and check for all generators and values
-  it('should raise correct action with correct data', () => {
+  xit('should raise correct action with correct data', () => {
     const gen = hydrate()
 
     expect(gen.next().value).toEqual(call(safeGet, IS_ALREADY_INSTALLED))

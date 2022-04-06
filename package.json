@@ -91,7 +91,7 @@
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-mail": "6.1.0",
     "react-native-modal": "11.5.6",
-    "react-native-pbkdf2": "git://github.com/evernym/react-native-pbkdf2.git#v0.1.5",
+    "react-native-pbkdf2": "https://github.com/evernym/react-native-pbkdf2.git#v0.1.5",
     "react-native-permissions": "^3.0.5",
     "react-native-randombytes": "3.5.3",
     "react-native-qrcode-svg": "^6.1.1",
@@ -176,7 +176,7 @@
       "post-checkout": "yarnhook",
       "post-merge": "yarnhook",
       "pre-commit": "lint-staged",
-      "pre-push": "onerror \"npm test && npm run lint\" -t \"Push Failed\" -s Purr"
+      "pre-push": "(npm test && npm run lint) || osascript -e 'display notification \"Push Failed\" with title \"Push from repo failed\"'"
     }
   }
 }

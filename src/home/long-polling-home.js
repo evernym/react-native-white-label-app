@@ -43,7 +43,7 @@ function* poll(interval: number): any {
   }
 }
 
-function* ensureAppActive(): any {
+export function* ensureAppActive(): any {
   if (AppState.currentState !== 'active') {
     // if app is not in foreground
     // then wait for app to come to foreground
@@ -74,7 +74,10 @@ function appStateSource() {
       }
       currentState = nextAppState
     }
-    const subscription = AppState.addEventListener('change', _stateChangeListener)
+    const subscription = AppState.addEventListener(
+      'change',
+      _stateChangeListener
+    )
 
     // return an unsubscribe function
     return () => {
