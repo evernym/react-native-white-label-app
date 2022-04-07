@@ -210,7 +210,6 @@ export function* confirmFirstInstallationWithWallet(): Generator<*, *, *> {
 }
 
 export function* hydrate(): any {
-  yield* ensureAppActive()
   try {
     let isAlreadyInstalled = yield call(safeGet, IS_ALREADY_INSTALLED)
     let inRecovery = yield call(safeGet, IN_RECOVERY)
