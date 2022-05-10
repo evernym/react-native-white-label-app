@@ -54,6 +54,10 @@ export const HomeScreen = (props: HomeProps) => {
     }
   }, [isDrawerOpen])
 
+  useEffect(() => {
+    props.getUnacknowledgedMessages()
+  }, [])
+
   const onCameraButton = () => {
     props.navigation.navigate(qrCodeScannerTabRoute, {
       backRedirectRoute: homeDrawerRoute,
@@ -99,8 +103,8 @@ export const HomeScreen = (props: HomeProps) => {
         accessible={false}
         accessibilityLabel="home-container"
       >
-        {(props.hasNoConnection || props.hasNoRecentConnections)
-        && (HomeViewEmptyState ? <HomeViewEmptyState /> : <EmptyState />)}
+        {(props.hasNoConnection || props.hasNoRecentConnections) &&
+          (HomeViewEmptyState ? <HomeViewEmptyState /> : <EmptyState />)}
         <View style={styles.checkmarkContainer}>
           <FlatList
             keyExtractor={keyExtractor}
