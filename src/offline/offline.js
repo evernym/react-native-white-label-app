@@ -49,7 +49,7 @@ export const Offline = ({
     if (isOffline) {
       return 'internet'
     }
-    if (isVcxError || isGetMessagesError) {
+    if (isGetMessagesError) {
       return 'agent'
     }
     if (isPoolError) {

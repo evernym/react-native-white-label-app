@@ -49,7 +49,11 @@ const MyCredentialsScreen = ({ route, navigation }: MyCredentialsProps) => {
       })
     )
 
-    credentials.sort((a, b) => a.credentialName.localeCompare(b.credentialName))
+    credentials.sort((a, b) =>
+      a.credentialName
+        .toLowerCase()
+        .localeCompare(b.credentialName.toLowerCase())
+    )
 
     return credentials
   }, [receivedCredentials])

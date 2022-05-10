@@ -94,14 +94,6 @@ describe('<Offline /> for disconnect agent case', () => {
     expect(tree).toMatchSnapshot()
   })
 
-  it('current text error for disconnect agent case', () => {
-    const { component } = setup(store)
-    let tree = component.root.findByType(Text).props.children
-    expect(tree[0] + tree[1].props.children).toBe(
-      'No agent connection detected. Reconnect'
-    )
-  })
-
   it('click is working for disconnect agent case', () => {
     const { component } = setup(store)
     let tree = component.root.findByType(Text).props.children

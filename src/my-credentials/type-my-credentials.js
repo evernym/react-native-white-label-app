@@ -45,7 +45,7 @@ export type CardStackProps = {
   credentials: Array<CredentialItem>,
   isExpanded: boolean,
   isHidden: boolean,
-  setActiveStack: (stackName: string | null) => void,
+  setActiveStack: (stackName: string | null, animate?: boolean) => void,
   isNeedMargin?: boolean,
 }
 

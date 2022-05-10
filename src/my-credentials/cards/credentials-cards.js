@@ -18,7 +18,7 @@ export const CredentialsCards = (props: CredentialsCardsProps) => {
   const [yPosition, setYPosition] = useState(0)
   const scrollViewRef = useRef<any>(null)
 
-  const updateActiveStack = (stackName) => {
+  const updateActiveStack = (stackName, animate = true) => {
     setActiveStack(stackName)
     if (stackName === null && scrollViewRef !== null) {
       const y = yPosition - CARD_HEIGHT / 2
@@ -26,7 +26,7 @@ export const CredentialsCards = (props: CredentialsCardsProps) => {
       return
     }
     if (scrollViewRef !== null) {
-      scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true })
+      scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: animate })
     }
   }
 
@@ -48,7 +48,7 @@ export const CredentialsCards = (props: CredentialsCardsProps) => {
       activeStack !== null &&
       groupedCredentials?.[activeStack]?.length === 1
     ) {
-      setActiveStack(null)
+      setActiveStack(null, false)
     }
   }, [groupedCredentials, activeStack])
 

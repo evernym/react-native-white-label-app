@@ -43,7 +43,7 @@ exports[`<Offline /> for disconnect agent case should match snapshot for disconn
     }
     suppressHighlighting={true}
   >
-    No agent connection detected. 
+    No  connection detected. 
     <Text
       allowFontScaling={false}
       onPress={[Function]}
