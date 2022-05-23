@@ -1,15 +1,16 @@
 import React from 'react'
 import * as ReactNative from 'react-native'
-import fetch from './fetch-mock'
 import mockModal from './modal-mock'
 import mockView from './view-mock'
+import { enableFetchMocks } from 'jest-fetch-mock'
 
 // mock Math.random for <Loader />
 const mockMath = Object.create(global.Math)
 mockMath.random = () => 0.1
 global.Math = mockMath
 
-global.fetch = fetch
+// window.fetch = fetch
+enableFetchMocks()
 
 jest.doMock('react-native', () => {
   // Extend ReactNative

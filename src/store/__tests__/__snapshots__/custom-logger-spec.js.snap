@@ -102,8 +102,7 @@ Object {
         "secondary": "rgba(119, 119, 119, 0.6)",
       },
     },
-    "data": "****",
-    "oneTimeConnections": "****",
+    "data": undefined,
   },
   "deepLink": Object {
     "error": undefined,
@@ -114,7 +113,182 @@ Object {
     "isEulaAccept": true,
   },
   "history": Object {
-    "data": "****",
+    "data": Object {
+      "connections": Object {
+        "senderDID3": Object {
+          "data": Array [
+            Object {
+              "action": "CONNECTED",
+              "data": Array [
+                Object {
+                  "data": "2017-09-06T00:00:00+05:30",
+                  "label": "Evernym",
+                },
+              ],
+              "icon": Object {
+                "default": "RelativeImageStub",
+              },
+              "id": "1",
+              "name": "Enterprise name",
+              "originalPayload": Object {},
+              "remoteDid": "remoteDid",
+              "status": "INVITATION_RECEIVED",
+              "timestamp": "2017-09-06T00:00:00+05:30",
+              "type": "INVITATION",
+            },
+          ],
+          "newBadge": false,
+        },
+        "senderDID4": Object {
+          "data": Array [
+            Object {
+              "action": "SHARED",
+              "data": Array [
+                Object {
+                  "data": "2017-09-06T00:00:00+05:30",
+                  "label": "Evernym",
+                },
+              ],
+              "icon": Object {
+                "default": "RelativeImageStub",
+              },
+              "id": "1",
+              "name": "Enterprise name",
+              "originalPayload": Object {},
+              "remoteDid": "remoteDid",
+              "status": "INVITATION_RECEIVED",
+              "timestamp": "2017-09-06T00:00:00+05:30",
+              "type": "INVITATION",
+            },
+          ],
+          "newBadge": false,
+        },
+        "senderDID5": Object {
+          "data": Array [
+            Object {
+              "action": "PENDING",
+              "data": Array [
+                Object {
+                  "data": "2017-09-06T00:00:00+05:30",
+                  "label": "Evernym",
+                },
+              ],
+              "icon": Object {
+                "default": "RelativeImageStub",
+              },
+              "id": "1",
+              "name": "Enterprise name",
+              "originalPayload": Object {},
+              "remoteDid": "remoteDid",
+              "status": "INVITATION_RECEIVED",
+              "timestamp": "2017-09-06T00:00:00+05:30",
+              "type": "INVITATION",
+            },
+          ],
+          "newBadge": false,
+        },
+        "senderDID6": Object {
+          "data": Array [
+            Object {
+              "action": "PROOF RECEIVED",
+              "data": Array [
+                Object {
+                  "data": "2017-09-06T00:00:00+05:30",
+                  "label": "Evernym",
+                },
+              ],
+              "icon": Object {
+                "default": "RelativeImageStub",
+              },
+              "id": "1",
+              "name": "Enterprise name",
+              "originalPayload": Object {
+                "payload": Object {
+                  "requester": Object {
+                    "name": "bob",
+                  },
+                },
+                "payloadInfo": Object {
+                  "uid": "uidProofReceived",
+                },
+              },
+              "remoteDid": "remoteDid",
+              "status": "INVITATION_RECEIVED",
+              "timestamp": "2017-09-06T00:00:00+05:30",
+              "type": "INVITATION",
+            },
+          ],
+          "newBadge": false,
+        },
+        "senderDID7": Object {
+          "data": Array [
+            Object {
+              "action": "RECEIVED",
+              "data": Array [
+                Object {
+                  "data": "2017-09-06T00:00:00+05:30",
+                  "label": "Evernym",
+                },
+              ],
+              "icon": Object {
+                "default": "RelativeImageStub",
+              },
+              "id": "1",
+              "name": "Enterprise name",
+              "originalPayload": Object {
+                "payload": Object {
+                  "requester": Object {
+                    "name": "bob",
+                  },
+                },
+                "payloadInfo": Object {
+                  "uid": "uidProofReceived",
+                },
+              },
+              "remoteDid": "remoteDid",
+              "status": "INVITATION_RECEIVED",
+              "timestamp": "2017-09-06T00:00:00+05:30",
+              "type": "INVITATION",
+            },
+          ],
+          "newBadge": false,
+        },
+        "senderDID8": Object {
+          "data": Array [
+            Object {
+              "action": "CLAIM OFFER RECEIVED",
+              "data": Array [
+                Object {
+                  "data": "2017-09-06T00:00:00+05:30",
+                  "label": "Evernym",
+                },
+              ],
+              "icon": Object {
+                "default": "RelativeImageStub",
+              },
+              "id": "1",
+              "name": "Enterprise name",
+              "originalPayload": Object {
+                "payload": Object {
+                  "requester": Object {
+                    "name": "bob",
+                  },
+                },
+                "payloadInfo": Object {
+                  "uid": "uidProofReceived",
+                },
+              },
+              "remoteDid": "remoteDid",
+              "status": "INVITATION_RECEIVED",
+              "timestamp": "2017-09-06T00:00:00+05:30",
+              "type": "INVITATION",
+            },
+          ],
+          "newBadge": false,
+        },
+      },
+      "connectionsUpdated": true,
+    },
     "isLoading": true,
   },
   "inAppNotification": Object {

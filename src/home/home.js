@@ -31,6 +31,7 @@ import {
   CLOSING_THE_SIDE_MENU,
   OPENING_THE_SIDE_MENU,
 } from '../feedback/log-to-apptentive'
+import { remoteLog } from '../store/remote-debug-log'
 
 export const headlineForHomeRoute = homeHeadline || 'Home'
 const showHistoryEvents =
@@ -55,6 +56,7 @@ export const HomeScreen = (props: HomeProps) => {
   }, [isDrawerOpen])
 
   useEffect(() => {
+    remoteLog('on Home screen')
     props.getUnacknowledgedMessages()
   }, [])
 
