@@ -127,6 +127,7 @@ import {
 } from '../switch-environment/type-switch-environment'
 
 import { Logger } from '@evernym/react-native-sdk'
+import { remoteLog } from './remote-debug-log'
 
 export async function setVcxLogger(
   logLevel: string,
@@ -343,6 +344,8 @@ export const customLogger = {
     } else {
       this.addRecordToBuffer(record)
     }
+
+    remoteLog(record)
   },
 
   addRecordToBuffer: function (record: any) {
@@ -405,11 +408,12 @@ export function PiiHiddenTransformer(state: Store) {
       ...state.backup,
       passphrase: hiddenInfoReplacement,
     },
-    connections: {
-      ...state.connections,
-      data: hiddenInfoReplacement,
-      oneTimeConnections: hiddenInfoReplacement,
-    },
+    // Show connections information for now
+    // connections: {
+    //   ...state.connections,
+    //   data: hiddenInfoReplacement,
+    //   oneTimeConnections: hiddenInfoReplacement,
+    // },
     claim: hiddenInfoReplacement,
     claimOffer: hiddenInfoReplacement,
     config: {
@@ -423,10 +427,11 @@ export function PiiHiddenTransformer(state: Store) {
       ...state.deepLink,
       tokens: hiddenInfoReplacement,
     },
-    history: {
-      ...state.history,
-      data: hiddenInfoReplacement,
-    },
+    // show history information for now
+    // history: {
+    //   ...state.history,
+    //   data: hiddenInfoReplacement,
+    // },
     proof: hiddenInfoReplacement,
     proofRequest: hiddenInfoReplacement,
     question: {
