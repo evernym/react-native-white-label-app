@@ -51,7 +51,7 @@ For the testing of your identity wallet you can use [Verity SDK](https://gitlab.
 - **Cocoapod >1.10.1**
 - **Sponsor server**. <br />
   You must have a Sponsor Server registered in Evernym environment.
-  See [the document](https://gitlab.com/evernym/mobile/mobile-sdk/-/blob/main/docs/2.Initialization.md#sponsor-server) describing Sponsor onboarding process in detail. <br />
+  See [the document](https://gitlab.com/evernym/mobile/mobile-sdk/-/blob/main/docs/3.Initialization.md#sponsor-server) describing Sponsor onboarding process in detail. <br />
   During the application configuration, you will have to provide a function querying an agent provisioning token from your Sponsor Server.
 
 ## Creating a new application with React MSDK
