@@ -67,7 +67,7 @@ function appStateSource() {
   return eventChannel((emitter) => {
     const _stateChangeListener = (nextAppState) => {
       if (
-        currentState.match(/inactive|background/) &&
+        currentState.match(/inactive|background|unknown/) &&
         nextAppState === 'active'
       ) {
         emitter(nextAppState)

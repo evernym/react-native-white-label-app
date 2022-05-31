@@ -31,13 +31,13 @@
         * release build for devices only (`arm64`):
 
            ```ruby
-            pod 'vcx', '0.0.227'
+            pod 'vcx', '0.0.233'
            ```
 
         * debug build for simulators
 
            ```ruby
-                pod 'vcx', '0.0.228'
+                pod 'vcx', '0.0.234'
            ```
 
       * **Note** that currently recommended VCX versions are `227/228`.
