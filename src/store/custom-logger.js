@@ -127,7 +127,7 @@ import {
 } from '../switch-environment/type-switch-environment'
 
 import { Logger } from '@evernym/react-native-sdk'
-import { remoteLog } from './remote-debug-log'
+// import { remoteLog } from './remote-debug-log'
 
 export async function setVcxLogger(
   logLevel: string,
@@ -345,7 +345,7 @@ export const customLogger = {
       this.addRecordToBuffer(record)
     }
 
-    remoteLog(record)
+    // remoteLog(record)
   },
 
   addRecordToBuffer: function (record: any) {

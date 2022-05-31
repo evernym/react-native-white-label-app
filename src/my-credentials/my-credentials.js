@@ -18,7 +18,6 @@ import {
   MyCredentialsViewEmptyState,
 } from '../external-imports'
 import { deleteClaim } from '../claim-offer/claim-offer-store'
-import { remoteLog } from '../store/remote-debug-log'
 
 export const headlineForCredentialRoute =
   credentialsHeadline || 'MY Credentials'
@@ -34,10 +33,6 @@ const MyCredentialsScreen = ({ route, navigation }: MyCredentialsProps) => {
     (uuid: string) => dispatch(deleteClaim(uuid)),
     [dispatch]
   )
-
-  useEffect(() => {
-    remoteLog('on my credentials')
-  }, [])
 
   const credentials = useMemo(() => {
     const credentials: Array<CredentialItem> = receivedCredentials.map(
