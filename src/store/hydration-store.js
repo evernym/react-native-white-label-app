@@ -98,7 +98,6 @@ import { getConnectionPairwiseAgentInfo } from './store-selector'
 import { hydrateSwitchedEnvironmentDetails } from '../switch-environment/switсh-environment-store'
 import { hydratePhysicalIdDidSaga } from '../physical-id/physical-id-store'
 import { ensureAppActive } from '../home/long-polling-home'
-import { remoteLog } from './remote-debug-log'
 
 export function* deleteDeviceSpecificData(): Generator<*, *, *> {
   try {
@@ -274,9 +273,7 @@ export function* hydrate(): any {
       // so we are raising this action which tells splash screen that we have values
       // for all three flags and redirection logic can move forward
       yield put(initialized())
-      remoteLog('init done')
       yield* ensureAppActive()
-      remoteLog('app active')
       yield* hydrateSwitchedEnvironmentDetails()
       yield* hydratePushTokenSaga()
       yield* hydrateWalletStoreSaga()
@@ -297,7 +294,6 @@ export function* hydrate(): any {
       yield* hydrateVerifierSaga()
       yield* hydratePairwiseAgentSaga()
       yield* hydratePhysicalIdDidSaga()
-      remoteLog('data hydrated. going to retry actions')
       // find and try to retry actions which was interrupted by closing the app
       yield* retryInterruptedActionsSaga()
 
@@ -309,13 +305,10 @@ export function* hydrate(): any {
         //yield put(vcxInitReset())
       }
       yield put(hydrated())
-      remoteLog('hydrated')
       // NOTE: VERY IMPORTANT!! Do not put safeToDownloadSmsInvitation until after
       // the call to vcxShutdown as this will mess up the inRecovery logic of items from the wallet
       yield put(safeToDownloadSmsInvitation())
-      remoteLog('going to call vcx init')
       yield* ensureVcxInitSuccess()
-      remoteLog('vcx init done')
       yield* upgradeLegacyConnections()
 
       // create pairwise agent to use for next connection establishing if it is empty
@@ -323,9 +316,8 @@ export function* hydrate(): any {
       if (!pairwiseAgent) {
         yield spawn(createPairwiseAgentSaga)
       }
-      remoteLog('ensure pool connection')
+
       yield* ensureVcxInitAndPoolConnectSuccess()
-      remoteLog('pool connection done')
       // NOTE: This will be changed when the TAA flow changes.
       // yield* hydrateTxnAuthorAgreementSaga()
     } catch (e) {

@@ -38,7 +38,6 @@ import {
 import { ResponseType } from '../components/request/type-request'
 import { sendInvitationResponse } from '../invitation/invitation-store'
 import { TAKE_TO_CONNECTION_DETAILS } from '../feedback/log-to-apptentive'
-import { remoteLog } from '../store/remote-debug-log'
 
 export const headlineForConnectionRoute =
   connectionsHeadline || 'My Connections'
@@ -145,10 +144,6 @@ const MyConnections = ({
       }
     }
   }, [unseenMessages])
-
-  useEffect(() => {
-    remoteLog('On my connections')
-  }, [])
 
   const onCardPress = (
     senderName: string,
