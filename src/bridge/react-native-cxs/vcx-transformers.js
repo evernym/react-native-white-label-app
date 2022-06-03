@@ -27,7 +27,10 @@ import { Platform } from 'react-native'
 import { getDeviceAttestation } from '../../start-up/device-check-saga'
 import { flatJsonParse } from '../../common/flat-json-parse'
 import { toUtf8FromBase64 } from './RNCxs'
-import type { AdditionalProofDataPayload, AriesPresentationRequest } from '../../proof-request/type-proof-request'
+import type {
+  AdditionalProofDataPayload,
+  AriesPresentationRequest,
+} from '../../proof-request/type-proof-request'
 import { convertProofRequestPushPayloadToAppProofRequest } from '../../push-notification/push-notification-store'
 
 export const paymentHandle = 0
@@ -37,7 +40,7 @@ const commonConfigParams = {
 
 export async function convertAgencyConfigToVcxProvision(
   config: AgencyPoolConfig,
-  walletPoolName: WalletPoolName,
+  walletPoolName: WalletPoolName
 ): Promise<VcxProvision> {
   const wallet_key = await getWalletKey()
 
@@ -60,7 +63,7 @@ export async function addAttestation(token: string) {
   }
 
   const [attestationError, attestationSignature] = await flattenAsync(
-    getDeviceAttestation,
+    getDeviceAttestation
   )(parsedToken.nonce)
   if (attestationError || !attestationSignature) {
     return token
@@ -74,7 +77,7 @@ export async function addAttestation(token: string) {
 }
 
 export function convertVcxProvisionResultToUserOneTimeInfo(
-  provision: VcxProvisionResult,
+  provision: VcxProvisionResult
 ): UserOneTimeInfo {
   return {
     oneTimeAgencyDid: provision.institution_did,
@@ -88,7 +91,7 @@ export function convertVcxProvisionResultToUserOneTimeInfo(
 
 export async function convertCxsInitToVcxInit(
   init: CxsInitConfig,
-  walletPoolName: WalletPoolName,
+  walletPoolName: WalletPoolName
 ): Promise<VcxInitConfig> {
   const wallet_key = await getWalletKey()
   const [, deviceName] = await flattenAsync(DeviceInfo.getDeviceName)()
@@ -113,7 +116,7 @@ export async function convertCxsInitToVcxInit(
 }
 
 export function convertCxsPushConfigToVcxPushTokenConfig(
-  pushConfig: CxsPushTokenConfig,
+  pushConfig: CxsPushTokenConfig
 ): VcxPushTokenConfig {
   return {
     type: vcxPushType,
@@ -123,7 +126,7 @@ export function convertCxsPushConfigToVcxPushTokenConfig(
 }
 
 export function convertInvitationToVcxConnectionCreate(
-  invitation: InvitationPayload,
+  invitation: InvitationPayload
 ): VcxCreateConnection {
   return {
     source_id: invitation.requestId,
@@ -144,7 +147,7 @@ export function convertInvitationToVcxConnectionCreate(
 }
 
 export function convertVcxConnectionToAppConnection(
-  vcxConnection: VcxConnectionConnectResult,
+  vcxConnection: VcxConnectionConnectResult
 ): MyPairwiseInfo {
   return {
     myPairwiseDid: vcxConnection.pw_did,
@@ -157,7 +160,7 @@ export function convertVcxConnectionToAppConnection(
 }
 
 export function convertLegacyClaimOfferToAppClaimOffer(
-  vcxCredentialOffer: VcxCredentialOffer,
+  vcxCredentialOffer: VcxCredentialOffer
 ): ClaimOfferPushPayload {
   return {
     msg_type: vcxCredentialOffer.msg_type,
@@ -166,7 +169,9 @@ export function convertLegacyClaimOfferToAppClaimOffer(
     from_did: vcxCredentialOffer.from_did,
     claim: vcxCredentialOffer.credential_attrs,
     claim_name: vcxCredentialOffer.claim_name || 'Credential',
-    claim_def_id: extractCredDefIdFromIndyCredentialOffer(vcxCredentialOffer.libindy_offer),
+    claim_def_id: extractCredDefIdFromIndyCredentialOffer(
+      vcxCredentialOffer.libindy_offer
+    ),
     schema_seq_no: vcxCredentialOffer.schema_seq_no,
     issuer_did: vcxCredentialOffer.from_did,
     // should override it when generating claim offer object
@@ -176,21 +181,24 @@ export function convertLegacyClaimOfferToAppClaimOffer(
 }
 
 export async function convertAriesCredentialOfferToAppClaimOffer(
-  credentialOffer: CredentialOffer,
+  credentialOffer: CredentialOffer
 ) {
   let claim: GenericObject = {}
 
   // check whether data is valid base64 string
-  const [decodedCredentialOfferError, decodedCredentialOffer] = await flattenAsync(
-    toUtf8FromBase64,
-  )(credentialOffer['offers~attach'][0].data.base64)
+  const [
+    decodedCredentialOfferError,
+    decodedCredentialOffer,
+  ] = await flattenAsync(toUtf8FromBase64)(
+    credentialOffer['offers~attach'][0].data.base64
+  )
   if (decodedCredentialOfferError || decodedCredentialOffer === null) {
     return null
   }
 
   // check whether decoded data is valid json or not
   const [parseCredentialOfferError, parsedCredentialOffer] = flatJsonParse(
-    decodedCredentialOffer,
+    decodedCredentialOffer
   )
   if (parseCredentialOfferError || parsedCredentialOffer === null) {
     return null
@@ -207,24 +215,27 @@ export async function convertAriesCredentialOfferToAppClaimOffer(
     from_did: '',
     claim: claim,
     claim_name:
+      credentialOffer.comment ||
       extractCredentialNameFromSchemaId(parsedCredentialOffer['schema_id']) ||
       credentialOffer['~alias']?.label ||
-      credentialOffer.comment ||
       'Credential',
     claim_def_id: parsedCredentialOffer['cred_def_id'],
     schema_seq_no: 0,
     issuer_did: '',
-    remoteName: credentialOffer.comment || credentialOffer['~alias']?.label || 'Unnamed Connection',
+    remoteName:
+      credentialOffer.comment ||
+      credentialOffer['~alias']?.label ||
+      'Unnamed Connection',
   }
 }
 
 export async function convertAriesProofRequestToCxsProofRequest(
   presentationRequest: AriesPresentationRequest,
-  senderName?: string,
+  senderName?: string
 ): Promise<null | AdditionalProofDataPayload> {
   // we still need to get data from base64
   const [decodeProofRequestError, decodedProofRequest] = await flattenAsync(
-    toUtf8FromBase64,
+    toUtf8FromBase64
   )(presentationRequest['request_presentations~attach'][0].data.base64)
   if (decodeProofRequestError || decodedProofRequest === null) {
     return null
@@ -232,7 +243,7 @@ export async function convertAriesProofRequestToCxsProofRequest(
 
   // check whether decoded data is valid json or not
   const [parseProofRequestError, parsedProofRequest] = flatJsonParse(
-    decodedProofRequest,
+    decodedProofRequest
   )
   if (parseProofRequestError || parsedProofRequest === null) {
     return null
@@ -244,7 +255,8 @@ export async function convertAriesProofRequestToCxsProofRequest(
     },
     '@topic': { mid: 0, tid: 0 },
     '@type': { name: 'proof_request', version: '0.1' },
-    remoteName: senderName || presentationRequest.comment || 'Verification Request',
+    remoteName:
+      senderName || presentationRequest.comment || 'Verification Request',
     proofHandle: 0,
   })
 }
@@ -261,7 +273,9 @@ const extractCredDefIdFromIndyCredentialOffer = (offer: string | null) => {
   }
 }
 
-export const extractCredentialNameFromSchemaId = (schemaId: string | null): string | null => {
+export const extractCredentialNameFromSchemaId = (
+  schemaId: string | null
+): string | null => {
   if (!schemaId) {
     return null
   }
