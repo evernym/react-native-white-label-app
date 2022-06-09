@@ -85,7 +85,7 @@
         <false/>
     ```
 
-8. Open `awesomeMsdkProject.xcworkspace` in Xcode and set `Always embed swift binaries` to `Yes`
+8. Open `awesomeMsdkProject.xcworkspace` in Xcode and set `Always embed swift standard libraries` to `Yes`
 
 ## Optional
 
