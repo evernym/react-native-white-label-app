@@ -152,7 +152,7 @@ export const environments = {
     agencyDID: 'TGLBMTcW9fHdkSqown9jD8',
     agencyVerificationKey: 'FKGV9jKvorzKPtPJPNLZkYPkLhiS1VbxdvBgd1RjcQHR',
     poolConfig: [
-      { key: 'training', genesis: sovrinTrainingGenesisTransactions, namespace_list: ['training'] },
+      { key: 'training', genesis: sovrinBuilderGenesisTransactions, namespace_list: ['training'] },
     ],
     paymentMethod: 'sov',
     domainDID: '',
