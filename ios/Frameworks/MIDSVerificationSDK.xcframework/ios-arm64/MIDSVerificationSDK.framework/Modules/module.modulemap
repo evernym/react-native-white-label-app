@@ -1,4 +1,0 @@
-framework module MIDSVerificationSDK {
-  header "MIDSVerificationSDK-Swift.h"
-  requires objc
-}
