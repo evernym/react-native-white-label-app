@@ -1,0 +1,11 @@
+framework module MIDSAssistSDK {
+  umbrella header "MIDSAssistSDK.h"
+
+  export *
+  module * { export * }
+}
+
+module MIDSAssistSDK.Swift {
+    header "MIDSAssistSDK-Swift.h"
+    requires objc
+}
