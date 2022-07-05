@@ -1,0 +1,140 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.3.2 (swiftlang-1200.0.45 clang-1200.0.32.28)
+// swift-module-flags: -target x86_64-apple-ios11.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name MIDSAssistSDK
+import Foundation
+@_exported import MIDSAssistSDK
+import MIDSVerificationSDK
+import Netverify
+import Swift
+import UIKit
+@_inheritsConvenienceInitializers public class MIDSAppearence : MIDSVerificationSDK.Appearence {
+  public static let shared: MIDSAssistSDK.MIDSAppearence
+  @objc deinit
+  @objc override dynamic public init()
+}
+@_inheritsConvenienceInitializers public class MIDSVerifyCountry : MIDSVerificationSDK.VerifyCountry {
+  @objc deinit
+  override public init(name: Swift.String, code: Swift.String)
+}
+@_inheritsConvenienceInitializers public class MIDSVerifyDocumentType : MIDSVerificationSDK.VerifyDocumentType {
+  @objc deinit
+  override public init(doc: [Netverify.NetverifyDocument])
+}
+@_inheritsConvenienceInitializers public class MIDSVerifyScanViewController : MIDSVerificationSDK.VerifyScanViewController {
+  @objc deinit
+  @objc override dynamic public init(nibName nibNameOrNil: Swift.String?, bundle nibBundleOrNil: Foundation.Bundle?)
+  @objc required dynamic public init?(coder: Foundation.NSCoder)
+}
+public class MIDSVerifyError {
+  public var errorMessage: Swift.String?
+  public var errorCode: Swift.Int?
+  public init(error: MIDSVerificationSDK.VerifyError)
+  @objc deinit
+}
+public protocol MIDSEnrollmentDelegate {
+  func midsEnrollmentManager(didFinishInitializationSuccess status: Swift.Bool)
+  func midsEnrollmentManager(didFinishInitializationWithError error: MIDSAssistSDK.MIDSVerifyError)
+  func midsEnrollmentManager(didDetermineNextScanViewController scanViewController: MIDSAssistSDK.MIDSCustomScanViewController, isFallback: Swift.Bool)
+  func midsEnrollmentManager(scanViewController: MIDSAssistSDK.MIDSCustomScanViewController, shouldDisplayNoUSAddressFoundHint message: Swift.String, confirmation: @escaping () -> Swift.Void)
+  func midsEnrollmentManager(scanViewController: MIDSAssistSDK.MIDSCustomScanViewController, shouldDisplayHelpWithText message: Swift.String, animationView: UIKit.UIView)
+  func midsEnrollmentManager(shouldDisplayConfirmationWith view: UIKit.UIView, text: Swift.String, currentStep: Swift.Int, totalSteps: Swift.Int, retryEnabled: Swift.Bool, confirmEnabled: Swift.Bool, confirmation: (() -> Swift.Void)?, retake: (() -> Swift.Void)?)
+  func midsEnrollmentManager(didStartBiometricAnalysis scanViewController: MIDSAssistSDK.MIDSCustomScanViewController)
+  func midsEnrollmentManager(didCaptureAllParts status: Swift.Bool)
+  func midsEnrollmentManager(didFinishScanningWith reference: Swift.String, accountID: Swift.String?, authenticationResult: Swift.Bool?)
+  func midsEnrollmentManager(didCancelWithError error: MIDSAssistSDK.MIDSVerifyError)
+  func midsEnrollmentManager(customScanViewControllerWillPrepareIProovController scanViewController: MIDSAssistSDK.MIDSCustomScanViewController)
+  func midsEnrollmentManager(customScanViewControllerWillPresentIProovController scanViewController: MIDSAssistSDK.MIDSCustomScanViewController)
+}
+public enum MIDSDataCenter : Swift.UInt32 {
+  case MIDSDataCenterUS
+  case MIDSDataCenterEU
+  case MIDSDataCenterSG
+  public typealias RawValue = Swift.UInt32
+  public init?(rawValue: Swift.UInt32)
+  public var rawValue: Swift.UInt32 {
+    get
+  }
+}
+@objc @_inheritsConvenienceInitializers public class MIDSEnrollmentManager : ObjectiveC.NSObject {
+  public var enrollmentDelegate: MIDSAssistSDK.MIDSEnrollmentDelegate?
+  public static func shared() -> MIDSAssistSDK.MIDSEnrollmentManager
+  public func isMIDSVerifySDKInitialized() -> Swift.Bool
+  public func initializeMIDSVerifySDK(sdkToken: Swift.String, dataCenter: MIDSAssistSDK.MIDSDataCenter = .MIDSDataCenterSG)
+  public func getCountryList() -> [MIDSAssistSDK.MIDSVerifyCountry]
+  public func getDocumentTypes(countryCode: Swift.String) -> [Swift.String]?
+  public func terminateSDK()
+  public func getSDKVersion() -> Swift.String
+  public func startScan(document: Swift.String, privacyPolicyVersion: Swift.String, userBiometricConsent: Swift.Bool)
+  @objc deinit
+  @objc override dynamic public init()
+}
+extension MIDSEnrollmentManager : MIDSVerificationSDK.EnrollmentDelegate {
+  public func midsEnrollmentManager(scanViewController: MIDSVerificationSDK.CustomScanViewController, shouldDisplayNoUSAddressFoundHint message: Swift.String, confirmation: @escaping () -> Swift.Void)
+  public func midsEnrollmentManager(didFinishInitializationSuccess status: Swift.Bool)
+  public func midsEnrollmentManager(didFinishInitializationWithError error: MIDSVerificationSDK.VerifyError)
+  public func midsEnrollmentManager(didDetermineNextScanViewController scanViewController: MIDSVerificationSDK.CustomScanViewController, isFallback: Swift.Bool)
+  public func midsEnrollmentManager(scanViewController: MIDSVerificationSDK.CustomScanViewController, shouldDisplayHelpWithText message: Swift.String, animationView: UIKit.UIView)
+  public func midsEnrollmentManager(shouldDisplayConfirmationWith view: UIKit.UIView, text: Swift.String, currentStep: Swift.Int, totalSteps: Swift.Int, retryEnabled: Swift.Bool, confirmEnabled: Swift.Bool, confirmation: (() -> Swift.Void)?, retake: (() -> Swift.Void)?)
+  public func midsEnrollmentManager(didStartBiometricAnalysis scanViewController: MIDSVerificationSDK.CustomScanViewController)
+  public func midsEnrollmentManager(customScanViewControllerWillPrepareIProovController scanViewController: MIDSVerificationSDK.CustomScanViewController)
+  public func midsEnrollmentManager(customScanViewControllerWillPresentIProovController scanViewController: MIDSVerificationSDK.CustomScanViewController)
+  public func midsEnrollmentManager(didCaptureAllParts status: Swift.Bool)
+  public func midsEnrollmentManager(didFinishScanningWith reference: Swift.String, accountId: Swift.String?, authenticationResult: Swift.Bool?)
+  public func midsEnrollmentManager(didCancelWithError error: MIDSVerificationSDK.VerifyError)
+}
+public enum MIDSScanMode : Swift.UInt {
+  case modeUndefined
+  case modeScanModeMRZ
+  case modeScanModeNFC
+  case modeBarcode
+  case modeOCR
+  case modeOCR_Template
+  case mode3DLiveness
+  case modeFaceCapture
+  case Manual
+  public typealias RawValue = Swift.UInt
+  public init?(rawValue: Swift.UInt)
+  public var rawValue: Swift.UInt {
+    get
+  }
+}
+@objc @_inheritsConvenienceInitializers open class MIDSCustomScanViewController : UIKit.UIViewController {
+  public var customScanViewController: MIDSVerificationSDK.CustomScanViewController?
+  public func pauseScan()
+  public func retryScan()
+  public var customOverlayLayer: UIKit.UIView? {
+    get
+  }
+  public func hasFlash() -> Swift.Bool?
+  public func hasMultipleCameras() -> Swift.Bool?
+  public func isFlashOn() -> Swift.Bool?
+  public func canToggleFlash() -> Swift.Bool?
+  public func toggleFlash()
+  public func canSwitchCamera() -> Swift.Bool?
+  public func switchCamera()
+  public func currentStep() -> Swift.UInt?
+  public func totalSteps() -> Swift.UInt?
+  public func isFallbackAvailable() -> Swift.Bool?
+  public func switchToFallback()
+  public func localizedShortHelpText() -> Swift.String?
+  public func localizedLongHelpText() -> Swift.String?
+  public var verticalRoiOffset: CoreGraphics.CGFloat? {
+    get
+    set
+  }
+  public func currentScanMode() -> MIDSAssistSDK.MIDSScanMode
+  @objc override dynamic public func viewDidLoad()
+  @objc deinit
+  @objc override dynamic public init(nibName nibNameOrNil: Swift.String?, bundle nibBundleOrNil: Foundation.Bundle?)
+  @objc required dynamic public init?(coder: Foundation.NSCoder)
+}
+@_inheritsConvenienceInitializers public class MIDSISOCountryConverter : MIDSVerificationSDK.VerifyISOCountryConverter {
+  @objc deinit
+  @objc override dynamic public init()
+}
+extension MIDSAssistSDK.MIDSDataCenter : Swift.Equatable {}
+extension MIDSAssistSDK.MIDSDataCenter : Swift.Hashable {}
+extension MIDSAssistSDK.MIDSDataCenter : Swift.RawRepresentable {}
+extension MIDSAssistSDK.MIDSScanMode : Swift.Equatable {}
+extension MIDSAssistSDK.MIDSScanMode : Swift.Hashable {}
+extension MIDSAssistSDK.MIDSScanMode : Swift.RawRepresentable {}
