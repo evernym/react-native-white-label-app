@@ -96,6 +96,7 @@ import {
   CLOUD_AGENT_UNAVAILABLE, CONNECTION_UPGRADE_NOT_NEEDED,
   INVALID_AGENCY_RESPONSE, NOT_READY,
 } from '../bridge/react-native-cxs/error-cxs'
+import { ensureAppActive } from '../home/long-polling-home'
 
 const initialState: ConnectionStore = {
   data: {},
@@ -304,6 +305,7 @@ export function* watchConnectionsChanged(): any {
 export function* persistConnections(): Generator<*, *, *> {
   try {
     const connections = yield select(getAllConnection)
+    yield* ensureAppActive();
     yield call(secureSet, CONNECTIONS, JSON.stringify(connections))
   } catch (e) {
     captureError(e)
