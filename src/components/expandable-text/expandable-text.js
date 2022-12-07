@@ -1,6 +1,12 @@
 // @flow
 import React, { useCallback, useState } from 'react'
-import { StyleSheet, Text, View, TouchableWithoutFeedback } from 'react-native'
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableWithoutFeedback,
+  Platform,
+} from 'react-native'
 import { verticalScale, moderateScale } from 'react-native-size-matters'
 import { colors } from '../../common/styles/constant'
 
@@ -55,7 +61,7 @@ export function ExpandableText({
 
   return (
     <>
-      {expanded ? (
+      {expanded || Platform.OS === 'android' ? (
         <Text style={style} onTextLayout={onTextLayout} {...rest}>
           {text}
         </Text>
@@ -70,7 +76,7 @@ export function ExpandableText({
           {text}
         </Text>
       )}
-      {showToggleMarker && renderExpandMarker()}
+      {showToggleMarker && Platform.OS !== 'android' && renderExpandMarker()}
     </>
   )
 }
