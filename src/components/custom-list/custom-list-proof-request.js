@@ -118,7 +118,7 @@ export class CustomListProofRequest extends Component<CustomListProps, void> {
       logoUrl = claim.logoUrl ? { uri: claim.logoUrl } : null
 
       if ((value === '' || !value) && !this.props.isMissingFieldsShowing) {
-        return <View />
+        return <View key={`${index}_${keyIndex}`} />
       }
 
       return (

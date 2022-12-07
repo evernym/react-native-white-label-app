@@ -1,14 +1,11 @@
 // @flow
-import React  from 'react'
-import {
-  View,
-  StyleSheet,
-} from 'react-native'
+import React from 'react'
+import { View, StyleSheet } from 'react-native'
 import { moderateScale } from 'react-native-size-matters'
 import { colors } from '../../common/styles/constant'
 import { RenderAttachmentIcon } from '../../components/attachment/attachment'
 
-import type { CredentialListProps, } from './type-credential-list'
+import type { CredentialListProps } from './type-credential-list'
 
 export const CredentialList = ({
   uid,
@@ -23,7 +20,7 @@ export const CredentialList = ({
           (userData.data === '' || !userData.data) &&
           !isMissingFieldsShowing
         ) {
-          return <View />
+          return <View key={index} />
         }
 
         return (

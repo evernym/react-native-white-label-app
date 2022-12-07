@@ -47,10 +47,6 @@ import {
   PROOF_VERIFICATION_FAILED,
   PROOF_VERIFIED,
 } from '../verifier/type-verifier'
-import {
-  PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED,
-  PHYSICAL_ID_DOCUMENT_SUBMITTED,
-} from '../physical-id/physical-id-type'
 
 const actionToRecord = [
   // removing invitation received from record array
@@ -95,8 +91,6 @@ const actionToRecord = [
   PROOF_REQUEST_SENT,
   PROOF_VERIFIED,
   PROOF_VERIFICATION_FAILED,
-  PHYSICAL_ID_DOCUMENT_SUBMITTED,
-  PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED,
 ]
 
 // TODO:KS Fix any type using `redux` provided Generic Types

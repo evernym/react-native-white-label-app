@@ -6,7 +6,7 @@ echo 'org.gradle.jvmargs=-Xmx4608m -XX:MaxPermSize=512m -XX:+HeapDumpOnOutOfMemo
 echo "2. Updating minimum supported SDK version to ${minVersion} "
 minVersion=23
 sed -ri '' "s|minSdkVersion = [0-9]*|minSdkVersion = ${minVersion}|" android/build.gradle
-echo "3. Adding the source repository for VCX and Jumio libraries"
+echo "3. Adding the source repository for VCX libraries"
 repository="
 allprojects {
     repositories {
@@ -16,7 +16,6 @@ allprojects {
         maven {
             url 'https://evernym.mycloudrepo.io/public/repositories/evernym'
         }
-        maven { url 'http://mobile-sdk.jumio.com' }
     }
 }"
 cat <<EOT >> android/build.gradle

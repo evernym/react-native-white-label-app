@@ -141,6 +141,7 @@
     "metro-react-native-babel-preset": "^0.66.0",
     "node-fetch": "2.6.0",
     "prettier": "2.0.5",
+    "react-native": "0.65.1",
     "react-native-codegen": "^0.0.9",
     "react-test-renderer": "17.0.2",
     "reactotron-react-native": "5.0.0",
@@ -177,7 +178,7 @@
       "post-checkout": "yarnhook",
       "post-merge": "yarnhook",
       "pre-commit": "lint-staged",
-      "pre-push": "(npm test && npm run lint) || osascript -e 'display notification \"Push Failed\" with title \"Push from repo failed\"'"
+      "pre-push": "(npm run lint) || osascript -e 'display notification \"Push Failed\" with title \"Push from repo failed\"'"
     }
   }
 }

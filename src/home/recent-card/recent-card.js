@@ -46,7 +46,6 @@ import { LOADING_ACTIONS } from '../../connection-history/type-connection-histor
 import { PROOF_VERIFICATION_FAILED } from '../../verifier/type-verifier'
 import { renderUserAvatar } from '../../components/user-avatar/user-avatar'
 import { EventTimestamp } from '../../components/event-timestamp/event-timestamp'
-import { PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED } from '../../physical-id/physical-id-type'
 
 class RecentCardComponent extends React.Component<RecentCardProps, void> {
   render() {
@@ -215,7 +214,6 @@ export const FAILED_ACTIONS = [
   ERROR_SEND_PROOF,
   DENY_PROOF_REQUEST_FAIL,
   PROOF_VERIFICATION_FAILED,
-  PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED,
 ]
 
 function getRetryStatus(event: *): boolean {

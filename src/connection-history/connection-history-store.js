@@ -5,7 +5,6 @@ import merge from 'lodash.merge'
 import {
   claimOfferRoute,
   inviteActionRoute,
-  problemReportModalRoute,
   proofRequestRoute,
   questionRoute,
 } from '../common'
@@ -188,15 +187,6 @@ import type {
   ProofVerificationFailedAction,
   ProofVerifiedAction,
 } from '../verifier/type-verifier'
-import {
-  PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED,
-  PHYSICAL_ID_DOCUMENT_SUBMITTED,
-} from '../physical-id/physical-id-type'
-import type {
-  PhysicalIdDocumentIssuanceFailedAction,
-  PhysicalIdDocumentSubmittedAction,
-} from '../physical-id/physical-id-type'
-import { selectPhysicalIdDid } from '../physical-id/physical-id-store'
 
 const initialState = {
   error: null,
@@ -1150,51 +1140,6 @@ export function convertPresentationVerificationFailedToHistoryEvent(
   }
 }
 
-// physical ID Document Submitted
-export function convertPhysicalIdDocumentSubmittedActionEvent(
-  action: PhysicalIdDocumentSubmittedAction,
-  connection: Connection,
-): ConnectionHistoryEvent {
-  return {
-    action: HISTORY_EVENT_STATUS[PHYSICAL_ID_DOCUMENT_SUBMITTED],
-    data: {},
-    id: uuid(),
-    name: connection.senderName || 'Unknown',
-    status: HISTORY_EVENT_STATUS[PHYSICAL_ID_DOCUMENT_SUBMITTED],
-    timestamp: moment().format(),
-    type: HISTORY_EVENT_TYPE.PHYSICAL_ID,
-    remoteDid: connection.senderDID,
-    originalPayload: action,
-    senderName: connection.senderName || 'Unknown',
-    senderLogoUrl: connection.logoUrl,
-  }
-}
-
-// physical ID Document Issuance Failed
-export function convertPhysicalIdDocumentIssuanceFailedEvent(
-  action: PhysicalIdDocumentIssuanceFailedAction,
-  documentSubmittedEvent: ConnectionHistoryEvent
-): ConnectionHistoryEvent {
-  return {
-    action: HISTORY_EVENT_STATUS[PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED],
-    // $FlowFixMe
-    data: { uid: action.uid, error: action.error },
-    id: uuid(),
-    name: documentSubmittedEvent.name,
-    status: HISTORY_EVENT_STATUS[PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED],
-    timestamp: moment().format(),
-    type: HISTORY_EVENT_TYPE.PHYSICAL_ID,
-    remoteDid: documentSubmittedEvent.remoteDid,
-    originalPayload: {
-      type: PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED,
-      payloadInfo : { ...action }
-    },
-    senderName: documentSubmittedEvent.senderName,
-    senderLogoUrl: documentSubmittedEvent.senderLogoUrl,
-    showBadge: true,
-  }
-}
-
 export const recordHistoryEvent = (historyEvent: ConnectionHistoryEvent) => ({
   type: RECORD_HISTORY_EVENT,
   historyEvent,
@@ -2034,34 +1979,6 @@ export function* historyEventOccurredSaga(
       historyEvent = errorSendProofEvent
     }
 
-    if (event.type === PHYSICAL_ID_DOCUMENT_SUBMITTED) {
-      let physicalIdDid = yield select(selectPhysicalIdDid)
-      let [connection] = yield select(getConnection, physicalIdDid)
-      if (!connection) {
-        return
-      }
-      historyEvent = convertPhysicalIdDocumentSubmittedActionEvent(event, connection)
-    }
-
-    if (event.type === PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED) {
-      let physicalIdDid = yield select(selectPhysicalIdDid)
-      const existingPhysicalIdDocumentIssuanceFailedEvent = yield select(
-        getPendingHistory,
-        event.uid,
-        physicalIdDid,
-        PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED
-      )
-      const documentSubmittedEvent = yield select(
-        getPendingHistory,
-        event.uid,
-        physicalIdDid,
-        PHYSICAL_ID_DOCUMENT_SUBMITTED
-      )
-      if (!existingPhysicalIdDocumentIssuanceFailedEvent) {
-        historyEvent = convertPhysicalIdDocumentIssuanceFailedEvent(event, documentSubmittedEvent)
-      }
-    }
-
     if (historyEvent) {
       yield put(recordHistoryEvent(historyEvent))
     }
@@ -2107,10 +2024,6 @@ export function* removeEventSaga(
     )
     eventType = MESSAGE_TYPE.INVITE_ACTION
     remotePairwiseDID = inviteActionPayload.remotePairwiseDID
-  } else if (action.navigationRoute === problemReportModalRoute) {
-    const physicalIdDid = yield select(selectPhysicalIdDid)
-    eventType = PHYSICAL_ID_DOCUMENT_ISSUANCE_FAILED
-    remotePairwiseDID = physicalIdDid
   }
 
   if (eventType && remotePairwiseDID) {
@@ -2122,15 +2035,7 @@ export function* removeEventSaga(
     )
 
     if (event) {
-      if (action.navigationRoute === problemReportModalRoute) {
-        yield put(updateHistoryEvent({
-            ...event,
-            showBadge: false,
-        }))
-      } else {
-        yield put(deleteHistoryEvent(event))
-
-      }
+      yield put(deleteHistoryEvent(event))
     }
   }
 }
