@@ -81,7 +81,7 @@ export const ModalContent = ({
         />
         {content.map(({ label, data }) => {
           if ((data === '' || !data) && !isMissingFieldsShowing) {
-            return <View />
+            return <View key={uuid()} />
           }
           return (
             <>

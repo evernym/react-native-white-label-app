@@ -276,7 +276,7 @@ class ProofRequestAttributeList extends Component<
         const value = selectedItem.values[label]
 
         if ((value === '' || !value) && !this.state.isMissingFieldsShowing) {
-          return <View />
+          return <View key={`${index}_${keyIndex}`} />
         }
 
         let claim =

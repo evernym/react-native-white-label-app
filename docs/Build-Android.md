@@ -67,7 +67,7 @@ In order to configure the building of your application for an Android platform, 
         ...
     ```
 
-1. Add the libvcx and jumio android repositories in your `android/build.gradle`:
+1. Add the libvcx android repositories in your `android/build.gradle`:
 
     ```groovy
     allprojects {
@@ -79,7 +79,6 @@ In order to configure the building of your application for an Android platform, 
             maven {
                 url 'https://evernym.mycloudrepo.io/public/repositories/evernym'
             }
-            maven { url 'http://mobile-sdk.jumio.com' }
         }
     }
     ```

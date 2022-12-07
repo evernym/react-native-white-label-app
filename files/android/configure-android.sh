@@ -21,7 +21,6 @@ allprojects {
         maven {
             url 'https://evernym.mycloudrepo.io/public/repositories/evernym'
         }
-        maven { url 'http://mobile-sdk.jumio.com' }
     }
 }"
 cat <<EOT >> android/build.gradle

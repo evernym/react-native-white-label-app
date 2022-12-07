@@ -23,5 +23,4 @@
   <string name="request_flow_core" translatable="false">TP-Core_SDK</string>
   <string name="request_flow_fraud_detection" translatable="false">TP-Fraud_Detection_SDK</string>
   <string name="request_flow_verification" translatable="false">TP-MIDS_SDK</string>
-  <style name="MIDSVerificationTheme" parent="Theme.Netverify" ns1:ignore="UnusedResources"/>
 </resources>

@@ -129,12 +129,12 @@ jest.doMock('react-native-vector-icons/lib/icon-button', () => () => {
   )
 })
 
-jest.mock('react-native-zip-archive', () => ({
+jest.doMock('react-native-zip-archive', () => ({
   zip: jest.fn(() => Promise.resolve()),
   unzip: jest.fn(() => Promise.resolve()),
 }))
 
-jest.mock('@react-native-firebase/messaging', () => () => ({
+jest.doMock('@react-native-firebase/messaging', () => () => ({
   requestPermission: jest.fn(() => Promise.resolve(true)),
   onTokenRefresh: jest.fn(() => Promise.resolve('refreshed-token-value')),
   getToken: jest.fn(() => Promise.resolve('token-value')),
@@ -143,11 +143,11 @@ jest.mock('@react-native-firebase/messaging', () => () => ({
   onNotificationOpenedApp: jest.fn(() => Promise.resolve()),
 }))
 
-jest.mock('@react-native-community/push-notification-ios', () => ({
+jest.doMock('@react-native-community/push-notification-ios', () => ({
   removeAllDeliveredNotifications: jest.fn(),
 }))
 
-jest.mock('react-native-sensitive-info', () => {
+jest.doMock('react-native-sensitive-info', () => {
   // todo: need to handle empty key-chain case
   const secureStorage = {
     ConnectMeKeyChain: {
@@ -178,7 +178,7 @@ jest.mock('@babel/plugin-proposal-decorators')
 
 jest.mock('react-native-modal', () => mockModal)
 
-jest.mock('rn-fetch-blob', () => ({
+jest.doMock('rn-fetch-blob', () => ({
   fetch: jest.fn((type, url) => Promise.resolve()),
   fs: {
     dirs: {

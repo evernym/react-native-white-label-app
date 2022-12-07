@@ -27,7 +27,6 @@ import type { OpenIdConnectStore } from '../open-id-connect/open-id-connect-acti
 import type { InviteActionStore } from '../invite-action/type-invite-action'
 import type { ShowCredentialStore } from '../show-credential/type-show-credential'
 import type { VerifierStore } from '../verifier/type-verifier'
-import type { PhysicalIdStore } from '../physical-id/physical-id-type'
 
 export type RouteStore = {
   currentScreen: string,
@@ -63,5 +62,4 @@ export type Store = {
   inviteAction: InviteActionStore,
   showCredential: ShowCredentialStore,
   verifier: VerifierStore,
-  physicalId: PhysicalIdStore,
 }
