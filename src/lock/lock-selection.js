@@ -150,42 +150,6 @@ export class LockSelection extends Component<LockSelectionProps, *> {
             >
               No thanks
             </CustomText>
-            <CustomView tertiary style={[style.devSwitchContainer]}>
-              <CustomView tertiary row spaceBetween>
-                <CustomView tertiary style={[style.devSwitchText]}>
-                  <CustomText bg="tertiary" tertiary h5 bold>
-                    Use Staging Net
-                  </CustomText>
-                  <CustomText bg="tertiary" tertiary h7>
-                    An alternative network for app developers
-                  </CustomText>
-                </CustomView>
-                <CustomView tertiary>
-                  {Platform.OS === 'ios' ? (
-                    <Switch
-                      trackColor={{ true: mantis }}
-                      onValueChange={this.onDevModeChange}
-                      value={this.state.devMode}
-                    />
-                  ) : (
-                    <ToggleSwitch
-                      onToggle={this.onDevModeChange}
-                      value={this.state.devMode}
-                      buttonWidth={55}
-                      buttonHeight={30}
-                      buttonRadius={30}
-                      sliderWidth={28}
-                      sliderHeight={28}
-                      sliderRadius={58}
-                      buttonOnColor={mantis}
-                      buttonOffColor={lightWhite}
-                      sliderOnColor={colors.white}
-                      sliderOffColor={colors.white}
-                    />
-                  )}
-                </CustomView>
-              </CustomView>
-            </CustomView>
           </Container>
         </ScrollView>
       </Container>
